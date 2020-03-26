@@ -1,6 +1,8 @@
 /**
  * @title UnionFindTree
  * @brief union_set(x,y) x が入っている集合と y が入っている集合を併合する．
+ * @brief same(x,y) x と y が同じ集合に入っているかどうかを判定する．
+ * @brief O(α(N))
  */
 
 #ifndef call_from_test

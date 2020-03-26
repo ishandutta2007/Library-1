@@ -1,3 +1,8 @@
+/**
+ * @title UnionFindTree
+ * @brief union_set(x,y) x が入っている集合と y が入っている集合を併合する．
+ */
+
 #ifndef call_from_test
 #include <bits/stdc++.h>
 using namespace std;

@@ -16,14 +16,14 @@ template <unsigned long long B> struct RollingHash {
     const ull MASK61 = MOD;
     vector<ull> hash, po;
     RollingHash() {}
-    RollingHash(vector<ll> vs) { init(vs); }
+    RollingHash(vector<long long> vs) { init(vs); }
     RollingHash(string &s) {
-        vector<ll> vs;
+        vector<long long> vs;
         for(char c : s)
             vs.emplace_back(c);
         init(vs);
     }
-    void init(vector<ll> vs) {
+    void init(vector<long long> vs) {
         int n = vs.size();
         hash.assign(n + 1, 0);
         po.assign(n + 1, 1);

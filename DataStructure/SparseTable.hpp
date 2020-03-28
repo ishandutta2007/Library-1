@@ -1,7 +1,7 @@
 /**
  * @title SparseTable
  * @brief RmQ
- * @brief 前処理 O(n log n)
+ * @brief 構築 O(n log n)
  * @brief query O(1)
  */
 

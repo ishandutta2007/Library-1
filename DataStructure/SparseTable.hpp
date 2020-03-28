@@ -1,6 +1,6 @@
 /**
- * @title DisjointSparseTable
- * @brief fは結合則をみたす二項演算
+ * @title SparseTable
+ * @brief RmQ
  * @brief 前処理 O(n log n)
  * @brief query O(1)
  */

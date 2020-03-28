@@ -36,7 +36,7 @@ template <class T> struct DisjointSparseTable {
     T query(int i, int j) { // [i, j)
         --j;
         if(i == j)
-            return xs[i];
+            return ys[0][i];
         int h = sizeof(int) * __CHAR_BIT__ - 1 - __builtin_clz(i ^ j);
         return f(ys[h][i], ys[h][j]);
     }

@@ -11,7 +11,6 @@ using namespace std;
 struct SuffixArray {
     vector<int> SA;
     const string s;
-
     SuffixArray(const string &str) : s(str) {
         SA.resize(s.size());
         iota(begin(SA), end(SA), 0);
@@ -39,4 +38,26 @@ struct SuffixArray {
         }
     }
     int operator[](int k) const { return (SA[k]); }
+
+    // O(|T|*log|S|)
+    int lower_bound(string &t) {
+        int low = -1, high = s.size();
+        while(high - low > 1) {
+            int m = (low + high) >> 1;
+            if(s.compare(SA[m], t.length(), t) < 0)
+                low = m;
+            else
+                high = m;
+        }
+        return high;
+    }
+
+    int upper_bound(string &t) {
+        t.back()++;
+        int res = lower_bound(t);
+        t.back()--;
+        return res;
+    }
+    // O(|T|*log|S|)
+    int count(string &T) { return upper_bound(T) - lower_bound(T); }
 };

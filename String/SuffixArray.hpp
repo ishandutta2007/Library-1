@@ -1,6 +1,7 @@
 /**
  * @title SuffixArray
  * @brief 構築 O(|S| log |S|)
+ * @brief lower_bound(T) 文字列Tを含む接尾辞のindexの下限 O(|T| log |S|)
  */
 
 #ifndef call_from_test
@@ -40,11 +41,11 @@ struct SuffixArray {
     int operator[](int k) const { return (SA[k]); }
 
     // O(|T|*log|S|)
-    int lower_bound(string &t) {
+    int lower_bound(string &T) {
         int low = -1, high = s.size();
         while(high - low > 1) {
             int m = (low + high) >> 1;
-            if(s.compare(SA[m], t.length(), t) < 0)
+            if(s.compare(SA[m], T.length(), T) < 0)
                 low = m;
             else
                 high = m;
@@ -52,10 +53,10 @@ struct SuffixArray {
         return high;
     }
 
-    int upper_bound(string &t) {
-        t.back()++;
-        int res = lower_bound(t);
-        t.back()--;
+    int upper_bound(string &T) {
+        T.back()++;
+        int res = lower_bound(T);
+        T.back()--;
         return res;
     }
     // O(|T|*log|S|)

@@ -14,15 +14,15 @@ struct KnuthMorrisPratt {
     const string s;
     int n;
     KnuthMorrisPratt(const string &str) : s(str), n(s.length()) {
-        int n = s.size();
-        vector<int> knuth(n + 1, -1);
         KMP.resize(n + 1, -1);
         for(int i = 0, j = -1; i < n; i++) {
-            while(~j && s[i] != s[j])
-                j = knuth[j];
-            knuth[i + 1] = KMP[i + 1] = ++j;
-            if(i + 1 < n && s[i + 1] == s[j])
-                knuth[i + 1] = knuth[j];
+            while(j >= 0 && s[i] != s[j])
+                j = KMP[j];
+            j++;
+            if((i + 1 == n ? '*' : s[i + 1]) == (j == n ? '*' : s[j]))
+                KMP[i + 1] = KMP[j];
+            else
+                KMP[i + 1] = j;
         }
     }
 

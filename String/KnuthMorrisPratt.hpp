@@ -35,7 +35,7 @@ struct KnuthMorrisPratt {
             while(k >= 0 && T[i] != s[k])
                 k = KMP[k];
             if(++k == n) {
-                /* match at T[i-m+1 ... i] */
+                /* match at T[i-n+1 ... i] */
                 occur.push_back(i - n + 1);
             }
         }

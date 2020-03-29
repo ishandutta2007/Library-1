@@ -1,11 +1,12 @@
 {
 "test/aoj/2207.test.cpp": "2020-03-26 13:56:53 +0900",
 "test/aoj/2644.test.cpp": "2020-03-29 02:12:04 +0900",
-"test/aoj/ALDS1_14_B.test.cpp": "2020-03-26 23:28:11 +0900",
+"test/aoj/ALDS1_14_B.KMP.test.cpp": "2020-03-29 14:43:20 +0900",
+"test/aoj/ALDS1_14_B.rollinghash.test.cpp": "2020-03-29 14:43:20 +0900",
 "test/aoj/DSL_1_A.test.cpp": "2020-03-26 13:56:53 +0900",
 "test/aoj/DSL_3_D.disjointsparsetable.test.cpp": "2020-03-28 22:38:15 +0900",
 "test/aoj/DSL_3_D.sparsetable.test.cpp": "2020-03-28 22:38:15 +0900",
 "test/yosupo/number_of_substrings.test.cpp": "2020-03-29 02:12:04 +0900",
 "test/yosupo/suffixarray.test.cpp": "2020-03-29 02:12:04 +0900",
-"test/yosupo/z_algorithm.test.cpp": "2020-03-26 16:32:30 +0900"
+"test/yosupo/z_algorithm.test.cpp": "2020-03-29 14:43:20 +0900"
 }

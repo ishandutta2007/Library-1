@@ -1,7 +1,7 @@
 /**
  * @title Z_algorithm
  * @brief $prefix_i$ は、$S$ と $S.substr(i)$ の LCP(longest common prefix)
- * @brief O(N)
+ * @brief O(|S|)
  */
 
 #ifndef call_from_test

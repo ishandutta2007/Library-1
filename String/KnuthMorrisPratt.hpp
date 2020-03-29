@@ -26,6 +26,9 @@ struct KnuthMorrisPratt {
         }
     }
 
+    // the period of S[0:i]
+    int period(int i) { return i - KMP[i]; }
+
     // positions for T that match s
     // O(|T|)
     vector<int> pattern_match(string T) {

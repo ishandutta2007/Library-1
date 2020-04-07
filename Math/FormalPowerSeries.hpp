@@ -24,7 +24,7 @@ class Mod64 {
   }
 
  public:
-  static constexpr u64 inv = mul_inv(mod);
+  static constexpr u64 inv = mul_inv(mod, 6, 1);
   static constexpr u64 r2 = -u128(mod) % mod;
   static constexpr int level = __builtin_ctzll(mod - 1);
   static_assert(inv * mod == 1, "invalid 1/M modulo 2^64.");

@@ -22,6 +22,17 @@ R kitamasa(const vector<R> &c, const vector<R> &a, u64 k, R mod) {
   int N = a.size();
   if (k < N) return a[k];
   if (FPS::mod != mod) FPS::init(mod);
+  if (N < 64) {
+    FPS f(N + 1);
+    for (int i = 0; i < N; i++) f[i] = mod - c[i];
+    f[N] = 1;
+    FPS r(1, 1);
+    for (FPS base{vector<R>{0, 1}}; k; k >>= 1, (base *= base) %= f)
+      if (k & 1) (r *= base) %= f;
+    R ret = 0;
+    for (int i = 0; i < N; i++) FPS::mod_add(ret, FPS::mod_mul(r[i], a[i]));
+    return ret;
+  }
   auto rem_pre = [&](const FPS &f, const FPS &b, const FPS &inv) {
     if (f.size() < b.size()) return f;
     int sq = f.size() - b.size() + 1;
@@ -40,7 +51,7 @@ R kitamasa(const vector<R> &c, const vector<R> &a, u64 k, R mod) {
   FPS f(N + 1);
   f[0] = 1;
   for (int i = 0; i < N; i++) f[N - i] = mod - c[i];
-  FPS r = FPS(vector<R>({1, 0}));
+  FPS r(vector<R>({1, 0}));
   FPS inv = f.inv(N);
   r = rem_pre(r, f, inv);
   u64 mask = (u64(1) << (63 - __builtin_clzll(k))) >> 1;

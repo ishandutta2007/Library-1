@@ -166,6 +166,7 @@ class FormalPowerSeries {
   void shrink() {
     while (!coefs.empty() && !coefs.back()) coefs.pop_back();
   }
+  void pop_back() { coefs.pop_back(); }
   const R *data() const { return coefs.data(); }
   R *data() { return coefs.data(); }
   const R &operator[](int i) const { return coefs[i]; }
@@ -254,13 +255,33 @@ class FormalPowerSeries {
   }
 
  private:
+  FPS mul_n(const FPS &g) const {
+    if (size() == 0 || g.size() == 0) return FPS();
+    FPS ret(size() + g.size() - 1, 0);
+    for (int i = 0; i < size(); i++)
+      for (int j = 0; j < g.size(); j++)
+        mod_add(ret[i + j], mod_mul((*this)[i], g[j]));
+    return ret;
+  }
   FPS mul(const FPS &g) const {
+    if (size() + g.size() < 80) return mul_n(g);
     const auto &f = *this;
-    if (f.size() == 0 || g.size() == 0) return FPS();
     mul2(f, g, false);
     return mul_crt(0, f.size() + g.size() - 1);
   }
-
+  pair<FPS, FPS> div_n(const FPS &g) const {
+    FPS f(*this, size());
+    if (f.size() < g.size()) return make_pair(FPS(), f);
+    FPS u(f.size() - g.size() + 1, 0);
+    R inv = mod_inverse(g[g.size() - 1]);
+    for (int i = u.size() - 1; i >= 0; --i) {
+      u[i] = mod_mul(f[f.size() - 1], inv);
+      for (int j = 0; j < g.size(); ++j)
+        mod_sub(f[j + f.size() - g.size()], mod_mul(g[j], u[i]));
+      f.pop_back();
+    }
+    return {u, f};
+  }
   FPS middle_product(const FPS &g) const {
     const FPS &f = *this;
     if (f.size() == 0 || g.size() == 0) return FPS();
@@ -385,11 +406,13 @@ class FormalPowerSeries {
   FPS &operator*=(const FPS &rhs) { return *this = *this * rhs; }
   FPS &operator/=(const FPS &rhs) {
     if (size() < rhs.size()) return *this = FPS();
+    if (rhs.size() < 250) return *this = div_n(rhs).first;
     int sq = size() - rhs.size() + 1;
     return *this
            = FPS(FPS(rev(), sq) * FPS(rhs.rev().inverse(sq), sq), sq).rev();
   }
   FPS &operator%=(const FPS &rhs) {
+    if (rhs.size() < 250) return *this = div_n(rhs).second;
     *this -= (*this / rhs) * rhs;
     shrink();
     return *this;

@@ -12,11 +12,15 @@ using namespace std;
 template <unsigned long long B>
 struct RollingHash {
   using ull = unsigned long long;
+
+ private:
   const ull MASK30 = (1UL << 30) - 1;
   const ull MASK31 = (1UL << 31) - 1;
   const ull MOD = (1UL << 61) - 1;
   const ull MASK61 = MOD;
   vector<ull> hash, po;
+
+ public:
   RollingHash() {}
   RollingHash(vector<long long> vs) { init(vs); }
   RollingHash(string &s) {
@@ -33,6 +37,13 @@ struct RollingHash {
       po[i + 1] = CalcMod(Mul(po[i], B));
     }
   }
+  // S[l, r)
+  ull get(int l, int r) {
+    ull res = hash[r] + MOD * 3 - Mul(hash[l], po[r - l]);
+    return CalcMod(res);
+  }
+
+ private:
   // a*b mod 2^61-1を返す関数(最後にModを取る)
   ull Mul(ull a, ull b) {
     ull au = a >> 31;
@@ -51,10 +62,5 @@ struct RollingHash {
     ull xd = x & MASK61;
     ull res = xu + xd;
     return res >= MOD ? res - MOD : res;
-  }
-  // S[l, r)
-  ull find(int l, int r) {
-    ull res = hash[r] + MOD * 3 - Mul(hash[l], po[r - l]);
-    return CalcMod(res);
   }
 };

@@ -137,7 +137,7 @@ void ntt_dit4(mod_t *A, int n, int sign, mod_t *roots) {
   }
 }
 
-const int size = 1 << 20;
+const int size = 1 << 22;
 using m64_1 = ntt::Mod64<34703335751681, 3>;
 using m64_2 = ntt::Mod64<35012573396993, 3>;
 m64_1 f1[size], g1[size];

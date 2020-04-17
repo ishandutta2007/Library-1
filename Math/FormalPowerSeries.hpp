@@ -86,7 +86,6 @@ void convolute(mod_t *A, int s1, mod_t *B, int s2, bool cyclic = false) {
   mod_t inv = mod_t(size).inverse();
   for (int i = 0; i < (cyclic ? size : s); i++) A[i] *= inv;
 }
-
 template <typename mod_t>
 void rev_permute(mod_t *A, int n) {
   int r = 0, nh = n >> 1;
@@ -96,7 +95,6 @@ void rev_permute(mod_t *A, int n) {
     if (r > i) swap(A[i], A[r]);
   }
 }
-
 template <typename mod_t>
 void ntt_dit4(mod_t *A, int n, int sign, mod_t *roots) {
   rev_permute(A, n);
@@ -136,13 +134,11 @@ void ntt_dit4(mod_t *A, int n, int sign, mod_t *roots) {
     }
   }
 }
-
 const int size = 1 << 22;
 using m64_1 = ntt::Mod64<34703335751681, 3>;
 using m64_2 = ntt::Mod64<35012573396993, 3>;
 m64_1 f1[size], g1[size];
 m64_2 f2[size], g2[size];
-
 }  // namespace ntt
 
 using R = u64;
@@ -186,7 +182,9 @@ class FormalPowerSeries {
       if (exp & 1) ret = mod_mul(ret, base);
     return ret;
   }
-  static R mod_inverse(R v) { return mod_pow(v, mod - 2); }
+  static R mod_inverse(R v) {
+    return v < ntt::size ? inve[v] : mod_pow(v, mod - 2);
+  }
   static R mod_sqrt(R x) {
     if (x == 0 || mod == 2) return x;
     if (mod_pow(x, (mod - 1) >> 1) != 1) return 0;  // no solution
@@ -222,6 +220,7 @@ class FormalPowerSeries {
     u64 m, s, x;
   };
 
+ private:
   static FPS mul_crt(int beg, int end) {
     using namespace ntt;
     auto inv = m64_2(m64_1::modulo()).inverse();
@@ -236,7 +235,6 @@ class FormalPowerSeries {
     }
     return ret;
   }
-
   static void mul2(const FPS &f, const FPS &g, bool cyclic = false) {
     using namespace ntt;
     if (&f == &g) {
@@ -269,26 +267,62 @@ class FormalPowerSeries {
     mul2(f, g, false);
     return mul_crt(0, f.size() + g.size() - 1);
   }
-  pair<FPS, FPS> div_n(const FPS &g) const {
-    FPS f(*this, size());
-    if (f.size() < g.size()) return make_pair(FPS(), f);
-    FPS u(f.size() - g.size() + 1, 0);
-    R inv = mod_inverse(g[g.size() - 1]);
-    for (int i = u.size() - 1; i >= 0; --i) {
-      u[i] = mod_mul(f[f.size() - 1], inv);
-      for (int j = 0; j < g.size(); ++j)
-        mod_sub(f[j + f.size() - g.size()], mod_mul(g[j], u[i]));
-      f.pop_back();
-    }
-    return {u, f};
-  }
   FPS middle_product(const FPS &g) const {
     const FPS &f = *this;
     if (f.size() == 0 || g.size() == 0) return FPS();
     mul2(f, g, true);
     return mul_crt(f.size(), g.size());
   }
+  FPS mul_cyclically(const FPS &g) const {
+    const auto &f = *this;
+    if (f.size() == 0 || g.size() == 0) return FPS();
+    mul2(f, g, true);
+    int s = max(f.size(), g.size()), size = 1;
+    while (size < s) size <<= 1;
+    return mul_crt(0, size);
+  }
+  static FPS sub_mul(const FPS &f, const FPS &q, const FPS &d) {
+    int sq = q.size();
+    FPS p = q.mul_cyclically(d);
+    int mask = p.size() - 1;
+    for (int i = 0; i < sq; i++) mod_sub(p[i & mask], f[i & mask]);
+    FPS r = FPS(f, sq, f.size());
+    for (int i = 0; i < r.size(); i++) mod_sub(r[i], p[(sq + i) & mask]);
+    return r;
+  }
 
+ public:
+  pair<FPS, FPS> divrem_rev_n(const FPS &brev) {
+    FPS frev(*this, size());
+    if (frev.size() < brev.size()) return make_pair(FPS(), frev);
+    int sq = frev.size() - brev.size() + 1;
+    FPS qrev(sq, 0);
+    R inv = mod_inverse(brev[0]);
+    for (int i = 0; i < qrev.size(); ++i) {
+      qrev[i] = mod_mul(frev[i], inv);
+      for (int j = 0; j < brev.size(); ++j)
+        mod_sub(frev[j + i], mod_mul(brev[j], qrev[i]));
+    }
+    return {qrev, FPS(frev, sq, frev.size())};
+  }
+  FPS div_rev_pre(const FPS &brev, const FPS &brevinv) const {
+    if (size() < brev.size()) {
+      return FPS();
+    }
+    int sq = size() - brev.size() + 1;
+    assert(size() >= sq && brevinv.size() >= sq);
+    FPS qrev = FPS(FPS(*this, sq) * FPS(brevinv, sq), sq);
+    return qrev;
+  }
+  FPS rem_rev_pre(const FPS &brev, const FPS &brevinv) const {
+    if (size() < brev.size()) {
+      return FPS(*this);
+    }
+    FPS rrev = sub_mul(*this, div_rev_pre(brev, brevinv), brev);
+    return rrev;
+  }
+
+ private:
   FPS inverse(int deg = -1) const {
     if (deg < 0) deg = size();
     FPS ret(1, mod_inverse((*this)[0]));
@@ -304,7 +338,6 @@ class FormalPowerSeries {
     for (int i = 1; i < size(); i++) ret[i - 1] = mod_mul(i, (*this)[i]);
     return ret;
   }
-
   FPS integral() const {
     FPS ret(size() + 1);
     ret[0] = 0;
@@ -312,13 +345,11 @@ class FormalPowerSeries {
       ret[i + 1] = mod_mul(inve[i + 1], (*this)[i]);
     return ret;
   }
-
   FPS logarithm(int deg = -1) const {
     assert((*this)[0] == 1);
     if (deg < 0) deg = size();
     return FPS(differentiation() * inverse(deg), deg - 1).integral();
   }
-
   FPS exponent(int deg = -1) const {
     assert((*this)[0] == 0);
     if (deg < 0) deg = size();
@@ -339,7 +370,6 @@ class FormalPowerSeries {
     }
     return ret;
   }
-
   FPS square_root(int deg = -1) const {
     if (deg < 0) deg = size();
     if ((*this)[0] == 0) {
@@ -366,7 +396,6 @@ class FormalPowerSeries {
     }
     return ret;
   }
-
   FPS power(u64 k, int deg = -1) const {
     if (deg < 0) deg = size();
     for (int i = 0; i < size(); i++) {
@@ -406,16 +435,19 @@ class FormalPowerSeries {
   FPS &operator*=(const FPS &rhs) { return *this = *this * rhs; }
   FPS &operator/=(const FPS &rhs) {
     if (size() < rhs.size()) return *this = FPS();
-    if (rhs.size() < 250) return *this = div_n(rhs).first;
-    int sq = size() - rhs.size() + 1;
-    return *this
-           = FPS(FPS(rev(), sq) * FPS(rhs.rev().inverse(sq), sq), sq).rev();
+    FPS frev = this->rev();
+    FPS rhsrev = rhs.rev();
+    if (rhs.size() < 250) return *this = frev.divrem_rev_n(rhsrev).first.rev();
+    FPS inv = rhsrev.inverse();
+    return *this = frev.div_rev_pre(rhsrev, inv).rev();
   }
   FPS &operator%=(const FPS &rhs) {
-    if (rhs.size() < 250) return *this = div_n(rhs).second;
-    *this -= (*this / rhs) * rhs;
-    shrink();
-    return *this;
+    if (size() < rhs.size()) return *this;
+    FPS frev = this->rev();
+    FPS rhsrev = rhs.rev();
+    if (rhs.size() < 250) return *this = frev.divrem_rev_n(rhsrev).second.rev();
+    FPS inv = rhsrev.inverse();
+    return *this = frev.rem_rev_pre(rhsrev, inv).rev();
   }
   FPS &operator+=(const R &v) {
     mod_add((*this)[0], v);

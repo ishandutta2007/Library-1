@@ -438,7 +438,7 @@ class FormalPowerSeries {
     FPS frev = this->rev();
     FPS rhsrev = rhs.rev();
     if (rhs.size() < 250) return *this = frev.divrem_rev_n(rhsrev).first.rev();
-    FPS inv = rhsrev.inverse();
+    FPS inv = rhsrev.inverse(this->size() - rhs.size() + 1);
     return *this = frev.div_rev_pre(rhsrev, inv).rev();
   }
   FPS &operator%=(const FPS &rhs) {
@@ -446,7 +446,7 @@ class FormalPowerSeries {
     FPS frev = this->rev();
     FPS rhsrev = rhs.rev();
     if (rhs.size() < 250) return *this = frev.divrem_rev_n(rhsrev).second.rev();
-    FPS inv = rhsrev.inverse();
+    FPS inv = rhsrev.inverse(this->size() - rhs.size() + 1);
     return *this = frev.rem_rev_pre(rhsrev, inv).rev();
   }
   FPS &operator+=(const R &v) {

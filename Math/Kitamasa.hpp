@@ -30,20 +30,18 @@ Modint kitamasa(const vector<Modint> &c, const vector<Modint> &a, uint64_t k) {
   FPS r({1, 0});
   if (N < 1150) {  // naive
     r = r.divrem_rev_n(f).second;
-    while (mask) {
+    for (; mask; mask >>= 1) {
       r *= r;
       if (k & mask) r.push_back(0);
       r = r.divrem_rev_n(f).second;
-      mask >>= 1;
     }
   } else {
     FPS inv = f.inv(N);
     r = r.rem_rev_pre(f, inv);
-    while (mask) {
+    for (; mask; mask >>= 1) {
       r *= r;
       if (k & mask) r.push_back(0);
       r = r.rem_rev_pre(f, inv);
-      mask >>= 1;
     }
   }
   Modint ret(0);

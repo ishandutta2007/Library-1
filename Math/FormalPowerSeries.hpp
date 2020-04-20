@@ -1,9 +1,8 @@
 /**
  * @title 形式的冪級数(任意素数MOD)
  * @category 数学
- * @brief 998244353とかでなくても使える
- * @brief まずinitを呼んでmodを設定
- * @brief 配列のサイズに注意(REの原因になりがち)
+ * @brief MOD=998244353とかでないModInt<MOD>でも使える
+ * @brief nttの配列のサイズに注意(REの原因になりがち)
  */
 // verify用 https://loj.ac/problem/150
 
@@ -86,8 +85,8 @@ template <typename mod_t>
 void rev_permute(mod_t *A, int n) {
   int r = 0, nh = n >> 1;
   for (int i = 1; i < n; i++) {
-    for (int h = nh; !((r ^= h) & h); h >>= 1)
-      ;
+    int h = nh;
+    while (!((r ^= h) & h)) h >>= 1;
     if (r > i) swap(A[i], A[r]);
   }
 }
@@ -99,8 +98,7 @@ void ntt_dit4(mod_t *A, int n, int sign, mod_t *roots) {
   if (logn & 1)
     for (int i = 0; i < n; i += 2) {
       mod_t a = A[i], b = A[i + 1];
-      A[i] = a + b;
-      A[i + 1] = a - b;
+      A[i] = a + b, A[i + 1] = a - b;
     }
   mod_t imag = roots[mod_t::level - 2];
   if (sign < 0) imag = imag.inverse();
@@ -118,15 +116,11 @@ void ntt_dit4(mod_t *A, int n, int sign, mod_t *roots) {
           mod_t a0 = A[i + m4 * 0] * one, a2 = A[i + m4 * 1] * w2;
           mod_t a1 = A[i + m4 * 2] * w, a3 = A[i + m4 * 3] * w3;
           mod_t t02 = a0 + a2, t13 = a1 + a3;
-          A[i + m4 * 0] = t02 + t13;
-          A[i + m4 * 2] = t02 - t13;
+          A[i + m4 * 0] = t02 + t13, A[i + m4 * 2] = t02 - t13;
           t02 = a0 - a2, t13 = (a1 - a3) * imag;
-          A[i + m4 * 1] = t02 + t13;
-          A[i + m4 * 3] = t02 - t13;
+          A[i + m4 * 1] = t02 + t13, A[i + m4 * 3] = t02 - t13;
         }
-        w *= dw;
-        w2 = w * w;
-        w3 = w2 * w;
+        w *= dw, w2 = w * w, w3 = w2 * w;
       }
     }
   }
@@ -234,20 +228,17 @@ struct FormalPowerSeries : vector<Modint> {
     if (x.pow((Modint::modulo() - 1) >> 1) != 1) return 0;  // no solution
     Modint b(2);
     Modint w(b * b - x);
-    while (w.pow((Modint::modulo() - 1) >> 1) == 1) {
-      b += Modint(1);
-      w = b * b - x;
-    }
+    while (w.pow((Modint::modulo() - 1) >> 1) == 1)
+      b += Modint(1), w = b * b - x;
     auto mul = [&](pair<Modint, Modint> u, pair<Modint, Modint> v) {
       Modint a = (u.first * v.first + u.second * v.second * w);
       Modint b = (u.first * v.second + u.second * v.first);
       return make_pair(a, b);
     };
-    unsigned exp = (Modint::modulo() + 1) >> 1;
+    unsigned e = (Modint::modulo() + 1) >> 1;
     auto ret = make_pair(Modint(1), Modint(0));
-    for (auto base = make_pair(b, 1); exp; exp >>= 1, base = mul(base, base)) {
-      if (exp & 1) ret = mul(ret, base);
-    }
+    for (auto bs = make_pair(b, Modint(1)); e; e >>= 1, bs = mul(bs, bs))
+      if (e & 1) ret = mul(ret, bs);
     return ret.first.x * 2 < Modint::modulo() ? ret.first : -ret.first;
   }
 
@@ -328,20 +319,14 @@ struct FormalPowerSeries : vector<Modint> {
     return {qrev, frev.part(sq, frev.size())};
   }
   FPS div_rev_pre(const FPS &brev, const FPS &brevinv) const {
-    if (this->size() < brev.size()) {
-      return FPS();
-    }
+    if (this->size() < brev.size()) return FPS();
     int sq = this->size() - brev.size() + 1;
     assert(this->size() >= sq && brevinv.size() >= sq);
-    FPS qrev = (this->part(sq) * brevinv.part(sq)).part(sq);
-    return qrev;
+    return (this->part(sq) * brevinv.part(sq)).part(sq);
   }
   FPS rem_rev_pre(const FPS &brev, const FPS &brevinv) const {
-    if (this->size() < brev.size()) {
-      return FPS(*this);
-    }
-    FPS rrev = sub_mul(*this, div_rev_pre(brev, brevinv), brev);
-    return rrev;
+    if (this->size() < brev.size()) return FPS(*this);
+    return sub_mul(*this, div_rev_pre(brev, brevinv), brev);
   }
 
  private:
@@ -355,7 +340,7 @@ struct FormalPowerSeries : vector<Modint> {
     }
     return ret;
   }
-  FPS differentiation() const {
+  FPS differential() const {
     FPS ret(max(0, int(this->size() - 1)));
     for (int i = 1; i < this->size(); i++) ret[i - 1] = (*this)[i] * Modint(i);
     return ret;
@@ -370,15 +355,15 @@ struct FormalPowerSeries : vector<Modint> {
   FPS logarithm(int deg = -1) const {
     assert((*this)[0].x == 1);
     if (deg < 0) deg = this->size();
-    return ((this->differentiation() * this->inverse(deg)).part(deg - 1))
+    return ((this->differential() * this->inverse(deg)).part(deg - 1))
         .integral();
   }
   FPS exponent(int deg = -1) const {
     assert((*this)[0].x == 0);
     if (deg < 0) deg = this->size();
     FPS ret({1, 1 < this->size() ? (*this)[1] : 0}), retinv(1, 1);
-    FPS f = this->differentiation();
-    FPS retdif = ret.differentiation();
+    FPS f = this->differential();
+    FPS retdif = ret.differential();
     for (int e = 1, ne = 2, nne; ne < deg; e = ne, ne = nne) {
       nne = min(2 * ne, deg);
       FPS h = retinv.part(ne - e) * -retinv.middle_product(ret);
@@ -414,9 +399,8 @@ struct FormalPowerSeries : vector<Modint> {
     FPS ret(1, sqr);
     Modint inv2 = Modint(2).inverse();
     for (int i = 1; i < deg; i <<= 1) {
-      ret += *this->part(i << 1) * ret.inverse(i << 1);
-      ret = ret.part(i << 1);
-      ret *= inv2;
+      ret += this->part(i << 1) * ret.inverse(i << 1);
+      ret = ret.part(i << 1) * inv2;
     }
     return ret;
   }
@@ -435,7 +419,7 @@ struct FormalPowerSeries : vector<Modint> {
   }
 
  public:
-  FPS diff() const { return differentiation(); }                     // O(N)
+  FPS diff() const { return differential(); }                        // O(N)
   FPS inte() const { return integral(); }                            // O(N)
   FPS inv(int deg = -1) const { return inverse(deg); }               // O(NlogN)
   FPS log(int deg = -1) const { return logarithm(deg); }             // O(NlogN)

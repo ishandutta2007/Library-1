@@ -17,17 +17,17 @@ using namespace std;
 // b[n] = c[0] * b[n-N] + c[1] * b[n-N+1] + ... + c[N-1] * b[n-1] (n >= N)
 // calc b[k]
 
-template <class Mint>
-Mint kitamasa(const vector<Mint> &c, const vector<Mint> &a, uint64_t k) {
+template <class Modint>
+Modint kitamasa(const vector<Modint> &c, const vector<Modint> &a, uint64_t k) {
   assert(a.size() == c.size());
   int N = a.size();
   if (k < N) return a[k];
-  using FPS = FormalPowerSeries<Mint>;
-  uint64_t mask = (u64(1) << (63 - __builtin_clzll(k))) >> 1;
+  using FPS = FormalPowerSeries<Modint>;
+  uint64_t mask = (uint64_t(1) << (63 - __builtin_clzll(k))) >> 1;
   FPS f(N + 1);
   f[0] = 1;
   for (int i = 0; i < N; i++) f[N - i] = -c[i];
-  FPS r(vector<Mint>({1, 0}));
+  FPS r({1, 0});
   if (N < 1150) {  // naive
     r = r.divrem_rev_n(f).second;
     while (mask) {
@@ -46,7 +46,7 @@ Mint kitamasa(const vector<Mint> &c, const vector<Mint> &a, uint64_t k) {
       mask >>= 1;
     }
   }
-  Mint ret(0);
+  Modint ret(0);
   for (int i = 0; i < N; i++) ret += r[N - i - 1] * a[i];
   return ret;
 }

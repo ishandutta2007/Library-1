@@ -5,6 +5,7 @@ using namespace std;
 
 #define call_from_test
 #include "Math/FormalPowerSeries.hpp"
+#include "Math/ModInt.hpp"
 #undef call_from_test
 
 signed main() {
@@ -12,7 +13,8 @@ signed main() {
   ios::sync_with_stdio(0);
   int N;
   cin >> N;
-  FPS::init(998244353);
+  using Mint = ModInt<998244353>;
+  using FPS = FormalPowerSeries<Mint>;
   FPS a(N);
   for (int i = 0; i < N; i++) cin >> a[i];
   auto b = a.log();

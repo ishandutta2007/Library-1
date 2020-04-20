@@ -5,26 +5,24 @@ using namespace std;
 
 #define call_from_test
 #include "Math/FormalPowerSeries.hpp"
+#include "Math/ModInt.hpp"
 #undef call_from_test
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  FPS::init(998244353);
+  using Mint = ModInt<998244353>;
+  using FPS = FormalPowerSeries<Mint>;
   int N, K, P;
   cin >> N >> K >> P;
-  R p = FPS::mod_mul(P, FPS::inve[100]);
-  R q = 1;
-  FPS::mod_sub(q, p);
-  FPS f(N + 1, p);
-  f *= p;
-  f *= FPS::mod_inverse(N);
-  f = -f;
+  Mint p = Mint(P) / Mint(100);
+  Mint q = Mint(1) - p;
+  FPS f(N + 1, -p * p / Mint(N));
   f[0] = p;
   auto g = f.inv(K);
-  R ans = 1;
+  Mint ans(1);
   for (int i = 1; i < K; i++) {
-    FPS::mod_sub(ans, FPS::mod_mul(g[i], q));
+    ans -= g[i] * q;
   }
   cout << ans << endl;
   return 0;

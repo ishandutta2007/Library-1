@@ -17,17 +17,18 @@ using namespace std;
 // b[n] = c[0] * b[n-N] + c[1] * b[n-N+1] + ... + c[N-1] * b[n-1] (n >= N)
 // calc b[k]
 
-R kitamasa(const vector<R> &c, const vector<R> &a, u64 k, R mod) {
+template <class Mint>
+Mint kitamasa(const vector<Mint> &c, const vector<Mint> &a, uint64_t k) {
   assert(a.size() == c.size());
   int N = a.size();
   if (k < N) return a[k];
-  if (FPS::mod != mod) FPS::init(mod);
-  u64 mask = (u64(1) << (63 - __builtin_clzll(k))) >> 1;
+  using FPS = FormalPowerSeries<Mint>;
+  uint64_t mask = (u64(1) << (63 - __builtin_clzll(k))) >> 1;
   FPS f(N + 1);
   f[0] = 1;
-  for (int i = 0; i < N; i++) f[N - i] = mod - c[i];
-  FPS r(vector<R>({1, 0}));
-  if (N < 250) {  // naive
+  for (int i = 0; i < N; i++) f[N - i] = -c[i];
+  FPS r(vector<Mint>({1, 0}));
+  if (N < 1150) {  // naive
     r = r.divrem_rev_n(f).second;
     while (mask) {
       r *= r;
@@ -45,8 +46,7 @@ R kitamasa(const vector<R> &c, const vector<R> &a, u64 k, R mod) {
       mask >>= 1;
     }
   }
-  R ret = 0;
-  for (int i = 0; i < N; i++)
-    FPS::mod_add(ret, FPS::mod_mul(r[N - i - 1], a[i]));
+  Mint ret(0);
+  for (int i = 0; i < N; i++) ret += r[N - i - 1] * a[i];
   return ret;
 }

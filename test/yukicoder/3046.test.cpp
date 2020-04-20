@@ -5,6 +5,7 @@ using namespace std;
 
 #define call_from_test
 #include "Math/FormalPowerSeries.hpp"
+#include "Math/ModInt.hpp"
 #undef call_from_test
 
 signed main() {
@@ -14,12 +15,13 @@ signed main() {
   cin >> K;
   int N;
   cin >> N;
-  FPS::init(1e9 + 7);
+  using Mint = ModInt<int(1e9 + 7)>;
+  using FPS = FormalPowerSeries<Mint>;
   FPS f(1e5 + 10, 0);
   for (int i = 0; i < N; i++) {
     int x;
     cin >> x;
-    FPS::mod_sub(f[x], 1);
+    f[x] = -1;
   }
   f[0] = 1;
   FPS ans = f.inv(K + 1);

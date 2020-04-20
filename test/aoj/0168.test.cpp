@@ -6,16 +6,17 @@ using namespace std;
 #define call_from_test
 #include "Math/FormalPowerSeries.hpp"
 #include "Math/Kitamasa.hpp"
+#include "Math/ModInt.hpp"
 #undef call_from_test
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   int n;
-  int mod = 1e9 + 7;
-  vector<R> c = {1, 1, 1}, a = {1, 1, 2};
+  using Mint = ModInt<int(1e9 + 7)>;
+  vector<Mint> c = {1, 1, 1}, a = {1, 1, 2};
   while (cin >> n && n) {
-    cout << (kitamasa(c, a, n, mod) - 1) / 3650 + 1 << "\n";
+    cout << (kitamasa(c, a, n).x - 1) / 3650 + 1 << "\n";
   }
   cout << flush;
   return 0;

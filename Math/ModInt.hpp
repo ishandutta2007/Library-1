@@ -26,7 +26,7 @@ struct ModInt {
     return *this;
   }
   ModInt &operator/=(const ModInt &p) { return *this *= p.inverse(); }
-  ModInt operator-() const { return ModInt(-x); }
+  ModInt operator-() const { return ModInt() - *this; }
   ModInt operator+(const ModInt &p) const { return ModInt(*this) += p; }
   ModInt operator-(const ModInt &p) const { return ModInt(*this) -= p; }
   ModInt operator*(const ModInt &p) const { return ModInt(*this) *= p; }
@@ -35,10 +35,7 @@ struct ModInt {
   bool operator!=(const ModInt &p) const { return x != p.x; }
   ModInt inverse() const {
     int a = x, b = mod, u = 1, v = 0, t;
-    while (b > 0) {
-      t = a / b;
-      swap(a -= t * b, b), swap(u -= t * v, v);
-    }
+    while (b) t = a / b, swap(a -= t * b, b), swap(u -= t * v, v);
     return ModInt(u);
   }
   ModInt pow(int64_t e) const {

@@ -1,5 +1,5 @@
 /**
- * @title SuffixArray
+ * @title 接尾辞配列(SuffixArray)
  * @category 文字列
  * @brief 構築 O(|S| log |S|)
  * @brief lower_bound(T) 文字列Tを含む接尾辞のindexの下限 O(|T| log |S|)

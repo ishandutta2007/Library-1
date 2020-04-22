@@ -1,5 +1,5 @@
 /**
- * @title UnionFindTree
+ * @title UnionFind
  * @category データ構造
  * @brief union_set(x,y) x が入っている集合と y が入っている集合を併合する．
  * @brief same(x,y) x と y が同じ集合に入っているかどうかを判定する．

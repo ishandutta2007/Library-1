@@ -12,56 +12,56 @@
 using namespace std;
 #endif
 
-struct BitMatrix {
+struct Matrix_mod2 {
  private:
   vector<vector<short>> a;
 
  public:
-  BitMatrix() {}
-  BitMatrix(size_t n, size_t m) : a(n, vector<short>(m, 0)) {}
-  BitMatrix(size_t n) : BitMatrix(n, n) {}
+  Matrix_mod2() {}
+  Matrix_mod2(size_t n, size_t m) : a(n, vector<short>(m, 0)) {}
+  Matrix_mod2(size_t n) : Matrix_mod2(n, n) {}
   inline const vector<short> &operator[](size_t k) const { return a[k]; }
   inline vector<short> &operator[](size_t k) { return a[k]; }
   size_t height() const { return a.size(); }
   size_t width() const { return a[0].size(); }
 
-  static BitMatrix I(size_t n) {
-    BitMatrix mat(n);
+  static Matrix_mod2 I(size_t n) {
+    Matrix_mod2 mat(n);
     for (int i = 0; i < n; i++) mat[i][i] = 1;
     return mat;
   }
-  BitMatrix operator+(const BitMatrix &b) const {
+  Matrix_mod2 operator+(const Matrix_mod2 &b) const {
     size_t n = height(), m = width();
-    BitMatrix c(n, m);
+    Matrix_mod2 c(n, m);
     for (int i = 0; i < n; i++)
       for (int j = 0; j < m; j++) c[i][j] = (*this)[i][j] ^ b[i][j];
     return c;
   }
-  BitMatrix operator*(const BitMatrix &b) const {
+  Matrix_mod2 operator*(const Matrix_mod2 &b) const {
     if (width() <= 64) return mul<64>(b);
     if (width() <= 2600) return mul<2600>(b);
     return mul<100010>(b);
   }
-  BitMatrix &operator+=(const BitMatrix &b) { return *this = (*this) + b; }
-  BitMatrix &operator*=(const BitMatrix &b) { return *this = (*this) * b; }
-  BitMatrix pow(uint64_t e) const {
-    BitMatrix ret = I(height());
-    for (BitMatrix base = *this; e; e >>= 1, base *= base)
+  Matrix_mod2 &operator+=(const Matrix_mod2 &b) { return *this = (*this) + b; }
+  Matrix_mod2 &operator*=(const Matrix_mod2 &b) { return *this = (*this) * b; }
+  Matrix_mod2 pow(uint64_t e) const {
+    Matrix_mod2 ret = I(height());
+    for (Matrix_mod2 base = *this; e; e >>= 1, base *= base)
       if (e & 1) ret *= base;
     return ret;
   }
-  bool operator==(const BitMatrix &b) const { return a == b.a; }
+  bool operator==(const Matrix_mod2 &b) const { return a == b.a; }
 
-  static pair<BitMatrix, BitMatrix> Gauss_Jordan(const BitMatrix &a,
-                                                 const BitMatrix &b) {
+  static pair<Matrix_mod2, Matrix_mod2> Gauss_Jordan(const Matrix_mod2 &a,
+                                                     const Matrix_mod2 &b) {
     if (a.width() + b.width() <= 64) return gauss_jordan_content<64>(a, b);
     if (a.width() + b.width() <= 2600) return gauss_jordan_content<2600>(a, b);
     return gauss_jordan_content<100010>(a, b);
   }
   static pair<vector<int>, vector<vector<int>>> linear_equations(
-      const BitMatrix &a, const vector<int> &b) {
+      const Matrix_mod2 &a, const vector<int> &b) {
     int n = a.height(), m = a.width();
-    BitMatrix B(n, 1);
+    Matrix_mod2 B(n, 1);
     for (int i = 0; i < n; i++) B[i][0] = b[i];
     auto p = Gauss_Jordan(a, B);
     vector<int> jdx(n, -1), idx(m, -1);
@@ -92,8 +92,8 @@ struct BitMatrix {
   }
   int rank() const {
     int n = height(), m = width();
-    BitMatrix b(n, 0);
-    BitMatrix p = Gauss_Jordan(*this, b).first;
+    Matrix_mod2 b(n, 0);
+    Matrix_mod2 p = Gauss_Jordan(*this, b).first;
     for (int i = 0, j; i < n; i++) {
       for (j = 0; j < m; j++)
         if (p[i][j] != 0) break;
@@ -104,13 +104,13 @@ struct BitMatrix {
 
  private:
   template <size_t SIZE>
-  BitMatrix mul(const BitMatrix &b) const {
+  Matrix_mod2 mul(const Matrix_mod2 &b) const {
     size_t n = height(), m = width(), l = b.width();
     assert(m == b.height());
     vector<bitset<SIZE>> tb(l);
     for (int i = 0; i < l; ++i)
       for (int j = 0; j < m; ++j) tb[i][j] = b[j][i];
-    BitMatrix c(n, l);
+    Matrix_mod2 c(n, l);
     for (int i = 0; i < n; i++) {
       bitset<SIZE> abit;
       for (int k = 0; k < m; k++) abit[k] = (*this)[i][k];
@@ -120,8 +120,8 @@ struct BitMatrix {
   }
 
   template <size_t SIZE>
-  static pair<BitMatrix, BitMatrix> gauss_jordan_content(const BitMatrix &a,
-                                                         const BitMatrix &b) {
+  static pair<Matrix_mod2, Matrix_mod2> gauss_jordan_content(
+      const Matrix_mod2 &a, const Matrix_mod2 &b) {
     size_t n = a.height(), m = a.width(), l = b.width();
     vector<bitset<SIZE>> c(n);
     for (int i = 0; i < n; i++)
@@ -138,7 +138,7 @@ struct BitMatrix {
         if (i != d && c[i][j]) c[i] ^= c[d];
       d++;
     }
-    BitMatrix reta(n, m), retb(n, l);
+    Matrix_mod2 reta(n, m), retb(n, l);
     for (int i = 0; i < n; i++)
       for (int j = 0; j < m; j++) reta[i][j] = c[i][j];
     for (int i = 0; i < n; i++)

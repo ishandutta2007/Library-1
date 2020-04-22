@@ -4,6 +4,7 @@
  * @brief 構築 O(|S| log |S|)
  * @brief lower_bound(T) 文字列Tを含む接尾辞のindexの下限 O(|T| log |S|)
  * @brief LongestCommonPrefix配列（高さ配列） 構築 O(|S|)
+ * @brief '$'は入れてない
  */
 
 #ifndef call_from_test
@@ -67,9 +68,8 @@ struct SuffixArray {
     for (int i = 0; i < SA.size(); i++) rank[SA[i]] = i;
     for (int i = 0, h = 0; i < SA.size(); i++) {
       if (rank[i] + 1 < SA.size()) {
-        for (int j = SA[rank[i] + 1];
-             max(i, j) + h < SA.size() && s[i + h] == s[j + h]; ++h)
-          ;
+        int j = SA[rank[i] + 1];
+        while (max(i, j) + h < SA.size() && s[i + h] == s[j + h]) ++h;
         LCP[rank[i] + 1] = h;
         if (h > 0) --h;
       }

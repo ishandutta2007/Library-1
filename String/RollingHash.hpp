@@ -11,14 +11,12 @@ using namespace std;
 
 template <unsigned long long B>
 struct RollingHash {
-  using ull = unsigned long long;
-
  private:
-  const ull MASK30 = (1UL << 30) - 1;
-  const ull MASK31 = (1UL << 31) - 1;
-  const ull MOD = (1UL << 61) - 1;
-  const ull MASK61 = MOD;
-  vector<ull> hash, po;
+  const uint64_t MASK30 = (1UL << 30) - 1;
+  const uint64_t MASK31 = (1UL << 31) - 1;
+  const uint64_t MOD = (1UL << 61) - 1;
+  const uint64_t MASK61 = MOD;
+  vector<uint64_t> hash, po;
 
  public:
   RollingHash() {}
@@ -38,29 +36,27 @@ struct RollingHash {
     }
   }
   // S[l, r)
-  ull get(int l, int r) {
-    ull res = hash[r] + MOD * 3 - Mul(hash[l], po[r - l]);
+  uint64_t get_hash(int l, int r) {
+    uint64_t res = hash[r] + MOD * 3 - Mul(hash[l], po[r - l]);
     return CalcMod(res);
   }
 
  private:
-  // a*b mod 2^61-1を返す関数(最後にModを取る)
-  ull Mul(ull a, ull b) {
-    ull au = a >> 31;
-    ull ad = a & MASK31;
-    ull bu = b >> 31;
-    ull bd = b & MASK31;
-    ull mid = ad * bu + au * bd;
-    ull midu = mid >> 30;
-    ull midd = mid & MASK30;
+  uint64_t Mul(uint64_t a, uint64_t b) {
+    uint64_t au = a >> 31;
+    uint64_t ad = a & MASK31;
+    uint64_t bu = b >> 31;
+    uint64_t bd = b & MASK31;
+    uint64_t mid = ad * bu + au * bd;
+    uint64_t midu = mid >> 30;
+    uint64_t midd = mid & MASK30;
     return au * bu * 2 + midu + (midd << 31) + ad * bd;
   }
 
-  // mod 2^61-1を計算する関数
-  ull CalcMod(ull x) {
-    ull xu = x >> 61;
-    ull xd = x & MASK61;
-    ull res = xu + xd;
+  uint64_t CalcMod(uint64_t x) {
+    uint64_t xu = x >> 61;
+    uint64_t xd = x & MASK61;
+    uint64_t res = xu + xd;
     return res >= MOD ? res - MOD : res;
   }
 };

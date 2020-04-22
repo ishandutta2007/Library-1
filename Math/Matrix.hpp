@@ -69,7 +69,7 @@ struct Matrix {
       for (int j = 0; j < m; j++) ret[i] += (*this)[i][j] * v[j];
     return ret;
   }
-  bool operator==(const BitMatrix &b) const { return a == b.a; }
+  bool operator==(const Matrix &b) const { return a == b.a; }
   template <typename T>
   using ET = enable_if<is_floating_point<T>::value>;
   template <typename T>

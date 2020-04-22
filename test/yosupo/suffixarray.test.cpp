@@ -8,16 +8,14 @@ using namespace std;
 #undef call_from_test
 
 signed main() {
-    cin.tie(0);
-    ios::sync_with_stdio(0);
-    string S;
-    cin >> S;
-    SuffixArray SA(S);
-    for(int i = 0; i < S.length(); i++) {
-        if(i)
-            cout << " ";
-        cout << SA[i];
-    }
-    cout << endl;
-    return 0;
+  cin.tie(0);
+  ios::sync_with_stdio(0);
+  string S;
+  cin >> S;
+  SuffixArray SA(S);
+  for (int i = 0; i < S.length(); i++) {
+    cout << (i ? " " : "") << SA[i];
+  }
+  cout << endl;
+  return 0;
 }

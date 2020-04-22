@@ -19,8 +19,8 @@ signed main() {
   RH2 rt2(T), rp2(P);
   int N = P.length();
   for (int i = 0; i + N <= T.length(); i++) {
-    if (rt1.get(i, i + N) == rp1.get(0, N)
-        && rt2.get(i, i + N) == rp2.get(0, N))
+    if (rt1.get_hash(i, i + N) == rp1.get_hash(0, N)
+        && rt2.get_hash(i, i + N) == rp2.get_hash(0, N))
       cout << i << "\n";
   }
   cout << flush;

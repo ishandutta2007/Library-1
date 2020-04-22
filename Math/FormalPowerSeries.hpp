@@ -1,7 +1,7 @@
 /**
- * @title 形式的冪級数(任意素数MOD)
+ * @title 形式的冪級数(任意素数mod)
  * @category 数学
- * @brief MOD=998244353とかでないModInt<MOD>でも使える
+ * @brief mod=998244353とかでないModInt<mod>でも使える
  * @brief nttの配列のサイズに注意(REの原因になりがち)
  */
 // verify用: https://loj.ac/problem/150

@@ -1,5 +1,5 @@
 /**
- * @title ポテンシャルUnionFindTree
+ * @title ポテンシャルUnionFind
  * @category データ構造
  * @brief 各ノードにポテンシャルをもたせ、その差を求められる
  * @brief O(α(N))

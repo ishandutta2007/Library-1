@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/BitMatrix.hpp"
+#include "Math/Matrix_mod2.hpp"
 #undef call_from_test
 
 signed main() {
@@ -12,7 +12,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N;
   cin >> N;
-  BitMatrix A(N);
+  Matrix_mod2 A(N);
   for (int i = 0; i < N; i++)
     for (int j = 0; j < N; j++) {
       cin >> A[i][j];
@@ -21,7 +21,7 @@ signed main() {
   for (int i = 0; i < N; i++) cin >> v[i];
   int T;
   cin >> T;
-  auto ans = BitMatrix::linear_equations(A.pow(T), v);
+  auto ans = Matrix_mod2::linear_equations(A.pow(T), v);
   if (!ans.first.size()) {
     cout << "none" << endl;
   } else if (ans.second.size()) {

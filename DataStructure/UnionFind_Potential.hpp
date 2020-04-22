@@ -1,5 +1,5 @@
 /**
- * @title ポテンシャルUnionFind
+ * @title Union-Find(ポテンシャル)
  * @category データ構造
  * @brief 各ノードにポテンシャルをもたせ、その差を求められる
  * @brief O(α(N))
@@ -10,11 +10,11 @@
 using namespace std;
 #endif
 
-struct PotentializedUnionFind {
+struct UnionFind_Potential {
   typedef long long Weight;
   vector<int> par;
   vector<Weight> val;
-  PotentializedUnionFind(int size) : par(size, -1), val(size, 0) {}
+  UnionFind_Potential(int size) : par(size, -1), val(size, 0) {}
   bool unionSet(int y, int x, Weight w) {
     w += potential(x);
     w -= potential(y);

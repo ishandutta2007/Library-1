@@ -5,8 +5,8 @@ using namespace std;
 
 #define call_from_test
 #include "Math/FormalPowerSeries.hpp"
-#include "Math/Kitamasa.hpp"
 #include "Math/ModInt.hpp"
+#include "Math/kitamasa.hpp"
 #undef call_from_test
 
 using Mint = ModInt<int(1e9 + 7)>;

@@ -1,5 +1,5 @@
 /**
- * @title KnuthMorrisPratt
+ * @title Knuth-Morris-Pratt
  * @category 文字列
  * @brief テーブル構築 O(|S|)
  * @brief pattern_match(T) Tの中からSと一致する部分を検索 O(|T|)

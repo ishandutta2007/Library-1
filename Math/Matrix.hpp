@@ -161,8 +161,8 @@ struct Matrix {
     for (int i = 0; i < n; i++) {
       int p = i;
       for (int j = i + 1; j < n; j++)
-        if (compare(A[i][p], A[i][j])) p = j;
-      if (p == n && is_zero(A[i][p])) return 0;
+        if (compare(A[p][i], A[j][i])) p = j;
+      if (is_zero(A[p][i])) return 0;
       if (p != i) ret = -ret;
       swap(A[p], A[i]);
       ret *= A[i][i];

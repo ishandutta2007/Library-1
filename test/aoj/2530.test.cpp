@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/BitMatrix.hpp"
+#include "Math/Matrix_mod2.hpp"
 #include "Math/ModInt.hpp"
 #undef call_from_test
 
@@ -13,7 +13,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int R, C;
   cin >> R >> C;
-  BitMatrix A(R * C, R * C);
+  Matrix_mod2 A(R * C, R * C);
   vector<int> b(R * C);
   for (int i = 0; i < R; i++)
     for (int j = 0; j < C; j++) cin >> b[i * C + j];
@@ -29,7 +29,7 @@ signed main() {
           }
     }
   }
-  auto ans = BitMatrix::linear_equations(A, b);
+  auto ans = Matrix_mod2::linear_equations(A, b);
   if (ans.first.size())
     cout << ModInt<int(1e9 + 9)>(2).pow(ans.second.size()) << endl;
   else

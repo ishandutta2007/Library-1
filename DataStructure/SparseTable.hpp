@@ -1,5 +1,5 @@
 /**
- * @title SparseTable
+ * @title Sparse-Table
  * @category データ構造
  * @brief RmQ
  * @brief 構築 O(n log n)

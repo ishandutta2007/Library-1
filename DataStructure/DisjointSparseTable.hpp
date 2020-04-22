@@ -1,5 +1,5 @@
 /**
- * @title DisjointSparseTable
+ * @title Disjoint-Sparse-Table
  * @category データ構造
  * @brief fは結合則をみたす二項演算
  * @brief 構築 O(n log n)

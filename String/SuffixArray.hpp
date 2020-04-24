@@ -1,5 +1,5 @@
 /**
- * @title 接尾辞配列(SuffixArray)
+ * @title 接尾辞配列(Suffix-Array)
  * @category 文字列
  * @brief 構築 O(|S| log |S|)
  * @brief lower_bound(T) 文字列Tを含む接尾辞のindexの下限 O(|T| log |S|)
@@ -41,7 +41,7 @@ struct SuffixArray {
   }
   int operator[](int k) const { return (SA[k]); }
 
-  // O(|T|*log|S|)
+  // O(|T|log|S|)
   int lower_bound(string &T) {
     int low = -1, high = s.size();
     while (high - low > 1) {
@@ -59,7 +59,7 @@ struct SuffixArray {
     T.back()--;
     return res;
   }
-  // O(|T|*log|S|)
+  // O(|T|log|S|)
   int count(string &T) { return upper_bound(T) - lower_bound(T); }
 
   // O(|S|)

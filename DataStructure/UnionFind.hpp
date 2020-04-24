@@ -15,8 +15,7 @@ struct UnionFind {
   vector<int> par;
   UnionFind(int size) : par(size, -1) {}
   bool unionSet(int x, int y) {
-    x = root(x);
-    y = root(y);
+    x = root(x), y = root(y);
     if (x != y) {
       if (par[y] < par[x]) swap(x, y);
       par[x] += par[y];

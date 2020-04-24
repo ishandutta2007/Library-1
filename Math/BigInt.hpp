@@ -155,7 +155,7 @@ struct BigInt {
     dat.clear();
     ll pos = 0;
     while (pos < (ll)s.size() && (s[pos] == '-' || s[pos] == '+')) {
-      if (s[pos] == '-') minus = ~minus;
+      if (s[pos] == '-') minus = !minus;
       ++pos;
     }
     for (ll i = s.size() - 1; i >= pos; i -= base_digits) {
@@ -314,11 +314,11 @@ struct BigInt {
   }
   BigInt operator-() const {
     BigInt res = *this;
-    res.minus = ~res.minus;
+    res.minus = !res.minus;
     return res;
   }
   BigInt &operator*=(ll v) {
-    if (v < 0) minus = ~minus, v = -v;
+    if (v < 0) minus = !minus, v = -v;
     for (ll i = 0, carry = 0; i < (ll)dat.size() || carry; ++i) {
       if (i == (ll)dat.size()) dat.push_back(0);
       ll cur = dat[i] * (ll)v + carry;
@@ -330,7 +330,7 @@ struct BigInt {
   }
   BigInt operator*(ll v) const { return BigInt(*this) *= v; }
   BigInt &operator/=(ll v) {
-    if (v < 0) minus = ~minus, v = -v;
+    if (v < 0) minus = !minus, v = -v;
     for (ll i = (ll)dat.size() - 1, rem = 0; i >= 0; --i) {
       ll cur = dat[i] + rem * (ll)base;
       dat[i] = (ll)(cur / v);

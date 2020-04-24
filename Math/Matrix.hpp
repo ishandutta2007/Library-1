@@ -1,8 +1,8 @@
 /**
  * @title 行列
+ * @category 数学
  * @brief Gauss_Jordan(A,B) 拡大係数行列に対するガウスジョルダン法
  * @brief linear_equations(A,b) 返り値 {解のうちの一つ,解空間の基底ベクトル}
- * @category 数学
  */
 
 #ifndef call_from_test

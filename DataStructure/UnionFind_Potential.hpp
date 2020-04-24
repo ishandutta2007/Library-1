@@ -16,15 +16,12 @@ struct UnionFind_Potential {
   vector<Weight> val;
   UnionFind_Potential(int size) : par(size, -1), val(size, 0) {}
   bool unionSet(int y, int x, Weight w) {
-    w += potential(x);
-    w -= potential(y);
-    x = root(x);
-    y = root(y);
+    w += potential(x) - potential(y);
+    x = root(x), y = root(y);
     if (x != y) {
       if (par[y] < par[x]) swap(x, y), w = -w;
       par[x] += par[y];
-      par[y] = x;
-      val[y] = w;
+      par[y] = x, val[y] = w;
     }
     return x != y;
   }

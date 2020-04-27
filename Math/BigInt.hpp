@@ -1,6 +1,7 @@
 /**
  * @title 多倍長整数
  * @category 数学
+ * @brief javaやpythonの多倍長整数を使うべき
  * @brief nttの配列のサイズに注意(REの原因になりがち)
  */
 

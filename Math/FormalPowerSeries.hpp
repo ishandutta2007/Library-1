@@ -221,6 +221,11 @@ struct FormalPowerSeries : vector<Modint> {
   FPS operator*(const FPS &rhs) const { return this->mul(rhs); }     // O(NlogN)
   FPS operator/(const FPS &rhs) const { return FPS(*this) /= rhs; }  // O(NlogN)
   FPS operator%(const FPS &rhs) const { return FPS(*this) %= rhs; }  // O(NlogN)
+  Modint eval(Modint x) {
+    Modint res, w = 1;
+    for (auto &v : *this) res += w * v, w *= x;
+    return res;
+  }
 
  public:
   static Modint mod_sqrt(Modint x) {

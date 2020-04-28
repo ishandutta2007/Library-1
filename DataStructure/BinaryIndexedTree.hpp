@@ -3,7 +3,6 @@
  * @category データ構造
  * @brief O(logN)
  * @brief 0-indexed
- * @brief lower_bound(a): min { k : sum(k) >= a }
  */
 
 #ifndef call_from_test
@@ -29,10 +28,11 @@ struct BinaryIndexedTree {
     for (; k > 0; k &= k - 1) s += dat[k];
     return s;
   }
+  // min{ k : sum(k) >= a }
   int lower_bound(long long a) const {
     int k = 0;
     for (int p = 1 << (__lg(dat.size() - 1) + 1); p > 0; p >>= 1)
       if (k + p < dat.size() && dat[k + p] < a) a -= dat[k += p];
-    return k;
+    return k + 1 == dat.size() ? -1 : k;  // -1 => no solution
   }
 };

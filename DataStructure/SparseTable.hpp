@@ -1,5 +1,5 @@
 /**
- * @title Sparse-Table
+ * @title Sparse-Table(区間min)
  * @category データ構造
  * @brief RmQ
  * @brief 構築 O(n log n)

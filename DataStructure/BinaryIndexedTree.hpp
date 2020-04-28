@@ -22,8 +22,7 @@ struct BinaryIndexedTree {
   void add(int k, long long a) {
     for (++k; k < dat.size(); k += k & -k) dat[k] += a;
   }
-  // sum [0,k)
-  long long operator[](int k) {
+  long long operator[](int k) {  // sum [0,k)
     long long s = 0;
     for (; k > 0; k &= k - 1) s += dat[k];
     return s;

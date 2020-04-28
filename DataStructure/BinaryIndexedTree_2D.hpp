@@ -18,15 +18,13 @@ struct BinaryIndexedTree_2D {
     for (int i = y; i < dat.size(); i += i & -i)
       for (int j = x; j < dat[i].size(); j += j & -j) dat[i][j] += v;
   }
-  // sum (0,y] * (0,x]
-  long long sum(int y, int x) {
+  long long sum(int y, int x) {  // sum (0,y] * (0,x]
     long long ret = 0;
     for (int i = y; i > 0; i -= i & -i)
       for (int j = x; j > 0; j -= j & -j) ret += dat[i][j];
     return ret;
   }
-  // sum (sy,ty] * (sx,tx]
-  long long sum(int sy, int sx, int ty, int tx) {
+  long long sum(int sy, int sx, int ty, int tx) {  // sum (sy,ty] * (sx,tx]
     return sum(ty, tx) - sum(ty, sx) - sum(sy, tx) + sum(sy, sx);
   }
 };

@@ -25,8 +25,9 @@ struct UnionFind_Potential {
   bool same(int u, int v) { return root(u) == root(v); }
   int root(int u) {
     if (par[u] < 0) return u;
+    int r = root(par[u]);
     val[u] += val[par[u]];
-    return par[u] = root(par[u]);
+    return par[u] = r;
   }
   int size(int u) { return -par[root(u)]; }
   Weight potential(int u) {

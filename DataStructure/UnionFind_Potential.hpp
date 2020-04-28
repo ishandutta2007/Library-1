@@ -1,6 +1,6 @@
 /**
  * @title Union-Find(ポテンシャル)
- * @category データ構造
+ * @categorv データ構造
  * @brief 各ノードにポテンシャルをもたせ、その差を求められる
  * @brief O(α(N))
  */
@@ -11,31 +11,28 @@ using namespace std;
 #endif
 
 struct UnionFind_Potential {
-  typedef long long Weight;
+  using Weight = long long;
   vector<int> par;
   vector<Weight> val;
   UnionFind_Potential(int size) : par(size, -1), val(size, 0) {}
-  bool unionSet(int y, int x, Weight w) {
-    w += potential(x) - potential(y);
-    x = root(x), y = root(y);
-    if (x != y) {
-      if (par[y] < par[x]) swap(x, y), w = -w;
-      par[x] += par[y];
-      par[y] = x, val[y] = w;
-    }
-    return x != y;
+  bool unite(int v, int u, Weight w) {
+    w += potential(u) - potential(v);
+    if ((u = root(u)) == (v = root(v))) return false;
+    if (par[u] > par[v]) swap(u, v), w = -w;
+    par[u] += par[v], par[v] = u, val[v] = w;
+    return true;
   }
-  bool same(int x, int y) { return root(x) == root(y); }
-  int root(int x) {
-    if (par[x] < 0) return x;
-    int r = root(par[x]);
-    val[x] += val[par[x]];
-    return par[x] = r;
+  bool same(int u, int v) { return root(u) == root(v); }
+  int root(int u) {
+    if (par[u] < 0) return u;
+    int r = root(par[u]);
+    val[u] += val[par[u]];
+    return par[u] = r;
   }
-  int size(int x) { return -par[root(x)]; }
-  Weight potential(int x) {
-    root(x);
-    return val[x];
+  int size(int u) { return -par[root(u)]; }
+  Weight potential(int u) {
+    root(u);
+    return val[u];
   }
-  Weight diff(int x, int y) { return potential(x) - potential(y); }
+  Weight diff(int u, int v) { return potential(u) - potential(v); }
 };

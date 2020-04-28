@@ -32,7 +32,7 @@ signed main() {
       pow = pow.substr(3);
       int x = stoi(pow);
       if (!uf.same(a, b) || uf.diff(a, b) == x)
-        uf.unionSet(a, b, x);
+        uf.unite(a, b, x);
       else
         isok = false;
     }

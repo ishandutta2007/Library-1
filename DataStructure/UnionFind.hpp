@@ -1,7 +1,7 @@
 /**
  * @title Union-Find
  * @category データ構造
- * @brief union_set(x,y) x が入っている集合と y が入っている集合を併合する．
+ * @brief unite(x,y) x が入っている集合と y が入っている集合を併合する．
  * @brief same(x,y) x と y が同じ集合に入っているかどうかを判定する．
  * @brief O(α(N))
  */
@@ -14,16 +14,13 @@ using namespace std;
 struct UnionFind {
   vector<int> par;
   UnionFind(int size) : par(size, -1) {}
-  bool unionSet(int x, int y) {
-    x = root(x), y = root(y);
-    if (x != y) {
-      if (par[y] < par[x]) swap(x, y);
-      par[x] += par[y];
-      par[y] = x;
-    }
-    return x != y;
+  bool unite(int u, int v) {
+    if ((u = root(u)) == (v = root(v))) return false;
+    if (par[u] > par[v]) swap(u, v);
+    par[u] += par[v], par[v] = u;
+    return true;
   }
-  bool same(int x, int y) { return root(x) == root(y); }
-  int root(int x) { return par[x] < 0 ? x : par[x] = root(par[x]); }
-  int size(int x) { return -par[root(x)]; }
+  bool same(int u, int v) { return root(u) == root(v); }
+  int root(int u) { return par[u] < 0 ? u : par[u] = root(par[u]); }
+  int size(int u) { return -par[root(u)]; }
 };

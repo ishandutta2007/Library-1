@@ -26,10 +26,7 @@ K lagrange_interpolation(vector<K> &y, K t) {
   K res(0);
   for (int i = 0; i <= n; i++) {
     K tmp = y[i] * pro[i] * orp[i] * finv[i] * finv[n - i];
-    if ((n - i) & 1)
-      res -= tmp;
-    else
-      res += tmp;
+    res += (n - i) & 1 ? -tmp : tmp;
   }
   return res;
 }

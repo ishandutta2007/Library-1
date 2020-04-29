@@ -22,19 +22,12 @@ struct Combination {
   static Modint inv(int n) { return _inv[n]; }
   static Modint fact(int n) { return _fact[n]; }
   static Modint fact_inv(int n) { return _finv[n]; }
-  static Modint C(int n, int k) {
-    if (n < k || k < 0) return Modint(0);
-    return _fact[n] * _finv[n - k] * _finv[k];
+  static Modint nPr(int n, int r) {
+    if (n < r || r < 0) return Modint(0);
+    return _fact[n] * _finv[n - r];
   }
-  static Modint P(int n, int k) {
-    if (n < k || k < 0) return Modint(0);
-    return _fact[n] * _finv[n - k];
-  }
-  static Modint H(int n, int k) {
-    if (n < 0 || k < 0) return Modint(0);
-    if (!n && !k) return Modint(1);
-    return C(n + k - 1, n);
-  }
+  static Modint nCr(int n, int r) { return nPr(n, r) * _finv[r]; }
+  static Modint nHr(int n, int r) { return !r ? Modint(1) : nCr(n + r - 1, r); }
   static size_t size() { return _inv.size(); }
 };
 template <class Modint>

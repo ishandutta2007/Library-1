@@ -137,8 +137,6 @@ m64_2 f2[size], g2[size];
 template <typename Modint>
 struct FormalPowerSeries : vector<Modint> {
   using FPS = FormalPowerSeries;
-
- public:
   using vector<Modint>::vector;
 
  public:

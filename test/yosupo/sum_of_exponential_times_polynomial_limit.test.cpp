@@ -43,10 +43,8 @@ signed main() {
   Mint ans = 0;
   C::init(d + 1);
   for (int i = 0; i <= d; i++) {
-    if ((d - i) & 1)
-      ans -= C::C(d + 1, i + 1) * rpow[d - i] * sum[i];
-    else
-      ans += C::C(d + 1, i + 1) * rpow[d - i] * sum[i];
+    Mint tmp = C::nCr(d + 1, i + 1) * rpow[d - i] * sum[i];
+    ans += (d - i) & 1 ? -tmp : tmp;
   }
   ans /= Mint(1 - r).pow(d + 1);
   cout << ans << endl;

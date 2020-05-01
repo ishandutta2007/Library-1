@@ -19,7 +19,7 @@ signed main() {
     cin >> op >> s >> t;
     s--, t--;
     if (op)
-      cout << bit[t + 1] - bit[s] << endl;
+      cout << bit.sum(t + 1) - bit.sum(s) << endl;
     else {
       long long x;
       cin >> x;

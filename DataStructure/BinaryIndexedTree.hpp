@@ -16,22 +16,23 @@ struct BinaryIndexedTree {
   BinaryIndexedTree(int n, long long a)
       : BinaryIndexedTree(vector<long long>(n, a)) {}
   BinaryIndexedTree(vector<long long> y) : dat(y.size() + 1) {
-    for (int k = 0; k < y.size(); ++k) dat[k + 1] = y[k];
-    for (int k = 1; k + (k & -k) < dat.size(); ++k) dat[k + (k & -k)] += dat[k];
+    for (int i = 0; i < y.size(); ++i) dat[i + 1] = y[i];
+    for (int i = 1; i + (i & -i) < dat.size(); ++i) dat[i + (i & -i)] += dat[i];
   }
-  void add(int k, long long a) {
-    for (++k; k < dat.size(); k += k & -k) dat[k] += a;
+  void add(int i, long long a = 1) {
+    for (++i; i < dat.size(); i += i & -i) dat[i] += a;
   }
-  long long operator[](int k) {  // sum [0,k)
+  long long sum(int i) {  // sum [0,i)
     long long s = 0;
-    for (; k > 0; k &= k - 1) s += dat[k];
+    for (; i > 0; i &= i - 1) s += dat[i];
     return s;
   }
-  // min{ k : sum(k) >= a }
-  int lower_bound(long long a) const {
-    int k = 0;
+  // min { i : sum(i) > k } => kth element(0-indexed)
+  int find(long long k) const {
+    if (dat.back() <= k++) return -1;  // -1 => no solution
+    int i = 0;
     for (int p = 1 << (__lg(dat.size() - 1) + 1); p > 0; p >>= 1)
-      if (k + p < dat.size() && dat[k + p] < a) a -= dat[k += p];
-    return k + 1 == dat.size() ? -1 : k;  // -1 => no solution
+      if (i + p < dat.size() && dat[i + p] < k) k -= dat[i += p];
+    return i;
   }
 };

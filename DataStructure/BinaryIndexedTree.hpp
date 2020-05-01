@@ -29,10 +29,10 @@ struct BinaryIndexedTree {
   }
   // min { i : sum(i) > k } => kth element(0-indexed)
   int find(long long k) const {
-    if (dat.back() <= k++) return -1;  // -1 => no solution
     int i = 0;
+    k++;
     for (int p = 1 << (__lg(dat.size() - 1) + 1); p > 0; p >>= 1)
       if (i + p < dat.size() && dat[i + p] < k) k -= dat[i += p];
-    return i;
+    return i + 1 == dat.size() ? -1 : i;  // -1 => no solutions
   }
 };

@@ -4,8 +4,14 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/BinaryIndexedTree.hpp"
+#include "DataStructure/SegmentTree.hpp"
 #undef call_from_test
+
+struct RsumQ {
+  using T = int;
+  static T ti() { return 0; }
+  static T f(const T &l, const T &r) { return l + r; }
+};
 
 signed main() {
   cin.tie(0);
@@ -28,19 +34,20 @@ signed main() {
   }
   sort(x.begin(), x.end());
   x.erase(unique(x.begin(), x.end()), x.end());
-  BinaryIndexedTree bit(x.size());
+  SegmentTree<RsumQ> seg(x.size());
   for (auto q : query) {
     if (q < 0) {
-      int i = bit.find(K);
+      auto check = [&](int x) { return x > K; };
+      int i = seg.find_first(0, check);
       if (i >= 0) {
         cout << x[i] << endl;
-        bit.add(i, -1);
+        seg.set_val(i, seg[i] - 1);
       } else {
         cout << -1 << endl;
       }
     } else {
       int i = lower_bound(x.begin(), x.end(), q) - x.begin();
-      bit.add(i, 1);
+      seg.set_val(i, seg[i] + 1);
     }
   }
   return 0;

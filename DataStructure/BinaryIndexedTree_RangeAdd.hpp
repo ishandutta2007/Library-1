@@ -20,7 +20,7 @@ struct BinaryIndexedTree_RangeAdd {
     for (int k = l + 1; k < (int)dat2.size(); k += k & -k) dat2[k] += w;
     for (int k = r + 1; k < (int)dat2.size(); k += k & -k) dat2[k] -= w;
   }
-  long long operator[](int x) {  // sum [0,x)
+  long long sum(int x) {  // sum [0,x)
     long long s = 0;
     for (int k = x; k > 0; k &= k - 1) s += dat1[k];
     for (int k = x; k > 0; k &= k - 1) s += dat2[k] * x;

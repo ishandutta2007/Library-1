@@ -14,7 +14,6 @@ struct PersistentArray {
     T data;
     Node *child[1 << LOG] = {};
     Node() {}
-    Node(const T &data) : data(data) {}
   };
 
  private:

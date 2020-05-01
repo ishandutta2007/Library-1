@@ -22,7 +22,7 @@ signed main() {
     int t, a, b;
     cin >> t >> a >> b;
     if (t)
-      cout << bit[b] - bit[a] << endl;
+      cout << bit.sum(b) - bit.sum(a) << endl;
     else
       bit.add(a, b);
   }

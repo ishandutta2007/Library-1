@@ -38,7 +38,7 @@ signed main() {
   for (auto q : query) {
     if (q < 0) {
       auto check = [&](int x) { return x > K; };
-      int i = seg.find_first(0, check);
+      int i = seg.find_first(check);
       if (i >= 0) {
         cout << x[i] << endl;
         seg.set_val(i, seg[i] - 1);

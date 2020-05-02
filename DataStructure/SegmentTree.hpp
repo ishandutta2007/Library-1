@@ -74,7 +74,8 @@ struct SegmentTree {
   }
   // max { i : check(query(i,b)) = true }
   template <typename C>
-  int find_last(const C &check, int b = n) {
+  int find_last(const C &check, int b = -1) {
+    if (b < 0) b = n;
     T vr = M::ti();
     if (b >= n) {
       if (check(M::f(dat[1], vr))) return find_subtree(1, check, vr, true);

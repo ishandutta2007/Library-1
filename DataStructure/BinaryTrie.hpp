@@ -22,7 +22,7 @@ struct RsumQ {
   static T ti() { return 0; }
   static T f(const T &l, const T &r) { return l + r; }
 };
-struct BinaryTrie : SegmentTree_Dynamic<RsumQ> {
+struct BinaryTrie : public SegmentTree_Dynamic<RsumQ> {
   using ll = long long;
   using U = unsigned long long;
   BinaryTrie(ll max_val = INT_MAX) : SegmentTree_Dynamic<RsumQ>(max_val) {}

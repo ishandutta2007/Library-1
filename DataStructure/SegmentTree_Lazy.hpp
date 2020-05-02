@@ -92,7 +92,7 @@ struct SegmentTree_Lazy {
   T operator[](const int k) { return query(k, k + 1); }
   // min { i : check(query(a,i+1)) = true }
   template <typename C>
-  int find_first(const C& check, int a) {
+  int find_first(const C& check, int a = 0) {
     T vl = M::ti();
     if (a <= 0) {
       if (check(M::f(vl, reflect(1)))) return find_subtree(1, check, vl, false);
@@ -111,7 +111,8 @@ struct SegmentTree_Lazy {
   }
   // max { i : check(query(i,b)) = true }
   template <typename C>
-  int find_last(const C& check, int b) {
+  int find_last(const C& check, int b = -1) {
+    if (b < 0) b = n;
     T vr = M::ti();
     if (b >= n) {
       if (check(M::f(reflect(1), vr))) return find_subtree(1, check, vr, true);

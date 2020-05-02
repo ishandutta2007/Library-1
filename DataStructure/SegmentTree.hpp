@@ -11,10 +11,13 @@ using namespace std;
 
 template <typename M>
 struct SegmentTree {
- private:
   using T = typename M::T;
-  int n;
+
+ private:
+  const int n;
   vector<T> dat;
+
+ private:
   template <typename C>
   int find_subtree(int a, const C &check, T &cur, bool type) {
     while (a < n) {
@@ -51,9 +54,9 @@ struct SegmentTree {
     return M::f(vl, vr);
   }
   T operator[](const int &k) const { return dat[k + n]; }
-  // min { i : check(query(a,i)) = true }
+  // min { i : check(query(a,i+1)) = true }
   template <typename C>
-  int find_first(int a, const C &check) {
+  int find_first(const C &check, int a = 0) {
     T vl = M::ti();
     if (a <= 0) {
       if (check(M::f(vl, dat[1]))) return find_subtree(1, check, vl, false);
@@ -71,7 +74,7 @@ struct SegmentTree {
   }
   // max { i : check(query(i,b)) = true }
   template <typename C>
-  int find_last(int b, const C &check) {
+  int find_last(const C &check, int b = n) {
     T vr = M::ti();
     if (b >= n) {
       if (check(M::f(dat[1], vr))) return find_subtree(1, check, vr, true);

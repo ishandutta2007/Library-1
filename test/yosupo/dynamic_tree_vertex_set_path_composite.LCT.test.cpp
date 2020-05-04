@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Datastructure/LinkCutTree_Monoid.hpp"
+#include "DataStructure/LinkCutTree_Monoid.hpp"
 #include "Math/ModInt.hpp"
 #undef call_from_test
 

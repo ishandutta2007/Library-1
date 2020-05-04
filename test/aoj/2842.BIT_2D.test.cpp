@@ -21,7 +21,7 @@ signed main() {
     if (c == 0) query.emplace_back(t + T, -1, h1, w1, h2, w2);
   }
   sort(query.begin(), query.end());
-  BinaryIndexedTree_2D bit1(H, W), bit2(H, W);
+  BinaryIndexedTree_2D<long long> bit1(H, W), bit2(H, W);
   for (auto q : query) {
     int t, c, h1, w1, h2, w2;
     tie(t, c, h1, w1, h2, w2) = q;

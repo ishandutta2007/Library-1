@@ -13,7 +13,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, Q;
   cin >> N >> Q;
-  BinaryIndexedTree_RangeAdd bit(N);
+  BinaryIndexedTree_RangeAdd<long long> bit(N);
   while (Q--) {
     int op, s, t;
     cin >> op >> s >> t;

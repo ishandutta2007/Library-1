@@ -1,5 +1,7 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1328"
 
+// double型の行列の連立一次方程式のverify
+
 #include <bits/stdc++.h>
 using namespace std;
 

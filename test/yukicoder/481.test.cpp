@@ -1,5 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/481"
 
+//行列(F_2)のrankのverify
+
 #include <bits/stdc++.h>
 using namespace std;
 

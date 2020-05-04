@@ -9,7 +9,7 @@
 using namespace std;
 #endif
 
-template <typename M>
+template <typename M, size_t LIM = 1 << 23>
 struct SegmentTree_Dynamic {
   using T = typename M::T;
   using ll = long long;
@@ -20,27 +20,26 @@ struct SegmentTree_Dynamic {
     Node *ch[2];
     Node() : dat(M::ti()), xor_lazy(0), ch{nullptr, nullptr} {}
     void *operator new(size_t) {
-      static vector<Node> pool(1 << 23);
+      static vector<Node> pool(LIM);
       return &pool[node_count++];
     }
   };
-  using np = Node *;
 
  protected:
   const int height;
   const ll n;
   static int node_count;
-  np root;
+  Node *root;
 
  private:
-  inline void push(np t, ll b) {
+  inline void push(Node *t, ll b) {
     if ((t->xor_lazy >> (U)b) & (U)1) swap(t->ch[0], t->ch[1]);
     if (t->ch[0] != nullptr) t->ch[0]->xor_lazy ^= t->xor_lazy;
     if (t->ch[1] != nullptr) t->ch[1]->xor_lazy ^= t->xor_lazy;
     t->xor_lazy = 0;
   }
-  T value(np t) { return t ? t->dat : M::ti(); }
-  np set_Node(np t, U pos, T val, ll b) {
+  T value(Node *t) { return t ? t->dat : M::ti(); }
+  Node *set_Node(Node *t, U pos, T val, ll b) {
     if (t == nullptr) t = new Node();
     if (b < 0) {
       t->dat = val;
@@ -52,7 +51,7 @@ struct SegmentTree_Dynamic {
     t->dat = M::f(value(t->ch[0]), value(t->ch[1]));
     return t;
   }
-  T query_Node(ll l, ll r, np t, ll lb, ll ub, ll b) {
+  T query_Node(ll l, ll r, Node *t, ll lb, ll ub, ll b) {
     if (t == nullptr || ub <= l || r <= lb) return M::ti();
     push(t, b);
     if (l <= lb && ub <= r) return t->dat;
@@ -62,7 +61,7 @@ struct SegmentTree_Dynamic {
     return M::f(vl, vr);
   }
   template <typename C>
-  ll find(np t, C &check, U bias) {
+  ll find(Node *t, C &check, U bias) {
     if (!t) return -1;
     ll ret = 0;
     T acc = M::ti();
@@ -83,7 +82,7 @@ struct SegmentTree_Dynamic {
   SegmentTree_Dynamic(ll n_)
       : height(ceil(log2(n_))), n(1LL << height), root(nullptr) {}
   void clear() {
-    Node::node_count = 0;
+    node_count = 0;
     root = nullptr;
   }
   void xor_all(U key) {
@@ -99,5 +98,5 @@ struct SegmentTree_Dynamic {
     return find(root, check, bias);
   }
 };
-template <typename M>
-int SegmentTree_Dynamic<M>::node_count = 0;
+template <typename M, size_t LIM>
+int SegmentTree_Dynamic<M, LIM>::node_count = 0;

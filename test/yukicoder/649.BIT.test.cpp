@@ -28,7 +28,7 @@ signed main() {
   }
   sort(x.begin(), x.end());
   x.erase(unique(x.begin(), x.end()), x.end());
-  BinaryIndexedTree bit(x.size());
+  BinaryIndexedTree<long long> bit(x.size());
   for (auto q : query) {
     if (q < 0) {
       int i = bit.find(K);

@@ -36,5 +36,6 @@ struct BinaryTrie : public SegmentTree_Dynamic<RsumQ> {
   ll max_element(U bias = 0) { return kth_element(0, ~bias); }
   int lower_bound(U val) { return query(0, val); }
   int upper_bound(U val) { return query(0, val + 1); }
+  int count(U val) { return query(val, val + 1); }
   int size() { return root ? root->dat : 0; }
 };

@@ -4,6 +4,7 @@
  * @brief O(logN)
  */
 
+// verify用: https://atcoder.jp/contests/arc030/tasks/arc030_4
 #ifndef call_from_test
 #include <bits/stdc++.h>
 using namespace std;

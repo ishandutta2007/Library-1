@@ -19,9 +19,8 @@ struct Combination {
     for (int i = n; i; --i) _finv[i - 1] = Modint(i) * _finv[i];
     for (int i = 1; i <= n; ++i) _inv[i] = _finv[i] * _fact[i - 1];
   }
-  static Modint inv(int n) { return _inv[n]; }
-  static Modint fact(int n) { return _fact[n]; }
-  static Modint fact_inv(int n) { return _finv[n]; }
+  static Modint inverse(int n) { return _inv[n]; }
+  static Modint fact(int n, bool inv = 0) { return inv ? _finv[n] : _fact[n]; }
   static Modint nPr(int n, int r) {
     if (n < r || r < 0) return Modint(0);
     return _fact[n] * _finv[n - r];

@@ -1,6 +1,9 @@
 #define PROBLEM \
   "https://judge.yosupo.jp/problem/sum_of_exponential_times_polynomial"
 
+/** @see https://min-25.hatenablog.com/entry/2015/04/24/031413
+ */
+
 #include <bits/stdc++.h>
 using namespace std;
 

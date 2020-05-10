@@ -336,7 +336,7 @@ struct FormalPowerSeries : vector<Modint> {
  private:
   FPS inverse(int deg = -1) const {
     if (deg < 0) deg = this->size();
-    FPS ret(1, (*this)[0].inverse());
+    FPS ret(1, Modint(1) / (*this)[0]);
     for (int e = 1, ne; e < deg; e = ne) {
       ne = min(2 * e, deg);
       FPS h = ret.part(ne - e) * -ret.middle_product(this->part(ne));
@@ -401,7 +401,7 @@ struct FormalPowerSeries : vector<Modint> {
     Modint sqr = mod_sqrt((*this)[0]);
     if (sqr * sqr != (*this)[0]) return FPS();  // no solutions
     FPS ret(1, sqr);
-    Modint inv2 = Modint(2).inverse();
+    Modint inv2 = Modint(1) / Modint(2);
     for (int i = 1; i < deg; i <<= 1) {
       ret += this->part(i << 1) * ret.inverse(i << 1);
       ret = ret.part(i << 1) * inv2;
@@ -413,7 +413,7 @@ struct FormalPowerSeries : vector<Modint> {
     for (int i = 0; i < this->size(); i++) {
       if ((*this)[i].x != 0) {
         if (i * k > deg) return FPS(deg, 0);
-        Modint inv = (*this)[i].inverse();
+        Modint inv = Modint(1) / (*this)[i];
         FPS ret = (((*this * inv) >> i).logarithm() * k).exponent()
                   * (*this)[i].pow(k);
         return (ret << (i * k)).part(deg);

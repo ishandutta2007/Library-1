@@ -17,7 +17,8 @@ signed main() {
   using FPS = FormalPowerSeries<Mint>;
   int N, T;
   cin >> N >> T;
-  int c[T + 1] = {};
+  int c[T + 1];
+  fill(c, c + T + 1, 0);
   for (int i = 0; i < N; i++) {
     int s;
     cin >> s;

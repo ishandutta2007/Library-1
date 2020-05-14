@@ -1,5 +1,5 @@
 /**
- * @title 高速きたまさ法
+ * @title 線形漸化式の高速計算
  * @category 数学
  * @brief O(NlogNlogk)
  */

@@ -26,8 +26,8 @@ struct SegmentTree_Dynamic {
   };
 
  protected:
-  const int height;
-  const ll n;
+  int height;
+  ll n;
   static int node_count;
   Node *root;
 
@@ -39,7 +39,7 @@ struct SegmentTree_Dynamic {
     t->xor_lazy = 0;
   }
   T value(Node *t) { return t ? t->dat : M::ti(); }
-  Node *set_Node(Node *t, U pos, T val, ll b) {
+  Node *set_Node(Node *t, const U &pos, const T &val, ll b) {
     if (t == nullptr) t = new Node();
     if (b < 0) {
       t->dat = val;
@@ -51,7 +51,8 @@ struct SegmentTree_Dynamic {
     t->dat = M::f(value(t->ch[0]), value(t->ch[1]));
     return t;
   }
-  T query_Node(ll l, ll r, Node *t, ll lb, ll ub, ll b) {
+  T query_Node(const ll &l, const ll &r, Node *t, const ll &lb, const ll &ub,
+               ll b) {
     if (t == nullptr || ub <= l || r <= lb) return M::ti();
     push(t, b);
     if (l <= lb && ub <= r) return t->dat;

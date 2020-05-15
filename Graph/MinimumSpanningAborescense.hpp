@@ -21,13 +21,23 @@ struct MinimumSpanningAborescense {
   struct Edge {
     int src, dst, id;
     T weight;
+    /* inverse */
+    bool operator<(const Edge &r) const { return this->weight > r.weight; }
     Edge() {}
     Edge(int s, int d, int i, int w) : src(s), dst(d), id(i), weight(w) {}
+  };
+  struct Op_Edge_add {
+    using E = T;
+    static E ei() { return 0; }
+    static Edge g(const Edge &l, const E &r) {
+      return Edge(l.src, l.dst, l.id, l.weight + r);
+    }
+    static E h(const E &l, const E &r) { return l + r; }
   };
 
  private:
   vector<Edge> edges;
-  using Heap = SkewHeap<Edge, int>;
+  using Heap = SkewHeap<Edge, Op_Edge_add>;
   int n;
 
  public:
@@ -37,12 +47,7 @@ struct MinimumSpanningAborescense {
   }
   pair<T, vector<int>> get_MSA(int root) {
     UnionFind uf(n);
-    auto comp
-        = [](const Edge &a, const Edge &b) { return a.weight > b.weight; };
-    auto g = [](const Edge &a, const T &b) {
-      return Edge(a.src, a.dst, a.id, a.weight + b);
-    };
-    vector<Heap> heap(n, Heap(comp, g));
+    vector<Heap> heap(n);
     for (auto &e : edges) heap[e.dst].push(e);
     T score = 0;
     int m = edges.size();
@@ -69,7 +74,7 @@ struct MinimumSpanningAborescense {
         ch.push_back(min_e.id);
         int v = uf.root(min_e.src);
         if (seen[v] == s) {
-          Heap new_heap(comp, g);
+          Heap new_heap;
           while (1) {
             int w = path.back();
             path.pop_back();

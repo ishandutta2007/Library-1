@@ -30,7 +30,7 @@ signed main() {
     }
     return ret;
   };
-  Tree_DP<Vll, Pill> graph(N, f, Vll(M, 0), g);
+  Tree_DP<Vll, Pill> graph(N, f, Vll(M + 1, 0), g);
   long long U[N];
   for (int i = 0; i < N; i++) {
     cin >> U[i];

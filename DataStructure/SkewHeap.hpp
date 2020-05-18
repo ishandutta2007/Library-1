@@ -19,9 +19,10 @@ struct Op_add {
   static E h(const E &l, const E &r) { return l + r; }
 };
 
-template <typename T, typename Op = Op_add<T>, typename Compare = less<T>>
+template <typename T, typename Op = Op_add<T>>
 struct SkewHeap {
   using E = typename Op::E;
+  using Compare = typename less<T>;
   Compare comp;
   struct Node {
     Node *ch[2];

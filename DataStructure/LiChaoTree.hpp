@@ -13,7 +13,7 @@ using namespace std;
 #endif
 
 template <typename T, T x_low = -(1 << 30), T x_high = (1 << 30),
-          T INF = numeric_limits<T>::max(), size_t LIM = (1 << 23)>
+          size_t LIM = (1 << 23)>
 struct LiChaoTree {
   struct Line {
     T a, b;
@@ -32,6 +32,7 @@ struct LiChaoTree {
   };
 
  private:
+  static constexpr T INF = numeric_limits<T>::max() / 2;
   static int node_count;
   Node *root;
 
@@ -114,5 +115,5 @@ struct LiChaoTree {
   }
   T query(T x) const { return query(root, x_low, x_high, x); }
 };
-template <typename T, T x_low, T x_high, T INF, size_t LIM>
-int LiChaoTree<T, x_low, x_high, INF, LIM>::node_count = 0;
+template <typename T, T x_low, T x_high, size_t LIM>
+int LiChaoTree<T, x_low, x_high, LIM>::node_count = 0;

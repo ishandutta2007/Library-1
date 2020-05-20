@@ -45,7 +45,7 @@ struct MinimumSpanningAborescense {
   void add_edge(int src, int dst, cost_t weight) {
     edges.emplace_back(src, dst, edges.size(), weight);
   }
-  pair<T, vector<int>> get_MSA(int root) {
+  pair<cost_t, vector<int>> get_MSA(int root) {
     UnionFind uf(n);
     vector<Heap> heap(n);
     for (auto &e : edges) heap[e.dst].push(e);

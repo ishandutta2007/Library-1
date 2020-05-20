@@ -4,6 +4,7 @@
  * @brief PrimalDual
  * @brief O((f+F')ElogV)
  * @brief 負辺除去あり
+ * @brief 返り値:{流量f流したときの最小コスト,そもそも流量f流せたか(bool)}
  */
 // verify用: https://codeforces.com/contest/316/problem/C2
 
@@ -83,7 +84,7 @@ struct MinCostFlow {
       }
     }
   }
-  cost_t flow(vector<flow_t> d0) {
+  pair<cost_t, bool> flow(vector<flow_t> d0) {
     cost_t res = 0;
     p.assign(n, 0);
     preve.assign(n, -1);
@@ -98,7 +99,7 @@ struct MinCostFlow {
     }
     while (f > 0) {
       dijkstra();
-      if (dist[T] == COST_MAX) return COST_MAX;  // no solution
+      if (dist[T] == COST_MAX) return {0, false};  // no solution
       for (int v = 0; v < n; v++)
         if (dist[v] < dist[T]) p[v] += dist[v] - dist[T];
       flow_t d = f;
@@ -112,7 +113,7 @@ struct MinCostFlow {
         graph[v][e.rev].capacity += d;
       }
     }
-    return neg + res;
+    return {neg + res, true};
   }
 
  public:
@@ -129,7 +130,7 @@ struct MinCostFlow {
       add_edge(dst, src, cap, -cost);
     }
   }
-  cost_t min_cost_flow(int s, int t, flow_t f) {
+  pair<cost_t, bool> min_cost_flow(int s, int t, flow_t f) {
     vector<flow_t> d0(n);
     d0[s] = f, d0[t] = -f;
     return flow(d0);

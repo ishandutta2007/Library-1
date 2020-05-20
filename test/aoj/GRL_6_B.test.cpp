@@ -19,6 +19,7 @@ signed main() {
     cin >> u >> v >> c >> d;
     graph.add_edge(u, v, c, d);
   }
-  cout << graph.min_cost_flow(0, V - 1, F) << endl;
+  auto ans = graph.min_cost_flow(0, V - 1, F);
+  cout << (ans.second ? ans.first : -1) << endl;
   return 0;
 }

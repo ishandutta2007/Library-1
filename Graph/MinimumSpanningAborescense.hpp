@@ -16,18 +16,18 @@ using namespace std;
 #undef call_from_test
 #endif
 
-template <typename T>
+template <typename cost_t>
 struct MinimumSpanningAborescense {
   struct Edge {
     int src, dst, id;
-    T weight;
+    cost_t weight;
     /* inverse */
     bool operator<(const Edge &r) const { return this->weight > r.weight; }
     Edge() {}
     Edge(int s, int d, int i, int w) : src(s), dst(d), id(i), weight(w) {}
   };
   struct Op_Edge_add {
-    using E = T;
+    using E = cost_t;
     static E ei() { return 0; }
     static Edge g(const Edge &l, const E &r) {
       return Edge(l.src, l.dst, l.id, l.weight + r);
@@ -41,15 +41,15 @@ struct MinimumSpanningAborescense {
   int n;
 
  public:
-  MinimumSpanningAborescense(int sz) : n(sz) {}
-  void add_edge(int src, int dst, T weight) {
+  MinimumSpanningAborescense(int n) : n(n) {}
+  void add_edge(int src, int dst, cost_t weight) {
     edges.emplace_back(src, dst, edges.size(), weight);
   }
   pair<T, vector<int>> get_MSA(int root) {
     UnionFind uf(n);
     vector<Heap> heap(n);
     for (auto &e : edges) heap[e.dst].push(e);
-    T score = 0;
+    cost_t score = 0;
     int m = edges.size();
     vector<int> seen(n, -1), paredge(m), ei, leaf(n, -1), par(n), usede(m);
     seen[root] = root;

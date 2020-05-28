@@ -79,6 +79,7 @@ struct SegmentTree_Lazy {
     laz[a] = M::ei();
     recalc(a);
   }
+  //[a,b)
   T query(int a, int b) {
     thrust(a += n);
     thrust(b += n - 1);

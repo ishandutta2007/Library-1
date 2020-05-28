@@ -10,7 +10,7 @@
 using namespace std;
 #endif
 
-template <typename T = long long>
+template <typename T>
 struct BinaryIndexedTree {
   vector<T> dat;
   BinaryIndexedTree(int n) : dat(n + 1, 0) {}

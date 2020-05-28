@@ -10,8 +10,8 @@
 using namespace std;
 #endif
 
+template <typename Weight>
 struct UnionFind_Potential {
-  using Weight = long long;
   vector<int> par;
   vector<Weight> val;
   UnionFind_Potential(int size) : par(size, -1), val(size, 0) {}

@@ -21,8 +21,11 @@ signed main() {
     graph.add_edge(s, t, w);
   }
   auto ans = graph.get_MSA(r);
+  vector<int> par(N);
+  iota(par.begin(), par.end(), 0);
+  for (auto e : ans.second) par[e.dst] = e.src;
   cout << ans.first << endl;
-  for (int i = 0; i < N; i++) cout << (i ? " " : "") << ans.second[i];
+  for (int i = 0; i < N; i++) cout << (i ? " " : "") << par[i];
   cout << endl;
   return 0;
 }

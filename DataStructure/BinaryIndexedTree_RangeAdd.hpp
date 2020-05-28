@@ -10,7 +10,7 @@
 using namespace std;
 #endif
 
-template <typename T = long long>
+template <typename T>
 struct BinaryIndexedTree_RangeAdd {
   vector<T> dat1;
   vector<T> dat2;

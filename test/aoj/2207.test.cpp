@@ -12,7 +12,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N;
   while (cin >> N && N != 0) {
-    UnionFind_Potential uf(2 * N);
+    UnionFind_Potential<long long> uf(2 * N);
     int cnt = 0;
     map<string, int> mp;
     bool isok = true;

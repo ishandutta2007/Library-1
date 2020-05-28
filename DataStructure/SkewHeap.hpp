@@ -12,17 +12,16 @@ using namespace std;
 #endif
 
 template <typename T>
-struct Op_add {
+struct Op_RaddQ {
   using E = T;
   static E ei() { return 0; }
   static T g(const T &l, const E &r) { return l + r; }
   static E h(const E &l, const E &r) { return l + r; }
 };
 
-template <typename T, typename Op = Op_add<T>, typename Compare = less<T>>
+template <typename T, typename Compare = less<T>, typename Op = Op_RaddQ<T>>
 struct SkewHeap {
   using E = typename Op::E;
-  Compare comp;
   struct Node {
     Node *ch[2];
     T key;
@@ -44,7 +43,7 @@ struct SkewHeap {
     if (!a || !b) return a ? a : b;
     propagate(a);
     propagate(b);
-    if (comp(a->key, b->key)) swap(a, b);
+    if (Compare()(a->key, b->key)) swap(a, b);
     a->ch[1] = merge(b, a->ch[1]);
     swap(a->ch[0], a->ch[1]);
     return a;
@@ -52,7 +51,7 @@ struct SkewHeap {
 
  public:
   /* max heap */
-  SkewHeap(const Compare &c = Compare()) : comp(c), root(nullptr) {}
+  SkewHeap() : root(nullptr) {}
   void push(T key) {
     Node *n = new Node(key, Op::ei());
     root = merge(root, n);

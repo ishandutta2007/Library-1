@@ -3,6 +3,7 @@
  * @category グラフ
  * @brief run(root):木dp
  * @brief run_rerooting():全方位木dp
+ * @see https://ei1333.hateblo.jp/entry/2018/12/21/004022
  */
 
 #ifndef call_from_test
@@ -60,8 +61,8 @@ struct Tree_DP {
       const G &g = [](const T &dp, const E &dat) { return dp; })
       : graph(V), f(f), g(g), init(init), subdp(V, init), dp(V, init) {}
 
-  void add_edge(int u, int v, E d = E()) {
-    graph[u].emplace_back((Edge){v, d, init, init});
+  void add_edge(int src, int dst, E d = E()) {
+    graph[src].emplace_back((Edge){dst, d, init, init});
   }
 
   T run(int root) {

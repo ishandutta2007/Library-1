@@ -2,7 +2,7 @@
  * @title 最大マッチング(二部グラフ)
  * @category グラフ
  * @brief  O(VE)
- * @brief 速い(O(V√E)並?)
+ * @brief 速い(O(E√V)並?)
  * @brief 返り値:{マッチング数,{左の相方(いないなら-1),右の相方(いないなら-1)}}
  * @see https://snuke.hatenablog.com/entry/2019/05/07/013609
  */

@@ -12,7 +12,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, Q;
   cin >> N >> Q;
-  BinaryIndexedTree bit(N);
+  BinaryIndexedTree<long long> bit(N);
   for (int i = 0; i < N; i++) {
     long long a;
     cin >> a;

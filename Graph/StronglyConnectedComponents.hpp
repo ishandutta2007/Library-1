@@ -2,7 +2,7 @@
  * @title 強連結成分分解
  * @category グラフ
  * @brief Gabow
- * @brief O(n + m)
+ * @brief O(V + E)
  * @brief 返り値:{強連結成分(トポロジカルソート),ノードの属する成分の添字}
  */
 
@@ -43,6 +43,6 @@ struct StronglyConnectedComponents {
     for (int u = 0; u < n; ++u)
       if (!I[u]) dfs(u);
     for (int u = 0; u < n; ++u) I[u] -= n + 1;
-    return {scc, I};
+    return make_pair(scc, I);
   }
 };

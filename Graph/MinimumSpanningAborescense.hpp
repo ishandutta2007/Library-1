@@ -2,7 +2,7 @@
  * @title 最小全域有向木
  * @category グラフ
  * @brief Chu-Liu/Edmonds
- * @brief O(m log n)
+ * @brief O(E log V)
  * @brief 返り値:{全域木のコスト総和,全域木に使用する辺}
  */
 
@@ -33,11 +33,13 @@ struct MinimumSpanningAborescense {
     }
     static E h(const E &l, const E &r) { return l + r; }
   };
+  using Heap = SkewHeap<Edge, greater<Edge>, Op_Edge_add>;
 
  private:
-  vector<Edge> edges;
-  using Heap = SkewHeap<Edge, greater<Edge>, Op_Edge_add>;
   int n;
+
+ public:
+  vector<Edge> edges;
 
  public:
   MinimumSpanningAborescense(int n) : n(n) {}

@@ -1,7 +1,7 @@
 /**
  * @title 最小全域木(Kruskal)
  * @category グラフ
- * @brief O(m log n)
+ * @brief O(E log V)
  * @brief 返り値:{全域木のコスト総和,全域木に使用する辺}
  */
 
@@ -17,11 +17,11 @@ using namespace std;
 template <typename cost_t>
 struct MinimumSpanningTree_Kruskal {
   struct Edge {
-    int src, dst, id;
+    int u, v, id;
     cost_t cost;
     bool operator<(const Edge &rhs) const { return this->cost < rhs.cost; }
     Edge() {}
-    Edge(int s, int d, int i, int c) : src(s), dst(d), id(i), cost(c) {}
+    Edge(int s, int d, int i, int c) : u(s), v(d), id(i), cost(c) {}
   };
 
  private:
@@ -32,8 +32,8 @@ struct MinimumSpanningTree_Kruskal {
 
  public:
   MinimumSpanningTree_Kruskal(int n) : n(n) {}
-  void add_edge(int src, int dst, cost_t cost) {
-    edges.emplace_back(src, dst, edges.size(), cost);
+  void add_edge(int u, int v, cost_t cost) {
+    edges.emplace_back(u, v, edges.size(), cost);
   }
   pair<cost_t, vector<Edge>> get_MST() {
     UnionFind uf(n);
@@ -41,7 +41,7 @@ struct MinimumSpanningTree_Kruskal {
     cost_t total = cost_t();
     vector<Edge> es;
     for (auto &e : edges)
-      if (uf.unite(e.src, e.dst)) {
+      if (uf.unite(e.u, e.v)) {
         es.emplace_back(e);
         total += e.cost;
       }

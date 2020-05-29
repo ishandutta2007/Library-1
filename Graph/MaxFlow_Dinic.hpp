@@ -1,11 +1,12 @@
 /**
  * @title 最大流(Dinic)
  * @category グラフ
- * @brief  O(n^2 m)
+ * @brief  O(V^2 E)
  * @brief link: s->tフローで辺(src,dst)の容量を1増やしたときの最大流の変化
  * @brief cut: s->tフローで辺(src,dst)の容量を1減らしたときの最大流の変化
  */
 
+// 最小流量制限付き最大流 https://snuke.hatenablog.com/entry/2016/07/10/043918
 #ifndef call_from_test
 #include <bits/stdc++.h>
 using namespace std;

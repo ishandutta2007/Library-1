@@ -37,12 +37,12 @@ signed main() {
   int num = n;
   for (auto e : res.second) {
     id[e.id] = num++;
-    lct.link(e.src, id[e.id]);
-    lct.link(id[e.id], e.dst);
+    lct.link(e.u, id[e.id]);
+    lct.link(id[e.id], e.v);
   }
   for (auto e : graph.edges) {
     if (id[e.id] != -1) continue;
-    lct.update(e.src, e.dst, e.cost);
+    lct.update(e.u, e.v, e.cost);
   }
   long long ans[m];
   for (auto e : graph.edges) {

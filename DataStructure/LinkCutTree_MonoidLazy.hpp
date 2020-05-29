@@ -18,8 +18,8 @@ struct LinkCutTree_MonoidLazy {
     bool rev;
     T val, dat, rdat;
     E laz;
-    Node()
-        : rev(false), val(M::ti()), dat(M::ti()), rdat(M::ti()), laz(M::ei()) {
+    Node(T init = M::ti())
+        : rev(false), val(init), dat(init), rdat(init), laz(M::ei()) {
       ch[0] = ch[1] = par = nullptr;
     }
   };
@@ -107,7 +107,7 @@ struct LinkCutTree_MonoidLazy {
   vector<Node> ns;
 
  public:
-  LinkCutTree_MonoidLazy(int n) : ns(n) {}
+  LinkCutTree_MonoidLazy(int n, T init = M::ti()) : ns(n, init) {}
   // make k the root
   void evert(int k) {
     expose(&ns[k]);
@@ -135,7 +135,10 @@ struct LinkCutTree_MonoidLazy {
     Node *u = expose(&ns[y]);
     return ns[x].par ? u - &ns[0] : -1;
   }
-  T operator[](int k) { return ns[k].val; }
+  T operator[](int k) {
+    expose(&ns[k]);
+    return ns[k].val;
+  }
   // [a,b] closed section
   T query(int a, int b) {
     evert(a);

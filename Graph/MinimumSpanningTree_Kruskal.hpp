@@ -26,6 +26,8 @@ struct MinimumSpanningTree_Kruskal {
 
  private:
   int n;
+
+ public:
   vector<Edge> edges;
 
  public:

@@ -1,5 +1,5 @@
 /**
- * @title Link-Cut-Tree(モノイド)
+ * @title Link-Cut-Tree(モノイド双対)
  * @category データ構造
  * @brief O(logN)
  */
@@ -10,13 +10,15 @@ using namespace std;
 #endif
 
 template <typename M>
-struct LinkCutTree_Monoid {
+struct LinkCutTree_MonoidDual {
   using T = typename M::T;
+  using E = typename M::E;
   struct Node {
     Node *ch[2], *par;
     bool rev;
-    T val, dat, rdat;
-    Node(T init = M::ti()) : rev(false), val(init), dat(init), rdat(init) {
+    T val;
+    E laz;
+    Node(T init = T()) : rev(false), val(init), laz(M::ei()) {
       ch[0] = ch[1] = par = nullptr;
     }
   };
@@ -31,12 +33,9 @@ struct LinkCutTree_Monoid {
     bool d = dir(t);
     if ((p->ch[d] = t->ch[!d])) p->ch[d]->par = p;
     t->ch[!d] = p;
-    pushup(p);
-    pushup(t);
     t->par = p->par;
     if (!is_root(p)) {
       p->par->ch[dir(p)] = t;
-      pushup(t->par);
     }
     p->par = t;
   }
@@ -55,32 +54,30 @@ struct LinkCutTree_Monoid {
       rot(x);
     }
   }
-  void pushup(Node *t) {
-    t->rdat = t->dat = t->val;
-    if (t->ch[0])
-      t->dat = M::f(t->ch[0]->dat, t->dat),
-      t->rdat = M::f(t->rdat, t->ch[0]->rdat);
-    if (t->ch[1])
-      t->dat = M::f(t->dat, t->ch[1]->dat),
-      t->rdat = M::f(t->ch[1]->rdat, t->rdat);
-  }
   Node *expose(Node *x) {
     Node *r = nullptr;
     for (Node *p = x; p; p = p->par) {
       splay(p);
       p->ch[1] = r;
-      pushup(p);
       r = p;
     }
     splay(x);
     return r;
   }
+  void propagate(Node *t, E v) {
+    t->laz = M::h(t->laz, v);
+    t->val = M::g(t->val, v);
+  }
   void toggle(Node *t) {
     swap(t->ch[0], t->ch[1]);
-    swap(t->dat, t->rdat);
     t->rev ^= 1;
   }
   Node *eval(Node *t) {
+    if (t->laz != M::ei()) {
+      if (t->ch[0]) propagate(t->ch[0], t->laz);
+      if (t->ch[1]) propagate(t->ch[1], t->laz);
+      t->laz = M::ei();
+    }
     if (t->rev) {
       if (t->ch[0]) toggle(t->ch[0]);
       if (t->ch[1]) toggle(t->ch[1]);
@@ -93,7 +90,7 @@ struct LinkCutTree_Monoid {
   vector<Node> ns;
 
  public:
-  LinkCutTree_Monoid(int n, T init = M::ti()) : ns(n, init) {}
+  LinkCutTree_MonoidDual(int n, T init = T()) : ns(n, init) {}
   // make k the root
   void evert(int k) {
     expose(&ns[k]);
@@ -106,7 +103,6 @@ struct LinkCutTree_Monoid {
     expose(&ns[p]);
     ns[p].ch[1] = &ns[c];
     ns[c].par = &ns[p];
-    pushup(&ns[p]);
   }
   // cut link from c to p
   void cut(int c, int p) {
@@ -114,19 +110,21 @@ struct LinkCutTree_Monoid {
     expose(&ns[c]);
     Node *y = ns[c].ch[0];
     ns[c].ch[0] = y->par = nullptr;
-    pushup(&ns[c]);
   }
   int lca(int x, int y) {
     expose(&ns[x]);
     Node *u = expose(&ns[y]);
     return ns[x].par ? u - &ns[0] : -1;
   }
-  T operator[](int k) { return ns[k].val; }
-  // [a,b] closed section
-  T query(int a, int b) {
+  T operator[](int k) {
+    expose(&ns[k]);
+    return ns[k].val;
+  }
+  void update(int a, int b, E v) {
     evert(a);
     expose(&ns[b]);
-    return ns[b].dat;
+    propagate(&ns[b], v);
+    eval(&ns[b]);
   }
   void set_val(int k, T v) {
     expose(&ns[k]);

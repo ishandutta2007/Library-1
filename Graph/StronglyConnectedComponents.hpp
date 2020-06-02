@@ -21,28 +21,28 @@ struct StronglyConnectedComponents {
   void add_edge(int src, int dst) { radj[dst].push_back(src); }
   pair<vector<vector<int>>, vector<int>> get_SCC() {
     vector<vector<int>> scc;
-    vector<int> S, B, I(n);
+    vector<int> S, B, index(n);
     function<void(int)> dfs = [&](int u) {
-      B.push_back(I[u] = S.size());
+      B.push_back(index[u] = S.size());
       S.push_back(u);
       for (int v : radj[u]) {
-        if (!I[v])
+        if (!index[v])
           dfs(v);
         else
-          while (I[v] < B.back()) B.pop_back();
+          while (index[v] < B.back()) B.pop_back();
       }
-      if (I[u] == B.back()) {
+      if (index[u] == B.back()) {
         scc.push_back({});
         B.pop_back();
-        for (; I[u] < S.size(); S.pop_back()) {
+        for (; index[u] < S.size(); S.pop_back()) {
           scc.back().push_back(S.back());
-          I[S.back()] = n + scc.size();
+          index[S.back()] = n + scc.size();
         }
       }
     };
     for (int u = 0; u < n; ++u)
-      if (!I[u]) dfs(u);
-    for (int u = 0; u < n; ++u) I[u] -= n + 1;
-    return make_pair(scc, I);
+      if (!index[u]) dfs(u);
+    for (int u = 0; u < n; ++u) index[u] -= n + 1;
+    return make_pair(scc, index);
   }
 };

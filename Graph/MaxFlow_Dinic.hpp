@@ -24,7 +24,7 @@ struct MaxFlow_Dinic {
  private:
   static constexpr flow_t FLOW_MAX = numeric_limits<flow_t>::max() / 2;
   int n;
-  vector<vector<Edge>> graph;
+  vector<vector<Edge>> adj;
   vector<int> level, iter;
 
  private:
@@ -37,7 +37,7 @@ struct MaxFlow_Dinic {
       int u = Q.front();
       Q.pop();
       if (u == t) break;
-      for (auto &e : graph[u]) {
+      for (auto &e : adj[u]) {
         if (e.capacity > 0 && level[e.dst] < 0) {
           Q.push(e.dst);
           level[e.dst] = level[u] + 1;
@@ -48,8 +48,8 @@ struct MaxFlow_Dinic {
   }
   flow_t dfs(int u, const int &t, flow_t cur) {
     if (u == t) return cur;
-    for (int &i = iter[u]; i < graph[u].size(); ++i) {
-      Edge &e = graph[u][i], &r = graph[e.dst][e.rev];
+    for (int &i = iter[u]; i < adj[u].size(); ++i) {
+      Edge &e = adj[u][i], &r = adj[e.dst][e.rev];
       if (e.capacity > 0 && level[u] < level[e.dst]) {
         flow_t f = dfs(e.dst, t, min(cur, e.capacity));
         if (f > 0) {
@@ -63,15 +63,15 @@ struct MaxFlow_Dinic {
   }
   flow_t flow(int s, int t) {
     if (levelize(s, t) < 0) return 0;
-    iter.assign(graph.size(), 0);
+    iter.assign(adj.size(), 0);
     return dfs(s, t, 1);
   }
 
  public:
-  MaxFlow_Dinic(int n) : n(n), graph(n) {}
+  MaxFlow_Dinic(int n) : n(n), adj(n) {}
   void add_edge(int src, int dst, flow_t cap) {
-    graph[src].emplace_back((Edge){dst, cap, graph[dst].size(), 0});
-    graph[dst].emplace_back((Edge){src, 0, graph[src].size() - 1, 1});
+    adj[src].emplace_back((Edge){dst, cap, adj[dst].size(), 0});
+    adj[dst].emplace_back((Edge){src, 0, adj[src].size() - 1, 1});
   }
   flow_t max_flow(int s, int t, flow_t lim = FLOW_MAX) {
     flow_t flow = 0;
@@ -82,7 +82,7 @@ struct MaxFlow_Dinic {
     return flow;
   }
   flow_t link(int src, int dst, int s, int t) {
-    for (auto &e : graph[src])
+    for (auto &e : adj[src])
       if (e.dst == dst && !e.isrev) {
         e.capacity += 1;
         break;
@@ -90,7 +90,7 @@ struct MaxFlow_Dinic {
     return flow(s, t);
   }
   flow_t cut(int src, int dst, int s, int t) {
-    for (auto &e : graph[src])
+    for (auto &e : adj[src])
       if (e.dst == dst && !e.isrev) {
         flow_t diff = 0;
         if (e.capacity == 0) {
@@ -99,7 +99,7 @@ struct MaxFlow_Dinic {
             flow(src, s);
             diff = -1;
           }
-          graph[e.dst][e.rev].capacity -= 1;
+          adj[e.dst][e.rev].capacity -= 1;
         } else {
           e.capacity -= 1;
         }
@@ -108,10 +108,10 @@ struct MaxFlow_Dinic {
     assert(false);  // no edge
   }
   void output() {
-    for (int i = 0; i < graph.size(); i++) {
-      for (auto &e : graph[i]) {
+    for (int i = 0; i < adj.size(); i++) {
+      for (auto &e : adj[i]) {
         if (e.isrev) continue;
-        auto &rev_e = graph[e.dst][e.rev];
+        auto &rev_e = adj[e.dst][e.rev];
         cerr << i << "->" << e.dst << " (flow: " << rev_e.capacity << "/"
              << e.capacity + rev_e.capacity << ")" << endl;
       }

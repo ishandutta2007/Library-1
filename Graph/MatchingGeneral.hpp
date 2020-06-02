@@ -18,7 +18,7 @@ struct MatchingGeneral {
 
  private:
   int n, res;
-  vector<vector<int>> g;
+  vector<vector<int>> adj;
   vector<int> mate, idx, p;
   vector<edge> es;
 
@@ -47,7 +47,7 @@ struct MatchingGeneral {
     while (!que.empty()) {
       int x = que.front();
       que.pop();
-      for (int y : g[x])
+      for (int y : adj[x])
         if (y != rt) {
           if (mate[y] == -1) {
             mate[y] = x;
@@ -93,10 +93,10 @@ struct MatchingGeneral {
 
  public:
   MatchingGeneral(int n)
-      : g(n), n(n), res(0), mate(n, -1), idx(n, -1), p(n), es(n) {}
+      : adj(n), n(n), res(0), mate(n, -1), idx(n, -1), p(n), es(n) {}
   void add_edge(int u, int v) {
-    g[u].emplace_back(v);
-    g[v].emplace_back(u);
+    adj[u].emplace_back(v);
+    adj[v].emplace_back(u);
   }
   pair<int, vector<int>> get_matching() {
     for (int i = 0; i < n; i++)

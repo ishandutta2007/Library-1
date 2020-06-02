@@ -55,7 +55,7 @@ signed main() {
       int i;
       tie(ans, i) = lct.query(u, v);
       cout << ans << endl;
-      if (i != -1) {
+      if (ans != -1) {
         pq[i].pop();
         lct.set_val(i, make_pair(pq[i].top(), i));
       }

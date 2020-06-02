@@ -93,7 +93,7 @@ struct MatchingGeneral {
 
  public:
   MatchingGeneral(int n)
-      : adj(n), n(n), res(0), mate(n, -1), idx(n, -1), p(n), es(n) {}
+      : n(n), res(0), adj(n), mate(n, -1), idx(n, -1), p(n), es(n) {}
   void add_edge(int u, int v) {
     adj[u].emplace_back(v);
     adj[v].emplace_back(u);

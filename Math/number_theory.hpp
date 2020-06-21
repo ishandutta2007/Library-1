@@ -4,8 +4,7 @@
  * @brief 約数や倍数についてのゼータ変換やメビウス変換
  * @brief をもとに数論的関数やgcd畳み込みなどを実現
  * @brief O(N log log N)
- * @see
- * https://qiita.com/convexineq/items/afc84dfb9ee4ec4a67d5#_reference-6897e76b2cb2ee712901
+ * @see https://qiita.com/convexineq/items/afc84dfb9ee4ec4a67d5
  * @see https://en.wikipedia.org/wiki/Dirichlet_convolution
  */
 

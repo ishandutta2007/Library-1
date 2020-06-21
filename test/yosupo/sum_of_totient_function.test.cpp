@@ -9,7 +9,9 @@ using namespace std;
 #include "Math/number_theory.hpp"
 #undef call_from_test
 
-void yosupo_phi() {
+signed main() {
+  cin.tie(0);
+  ios::sync_with_stdio(false);
   using Mint = ModInt<998244353>;
   using namespace number_theory;
   const int M = 1 << (200 / 9);
@@ -26,4 +28,5 @@ void yosupo_phi() {
   cin >> N;
   Mint ans = dujiao_sieve<Mint>(N, N, g, b, memo);
   cout << ans << endl;
+  return 0;
 }

@@ -5,7 +5,7 @@ using namespace std;
 
 #define call_from_test
 #include "Math/ModInt.hpp"
-#include "Math/mobius_inversion.hpp"
+#include "Math/dujiao_sieve.hpp"
 #undef call_from_test
 
 signed main() {
@@ -25,12 +25,13 @@ signed main() {
   auto b_2 = [](int64_t d) {
     return Mint(d * (d + 1) / 2) * Mint(2 * d + 1) / Mint(3);
   };
+  map<pair<int64_t, int64_t>, Mint> memo_1, memo_w, memo_h, memo_hw;
   int64_t H, W;
   cin >> H >> W;
-  Mint ans_1 = mobius_inversion<Mint>(H - 1, W - 1, g_1, b_0);
-  Mint ans_w = mobius_inversion<Mint>(H - 1, W - 1, g_w, b_1);
-  Mint ans_h = mobius_inversion<Mint>(H - 1, W - 1, g_h, b_1);
-  Mint ans_hw = mobius_inversion<Mint>(H - 1, W - 1, g_hw, b_2);
+  Mint ans_1 = dujiao_sieve<Mint>(H - 1, W - 1, g_1, b_0, memo_1);
+  Mint ans_w = dujiao_sieve<Mint>(H - 1, W - 1, g_w, b_1, memo_w);
+  Mint ans_h = dujiao_sieve<Mint>(H - 1, W - 1, g_h, b_1, memo_h);
+  Mint ans_hw = dujiao_sieve<Mint>(H - 1, W - 1, g_hw, b_2, memo_hw);
   Mint MH(H), MW(W);
   Mint ans = MH * MW * ans_1 - MH * ans_w - MW * ans_h + ans_hw;
   ans *= (2);

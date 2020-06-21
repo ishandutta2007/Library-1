@@ -74,6 +74,7 @@
 "test/yosupo/suffixarray.test.cpp": "2020-04-24 16:54:44 +0900",
 "test/yosupo/sum_of_exponential_times_polynomial.test.cpp": "2020-06-19 17:39:38 +0900",
 "test/yosupo/sum_of_exponential_times_polynomial_limit.test.cpp": "2020-06-19 17:39:38 +0900",
+"test/yosupo/sum_of_totient_function.test.cpp": "2020-06-22 08:25:52 +0900",
 "test/yosupo/two_edge_connected_components.test.cpp": "2020-06-02 14:58:00 +0900",
 "test/yosupo/two_sat.test.cpp": "2020-06-02 14:58:00 +0900",
 "test/yosupo/z_algorithm.test.cpp": "2020-04-23 01:08:45 +0900",

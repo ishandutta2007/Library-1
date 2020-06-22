@@ -14,7 +14,7 @@
  */
 
 // input H,W,g,b,k
-// output a(1)f(H,W)
+// output f(H,W)
 //  s.t. g(x,y) = sum_{d=1,2,...} a(d)f([x/d^k],[y/d^k])
 //       b(d) = a(1)+a(2)+...+a(d)
 
@@ -38,5 +38,5 @@ T dujiao_sieve(int64_t H, int64_t W, const G &g, const A &b,
     ret -= r * (b(next_d - 1) - b(d - 1));
     d = next_d;
   }
-  return memo[make_pair(H, W)] = ret;
+  return memo[make_pair(H, W)] = ret / b(1);
 }

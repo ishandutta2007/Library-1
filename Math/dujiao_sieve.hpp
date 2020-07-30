@@ -8,9 +8,8 @@
  * @see https://oi-wiki.org/math/du/
  * @see https://blog.bill.moe/multiplicative-function-sieves-notes/
  * @brief メモ化再帰で実装(map使ってるのでlogがつく)
- * @brief k==1ならO(N^(3/4)) (g,bの計算量無視)
+ * @brief k==1ならO(N^(3/4)) (g,bの計算量をO(1)として)
  * @brief 前処理でN^(2/3)まで計算できるならO(N^(2/3))
- * @brief O(N^((k+2)/(k+1)^2))ぐらい?
  */
 
 // input H,W,g,b,k

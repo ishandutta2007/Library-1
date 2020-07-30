@@ -8,6 +8,9 @@
  * @see https://en.wikipedia.org/wiki/Dirichlet_convolution
  */
 
+// verify用:
+// https://atcoder.jp/contests/agc038/tasks/agc038_c
+
 #ifndef call_from_test
 #include <bits/stdc++.h>
 using namespace std;
@@ -29,6 +32,7 @@ void init(int n) {
 template <typename T>
 void divisor_zeta(vector<T> &f) {
   int n = f.size();
+  if (!primes.size()) init(n);
   for (int p : primes) {
     if (p > n) break;
     for (int i = 1; p * i < n; i++) f[p * i] += f[i];
@@ -38,6 +42,7 @@ void divisor_zeta(vector<T> &f) {
 template <typename T>
 void divisor_mobius(vector<T> &f) {
   int n = f.size();
+  if (!primes.size()) init(n);
   for (int p : primes) {
     if (p > n) break;
     for (int i = (n - 1) / p; i > 0; i--) f[p * i] -= f[i];
@@ -89,6 +94,7 @@ static vector<T> lcm_convolution(vector<T> a, vector<T> b) {
 template <typename T>
 static void multiple_zeta(vector<T> &f) {
   int n = f.size();
+  if (!primes.size()) init(n);
   for (int p : primes) {
     if (p > n) break;
     for (int i = (n - 1) / p; i > 0; i--) f[i] += f[p * i];
@@ -98,6 +104,7 @@ static void multiple_zeta(vector<T> &f) {
 template <typename T>
 static void multiple_mobius(vector<T> &f) {
   int n = f.size();
+  if (!primes.size()) init(n);
   for (int p : primes) {
     if (p > n) break;
     for (int i = 1; p * i < n; i++) f[i] -= f[p * i];

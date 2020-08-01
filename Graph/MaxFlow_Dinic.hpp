@@ -82,8 +82,8 @@ struct MaxFlow_Dinic {
     return ret;
   }
   void add_edge(int src, int dst, flow_t cap) {
-    adj[src].emplace_back((Edge){dst, cap, adj[dst].size(), 0});
-    adj[dst].emplace_back((Edge){src, 0, adj[src].size() - 1, 1});
+    adj[src].emplace_back((Edge){dst, cap, (int)adj[dst].size(), 0});
+    adj[dst].emplace_back((Edge){src, 0, (int)adj[src].size() - 1, 1});
   }
   flow_t max_flow(int s, int t, flow_t lim = FLOW_MAX) {
     flow_t flow = 0;

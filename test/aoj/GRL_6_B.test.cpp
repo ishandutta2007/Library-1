@@ -21,6 +21,6 @@ signed main() {
     graph.add_edge(u, v, 0, c, d);
   }
   auto ans = graph.st_flow_run(0, V - 1, F);
-  cout << (ans.second ? ans.first : -1) << endl;
+  cout << (ans.first ? ans.second : -1) << endl;
   return 0;
 }

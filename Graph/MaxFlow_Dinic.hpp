@@ -23,7 +23,7 @@ struct MaxFlow_Dinic {
   };
 
  private:
-  const flow_t FLOW_MAX = numeric_limits<flow_t>::max() / 2;
+  static constexpr flow_t FLOW_MAX = numeric_limits<flow_t>::max() / 2;
   int n;
   vector<vector<Edge>> adj;
   vector<int> level, iter;

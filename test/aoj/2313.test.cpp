@@ -12,7 +12,8 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, E, Q;
   cin >> N >> E >> Q;
-  MaxFlow_Dinic<int> graph(N);
+  MaxFlow_Dinic<int> graph;
+  graph.add_vertices(N);
   set<pair<int, int>> S;
   while (E--) {
     int F, T;

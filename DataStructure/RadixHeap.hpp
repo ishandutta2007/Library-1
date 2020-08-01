@@ -13,7 +13,8 @@ using namespace std;
 #endif
 
 // verify用:
-// https://codeforces.com/contest/316/problem/C2 (Radix-HeapでないとTLEした)
+// https://codeforces.com/contest/316/problem/C2
+// (Radix-HeapでないとTLEした -> 容量スケーリングならTLEしない)
 
 namespace internal {
 template <bool Is64bit>

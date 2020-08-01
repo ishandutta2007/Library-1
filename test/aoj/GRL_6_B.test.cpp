@@ -13,13 +13,14 @@ signed main() {
   ios::sync_with_stdio(0);
   int V, E, F;
   cin >> V >> E >> F;
-  MinCostFlow<int, int> graph(V);
+  MinCostFlow<int, int> graph;
+  graph.add_vertices(V);
   while (E--) {
     int u, v, c, d;
     cin >> u >> v >> c >> d;
-    graph.add_edge(u, v, c, d);
+    graph.add_edge(u, v, 0, c, d);
   }
-  auto ans = graph.min_cost_flow(0, V - 1, F);
+  auto ans = graph.st_flow_run(0, V - 1, F);
   cout << (ans.second ? ans.first : -1) << endl;
   return 0;
 }

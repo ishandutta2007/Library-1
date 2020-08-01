@@ -13,7 +13,8 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, M;
   cin >> N >> M;
-  MaxFlow_Dinic<long long> graph(N);
+  MaxFlow_Dinic<long long> graph;
+  graph.add_vertices(N);
   for (int i = 0; i < M; i++) {
     int u, v;
     long long c;

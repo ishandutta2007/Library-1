@@ -67,7 +67,7 @@ class MinCostFlow {
  public:
   MinCostFlow() : n(0) {}
   int add_vertex() {
-    ++n;
+    n++;
     adj.resize(n);
     b.resize(n);
     return n - 1;
@@ -127,7 +127,7 @@ class MinCostFlow {
       pq.pop();
       if (dist[u] - d + EPS < 0) continue;
       farthest = d;
-      if (b[u] <= -delta) ++deficit_count;
+      if (b[u] <= -delta) deficit_count++;
       if (deficit_count >= deficit_vs.size()) break;
       for (auto &e : adj[u]) {
         if (e.residual_cap() < delta) continue;
@@ -139,7 +139,7 @@ class MinCostFlow {
       }
     }
     pq = decltype(pq)();
-    for (int v = 0; v < n; ++v) potential[v] += min(dist[v], farthest);
+    for (int v = 0; v < n; v++) potential[v] += min(dist[v], farthest);
     return deficit_count > 0;
   }
   void primal(const flow_t delta) {
@@ -180,7 +180,7 @@ class MinCostFlow {
           b[dst] += rcap;
         }
       }
-    for (int v = 0; v < n; ++v)
+    for (int v = 0; v < n; v++)
       if (b[v] != 0) (b[v] > 0 ? excess_vs : deficit_vs).emplace_back(v);
   }
 
@@ -241,7 +241,7 @@ class MinCostFlow {
   }
   vector<cost_t> get_potential() {
     fill(begin(potential), end(potential), 0);
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < n; i++)
       for (const auto &es : adj)
         for (const auto &e : es)
           if (e.residual_cap() > 0)

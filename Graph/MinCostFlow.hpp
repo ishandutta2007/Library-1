@@ -249,6 +249,16 @@ class MinCostFlow {
                                    potential[adj[e.dst][e.rev].dst] + e.cost);
     return potential;
   }
+  template <class T>
+  T get_result_value() {
+    T value = 0;
+    for (const auto &es : adj)
+      for (const auto &e : es) {
+        value += (T)(e.flow) * (T)(e.cost);
+      }
+    value /= (T)2;
+    return value;
+  }
 };
 
 template <class flow_t, class cost_t,

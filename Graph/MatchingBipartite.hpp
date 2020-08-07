@@ -22,30 +22,28 @@ struct MatchingBipartite {
     vector<int> pre(n, -1), root(n, -1);
     vector<int> leftmate(n, -1), rightmate(m, -1);
     int res = 0;
-    bool upd = true;
-    while (upd) {
-      upd = false;
+    bool update = true;
+    while (update) {
+      update = false;
       queue<int> s;
-      for (int i = 0; i < n; ++i) {
+      for (int i = 0; i < n; ++i)
         if (leftmate[i] == -1) {
           root[i] = i;
           s.push(i);
         }
-      }
       while (!s.empty()) {
         int v = s.front();
         s.pop();
         if (leftmate[root[v]] != -1) continue;
-        for (int i = 0; i < (int)adj[v].size(); ++i) {
-          int u = adj[v][i];
+        for (int u : adj[v]) {
           if (rightmate[u] == -1) {
             while (u != -1) {
               rightmate[u] = v;
               swap(leftmate[v], u);
               v = pre[v];
             }
-            upd = true;
-            ++res;
+            update = true;
+            res++;
             break;
           }
           u = rightmate[u];
@@ -55,7 +53,7 @@ struct MatchingBipartite {
           s.push(u);
         }
       }
-      if (upd)
+      if (update)
         fill(pre.begin(), pre.end(), -1), fill(root.begin(), root.end(), -1);
     }
     return make_pair(res, make_pair(leftmate, rightmate));

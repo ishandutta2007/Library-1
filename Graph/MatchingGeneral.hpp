@@ -12,78 +12,70 @@ using namespace std;
 #endif
 
 struct MatchingGeneral {
-  struct edge {
-    int u, v;
-  };
-
  private:
   int n, res;
   vector<vector<int>> adj;
   vector<int> mate, idx, p;
-  vector<edge> es;
+  vector<pair<int, int>> edges;
 
  private:
   void rematch(int u, int v) {
     int w = mate[u];
     mate[u] = v;
     if (w == -1 || mate[w] != u) return;
-    if (es[u].v == -1) {
-      mate[w] = es[u].u;
-      rematch(es[u].u, w);
+    if (edges[u].second == -1) {
+      mate[w] = edges[u].first;
+      rematch(edges[u].first, w);
     } else {
-      rematch(es[u].u, es[u].v);
-      rematch(es[u].v, es[u].u);
+      rematch(edges[u].first, edges[u].second);
+      rematch(edges[u].second, edges[u].first);
     }
   }
-  bool check(int rt) {
+  bool check(int root) {
     function<int(int)> f = [&](int x) {
       return (idx[x] != res || p[x] == -1) ? x : (p[x] = f(p[x]));
     };
     queue<int> que;
-    que.push(rt);
-    p[rt] = -1;
-    idx[rt] = res;
-    es[rt] = {-1, -1};
+    que.push(root);
+    p[root] = -1;
+    idx[root] = res;
+    edges[root] = {-1, -1};
+    function<void(int, int)> g = [&](int t, int w) {
+      while (t != w) {
+        idx[t] = res;
+        p[t] = w;
+        que.push(t);
+        t = f(edges[mate[t]].first);
+      }
+    };
     while (!que.empty()) {
       int x = que.front();
       que.pop();
       for (int y : adj[x])
-        if (y != rt) {
+        if (y != root) {
           if (mate[y] == -1) {
             mate[y] = x;
             rematch(x, y);
             return true;
           } else if (idx[y] == res) {
-            int u = f(x), v = f(y), w = rt;
+            int u = f(x), v = f(y), w = root;
             if (u == v) continue;
-            while (u != rt || v != rt) {
-              if (v != rt) swap(u, v);
-              if (es[u].u == x && es[u].v == y) {
+            while (u != root || v != root) {
+              if (v != root) swap(u, v);
+              if (edges[u].first == x && edges[u].second == y) {
                 w = u;
                 break;
               }
-              es[u] = {x, y};
-              u = f(es[mate[u]].u);
+              edges[u] = {x, y};
+              u = f(edges[mate[u]].first);
             }
-            int t = f(x);
-            while (t != w) {
-              idx[t] = res;
-              p[t] = w;
-              que.push(t);
-              t = f(es[mate[t]].u);
-            }
-            t = f(y);
-            while (t != w) {
-              idx[t] = res;
-              p[t] = w;
-              que.push(t);
-              t = f(es[mate[t]].u);
-            }
+            g(f(x), w);
+            g(f(y), w);
           } else if (idx[mate[y]] != res) {
-            es[y] = {-1, -1};
+            edges[y] = {-1, -1};
             idx[mate[y]] = res;
             p[mate[y]] = y;
-            es[mate[y]] = {x, -1};
+            edges[mate[y]] = {x, -1};
             que.push(mate[y]);
           }
         }
@@ -93,7 +85,7 @@ struct MatchingGeneral {
 
  public:
   MatchingGeneral(int n)
-      : n(n), res(0), adj(n), mate(n, -1), idx(n, -1), p(n), es(n) {}
+      : n(n), res(0), adj(n), mate(n, -1), idx(n, -1), p(n), edges(n) {}
   void add_edge(int u, int v) {
     adj[u].emplace_back(v);
     adj[v].emplace_back(u);

@@ -1,8 +1,8 @@
 /**
  * @title Berlekamp-Massey
  * @category 数学
- * @brief　数列の最初のN項から、その数列を生成するN/2次以下の最小の線形漸化式を求める
- * @brief O(N^2)
+ * 数列の最初のN項から、その数列を生成するN/2次以下の最小の線形漸化式を求める
+ *  O(N^2)
  */
 
 // verify用:

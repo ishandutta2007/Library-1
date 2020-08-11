@@ -1,12 +1,8 @@
 /**
  * @title 線形漸化式の高速計算
  * @category 数学
- * @brief O(NlogNlogk)
+ *  O(NlogNlogk)
  */
-
-// b[0] = a[0], b[1] = a[1], ..., b[N-1] = a[N-1]
-// b[n] = c[0] * b[n-N] + c[1] * b[n-N+1] + ... + c[N-1] * b[n-1] (n >= N)
-// calc b[k]
 
 #ifndef call_from_test
 #include <bits/stdc++.h>
@@ -16,6 +12,10 @@ using namespace std;
 #include "Math/FormalPowerSeries.hpp"
 #undef call_from_test
 #endif
+
+// b[0] = a[0], b[1] = a[1], ..., b[N-1] = a[N-1]
+// b[n] = c[0] * b[n-N] + c[1] * b[n-N+1] + ... + c[N-1] * b[n-1] (n >= N)
+// calc b[k]
 
 template <class Modint>
 Modint kitamasa(const vector<Modint> &c, const vector<Modint> &a, uint64_t k) {

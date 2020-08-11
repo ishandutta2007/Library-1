@@ -7,20 +7,20 @@
  * @see https://yukicoder.me/wiki/sum_totient
  * @see https://oi-wiki.org/math/du/
  * @see https://blog.bill.moe/multiplicative-function-sieves-notes/
- * @brief メモ化再帰で実装(map使ってるのでlogがつく)
- * @brief k==1ならO(N^(3/4)) (g,bの計算量をO(1)として)
- * @brief 前処理でN^(2/3)まで計算できるならO(N^(2/3))
+ *  メモ化再帰で実装(map使ってるのでlogがつく)
+ *  k==1ならO(N^(3/4)) (g,bの計算量をO(1)として)
+ *  前処理でN^(2/3)まで計算できるならO(N^(2/3))
  */
-
-// input H,W,g,b,k
-// output f(H,W)
-//  s.t. g(x,y) = sum_{d=1,2,...} a(d)f([x/d^k],[y/d^k])
-//       b(d) = a(1)+a(2)+...+a(d)
 
 #ifndef call_from_test
 #include <bits/stdc++.h>
 using namespace std;
 #endif
+
+// input H,W,g,b,k
+// output f(H,W)
+//  s.t. g(x,y) = sum_{d=1,2,...} a(d)f([x/d^k],[y/d^k])
+//       b(d) = a(1)+a(2)+...+a(d)
 
 template <typename T, typename G, typename A>
 T dujiao_sieve(int64_t H, int64_t W, const G &g, const A &b,

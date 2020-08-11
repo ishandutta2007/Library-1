@@ -1,8 +1,8 @@
 /**
  * @title 最小費用流
  * @category グラフ
- * @brief PrimalDual(容量スケーリング)
- * @brief O(m^2 log U log n)
+ *  PrimalDual(容量スケーリング)
+ *  O(m^2 log U log n)
  * @see https://misawa.github.io/others/flow/library_design.html
  */
 // verify用:

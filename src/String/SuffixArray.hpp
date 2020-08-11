@@ -1,10 +1,10 @@
 /**
  * @title 接尾辞配列(Suffix-Array)
  * @category 文字列
- * @brief 構築 O(|S| log |S|)
- * @brief lower_bound(T) 文字列Tを含む接尾辞のindexの下限 O(|T| log |S|)
- * @brief LongestCommonPrefix配列（高さ配列） 構築 O(|S|)
- * @brief '$'は入れてない
+ *  構築 O(|S| log |S|)
+ *  lower_bound(T) 文字列Tを含む接尾辞のindexの下限 O(|T| log |S|)
+ *  LongestCommonPrefix配列（高さ配列） 構築 O(|S|)
+ *  '$'は入れてない
  */
 
 #ifndef call_from_test

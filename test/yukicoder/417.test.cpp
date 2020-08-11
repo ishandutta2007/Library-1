@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/Tree_DP.hpp"
+#include "src/Graph/Tree_DP.hpp"
 #undef call_from_test
 
 signed main() {

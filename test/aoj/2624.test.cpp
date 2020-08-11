@@ -6,7 +6,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/Matrix_mod2.hpp"
+#include "src/Math/Matrix_mod2.hpp"
 #undef call_from_test
 
 signed main() {

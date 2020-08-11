@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/ModInt.hpp"
-#include "Math/dujiao_sieve.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/Math/dujiao_sieve.hpp"
 #undef call_from_test
 
 signed main() {

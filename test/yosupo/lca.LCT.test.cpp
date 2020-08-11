@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/LinkCutTree.hpp"
+#include "src/DataStructure/LinkCutTree.hpp"
 #undef call_from_test
 
 signed main() {

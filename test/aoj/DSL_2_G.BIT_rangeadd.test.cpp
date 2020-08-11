@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/BinaryIndexedTree_RangeAdd.hpp"
+#include "src/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
 #undef call_from_test
 
 signed main() {

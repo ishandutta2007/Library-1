@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/MaxFlow_Dinic.hpp"
+#include "src/Graph/MaxFlow_Dinic.hpp"
 #undef call_from_test
 
 signed main() {

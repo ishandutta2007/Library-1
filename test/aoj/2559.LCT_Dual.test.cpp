@@ -4,9 +4,9 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/LinkCutTree_MonoidDual.hpp"
-#include "DataStructure/UnionFind.hpp"
-#include "Graph/MinimumSpanningTree_Kruskal.hpp"
+#include "src/DataStructure/LinkCutTree_MonoidDual.hpp"
+#include "src/DataStructure/UnionFind.hpp"
+#include "src/Graph/MinimumSpanningTree_Kruskal.hpp"
 #undef call_from_test
 
 struct RchminQ {

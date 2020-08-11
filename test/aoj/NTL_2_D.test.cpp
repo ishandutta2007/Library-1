@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/BigInt.hpp"
+#include "src/Math/BigInt.hpp"
 #undef call_from_test
 
 signed main() {

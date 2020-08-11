@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/SegmentTree.hpp"
-#include "Math/ModInt.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
+#include "src/Math/ModInt.hpp"
 #undef call_from_test
 
 using Mint = ModInt<998244353>;

@@ -7,8 +7,8 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/Combination.hpp"
-#include "Math/ModInt.hpp"
+#include "src/Math/Combination.hpp"
+#include "src/Math/ModInt.hpp"
 #undef call_from_test
 
 template <class Modint>

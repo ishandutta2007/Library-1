@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/MatchingGeneral.hpp"
+#include "src/Graph/MatchingGeneral.hpp"
 #undef call_from_test
 
 signed main() {

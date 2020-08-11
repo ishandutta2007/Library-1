@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/MinCostFlow.hpp"
+#include "src/Graph/MinCostFlow.hpp"
 #undef call_from_test
 
 signed main() {

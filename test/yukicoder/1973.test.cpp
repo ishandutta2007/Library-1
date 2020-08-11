@@ -4,9 +4,9 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/FormalPowerSeries.hpp"
-#include "Math/ModInt.hpp"
-#include "Math/kitamasa.hpp"
+#include "src/Math/FormalPowerSeries.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/Math/kitamasa.hpp"
 #undef call_from_test
 
 signed main() {

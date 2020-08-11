@@ -6,7 +6,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/Matrix.hpp"
+#include "src/Math/Matrix.hpp"
 #undef call_from_test
 
 signed main() {

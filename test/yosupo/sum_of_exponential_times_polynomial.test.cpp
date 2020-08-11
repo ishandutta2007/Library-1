@@ -8,9 +8,9 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/Combination.hpp"
-#include "Math/ModInt.hpp"
-#include "Math/lagrange_interpolation.hpp"
+#include "src/Math/Combination.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/Math/lagrange_interpolation.hpp"
 #undef call_from_test
 
 template <class Modint>

@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/StronglyConnectedComponents.hpp"
+#include "src/Graph/StronglyConnectedComponents.hpp"
 #undef call_from_test
 
 signed main() {

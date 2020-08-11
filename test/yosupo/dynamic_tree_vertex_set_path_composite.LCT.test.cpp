@@ -5,8 +5,8 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/LinkCutTree_Monoid.hpp"
-#include "Math/ModInt.hpp"
+#include "src/DataStructure/LinkCutTree_Monoid.hpp"
+#include "src/Math/ModInt.hpp"
 #undef call_from_test
 
 using Mint = ModInt<998244353>;

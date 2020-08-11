@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/DisjointSparseTable.hpp"
-#include "String/SuffixArray.hpp"
+#include "src/DataStructure/DisjointSparseTable.hpp"
+#include "src/String/SuffixArray.hpp"
 #undef call_from_test
 
 signed main() {

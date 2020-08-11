@@ -5,8 +5,8 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/MinCostFlow.hpp"
-#include "DataStructure/RadixHeap.hpp"
+#include "src/Graph/MinCostFlow.hpp"
+#include "src/DataStructure/RadixHeap.hpp"
 #undef call_from_test
 
 signed main() {

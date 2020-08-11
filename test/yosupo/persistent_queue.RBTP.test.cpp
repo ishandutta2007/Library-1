@@ -6,8 +6,8 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/RedBlackTree.hpp"
-#include "DataStructure/RedBlackTree_Persistent.hpp"
+#include "src/DataStructure/RedBlackTree.hpp"
+#include "src/DataStructure/RedBlackTree_Persistent.hpp"
 #undef call_from_test
 
 struct Monoid {

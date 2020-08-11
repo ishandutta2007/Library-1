@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/MatchingBipartite.hpp"
+#include "src/Graph/MatchingBipartite.hpp"
 #undef call_from_test
 
 signed main() {

@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/UnionFind.hpp"
+#include "src/DataStructure/UnionFind.hpp"
 #undef call_from_test
 
 signed main() {

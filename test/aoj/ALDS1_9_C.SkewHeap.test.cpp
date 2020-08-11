@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/SkewHeap.hpp"
+#include "src/DataStructure/SkewHeap.hpp"
 #undef call_from_test
 
 signed main() {

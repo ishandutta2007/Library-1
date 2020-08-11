@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/FormalPowerSeries.hpp"
-#include "Math/ModInt.hpp"
+#include "src/Math/FormalPowerSeries.hpp"
+#include "src/Math/ModInt.hpp"
 #undef call_from_test
 
 // log(1+x^s_1)(1+x^s_2)...(1+x^s_N)=log(1+x^s_1)+log(1+x^s_2)+...log(1+x^s_N)

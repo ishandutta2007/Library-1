@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/PersistentArray.hpp"
-#include "DataStructure/UnionFind_Persistent.hpp"
+#include "src/DataStructure/PersistentArray.hpp"
+#include "src/DataStructure/UnionFind_Persistent.hpp"
 #undef call_from_test
 
 signed main() {

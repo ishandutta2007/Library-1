@@ -6,8 +6,8 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/ModInt.hpp"
-#include "Graph/Tree_DP.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/Graph/Tree_DP.hpp"
 #undef call_from_test
 
 signed main() {

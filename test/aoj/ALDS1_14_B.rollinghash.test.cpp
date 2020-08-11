@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "String/RollingHash.hpp"
+#include "src/String/RollingHash.hpp"
 #undef call_from_test
 
 signed main() {

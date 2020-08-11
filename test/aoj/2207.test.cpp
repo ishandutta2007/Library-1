@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/UnionFind_Potential.hpp"
+#include "src/DataStructure/UnionFind_Potential.hpp"
 #undef call_from_test
 
 signed main() {

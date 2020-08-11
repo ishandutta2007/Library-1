@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/TwoEdgeConnectedComponents.hpp"
-#include "DataStructure/LinkCutTree_Monoid.hpp"
+#include "src/Graph/TwoEdgeConnectedComponents.hpp"
+#include "src/DataStructure/LinkCutTree_Monoid.hpp"
 #undef call_from_test
 
 struct RmaxQ {

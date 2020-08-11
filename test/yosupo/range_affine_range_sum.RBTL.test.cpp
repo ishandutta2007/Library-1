@@ -6,8 +6,8 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/RedBlackTree_Lazy.hpp"
-#include "Math/ModInt.hpp"
+#include "src/DataStructure/RedBlackTree_Lazy.hpp"
+#include "src/Math/ModInt.hpp"
 #undef call_from_test
 
 using Mint = ModInt<998244353>;

@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/SparseTable.hpp"
+#include "src/DataStructure/SparseTable.hpp"
 #undef call_from_test
 
 signed main() {

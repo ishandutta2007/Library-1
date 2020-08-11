@@ -5,7 +5,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/SegmentTree_Dual.hpp"
+#include "src/DataStructure/SegmentTree_Dual.hpp"
 #undef call_from_test
 
 struct RupdQ {

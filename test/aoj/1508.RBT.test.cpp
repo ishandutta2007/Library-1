@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/RedBlackTree.hpp"
+#include "src/DataStructure/RedBlackTree.hpp"
 #undef call_from_test
 
 struct RminQ {

@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/SegmentTree.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 #undef call_from_test
 
 struct RsumQ {

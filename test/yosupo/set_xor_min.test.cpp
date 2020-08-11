@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/SegmentTree_Dynamic.hpp"
-#include "DataStructure/BinaryTrie.hpp"
+#include "src/DataStructure/SegmentTree_Dynamic.hpp"
+#include "src/DataStructure/BinaryTrie.hpp"
 #undef call_from_test
 
 signed main() {

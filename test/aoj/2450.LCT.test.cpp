@@ -6,7 +6,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/LinkCutTree_MonoidLazy.hpp"
+#include "src/DataStructure/LinkCutTree_MonoidLazy.hpp"
 #undef call_from_test
 
 struct RupdQ_RmaxsumQ {

@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "String/SuffixArray.hpp"
+#include "src/String/SuffixArray.hpp"
 #undef call_from_test
 
 signed main() {

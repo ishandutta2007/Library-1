@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/BinaryIndexedTree.hpp"
+#include "src/DataStructure/BinaryIndexedTree.hpp"
 #undef call_from_test
 
 signed main() {

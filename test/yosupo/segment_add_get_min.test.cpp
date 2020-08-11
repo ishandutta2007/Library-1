@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/LiChaoTree.hpp"
+#include "src/DataStructure/LiChaoTree.hpp"
 #undef call_from_test
 
 signed main() {

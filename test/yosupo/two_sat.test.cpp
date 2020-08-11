@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/StronglyConnectedComponents.hpp"
-#include "Math/TwoSatisfiability.hpp"
+#include "src/Graph/StronglyConnectedComponents.hpp"
+#include "src/Math/TwoSatisfiability.hpp"
 #undef call_from_test
 
 signed main() {

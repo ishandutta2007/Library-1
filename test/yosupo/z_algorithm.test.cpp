@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "String/z_algorithm.hpp"
+#include "src/String/z_algorithm.hpp"
 #undef call_from_test
 
 signed main() {

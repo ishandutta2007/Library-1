@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Graph/TwoEdgeConnectedComponents.hpp"
+#include "src/Graph/TwoEdgeConnectedComponents.hpp"
 #undef call_from_test
 
 signed main() {

@@ -1,16 +1,16 @@
 /**
  * @title ラグランジュ補間
  * @category 数学
- * @brief x=0,1,..,N-1とy=f(0),f(1),...,f(N-1)が与えられたときのf(t)を計算
- * @brief O(N)
+ *  x=0,1,..,N-1とy=f(0),f(1),...,f(N-1)が与えられたときのf(t)を計算
+ *  O(N)
  */
+
+// verify用:http://codeforces.com/contest/622/problem/F
 
 #ifndef call_from_test
 #include <bits/stdc++.h>
 using namespace std;
 #endif
-
-// verify用:http://codeforces.com/contest/622/problem/F
 
 template <typename K>
 K lagrange_interpolation(vector<K> &y, K t) {

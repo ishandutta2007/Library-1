@@ -1,7 +1,7 @@
 /**
  * @title 多倍長整数
  * @category 数学
- * @brief javaやpythonの多倍長整数を使うべき
+ * javaやpythonの多倍長整数を使うべき
  */
 
 #ifndef call_from_test

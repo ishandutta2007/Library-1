@@ -1,8 +1,8 @@
 /**
  * @title 二重辺連結成分分解
  * @category グラフ
- * @brief O(V + E)
- * @brief 返り値:{二重辺連結成分,ノードの属する成分の添字}
+ *  O(V + E)
+ *  返り値:{二重辺連結成分,ノードの属する成分の添字}
  */
 
 #ifndef call_from_test

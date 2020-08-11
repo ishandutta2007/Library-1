@@ -1,8 +1,8 @@
 /**
  * @title 最長共通接頭辞(Z-Algorithm)
  * @category 文字列
- * @brief $prefix_i$ は、$S$ と $S.substr(i)$ の LCP(longest common prefix)
- * @brief O(|S|)
+ *  $prefix_i$ は、$S$ と $S.substr(i)$ の LCP(longest common prefix)
+ *  O(|S|)
  */
 
 #ifndef call_from_test

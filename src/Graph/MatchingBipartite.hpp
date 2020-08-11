@@ -1,9 +1,9 @@
 /**
  * @title 最大マッチング(二部グラフ)
  * @category グラフ
- * @brief  O(VE)
- * @brief 速い(O(E√V)並?)
- * @brief 返り値:{マッチング数,{左の相方(いないなら-1),右の相方(いないなら-1)}}
+ *   O(VE)
+ *  速い(O(E√V)並?)
+ *  返り値:{マッチング数,{左の相方(いないなら-1),右の相方(いないなら-1)}}
  * @see https://snuke.hatenablog.com/entry/2019/05/07/013609
  */
 // 被覆問題との関係 https://qiita.com/drken/items/7f98315b56c95a6181a4
@@ -22,34 +22,25 @@ struct MatchingBipartite {
     vector<int> pre(n, -1), root(n, -1);
     vector<int> leftmate(n, -1), rightmate(m, -1);
     int res = 0;
-    bool update = true;
-    while (update) {
+    for (bool update = true; update;) {
       update = false;
       queue<int> que;
       for (int i = 0; i < n; ++i)
-        if (leftmate[i] == -1) {
-          root[i] = i;
-          que.push(i);
-        }
+        if (leftmate[i] == -1) que.push(root[i] = i);
       while (!que.empty()) {
         int v = que.front();
         que.pop();
         if (leftmate[root[v]] != -1) continue;
         for (int u : adj[v]) {
           if (rightmate[u] == -1) {
-            while (u != -1) {
-              rightmate[u] = v;
-              swap(leftmate[v], u);
-              v = pre[v];
-            }
+            for (; u != -1; v = pre[v]) rightmate[u] = v, swap(leftmate[v], u);
             update = true;
             res++;
             break;
           }
           u = rightmate[u];
           if (pre[u] != -1) continue;
-          pre[u] = v;
-          root[u] = root[v];
+          root[u] = root[pre[u] = v];
           que.push(u);
         }
       }

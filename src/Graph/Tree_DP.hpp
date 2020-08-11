@@ -1,8 +1,8 @@
 /**
  * @title 木DP
  * @category グラフ
- * @brief run(root):木dp
- * @brief run_rerooting():全方位木dp
+ *  run(root):木dp
+ *  run_rerooting():全方位木dp
  * @see https://ei1333.hateblo.jp/entry/2018/12/21/004022
  */
 

@@ -1,8 +1,8 @@
 /**
  * @title 2-SAT
  * @category 数学
- * @brief 強連結成分分解を用いる
- * @brief solve():真偽値の割当を返す(充足不可能なら空)
+ *  強連結成分分解を用いる
+ *  solve():真偽値の割当を返す(充足不可能なら空)
  */
 
 #ifndef call_from_test

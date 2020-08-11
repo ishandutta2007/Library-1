@@ -1,8 +1,8 @@
 /**
  * @title 行列(mod2)
  * @category 数学
- * @brief Gauss_Jordan(A,B) 拡大係数行列に対するガウスジョルダン法
- * @brief linear_equations 返り値 {解のうちの一つ,解空間の基底ベクトル}
+ *  Gauss_Jordan(A,B) 拡大係数行列に対するガウスジョルダン法
+ *  linear_equations 返り値 {解のうちの一つ,解空間の基底ベクトル}
  */
 // verify用:
 // https://atcoder.jp/contests/bitflyer2018-final-open/tasks/bitflyer2018_final_d

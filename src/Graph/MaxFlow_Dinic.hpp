@@ -1,9 +1,9 @@
 /**
  * @title 最大流(Dinic)
  * @category グラフ
- * @brief  O(V^2 E)
- * @brief link: s->tフローで辺(src,dst)の容量を1増やしたときの最大流の変化
- * @brief cut: s->tフローで辺(src,dst)の容量を1減らしたときの最大流の変化
+ *   O(V^2 E)
+ *  link: s->tフローで辺(src,dst)の容量を1増やしたときの最大流の変化
+ *  cut: s->tフローで辺(src,dst)の容量を1減らしたときの最大流の変化
  */
 
 // 最小流量制限付き最大流 https://snuke.hatenablog.com/entry/2016/07/10/043918

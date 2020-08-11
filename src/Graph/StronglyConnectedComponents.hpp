@@ -1,9 +1,9 @@
 /**
  * @title 強連結成分分解
  * @category グラフ
- * @brief Gabow
- * @brief O(V + E)
- * @brief 返り値:{強連結成分(トポロジカルソート),ノードの属する成分の添字}
+ *  Gabow
+ *  O(V + E)
+ *  返り値:{強連結成分(トポロジカルソート),ノードの属する成分の添字}
  */
 
 #ifndef call_from_test

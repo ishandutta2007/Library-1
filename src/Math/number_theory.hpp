@@ -1,9 +1,9 @@
 /**
  * @title 数論
  * @category 数学
- * @brief 約数や倍数についてのゼータ変換やメビウス変換
- * @brief をもとに数論的関数やgcd畳み込みなどを実現
- * @brief O(N log log N)
+ *  約数や倍数についてのゼータ変換やメビウス変換
+ *  をもとに数論的関数やgcd畳み込みなどを実現
+ *  O(N log log N)
  * @see https://qiita.com/convexineq/items/afc84dfb9ee4ec4a67d5
  * @see https://en.wikipedia.org/wiki/Dirichlet_convolution
  */

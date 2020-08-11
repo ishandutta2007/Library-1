@@ -1,8 +1,8 @@
 /**
  * @title 最小全域木(Kruskal)
  * @category グラフ
- * @brief O(E log V)
- * @brief 返り値:{全域木のコスト総和,全域木に使用する辺}
+ *  O(E log V)
+ *  返り値:{全域木のコスト総和,全域木に使用する辺}
  */
 
 #ifndef call_from_test

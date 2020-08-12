@@ -1,0 +1,38 @@
+#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3034"
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define call_from_test
+#include "src/Geometry/_geometry_temp.hpp"
+#include "src/Geometry/min_enclosing_circle.hpp"
+#undef call_from_test
+
+signed main() {
+  cin.tie(0);
+  ios::sync_with_stdio(0);
+  using namespace geometry;
+  int N, M;
+  cin >> N >> M;
+  vector<Point> ps(N);
+  for (int i = 0; i < N; i++) cin >> ps[i];
+  Real dp[1 << N][M + 1];
+  Real min_r[1 << N];
+  for (int S = 1; S < (1 << N); S++) {
+    fill(dp[S], dp[S] + M + 1, 1e10);
+    vector<Point> qs;
+    for (int i = 0; i < N; i++)
+      if ((S >> i) & 1) qs.push_back(ps[i]);
+    min_r[S] = min_enclosing_circle(qs).r;
+  }
+  fill(dp[0], dp[0] + M + 1, 0);
+  for (int S = 1; S < (1 << N); S++) {
+    for (int j = 1; j <= M; j++) {
+      for (int T = S; T; T = (T - 1) & S) {
+        dp[S][j] = min(dp[S][j], max(dp[S ^ T][j - 1], min_r[T]));
+      }
+    }
+  }
+  cout << fixed << setprecision(10) << dp[(1 << N) - 1][M] << endl;
+  return 0;
+}

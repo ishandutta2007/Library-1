@@ -10,7 +10,7 @@
 using namespace std;
 
 #define call_from_test
-#include "Math/FormalPowerSeries.hpp"
+#include "src/Math/FormalPowerSeries.hpp"
 #undef call_from_test
 #endif
 

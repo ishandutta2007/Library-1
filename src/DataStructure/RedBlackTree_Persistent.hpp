@@ -1,7 +1,7 @@
 /**
  * @title 赤黒木(永続)
  * @category データ構造
- * @brief O(logN)
+ * O(logN)
  */
 // verify用:
 // https://atcoder.jp/contests/joisc2012/tasks/joisc2012_copypaste
@@ -11,7 +11,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/RedBlackTree.hpp"
+#include "src/DataStructure/RedBlackTree.hpp"
 #undef call_from_test
 #endif
 

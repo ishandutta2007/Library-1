@@ -1,8 +1,8 @@
 /**
  * @title Binary-Indexed-Tree
  * @category データ構造
- * @brief O(logN)
- * @brief 0-indexed
+ *  O(logN)
+ *  0-indexed
  */
 
 #ifndef call_from_test

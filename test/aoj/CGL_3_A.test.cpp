@@ -16,6 +16,6 @@ signed main() {
   cin >> n;
   Polygon g(n);
   for (int i = 0; i < n; i++) cin >> g[i];
-  cout << fixed << setprecision(10) << g.area() << endl;
+  cout << fixed << setprecision(12) << g.area() << endl;
   return 0;
 }

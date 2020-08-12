@@ -16,6 +16,6 @@ signed main() {
   cin >> n;
   Convex g(n);
   for (int i = 0; i < n; i++) cin >> g[i];
-  cout << fixed << setprecision(10) << g.diameter() << endl;
+  cout << fixed << setprecision(12) << g.diameter() << endl;
   return 0;
 }

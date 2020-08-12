@@ -21,7 +21,7 @@ signed main() {
   while (q--) {
     Line l;
     cin >> l.p1 >> l.p2;
-    cout << fixed << setprecision(10) << g.cut(l).area() << endl;
+    cout << fixed << setprecision(12) << g.cut(l).area() << endl;
   }
   return 0;
 }

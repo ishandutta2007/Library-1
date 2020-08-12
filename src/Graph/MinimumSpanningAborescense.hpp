@@ -11,8 +11,8 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/UnionFind.hpp"
-#include "DataStructure/SkewHeap.hpp"
+#include "src/DataStructure/UnionFind.hpp"
+#include "src/DataStructure/SkewHeap.hpp"
 #undef call_from_test
 #endif
 

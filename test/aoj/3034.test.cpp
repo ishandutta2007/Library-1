@@ -33,6 +33,6 @@ signed main() {
       }
     }
   }
-  cout << fixed << setprecision(10) << dp[(1 << N) - 1][M] << endl;
+  cout << fixed << setprecision(12) << dp[(1 << N) - 1][M] << endl;
   return 0;
 }

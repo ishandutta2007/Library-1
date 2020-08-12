@@ -14,6 +14,6 @@ signed main() {
   using namespace geometry;
   Segment s, t;
   cin >> s.p1 >> s.p2 >> t.p1 >> t.p2;
-  cout << fixed << setprecision(10) << dist(s, t) << endl;
+  cout << fixed << setprecision(12) << dist(s, t) << endl;
   return 0;
 }

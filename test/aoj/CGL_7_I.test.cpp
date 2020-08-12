@@ -16,6 +16,6 @@ signed main() {
   Circle c, d;
   cin >> c.o >> c.r;
   cin >> d.o >> d.r;
-  cout << intersection_area(c, d) << endl;
+  cout << fixed << setprecision(12) << intersection_area(c, d) << endl;
   return 0;
 }

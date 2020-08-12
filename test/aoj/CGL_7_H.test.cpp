@@ -19,6 +19,6 @@ signed main() {
   c.o = {0, 0};
   Polygon g(n);
   for (int i = 0; i < n; i++) cin >> g[i];
-  cout << intersection_area(c, g) << endl;
+  cout << fixed << setprecision(12) << intersection_area(c, g) << endl;
   return 0;
 }

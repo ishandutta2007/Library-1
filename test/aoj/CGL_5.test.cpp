@@ -17,6 +17,6 @@ signed main() {
   vector<Point> ps(n);
   for (int i = 0; i < n; i++) cin >> ps[i];
   auto pp = closest_pair(ps);
-  cout << fixed << setprecision(10) << dist(pp.first, pp.second) << endl;
+  cout << fixed << setprecision(12) << dist(pp.first, pp.second) << endl;
   return 0;
 }

@@ -61,9 +61,9 @@ Point operator/(Point p, Real a) { return p /= a; }
 Real dot(Point p, Point q) { return p.x * q.x + p.y * q.y; }
 Real cross(Point p, Point q) { return p.x * q.y - p.y * q.x; }  // left turn > 0
 Real norm2(Point p) { return dot(p, p); }
-Real abs(Point p) { return sqrt(norm2(p)); }
+Real norm(Point p) { return sqrt(norm2(p)); }
 Real arg(Point p) { return atan2(p.y, p.x); }
-Real dist(Point p, Point q) { return abs(p - q); }
+Real dist(Point p, Point q) { return norm(p - q); }
 Real arg(Point p, Point q) { return atan2(cross(p, q), dot(p, q)); }
 Point orth(Point p) { return {-p.y, p.x}; }
 Point rotate(Real theta, Point p) {

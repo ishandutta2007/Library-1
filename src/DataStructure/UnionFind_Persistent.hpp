@@ -1,7 +1,7 @@
 /**
  * @title Union-Find(完全永続)
  * @category データ構造
- * @brief 経路圧縮なし O(logN)
+ * 経路圧縮なし O(logN)
  */
 // verify用:
 // https://atcoder.jp/contests/code-thanks-festival-2017/tasks/code_thanks_festival_2017_h
@@ -11,7 +11,7 @@
 using namespace std;
 
 #define call_from_test
-#include "DataStructure/PersistentArray.hpp"
+#include "src/DataStructure/PersistentArray.hpp"
 #undef call_from_test
 #endif
 

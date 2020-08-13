@@ -14,6 +14,7 @@ using namespace std;
 #endif
 
 namespace geometry {
+
 Circle min_enclosing_circle(vector<Point> ps) {
   assert(ps.size());
   if (ps.size() == 1) return {ps[0], 0.};
@@ -34,4 +35,5 @@ Circle min_enclosing_circle(vector<Point> ps) {
     }
   return c;
 }
+
 }  // namespace geometry

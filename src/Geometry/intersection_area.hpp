@@ -13,12 +13,14 @@ using namespace std;
 #endif
 
 namespace geometry {
+
 Real intersection_area(Circle c, Circle d) {
   if (c.r < d.r) swap(c, d);
-  auto A = [&](Real r, Real h) {
+  auto A = [&](long double r, long double h) {
     return r * r * acos(h / r) - h * sqrt(r * r - h * h);
   };
-  auto l = dist(c.o, d.o), a = (l * l + c.r * c.r - d.r * d.r) / (2 * l);
+  Real l = dist(c.o, d.o);
+  Real a = (l * l + c.r * c.r - d.r * d.r) / (2 * l);
   if (sgn(l - c.r - d.r) >= 0) return 0;  // far away
   if (sgn(l - c.r + d.r) <= 0) return PI * d.r * d.r;
   if (sgn(l - c.r) >= 0)
@@ -44,4 +46,5 @@ Real intersection_area(Polygon g, Circle c) {
   return sum;
 }
 Real intersection_area(Circle c, Polygon g) { return intersection_area(g, c); }
+
 }  // namespace geometry

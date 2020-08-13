@@ -16,7 +16,7 @@ namespace geometry {
 
 Real intersection_area(Circle c, Circle d) {
   if (c.r < d.r) swap(c, d);
-  auto A = [&](long double r, long double h) {
+  auto A = [&](Real r, Real h) {
     return r * r * acos(h / r) - h * sqrt(r * r - h * h);
   };
   Real l = dist(c.o, d.o);
@@ -35,7 +35,7 @@ Real intersection_area(Polygon g, Circle c) {
     Real a = dot(d, p) / dot(d, d), b = (dot(p, p) - c.r * c.r) / dot(d, d);
     Real det = a * a - b;
     if (det <= 0) return arg(p, q) * c.r * c.r / 2;
-    Real s = max(0., -a - sqrt(det)), t = min(1., -a + sqrt(det));
+    Real s = max((Real)0., -a - sqrt(det)), t = min((Real)1., -a + sqrt(det));
     if (t < 0 || 1 <= s) return c.r * c.r * arg(p, q) / 2;
     Point u = p + s * d, v = p + t * d;
     return arg(p, u) * c.r * c.r / 2 + cross(u, v) / 2
@@ -46,5 +46,4 @@ Real intersection_area(Polygon g, Circle c) {
   return sum;
 }
 Real intersection_area(Circle c, Polygon g) { return intersection_area(g, c); }
-
 }  // namespace geometry

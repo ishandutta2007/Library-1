@@ -16,9 +16,9 @@ namespace geometry {
 pair<Point, Point> closest_pair(vector<Point> ps) {
   sort(ps.begin(), ps.end(), [](Point p, Point q) { return p.y < q.y; });
   Point u = ps[0], v = ps[1];
-  Real best = dist(u, v);
+  Real best = norm2(u - v);
   auto update = [&](Point p, Point q) {
-    Real dis = dist(p, q);
+    Real dis = norm2(p - q);
     if (best > dis) best = dis, u = p, v = q;
   };
   function<void(int, int)> rec = [&](int l, int r) {

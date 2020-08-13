@@ -97,7 +97,8 @@ struct polar_angle {
     q = q - o;
     if (quad(p) != quad(q)) return s * quad(p) < s * quad(q);
     if (cross(p, q)) return s * cross(p, q) > 0;
-    return norm2(p) < norm2(q);  // closer first
+    // return norm2(p) < norm2(q);  // closer first
+    return p < q;
   }
 };
 
@@ -217,11 +218,11 @@ struct Circle {
   }
   vector<Line> tangent(Point p) {
     Point u = p - o, v = orth(u);
-    Real dis = norm2(u) - r * r;
-    if (sgn(dis) < 0) return {};
-    if (sgn(dis) == 0) return {{p, p + v}};
+    Real len = norm2(u) - r * r;
+    if (sgn(len) < 0) return {};
+    if (sgn(len) == 0) return {{p, p + v}};
     u *= r * r / norm2(u);
-    v *= r * sqrt(dis) / norm2(v);
+    v *= r * sqrt(len) / norm2(v);
     return {{p, o + u - v}, {p, o + u + v}};
   }
 };
@@ -238,13 +239,13 @@ Circle circumscribed_circle(Point A, Point B, Point C) {
   return {o, dist(A, o)};
 }
 
-vector<Line> tangent(Circle c, Circle d) {
-  Real dis = dist(c.o, d.o);
-  if (sgn(dis) == 0) return {};  // same origin
-  Point u = (d.o - c.o) / dis, v = orth(u);
+vector<Line> common_tangent(Circle c, Circle d) {
+  Real len = dist(c.o, d.o);
+  if (sgn(len) == 0) return {};  // same origin
+  Point u = (d.o - c.o) / len, v = orth(u);
   vector<Line> ls;
   for (int s = +1; s >= -1; s -= 2) {
-    Real h = (c.r + s * d.r) / dis;
+    Real h = (c.r + s * d.r) / len;
     if (sgn(1 - h * h) == 0) {  // touch inner/outer
       ls.emplace_back(Line{c.o + h * c.r * u, c.o + h * c.r * (u + v)});
     } else if (sgn(1 - h * h) > 0) {  // properly intersect
@@ -323,27 +324,21 @@ struct Polygon : vector<Point> {
 struct Convex : Polygon {
   using Polygon::Polygon;
   pair<Point, Point> farthest() {
-    if (this->size() == 2) return {(*this)[0], (*this)[1]};
-    int i = 0, j = 0;
-    for (int k = 0; k < (int)this->size(); k++) {
-      if ((*this)[i] < (*this)[k]) i = k;
-      if ((*this)[k] <= (*this)[j]) j = k;
-    }
-    Real max_dist = 0;
-    Point p, q;
-    for (int si = i, sj = j; i != sj || j != si;) {
-      if (max_dist < norm2((*this)[i] - (*this)[j])) {
-        max_dist = norm2((*this)[i] - (*this)[j]);
-        p = (*this)[i];
-        q = (*this)[j];
+    int u = 0, v = 1;
+    Real best = -1;
+    for (int i = 0, j = 1; i < (int)this->size(); ++i) {
+      while (1) {
+        int k = next(j);
+        Real len = norm2((*this)[j] - (*this)[i]);
+        if (sgn(len - norm2((*this)[k] - (*this)[i])) <= 0)
+          j = k;
+        else {
+          if (best < len) best = len, u = i, v = j;
+          break;
+        }
       }
-      int ni = next(i), nj = next(j);
-      if (cross((*this)[ni] - (*this)[i], (*this)[nj] - (*this)[j]) <= 0)
-        i = ni;
-      else
-        j = nj;
     }
-    return {p, q};
+    return make_pair((*this)[u], (*this)[v]);
   }
   Real diameter() {
     Point p, q;

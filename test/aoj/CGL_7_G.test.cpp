@@ -17,7 +17,7 @@ signed main() {
   Circle c, d;
   cin >> c.o >> c.r;
   cin >> d.o >> d.r;
-  auto ls = tangent(c, d);
+  auto ls = common_tangent(c, d);
   vector<Point> ps;
   for (Line l : ls) ps.push_back(l.p1);
   sort(ps.begin(), ps.end());

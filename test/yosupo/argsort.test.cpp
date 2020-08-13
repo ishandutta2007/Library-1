@@ -1,5 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sort_points_by_argument"
 
+#define ERROR "0.00000001"
+
 #include <bits/stdc++.h>
 using namespace std;
 

@@ -11,7 +11,7 @@ using namespace std;
 namespace geometry {
 using Real = double;
 int sgn(Real x) {
-  static constexpr Real EPS = 1e-8;
+  static constexpr Real EPS = 1e-10;
   return x < -EPS ? -1 : x > +EPS ? 1 : 0;
 }
 const Real PI = acos(-1.0);
@@ -246,8 +246,8 @@ vector<Line> tangent(Circle c, Circle d) {
       ls.emplace_back(Line{c.o + c.r * u, c.o + c.r * (u + v)});
     } else if (sgn(1 - h * h) > 0) {  // properly intersect
       Point uu = h * u, vv = sqrt(1 - h * h) * v;
-      ls.emplace_back(Line{c.o + c.r * (uu + vv), d.o - d.r * (uu + vv) * s});
-      ls.emplace_back(Line{c.o + c.r * (uu - vv), d.o - d.r * (uu - vv) * s});
+      ls.emplace_back(Line{d.o - d.r * (uu + vv) * s, c.o + c.r * (uu + vv)});
+      ls.emplace_back(Line{d.o - d.r * (uu - vv) * s, c.o + c.r * (uu - vv)});
     }
   }
   return ls;

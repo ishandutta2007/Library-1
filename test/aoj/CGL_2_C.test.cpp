@@ -14,8 +14,12 @@ signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   using namespace geometry;
-  Segment s, t;
-  cin >> s.p1 >> s.p2 >> t.p1 >> t.p2;
-  cout << cross_points(s, t)[0] << endl;
+  int q;
+  cin >> q;
+  while (q--) {
+    Segment s, t;
+    cin >> s.p1 >> s.p2 >> t.p1 >> t.p2;
+    cout << cross_points(s, t)[0] << endl;
+  }
   return 0;
 }

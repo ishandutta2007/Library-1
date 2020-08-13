@@ -14,6 +14,7 @@ using namespace std;
 #endif
 
 namespace geometry {
+
 pair<int, Point> max_circle_cover(vector<Point> ps, Real r) {
   const Real dx[4] = {1, -1, -1, 1}, dy[4] = {1, 1, -1, -1};
   Point best_p;
@@ -49,4 +50,5 @@ pair<int, Point> max_circle_cover(vector<Point> ps, Real r) {
   rec({0, 0}, w, ps);
   return {best, best_p};
 }
+
 }  // namespace geometry

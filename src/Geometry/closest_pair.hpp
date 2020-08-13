@@ -13,6 +13,7 @@ using namespace std;
 #endif
 
 namespace geometry {
+
 pair<Point, Point> closest_pair(vector<Point> ps) {
   sort(ps.begin(), ps.end(), [](Point p, Point q) { return p.y < q.y; });
   Point u = ps[0], v = ps[1];
@@ -50,4 +51,5 @@ pair<Point, Point> closest_pair(vector<Point> ps) {
 pair<Point, Point> farthest_pair(vector<Point> ps) {
   return convex_hull(ps).farthest();
 }
+
 }  // namespace geometry

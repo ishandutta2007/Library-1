@@ -23,6 +23,7 @@ signed main() {
   int st = 0;
   for (int i = 0; i < (int)g.size(); i++)
     if (g[st].y > g[i].y || (g[st].y == g[i].y && g[st].x > g[i].x)) st = i;
-  for (int i = 0; i < (int)g.size(); i++) cout << g[st + i] << endl;
+  for (int i = 0, j = st; i < (int)g.size(); i++, j = g.next(j))
+    cout << g[j] << endl;
   return 0;
 }

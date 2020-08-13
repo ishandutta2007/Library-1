@@ -17,6 +17,6 @@ signed main() {
   Point A, B, C;
   cin >> A >> B >> C;
   Circle c = inscribed_circle(A, B, C);
-  cout << c.o << c.r << endl;
+  cout << c.o << " " << c.r << endl;
   return 0;
 }

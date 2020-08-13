@@ -16,6 +16,6 @@ signed main() {
   vector<Point> ps(N);
   for (int i = 0; i < N; i++) cin >> ps[i];
   sort(ps.begin(), ps.end(), polar_angle());
-  for (Point p : ps) cout << p.x << " " << p.y << endl;
+  for (Point p : ps) cout << (long long)p.x << " " << (long long)p.y << endl;
   return 0;
 }

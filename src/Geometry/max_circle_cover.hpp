@@ -1,6 +1,7 @@
 /**
  * @title 半径固定の円の最大被覆点数
  * @category 幾何
+ * ４分木
  */
 
 #ifndef call_from_test

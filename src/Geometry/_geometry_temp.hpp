@@ -10,7 +10,7 @@ using namespace std;
 
 namespace geometry {
 
-using Real = double;
+using Real = long double;
 int sgn(Real x) {
   static constexpr Real EPS = 1e-8;
   return x < -EPS ? -1 : x > +EPS ? 1 : 0;
@@ -63,11 +63,9 @@ Real dot(Point p, Point q) { return p.x * q.x + p.y * q.y; }
 Real cross(Point p, Point q) { return p.x * q.y - p.y * q.x; }  // left turn > 0
 Real norm2(Point p) { return dot(p, p); }
 Real norm(Point p) { return sqrt(norm2(p)); }
-Real arg(Point p) { return atan2((long double)p.y, (long double)p.x); }
+Real arg(Point p) { return atan2(p.y, p.x); }
 Real dist(Point p, Point q) { return norm(p - q); }
-Real arg(Point p, Point q) {
-  return atan2((long double)cross(p, q), (long double)dot(p, q));
-}
+Real arg(Point p, Point q) { return atan2(cross(p, q), dot(p, q)); }
 Point orth(Point p) { return {-p.y, p.x}; }
 Point rotate(Real theta, Point p) {
   return {cos(theta) * p.x - sin(theta) * p.y,
@@ -99,8 +97,7 @@ struct polar_angle {
     q = q - o;
     if (quad(p) != quad(q)) return s * quad(p) < s * quad(q);
     if (cross(p, q)) return s * cross(p, q) > 0;
-    // return norm2(p) < norm2(q);  // closer first
-    return p < q;
+    return norm2(p) < norm2(q);  // closer first
   }
 };
 

@@ -11,7 +11,7 @@ using namespace std;
 namespace geometry {
 using Real = double;
 int sgn(Real x) {
-  static constexpr Real EPS = 1e-10;
+  static constexpr Real EPS = 1e-8;
   return x < -EPS ? -1 : x > +EPS ? 1 : 0;
 }
 const Real PI = acos(-1.0);
@@ -329,8 +329,8 @@ struct Convex : Polygon {
     Real max_dist = 0;
     Point p, q;
     for (int si = i, sj = j; i != sj || j != si;) {
-      if (max_dist < dist((*this)[i], (*this)[j])) {
-        max_dist = dist((*this)[i], (*this)[j]);
+      if (max_dist < norm2((*this)[i] - (*this)[j])) {
+        max_dist = norm2((*this)[i] - (*this)[j]);
         p = (*this)[i];
         q = (*this)[j];
       }

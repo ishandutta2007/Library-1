@@ -1,5 +1,7 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3034"
 
+#define ERROR "0.00000001"
+
 #include <bits/stdc++.h>
 using namespace std;
 

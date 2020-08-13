@@ -246,7 +246,7 @@ vector<Line> tangent(Circle c, Circle d) {
   for (int s = +1; s >= -1; s -= 2) {
     Real h = (c.r + s * d.r) / dis;
     if (sgn(1 - h * h) == 0) {  // touch inner/outer
-      ls.emplace_back(Line{c.o + c.r * u, c.o + c.r * (u + v)});
+      ls.emplace_back(Line{c.o + h * c.r * u, c.o + h * c.r * (u + v)});
     } else if (sgn(1 - h * h) > 0) {  // properly intersect
       Point uu = h * u, vv = sqrt(1 - h * h) * v;
       ls.emplace_back(Line{c.o + c.r * (uu + vv), d.o - d.r * (uu + vv) * s});

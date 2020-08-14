@@ -42,7 +42,8 @@ Real intersection_area(Polygon g, Circle c) {
            + arg(v, q) * c.r * c.r / 2;
   };
   Real sum = 0.0;
-  for (int i = 0; i < g.size(); ++i) sum += tri(g[i] - c.o, g[g.next(i)] - c.o);
+  for (int i = 0; i < (int)g.size(); ++i)
+    sum += tri(g[i] - c.o, g[g.next(i)] - c.o);
   return sum;
 }
 Real intersection_area(Circle c, Polygon g) { return intersection_area(g, c); }

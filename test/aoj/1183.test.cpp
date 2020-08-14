@@ -13,6 +13,7 @@ signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   using namespace geometry;
+  cout << fixed << setprecision(12);
   for (int N; cin >> N && N;) {
     vector<Circle> cs(N);
     for (int i = 0; i < N; i++) cin >> cs[i].o >> cs[i].r;
@@ -37,7 +38,7 @@ signed main() {
           isok &= cross_points(ss[k], s).size() > 0;
         if (isok) dp[j] = min(dp[j], dp[i] + dist(ps[i], ps[j]));
       }
-    cout << fixed << setprecision(12) << dp[2 * N - 1] << endl;
+    cout << dp[2 * N - 1] << endl;
   }
   return 0;
 }

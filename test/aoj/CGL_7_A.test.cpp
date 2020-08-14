@@ -15,6 +15,6 @@ signed main() {
   Circle c, d;
   cin >> c.o >> c.r;
   cin >> d.o >> d.r;
-  cout << tangent(c, d).size() << endl;
+  cout << common_tangent(c, d).size() << endl;
   return 0;
 }

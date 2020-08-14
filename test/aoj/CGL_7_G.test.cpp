@@ -14,6 +14,7 @@ signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   using namespace geometry;
+  cout << fixed << setprecision(12);
   Circle c, d;
   cin >> c.o >> c.r;
   cin >> d.o >> d.r;

@@ -14,6 +14,7 @@ signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   using namespace geometry;
+  cout << fixed << setprecision(12);
   int q;
   cin >> q;
   while (q--) {

@@ -14,6 +14,7 @@ signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   using namespace geometry;
+  cout << fixed << setprecision(12);
   int n;
   cin >> n;
   Convex g(n);
@@ -23,7 +24,7 @@ signed main() {
   while (q--) {
     Line l;
     cin >> l.p1 >> l.p2;
-    cout << fixed << setprecision(12) << g.cut(l).area() << endl;
+    cout << g.cut(l).area() << endl;
   }
   return 0;
 }

@@ -21,6 +21,6 @@ signed main() {
   Point p1 = ps[0];
   Point p2 = ps.size() > 1 ? ps[1] : ps[0];
   if (p2 < p1) swap(p1, p2);
-  cout << p1 << " " << p2 << endl;
+  cout << fixed << setprecision(12) << p1 << " " << p2 << endl;
   return 0;
 }

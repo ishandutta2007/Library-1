@@ -14,6 +14,7 @@ signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   using namespace geometry;
+  cout << fixed << setprecision(12);
   int n;
   cin >> n;
   vector<Point> ps(n);

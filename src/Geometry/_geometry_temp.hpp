@@ -78,7 +78,7 @@ istream &operator>>(istream &is, Point &p) {
   return is;
 }
 ostream &operator<<(ostream &os, Point p) {
-  os << fixed << setprecision(12) << p.x << " " << p.y;
+  os << p.x << " " << p.y;
   return os;
 }
 // usage: sort(ps.begin(),ps.end(), polar_angle(origin, direction));
@@ -122,6 +122,10 @@ struct Line {
     return !sgn(cross(p1 - p2, l.p1 - l.p2)) && !sgn(cross(p1 - p2, l.p1 - p1));
   }
   bool is_on(Point p) { return !sgn(cross(p1 - p, p2 - p)); }
+  tuple<Real, Real, Real> coef() {  // return  A,B,C of Ax+By=C
+    auto n = orth(p2 - p1);
+    return make_tuple(n.x, n.y, dot(n, p1));
+  }
   Point project(Point p) {
     Point v = p2 - p1;
     return p1 + dot(p - p1, v) / dot(v, v) * v;
@@ -351,7 +355,7 @@ struct Convex : Polygon {
     Convex g;
     for (int i = 0; i < (int)this->size(); i++) {
       Point p = (*this)[i], q = (*this)[next(i)];
-      if (sgn(cross(l.p1 - p, l.p2 - p) >= 0)) g.push_back(p);
+      if (sgn(cross(l.p1 - p, l.p2 - p)) >= 0) g.push_back(p);
       if (sgn(cross(l.p1 - p, l.p2 - p)) * sgn(cross(l.p1 - q, l.p2 - q)) < 0) {
         Real a = cross(q - p, l.p2 - l.p1);
         Real b = cross(l.p1 - p, l.p2 - l.p1);
@@ -373,5 +377,40 @@ Convex convex_hull(vector<Point> ps) {
   ch.resize(k - 1);
   return ch;
 }
+
+//-----------------------------------------------------------------------------
+// visualizer
+// use https://csacademy.com/app/geometry_widget/
+//-----------------------------------------------------------------------------
+struct Visualizer {
+  ofstream ofs;
+  Visualizer(string s = "visualize.txt") : ofs(s) {
+    ofs << fixed << setprecision(10);
+  }
+  Visualizer &operator<<(Point p) {
+    ofs << p << endl;
+    return *this;
+  }
+  Visualizer &operator<<(Line l) {
+    Real A, B, C;
+    tie(A, B, C) = l.coef();
+    ofs << "Line " << A << " " << B << " " << C << endl;
+    return *this;
+  }
+  Visualizer &operator<<(Segment s) {
+    ofs << "Segment " << s.p1 << " " << s.p2 << endl;
+    return *this;
+  }
+  Visualizer &operator<<(Circle c) {
+    ofs << "Circle " << c.o << " " << c.r << endl;
+    return *this;
+  }
+  Visualizer &operator<<(Polygon g) {
+    ofs << "Polygon" << endl;
+    for (Point p : g) ofs << p << endl;
+    ofs << "..." << endl;
+    return *this;
+  }
+};
 
 }  // namespace geometry

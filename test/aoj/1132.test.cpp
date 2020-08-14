@@ -4,7 +4,7 @@
 using namespace std;
 
 #define call_from_test
-#include "src/Geometry/_geometry_temp.hpp"
+#include "src/Geometry/!geometry_temp.hpp"
 #include "src/Geometry/max_circle_cover.hpp"
 #undef call_from_test
 

@@ -1,2 +1,4 @@
-#define IGNORE
+/**
+ * @ignore
+ */
 // test

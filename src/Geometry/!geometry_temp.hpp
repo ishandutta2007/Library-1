@@ -69,7 +69,7 @@ Real arg(Point p) { return atan2(p.y, p.x); }
 Real dist(Point p, Point q) { return norm(p - q); }
 Real arg(Point p, Point q) { return atan2(cross(p, q), dot(p, q)); }
 Point orth(Point p) { return {-p.y, p.x}; }
-Point rotate(Real theta, Point p) {
+Point rotate(Point p, Real theta) {
   return {cos(theta) * p.x - sin(theta) * p.y,
           sin(theta) * p.x + cos(theta) * p.y};
 }
@@ -158,6 +158,15 @@ bool is_parallel(Line l, Line m) {
   return !sgn(cross(l.p1 - l.p2, m.p1 - m.p2));
 }
 
+Line translate(Line l, Point v) { return {l.p1 + v, l.p2 + v}; }
+Line rotate(Line l, Real theta) {
+  return {rotate(l.p1, theta), rotate(l.p2, theta)};
+}
+Segment translate(Segment s, Point v) { return {s.p1 + v, s.p2 + v}; }
+Segment rotate(Segment s, Real theta) {
+  return {rotate(s.p1, theta), rotate(s.p2, theta)};
+}
+
 vector<Point> cross_points(Line l, Line m) {
   Real a = cross(m.p2 - m.p1, l.p2 - l.p1);
   Real b = cross(l.p1 - m.p1, l.p2 - l.p1);
@@ -232,6 +241,9 @@ struct Circle {
     return {{p, o + u - v}, {p, o + u + v}};
   }
 };
+
+Circle translate(Circle c, Point v) { return {c.o + v, c.r}; }
+Circle rotate(Circle c, Real theta) { return {rotate(c.o, theta), c.r}; }
 
 Circle inscribed_circle(Point A, Point B, Point C) {
   Real a = dist(B, C), b = dist(C, A), c = dist(A, B);
@@ -327,13 +339,24 @@ struct Polygon : vector<Point> {
   }
 };
 
+Polygon translate(Polygon g, Point v) {
+  Polygon h(g.size());
+  for (int i = 0; i < (int)g.size(); i++) h[i] = g[i] + v;
+  return h;
+}
+Polygon rotate(Polygon g, Real theta) {
+  Polygon h(g.size());
+  for (int i = 0; i < (int)g.size(); i++) h[i] = rotate(g[i], theta);
+  return h;
+}
+
 struct Convex : Polygon {
   using Polygon::Polygon;
   pair<Point, Point> farthest() {
     int u = 0, v = 1;
     Real best = -1;
     for (int i = 0, j = 1; i < (int)this->size(); ++i) {
-      while (1) {
+      while (true) {
         int k = next(j);
         Real len = norm2((*this)[j] - (*this)[i]);
         if (sgn(len - norm2((*this)[k] - (*this)[i])) <= 0)
@@ -380,7 +403,7 @@ Convex convex_hull(vector<Point> ps) {
 
 //-----------------------------------------------------------------------------
 // visualizer
-// use https://csacademy.com/app/geometry_widget/
+// to use https://csacademy.com/app/geometry_widget/
 //-----------------------------------------------------------------------------
 struct Visualizer {
   ofstream ofs;

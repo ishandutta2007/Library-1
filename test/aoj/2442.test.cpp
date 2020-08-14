@@ -24,7 +24,7 @@ signed main() {
     bool isok = true;
     for (int i = 0; i < N / 2; i++) isok &= ans == (ps[i] + ps[N / 2 + i]) / 2;
     if (isok)
-      cout << ans << endl;
+      cout << fixed << setprecision(12) << ans << endl;
     else
       cout << "NA" << endl;
   }

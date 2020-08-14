@@ -14,12 +14,13 @@ signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   using namespace geometry;
+  cout << fixed << setprecision(12);
   int q;
   cin >> q;
   while (q--) {
     Segment s, t;
     cin >> s.p1 >> s.p2 >> t.p1 >> t.p2;
-    cout << fixed << setprecision(12) << dist(s, t) << endl;
+    cout << dist(s, t) << endl;
   }
   return 0;
 }

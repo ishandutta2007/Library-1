@@ -118,6 +118,10 @@ int ccw(Point p0, Point p1, Point p2) {
 //-----------------------------------------------------------------------------
 struct Line {
   Point p1, p2;
+  Point &operator[](int i) {
+    assert(0 <= i && i <= 1);
+    return i ? p2 : p1;
+  }
   bool operator==(Line l) const {
     return !sgn(cross(p1 - p2, l.p1 - l.p2)) && !sgn(cross(p1 - p2, l.p1 - p1));
   }
@@ -135,6 +139,10 @@ struct Line {
 
 struct Segment {
   Point p1, p2;
+  Point &operator[](int i) {
+    assert(0 <= i && i <= 1);
+    return i ? p2 : p1;
+  }
   bool operator==(Segment s) const {  // do not consider the direction
     return (p1 == s.p1 && p2 == s.p2) || (p1 == s.p2 && p2 == s.p1);
   }
@@ -388,6 +396,36 @@ struct Convex : Polygon {
     return g;
   }
 };
+
+Real dist(Polygon g, Point p) {
+  if (g.contains(p) != OUT) return 0;
+  Real res = dist(Segment({g.back(), g[0]}), p);
+  for (int i = 0; i + 1 < (int)g.size(); i++)
+    res = min(res, dist(Segment({g[i], g[i + 1]}), p));
+  return res;
+}
+Real dist(Point p, Polygon g) { return dist(g, p); }
+Real dist(Polygon g, Line l) {
+  Real res = dist(Segment({g.back(), g[0]}), l);
+  for (int i = 0; i + 1 < (int)g.size(); i++)
+    res = min(res, dist(Segment({g[i], g[i + 1]}), l));
+  return res;
+}
+Real dist(Line l, Polygon g) { return dist(g, l); }
+Real dist(Polygon g, Segment s) {
+  if (g.contains(s.p1) != OUT || g.contains(s.p2) != OUT) return 0;
+  Real res = dist(Segment({g.back(), g[0]}), s);
+  for (int i = 0; i + 1 < (int)g.size(); i++)
+    res = min(res, dist(Segment({g[i], g[i + 1]}), s));
+  return res;
+}
+Real dist(Segment s, Polygon g) { return dist(g, s); }
+Real dist(Polygon g, Polygon h) {
+  Real res = dist(Segment({g.back(), g[0]}), h);
+  for (int i = 0; i + 1 < (int)g.size(); i++)
+    res = min(res, dist(Segment({g[i], g[i + 1]}), h));
+  return res;
+}
 
 Convex convex_hull(vector<Point> ps) {
   int n = ps.size(), k = 0;

@@ -1,6 +1,6 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2972"
 
-#define ERROR "0.00000001"
+#define ERROR "0.0001"
 
 //焼きなまし法（実は凸関数だから三分探索や山登りでいいらしい）
 //点の距離しか使わないから幾何ライブラリは大げさ

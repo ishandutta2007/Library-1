@@ -125,7 +125,8 @@ struct Line {
   bool operator==(Line l) const {
     return !sgn(cross(p1 - p2, l.p1 - l.p2)) && !sgn(cross(p1 - p2, l.p1 - p1));
   }
-  bool is_on(Point p) { return !sgn(cross(p1 - p, p2 - p)); }
+  // 1:left, 0:on, -1:right
+  int where(Point p) { return sgn(cross(p1 - p, p2 - p)); }
   tuple<Real, Real, Real> coef() {  // return  A,B,C of Ax+By=C
     auto n = orth(p2 - p1);
     return make_tuple(n.x, n.y, dot(n, p1));
@@ -312,6 +313,20 @@ vector<Point> cross_points(Circle c, Line l) {
           l.p1 - (b - sqrt(det)) * u};
 }
 vector<Point> cross_points(Line l, Circle c) { return cross_points(c, l); }
+vector<Point> cross_points(Circle c, Segment s) {
+  Point u = s.p2 - s.p1, v = s.p1 - c.o;
+  Real a = norm2(u), b = dot(u, v) / a, t = (norm2(v) - c.r * c.r) / a;
+  Real det = b * b - t;
+  if (sgn(det) < 0) return {};  // no solution
+  if (sgn(det) == 0 && sgn(-b) >= 0 && sgn(1 - (-b)) >= 0)
+    return {s.p1 - b * u};  // touch
+  Real t1 = -b - sqrt(det), t2 = -b + sqrt(det);
+  vector<Point> qs;
+  if (sgn(t1) >= 0 && sgn(1 - t1) >= 0) qs.push_back(s.p1 + t1 * u);
+  if (sgn(t2) >= 0 && sgn(1 - t2) >= 0) qs.push_back(s.p1 + t2 * u);
+  return qs;
+}
+vector<Point> cross_points(Segment s, Circle c) { return cross_points(c, s); }
 
 //-----------------------------------------------------------------------------
 // Polygon
@@ -386,8 +401,8 @@ struct Convex : Polygon {
     Convex g;
     for (int i = 0; i < (int)this->size(); i++) {
       Point p = (*this)[i], q = (*this)[next(i)];
-      if (sgn(cross(l.p1 - p, l.p2 - p)) >= 0) g.push_back(p);
-      if (sgn(cross(l.p1 - p, l.p2 - p)) * sgn(cross(l.p1 - q, l.p2 - q)) < 0) {
+      if (l.where(p) >= 0) g.push_back(p);
+      if (l.where(p) * l.where(q) < 0) {
         Real a = cross(q - p, l.p2 - l.p1);
         Real b = cross(l.p1 - p, l.p2 - l.p1);
         g.push_back(p + b / a * (q - p));

@@ -7,7 +7,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 #endif
-
 namespace geometry {
 
 using Real = long double;
@@ -25,13 +24,8 @@ enum {
   ONLINE_FRONT = -2,
   ON_SEGMENT = 0
 };
-enum {
-  ON = 0,
-  LEFT = +1,
-  RIGHT = -1,
-  IN = +2,
-  OUT = -2,
-};
+enum { ON = 0, LEFT = +1, RIGHT = -1, IN = +2, OUT = -2 };
+enum { DISJOINT = 0, TOUCH = 1, CROSSING = 2, OVERLAP = 3 };
 //-----------------------------------------------------------------------------
 // Point
 //-----------------------------------------------------------------------------
@@ -87,7 +81,6 @@ ostream &operator<<(ostream &os, Point p) {
   os << p.x << " " << p.y;
   return os;
 }
-
 int ccw(Point p0, Point p1, Point p2) {
   Point a = p1 - p0, b = p2 - p0;
   if (sgn(cross(a, b)) > 0) return COUNTER_CLOCKWISE;
@@ -96,7 +89,6 @@ int ccw(Point p0, Point p1, Point p2) {
   if (norm2(a) < norm2(b)) return ONLINE_FRONT;
   return ON_SEGMENT;
 }
-
 //-----------------------------------------------------------------------------
 // Line and Segment
 //-----------------------------------------------------------------------------
@@ -168,8 +160,6 @@ struct Segment {
     return p1 + b / a * v;
   }
 };
-Segment Line::reflect(Segment s) { return {reflect(s.p1), reflect(s.p2)}; }
-
 bool is_orthogonal(Line l, Line m) {
   return !sgn(dot(l.p1 - l.p2, m.p1 - m.p2));
 }
@@ -181,6 +171,8 @@ Line translate(Line l, Point v) { return {l.p1 + v, l.p2 + v}; }
 Line rotate(Line l, Real theta) {
   return {rotate(l.p1, theta), rotate(l.p2, theta)};
 }
+
+Segment Line::reflect(Segment s) { return {reflect(s.p1), reflect(s.p2)}; }
 Segment translate(Segment s, Point v) { return {s.p1 + v, s.p2 + v}; }
 Segment rotate(Segment s, Real theta) {
   return {rotate(s.p1, theta), rotate(s.p2, theta)};
@@ -222,6 +214,15 @@ vector<Point> cross_points(Segment s, Segment t) {
   if (sgn(dot(t.p1 - s.p1, t.p2 - s.p1)) <= 0) insert_if_possible(s.p1);
   if (sgn(dot(t.p1 - s.p2, t.p2 - s.p2)) <= 0) insert_if_possible(s.p2);
   return ps;
+}
+
+int intersect(Segment s, Segment t) {
+  auto cp = cross_points(s, t);
+  if (cp.size() == 0) return DISJOINT;
+  if (cp.size() > 1) return OVERLAP;
+  if ((cp[0] == s.p1 || cp[0] == s.p2 || cp[0] == t.p1 || cp[0] == t.p2))
+    return TOUCH;
+  return CROSSING;
 }
 
 Real dist(Line l, Point p) { return dist(p, l.project(p)); }

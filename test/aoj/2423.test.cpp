@@ -5,7 +5,7 @@ using namespace std;
 
 #define call_from_test
 #include "src/Geometry/!geometry_temp.hpp"
-#include "src/Geometry/min_enclosing_circle.hpp"
+#include "src/Geometry/circle_functions.hpp"
 #include "src/Graph/MatchingBipartite.hpp"
 #undef call_from_test
 

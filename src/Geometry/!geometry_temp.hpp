@@ -25,7 +25,13 @@ enum {
   ONLINE_FRONT = -2,
   ON_SEGMENT = 0
 };
-enum { IN = 2, ON = 1, OUT = 0 };
+enum {
+  ON = 0,
+  LEFT = +1,
+  RIGHT = -1,
+  IN = +2,
+  OUT = -2,
+};
 //-----------------------------------------------------------------------------
 // Point
 //-----------------------------------------------------------------------------
@@ -81,28 +87,6 @@ ostream &operator<<(ostream &os, Point p) {
   os << p.x << " " << p.y;
   return os;
 }
-// usage: sort(ps.begin(),ps.end(), polar_angle(origin, direction));
-// (-PI,PI]
-struct polar_angle {
-  const Point o;
-  const int s;  // +1 for ccw, -1 for cw
-  polar_angle(Point origin = {0, 0}, int dir = +1) : o(origin), s(dir) {}
-  int quad(Point p) const {
-    for (int i = 0; i < 4; ++i, swap(p.x = -p.x, p.y))
-      if (p.x < 0 && p.y < 0) return 2 * i;
-    for (int i = 0; i < 4; ++i, swap(p.x = -p.x, p.y))
-      if (p.x == 0 && p.y < 0) return 2 * i + 1;
-    return 3;  // arg(0,0) = 0
-  }
-  bool operator()(Point p, Point q) const {
-    p = p - o;
-    q = q - o;
-    if (quad(p) != quad(q)) return s * quad(p) < s * quad(q);
-    if (cross(p, q)) return s * cross(p, q) > 0;
-    // return norm2(p) < norm2(q);  // closer first
-    return p < q;
-  }
-};
 
 int ccw(Point p0, Point p1, Point p2) {
   Point a = p1 - p0, b = p2 - p0;
@@ -116,8 +100,23 @@ int ccw(Point p0, Point p1, Point p2) {
 //-----------------------------------------------------------------------------
 // Line and Segment
 //-----------------------------------------------------------------------------
+struct Segment;
+struct Circle;
 struct Line {
   Point p1, p2;
+  Line() {}
+  Line(Point p, Point q) : p1(p), p2(q) {}
+  Line(Real a, Real b, Real c) {  // ax+by+c=0
+    if (!sgn(b)) {
+      p1 = {-c / a, 1}, p2 = {-c / a, 0};
+      if (sgn(a) < 0) swap(p1, p2);
+    } else if (!sgn(a))
+      p1 = {0, -c / b}, p2 = {1, -c / b};
+    else
+      p1 = {0, -c / b}, p2 = {1, -(c + a) / b};
+    if (sgn(b) < 0) swap(p1, p2);
+    // ax+by+c>0: left, ax+by+c=0: on, ax+by+c<0: right
+  }
   Point &operator[](int i) {
     assert(0 <= i && i <= 1);
     return i ? p2 : p1;
@@ -125,17 +124,27 @@ struct Line {
   bool operator==(Line l) const {
     return !sgn(cross(p1 - p2, l.p1 - l.p2)) && !sgn(cross(p1 - p2, l.p1 - p1));
   }
-  // 1:left, 0:on, -1:right
+  // 1: left, 0: on, -1: right
   int where(Point p) { return sgn(cross(p1 - p, p2 - p)); }
-  tuple<Real, Real, Real> coef() {  // return  A,B,C of Ax+By=C
+  // return  a,b,c of ax+by+c=0
+  tuple<Real, Real, Real> coef() {
     auto n = orth(p2 - p1);
-    return make_tuple(n.x, n.y, dot(n, p1));
+    return make_tuple(n.x, n.y, -dot(n, p1));
   }
   Point project(Point p) {
     Point v = p2 - p1;
     return p1 + dot(p - p1, v) / dot(v, v) * v;
   }
   Point reflect(Point p) { return 2 * project(p) - p; }
+  Line reflect(Line l) { return {reflect(l.p1), reflect(l.p2)}; }
+  Segment reflect(Segment s);
+  Circle reflect(Circle c);
+  vector<Point> reflect(vector<Point> ps) {
+    reverse(ps.begin(), ps.end());
+    vector<Point> res;
+    for (Point p : ps) res.push_back(reflect(p));
+    return res;
+  }
 };
 
 struct Segment {
@@ -159,6 +168,7 @@ struct Segment {
     return p1 + b / a * v;
   }
 };
+Segment Line::reflect(Segment s) { return {reflect(s.p1), reflect(s.p2)}; }
 
 bool is_orthogonal(Line l, Line m) {
   return !sgn(dot(l.p1 - l.p2, m.p1 - m.p2));
@@ -236,7 +246,7 @@ struct Circle {
   Point o;
   Real r;
   Real area() { return PI * r * r; }
-  int contains(Point p) {
+  int where(Point p) {
     int s = sgn(norm2(p - o) - r * r);
     return s < 0 ? IN : s == 0 ? ON : OUT;
   }
@@ -251,38 +261,9 @@ struct Circle {
   }
 };
 
+Circle Line::reflect(Circle c) { return {reflect(c.o), c.r}; }
 Circle translate(Circle c, Point v) { return {c.o + v, c.r}; }
 Circle rotate(Circle c, Real theta) { return {rotate(c.o, theta), c.r}; }
-
-Circle inscribed_circle(Point A, Point B, Point C) {
-  Real a = dist(B, C), b = dist(C, A), c = dist(A, B);
-  Point o = (a * A + b * B + c * C) / (a + b + c);
-  return {o, dist(Segment{A, B}, o)};
-}
-
-Circle circumscribed_circle(Point A, Point B, Point C) {
-  Point u = orth(B - A), v = C - A;
-  Point o = (A + B + u * dot(C - B, v) / dot(u, v)) / 2;
-  return {o, dist(A, o)};
-}
-
-vector<Line> common_tangent(Circle c, Circle d) {
-  Real len = dist(c.o, d.o);
-  if (sgn(len) == 0) return {};  // same origin
-  Point u = (d.o - c.o) / len, v = orth(u);
-  vector<Line> ls;
-  for (int s = +1; s >= -1; s -= 2) {
-    Real h = (c.r + s * d.r) / len;
-    if (sgn(1 - h * h) == 0) {  // touch inner/outer
-      ls.emplace_back(Line{c.o + h * c.r * u, c.o + h * c.r * (u + v)});
-    } else if (sgn(1 - h * h) > 0) {  // properly intersect
-      Point uu = h * u, vv = sqrt(1 - h * h) * v;
-      ls.emplace_back(Line{c.o + c.r * (uu + vv), d.o - d.r * (uu + vv) * s});
-      ls.emplace_back(Line{c.o + c.r * (uu - vv), d.o - d.r * (uu - vv) * s});
-    }
-  }
-  return ls;
-}
 
 vector<Point> cross_points(Circle c, Circle d) {
   if (c.r < d.r) swap(c, d);
@@ -334,6 +315,8 @@ vector<Point> cross_points(Segment s, Circle c) { return cross_points(c, s); }
 //-----------------------------------------------------------------------------
 struct Polygon : vector<Point> {
   using vector<Point>::vector;
+  Polygon() : vector<Point>() {}
+  Polygon(vector<Point> ps) : vector<Point>(ps) {}
   int prev(int i) { return i ? i - 1 : (int)this->size() - 1; }
   int next(int i) { return (i + 1 == (int)this->size() ? 0 : i + 1); }
   bool is_convex() {
@@ -349,7 +332,7 @@ struct Polygon : vector<Point> {
       a += cross((*this)[i], (*this)[i + 1]);
     return a / 2;
   }
-  int contains(Point p) {
+  int where(Point p) {
     bool in = false;
     for (int i = 0; i < (int)this->size(); i++) {
       Point a = (*this)[i] - p, b = (*this)[next(i)] - p;
@@ -359,6 +342,20 @@ struct Polygon : vector<Point> {
         return ON;  // Point on the edge
     }
     return in ? IN : OUT;  // Point in:out the Polygon
+  }
+  bool contains(Segment s, int side = IN) {  // +2 for in, -2 for out
+    int opp = side == IN ? OUT : IN;
+    if (where(s.p1) == opp || where(s.p2) == opp) return false;
+    vector<Point> ps = {s.p1, s.p2};
+    for (int i = 0; i < (int)this->size(); i++)
+      for (Point p : cross_points(s, Segment({(*this)[i], (*this)[next(i)]})))
+        ps.push_back(p);
+    int n = ps.size();
+    sort(ps.begin(), ps.end());
+    for (int i = 0; i + 1 < n; i++) ps.push_back((ps[i] + ps[i + 1]) / 2);
+    for (Point p : ps)
+      if (where(p) == opp) return false;
+    return true;
   }
 };
 
@@ -397,11 +394,11 @@ struct Convex : Polygon {
     tie(p, q) = farthest();
     return dist(p, q);
   }
-  Convex cut(Line l) {
+  Convex cut(Line l, int side = LEFT) {  // +1 for left, -1 for right
     Convex g;
     for (int i = 0; i < (int)this->size(); i++) {
       Point p = (*this)[i], q = (*this)[next(i)];
-      if (l.where(p) >= 0) g.push_back(p);
+      if (l.where(p) * side >= 0) g.push_back(p);
       if (l.where(p) * l.where(q) < 0) {
         Real a = cross(q - p, l.p2 - l.p1);
         Real b = cross(l.p1 - p, l.p2 - l.p1);
@@ -413,7 +410,7 @@ struct Convex : Polygon {
 };
 
 Real dist(Polygon g, Point p) {
-  if (g.contains(p) != OUT) return 0;
+  if (g.where(p) != OUT) return 0;
   Real res = dist(Segment({g.back(), g[0]}), p);
   for (int i = 0; i + 1 < (int)g.size(); i++)
     res = min(res, dist(Segment({g[i], g[i + 1]}), p));
@@ -428,7 +425,7 @@ Real dist(Polygon g, Line l) {
 }
 Real dist(Line l, Polygon g) { return dist(g, l); }
 Real dist(Polygon g, Segment s) {
-  if (g.contains(s.p1) != OUT || g.contains(s.p2) != OUT) return 0;
+  if (g.where(s.p1) != OUT || g.where(s.p2) != OUT) return 0;
   Real res = dist(Segment({g.back(), g[0]}), s);
   for (int i = 0; i + 1 < (int)g.size(); i++)
     res = min(res, dist(Segment({g[i], g[i + 1]}), s));
@@ -453,7 +450,6 @@ Convex convex_hull(vector<Point> ps) {
   ch.resize(k - 1);
   return ch;
 }
-
 //-----------------------------------------------------------------------------
 // visualizer
 // to use https://csacademy.com/app/geometry_widget/

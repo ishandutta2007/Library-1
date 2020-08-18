@@ -21,7 +21,17 @@ signed main() {
   while (q--) {
     Point p;
     cin >> p;
-    cout << g.contains(p) << endl;
+    switch (g.where(p)) {
+      case IN:
+        cout << 2 << endl;
+        break;
+      case ON:
+        cout << 1 << endl;
+        break;
+      case OUT:
+        cout << 0 << endl;
+        break;
+    }
   }
   return 0;
 }

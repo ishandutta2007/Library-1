@@ -42,8 +42,7 @@ signed main() {
     for (int k = 0; k < N; k++)
       for (int i = 0; i < N; i++)
         for (int j = 0; j < N; j++)
-          if (dis[i][j] > dis[i][k] + dis[k][j])
-            dis[i][j] = dis[i][k] + dis[k][j];
+          dis[i][j] = min(dis[i][j], dis[i][k] + dis[k][j]);
     cout << fixed << setprecision(12) << dis[M - 1][L - 1] << endl;
   }
   return 0;

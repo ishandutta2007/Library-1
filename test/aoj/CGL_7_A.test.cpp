@@ -6,6 +6,7 @@ using namespace std;
 
 #define call_from_test
 #include "src/Geometry/!geometry_temp.hpp"
+#include "src/Geometry/circle_functions.hpp"
 #undef call_from_test
 
 signed main() {

@@ -44,8 +44,8 @@ signed main() {
           for (Point p : cp) cps.push_back(p);
         }
       for (Point p : cps) {
-        bool isok = g.contains(p) != OUT;
-        for (Circle c : cs) isok &= c.contains(p) != IN;
+        bool isok = g.where(p) != OUT;
+        for (Circle c : cs) isok &= c.where(p) != IN;
         if (isok) return true;
       }
       return false;

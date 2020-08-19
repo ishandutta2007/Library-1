@@ -22,8 +22,6 @@ struct MinimumSpanningAborescense {
     int src, dst, id;
     cost_t cost;
     bool operator>(const Edge &r) const { return this->cost > r.cost; }
-    Edge() {}
-    Edge(int s, int d, int i, int c) : src(s), dst(d), id(i), cost(c) {}
   };
   struct Op_Edge_add {
     using E = cost_t;
@@ -44,7 +42,7 @@ struct MinimumSpanningAborescense {
  public:
   MinimumSpanningAborescense(int n) : n(n) {}
   void add_edge(int src, int dst, cost_t cost) {
-    edges.emplace_back(src, dst, edges.size(), cost);
+    edges.emplace_back(Edge{src, dst, (int)edges.size(), cost});
   }
   pair<cost_t, vector<Edge>> get_MSA(int root) {
     UnionFind uf(n);

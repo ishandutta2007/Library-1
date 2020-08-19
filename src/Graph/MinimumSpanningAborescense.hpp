@@ -27,7 +27,7 @@ struct MinimumSpanningAborescense {
     using E = cost_t;
     static E ei() { return 0; }
     static Edge g(const Edge &l, const E &r) {
-      return Edge(l.src, l.dst, l.id, l.cost + r);
+      return Edge({l.src, l.dst, l.id, l.cost + r});
     }
     static E h(const E &l, const E &r) { return l + r; }
   };

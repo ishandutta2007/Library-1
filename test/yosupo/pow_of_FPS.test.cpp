@@ -18,9 +18,7 @@ signed main() {
   FPS a(N);
   for (int i = 0; i < N; i++) cin >> a[i];
   auto b = a.pow(M);
-  for (int i = 0; i < N; i++) {
-    cout << b[i] << (i < N - 1 ? " " : "\n");
-  }
+  for (int i = 0; i < N; i++) cout << b[i] << (i < N - 1 ? " " : "\n");
   cout << flush;
   return 0;
 }

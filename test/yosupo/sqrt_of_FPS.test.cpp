@@ -21,9 +21,7 @@ signed main() {
   if (b.size() == 0) {
     cout << -1 << endl;
   } else {
-    for (int i = 0; i < N; i++) {
-      cout << b[i] << (i < N - 1 ? " " : "\n");
-    }
+    for (int i = 0; i < N; i++) cout << b[i] << (i < N - 1 ? " " : "\n");
     cout << flush;
   }
   return 0;

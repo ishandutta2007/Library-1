@@ -333,8 +333,8 @@ struct FormalPowerSeries : vector<Modint> {
     return sub_mul(*this, div_rev_pre(brev, brevinv), brev);
   }
 
- private:
-  FPS inverse(int deg = -1) const {
+ public:
+  FPS inv(int deg = -1) const {  // O(NlogN)
     if (deg < 0) deg = this->size();
     FPS ret(1, Modint(1) / (*this)[0]);
     for (int e = 1, ne; e < deg; e = ne) {
@@ -344,36 +344,35 @@ struct FormalPowerSeries : vector<Modint> {
     }
     return ret;
   }
-  FPS differential() const {
+  FPS diff() const {  // O(N)
     FPS ret(max(0, int(this->size() - 1)));
     for (int i = 1; i < this->size(); i++) ret[i - 1] = (*this)[i] * Modint(i);
     return ret;
   }
-  FPS integral() const {
+  FPS inte() const {  // O(N)
     FPS ret(this->size() + 1);
     ret[0] = Modint(0);
     for (int i = 0; i < this->size(); i++)
       ret[i + 1] = (*this)[i] / Modint(i + 1);
     return ret;
   }
-  FPS logarithm(int deg = -1) const {
+  FPS log(int deg = -1) const {  // O(NlogN)
     assert((*this)[0].x == 1);
     if (deg < 0) deg = this->size();
-    return ((this->differential() * this->inverse(deg)).part(deg - 1))
-        .integral();
+    return ((this->diff() * this->inv(deg)).part(deg - 1)).inte();
   }
-  FPS exponent(int deg = -1) const {
+  FPS exp(int deg = -1) const {  // O(NlogN)
     assert((*this)[0].x == 0);
     if (deg < 0) deg = this->size();
     FPS ret({1, 1 < this->size() ? (*this)[1] : 0}), retinv(1, 1);
-    FPS f = this->differential();
-    FPS retdif = ret.differential();
+    FPS f = this->diff();
+    FPS retdif = ret.diff();
     for (int e = 1, ne = 2, nne; ne < deg; e = ne, ne = nne) {
       nne = min(2 * ne, deg);
       FPS h = retinv.part(ne - e) * -retinv.middle_product(ret);
       for (int i = e; i < ne; i++) retinv.push_back(h[i - e]);
       FPS a = ret * f.part(nne) - retdif;
-      FPS c = (retinv * a.part(nne)).integral();
+      FPS c = (retinv * a.part(nne)).inte();
       h = ret.middle_product(c.part(nne));
       for (int i = ne; i < nne; i++) {
         ret.push_back(h[i - ne]);
@@ -382,14 +381,14 @@ struct FormalPowerSeries : vector<Modint> {
     }
     return ret;
   }
-  FPS square_root(int deg = -1) const {
+  FPS sqrt(int deg = -1) const {  // O(NlogN)
     if (deg < 0) deg = this->size();
     if ((*this)[0].x == 0) {
       for (int i = 1; i < this->size(); i++) {
         if ((*this)[i].x != 0) {
           if (i & 1) return FPS();  // no solutions
           if (deg - i / 2 <= 0) break;
-          auto ret = (*this >> i).square_root(deg - i / 2);
+          auto ret = (*this >> i).sqrt(deg - i / 2);
           if (!ret.size()) return FPS();  // no solutions
           ret = ret << (i / 2);
           if (ret.size() < deg) ret.resize(deg, 0);
@@ -403,31 +402,36 @@ struct FormalPowerSeries : vector<Modint> {
     FPS ret(1, sqr);
     Modint inv2 = Modint(1) / Modint(2);
     for (int i = 1; i < deg; i <<= 1) {
-      ret += this->part(i << 1) * ret.inverse(i << 1);
+      ret += this->part(i << 1) * ret.inv(i << 1);
       ret = ret.part(i << 1) * inv2;
     }
     return ret;
   }
-  FPS power(uint64_t k, int deg = -1) const {
+  FPS pow(uint64_t k, int deg = -1) const {  // O(NlogN)
     if (deg < 0) deg = this->size();
     for (int i = 0; i < this->size(); i++) {
       if ((*this)[i].x != 0) {
         if (i * k > deg) return FPS(deg, 0);
         Modint inv = Modint(1) / (*this)[i];
-        FPS ret = (((*this * inv) >> i).logarithm() * k).exponent()
-                  * (*this)[i].pow(k);
+        FPS ret = (((*this * inv) >> i).log() * k).exp() * (*this)[i].pow(k);
         return (ret << (i * k)).part(deg);
       }
     }
     return *this;
   }
-
- public:
-  FPS diff() const { return differential(); }                        // O(N)
-  FPS inte() const { return integral(); }                            // O(N)
-  FPS inv(int deg = -1) const { return inverse(deg); }               // O(NlogN)
-  FPS log(int deg = -1) const { return logarithm(deg); }             // O(NlogN)
-  FPS exp(int deg = -1) const { return exponent(deg); }              // O(NlogN)
-  FPS sqrt(int deg = -1) const { return square_root(deg); }          // O(NlogN)
-  FPS pow(uint64_t k, int deg = -1) const { return power(k, deg); }  // O(NlogN)
+  FPS shift(Modint c) const {  // O(NlogN)
+    int n = this->size();
+    FPS ret(n), p(n);
+    Modint fact = 1, cpw = 1;
+    for (int i = 0; i < n; fact *= (++i)) ret[i] = (*this)[i] * fact;
+    Modint finv = Modint(n) / fact;
+    for (int i = n; i > 0; i--) p[i - 1] = i == n ? finv : p[i] * i;
+    for (int i = 0; i < n; i++, cpw *= c) p[i] *= cpw;
+    reverse(begin(ret), end(ret));
+    ret *= p;
+    ret.resize(n);
+    reverse(begin(ret), end(ret));
+    for (int i = n - 1; i >= 0; finv *= (i--)) ret[i] *= finv;
+    return ret;
+  }
 };

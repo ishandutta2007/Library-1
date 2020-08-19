@@ -20,8 +20,6 @@ struct MinimumSpanningTree_Kruskal {
     int u, v, id;
     cost_t cost;
     bool operator<(const Edge &rhs) const { return this->cost < rhs.cost; }
-    Edge() {}
-    Edge(int s, int d, int i, int c) : u(s), v(d), id(i), cost(c) {}
   };
 
  private:
@@ -33,7 +31,7 @@ struct MinimumSpanningTree_Kruskal {
  public:
   MinimumSpanningTree_Kruskal(int n) : n(n) {}
   void add_edge(int u, int v, cost_t cost) {
-    edges.emplace_back(u, v, edges.size(), cost);
+    edges.emplace_back(Edge{u, v, (int)edges.size(), cost});
   }
   pair<cost_t, vector<Edge>> get_MST() {
     UnionFind uf(n);

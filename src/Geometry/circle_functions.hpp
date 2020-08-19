@@ -16,9 +16,9 @@ namespace geometry {
 
 Circle inscribed_circle(Point A, Point B, Point C) {
   Real a = dist(B, C), b = dist(C, A), c = dist(A, B);
-  Real s = a + b + c;
-  Point o = (a * A + b * B + c * C) / s;
-  Real r = sqrt((s - a) * (s - b) * (s - c) / s) / 2;
+  Real s = (a + b + c) / 2;
+  Point o = (a * A + b * B + c * C) / (a + b + c);
+  Real r = sqrt((s - a) * (s - b) * (s - c) / s);
   return {o, r};
 }
 

@@ -10,6 +10,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 #endif
+
 struct KnuthMorrisPratt {
   vector<int> KMP;
   const string s;

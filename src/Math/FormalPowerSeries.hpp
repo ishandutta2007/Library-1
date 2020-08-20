@@ -150,6 +150,12 @@ struct FormalPowerSeries : vector<Modint> {
       ret[i - beg] = (*this)[i];
     return ret;
   }
+  FPS pre(int sz) const {
+    sz = min(sz, int(this->size()));
+    FPS ret(this->begin(), this->begin() + sz);
+    ret.shrink();
+    return ret;
+  }
   FPS operator>>(int size) const {
     if (this->size() <= size) return {};
     FPS ret(*this);
@@ -183,6 +189,10 @@ struct FormalPowerSeries : vector<Modint> {
     for (int k = 0; k < this->size(); k++) (*this)[k] *= v;
     return *this;
   }
+  FPS &operator/=(const Modint &v) {
+    *this *= Modint(1) / v;
+    return *this;
+  }
   FPS &operator+=(const FPS &rhs) {
     if (this->size() < rhs.size()) this->resize(rhs.size());
     for (int i = 0; i < (int)rhs.size(); i++) (*this)[i] += rhs[i];
@@ -193,13 +203,20 @@ struct FormalPowerSeries : vector<Modint> {
     for (int i = 0; i < (int)rhs.size(); i++) (*this)[i] -= rhs[i];
     return *this;
   }
-  FPS &operator*=(const FPS &rhs) { return *this = *this * rhs; }
+  FPS &operator*=(const FPS &rhs) {
+    int f_min = 0, g_min = 0;
+    while (f_min < this->size() && (*this)[f_min].x == 0) f_min++;
+    while (g_min < rhs.size() && rhs[g_min].x == 0) g_min++;
+    if (f_min == this->size() || g_min == rhs.size())
+      return *this = FPS(this->size() + rhs.size());
+    return *this = ((*this >> f_min).mul(rhs >> g_min) << (f_min + g_min));
+  }
   FPS &operator/=(const FPS &rhs) {
     if (this->size() < rhs.size()) return *this = FPS();
     FPS frev = this->rev();
     FPS rhsrev = rhs.rev();
     if (rhs.size() < 1150) return *this = frev.divrem_rev_n(rhsrev).first.rev();
-    FPS inv = rhsrev.inv(this->size() - rhs.size() + 1);
+    FPS inv = rhsrev.inverse(this->size() - rhs.size() + 1);
     return *this = frev.div_rev_pre(rhsrev, inv).rev();
   }
   FPS &operator%=(const FPS &rhs) {
@@ -208,15 +225,16 @@ struct FormalPowerSeries : vector<Modint> {
     FPS rhsrev = rhs.rev();
     if (rhs.size() < 1150)
       return *this = frev.divrem_rev_n(rhsrev).second.rev();
-    FPS inv = rhsrev.inv(frev.size() - rhs.size() + 1);
+    FPS inv = rhsrev.inverse(frev.size() - rhs.size() + 1);
     return *this = frev.rem_rev_pre(rhsrev, inv).rev();
   }
   FPS operator+(const Modint &v) const { return FPS(*this) += v; }   // O(1)
   FPS operator-(const Modint &v) const { return FPS(*this) -= v; }   // O(1)
   FPS operator*(const Modint &v) const { return FPS(*this) *= v; }   // O(N)
+  FPS operator/(const Modint &v) const { return FPS(*this) /= v; }   // O(N)
   FPS operator+(const FPS &rhs) const { return FPS(*this) += rhs; }  // O(N)
   FPS operator-(const FPS &rhs) const { return FPS(*this) -= rhs; }  // O(N)
-  FPS operator*(const FPS &rhs) const { return this->mul(rhs); }     // O(NlogN)
+  FPS operator*(const FPS &rhs) const { return FPS(*this) *= rhs; }  // O(NlogN)
   FPS operator/(const FPS &rhs) const { return FPS(*this) /= rhs; }  // O(NlogN)
   FPS operator%(const FPS &rhs) const { return FPS(*this) %= rhs; }  // O(NlogN)
   Modint eval(Modint x) {
@@ -308,6 +326,29 @@ struct FormalPowerSeries : vector<Modint> {
     for (int i = 0; i < r.size(); i++) r[i] -= p[(sq + i) & mask];
     return r;
   }
+  FPS comp_dc(const FPS &g, int deg = -1) {
+    if (deg < 0) deg = max(this->size(), g.size());
+    if (this->size() <= 8) {
+      FPS ret = {this->back()};
+      for (int i = this->size() - 2; i >= 0; i--)
+        ret = (ret * g).pre(deg) + (*this)[i];
+      return ret;
+    }
+    vector<FPS> pw(deg);
+    pw[0] = {1};
+    pw[1] = g;
+    int m = 2;
+    for (; m < deg; m *= 2) pw[m] = (pw[m / 2] * pw[m / 2]).pre(deg);
+    function<FPS(FPS, int)> rec = [&](FPS p, int k) {
+      if (p.size() <= 1) return p;
+      p.shrink();
+      while (k >= p.size()) k /= 2;
+      FPS q(begin(p) + k, end(p));
+      p.resize(k);
+      return (rec(q, k) * pw[k] + rec(p, k)).pre(deg);
+    };
+    return rec(*this, m);
+  }
 
  public:
   pair<FPS, FPS> divrem_rev_n(const FPS &brev) {
@@ -315,7 +356,7 @@ struct FormalPowerSeries : vector<Modint> {
     if (frev.size() < brev.size()) return make_pair(FPS(), frev);
     int sq = frev.size() - brev.size() + 1;
     FPS qrev(sq, 0);
-    Modint inv = Modint(1) / brev[0];
+    Modint inv = brev[0].inverse();
     for (int i = 0; i < qrev.size(); ++i) {
       qrev[i] = frev[i] * inv;
       for (int j = 0; j < brev.size(); ++j) frev[j + i] -= brev[j] * qrev[i];
@@ -409,11 +450,13 @@ struct FormalPowerSeries : vector<Modint> {
     for (int i = 0; i < this->size(); i++)
       if ((*this)[i].x != 0) {
         if (i * k > deg) return FPS(deg, 0);
+        int n = deg - i * k;
         Modint inv = Modint(1) / (*this)[i];
-        FPS ret = (((*this * inv) >> i).log() * k).exp() * (*this)[i].pow(k);
+        FPS ret
+            = ((((*this) >> i) * inv).log(n) * k).exp(n) * (*this)[i].pow(k);
         return (ret << (i * k)).part(deg);
       }
-    return *this;
+    return FPS(deg, 0);
   }
   FPS shift(Modint c) const {  // O(NlogN)
     int n = this->size();
@@ -426,5 +469,25 @@ struct FormalPowerSeries : vector<Modint> {
     ret = (ret.rev() * p).part(n).rev();
     for (int i = n - 1; i >= 0; finv *= (i--)) ret[i] *= finv;
     return ret;
+  }
+  FPS comp(const FPS &g, int deg = -1) {  // O((NlogN)^(1.5))
+    if (deg < 0) deg = max(this->size(), g.size());
+    if (this->size() == 0 || g.size() == 0) return FPS(deg, 0);
+    if (g.size() == 1) return FPS({eval(g[0])}).part(deg);
+    int k = (int)::sqrt(deg / (::log2(deg) + 1)) + 1;
+    if (k >= g.size() || this->size() <= 500 || g.size() <= 160
+        || this->size() * 15 + g.size() * 11 <= 16500)
+      return comp_dc(g, deg).part(deg);
+    FPS p = g.pre(k);
+    FPS q = g - p, fp = comp_dc(p, deg), qpw = {1}, tmp = p.diff().inv(deg);
+    Modint fact = 1;
+    FPS ret;
+    for (int i = 0, b = deg / k + 1; i < b; i++) {
+      ret += (fp * qpw).pre(deg) / fact;
+      fp = (fp.diff() * tmp).pre(deg);
+      qpw = (qpw * q).pre(deg);
+      fact *= i + 1;
+    }
+    return ret.part(deg);
   }
 };

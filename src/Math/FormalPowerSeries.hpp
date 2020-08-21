@@ -298,7 +298,8 @@ struct FormalPowerSeries : vector<Modint> {
   }
   FPS mul(const FPS &g) const {
     if (this->size() == 0 || g.size() == 0) return FPS();
-    if (this->size() + g.size() < 750) return mul_n(g);
+    if (this->size() + g.size() < 750 || this->size() < 8 || g.size() < 8)
+      return mul_n(g);
     const FPS &f = *this;
     mul2(f, g, false);
     return mul_crt(0, int(f.size() + g.size() - 1));

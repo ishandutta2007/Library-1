@@ -216,7 +216,7 @@ struct FormalPowerSeries : vector<Modint> {
     FPS frev = this->rev();
     FPS rhsrev = rhs.rev();
     if (rhs.size() < 1150) return *this = frev.divrem_rev_n(rhsrev).first.rev();
-    FPS inv = rhsrev.inv(this->size() - rhs.size() + 1);
+    FPS inv = rhsrev.inverse(this->size() - rhs.size() + 1);
     return *this = frev.div_rev_pre(rhsrev, inv).rev();
   }
   FPS &operator%=(const FPS &rhs) {
@@ -225,7 +225,7 @@ struct FormalPowerSeries : vector<Modint> {
     FPS rhsrev = rhs.rev();
     if (rhs.size() < 1150)
       return *this = frev.divrem_rev_n(rhsrev).second.rev();
-    FPS inv = rhsrev.inv(frev.size() - rhs.size() + 1);
+    FPS inv = rhsrev.inverse(frev.size() - rhs.size() + 1);
     return *this = frev.rem_rev_pre(rhsrev, inv).rev();
   }
   FPS operator+(const Modint &v) const { return FPS(*this) += v; }   // O(1)
@@ -237,7 +237,7 @@ struct FormalPowerSeries : vector<Modint> {
   FPS operator*(const FPS &rhs) const { return FPS(*this) *= rhs; }  // O(NlogN)
   FPS operator/(const FPS &rhs) const { return FPS(*this) /= rhs; }  // O(NlogN)
   FPS operator%(const FPS &rhs) const { return FPS(*this) %= rhs; }  // O(NlogN)
-  Modint eval(Modint x) {
+  Modint eval(Modint x) const {
     Modint res, w = 1;
     for (auto &v : *this) res += w * v, w *= x;
     return res;
@@ -327,7 +327,7 @@ struct FormalPowerSeries : vector<Modint> {
     for (int i = 0; i < r.size(); i++) r[i] -= p[(sq + i) & mask];
     return r;
   }
-  FPS comp_dc(const FPS &g, int deg = -1) {
+  FPS comp_dc(const FPS &g, int deg = -1) const {
     if (deg < 0) deg = max(this->size(), g.size());
     if (this->size() <= 8) {
       FPS ret = {this->back()};
@@ -423,6 +423,12 @@ struct FormalPowerSeries : vector<Modint> {
     }
     return ret;
   }
+  pair<FPS, FPS> cos_and_sin(int deg = -1) const {  // O(NlogN)
+    if (deg < 0) deg = this->size();
+    Modint i = mod_sqrt(-1);
+    FPS a = (*this * i).exp(deg), b = (*this * (-i)).exp(deg);
+    return make_pair((a + b) / Modint(2), (a - b) / (Modint(2) * i));
+  }
   FPS sqrt(int deg = -1) const {  // O(NlogN)
     if (deg < 0) deg = this->size();
     if ((*this)[0].x == 0) {
@@ -471,7 +477,7 @@ struct FormalPowerSeries : vector<Modint> {
     for (int i = n - 1; i >= 0; finv *= (i--)) ret[i] *= finv;
     return ret;
   }
-  FPS comp(const FPS &g, int deg = -1) {  // O((NlogN)^(1.5)?)
+  FPS comp(const FPS &g, int deg = -1) const {  // O((NlogN)^(1.5)?)
     if (deg < 0) deg = max(this->size(), g.size());
     if (this->size() == 0 || g.size() == 0) return FPS(deg, 0);
     if (g.size() == 1) return FPS({eval(g[0])}).part(deg);

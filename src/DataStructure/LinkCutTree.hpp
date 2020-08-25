@@ -13,7 +13,6 @@ struct LinkCutTree {
   struct Node {
     Node *ch[2], *par;
     bool rev;
-    Node() : rev(false) { ch[0] = ch[1] = par = nullptr; }
   };
 
  private:
@@ -70,9 +69,10 @@ struct LinkCutTree {
 
  private:
   vector<Node> ns;
+  int linkcnt;
 
  public:
-  LinkCutTree(int n) : ns(n) {}
+  LinkCutTree(int n) : ns(n), linkcnt(0) {}
   // make k the root
   void evert(int k) {
     expose(&ns[k]);
@@ -81,6 +81,7 @@ struct LinkCutTree {
   }
   // add link from c to p
   void link(int c, int p) {
+    assert(linkcnt++ < ns.size() - 1);
     evert(c);
     expose(&ns[p]);
     ns[p].ch[1] = &ns[c];
@@ -88,6 +89,7 @@ struct LinkCutTree {
   }
   // cut link from c (to the root direction)
   void cut(int c, int p) {
+    linkcnt--;
     evert(p);
     expose(&ns[c]);
     Node *y = ns[c].ch[0];

@@ -106,8 +106,11 @@ struct LinkCutTree_MonoidLazy {
  public:
   vector<Node> ns;
 
+ private:
+  int linkcnt;
+
  public:
-  LinkCutTree_MonoidLazy(int n, T init = M::ti()) : ns(n, init) {}
+  LinkCutTree_MonoidLazy(int n, T init = M::ti()) : ns(n, init), linkcnt(0) {}
   // make k the root
   void evert(int k) {
     expose(&ns[k]);
@@ -116,6 +119,7 @@ struct LinkCutTree_MonoidLazy {
   }
   // add link from c to p
   void link(int c, int p) {
+    assert(linkcnt++ < ns.size() - 1);
     evert(c);
     expose(&ns[p]);
     ns[p].ch[1] = &ns[c];
@@ -124,6 +128,7 @@ struct LinkCutTree_MonoidLazy {
   }
   // cut link from c to p
   void cut(int c, int p) {
+    linkcnt--;
     evert(p);
     expose(&ns[c]);
     Node *y = ns[c].ch[0];

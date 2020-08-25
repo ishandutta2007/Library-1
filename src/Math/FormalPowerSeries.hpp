@@ -151,27 +151,25 @@ struct FormalPowerSeries : vector<Modint> {
     return ret;
   }
   FPS pre(int sz) const {
-    sz = min(sz, int(this->size()));
-    FPS ret(this->begin(), this->begin() + sz);
+    FPS ret(this->begin(), this->begin() + min(sz, int(this->size())));
     ret.shrink();
     return ret;
   }
+  int ctz() const {
+    for (int i = 0; i < (int)this->size(); i++)
+      if ((*this)[i].x != 0) return i;
+    return (int)this->size();
+  }
   FPS operator>>(int size) const {
     if (this->size() <= size) return {};
-    FPS ret(*this);
-    ret.erase(ret.begin(), ret.begin() + size);
-    return ret;
+    return FPS(this->begin() + size, this->end());
   }
   FPS operator<<(int size) const {
     FPS ret(*this);
     ret.insert(ret.begin(), size, Modint(0));
     return ret;
   }
-  FPS rev() const {
-    FPS ret(*this);
-    reverse(ret.begin(), ret.end());
-    return ret;
-  }
+  FPS rev() const { return FPS(this->rbegin(), this->rend()); }
   FPS operator-() {
     FPS ret(*this);
     for (int i = 0; i < (int)ret.size(); i++) ret[i] = -ret[i];
@@ -204,9 +202,7 @@ struct FormalPowerSeries : vector<Modint> {
     return *this;
   }
   FPS &operator*=(const FPS &rhs) {
-    int f_min = 0, g_min = 0;
-    while (f_min < this->size() && (*this)[f_min].x == 0) f_min++;
-    while (g_min < rhs.size() && rhs[g_min].x == 0) g_min++;
+    int f_min = this->ctz(), g_min = rhs.ctz();
     if (f_min == this->size() || g_min == rhs.size())
       return *this = FPS(this->size() + rhs.size());
     return *this = ((*this >> f_min).mul(rhs >> g_min) << (f_min + g_min));
@@ -329,6 +325,9 @@ struct FormalPowerSeries : vector<Modint> {
   }
   FPS comp_dc(const FPS &g, int deg = -1) const {
     if (deg < 0) deg = max(this->size(), g.size());
+    if (this->size() <= 1) return *this;
+    if (g.size() == 0) return FPS({(*this)[0]});
+    if (g.size() == 1) return FPS({eval(g[0])});
     if (this->size() <= 8) {
       FPS ret = {this->back()};
       for (int i = this->size() - 2; i >= 0; i--)
@@ -341,12 +340,14 @@ struct FormalPowerSeries : vector<Modint> {
     int m = 2;
     for (; m < deg; m *= 2) pw[m] = (pw[m / 2] * pw[m / 2]).pre(deg);
     function<FPS(FPS, int)> rec = [&](FPS p, int k) {
-      if (p.size() <= 1) return p;
       p.shrink();
+      if (p.size() <= 1) return p;
       while (k >= p.size()) k /= 2;
       FPS q(begin(p) + k, end(p));
       p.resize(k);
-      return (rec(q, k) * pw[k] + rec(p, k)).pre(deg);
+      FPS ret = rec(p, k);
+      if (pw[k].size() > 0) ret = (ret + rec(q, k) * pw[k]).pre(deg);
+      return ret;
     };
     return rec(*this, m);
   }
@@ -377,6 +378,7 @@ struct FormalPowerSeries : vector<Modint> {
 
  public:
   FPS inv(int deg = -1) const {  // O(NlogN)
+    assert((*this)[0].x != 0);
     if (deg < 0) deg = this->size();
     FPS ret(1, Modint(1) / (*this)[0]);
     for (int e = 1, ne; e < deg; e = ne) {
@@ -431,39 +433,26 @@ struct FormalPowerSeries : vector<Modint> {
   }
   FPS sqrt(int deg = -1) const {  // O(NlogN)
     if (deg < 0) deg = this->size();
-    if ((*this)[0].x == 0) {
-      for (int i = 1; i < this->size(); i++)
-        if ((*this)[i].x != 0) {
-          if (i & 1) return FPS();  // no solutions
-          if (deg - i / 2 <= 0) break;
-          auto ret = (*this >> i).sqrt(deg - i / 2);
-          if (!ret.size()) return FPS();  // no solutions
-          ret = ret << (i / 2);
-          if (ret.size() < deg) ret.resize(deg, 0);
-          return ret;
-        }
-      return FPS(deg, 0);
-    }
-    Modint sqr = mod_sqrt((*this)[0]);
-    if (sqr * sqr != (*this)[0]) return FPS();  // no solutions
-    FPS ret(1, sqr);
+    int xpw = this->ctz();
+    if (xpw & 1) return FPS();  // no solutions
+    if (xpw == this->size() || deg - xpw / 2 <= 0) return FPS(deg, 0);
+    Modint sqr = mod_sqrt((*this)[xpw]);
+    if (sqr * sqr != (*this)[xpw]) return FPS();  // no solutions
+    FPS ret({sqr});
     Modint inv2 = Modint(1) / Modint(2);
-    for (int i = 1; i < deg; i <<= 1)
-      ret = (ret + this->part(i << 1) * ret.inv(i << 1)).part(i << 1) * inv2;
-    return ret;
+    for (int i = 1; i < deg - xpw / 2; i <<= 1)
+      (ret += (this->part(xpw, xpw + i * 2) * ret.inv(i * 2)).part(i * 2))
+          *= inv2;
+    return (ret << (xpw / 2)).part(deg);
   }
   FPS pow(uint64_t k, int deg = -1) const {  // O(NlogN)
     if (deg < 0) deg = this->size();
-    for (int i = 0; i < this->size(); i++)
-      if ((*this)[i].x != 0) {
-        if (i * k > deg) return FPS(deg, 0);
-        int n = deg - i * k;
-        Modint inv = Modint(1) / (*this)[i];
-        FPS ret
-            = ((((*this) >> i) * inv).log(n) * k).exp(n) * (*this)[i].pow(k);
-        return (ret << (i * k)).part(deg);
-      }
-    return FPS(deg, 0);
+    int i = this->ctz();
+    if (i == this->size() || i * k > deg) return FPS(deg, 0);
+    int n = deg - i * k;
+    Modint inv = Modint(1) / (*this)[i];
+    FPS ret = ((((*this) >> i) * inv).log(n) * k).exp(n) * (*this)[i].pow(k);
+    return (ret << (i * k)).part(deg);
   }
   FPS shift(Modint c) const {  // O(NlogN)
     int n = this->size();
@@ -479,17 +468,21 @@ struct FormalPowerSeries : vector<Modint> {
   }
   FPS comp(const FPS &g, int deg = -1) const {  // O((NlogN)^(1.5)?)
     if (deg < 0) deg = max(this->size(), g.size());
-    if (this->size() == 0 || g.size() == 0) return FPS(deg, 0);
+    if (this->size() <= 1) return this->part(deg);
+    if (g.size() == 0) return FPS({(*this)[0]}).part(deg);
     if (g.size() == 1) return FPS({eval(g[0])}).part(deg);
     int k = (int)::sqrt(deg) + 1;
-    if (k >= g.size() || this->size() < 100) return comp_dc(g, deg).part(deg);
+    if (k >= g.size() || this->size() < 100 || g.ctz() >= k)
+      return comp_dc(g, deg).part(deg);
     FPS p = g.pre(k);
-    FPS q = g - p, fp = comp_dc(p, deg), qpw = {1}, tmp = p.diff().inv(deg);
+    FPS q = g - p, fp = comp_dc(p, deg), qpw = {1}, tmp = p.diff();
+    int xpw = tmp.ctz();
+    tmp = (tmp >> xpw).inv(deg);
     Modint fact = 1;
     FPS ret;
     for (int i = 0, b = deg / k + 1; i < b; i++) {
       ret += (fp * qpw).pre(deg) / fact;
-      fp = (fp.diff() * tmp).pre(deg);
+      fp = ((fp.diff() >> xpw) * tmp).pre(deg);
       qpw = (qpw * q).pre(deg);
       fact *= i + 1;
     }

@@ -1,8 +1,8 @@
 /**
  * @title Binary-Indexed-Tree(2次元)
  * @category データ構造
- * @brief O(logHW)
- * @brief 1-indexed
+ * O(logHW)
+ * 1-indexed
  */
 
 #ifndef call_from_test
@@ -16,8 +16,8 @@ struct BinaryIndexedTree_2D {
   vector<vT> dat;
   BinaryIndexedTree_2D(int H, int W) : dat(vector<vT>(H + 1, vT(W + 1, 0))) {}
   void add(int y, int x, T v) {
-    for (int i = y; i < dat.size(); i += i & -i)
-      for (int j = x; j < dat[i].size(); j += j & -j) dat[i][j] += v;
+    for (int i = y; i < (int)dat.size(); i += i & -i)
+      for (int j = x; j < (int)dat[i].size(); j += j & -j) dat[i][j] += v;
   }
   T sum(int y, int x) {  // sum (0,y] * (0,x]
     T ret = 0;

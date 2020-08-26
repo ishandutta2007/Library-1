@@ -17,7 +17,7 @@ signed main() {
   cin >> N;
   FPS f(N + 1);
   Mint fact = 1;
-  for (long long i = 1; i <= N; fact *= (i++)) f[i] = (i + 1) * (i + 1);
+  for (int i = 1; i <= N; fact *= (i++)) f[i] = Mint(i + 1) * Mint(i + 1);
   auto cs = f.cos_and_sin();
   auto ans = cs.first + cs.second;
   for (int K = 1; K <= N; K++) cout << ans[K] * fact << endl;

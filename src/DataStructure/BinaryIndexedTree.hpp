@@ -20,7 +20,7 @@ struct BinaryIndexedTree {
     for (int i = 1; i + (i & -i) < dat.size(); ++i) dat[i + (i & -i)] += dat[i];
   }
   void add(int i, T a = 1) {
-    for (++i; i < dat.size(); i += i & -i) dat[i] += a;
+    for (++i; i < (int)dat.size(); i += i & -i) dat[i] += a;
   }
   T sum(int i) {  // sum [0,i)
     T s = 0;

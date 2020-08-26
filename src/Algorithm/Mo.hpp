@@ -27,7 +27,8 @@ struct Mo {
     sort(begin(ord), end(ord), [&](int a, int b) {
       int ablock = lr[a].first / bs, bblock = lr[b].first / bs;
       if (ablock != bblock) return ablock < bblock;
-      return bool((ablock & 1) ^ (lr[a].second < lr[b].second));
+      return (ablock & 1) ? lr[a].second > lr[b].second
+                          : lr[a].second < lr[b].second;
     });
     int l = 0, r = 0;
     for (auto idx : ord) {

@@ -26,7 +26,7 @@ signed main() {
     cin >> l >> r;
     mo.query(l, r);
   }
-  BinaryIndexedTree<int> bit(v.back() + 10);
+  BinaryIndexedTree<int> bit(N + 1);
   int inv = 0, total = 0;
   auto addl = [&](int i) {
     inv += bit.sum(A[i]);

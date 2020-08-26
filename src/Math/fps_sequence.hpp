@@ -57,22 +57,3 @@ FormalPowerSeries<mint> stirling_second(int N) {
     a[i] = mint(i).pow(N) * finv, b[i] = i & 1 ? -finv : finv;
   return (a * b).part(N + 1);
 }
-
-template <typename mint>
-FormalPowerSeries<mint> eulerian(int N) {
-  if (N == 0) return FormalPowerSeries<mint>({1});
-  vector<mint> fact(N + 2), finv(N + 2);
-  fact[0] = finv[N + 1] = 1;
-  for (int i = 1; i <= N + 1; i++) fact[i] = fact[i - 1] * i;
-  finv[N + 1] /= fact[N + 1];
-  for (int i = N; i >= 0; i--) finv[i] = finv[i + 1] * (i + 1);
-  FormalPowerSeries<mint> a(N / 2 + 1), b(N / 2 + 1);
-  for (int i = 0; i <= N / 2; i++) {
-    a[i] = i & 1 ? -finv[i] * finv[N + 1 - i] : finv[i] * finv[N + 1 - i];
-    b[i] = mint(i + 1).pow(N) * fact[N + 1];
-  }
-  FormalPowerSeries<mint> ret = (a * b).part(N + 1);
-  for (int i = 0; i <= N / 2; i++) ret[N - i - 1] = ret[i];
-  ret[N] = 0;
-  return ret;
-}

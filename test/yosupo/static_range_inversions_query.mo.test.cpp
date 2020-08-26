@@ -26,8 +26,8 @@ signed main() {
     cin >> l >> r;
     mo.query(l, r);
   }
-  BinaryIndexedTree<int> bit(N + 1);
-  int inv = 0, total = 0;
+  BinaryIndexedTree<long long> bit(N + 1);
+  long long inv = 0, total = 0;
   auto addl = [&](int i) {
     inv += bit.sum(A[i]);
     bit.add(A[i], 1);
@@ -48,7 +48,7 @@ signed main() {
     bit.add(A[i], -1);
     total--;
   };
-  int ans[Q];
+  long long ans[Q];
   auto out = [&](int q) { ans[q] = inv; };
   mo.run(addl, addr, erasel, eraser, out);
   for (int q = 0; q < Q; q++) cout << ans[q] << "\n";

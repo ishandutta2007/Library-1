@@ -11,7 +11,7 @@ using namespace std;
 struct RmaxQ {
   using T = pair<long long, int>;
   static T ti() { return T(-1, -1); }
-  static T f(const T &l, const T &r) { return l.first > r.first ? l : r; }
+  static T f(const T &vl, const T &vr) { return vl.first > vr.first ? vl : vr; }
 };
 signed main() {
   cin.tie(0);

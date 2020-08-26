@@ -60,6 +60,7 @@ FormalPowerSeries<mint> stirling_second(int N) {
 
 template <typename mint>
 FormalPowerSeries<mint> eulerian(int N) {
+  if (N == 0) return FormalPowerSeries<mint>({1});
   vector<mint> fact(N + 2), finv(N + 2);
   fact[0] = finv[N + 1] = 1;
   for (int i = 1; i <= N + 1; i++) fact[i] = fact[i - 1] * i;
@@ -72,5 +73,6 @@ FormalPowerSeries<mint> eulerian(int N) {
   }
   FormalPowerSeries<mint> ret = (a * b).part(N + 1);
   for (int i = 0; i <= N / 2; i++) ret[N - i - 1] = ret[i];
+  ret[N] = 0;
   return ret;
 }

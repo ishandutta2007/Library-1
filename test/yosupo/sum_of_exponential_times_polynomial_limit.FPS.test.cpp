@@ -19,12 +19,12 @@ signed main() {
   using Mint = ModInt<998244353>;
   int r, d;
   cin >> r >> d;
-  if (r == 0 && d == 0) {
-    cout << 1 << endl;
+  if (d == 0) {
+    cout << Mint(1 - r).inverse() << endl;
   } else {
     auto A = eulerian<Mint>(d);
     Mint ans = 0, rpw = r;
-    for (int i = 0; i <= d; i++, rpw *= r) ans += A[i] * rpw;
+    for (int i = 0; i < d; i++, rpw *= r) ans += A[i] * rpw;
     ans /= Mint(1 - r).pow(d + 1);
     cout << ans << endl;
   }

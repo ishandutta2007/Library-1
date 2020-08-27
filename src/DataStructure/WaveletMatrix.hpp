@@ -51,7 +51,7 @@ struct WaveletMatrix {
   WaveletMatrix(vector<int> v)
       : WaveletMatrix(v, *max_element(v.begin(), v.end()) + 1) {}
   WaveletMatrix(vector<int> v, unsigned s) : sigma(s), length(v.size()) {
-    height = (sigma == 1) ? 1 : (32 - __builtin_clz(sigma - 1));
+    height = 32 - __builtin_clz(sigma);
     matrix.resize(height);
     mid.resize(height);
     vector<int> l(length), r(length);

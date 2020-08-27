@@ -33,7 +33,7 @@ signed main() {
     add(i, 1);
     if (i >= K - 1) {
       int med = bit1.find(K / 2);
-      int lcnt = K / 2, hcnt = K - lcnt;
+      int lcnt = bit1.sum(med), hcnt = K - lcnt;
       long long lsum = bit2.sum(med), hsum = sum - lsum;
       long long low = lcnt * vec[med] - lsum;
       long long high = hsum - hcnt * vec[med];

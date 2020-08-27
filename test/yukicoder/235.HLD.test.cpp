@@ -1,10 +1,11 @@
-#define PROBLEM "https://yukicoder.me/problems/640"
+#define PROBLEM "https://yukicoder.me/problems/no/235"
 
 #include <bits/stdc++.h>
 using namespace std;
 
 #define call_from_test
-#include "src/DataStructure/LinkCutTree_MonoidLazy.hpp"
+#include "src/Graph/HeavyLightDecomposition.hpp"
+#include "src/DataStructure/SegmentTree_Lazy.hpp"
 #include "src/Math/ModInt.hpp"
 #undef call_from_test
 
@@ -33,18 +34,20 @@ signed main() {
   ios::sync_with_stdio(0);
   int N;
   cin >> N;
-  LinkCutTree_MonoidLazy<Mono> lct(N);
+  HeavyLightDecomposition hld(N);
   Mint S[N], C[N];
   for (int i = 0; i < N; i++) cin >> S[i];
   for (int i = 0; i < N; i++) cin >> C[i];
-  for (int i = 0; i < N; i++) lct.set_val(i, {S[i], C[i]});
   for (int i = 0; i < N - 1; i++) {
     int A, B;
     cin >> A >> B;
     A--, B--;
-    lct.link(A, B);
+    hld.add_edge(A, B);
   }
-  lct.evert(0);
+  hld.build(0);
+  SegmentTree_Lazy<Mono> seg(N);
+  for (int i = 0; i < N; i++) seg.set_val(hld.in[i], {S[i], C[i]});
+  auto q = [&](int a, int b) { return seg.query(a, b); };
   int Q;
   cin >> Q;
   while (Q--) {
@@ -52,11 +55,12 @@ signed main() {
     cin >> op >> X >> Y;
     X--, Y--;
     if (op) {
-      cout << lct.query(X, Y).val << endl;
+      cout << hld.query_path(X, Y, q, Mono::f, Mono::ti()).val << endl;
     } else {
       Mint Z;
       cin >> Z;
-      lct.update(X, Y, Z);
+      auto upd = [&](int a, int b) { seg.update(a, b, Z); };
+      hld.update_path(X, Y, upd);
     }
   }
   return 0;

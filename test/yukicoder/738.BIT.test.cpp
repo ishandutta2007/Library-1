@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/1732"
+#define PROBLEM "https://yukicoder.me/problems/no/738"
 
 #include <bits/stdc++.h>
 using namespace std;

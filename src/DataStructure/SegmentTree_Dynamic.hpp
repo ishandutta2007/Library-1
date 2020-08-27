@@ -1,7 +1,7 @@
 /**
  * @title Segment-Tree(動的)
  * @category データ構造
- * @brief O(logN)
+ * O(logN)
  */
 
 #ifndef call_from_test
@@ -90,8 +90,8 @@ struct SegmentTree_Dynamic {
     if (root != nullptr) root->xor_lazy ^= key;
   }
   void set_val(ll k, T x) { root = set_Node(root, k, x, height - 1); }
-  //[a,b)
-  T query(ll a, ll b) { return query_Node(a, b, root, 0, n, height - 1); }
+  //[l,r)
+  T query(ll l, ll r) { return query_Node(l, r, root, 0, n, height - 1); }
   T operator[](ll k) { return query(k, k + 1); }
   // min { i : check(query(0,i+1)) = true }
   template <typename C>

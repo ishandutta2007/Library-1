@@ -1,8 +1,8 @@
 /**
  * @title 二分Trie
  * @category データ構造
- * @brief O(logN)
- * @brief multiset的な仕様(内部は動的セグ木)
+ *  O(logN)
+ *  multiset的な仕様(内部は動的セグ木)
  */
 // verify用:
 // https://codeforces.com/contest/947/problem/C
@@ -20,7 +20,7 @@ using namespace std;
 struct RsumQ {
   using T = int;
   static T ti() { return 0; }
-  static T f(const T &l, const T &r) { return l + r; }
+  static T f(const T &vl, const T &vr) { return vl + vr; }
 };
 struct BinaryTrie : public SegmentTree_Dynamic<RsumQ> {
   using ll = long long;

@@ -160,6 +160,7 @@
 "test/yukicoder/649.SegTree_Dynamic.test.cpp": "2020-08-27 16:28:05 +0900",
 "test/yukicoder/658.test.cpp": "2020-08-27 17:40:42 +0900",
 "test/yukicoder/665.test.cpp": "2020-08-11 20:23:42 +0900",
+"test/yukicoder/728.WM.test.cpp": "2020-08-28 16:00:18 +0900",
 "test/yukicoder/738.BIT.test.cpp": "2020-08-27 17:40:42 +0900",
 "test/yukicoder/763.test.cpp": "2020-08-11 20:23:42 +0900",
 "test/yukicoder/768.test.cpp": "2020-08-27 16:28:05 +0900",

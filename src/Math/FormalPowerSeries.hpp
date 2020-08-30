@@ -153,7 +153,7 @@ struct FormalPowerSeries : vector<mint> {
   }
   size_t ctz() const {
     for (size_t i = 0; i < this->size(); i++)
-      if ((*this)[i].x != 0) return i;
+      if ((*this)[i] = mint(0)) return i;
     return this->size();
   }
   FPS operator>>(size_t size) const {
@@ -251,18 +251,20 @@ struct FormalPowerSeries : vector<mint> {
     auto ret = make_pair(mint(1), mint(0));
     for (auto bs = make_pair(b, mint(1)); e; e >>= 1, bs = mul(bs, bs))
       if (e & 1) ret = mul(ret, bs);
-    return ret.first.x * 2 < mint::modulo() ? ret.first : -ret.first;
+    return ret.first.get() * 2 < mint::modulo() ? ret.first : -ret.first;
   }
 
  private:
   static void mul2(const FPS &f, const FPS &g, bool cyclic = false) {
     using namespace ntt;
-    for (int i = 0; i < (int)f.size(); i++) f1[i] = f[i].x, f2[i] = f[i].x;
+    for (int i = 0; i < (int)f.size(); i++)
+      f1[i] = f[i].get(), f2[i] = f[i].get();
     if (&f == &g) {
       convolute(f1, f.size(), f1, f.size(), cyclic);
       convolute(f2, f.size(), f2, f.size(), cyclic);
     } else {
-      for (int i = 0; i < (int)g.size(); i++) g1[i] = g[i].x, g2[i] = g[i].x;
+      for (int i = 0; i < (int)g.size(); i++)
+        g1[i] = g[i].get(), g2[i] = g[i].get();
       convolute(f1, f.size(), g1, g.size(), cyclic);
       convolute(f2, f.size(), g2, g.size(), cyclic);
     }
@@ -372,7 +374,7 @@ struct FormalPowerSeries : vector<mint> {
 
  public:
   FPS inv(int deg = -1) const {  // O(NlogN)
-    assert((*this)[0].x != 0);
+    assert((*this)[0] != mint(0));
     if (deg < 0) deg = this->size();
     FPS ret(1, mint(1) / (*this)[0]);
     for (int e = 1, ne; e < deg; e = ne) {
@@ -395,12 +397,12 @@ struct FormalPowerSeries : vector<mint> {
     return ret;
   }
   FPS log(int deg = -1) const {  // O(NlogN)
-    assert((*this)[0].x == 1);
+    assert((*this)[0] == mint(1));
     if (deg < 0) deg = this->size();
     return ((this->diff() * this->inv(deg)).part(deg - 1)).inte();
   }
   FPS exp(int deg = -1) const {  // O(NlogN)
-    assert((*this)[0].x == 0);
+    assert((*this)[0] == mint(0));
     if (deg < 0) deg = this->size();
     FPS ret({1, 1 < this->size() ? (*this)[1] : 0}), retinv(1, 1);
     FPS f = this->diff();

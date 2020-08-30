@@ -24,7 +24,7 @@ struct HeavyLightDecomposition {
     out.assign(adj.size(), 0);
     head.assign(adj.size(), 0);
     par.assign(adj.size(), 0);
-    dfs_sz(rt, -1, 0);
+    dfs_sz(rt, -1);
     int t = 0;
     dfs_hld(rt, -1, t);
   }
@@ -65,11 +65,11 @@ struct HeavyLightDecomposition {
   }
 
  private:
-  void dfs_sz(int v, int p, int d) {
+  void dfs_sz(int v, int p) {
     if (adj[v].size() && adj[v][0] == p) swap(adj[v][0], adj[v].back());
     for (auto &u : adj[v])
       if (u != p) {
-        dfs_sz(u, v, d + 1);
+        dfs_sz(u, v);
         sz[v] += sz[u];
         if (sz[adj[v][0]] < sz[u]) swap(adj[v][0], u);
       }

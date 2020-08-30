@@ -52,4 +52,5 @@ struct ModInt {
     return (is);
   }
   static int modulo() { return mod; }
+  int get() const { return x; }
 };

@@ -18,16 +18,31 @@ using namespace std;
 
 namespace number_theory {
 vector<int> primes;
+const int MAX_N = 1 << 24;
+int mpf[MAX_N];  // minimum prime factor
 void init(int n) {
   primes.push_back(2);
-  bool is_prime[n + 1];
-  fill(is_prime, is_prime + n + 1, true);
+  for (int i = 2; i <= n; i += 2) mpf[i] = 2;
   for (long long p = 3; p <= n; p += 2)
-    if (is_prime[p]) {
+    if (!mpf[p]) {
+      mpf[p] = p;
       primes.push_back(p);
-      for (long long i = p * p; i <= n; i += p) is_prime[i] = false;
+      for (long long i = p * p; i <= n; i += 2 * p)
+        if (!mpf[i]) mpf[i] = p;
     }
 }
+
+vector<pair<int, int>> prime_factorize(int n) {  // O(log n)
+  vector<pair<int, int>> res;
+  while (n > 1) {
+    int p = mpf[n];
+    int e = 0;
+    while (mpf[n] == p) e++, n /= p;
+    res.push_back(make_pair(p, e));
+  }
+  return res;
+}
+
 // f -> g s.t. g(n) = sum_{m|n} f(m)
 template <typename T>
 void divisor_zeta(vector<T> &f) {

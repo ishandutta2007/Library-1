@@ -153,7 +153,7 @@ struct FormalPowerSeries : vector<mint> {
   }
   size_t ctz() const {
     for (size_t i = 0; i < this->size(); i++)
-      if ((*this)[i] = mint(0)) return i;
+      if ((*this)[i] == mint(0)) return i;
     return this->size();
   }
   FPS operator>>(size_t size) const {

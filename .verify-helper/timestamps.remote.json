@@ -109,6 +109,7 @@
 "test/yosupo/persistent_unionfind.test.cpp": "2020-08-13 01:21:15 +0900",
 "test/yosupo/point_add_range_sum.BIT.test.cpp": "2020-08-27 16:28:05 +0900",
 "test/yosupo/point_set_range_composite.SegTree.test.cpp": "2020-08-30 17:41:10 +0900",
+"test/yosupo/range_affine_range_sum.RBTL.test.cpp": "2020-08-30 17:41:10 +0900",
 "test/yosupo/range_kth_smallest.WM.test.cpp": "2020-08-27 16:59:24 +0900",
 "test/yosupo/scc.test.cpp": "2020-08-26 21:11:40 +0900",
 "test/yosupo/segment_add_get_min.test.cpp": "2020-08-11 17:25:27 +0900",

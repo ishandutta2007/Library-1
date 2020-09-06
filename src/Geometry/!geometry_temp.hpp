@@ -384,7 +384,7 @@ struct Convex : Polygon {
   pair<Point, Point> farthest() {
     int u = 0, v = 1;
     Real best = -1;
-    for (int i = 0, j = 1; i < (int)this->size(); ++i) {
+    for (int i = 0, j = 1; i < (int)this->size(); ++i)
       while (true) {
         int k = next(j);
         Real len = norm2((*this)[j] - (*this)[i]);
@@ -395,7 +395,6 @@ struct Convex : Polygon {
           break;
         }
       }
-    }
     return make_pair((*this)[u], (*this)[v]);
   }
   Real diameter() {

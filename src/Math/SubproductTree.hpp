@@ -2,7 +2,6 @@
  * @title 複数の値代入と多項式補間
  * @category 数学
  *  どちらもO(N log^2 N)
- *  多項式補間はxが等差数列ならラグランジュ補間のほうがO(N)で速い
  */
 
 #ifndef call_from_test

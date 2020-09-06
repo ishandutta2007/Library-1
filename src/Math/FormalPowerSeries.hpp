@@ -311,12 +311,12 @@ struct FormalPowerSeries : vector<mint> {
     return mul_crt(0, size);
   }
   static FPS sub_mul(const FPS &f, const FPS &q, const FPS &d) {
-    int sq = q.size();
+    size_t sq = q.size();
     FPS p = q.mul_cyclically(d);
-    int mask = p.size() - 1;
-    for (int i = 0; i < sq; i++) p[i & mask] -= f[i & mask];
+    size_t mask = p.size() - 1;
+    for (size_t i = 0; i < sq; i++) p[i & mask] -= f[i & mask];
     FPS r = f.part(sq, f.size());
-    for (int i = 0; i < r.size(); i++) r[i] -= p[(sq + i) & mask];
+    for (size_t i = 0; i < r.size(); i++) r[i] -= p[(sq + i) & mask];
     return r;
   }
   FPS comp_dc(const FPS &g, int deg = -1) const {

@@ -34,4 +34,5 @@ struct BinaryIndexedTree {
       if (i + p < (int)dat.size() && dat[i + p] <= k) k -= dat[i += p];
     return i + 1 == (int)dat.size() ? -1 : i;  // -1 -> no solutions
   }
+  T operator[](size_t k) { return sum(k + 1) - sum(k); }
 };

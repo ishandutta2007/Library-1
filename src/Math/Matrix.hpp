@@ -109,7 +109,7 @@ struct Matrix {
       for (size_t k = j; k < m + l; k++) c[d][k] *= invc;
       for (size_t i = 0; i < n; i++) {
         if (i == d) continue;
-        for (size_t k = m + l - 1; k >= j; k--) c[i][k] -= c[i][j] * c[d][k];
+        for (int k = m + l - 1; k >= (int)j; k--) c[i][k] -= c[i][j] * c[d][k];
       }
       d++;
     }

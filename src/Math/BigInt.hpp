@@ -316,9 +316,10 @@ struct BigInt {
         blim = next_blim;
       }
     }
-    BigInt ret = (*this) * t;
+    BigInt ret = this->abs() * t;
     ret.dat = vector<int64_t>(ret.dat.begin() + dat.size(), ret.dat.end());
-    while ((ret + BigInt(1)) * b <= (*this)) ret += BigInt(1);
+    while ((ret + BigInt(1)) * b <= this->abs()) ret += BigInt(1);
+    ret.minus = this->minus ^ b.minus;
     ret.shrink();
     return ret;
   }
@@ -416,11 +417,11 @@ struct BigInt {
   }
   BigInt operator*(const BigInt &v) const { return this->mul(v); }
   BigInt operator/(const BigInt &v) const {
-    if (*this < v) return BigInt(0);
+    if (this->abs() < v.abs()) return BigInt(0);
     return dat.size() < 730 ? divmod(*this, v).first : quo(v);
   }
   BigInt operator%(const BigInt &v) const {
-    if (*this < v) return *this;
+    if (this->abs() < v.abs()) return *this;
     return dat.size() < 730 ? divmod(*this, v).second : *this - v * quo(v);
   }
   BigInt &operator+=(const BigInt &v) { return *this = *this + v; }

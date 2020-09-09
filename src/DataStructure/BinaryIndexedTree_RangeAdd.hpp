@@ -27,4 +27,7 @@ struct BinaryIndexedTree_RangeAdd {
     for (int k = x; k > 0; k &= k - 1) s += dat2[k] * x;
     return s;
   }
+  // sum [l,r)
+  T sum(int l, int r) { return sum(r) - sum(l); }
+  T operator[](size_t k) { return sum(k + 1) - sum(k); }
 };

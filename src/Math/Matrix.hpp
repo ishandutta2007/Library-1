@@ -154,20 +154,20 @@ struct Matrix {
   }
   // O(n^3)
   K det() const {
-    size_t n = height();
+    int n = height();
     Matrix A(a);
     K ret(1);
-    for (size_t i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
       int p = i;
-      for (size_t j = i + 1; j < n; j++)
+      for (int j = i + 1; j < n; j++)
         if (compare(A[p][i], A[j][i])) p = j;
       if (is_zero(A[p][i])) return 0;
       if (p != i) ret = -ret;
       swap(A[p], A[i]);
       ret *= A[i][i];
       K inva = K(1) / A[i][i];
-      for (size_t j = i + 1; j < n; j++)
-        for (size_t k = n - 1; k >= i; k--) A[j][k] -= inva * A[j][i] * A[i][k];
+      for (int j = i + 1; j < n; j++)
+        for (int k = n - 1; k >= i; k--) A[j][k] -= inva * A[j][i] * A[i][k];
     }
     return ret;
   }

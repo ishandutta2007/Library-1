@@ -36,19 +36,6 @@ struct SegmentTree_Lazy {
   inline void recalc(int k) {
     while (k >>= 1) dat[k] = M::f(reflect((k << 1) | 0), reflect((k << 1) | 1));
   }
-  template <typename C>
-  int find_subtree(int a, const C& check, T& cur, bool type) {
-    while (a < n) {
-      eval(a);
-      T nxt = type ? M::f(reflect(2 * a + type), cur)
-                   : M::f(cur, reflect(2 * a + type));
-      if (check(nxt))
-        a = 2 * a + type;
-      else
-        cur = nxt, a = 2 * a + !type;
-    }
-    return a - n;
-  }
 
  public:
   SegmentTree_Lazy() {}
@@ -91,42 +78,4 @@ struct SegmentTree_Lazy {
     return M::f(vl, vr);
   }
   T operator[](const int k) { return query(k, k + 1); }
-  // min { i : check(query(a,i+1)) = true }
-  template <typename C>
-  int find_first(const C& check, int a = 0) {
-    T vl = M::ti();
-    if (a <= 0) {
-      if (check(M::f(vl, reflect(1)))) return find_subtree(1, check, vl, false);
-      return -1;
-    }
-    thrust(a + n);
-    int b = n;
-    for (a += n, b += n; a < b; a >>= 1, b >>= 1)
-      if (a & 1) {
-        T nxt = M::f(vl, reflect(a));
-        if (check(nxt)) return find_subtree(a, check, vl, false);
-        vl = nxt;
-        ++a;
-      }
-    return -1;
-  }
-  // max { i : check(query(i,b)) = true }
-  template <typename C>
-  int find_last(const C& check, int b = -1) {
-    if (b < 0) b = n;
-    T vr = M::ti();
-    if (b >= n) {
-      if (check(M::f(reflect(1), vr))) return find_subtree(1, check, vr, true);
-      return -1;
-    }
-    thrust(b + n - 1);
-    int a = 0;
-    for (a += n, b += n; a < b; a >>= 1, b >>= 1)
-      if (b & 1) {
-        T nxt = M::f(reflect(--b), vr);
-        if (check(nxt)) return find_subtree(b, check, vr, true);
-        vr = nxt;
-      }
-    return -1;
-  }
 };

@@ -37,9 +37,9 @@ signed main() {
   SegmentTree<RsumQ> seg(x.size());
   for (auto q : query) {
     if (q < 0) {
-      auto check = [&](int x) { return x > K; };
-      int i = seg.find_first(check);
-      if (i >= 0) {
+      auto check = [&](int v) { return v <= K; };
+      int i = seg.find_right(check);
+      if (i < (int)x.size()) {
         cout << x[i] << endl;
         seg.set_val(i, seg[i] - 1);
       } else {

@@ -5,7 +5,7 @@
  * @see https://qiita.com/keymoon/items/11fac5627672a6d6a9f6
  */
 
-// lcp_concat https://atcoder.jp/contests/arc050/tasks/arc050_d
+// lcp verify https://atcoder.jp/contests/arc050/tasks/arc050_d
 
 #ifndef call_from_test
 #include <bits/stdc++.h>
@@ -78,9 +78,6 @@ struct RollingHash_MultiBase {
   int lcp(int l1, int r1, int l2, int r2) const {
     return lcp(*this, *this, l1, r1, l2, r2);
   }
-  int lcp_concat(int l1, int r1, int l2, int r2) const {
-    return lcp_concat(*this, *this, l1, r1, l2, r2);
-  }
   static bool equal(const RollingHash_MultiBase &a,
                     const RollingHash_MultiBase &b, int l1, int r1, int l2,
                     int r2) {
@@ -96,35 +93,6 @@ struct RollingHash_MultiBase {
     while (high - low > 1) {
       int mid = (low + high) / 2;
       if (equal(a, b, l1, l1 + mid, l2, l2 + mid))
-        low = mid;
-      else
-        high = mid;
-    }
-    return low;
-  }
-  // lcp of s+t and t+s
-  static int lcp_concat(const RollingHash_MultiBase &a,
-                        const RollingHash_MultiBase &b, int l1, int r1, int l2,
-                        int r2) {
-    auto eq = [&](int x) {
-      for (size_t i = 0; i < a.bases.size(); i++) {
-        uint64_t ha = l1 + x <= r1
-                          ? a.rhs[i].get_hash(l1, l1 + x)
-                          : RollingHash::concat_hash(a.rhs[i], b.rhs[i], l1, r1,
-                                                     l2, l2 + x + l1 - r1);
-        uint64_t hb = l2 + x <= r2
-                          ? b.rhs[i].get_hash(l2, l2 + x)
-                          : RollingHash::concat_hash(b.rhs[i], a.rhs[i], l2, r2,
-                                                     l1, l1 + x + l2 - r2);
-        if (ha != hb) return false;
-      }
-      return true;
-    };
-    int len = r1 - l1 + r2 - l2;
-    int low = 0, high = len + 1;
-    while (high - low > 1) {
-      int mid = (low + high) / 2;
-      if (eq(mid))
         low = mid;
       else
         high = mid;

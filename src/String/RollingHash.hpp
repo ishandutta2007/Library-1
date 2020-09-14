@@ -14,9 +14,9 @@ using namespace std;
 
 struct RollingHash {
  private:
-  static const uint64_t mod = (1ull << 61ull) - 1;
+  static constexpr uint64_t mod = (1ull << 61ull) - 1;
   vector<uint64_t> hash, pw;
-  const uint64_t base;
+  uint64_t base;
 
  private:
   static inline uint64_t add(uint64_t a, uint64_t b) {
@@ -36,10 +36,10 @@ struct RollingHash {
   }
 
   RollingHash() = default;
-  RollingHash(const string &s, uint64_t base)
+  RollingHash(const string& s, uint64_t base)
       : RollingHash(vector<char>(s.begin(), s.end()), base) {}
   template <typename T>
-  RollingHash(const vector<T> &s, uint64_t base) : base(base) {
+  RollingHash(const vector<T>& s, uint64_t base) : base(base) {
     hash.assign(s.size() + 1, 0);
     pw.assign(s.size() + 1, 0);
     pw[0] = 1;
@@ -52,25 +52,27 @@ struct RollingHash {
   uint64_t get_hash(int l, int r) const {
     return add(hash[r], mod - mul(hash[l], pw[r - l]));
   }
-  uint64_t concat_hash(int l1, int r1, int l2, int r2) const {
-    return concat_hash(*this, *this, l1, r1, l2, r2);
-  }
-  static uint64_t concat_hash(const RollingHash &a, const RollingHash &b,
-                              int l1, int r1, int l2, int r2) {
-    assert(a.base == b.base);
-    return add(mul(a.get_hash(l1, r1), b.pw[r2 - l2]), b.get_hash(l2, r2));
+  uint64_t combine_hash(uint64_t hash1, uint64_t hash2, int hash2len) {
+    return add(mul(hash1, pw[hash2len]), hash2);
   }
 };
 
+template <size_t SIZE>
 struct RollingHash_MultiBase {
-  vector<RollingHash> rhs;
-  vector<uint64_t> bases;
+  using Array = array<uint64_t, SIZE>;
+  array<RollingHash, SIZE> rhs;
+  Array bases;
   RollingHash_MultiBase() = default;
-  RollingHash_MultiBase(const string &s, vector<uint64_t> bs)
+  RollingHash_MultiBase(const string& s, Array bs)
       : RollingHash_MultiBase(vector<char>(s.begin(), s.end()), bs) {}
   template <typename T>
-  RollingHash_MultiBase(const vector<T> &s, vector<uint64_t> bs) : bases(bs) {
-    for (auto base : bases) rhs.emplace_back(RollingHash(s, base));
+  RollingHash_MultiBase(const vector<T>& s, Array bs) : bases(bs) {
+    for (size_t i = 0; i < SIZE; i++) rhs[i] = RollingHash(s, bases[i]);
+  }
+  Array get_hash(int l, int r) const {
+    Array ret;
+    for (size_t i = 0; i < SIZE; i++) ret[i] = rhs[i].get_hash(l, r);
+    return ret;
   }
   bool equal(int l1, int r1, int l2, int r2) const {
     return equal(*this, *this, l1, r1, l2, r2);
@@ -78,15 +80,14 @@ struct RollingHash_MultiBase {
   int lcp(int l1, int r1, int l2, int r2) const {
     return lcp(*this, *this, l1, r1, l2, r2);
   }
-  static bool equal(const RollingHash_MultiBase &a,
-                    const RollingHash_MultiBase &b, int l1, int r1, int l2,
+  static bool equal(const RollingHash_MultiBase& a,
+                    const RollingHash_MultiBase& b, int l1, int r1, int l2,
                     int r2) {
-    assert(a.bases.size() == b.bases.size());
-    for (size_t i = 0; i < a.bases.size(); i++)
+    for (size_t i = 0; i < SIZE; i++)
       if (a.rhs[i].get_hash(l1, r1) != b.rhs[i].get_hash(l2, r2)) return false;
     return true;
   }
-  static int lcp(const RollingHash_MultiBase &a, const RollingHash_MultiBase &b,
+  static int lcp(const RollingHash_MultiBase& a, const RollingHash_MultiBase& b,
                  int l1, int r1, int l2, int r2) {
     int len = min(r1 - l1, r2 - l2);
     int low = 0, high = len + 1;

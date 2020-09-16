@@ -1,4 +1,5 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/search/titles/1595"
+#define PROBLEM \
+  "https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1595"
 
 #include <bits/stdc++.h>
 using namespace std;

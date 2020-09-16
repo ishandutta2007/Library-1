@@ -1,4 +1,5 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0334"
+#define PROBLEM \
+  "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Final/0334"
 
 #include <bits/stdc++.h>
 using namespace std;

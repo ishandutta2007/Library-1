@@ -1,4 +1,5 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0342"
+#define PROBLEM \
+  "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Prelim/0342"
 
 #define ERROR "0.00000001"
 

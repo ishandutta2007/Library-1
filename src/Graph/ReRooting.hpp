@@ -61,7 +61,7 @@ struct ReRooting {
   }
   vector<T> run() {
     dfs_sub(0, -1);
-    dfs_all(0, -1, e);
+    dfs_all(0, -1, id);
     return dp;
   }
 };

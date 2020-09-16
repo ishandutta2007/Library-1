@@ -1,12 +1,10 @@
 #define PROBLEM "https://yukicoder.me/problems/no/768"
 
-//全方位木DP
-
 #include <bits/stdc++.h>
 using namespace std;
 
 #define call_from_test
-#include "src/Graph/Tree_DP.hpp"
+#include "src/Graph/ReRooting.hpp"
 #undef call_from_test
 
 signed main() {
@@ -16,7 +14,7 @@ signed main() {
   cin >> N;
   auto f = [](short vdp, short chdp) { return short(vdp & chdp); };
   auto g = [](short dp, int dat) { return short(!dp); };
-  Tree_DP<short> graph(N, f, 1, g);
+  ReRooting<short> graph(N, f, 1, g);
   for (int i = 0; i < N - 1; i++) {
     int a, b;
     cin >> a >> b;
@@ -24,7 +22,7 @@ signed main() {
     graph.add_edge(a, b);
     graph.add_edge(b, a);
   }
-  auto ret = graph.run_rerooting();
+  auto ret = graph.run();
   vector<int> ans;
   for (int i = 0; i < N; i++)
     if (ret[i]) ans.push_back(i + 1);

@@ -1,5 +1,5 @@
 #define PROBLEM \
-  "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_2_B"
+  "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/2/GRL_2_B"
 
 #include <bits/stdc++.h>
 using namespace std;

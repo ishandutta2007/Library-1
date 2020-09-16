@@ -10,7 +10,7 @@ using namespace std;
 
 template <int mod>
 struct ModInt {
-  int x;
+  int64_t x;
   ModInt() : x(0) {}
   ModInt(int64_t y) : x(y >= 0 ? y % mod : (mod - (-y) % mod)) {}
   ModInt &operator+=(const ModInt &p) {

@@ -24,7 +24,6 @@ class Mod64 {
   static constexpr uint64_t inv = mul_inv(mod, 6, 1);
   static constexpr uint64_t r2 = -u128(mod) % mod;
   static constexpr int level = __builtin_ctzll(mod - 1);
-  static_assert(inv * mod == 1, "invalid 1/M modulo 2^64.");
   Mod64() {}
   Mod64(uint64_t n) : x(init(n)){};
   static uint64_t modulo() { return mod; }
@@ -45,9 +44,11 @@ class Mod64 {
     this->x = reduce(u128(this->x) * rhs.x);
     return *this;
   }
+  Mod64 &operator/=(Mod64 rhs) { return *this *= rhs.inverse(); }
   Mod64 operator+(Mod64 rhs) const { return Mod64(*this) += rhs; }
   Mod64 operator-(Mod64 rhs) const { return Mod64(*this) -= rhs; }
   Mod64 operator*(Mod64 rhs) const { return Mod64(*this) *= rhs; }
+  Mod64 operator/(Mod64 rhs) const { return Mod64(*this) /= rhs; }
   uint64_t get() const { return reduce(this->x) % mod; }
   void set(uint64_t n) const { this->x = n; }
   Mod64 pow(uint64_t exp) const {
@@ -58,6 +59,15 @@ class Mod64 {
   }
   Mod64 inverse() const { return pow(mod - 2); }
   uint64_t x;
+  friend ostream &operator<<(ostream &os, const Mod64 &p) {
+    return os << p.get();
+  }
+  friend istream &operator>>(istream &is, Mod64 &a) {
+    int64_t t;
+    is >> t;
+    a = Mod64<mod, prim_root>(t);
+    return (is);
+  }
 };
 template <typename mod_t>
 void convolute(mod_t *A, int s1, mod_t *B, int s2, bool cyclic = false) {
@@ -153,7 +163,7 @@ struct FormalPowerSeries : vector<mint> {
   }
   size_t ctz() const {
     for (size_t i = 0; i < this->size(); i++)
-      if ((*this)[i] != mint(0)) return i;
+      if ((*this)[i].get() != 0) return i;
     return this->size();
   }
   FPS operator>>(size_t size) const {
@@ -188,12 +198,12 @@ struct FormalPowerSeries : vector<mint> {
     return *this;
   }
   FPS &operator+=(const FPS &rhs) {
-    if (this->size() < rhs.size()) this->resize(rhs.size());
+    if (this->size() < rhs.size()) this->resize(rhs.size(), mint(0));
     for (int i = 0; i < (int)rhs.size(); i++) (*this)[i] += rhs[i];
     return *this;
   }
   FPS &operator-=(const FPS &rhs) {
-    if (this->size() < rhs.size()) this->resize(rhs.size());
+    if (this->size() < rhs.size()) this->resize(rhs.size(), mint(0));
     for (int i = 0; i < (int)rhs.size(); i++) (*this)[i] -= rhs[i];
     return *this;
   }

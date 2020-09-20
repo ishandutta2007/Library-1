@@ -8,6 +8,9 @@
 // 2冪にするのやめて二次元array(10x10)をのせることに成功
 // https://atcoder.jp/contests/arc027/tasks/arc027_4
 
+// find_left, find_right verify
+// https://atcoder.jp/contests/code-festival-2014-qualb/tasks/code_festival_qualB_d
+
 #ifndef call_from_test
 #include <bits/stdc++.h>
 using namespace std;

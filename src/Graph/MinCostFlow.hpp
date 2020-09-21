@@ -119,7 +119,7 @@ class MinCostFlow {
                      end(deficit_vs));
     for (const auto v : excess_vs) pq.emplace(dist[v] = 0, v);
     farthest = 0;
-    int deficit_count = 0;
+    size_t deficit_count = 0;
     while (!pq.empty()) {
       cost_t d;
       int u;

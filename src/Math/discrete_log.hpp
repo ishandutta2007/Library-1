@@ -17,8 +17,9 @@ int discrete_log(unsigned a, unsigned b, unsigned mod) {
     return u >= 0 ? u % mod : (mod - (-u) % mod);
   };
   unsigned cnt = 0;
-  for (unsigned g; (g = __gcd(a, mod)) != 1; cnt++) {
+  for (unsigned g;; cnt++) {
     if ((b == 1) || (mod == 1)) return cnt;
+    if ((g = __gcd(a, mod)) == 1) break;
     if (b % g != 0) return -1;  // no solution
     b /= g, mod /= g;
     b = 1ull * mod_inv(a / g, mod) * b % mod;

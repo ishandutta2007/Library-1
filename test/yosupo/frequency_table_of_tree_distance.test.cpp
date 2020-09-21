@@ -67,7 +67,7 @@ signed main() {
   };
   dfs(0);
   ans /= 2;
-  for (int i = 1; i <= N; i++) cout << (i > 1 ? " " : "") << ans[i];
+  for (int i = 1; i < N; i++) cout << (i > 1 ? " " : "") << ans[i];
   cout << '\n';
   return 0;
 }

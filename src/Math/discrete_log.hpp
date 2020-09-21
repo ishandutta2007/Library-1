@@ -28,7 +28,7 @@ int discrete_log(unsigned a, unsigned b, unsigned mod) {
   unordered_map<unsigned int, unsigned int> mp;
   unsigned int baby = 1;
   for (unsigned i = 0; i < middle; i++, baby = 1ull * baby * a % mod)
-    mp[baby] = i;
+    mp.insert({baby, i});
   unsigned int inv = mod_inv(baby, mod);
   unsigned int giant = b;
   for (unsigned i = 0; i < middle; i++) {

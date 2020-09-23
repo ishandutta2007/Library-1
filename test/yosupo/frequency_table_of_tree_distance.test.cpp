@@ -59,13 +59,14 @@ signed main() {
             if (u != p && !used[u]) que.emplace(u, v, d + 1);
         }
         cnt += num;
-        ans -= num * num / 2;
+        ans -= num * num;
       }
-    ans += cnt * cnt / 2;
+    ans += cnt * cnt;
     for (int next : tree[c])
       if (!used[next]) dfs(next);
   };
   dfs(0);
+  ans /= 2;
   for (int i = 1; i < N; i++) cout << (i > 1 ? " " : "") << ans[i];
   cout << '\n';
   return 0;

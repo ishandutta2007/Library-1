@@ -1,8 +1,6 @@
 /**
  * @title 形式的冪級数
  * @category 数学
- *  mod=998244353とかでない素数modのModInt<mod>でも使える
- *  nttの配列のサイズに注意(REの原因になりがち)
  */
 // verify用: https://loj.ac/problem/150
 
@@ -13,7 +11,7 @@ using namespace std;
 
 namespace ntt {
 template <uint64_t mod, uint64_t prim_root>
-class Mod64 {
+class UnsafeMod {
  private:
   using u128 = __uint128_t;
   static constexpr uint64_t mul_inv(uint64_t n, int e = 6, uint64_t x = 1) {
@@ -24,50 +22,40 @@ class Mod64 {
   static constexpr uint64_t inv = mul_inv(mod, 6, 1);
   static constexpr uint64_t r2 = -u128(mod) % mod;
   static constexpr int level = __builtin_ctzll(mod - 1);
-  Mod64() {}
-  Mod64(uint64_t n) : x(init(n)){};
+  UnsafeMod() {}
+  UnsafeMod(uint64_t n) : x(init(n)){};
   static uint64_t modulo() { return mod; }
   static uint64_t init(uint64_t w) { return reduce(u128(w) * r2); }
   static uint64_t reduce(const u128 w) {
     return uint64_t(w >> 64) + mod - ((u128(uint64_t(w) * inv) * mod) >> 64);
   }
-  static Mod64 omega() { return Mod64(prim_root).pow((mod - 1) >> level); }
-  Mod64 &operator+=(Mod64 rhs) {
+  static UnsafeMod omega() {
+    return UnsafeMod(prim_root).pow((mod - 1) >> level);
+  }
+  UnsafeMod &operator+=(UnsafeMod rhs) {
     this->x += rhs.x;
     return *this;
   }
-  Mod64 &operator-=(Mod64 rhs) {
+  UnsafeMod &operator-=(UnsafeMod rhs) {
     this->x += 2 * mod - rhs.x;
     return *this;
   }
-  Mod64 &operator*=(Mod64 rhs) {
+  UnsafeMod &operator*=(UnsafeMod rhs) {
     this->x = reduce(u128(this->x) * rhs.x);
     return *this;
   }
-  Mod64 &operator/=(Mod64 rhs) { return *this *= rhs.inverse(); }
-  Mod64 operator+(Mod64 rhs) const { return Mod64(*this) += rhs; }
-  Mod64 operator-(Mod64 rhs) const { return Mod64(*this) -= rhs; }
-  Mod64 operator*(Mod64 rhs) const { return Mod64(*this) *= rhs; }
-  Mod64 operator/(Mod64 rhs) const { return Mod64(*this) /= rhs; }
+  UnsafeMod operator+(UnsafeMod rhs) const { return UnsafeMod(*this) += rhs; }
+  UnsafeMod operator-(UnsafeMod rhs) const { return UnsafeMod(*this) -= rhs; }
+  UnsafeMod operator*(UnsafeMod rhs) const { return UnsafeMod(*this) *= rhs; }
   uint64_t get() const { return reduce(this->x) % mod; }
   void set(uint64_t n) const { this->x = n; }
-  Mod64 pow(uint64_t exp) const {
-    Mod64 ret = Mod64(1);
-    for (Mod64 base = *this; exp; exp >>= 1, base *= base)
+  UnsafeMod pow(uint64_t exp) const {
+    UnsafeMod ret = UnsafeMod(1);
+    for (UnsafeMod base = *this; exp; exp >>= 1, base *= base)
       if (exp & 1) ret *= base;
     return ret;
   }
-  Mod64 inverse() const { return pow(mod - 2); }
-  uint64_t x;
-  friend ostream &operator<<(ostream &os, const Mod64 &p) {
-    return os << p.get();
-  }
-  friend istream &operator>>(istream &is, Mod64 &a) {
-    int64_t t;
-    is >> t;
-    a = Mod64<mod, prim_root>(t);
-    return (is);
-  }
+  UnsafeMod inverse() const { return pow(mod - 2); }
 };
 template <typename mod_t>
 void convolute(mod_t *A, int s1, mod_t *B, int s2, bool cyclic = false) {
@@ -133,8 +121,8 @@ void ntt_dit4(mod_t *A, int n, int sign, mod_t *roots) {
   }
 }
 const int size = 1 << 22;
-using m64_1 = ntt::Mod64<34703335751681, 3>;
-using m64_2 = ntt::Mod64<35012573396993, 3>;
+using m64_1 = ntt::UnsafeMod<34703335751681, 3>;
+using m64_2 = ntt::UnsafeMod<35012573396993, 3>;
 m64_1 f1[size], g1[size];
 m64_2 f2[size], g2[size];
 
@@ -163,7 +151,7 @@ struct FormalPowerSeries : vector<mint> {
   }
   size_t ctz() const {
     for (size_t i = 0; i < this->size(); i++)
-      if ((*this)[i].get() != 0) return i;
+      if ((*this)[i] != mint(0)) return i;
     return this->size();
   }
   FPS operator>>(size_t size) const {
@@ -194,7 +182,7 @@ struct FormalPowerSeries : vector<mint> {
     return *this;
   }
   FPS &operator/=(const mint &v) {
-    *this *= mint(1) / v;
+    for (size_t k = 0; k < this->size(); k++) (*this)[k] /= v;
     return *this;
   }
   FPS &operator+=(const FPS &rhs) {
@@ -264,16 +252,25 @@ struct FormalPowerSeries : vector<mint> {
   }
 
  private:
+  template <typename T,
+            typename enable_if<is_integral<T>::value>::type * = nullptr>
+  static inline void sub(const vector<T> &v, ntt::m64_1 v1[], ntt::m64_2 v2[]) {
+    for (size_t i = 0; i < v.size(); i++) v1[i] = v[i], v2[i] = v[i];
+  }
+  template <typename T,
+            typename enable_if<!is_integral<T>::value>::type * = nullptr>
+  static inline void sub(const vector<T> &v, ntt::m64_1 v1[], ntt::m64_2 v2[]) {
+    for (size_t i = 0; i < v.size(); i++)
+      v1[i] = v[i].get(), v2[i] = v[i].get();
+  }
   static void mul2(const FPS &f, const FPS &g, bool cyclic = false) {
     using namespace ntt;
-    for (size_t i = 0; i < f.size(); i++)
-      f1[i] = f[i].get(), f2[i] = f[i].get();
+    sub(f, f1, f2);
     if (&f == &g) {
       convolute(f1, f.size(), f1, f.size(), cyclic);
       convolute(f2, f.size(), f2, f.size(), cyclic);
     } else {
-      for (size_t i = 0; i < g.size(); i++)
-        g1[i] = g[i].get(), g2[i] = g[i].get();
+      sub(g, g1, g2);
       convolute(f1, f.size(), g1, g.size(), cyclic);
       convolute(f2, f.size(), g2, g.size(), cyclic);
     }
@@ -281,7 +278,7 @@ struct FormalPowerSeries : vector<mint> {
   static FPS mul_crt(int beg, int end) {
     using namespace ntt;
     auto inv = m64_2(m64_1::modulo()).inverse();
-    mint mod1(m64_1::modulo());
+    mint mod1 = m64_1::modulo();
     FPS ret(end - beg);
     for (int i = 0; i < (int)ret.size(); i++) {
       uint64_t r1 = f1[i + beg].get(), r2 = f2[i + beg].get();
@@ -290,17 +287,14 @@ struct FormalPowerSeries : vector<mint> {
     }
     return ret;
   }
-  FPS mul_n(const FPS &g) const {
-    if (this->size() == 0 || g.size() == 0) return FPS();
-    FPS ret(this->size() + g.size() - 1, 0);
-    for (size_t i = 0; i < this->size(); i++)
-      for (size_t j = 0; j < g.size(); j++) ret[i + j] += (*this)[i] * g[j];
-    return ret;
-  }
   FPS mul(const FPS &g) const {
     if (this->size() == 0 || g.size() == 0) return FPS();
-    if (this->size() + g.size() < 750 || this->size() < 8 || g.size() < 8)
-      return mul_n(g);
+    if (this->size() + g.size() < 750 || this->size() < 8 || g.size() < 8) {
+      FPS ret(this->size() + g.size() - 1, 0);
+      for (size_t i = 0; i < this->size(); i++)
+        for (size_t j = 0; j < g.size(); j++) ret[i + j] += (*this)[i] * g[j];
+      return ret;
+    }
     const FPS &f = *this;
     mul2(f, g, false);
     return mul_crt(0, int(f.size() + g.size() - 1));
@@ -312,7 +306,7 @@ struct FormalPowerSeries : vector<mint> {
     return mul_crt(f.size(), g.size());
   }
   FPS mul_cyclically(const FPS &g) const {
-    const auto &f = *this;
+    const FPS &f = *this;
     if (f.size() == 0 || g.size() == 0) return FPS();
     mul2(f, g, true);
     int s = max(f.size(), g.size()), size = 1;

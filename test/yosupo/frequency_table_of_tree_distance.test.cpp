@@ -13,7 +13,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  using FPS = FormalPowerSeries<ntt::m64_2>;
+  using FPS = FormalPowerSeries<long long>;
   int N;
   cin >> N;
   vector<int> tree[N];
@@ -59,14 +59,13 @@ signed main() {
             if (u != p && !used[u]) que.emplace(u, v, d + 1);
         }
         cnt += num;
-        ans -= num * num;
+        ans -= num * num / 2;
       }
-    ans += cnt * cnt;
+    ans += cnt * cnt / 2;
     for (int next : tree[c])
       if (!used[next]) dfs(next);
   };
   dfs(0);
-  ans /= 2;
   for (int i = 1; i < N; i++) cout << (i > 1 ? " " : "") << ans[i];
   cout << '\n';
   return 0;

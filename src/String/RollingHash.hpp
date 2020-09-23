@@ -49,7 +49,8 @@ struct RollingHash {
     }
   }
   // S[l, r)
-  uint64_t get_hash(int l, int r) const {
+  uint64_t get_hash(int l = 0, int r = -1) const {
+    if (r < 0) r = pw.size() - 1;
     return add(hash[r], mod - mul(hash[l], pw[r - l]));
   }
   uint64_t combine_hash(uint64_t hash1, uint64_t hash2, int hash2len) {

@@ -56,6 +56,7 @@ class UnsafeMod {
     return ret;
   }
   UnsafeMod inverse() const { return pow(mod - 2); }
+  uint64_t x;
 };
 template <typename mod_t>
 void convolute(mod_t *A, int s1, mod_t *B, int s2, bool cyclic = false) {

@@ -13,7 +13,7 @@ using namespace std;
 template <typename T>
 struct BinaryIndexedTree {
   vector<T> dat;
-  BinaryIndexedTree(int n) : dat(n + 1, 0) {}
+  BinaryIndexedTree(int n) : dat(n + 1, T(0)) {}
   BinaryIndexedTree(int n, T a) : BinaryIndexedTree(vector<T>(n, a)) {}
   BinaryIndexedTree(vector<T> y) : dat(y.size() + 1, 0) {
     for (size_t i = 0; i < y.size(); ++i) dat[i + 1] = y[i];

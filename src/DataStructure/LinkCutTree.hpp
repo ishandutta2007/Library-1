@@ -69,7 +69,7 @@ struct LinkCutTree {
 
  private:
   vector<Node> ns;
-  int linkcnt;
+  size_t linkcnt;
 
  public:
   LinkCutTree(int n) : ns(n), linkcnt(0) {}

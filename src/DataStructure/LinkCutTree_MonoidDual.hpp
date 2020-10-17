@@ -86,11 +86,9 @@ struct LinkCutTree_MonoidDual {
     return t;
   }
 
- public:
-  vector<Node> ns;
-
  private:
-  int linkcnt;
+  vector<Node> ns;
+  size_t linkcnt;
 
  public:
   LinkCutTree_MonoidDual(int n, T init = T()) : ns(n, init), linkcnt(0) {}

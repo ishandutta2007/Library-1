@@ -14,7 +14,8 @@ template <typename T>
 struct BinaryIndexedTree_2D {
   using vT = vector<T>;
   vector<vT> dat;
-  BinaryIndexedTree_2D(int H, int W) : dat(vector<vT>(H + 1, vT(W + 1, 0))) {}
+  BinaryIndexedTree_2D(int H, int W)
+      : dat(vector<vT>(H + 1, vT(W + 1, T(0)))) {}
   void add(int y, int x, T v) {
     for (int i = y; i < (int)dat.size(); i += i & -i)
       for (int j = x; j < (int)dat[i].size(); j += j & -j) dat[i][j] += v;

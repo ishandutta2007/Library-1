@@ -14,7 +14,7 @@ template <typename T>
 struct BinaryIndexedTree_RangeAdd {
   vector<T> dat1;
   vector<T> dat2;
-  BinaryIndexedTree_RangeAdd(int n) : dat1(n + 1, 0), dat2(n + 1, 0) {}
+  BinaryIndexedTree_RangeAdd(int n) : dat1(n + 1, T(0)), dat2(n + 1, T(0)) {}
   void add_range(int l, int r, T w) {  // add w [l,r)
     for (int k = l + 1; k < (int)dat1.size(); k += k & -k) dat1[k] -= w * l;
     for (int k = r + 1; k < (int)dat1.size(); k += k & -k) dat1[k] += w * r;

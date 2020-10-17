@@ -15,16 +15,15 @@ signed main() {
   using FPS = FormalPowerSeries<Mint>;
   int N, M;
   cin >> N >> M;
-  int sz = 1 << (32 - __builtin_clz(N));
-  vector<FPS> buf(2 * sz + 1, {1});
+  deque<FPS> fs;
   for (int i = 0; i < N; i++) {
     Mint A;
     cin >> A;
-    buf[sz + i] = {1, -A};
+    fs.push_back(FPS({1, -A}));
   }
-  for (int k = sz - 1; k >= 0; k--)
-    buf[k] = (buf[2 * k + 1] * buf[2 * k + 2]).pre(M + 1);
-  auto ans = -buf[0].log(M + 1);
+  for (; fs.size() > 1; fs.pop_front(), fs.pop_front())
+    fs.push_back(fs[0] * fs[1]);
+  auto ans = -fs[0].log(M + 1);
   for (int i = 1; i <= M; i++) cout << (i - 1 ? " " : "") << ans[i] * i;
   cout << endl;
   return 0;

@@ -8,49 +8,67 @@
 using namespace std;
 #endif
 
-template <int mod>
-struct ModInt {
-  int64_t x;
-  ModInt() : x(0) {}
-  ModInt(int64_t y) : x(y >= 0 ? y % mod : (mod - (-y) % mod)) {}
-  ModInt &operator+=(const ModInt &p) {
-    if ((x += p.x) >= mod) x -= mod;
-    return *this;
+template <uint64_t mod, uint64_t prim_root = 0>
+class ModInt {
+ private:
+  using u128 = __uint128_t;
+  static constexpr uint64_t mul_inv(uint64_t n, int e = 6, uint64_t x = 1) {
+    return e == 0 ? x : mul_inv(n, e - 1, x * (2 - x * n));
   }
-  ModInt &operator-=(const ModInt &p) {
-    if ((x += mod - p.x) >= mod) x -= mod;
-    return *this;
+  static constexpr uint64_t inv = mul_inv(mod, 6, 1);
+  static constexpr uint64_t r2 = -u128(mod) % mod;
+  static constexpr uint64_t m2 = mod << 1;
+
+ public:
+  static constexpr int level = __builtin_ctzll(mod - 1);
+  ModInt() = default;
+  ~ModInt() = default;
+  constexpr ModInt(uint64_t n) : x(init(n)){};
+  static constexpr uint64_t modulo() { return mod; }
+  static constexpr uint64_t init(uint64_t w) { return reduce(u128(w) * r2); }
+  static constexpr uint64_t reduce(const u128 w) {
+    return uint64_t(w >> 64) + mod - ((u128(uint64_t(w) * inv) * mod) >> 64);
   }
-  ModInt &operator*=(const ModInt &p) {
-    x = (int)(1LL * x * p.x % mod);
-    return *this;
+  static constexpr uint64_t pr_rt() { return prim_root; }
+  constexpr ModInt operator-() const {
+    ModInt ret;
+    return ret.x = (m2 & -(x != 0)) - x, ret;
   }
-  ModInt &operator/=(const ModInt &p) { return *this *= p.inverse(); }
-  ModInt operator-() const { return ModInt() - *this; }
-  ModInt operator+(const ModInt &p) const { return ModInt(*this) += p; }
-  ModInt operator-(const ModInt &p) const { return ModInt(*this) -= p; }
-  ModInt operator*(const ModInt &p) const { return ModInt(*this) *= p; }
-  ModInt operator/(const ModInt &p) const { return ModInt(*this) /= p; }
-  bool operator==(const ModInt &p) const { return x == p.x; }
-  bool operator!=(const ModInt &p) const { return x != p.x; }
-  ModInt inverse() const {
-    int a = x, b = mod, u = 1, v = 0, t;
-    while (b) t = a / b, swap(a -= t * b, b), swap(u -= t * v, v);
-    return ModInt(u);
+  constexpr ModInt &operator+=(const ModInt &rhs) {
+    return x += rhs.x - m2, x += m2 & -(x >> 63), *this;
   }
-  ModInt pow(int64_t e) const {
-    ModInt ret(1);
-    for (ModInt b = *this; e; e >>= 1, b *= b)
-      if (e & 1) ret *= b;
+  constexpr ModInt &operator-=(const ModInt &rhs) {
+    return x -= rhs.x, x += m2 & -(x >> 63), *this;
+  }
+  constexpr ModInt &operator*=(const ModInt &rhs) {
+    return this->x = reduce(u128(this->x) * rhs.x), *this;
+  }
+  constexpr ModInt &operator/=(const ModInt &rhs) {
+    return this->operator*=(rhs.inverse());
+  }
+  ModInt operator+(const ModInt &rhs) const { return ModInt(*this) += rhs; }
+  ModInt operator-(const ModInt &rhs) const { return ModInt(*this) -= rhs; }
+  ModInt operator*(const ModInt &rhs) const { return ModInt(*this) *= rhs; }
+  ModInt operator/(const ModInt &rhs) const { return ModInt(*this) /= rhs; }
+  bool operator==(const ModInt &rhs) const { return x == rhs.x; }
+  bool operator!=(const ModInt &rhs) const { return x != rhs.x; }
+  uint64_t get() const {
+    uint64_t ret = reduce(x) - mod;
+    return ret + (mod & -(ret >> 63));
+  }
+  void set(uint64_t n) const { this->x = n; }
+  constexpr ModInt pow(uint64_t k) const {
+    ModInt ret = ModInt(1);
+    for (ModInt base = *this; k; k >>= 1, base *= base)
+      if (k & 1) ret *= base;
     return ret;
   }
-  friend ostream &operator<<(ostream &os, const ModInt &p) { return os << p.x; }
-  friend istream &operator>>(istream &is, ModInt &a) {
-    int64_t t;
-    is >> t;
-    a = ModInt<mod>(t);
-    return (is);
+  constexpr ModInt inverse() const { return pow(mod - 2); }
+  friend std::istream &operator>>(std::istream &is, ModInt &rhs) {
+    return is >> rhs.x, rhs.x = init(rhs.x), is;
   }
-  static int modulo() { return mod; }
-  int get() const { return x; }
+  friend std::ostream &operator<<(std::ostream &os, const ModInt &rhs) {
+    return os << rhs.get();
+  }
+  uint64_t x;
 };

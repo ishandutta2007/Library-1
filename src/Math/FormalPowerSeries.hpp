@@ -448,8 +448,8 @@ struct FormalPowerSeries : vector<mint> {
   }
   FPS pow(uint64_t k, int deg = -1) const {  // O(NlogN)
     if (deg < 0) deg = this->size();
-    int i = this->ctz();
-    if (i == this->size() || i * k > deg) return FPS(deg, 0);
+    size_t i = this->ctz();
+    if (i == this->size() || i * k > (uint64_t)deg) return FPS(deg, 0);
     int n = deg - i * k;
     mint inv = mint(1) / (*this)[i];
     FPS ret = ((((*this) >> i) * inv).log(n) * k).exp(n) * (*this)[i].pow(k);

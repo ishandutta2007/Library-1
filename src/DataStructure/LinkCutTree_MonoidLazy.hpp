@@ -103,11 +103,9 @@ struct LinkCutTree_MonoidLazy {
     return t;
   }
 
- public:
-  vector<Node> ns;
-
  private:
-  int linkcnt;
+  vector<Node> ns;
+  size_t linkcnt;
 
  public:
   LinkCutTree_MonoidLazy(int n, T init = M::ti()) : ns(n, init), linkcnt(0) {}

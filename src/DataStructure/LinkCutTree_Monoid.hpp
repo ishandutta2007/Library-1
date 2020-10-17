@@ -89,11 +89,9 @@ struct LinkCutTree_Monoid {
     return t;
   }
 
- public:
-  vector<Node> ns;
-
  private:
-  int linkcnt;
+  vector<Node> ns;
+  size_t linkcnt;
 
  public:
   LinkCutTree_Monoid(int n, T init = M::ti()) : ns(n, init), linkcnt(0) {}

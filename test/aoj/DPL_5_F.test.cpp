@@ -16,7 +16,6 @@ signed main() {
   cin >> n >> k;
   using Mint = ModInt<int(1e9 + 7)>;
   using C = Combination<Mint>;
-  C::init(n + k);
   cout << C::nHr(k, n - k) << endl;
   return 0;
 }

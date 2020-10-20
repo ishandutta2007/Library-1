@@ -9,6 +9,7 @@
 using namespace std;
 
 #define call_from_test
+#include "src/Math/ModInt.hpp"
 #include "src/Math/FormalPowerSeries.hpp"
 #undef call_from_test
 #endif
@@ -17,34 +18,32 @@ using namespace std;
 // b[n] = c[0] * b[n-N] + c[1] * b[n-N+1] + ... + c[N-1] * b[n-1] (n >= N)
 // return b[k]
 
-template <class Modint>
-Modint kitamasa(const vector<Modint> &c, const vector<Modint> &a, uint64_t k) {
+template <class mint>
+mint kitamasa(const vector<mint> &c, const vector<mint> &a, uint64_t k) {
   assert(a.size() == c.size());
   int N = a.size();
-  if (k < N) return a[k];
-  using FPS = FormalPowerSeries<Modint>;
+  if (k < (uint64_t)N) return a[k];
   uint64_t mask = (uint64_t(1) << (63 - __builtin_clzll(k))) >> 1;
-  FPS f(N + 1);
+  FormalPowerSeries<mint> f(N + 1), r({1, 0});
   f[0] = 1;
   for (int i = 0; i < N; i++) f[N - i] = -c[i];
-  FPS r({1, 0});
-  if (N < 1150) {  // naive
-    r = r.divrem_rev_n(f).second;
+  if (N < 512) {  // naive
+    r = r.quorem_rev_n(f).second;
     for (; mask; mask >>= 1) {
       r *= r;
       if (k & mask) r.push_back(0);
-      r = r.divrem_rev_n(f).second;
+      r = r.quorem_rev_n(f).second;
     }
   } else {
-    FPS inv = f.inv(N);
-    r = r.rem_rev_pre(f, inv);
+    FormalPowerSeries<mint> inv = f.inv();
+    r = r.quorem_rev_con(f, inv).second;
     for (; mask; mask >>= 1) {
       r *= r;
       if (k & mask) r.push_back(0);
-      r = r.rem_rev_pre(f, inv);
+      r = r.quorem_rev_con(f, inv).second;
     }
   }
-  Modint ret(0);
+  mint ret(0);
   for (int i = 0; i < N; i++) ret += r[N - i - 1] * a[i];
   return ret;
 }

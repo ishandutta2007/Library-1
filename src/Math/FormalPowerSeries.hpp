@@ -414,9 +414,17 @@ struct FormalPowerSeries : vector<mint> {
     }
     return ret;
   }
-
+  FPS operator-() {
+    FPS ret(this->size());
+    for (int i = ret.size() - 1; i >= 0; i--) ret[i] = -(*this)[i];
+    return ret;
+  }
   FPS &operator*=(const mint &v) {
     for (int i = this->size() - 1; i >= 0; i--) (*this)[i] *= v;
+    return *this;
+  }
+  FPS &operator/=(const mint &v) {
+    for (int i = this->size() - 1; i >= 0; i--) (*this)[i] /= v;
     return *this;
   }
   FPS &operator+=(const FPS &rhs) {
@@ -433,6 +441,7 @@ struct FormalPowerSeries : vector<mint> {
   FPS &operator/=(const FPS &rhs) { return *this = this->quo(rhs); }
   FPS &operator%=(const FPS &rhs) { return *this = this->quorem(rhs).second; }
   FPS operator*(const mint &v) const { return FPS(*this) *= v; }
+  FPS operator/(const mint &v) const { return FPS(*this) /= v; }
   FPS operator+(const FPS &rhs) const { return FPS(*this) += rhs; }
   FPS operator-(const FPS &rhs) const { return FPS(*this) -= rhs; }
   FPS operator*(const FPS &rhs) const { return this->mul(rhs); }

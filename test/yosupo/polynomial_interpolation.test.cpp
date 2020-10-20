@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "src/Math/FormalPowerSeries.hpp"
 #include "src/Math/ModInt.hpp"
+#include "src/Math/FormalPowerSeries.hpp"
 #include "src/Math/SubproductTree.hpp"
 #undef call_from_test
 

@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "src/Math/FormalPowerSeries.hpp"
 #include "src/Math/ModInt.hpp"
+#include "src/Math/FormalPowerSeries.hpp"
 #undef call_from_test
 
 signed main() {
@@ -24,7 +24,8 @@ signed main() {
     f[x] = -1;
   }
   f[0] = 1;
-  FPS ans = f.inv(K + 1);
+  f.resize(K + 1);
+  FPS ans = f.inv();
   cout << ans[K] << endl;
   return 0;
 }

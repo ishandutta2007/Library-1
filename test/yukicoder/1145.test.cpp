@@ -4,8 +4,8 @@
 using namespace std;
 
 #define call_from_test
-#include "src/Math/FormalPowerSeries.hpp"
 #include "src/Math/ModInt.hpp"
+#include "src/Math/FormalPowerSeries.hpp"
 #undef call_from_test
 
 signed main() {
@@ -23,7 +23,8 @@ signed main() {
   }
   for (; fs.size() > 1; fs.pop_front(), fs.pop_front())
     fs.push_back(fs[0] * fs[1]);
-  auto ans = -fs[0].log(M + 1);
+  fs[0].resize(M + 1);
+  auto ans = -fs[0].log();
   for (int i = 1; i <= M; i++) cout << (i - 1 ? " " : "") << ans[i] * i;
   cout << endl;
   return 0;

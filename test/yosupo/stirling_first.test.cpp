@@ -5,9 +5,9 @@
 using namespace std;
 
 #define call_from_test
+#include "src/Math/ModInt.hpp"
 #include "src/Math/FormalPowerSeries.hpp"
 #include "src/Math/fps_sequence.hpp"
-#include "src/Math/ModInt.hpp"
 #undef call_from_test
 
 signed main() {

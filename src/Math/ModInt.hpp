@@ -21,9 +21,9 @@ class ModInt {
 
  public:
   static constexpr int level = __builtin_ctzll(mod - 1);
-  ModInt() = default;
+  constexpr ModInt() : x(0) {}
+  constexpr ModInt(int64_t n) : x(init(n < 0 ? mod - (-n) % mod : n)) {}
   ~ModInt() = default;
-  constexpr ModInt(uint64_t n) : x(init(n)){};
   static constexpr uint64_t modulo() { return mod; }
   static constexpr uint64_t init(uint64_t w) { return reduce(u128(w) * r2); }
   static constexpr uint64_t reduce(const u128 w) {

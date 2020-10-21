@@ -16,7 +16,7 @@ signed main() {
   using Mint = ModInt<int(1e9 + 7)>;
   vector<Mint> c = {1, 1, 1}, a = {1, 1, 2};
   while (cin >> n && n) {
-    cout << (kitamasa(c, a, n).x - 1) / 3650 + 1 << "\n";
+    cout << (kitamasa(c, a, n).get() - 1) / 3650 + 1 << "\n";
   }
   cout << flush;
   return 0;

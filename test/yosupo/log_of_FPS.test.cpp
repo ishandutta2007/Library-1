@@ -18,7 +18,7 @@ signed main() {
   FPS a(N);
   for (int i = 0; i < N; i++) cin >> a[i];
   auto b = a.log();
-  for (int i = 0; i < N; i++) cout << b[i] << (i < N - 1 ? " " : "\n");
-  cout << flush;
+  for (int i = 0; i < N; i++) cout << (i ? " " : "") << b[i];
+  cout << '\n';
   return 0;
 }

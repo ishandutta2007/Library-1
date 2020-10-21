@@ -103,7 +103,7 @@ struct FormalPowerSeries : vector<mint> {
  public:
   int deg() const {
     int n = int(this->size()) - 1;
-    while (n >= 0 && (*this)[n] == 0) n--;
+    while (n >= 0 && (*this)[n] == mint(0)) n--;
     return n;
   }
   FPS &norm() { return this->resize(max(this->deg() + 1, 1)), *this; }
@@ -154,10 +154,11 @@ struct FormalPowerSeries : vector<mint> {
   }
   inline FPS div_con(const FPS &g, const FPS &g0) const {
     if (this->size() == 1) return {(*this)[0] * g[0].inverse()};
-    int n = this->size(), len = get_len(n), len2 = len >> 1;
+    int n = this->size(), len = get_len(n), len2 = len >> 1,
+        m = min<int>(n, g.size());
     FPS ret(n);
     copy_n(this->begin(), n, bf1), fill(bf1 + n, bf1 + len, 0);
-    copy_n(g.begin(), n, bf2), fill(bf2 + n, bf2 + len, 0);
+    copy_n(g.begin(), m, bf2), fill(bf2 + m, bf2 + len, 0);
     subst(a1, a2, 0, len2, g0.data()), subst(b1, b2, 0, len2, bf1);
     fill(a1 + len2, a1 + len, 0), fill(a2 + len2, a2 + len, 0);
     fill(b1 + len2, b1 + len, 0), fill(b2 + len2, b2 + len, 0);
@@ -177,10 +178,10 @@ struct FormalPowerSeries : vector<mint> {
     return ret;
   }
   inline pair<FPS, FPS> quorem_rev_con(const FPS &yr, const FPS &g0r) const {
-    if (this->size() < yr.size()) return make_pair(FPS({0}), *this);
+    if (this->size() < yr.size()) return make_pair(FPS{0}, *this);
     int sq = this->size() - yr.size() + 1, len = get_len(sq);
     FPS qr = FPS(this->begin(), this->begin() + sq).div_con(yr, g0r);
-    if (yr.size() == 1) return make_pair(qr, FPS({0}));
+    if (yr.size() == 1) return make_pair(qr, FPS{0});
     len = get_len(max(qr.size(), yr.size()));
     int mask = len - 1;
     subst(a1, a2, 0, sq, qr.data()), subst(b1, b2, 0, yr.size(), yr.data());
@@ -195,7 +196,7 @@ struct FormalPowerSeries : vector<mint> {
     return make_pair(qr, rem);
   }
   inline pair<FPS, FPS> quorem_rev_n(const FPS &yr) const {
-    if (this->size() < yr.size()) return make_pair(FPS({0}), *this);
+    if (this->size() < yr.size()) return make_pair(FPS{0}, *this);
     int sq = this->size() - yr.size() + 1;
     copy_n(this->begin(), this->size(), bf1);
     FPS qr(sq, 0);
@@ -208,50 +209,43 @@ struct FormalPowerSeries : vector<mint> {
   }
   FPS div(const FPS &y) const {
     if (this->size() == 1) return {(*this)[0] * y[0].inverse()};
-    int len = get_len(this->size()), len2 = len >> 1;
-    return div_con(y, FPS(y.begin(), y.begin() + len2).inv());
+    int len2 = get_len(this->size()) / 2;
+    FPS g(len2);
+    for (int i = min<int>(y.size(), len2) - 1; i >= 0; i--) g[i] = y[i];
+    return div_con(y, g.inv());
   }
   FPS quo(FPS y) const {
     FPS x(*this);
     x.norm(), y.norm();
-    if (x.size() < y.size()) return FPS({0});
+    if (x.size() < y.size()) return FPS{0};
+    if (x.size() == y.size()) return FPS{x.back() / y.back()};
     reverse(x.begin(), x.end()), reverse(y.begin(), y.end());
-    FPS ret = y.size() < 512 ? x.quorem_rev_n(y).first
-                             : (x.resize(x.size() - y.size() + 1), x.div(y));
+    FPS ret = y.size() < 1024 ? x.quorem_rev_n(y).first
+                              : (x.resize(x.size() - y.size() + 1), x.div(y));
     reverse(ret.begin(), ret.end());
     return ret;
   }
-  FPS quorem(FPS y) const {
+  pair<FPS, FPS> quorem(FPS y) const {
     FPS x(*this);
     x.norm(), y.norm();
-    if (x.size() < y.size()) return make_pair(FPS({0}), x);
+    if (x.size() < y.size()) return make_pair(FPS{0}, x);
+    if (x.size() == y.size()) {
+      mint tmp = x.back() / y.back();
+      return make_pair(FPS{tmp}, x - y * tmp);
+    }
     reverse(x.begin(), x.end()), reverse(y.begin(), y.end());
-    int len = get_len(x.size()), len2 = len >> 1;
     FPS q, r;
-    tie(q, r) = y.size() < 512 ? x.quorem_rev_n(y)
-                               : x.quorem_rev_con(
-                                   y, FPS(y.begin(), y.begin() + len2).inv());
+    if (y.size() < 1024)
+      tie(q, r) = x.quorem_rev_n(y);
+    else {
+      int len2 = get_len(x.size() - y.size() + 1) / 2;
+      FPS gr(len2);
+      for (int i = min<int>(y.size(), len2) - 1; i >= 0; i--) gr[i] = y[i];
+      tie(q, r) = x.quorem_rev_con(y, gr.inv());
+    }
     reverse(q.begin(), q.end()), reverse(r.begin(), r.end());
     return make_pair(q, r.norm());
   }
-  // pair<FPS, FPS> quorem(FPS y) const {
-  //   if (this->size() < y.size()) return make_pair(FPS({0}), *this);
-  //   FPS q = this->quo(y), rem(y.size() - 1);
-  //   if (y.size() == 1) return make_pair(q, FPS({0}));
-  //   int len = get_len(max(q.size(), y.size()));
-  //   int overlap = q.size() + y.size() - 1 - len;
-  //   subst(a1, a2, 0, q.size(), q), subst(b1, b2, 0, y.size(), y);
-  //   fill(a1 + q.size(), a1 + len, 0), fill(a2 + q.size(), a2 + len, 0);
-  //   fill(b1 + q.size(), b1 + len, 0), fill(b2 + q.size(), b2 + len, 0);
-  //   dft(len, a1), dft(len, a2), dft(len, b1), dft(len, b2);
-  //   for (int i = len - 1; i >= 0; i--) a1[i] *= b1[i], a2[i] *= b2[i];
-  //   idft(len, a1), idft(len, a2), crt(a1, a2, 0, rem.size(), rem.data());
-  //   if (overlap > 0)
-  //     for (int i = min<int>(rem.size(), overlap); i >= 0; i--)
-  //       rem[i] -= (*this)[len + i];
-  //   for (int i = rem.size() - 1; i >= 0; i--) rem[i] = (*this)[i] - rem[i];
-  //   return make_pair(q, rem.norm());
-  // }
   FPS diff() const {
     FPS ret(max(0, int(this->size() - 1)));
     for (int i = this->size() - 1; i > 0; i--) ret[i - 1] = (*this)[i] * i;
@@ -317,12 +311,12 @@ struct FormalPowerSeries : vector<mint> {
   }
   FPS pow(uint64_t k) const {
     int n = this->size(), cnt = 0;
-    while (cnt < n && (*this)[cnt] == 0) cnt++;
+    while (cnt < n && (*this)[cnt] == mint(0)) cnt++;
     if (k * cnt >= (uint64_t)n) return FPS(n, 0);
-    FPS ret(n, 0);
     mint iv = (*this)[cnt].inverse();
     FPS pt = ((FPS(this->begin() + cnt, this->end()) * iv).log() * k).exp()
-             * (*this)[cnt].pow(k);
+             * (*this)[cnt].pow(k),
+        ret(n, 0);
     for (int i = k * cnt, j = 0; i < n; i++, j++) ret[i] = pt[j];
     return ret;
   }
@@ -335,7 +329,7 @@ struct FormalPowerSeries : vector<mint> {
   FPS sqrt() const {
     static constexpr mint iv2 = mint(mint::modulo() - (mint::modulo() - 1) / 2);
     int n = this->size(), cnt = 0;
-    while (cnt < n && (*this)[cnt] == 0) cnt++;
+    while (cnt < n && (*this)[cnt] == mint(0)) cnt++;
     if (cnt == n) return FPS(n, 0);
     if (cnt & 1) return FPS();  // no solution
     mint sqr = (*this)[cnt].sqrt();
@@ -427,24 +421,24 @@ struct FormalPowerSeries : vector<mint> {
     for (int i = this->size() - 1; i >= 0; i--) (*this)[i] /= v;
     return *this;
   }
-  FPS &operator+=(const FPS &rhs) {
-    if (this->size() < rhs.size()) this->resize(rhs.size(), 0);
-    for (int i = rhs.size() - 1; i >= 0; i--) (*this)[i] += rhs[i];
-    return *this;
+  FPS &operator+=(const FPS &r) {
+    if (this->size() < r.size()) this->resize(r.size(), 0);
+    for (int i = r.size() - 1; i >= 0; i--) (*this)[i] += r[i];
+    return this->norm();
   }
-  FPS &operator-=(const FPS &rhs) {
-    if (this->size() < rhs.size()) this->resize(rhs.size(), 0);
-    for (int i = rhs.size() - 1; i >= 0; i--) (*this)[i] -= rhs[i];
-    return *this;
+  FPS &operator-=(const FPS &r) {
+    if (this->size() < r.size()) this->resize(r.size(), 0);
+    for (int i = r.size() - 1; i >= 0; i--) (*this)[i] -= r[i];
+    return this->norm();
   }
-  FPS &operator*=(const FPS &rhs) { return *this = this->mul(rhs); }
-  FPS &operator/=(const FPS &rhs) { return *this = this->quo(rhs); }
-  FPS &operator%=(const FPS &rhs) { return *this = this->quorem(rhs).second; }
+  FPS &operator*=(const FPS &r) { return *this = norm().mul(FPS(r).norm()); }
+  FPS &operator/=(const FPS &r) { return *this = this->quo(r); }
+  FPS &operator%=(const FPS &r) { return *this = this->quorem(r).second; }
   FPS operator*(const mint &v) const { return FPS(*this) *= v; }
   FPS operator/(const mint &v) const { return FPS(*this) /= v; }
-  FPS operator+(const FPS &rhs) const { return FPS(*this) += rhs; }
-  FPS operator-(const FPS &rhs) const { return FPS(*this) -= rhs; }
-  FPS operator*(const FPS &rhs) const { return this->mul(rhs); }
-  FPS operator/(const FPS &rhs) const { return this->quo(rhs); }
-  FPS operator%(const FPS &rhs) const { return this->quorem(rhs).second; }
+  FPS operator+(const FPS &r) const { return FPS(*this) += r; }
+  FPS operator-(const FPS &r) const { return FPS(*this) -= r; }
+  FPS operator*(const FPS &r) const { return FPS(*this) *= r; }
+  FPS operator/(const FPS &r) const { return this->quo(r); }
+  FPS operator%(const FPS &r) const { return this->quorem(r).second; }
 };

@@ -387,19 +387,18 @@ struct FormalPowerSeries : vector<mint> {
     return ret;
   }
   FPS comp(const FPS &g) const {
-    int n = this->size(), k = std::sqrt(n);
+    int n = this->size(), k = std::sqrt(1. * n);
     if (k * k < n) k++;
-    int d = n / k;
-    if (k * d < n) d++;
-    vector<FPS> gpw(k + 1, {1});
-    for (int i = 1; i <= k; i++) {
+    int d = (n - 1 + k) / k;
+    vector<FPS> gpw(d + 1, {1});
+    for (int i = 1; i <= d; i++) {
       gpw[i] = gpw[i - 1] * g;
       if ((int)gpw[i].size() > n) gpw[i].resize(n);
     }
     FPS ret(n, 0), gd({1}), tmp;
     for (int i = 0; i < k; i++) {
-      tmp.assign(n, 0);
-      for (int j = 0; j < d && i * d + j < n; j++)
+      tmp = {(*this)[i * d]};
+      for (int j = 1; j < d && i * d + j < n; j++)
         tmp += gpw[j] * (*this)[i * d + j];
       tmp *= gd;
       for (int j = min<int>(n, tmp.size()) - 1; j >= 0; j--) ret[j] += tmp[j];

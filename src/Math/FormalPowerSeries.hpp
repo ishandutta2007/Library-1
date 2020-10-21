@@ -390,7 +390,8 @@ struct FormalPowerSeries : vector<mint> {
     int n = this->size(), k = std::sqrt(1. * n);
     if (k * k < n) k++;
     int d = (n - 1 + k) / k;
-    vector<FPS> gpw(d + 1, {1});
+    vector<FPS> gpw(d + 1);
+    gpw[0] = {1};
     for (int i = 1; i <= d; i++) {
       gpw[i] = gpw[i - 1] * g;
       if ((int)gpw[i].size() > n) gpw[i].resize(n);

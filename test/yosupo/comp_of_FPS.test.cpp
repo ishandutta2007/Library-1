@@ -21,6 +21,6 @@ signed main() {
   for (int i = 0; i < N; i++) cin >> b[i];
   FPS c = a.comp(b);
   for (int i = 0; i < N; i++) cout << (i ? " " : "") << c[i];
-  cout << endl;
+  cout << '\n';
   return 0;
 }

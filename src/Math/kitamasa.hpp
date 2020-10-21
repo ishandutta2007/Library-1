@@ -27,10 +27,10 @@ mint kitamasa(const vector<mint> &c, const vector<mint> &a, uint64_t k) {
   FormalPowerSeries<mint> f(N + 1), r({1, 0});
   f[0] = 1;
   for (int i = 0; i < N; i++) f[N - i] = -c[i];
-  if (N < 512) {  // naive
+  if (N < 1024) {  // naive
     r = r.quorem_rev_n(f).second;
     for (; mask; mask >>= 1) {
-      r *= r;
+      r = r.mul(r);
       if (k & mask) r.push_back(0);
       r = r.quorem_rev_n(f).second;
     }
@@ -38,7 +38,7 @@ mint kitamasa(const vector<mint> &c, const vector<mint> &a, uint64_t k) {
     FormalPowerSeries<mint> inv = f.inv();
     r = r.quorem_rev_con(f, inv).second;
     for (; mask; mask >>= 1) {
-      r *= r;
+      r = r.mul(r);
       if (k & mask) r.push_back(0);
       r = r.quorem_rev_con(f, inv).second;
     }

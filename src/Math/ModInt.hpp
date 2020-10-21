@@ -29,6 +29,7 @@ class ModInt {
   static constexpr uint64_t reduce(const u128 w) {
     return uint64_t(w >> 64) + mod - ((u128(uint64_t(w) * inv) * mod) >> 64);
   }
+  static constexpr uint64_t norm(uint64_t x) { return x - (mod & -(x >= mod)); }
   static constexpr uint64_t pr_rt() { return prim_root; }
   constexpr ModInt operator-() const {
     ModInt ret;
@@ -50,13 +51,12 @@ class ModInt {
   ModInt operator-(const ModInt &rhs) const { return ModInt(*this) -= rhs; }
   ModInt operator*(const ModInt &rhs) const { return ModInt(*this) *= rhs; }
   ModInt operator/(const ModInt &rhs) const { return ModInt(*this) /= rhs; }
-  bool operator==(const ModInt &rhs) const { return x == rhs.x; }
-  bool operator!=(const ModInt &rhs) const { return x != rhs.x; }
+  bool operator==(const ModInt &rhs) const { return norm(x) == norm(rhs.x); }
+  bool operator!=(const ModInt &rhs) const { return norm(x) != norm(rhs.x); }
   uint64_t get() const {
     uint64_t ret = reduce(x) - mod;
     return ret + (mod & -(ret >> 63));
   }
-  void set(uint64_t n) const { this->x = n; }
   constexpr ModInt pow(uint64_t k) const {
     ModInt ret = ModInt(1);
     for (ModInt base = *this; k; k >>= 1, base *= base)
@@ -64,6 +64,22 @@ class ModInt {
     return ret;
   }
   constexpr ModInt inverse() const { return pow(mod - 2); }
+  constexpr ModInt sqrt() const {
+    if (*this == ModInt(0) || mod == 2) return *this;
+    if (pow((mod - 1) >> 1) != 1) return ModInt(0);  // no solutions
+    ModInt ONE = 1, b(2), w(b * b - *this);
+    while (w.pow((mod - 1) >> 1) == ONE) b += ONE, w = b * b - *this;
+    auto mul = [&](pair<ModInt, ModInt> u, pair<ModInt, ModInt> v) {
+      ModInt a = (u.first * v.first + u.second * v.second * w);
+      ModInt b = (u.first * v.second + u.second * v.first);
+      return make_pair(a, b);
+    };
+    uint64_t e = (mod + 1) >> 1;
+    auto ret = make_pair(ONE, ModInt(0));
+    for (auto bs = make_pair(b, ONE); e; e >>= 1, bs = mul(bs, bs))
+      if (e & 1) ret = mul(ret, bs);
+    return ret.first.get() * 2 < mod ? ret.first : -ret.first;
+  }
   friend std::istream &operator>>(std::istream &is, ModInt &rhs) {
     return is >> rhs.x, rhs.x = init(rhs.x), is;
   }

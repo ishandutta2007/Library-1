@@ -260,7 +260,7 @@ struct FormalPowerSeries : vector<mint> {
   }
   FPS log() const {
     assert((*this)[0] == mint(1));
-    return this->size() == 1 ? FPS({0}) : this->diff().div(*this).inte();
+    return this->size() == 1 ? FPS{0} : this->diff().div(*this).inte();
   }
   FPS exp() const {
     assert((*this)[0] == mint(0));
@@ -396,7 +396,7 @@ struct FormalPowerSeries : vector<mint> {
       gpw[i] = gpw[i - 1] * g;
       if ((int)gpw[i].size() > n) gpw[i].resize(n);
     }
-    FPS ret(n, 0), gd({1}), tmp;
+    FPS ret(n, 0), gd{1}, tmp;
     for (int i = 0; i < k; i++) {
       tmp = {(*this)[i * d]};
       for (int j = 1; j < d && i * d + j < n; j++)

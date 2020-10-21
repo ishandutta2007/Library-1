@@ -1,7 +1,8 @@
 /**
  * @title 多項式の拡張互除法
  * @category 数学
- *  O(Nlog^2N) ?
+ *  O(Nlog^2N)
+ * @see https://loj.ac/article/2773
  */
 
 #ifndef call_from_test

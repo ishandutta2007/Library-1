@@ -17,9 +17,9 @@ signed main() {
   cin >> N >> K >> P;
   Mint p = Mint(P) / Mint(100);
   Mint q = Mint(1) - p;
-  FPS f(N + 1, -p * p / Mint(N));
+  FPS f(K, -p * p / Mint(N));
   f[0] = p;
-  auto g = f.inv(K);
+  auto g = f.inv();
   Mint ans(1);
   for (int i = 1; i < K; i++) {
     ans -= g[i] * q;

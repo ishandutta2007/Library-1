@@ -16,10 +16,10 @@ using namespace std;
 
 template <typename Modint>
 struct SubproductTree {
-  using FPS = FormalPowerSeries<Modint>;
+  using poly = FormalPowerSeries<Modint>;
   int n;
   vector<Modint> xs;
-  vector<FPS> buf;
+  vector<poly> buf;
   SubproductTree() {}
   SubproductTree(const vector<Modint> &_xs)
       : n(_xs.size()), xs(_xs), buf(4 * n) {
@@ -34,9 +34,9 @@ struct SubproductTree {
     pre(l, m, k * 2), pre(m, r, k * 2 + 1);
     buf[k] = buf[k * 2] * buf[k * 2 + 1];
   }
-  vector<Modint> multi_eval(const FPS &f) {
+  vector<Modint> multi_eval(const poly &f) {
     vector<Modint> res(n);
-    function<void(FPS, int, int, int)> dfs = [&](FPS g, int l, int r, int k) {
+    function<void(poly, int, int, int)> dfs = [&](poly g, int l, int r, int k) {
       g %= buf[k];
       if (r - l <= 128) {
         for (int i = l; i < r; i++) res[i] = g.eval(xs[i]);
@@ -48,16 +48,16 @@ struct SubproductTree {
     dfs(f, 0, n, 1);
     return res;
   }
-  FPS interpolate(const vector<Modint> &ys) {
-    FPS w = buf[1].diff();
+  poly interpolate(const vector<Modint> &ys) {
+    poly w = buf[1].diff();
     vector<Modint> vs = multi_eval(w);
-    function<FPS(int, int, int)> dfs = [&](int l, int r, int k) {
-      if (r - l == 1) return FPS({ys[l] / vs[l]});
+    function<poly(int, int, int)> dfs = [&](int l, int r, int k) {
+      if (r - l == 1) return poly({ys[l] / vs[l]});
       int m = (l + r) >> 1;
       return buf[k * 2 + 1] * dfs(l, m, k * 2)
              + buf[k * 2] * dfs(m, r, k * 2 + 1);
     };
-    FPS res = dfs(0, n, 1);
+    poly res = dfs(0, n, 1);
     res.resize(n);
     return res;
   }

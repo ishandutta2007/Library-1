@@ -408,6 +408,11 @@ struct FormalPowerSeries : vector<mint> {
     }
     return ret;
   }
+  mint eval(mint x) const {
+    mint res, w = 1;
+    for (auto &v : *this) res += w * v, w *= x;
+    return res;
+  }
   FPS operator-() {
     FPS ret(this->size());
     for (int i = ret.size() - 1; i >= 0; i--) ret[i] = -(*this)[i];

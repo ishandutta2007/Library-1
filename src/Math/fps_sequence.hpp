@@ -56,5 +56,6 @@ FormalPowerSeries<mint> stirling_second(int N) {
   mint finv = 1;
   for (int i = 0; i <= N; finv /= (++i))
     a[i] = mint(i).pow(N) * finv, b[i] = i & 1 ? -finv : finv;
-  return (a * b).part(N + 1);
+  auto ret = a * b;
+  return ret.resize(N + 1), ret;
 }

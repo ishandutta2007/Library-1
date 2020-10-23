@@ -102,7 +102,7 @@ struct FormalPowerSeries : std::vector<mint> {
     while (n >= 0 && (*this)[n] == mint(0)) n--;
     return n;
   }
-  FPS &norm() { return this->resize(max(this->deg() + 1, 1)), *this; }
+  FPS &norm() { return this->resize(std::max(this->deg() + 1, 1)), *this; }
   std::uint64_t inline get_len(std::uint64_t n) const {
     return --n, n |= n >> 1, n |= n >> 2, n |= n >> 4, n |= n >> 8,
            n |= n >> 16, n |= n >> 32, ++n;
@@ -181,7 +181,7 @@ struct FormalPowerSeries : std::vector<mint> {
     int sq = this->size() - yr.size() + 1, len = get_len(sq);
     FPS qr = FPS(this->begin(), this->begin() + sq).div_con(yr, g0r);
     if (yr.size() == 1) return std::make_pair(qr, FPS{0});
-    len = get_len(max(qr.size(), yr.size()));
+    len = get_len(std::max(qr.size(), yr.size()));
     int mask = len - 1;
     subst(a1, a2, 0, sq, qr.data()), subst(b1, b2, 0, yr.size(), yr.data());
     std::fill(a1 + sq, a1 + len, 0), std::fill(a2 + sq, a2 + len, 0);
@@ -247,7 +247,7 @@ struct FormalPowerSeries : std::vector<mint> {
     return std::make_pair(q, r.norm());
   }
   FPS diff() const {
-    FPS ret(max(0, int(this->size() - 1)));
+    FPS ret(std::max(0, int(this->size() - 1)));
     for (int i = this->size() - 1; i > 0; i--) ret[i - 1] = (*this)[i] * i;
     return ret;
   }

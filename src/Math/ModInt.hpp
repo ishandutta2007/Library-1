@@ -72,14 +72,14 @@ class ModInt : modint_base {
     if (pow((mod - 1) >> 1) != 1) return ModInt(0);  // no solutions
     ModInt ONE = 1, b(2), w(b * b - *this);
     while (w.pow((mod - 1) >> 1) == ONE) b += ONE, w = b * b - *this;
-    auto mul = [&](pair<ModInt, ModInt> u, pair<ModInt, ModInt> v) {
+    auto mul = [&](std::pair<ModInt, ModInt> u, std::pair<ModInt, ModInt> v) {
       ModInt a = (u.first * v.first + u.second * v.second * w);
       ModInt b = (u.first * v.second + u.second * v.first);
-      return make_pair(a, b);
+      return std::make_pair(a, b);
     };
     u64 e = (mod + 1) >> 1;
-    auto ret = make_pair(ONE, ModInt(0));
-    for (auto bs = make_pair(b, ONE); e; e >>= 1, bs = mul(bs, bs))
+    auto ret = std::make_pair(ONE, ModInt(0));
+    for (auto bs = std::make_pair(b, ONE); e; e >>= 1, bs = mul(bs, bs))
       if (e & 1) ret = mul(ret, bs);
     return ret.first.get() * 2 < mod ? ret.first : -ret.first;
   }

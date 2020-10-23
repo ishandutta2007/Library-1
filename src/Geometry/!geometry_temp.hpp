@@ -64,20 +64,20 @@ Point operator/(Point p, Real a) { return p /= a; }
 Real dot(Point p, Point q) { return p.x * q.x + p.y * q.y; }
 Real cross(Point p, Point q) { return p.x * q.y - p.y * q.x; }  // left turn > 0
 Real norm2(Point p) { return dot(p, p); }
-Real norm(Point p) { return sqrt(norm2(p)); }
-Real arg(Point p) { return atan2(p.y, p.x); }
+Real norm(Point p) { return std::sqrt(norm2(p)); }
+Real arg(Point p) { return std::atan2(p.y, p.x); }
 Real dist(Point p, Point q) { return norm(p - q); }
-Real arg(Point p, Point q) { return atan2(cross(p, q), dot(p, q)); }
+Real arg(Point p, Point q) { return std::atan2(cross(p, q), dot(p, q)); }
 Point orth(Point p) { return {-p.y, p.x}; }
 Point rotate(Point p, Real theta) {
-  return {cos(theta) * p.x - sin(theta) * p.y,
-          sin(theta) * p.x + cos(theta) * p.y};
+  return {std::cos(theta) * p.x - std::sin(theta) * p.y,
+          std::sin(theta) * p.x + std::cos(theta) * p.y};
 }
-istream &operator>>(istream &is, Point &p) {
+std::istream &operator>>(std::istream &is, Point &p) {
   is >> p.x >> p.y;
   return is;
 }
-ostream &operator<<(ostream &os, Point p) {
+std::ostream &operator<<(std::ostream &os, Point p) {
   os << p.x << " " << p.y;
   return os;
 }
@@ -262,7 +262,7 @@ struct Circle {
     if (sgn(len) < 0) return {};
     if (sgn(len) == 0) return {{p, p + v}};
     u *= r * r / norm2(u);
-    v *= r * sqrt(len) / norm2(v);
+    v *= r * std::sqrt(len) / norm2(v);
     return {{p, o + u + v}, {p, o + u - v}};
   }
 };
@@ -286,7 +286,7 @@ std::vector<Point> cross_points(Circle c, Circle d) {
   if (inner == 0) return {(c.r * d.o - d.r * c.o) / (c.r - d.r)};
   if (outer == 0) return {(c.r * d.o + d.r * c.o) / (c.r + d.r)};
   Real eta = (c.r * c.r - d.r * d.r + g) / (2 * g);
-  Real mu = sqrt(c.r * c.r / g - eta * eta);
+  Real mu = std::sqrt(c.r * c.r / g - eta * eta);
   Point q = c.o + eta * (d.o - c.o), v = mu * orth(d.o - c.o);
   return {q + v, q - v};
 }
@@ -296,8 +296,8 @@ std::vector<Point> cross_points(Circle c, Line l) {
   Real det = b * b - t;
   if (sgn(det) < 0) return {};               // no solution
   if (sgn(det) == 0) return {l.p1 - b * u};  // touch inner/outer
-  return {l.p1 - (b + sqrt(det)) * u,        // properly intersect
-          l.p1 - (b - sqrt(det)) * u};
+  return {l.p1 - (b + std::sqrt(det)) * u,   // properly intersect
+          l.p1 - (b - std::sqrt(det)) * u};
 }
 std::vector<Point> cross_points(Line l, Circle c) { return cross_points(c, l); }
 std::vector<Point> cross_points(Circle c, Segment s) {
@@ -307,7 +307,7 @@ std::vector<Point> cross_points(Circle c, Segment s) {
   if (sgn(det) < 0) return {};  // no solution
   if (sgn(det) == 0 && sgn(-b) >= 0 && sgn(1 - (-b)) >= 0)
     return {s.p1 - b * u};  // touch
-  Real t1 = -b - sqrt(det), t2 = -b + sqrt(det);
+  Real t1 = -b - std::sqrt(det), t2 = -b + std::sqrt(det);
   std::vector<Point> qs;
   if (sgn(t1) >= 0 && sgn(1 - t1) >= 0) qs.emplace_back(s.p1 + t1 * u);
   if (sgn(t2) >= 0 && sgn(1 - t2) >= 0) qs.emplace_back(s.p1 + t2 * u);
@@ -402,7 +402,7 @@ struct Convex : Polygon {
   }
   Real diameter() {
     Point p, q;
-    tie(p, q) = farthest();
+    std::tie(p, q) = farthest();
     return dist(p, q);
   }
   Convex cut(Line l, int side = LEFT) {  // +1 for left, -1 for right
@@ -483,32 +483,32 @@ Convex convex_hull(std::vector<Point> ps) {
 // to use https://csacademy.com/app/geometry_widget/
 //-----------------------------------------------------------------------------
 struct Visualizer {
-  ofstream ofs;
-  Visualizer(string s = "visualize.txt") : ofs(s) {
-    ofs << fixed << setprecision(10);
+  std::ofstream ofs;
+  Visualizer(std::string s = "visualize.txt") : ofs(s) {
+    ofs << std::fixed << std::setprecision(10);
   }
   Visualizer &operator<<(Point p) {
-    ofs << p << endl;
+    ofs << p << '\n';
     return *this;
   }
   Visualizer &operator<<(Line l) {
     Real A, B, C;
-    tie(A, B, C) = l.coef();
-    ofs << "Line " << A << " " << B << " " << C << endl;
+    std::tie(A, B, C) = l.coef();
+    ofs << "Line " << A << " " << B << " " << C << '\n';
     return *this;
   }
   Visualizer &operator<<(Segment s) {
-    ofs << "Segment " << s.p1 << " " << s.p2 << endl;
+    ofs << "Segment " << s.p1 << " " << s.p2 << '\n';
     return *this;
   }
   Visualizer &operator<<(Circle c) {
-    ofs << "Circle " << c.o << " " << c.r << endl;
+    ofs << "Circle " << c.o << " " << c.r << '\n';
     return *this;
   }
   Visualizer &operator<<(Polygon g) {
-    ofs << "Polygon" << endl;
-    for (Point p : g) ofs << p << endl;
-    ofs << "..." << endl;
+    ofs << "Polygon" << '\n';
+    for (Point p : g) ofs << p << '\n';
+    ofs << "..." << '\n';
     return *this;
   }
 };

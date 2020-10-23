@@ -103,12 +103,12 @@ struct Line {
   Line(Real a, Real b, Real c) {  // ax+by+c=0
     if (!sgn(b)) {
       p1 = {-c / a, 1}, p2 = {-c / a, 0};
-      if (sgn(a) < 0) swap(p1, p2);
+      if (sgn(a) < 0) std::swap(p1, p2);
     } else if (!sgn(a))
       p1 = {0, -c / b}, p2 = {1, -c / b};
     else
       p1 = {0, -c / b}, p2 = {1, -(c + a) / b};
-    if (sgn(b) < 0) swap(p1, p2);
+    if (sgn(b) < 0) std::swap(p1, p2);
     // ax+by+c>0: left, ax+by+c=0: on, ax+by+c<0: right
   }
   Point &operator[](int i) {
@@ -121,9 +121,9 @@ struct Line {
   // 1: left, 0: on, -1: right
   int where(Point p) { return sgn(cross(p1 - p, p2 - p)); }
   // return  a,b,c of ax+by+c=0
-  tuple<Real, Real, Real> coef() {
+  std::tuple<Real, Real, Real> coef() {
     auto n = orth(p2 - p1);
-    return make_tuple(n.x, n.y, -dot(n, p1));
+    return std::make_tuple(n.x, n.y, -dot(n, p1));
   }
   Point project(Point p) {
     Point v = p2 - p1;
@@ -238,12 +238,12 @@ Real dist(Line l, Line m) {
 Real dist(Segment s, Point p) { return dist(p, s.closest_point(p)); }
 Real dist(Point p, Segment s) { return dist(s, p); }
 Real dist(Line l, Segment s) {
-  return cross_points(l, s).size() ? 0 : min(dist(l, s.p1), dist(l, s.p2));
+  return cross_points(l, s).size() ? 0 : std::min(dist(l, s.p1), dist(l, s.p2));
 }
 Real dist(Segment s, Line l) { return dist(l, s); }
 Real dist(Segment s, Segment t) {
   if (cross_points(s, t).size()) return 0;
-  return min({dist(s.p1, t), dist(s.p2, t), dist(t.p1, s), dist(t.p2, s)});
+  return std::min({dist(s.p1, t), dist(s.p2, t), dist(t.p1, s), dist(t.p2, s)});
 }
 //-----------------------------------------------------------------------------
 // Circle
@@ -272,7 +272,7 @@ Circle translate(Circle c, Point v) { return {c.o + v, c.r}; }
 Circle rotate(Circle c, Real theta) { return {rotate(c.o, theta), c.r}; }
 
 std::vector<Point> cross_points(Circle c, Circle d) {
-  if (c.r < d.r) swap(c, d);
+  if (c.r < d.r) std::swap(c, d);
   Real g = norm2(c.o - d.o);
   if (sgn(g) == 0) {
     if (sgn(c.r - d.r)) return {};
@@ -319,7 +319,7 @@ std::vector<Point> cross_points(Segment s, Circle c) {
 
 //-----------------------------------------------------------------------------
 // Polygon
-// assuming counterclockwise rotation
+// assustd::ming counterclockwise rotation
 //-----------------------------------------------------------------------------
 struct Polygon : std::vector<Point> {
   using std::vector<Point>::vector;
@@ -441,14 +441,14 @@ Real dist(Polygon g, Point p) {
   if (g.where(p) != OUT) return 0;
   Real res = dist(Segment({g.back(), g[0]}), p);
   for (int i = 0; i + 1 < (int)g.size(); i++)
-    res = min(res, dist(Segment({g[i], g[i + 1]}), p));
+    res = std::min(res, dist(Segment({g[i], g[i + 1]}), p));
   return res;
 }
 Real dist(Point p, Polygon g) { return dist(g, p); }
 Real dist(Polygon g, Line l) {
   Real res = dist(Segment({g.back(), g[0]}), l);
   for (int i = 0; i + 1 < (int)g.size(); i++)
-    res = min(res, dist(Segment({g[i], g[i + 1]}), l));
+    res = std::min(res, dist(Segment({g[i], g[i + 1]}), l));
   return res;
 }
 Real dist(Line l, Polygon g) { return dist(g, l); }
@@ -456,14 +456,14 @@ Real dist(Polygon g, Segment s) {
   if (g.where(s.p1) != OUT || g.where(s.p2) != OUT) return 0;
   Real res = dist(Segment({g.back(), g[0]}), s);
   for (int i = 0; i + 1 < (int)g.size(); i++)
-    res = min(res, dist(Segment({g[i], g[i + 1]}), s));
+    res = std::min(res, dist(Segment({g[i], g[i + 1]}), s));
   return res;
 }
 Real dist(Segment s, Polygon g) { return dist(g, s); }
 Real dist(Polygon g, Polygon h) {
   Real res = dist(Segment({g.back(), g[0]}), h);
   for (int i = 0; i + 1 < (int)g.size(); i++)
-    res = min(res, dist(Segment({g[i], g[i + 1]}), h));
+    res = std::min(res, dist(Segment({g[i], g[i + 1]}), h));
   return res;
 }
 

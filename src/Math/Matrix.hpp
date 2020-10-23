@@ -72,9 +72,9 @@ struct Matrix {
   }
   bool operator==(const Matrix &b) const { return a == b.a; }
   template <typename T>
-  using ET = enable_if<is_floating_point<T>::value>;
+  using ET = std::enable_if<std::is_floating_point<T>::value>;
   template <typename T>
-  using EF = enable_if<!is_floating_point<T>::value>;
+  using EF = std::enable_if<!std::is_floating_point<T>::value>;
   template <typename T, typename ET<T>::type * = nullptr>
   static bool is_zero(T x) {
     return std::abs(x) < 1e-8;

@@ -20,7 +20,7 @@ struct Mo {
   void run(const AL &add_left, const AR &add_right, const EL &erase_left,
            const ER &erase_right, const O &out) {
     int q = (int)lr.size();
-    int bs = n / min<int>(n, sqrt(q));
+    int bs = n / std::min<int>(n, std::sqrt(q));
     std::vector<int> ord(q);
     std::iota(ord.begin(), ord.end(), 0);
     std::sort(ord.begin(), ord.end(), [&](int a, int b) {

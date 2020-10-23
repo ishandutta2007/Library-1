@@ -6,9 +6,12 @@
  */
 
 // BEGIN CUT HERE
+namespace internal {
+struct modint_base {};
+}  // namespace internal
 
 template <std::uint64_t mod, std::uint64_t prim_root = 0>
-class ModInt {
+class ModInt : modint_base {
  private:
   using u64 = std::uint64_t;
   using u128 = __uint128_t;
@@ -88,3 +91,6 @@ class ModInt {
   }
   u64 x;
 };
+
+template <class T>
+using is_modint = std::is_base_of<internal::modint_base, T>;

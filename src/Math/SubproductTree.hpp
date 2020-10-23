@@ -1,6 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
-#include "src/Math/Modint.hpp"
+#include "src/Math/ModInt.hpp"
 #include "src/Math/FormalPowerSeries.hpp"
 /**
  * @title 複数の値代入と多項式補間

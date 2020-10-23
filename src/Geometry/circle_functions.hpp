@@ -14,7 +14,7 @@ Circle inscribed_circle(Point A, Point B, Point C) {
   Real a = dist(B, C), b = dist(C, A), c = dist(A, B);
   Real s = (a + b + c) / 2;
   Point o = (a * A + b * B + c * C) / (a + b + c);
-  Real r = sqrt((s - a) * (s - b) * (s - c) / s);
+  Real r = std::sqrt((s - a) * (s - b) * (s - c) / s);
   return {o, r};
 }
 
@@ -34,7 +34,7 @@ std::vector<Line> common_tangent(Circle c, Circle d) {
     if (sgn(1 - h * h) == 0) {  // touch inner/outer
       ls.emplace_back(Line{c.o + h * c.r * u, c.o + h * c.r * (u + v)});
     } else if (sgn(1 - h * h) > 0) {  // properly intersect
-      Point uu = h * u, vv = sqrt(1 - h * h) * v;
+      Point uu = h * u, vv = std::sqrt(1 - h * h) * v;
       ls.emplace_back(Line{c.o + c.r * (uu + vv), d.o - d.r * (uu + vv) * s});
       ls.emplace_back(Line{c.o + c.r * (uu - vv), d.o - d.r * (uu - vv) * s});
     }
@@ -43,9 +43,9 @@ std::vector<Line> common_tangent(Circle c, Circle d) {
 }
 
 Real intersection_area(Circle c, Circle d) {
-  if (c.r < d.r) swap(c, d);
+  if (c.r < d.r) std::swap(c, d);
   auto A = [&](Real r, Real h) {
-    return r * r * acos(h / r) - h * sqrt(r * r - h * h);
+    return r * r * std::acos(h / r) - h * std::sqrt(r * r - h * h);
   };
   Real l = dist(c.o, d.o);
   Real a = (l * l + c.r * c.r - d.r * d.r) / (2 * l);
@@ -63,7 +63,8 @@ Real intersection_area(Polygon g, Circle c) {
     Real a = dot(d, p) / dot(d, d), b = (dot(p, p) - c.r * c.r) / dot(d, d);
     Real det = a * a - b;
     if (det <= 0) return arg(p, q) * c.r * c.r / 2;
-    Real s = max((Real)0., -a - sqrt(det)), t = min((Real)1., -a + sqrt(det));
+    Real s = std::max((Real)0., -a - std::sqrt(det)),
+         t = std::min((Real)1., -a + std::sqrt(det));
     if (t < 0 || 1 <= s) return c.r * c.r * arg(p, q) / 2;
     Point u = p + s * d, v = p + t * d;
     return arg(p, u) * c.r * c.r / 2 + cross(u, v) / 2
@@ -112,7 +113,7 @@ std::pair<int, Point> max_circle_cover(std::vector<Point> ps, Real r) {
             for (Point q : ps) {
               Real d = dist(qs[i], q);
               if (sgn(d - r) <= 0) ++lo;
-              if (sgn(d - w * sqrt(2) - r) <= 0) pss[i].push_back(q);
+              if (sgn(d - w * std::sqrt(2) - r) <= 0) pss[i].push_back(q);
             }
             if (lo > best) {
               best = lo;
@@ -122,13 +123,13 @@ std::pair<int, Point> max_circle_cover(std::vector<Point> ps, Real r) {
           for (int i = 0; i < 4; ++i) {
             for (int j = i + 1; j < 4; ++j)
               if (pss[i].size() < pss[j].size())
-                swap(pss[i], pss[j]), swap(qs[i], qs[j]);
+                std::swap(pss[i], pss[j]), std::swap(qs[i], qs[j]);
             if (pss[i].size() <= best) break;
             rec(qs[i], w, pss[i]);
           }
         };
   Real w = 0;
-  for (Point p : ps) w = max({w, abs(p.x), abs(p.y)});
+  for (Point p : ps) w = std::max({w, abs(p.x), abs(p.y)});
   rec({0, 0}, w, ps);
   return {best, best_p};
 }

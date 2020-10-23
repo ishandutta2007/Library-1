@@ -1,13 +1,9 @@
 #define PROBLEM "https://yukicoder.me/problems/no/215"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/ModInt.hpp"
 #include "src/Math/FormalPowerSeries.hpp"
 #include "src/Math/kitamasa.hpp"
-#undef call_from_test
+using namespace std;
 
 using Mint = ModInt<int(1e9 + 7)>;
 Mint dp1[301][300 * 13 + 1];

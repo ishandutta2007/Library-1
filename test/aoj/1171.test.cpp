@@ -1,15 +1,10 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1171"
-
 #define ERROR "0.00001"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Geometry/!geometry_temp.hpp"
-#undef call_from_test
-
+using namespace std;
 using namespace geometry;
+
 const Real INF = 1e10;
 int N;
 vector<Segment> ss;

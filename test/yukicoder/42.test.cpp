@@ -1,12 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/42"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/ModInt.hpp"
 #include "src/Math/lagrange_interpolation.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

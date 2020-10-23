@@ -1,15 +1,11 @@
 #define PROBLEM \
   "https://judge.yosupo.jp/problem/sum_of_exponential_times_polynomial_limit"
-
 /** @see https://min-25.hatenablog.com/entry/2015/04/24/031413
  */
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/Combination.hpp"
 #include "src/Math/ModInt.hpp"
-#undef call_from_test
+using namespace std;
 
 template <class Modint>
 vector<Modint> pow_d_list(int n, long long d) {

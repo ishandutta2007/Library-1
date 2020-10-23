@@ -1,11 +1,7 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3032"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Graph/MatchingGeneral.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

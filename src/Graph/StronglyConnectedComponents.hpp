@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 強連結成分分解
  * @category グラフ
@@ -6,20 +8,17 @@
  *  返り値:{強連結成分(トポロジカルソート),ノードの属する成分の添字}
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct StronglyConnectedComponents {
-  vector<vector<int>> adj;
+  std::vector<std::vector<int>> adj;
 
   StronglyConnectedComponents(int n) : adj(n) {}
   void add_edge(int src, int dst) { adj[src].push_back(dst); }
-  pair<vector<vector<int>>, vector<int>> get_SCC() {
-    vector<vector<int>> scc;
-    vector<int> S, B, index(adj.size());
-    function<void(int)> dfs = [&](int u) {
+  pair<std::vector<std::vector<int>>, std::vector<int>> get_SCC() {
+    std::vector<std::vector<int>> scc;
+    std::vector<int> S, B, index(adj.size());
+    std::function<void(int)> dfs = [&](int u) {
       B.push_back(index[u] = S.size());
       S.push_back(u);
       for (int v : adj[u]) {
@@ -37,10 +36,10 @@ struct StronglyConnectedComponents {
         }
       }
     };
-    for (size_t u = 0; u < adj.size(); u++)
+    for (std::size_t u = 0; u < adj.size(); u++)
       if (!index[u]) dfs(u);
     reverse(scc.begin(), scc.end());
-    for (size_t u = 0; u < adj.size(); u++)
+    for (std::size_t u = 0; u < adj.size(); u++)
       index[u] = scc.size() - index[u] + adj.size();
     return make_pair(scc, index);
   }

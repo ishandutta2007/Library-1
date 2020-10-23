@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 最大マッチング(一般グラフ)
  * @category グラフ
@@ -6,17 +8,14 @@
  *  返り値:{マッチング数,各頂点の相方(いないなら-1）}
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct MatchingGeneral {
  private:
   int n, res;
-  vector<vector<int>> adj;
-  vector<int> mate, idx, p;
-  vector<pair<int, int>> edges;
+  std::vector<std::vector<int>> adj;
+  std::vector<int> mate, idx, p;
+  std::vector<std::pair<int, int>> edges;
 
  private:
   void rematch(int u, int v) {
@@ -31,10 +30,10 @@ struct MatchingGeneral {
     }
   }
   bool check(int root) {
-    function<int(int)> f = [&](int x) {
+    std::function<int(int)> f = [&](int x) {
       return (idx[x] != res || p[x] == -1) ? x : (p[x] = f(p[x]));
     };
-    queue<int> que;
+    std::queue<int> que;
     edges[root] = {-1, -1};
     idx[root] = res, p[root] = -1, que.push(root);
     while (!que.empty()) {
@@ -78,9 +77,9 @@ struct MatchingGeneral {
     adj[u].emplace_back(v);
     adj[v].emplace_back(u);
   }
-  pair<int, vector<int>> get_matching() {
+  std::pair<int, std::vector<int>> get_matching() {
     for (int i = 0; i < n; i++)
       if (mate[i] == -1) res += check(i);
-    return make_pair(res, mate);
+    return std::make_pair(res, mate);
   }
 };

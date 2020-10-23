@@ -1,16 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/Geometry/!geometry_temp.hpp"
 /**
  * @title 円のあれこれ
  * @category 幾何
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
-#include "src/Geometry/!geometry_temp.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 namespace geometry {
 
@@ -28,11 +24,11 @@ Circle circumscribed_circle(Point A, Point B, Point C) {
   return {o, dist(A, o)};
 }
 
-vector<Line> common_tangent(Circle c, Circle d) {
+std::vector<Line> common_tangent(Circle c, Circle d) {
   Real len = dist(c.o, d.o);
   if (sgn(len) == 0) return {};  // same origin
   Point u = (d.o - c.o) / len, v = orth(u);
-  vector<Line> ls;
+  std::vector<Line> ls;
   for (int s = +1; s >= -1; s -= 2) {
     Real h = (c.r + s * d.r) / len;
     if (sgn(1 - h * h) == 0) {  // touch inner/outer
@@ -80,12 +76,12 @@ Real intersection_area(Polygon g, Circle c) {
 }
 Real intersection_area(Circle c, Polygon g) { return intersection_area(g, c); }
 
-Circle min_enclosing_circle(vector<Point> ps) {
+Circle min_enclosing_circle(std::vector<Point> ps) {
   assert(ps.size());
   if (ps.size() == 1) return {ps[0], 0.};
-  random_device seed_gen;
-  mt19937 mt(seed_gen());
-  shuffle(ps.begin(), ps.end(), mt);
+  std::random_device seed_gen;
+  std::mt19937 mt(seed_gen());
+  std::shuffle(ps.begin(), ps.end(), mt);
   Circle c = {(ps[0] + ps[1]) / 2, dist(ps[0], ps[1]) / 2};
   for (int i = 2; i < ps.size(); i++)
     if (c.where(ps[i]) == OUT) {
@@ -101,15 +97,15 @@ Circle min_enclosing_circle(vector<Point> ps) {
   return c;
 }
 
-pair<int, Point> max_circle_cover(vector<Point> ps, Real r) {
+std::pair<int, Point> max_circle_cover(std::vector<Point> ps, Real r) {
   const Real dx[4] = {1, -1, -1, 1}, dy[4] = {1, 1, -1, -1};
   Point best_p;
   int best = 0;
-  function<void(Point, Real, vector<Point>)> rec
-      = [&](Point p, Real w, vector<Point> ps) {
+  std::function<void(Point, Real, std::vector<Point>)> rec
+      = [&](Point p, Real w, std::vector<Point> ps) {
           w /= 2;
           Point qs[4];
-          vector<Point> pss[4];
+          std::vector<Point> pss[4];
           for (int i = 0; i < 4; ++i) {
             qs[i] = p + w * Point({dx[i], dy[i]});
             int lo = 0;

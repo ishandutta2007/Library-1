@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 最大流(Dinic)
  * @category グラフ
@@ -7,10 +9,8 @@
  */
 
 // 最小流量制限付き最大流 https://snuke.hatenablog.com/entry/2016/07/10/043918
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+
+// BEGIN CUT HERE
 
 template <typename flow_t>
 struct MaxFlow_Dinic {
@@ -25,8 +25,8 @@ struct MaxFlow_Dinic {
  private:
   static constexpr flow_t FLOW_MAX = numeric_limits<flow_t>::max() / 2;
   int n;
-  vector<vector<Edge>> adj;
-  vector<int> level, iter;
+  std::vector<std::vector<Edge>> adj;
+  std::vector<int> level, iter;
 
  private:
   int levelize(const int &s, const int &t) {
@@ -74,8 +74,8 @@ struct MaxFlow_Dinic {
     adj.resize(++n);
     return n - 1;
   }
-  vector<int> add_vertices(const int size) {
-    vector<int> ret(size);
+  std::vector<int> add_vertices(const int size) {
+    std::vector<int> ret(size);
     iota(begin(ret), end(ret), n);
     n += size;
     adj.resize(n);

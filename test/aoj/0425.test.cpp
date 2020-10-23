@@ -1,12 +1,8 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Final/0425"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Algorithm/Mo.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

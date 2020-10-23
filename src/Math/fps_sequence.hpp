@@ -1,3 +1,7 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/Math/ModInt.hpp"
+#include "src/Math/FormalPowerSeries.hpp"
 /**
  * @title 数列(形式的冪級数使用)
  * @category 数学
@@ -9,15 +13,7 @@
  * @see https://en.m.wikipedia.org/wiki/Eulerian_number
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 template <typename mint>
 FormalPowerSeries<mint> bernoulli(int N) {

@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 数論
  * @category 数学
@@ -11,13 +13,10 @@
 // verify用:
 // https://atcoder.jp/contests/agc038/tasks/agc038_c
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 namespace number_theory {
-vector<int> primes;
+std::vector<int> primes;
 const int MAX_N = 1 << 24;
 int mpf[MAX_N];  // minimum prime factor
 void init(int n) {
@@ -32,8 +31,8 @@ void init(int n) {
     }
 }
 
-vector<pair<int, int>> prime_factorize(int n) {  // O(log n)
-  vector<pair<int, int>> res;
+std::vector<pair<int, int>> prime_factorize(int n) {  // O(log n)
+  std::vector<pair<int, int>> res;
   while (n > 1) {
     int p = mpf[n];
     int e = 0;
@@ -45,7 +44,7 @@ vector<pair<int, int>> prime_factorize(int n) {  // O(log n)
 
 // f -> g s.t. g(n) = sum_{m|n} f(m)
 template <typename T>
-void divisor_zeta(vector<T> &f) {
+void divisor_zeta(std::vector<T> &f) {
   int n = f.size();
   if (!primes.size()) init(n);
   for (int p : primes) {
@@ -55,7 +54,7 @@ void divisor_zeta(vector<T> &f) {
 }
 // f -> h s.t. f(n) = sum_{m|n} h(m)
 template <typename T>
-void divisor_mobius(vector<T> &f) {
+void divisor_mobius(std::vector<T> &f) {
   int n = f.size();
   if (!primes.size()) init(n);
   for (int p : primes) {
@@ -65,37 +64,37 @@ void divisor_mobius(vector<T> &f) {
 }
 // get table of Mobius function
 template <typename T = int>
-vector<T> get_mu(int n) {
-  vector<T> f(n + 1, T(0));
+std::vector<T> get_mu(int n) {
+  std::vector<T> f(n + 1, T(0));
   f[1] = T(1);
   divisor_mobius(f);
   return f;
 }
 // get table of Euler's totient function
 template <typename T = int>
-vector<T> get_phi(int n) {
-  vector<T> f(n + 1);
-  iota(f.begin(), f.end(), 0);
+std::vector<T> get_phi(int n) {
+  std::vector<T> f(n + 1);
+  std::iota(f.begin(), f.end(), 0);
   divisor_mobius(f);
   return f;
 }
 // get table of number-of-divisors function
 template <typename T = int>
-vector<T> get_d(int n) {
-  vector<T> f(n + 1, 1);
+std::vector<T> get_d(int n) {
+  std::vector<T> f(n + 1, 1);
   divisor_zeta(f);
   return f;
 }
 // get table of sum-of-divisors function
 template <typename T = int>
-vector<T> get_sigma(int n) {
-  vector<T> f(n + 1);
-  iota(f.begin(), f.end(), 0);
+std::vector<T> get_sigma(int n) {
+  std::vector<T> f(n + 1);
+  std::iota(f.begin(), f.end(), 0);
   divisor_zeta(f);
   return f;
 }
 template <typename T>
-static vector<T> lcm_convolution(vector<T> a, vector<T> b) {
+static std::vector<T> lcm_convolution(std::vector<T> a, std::vector<T> b) {
   int n = max(a.size(), b.size());
   a.resize(n);
   b.resize(n);
@@ -107,7 +106,7 @@ static vector<T> lcm_convolution(vector<T> a, vector<T> b) {
 }
 // f -> g s.t. g(n) = sum_{n|m} f(m)
 template <typename T>
-static void multiple_zeta(vector<T> &f) {
+static void multiple_zeta(std::vector<T> &f) {
   int n = f.size();
   if (!primes.size()) init(n);
   for (int p : primes) {
@@ -117,7 +116,7 @@ static void multiple_zeta(vector<T> &f) {
 }
 // f -> h s.t. f(n) = sum_{n|m} h(m)
 template <typename T>
-static void multiple_mobius(vector<T> &f) {
+static void multiple_mobius(std::vector<T> &f) {
   int n = f.size();
   if (!primes.size()) init(n);
   for (int p : primes) {
@@ -126,8 +125,8 @@ static void multiple_mobius(vector<T> &f) {
   }
 }
 template <typename T>
-static vector<T> gcd_convolution(vector<T> a, vector<T> b) {
-  int n = max(a.size(), b.size());
+static std::vector<T> gcd_convolution(std::vector<T> a, std::vector<T> b) {
+  int n = std::max(a.size(), b.size());
   a.resize(n);
   b.resize(n);
   multiple_zeta(a);

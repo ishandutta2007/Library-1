@@ -1,16 +1,11 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Prelim/0342"
-
 #define ERROR "0.00000001"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Geometry/!geometry_temp.hpp"
 #include "src/DataStructure/UnionFind.hpp"
 #include "src/Graph/MinimumSpanningTree_Kruskal.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

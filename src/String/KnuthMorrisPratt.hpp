@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Knuth-Morris-Pratt
  * @category 文字列
@@ -6,18 +8,15 @@
  *  period(i) verified :ARC060_F
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct KnuthMorrisPratt {
-  vector<int> KMP;
-  const string s;
+  std::vector<int> KMP;
+  const std::string s;
   int n;
-  KnuthMorrisPratt(const string &str) : s(str), n(s.length()) {
+  KnuthMorrisPratt(const std::string &str) : s(str), n(s.length()) {
     KMP.resize(n + 1, -1);
-    vector<int> knuth(n + 1, -1);
+    std::vector<int> knuth(n + 1, -1);
     for (int i = 0, j = -1; i < n; i++) {
       while (~j && s[i] != s[j]) j = knuth[j];
       knuth[i + 1] = KMP[i + 1] = ++j;
@@ -30,9 +29,9 @@ struct KnuthMorrisPratt {
 
   // positions for T that match s
   // O(|T|)
-  vector<int> pattern_match(string T) {
+  std::vector<int> pattern_match(std::string T) {
     int m = T.length();
-    vector<int> occur;
+    std::vector<int> occur;
     for (int i = 0, k = 0; i < m; ++i) {
       while (k >= 0 && T[i] != s[k]) k = KMP[k];
       if (++k == n) {

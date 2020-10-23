@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Union-Find
  * @category データ構造
@@ -6,13 +8,10 @@
  * @brief O(α(N))
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct UnionFind {
-  vector<int> par;
+  std::vector<int> par;
   UnionFind(int size) : par(size, -1) {}
   bool unite(int u, int v) {
     if ((u = root(u)) == (v = root(v))) return false;

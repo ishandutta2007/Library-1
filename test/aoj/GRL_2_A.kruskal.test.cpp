@@ -1,13 +1,9 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/2/GRL_2_A"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/UnionFind.hpp"
 #include "src/Graph/MinimumSpanningTree_Kruskal.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

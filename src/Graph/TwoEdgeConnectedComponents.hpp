@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 二重辺連結成分分解
  * @category グラフ
@@ -5,15 +7,12 @@
  *  返り値:{二重辺連結成分,ノードの属する成分の添字}
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct TwoEdgeConnectedComponents {
  private:
   int n;
-  vector<vector<int>> adj;
+  std::vector<std::vector<int>> adj;
 
  public:
   TwoEdgeConnectedComponents(int n) : n(n), adj(n) {}
@@ -21,14 +20,14 @@ struct TwoEdgeConnectedComponents {
     adj[u].push_back(v);
     adj[v].push_back(u);
   }
-  pair<vector<vector<int>>, vector<int>> get_2ECC() {
-    vector<int> index(n, -1), num(n), par(n, -1), cur(n);
-    vector<short> parcheck(n, 0);
-    vector<vector<int>> block;
+  std::pair<std::vector<std::vector<int>>, std::vector<int>> get_2ECC() {
+    std::vector<int> index(n, -1), num(n), par(n, -1), cur(n);
+    std::vector<short> parcheck(n, 0);
+    std::vector<std::vector<int>> block;
     for (int s = 0; s < n; ++s) {
       if (num[s]) continue;
       int time = 0;
-      vector<int> snum, path, stack = {s};
+      std::vector<int> snum, path, stack = {s};
       while (!stack.empty()) {
         int u = stack.back();
         if (cur[u] == 0) {
@@ -62,6 +61,6 @@ struct TwoEdgeConnectedComponents {
         }
       }
     }
-    return make_pair(block, index);
+    return std::make_pair(block, index);
   }
 };

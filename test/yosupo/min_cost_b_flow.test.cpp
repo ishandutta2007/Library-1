@@ -1,11 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/min_cost_b_flow"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Graph/MinCostFlow.hpp"
-#undef call_from_test
+using namespace std;
 
 ostream &operator<<(ostream &stream, const __int128_t &v) {
   if (v == 0) stream << "0";

@@ -1,15 +1,10 @@
 #define PROBLEM \
   "https://judge.yosupo.jp/problem/frequency_table_of_tree_distance"
-
 // 木の重心分解
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/ModInt.hpp"
 #include "src/Math/FormalPowerSeries.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

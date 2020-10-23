@@ -1,14 +1,9 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/persistent_queue"
-
 // 永続性のverify
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/RedBlackTree_Lazy.hpp"
 #include "src/DataStructure/RedBlackTree_PersistentLazy.hpp"
-#undef call_from_test
+using namespace std;
 
 struct Monoid {
   using T = int;

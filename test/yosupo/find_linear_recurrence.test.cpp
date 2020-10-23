@@ -1,12 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/find_linear_recurrence"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/ModInt.hpp"
 #include "src/Math/berlekamp_massey.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

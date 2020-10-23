@@ -1,13 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Link-Cut-Tree(モノイド双対)
  * @category データ構造
  * @brief O(logN)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename M>
 struct LinkCutTree_MonoidDual {
@@ -69,7 +68,7 @@ struct LinkCutTree_MonoidDual {
     t->val = M::g(t->val, v);
   }
   void toggle(Node *t) {
-    swap(t->ch[0], t->ch[1]);
+    std::swap(t->ch[0], t->ch[1]);
     t->rev ^= 1;
   }
   Node *eval(Node *t) {
@@ -87,7 +86,7 @@ struct LinkCutTree_MonoidDual {
   }
 
  private:
-  vector<Node> ns;
+  std::vector<Node> ns;
   size_t linkcnt;
 
  public:

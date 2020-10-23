@@ -1,13 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Segment-Tree(双対)
  * @category データ構造
  * @brief O(logN)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename M>
 struct SegmentTree_Dual {
@@ -16,8 +15,8 @@ struct SegmentTree_Dual {
 
  private:
   const int height, n;
-  vector<T> val;
-  vector<E> laz;
+  std::vector<T> val;
+  std::vector<E> laz;
 
  private:
   inline void eval(int k) {
@@ -32,8 +31,9 @@ struct SegmentTree_Dual {
 
  public:
   SegmentTree_Dual() {}
-  SegmentTree_Dual(int n_, T v1 = T()) : SegmentTree_Dual(vector<T>(n_, v1)) {}
-  SegmentTree_Dual(const vector<T>& v)
+  SegmentTree_Dual(int n_, T v1 = T())
+      : SegmentTree_Dual(std::vector<T>(n_, v1)) {}
+  SegmentTree_Dual(const std::vector<T>& v)
       : height(ceil(log2(v.size()))),
         n(1 << height),
         val(v),

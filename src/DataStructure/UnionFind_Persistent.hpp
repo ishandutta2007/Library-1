@@ -1,3 +1,6 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/DataStructure/PersistentArray.hpp"
 /**
  * @title Union-Find(完全永続)
  * @category データ構造
@@ -6,14 +9,7 @@
 // verify用:
 // https://atcoder.jp/contests/code-thanks-festival-2017/tasks/code_thanks_festival_2017_h
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
-#include "src/DataStructure/PersistentArray.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 struct UnionFind_Persistent {
   PersistentArray<int> par;

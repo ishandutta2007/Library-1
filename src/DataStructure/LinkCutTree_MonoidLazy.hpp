@@ -1,13 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Link-Cut-Tree(モノイド遅延伝搬)
  * @category データ構造
  * @brief O(logN)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename M>
 struct LinkCutTree_MonoidLazy {
@@ -85,8 +84,8 @@ struct LinkCutTree_MonoidLazy {
     t->rdat = M::g(t->rdat, v);
   }
   void toggle(Node *t) {
-    swap(t->ch[0], t->ch[1]);
-    swap(t->dat, t->rdat);
+    std::swap(t->ch[0], t->ch[1]);
+    std::swap(t->dat, t->rdat);
     t->rev ^= 1;
   }
   Node *eval(Node *t) {
@@ -104,7 +103,7 @@ struct LinkCutTree_MonoidLazy {
   }
 
  private:
-  vector<Node> ns;
+  std::vector<Node> ns;
   size_t linkcnt;
 
  public:

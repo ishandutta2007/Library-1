@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Rolling-Hash
  * @category 文字列
@@ -7,39 +9,36 @@
 
 // lcp verify https://atcoder.jp/contests/arc050/tasks/arc050_d
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct RollingHash {
  private:
-  static constexpr uint64_t mod = (1ull << 61ull) - 1;
-  vector<uint64_t> hash, pw;
-  uint64_t base;
+  static constexpr std::uint64_t mod = (1ull << 61ull) - 1;
+  std::vector<std::uint64_t> hash, pw;
+  std::uint64_t base;
 
  private:
-  static inline uint64_t add(uint64_t a, uint64_t b) {
+  static inline std::uint64_t add(std::uint64_t a, std::uint64_t b) {
     if ((a += b) >= mod) a -= mod;
     return a;
   }
-  static inline uint64_t mul(uint64_t a, uint64_t b) {
+  static inline std::uint64_t mul(std::uint64_t a, std::uint64_t b) {
     __uint128_t c = (__uint128_t)a * b;
     return add(c >> 61, c & mod);
   }
 
  public:
-  static inline uint64_t generate_base() {
-    mt19937_64 mt(chrono::steady_clock::now().time_since_epoch().count());
-    uniform_int_distribution<uint64_t> rand(1, RollingHash::mod - 1);
+  static inline std::uint64_t generate_base() {
+    std::mt19937_64 mt(chrono::steady_clock::now().time_since_epoch().count());
+    std::uniform_int_distribution<std::uint64_t> rand(1, RollingHash::mod - 1);
     return rand(mt);
   }
 
   RollingHash() = default;
-  RollingHash(const string& s, uint64_t base)
-      : RollingHash(vector<char>(s.begin(), s.end()), base) {}
+  RollingHash(const std::string& s, std::uint64_t base)
+      : RollingHash(std::vector<char>(s.begin(), s.end()), base) {}
   template <typename T>
-  RollingHash(const vector<T>& s, uint64_t base) : base(base) {
+  RollingHash(const std::vector<T>& s, std::uint64_t base) : base(base) {
     hash.assign(s.size() + 1, 0);
     pw.assign(s.size() + 1, 0);
     pw[0] = 1;
@@ -49,25 +48,26 @@ struct RollingHash {
     }
   }
   // S[l, r)
-  uint64_t get_hash(int l = 0, int r = -1) const {
+  std::uint64_t get_hash(int l = 0, int r = -1) const {
     if (r < 0) r = pw.size() - 1;
     return add(hash[r], mod - mul(hash[l], pw[r - l]));
   }
-  uint64_t combine_hash(uint64_t hash1, uint64_t hash2, int hash2len) {
+  std::uint64_t combine_hash(std::uint64_t hash1, std::uint64_t hash2,
+                             int hash2len) {
     return add(mul(hash1, pw[hash2len]), hash2);
   }
 };
 
 template <size_t SIZE>
 struct RollingHash_MultiBase {
-  using Array = array<uint64_t, SIZE>;
-  array<RollingHash, SIZE> rhs;
+  using Array = std::array<std::uint64_t, SIZE>;
+  std::array<RollingHash, SIZE> rhs;
   Array bases;
   RollingHash_MultiBase() = default;
-  RollingHash_MultiBase(const string& s, Array bs)
-      : RollingHash_MultiBase(vector<char>(s.begin(), s.end()), bs) {}
+  RollingHash_MultiBase(const std::string& s, Array bs)
+      : RollingHash_MultiBase(std::vector<char>(s.begin(), s.end()), bs) {}
   template <typename T>
-  RollingHash_MultiBase(const vector<T>& s, Array bs) : bases(bs) {
+  RollingHash_MultiBase(const std::vector<T>& s, Array bs) : bases(bs) {
     for (size_t i = 0; i < SIZE; i++) rhs[i] = RollingHash(s, bases[i]);
   }
   Array get_hash(int l, int r) const {

@@ -1,13 +1,9 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2423"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Geometry/!geometry_temp.hpp"
 #include "src/Geometry/circle_functions.hpp"
 #include "src/Graph/MatchingBipartite.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

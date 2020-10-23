@@ -1,12 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/235"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/LinkCutTree_MonoidLazy.hpp"
 #include "src/Math/ModInt.hpp"
-#undef call_from_test
+using namespace std;
 
 using Mint = ModInt<int(1e9 + 7)>;
 

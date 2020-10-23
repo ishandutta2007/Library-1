@@ -1,13 +1,8 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2674"
-
 // range_freq
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/WaveletMatrix.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

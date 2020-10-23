@@ -1,13 +1,9 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sum_of_totient_function"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/ModInt.hpp"
 #include "src/Math/dujiao_sieve.hpp"
 #include "src/Math/number_theory.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

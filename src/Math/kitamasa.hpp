@@ -1,29 +1,26 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/Math/ModInt.hpp"
+#include "src/Math/FormalPowerSeries.hpp"
 /**
  * @title 線形漸化式の高速計算
  * @category 数学
  *  O(NlogNlogk)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 // b[0] = a[0], b[1] = a[1], ..., b[N-1] = a[N-1]
 // b[n] = c[0] * b[n-N] + c[1] * b[n-N+1] + ... + c[N-1] * b[n-1] (n >= N)
 // return b[k]
 
 template <class mint>
-mint kitamasa(const vector<mint> &c, const vector<mint> &a, uint64_t k) {
+mint kitamasa(const std::vector<mint> &c, const std::vector<mint> &a,
+              std::uint64_t k) {
   assert(a.size() == c.size());
   int N = a.size();
-  if (k < (uint64_t)N) return a[k];
-  uint64_t mask = (uint64_t(1) << (63 - __builtin_clzll(k))) >> 1;
+  if (k < (std::uint64_t)N) return a[k];
+  std::uint64_t mask = (std::uint64_t(1) << (63 - __builtin_clzll(k))) >> 1;
   FormalPowerSeries<mint> f(N + 1), r({1, 0});
   f[0] = 1;
   for (int i = 0; i < N; i++) f[N - i] = -c[i];

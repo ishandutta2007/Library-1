@@ -1,13 +1,9 @@
 #define PROBLEM "https://yukicoder.me/problems/no/658"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/ModInt.hpp"
 #include "src/Math/FormalPowerSeries.hpp"
 #include "src/Math/kitamasa.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

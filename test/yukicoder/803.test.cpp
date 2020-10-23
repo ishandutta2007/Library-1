@@ -1,12 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/803"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/Matrix_mod2.hpp"
 #include "src/Math/ModInt.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

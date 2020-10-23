@@ -1,12 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/point_set_range_composite"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/SegmentTree.hpp"
 #include "src/Math/ModInt.hpp"
-#undef call_from_test
+using namespace std;
 
 using Mint = ModInt<998244353>;
 struct RcompositeQ {

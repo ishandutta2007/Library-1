@@ -1,15 +1,14 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Segment-Tree(動的)
  * @category データ構造
  * O(logN)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
-template <typename M, size_t LIM = 1 << 23>
+template <typename M, std::size_t LIM = 1 << 23>
 struct SegmentTree_Dynamic {
   using T = typename M::T;
   using ll = long long;
@@ -19,8 +18,8 @@ struct SegmentTree_Dynamic {
     U xor_lazy;
     Node *ch[2];
     Node() : dat(M::ti()), xor_lazy(0), ch{nullptr, nullptr} {}
-    void *operator new(size_t) {
-      static vector<Node> pool(LIM);
+    void *operator new(std::size_t) {
+      static std::vector<Node> pool(LIM);
       return &pool[node_count++];
     }
   };
@@ -99,5 +98,5 @@ struct SegmentTree_Dynamic {
     return find(root, check, bias);
   }
 };
-template <typename M, size_t LIM>
+template <typename M, std::size_t LIM>
 int SegmentTree_Dynamic<M, LIM>::node_count = 0;

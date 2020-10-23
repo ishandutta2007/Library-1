@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 接尾辞配列(Suffix-Array)
  * @category 文字列
@@ -7,20 +9,17 @@
  *  '$'は入れてない
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct SuffixArray {
-  vector<int> SA;
-  const string s;
-  SuffixArray(const string &str) : s(str) {
+  std::vector<int> SA;
+  const std::string s;
+  SuffixArray(const std::string &str) : s(str) {
     SA.resize(s.size());
-    iota(begin(SA), end(SA), 0);
-    sort(begin(SA), end(SA),
-         [&](int a, int b) { return s[a] == s[b] ? a > b : s[a] < s[b]; });
-    vector<int> classes(s.size()), c(s.begin(), s.end()), cnt(s.size());
+    std::iota(SA.begin(), SA.end(), 0);
+    std::sort(SA.begin(), SA.end(),
+              [&](int a, int b) { return s[a] == s[b] ? a > b : s[a] < s[b]; });
+    std::vector<int> classes(s.size()), c(s.begin(), s.end()), cnt(s.size());
     for (int len = 1; len < s.size(); len <<= 1) {
       for (int i = 0; i < s.size(); i++) {
         if (i > 0 && c[SA[i - 1]] == c[SA[i]] && SA[i - 1] + len < s.size()
@@ -30,8 +29,8 @@ struct SuffixArray {
           classes[SA[i]] = i;
         }
       }
-      iota(begin(cnt), end(cnt), 0);
-      copy(begin(SA), end(SA), begin(c));
+      std::iota(cnt.begin(), cnt.end(), 0);
+      std::copy(SA.begin(), SA.end(), c.begin());
       for (int i = 0; i < s.size(); i++) {
         int s1 = c[i] - len;
         if (s1 >= 0) SA[cnt[classes[s1]]++] = s1;
@@ -42,7 +41,7 @@ struct SuffixArray {
   int operator[](int k) const { return (SA[k]); }
 
   // O(|T|log|S|)
-  int lower_bound(string &T) {
+  int lower_bound(std::string &T) {
     int low = -1, high = s.size();
     while (high - low > 1) {
       int m = (low + high) >> 1;
@@ -53,23 +52,23 @@ struct SuffixArray {
     }
     return high;
   }
-  int upper_bound(string &T) {
+  int upper_bound(std::string &T) {
     T.back()++;
     int res = lower_bound(T);
     T.back()--;
     return res;
   }
   // O(|T|log|S|)
-  int count(string &T) { return upper_bound(T) - lower_bound(T); }
+  int count(std::string &T) { return upper_bound(T) - lower_bound(T); }
 
   // O(|S|)
-  vector<int> get_lcp() {
-    vector<int> rank(SA.size()), LCP(SA.size());
+  std::vector<int> get_lcp() {
+    std::vector<int> rank(SA.size()), LCP(SA.size());
     for (int i = 0; i < SA.size(); i++) rank[SA[i]] = i;
     for (int i = 0, h = 0; i < SA.size(); i++) {
       if (rank[i] + 1 < SA.size()) {
         int j = SA[rank[i] + 1];
-        while (max(i, j) + h < SA.size() && s[i + h] == s[j + h]) ++h;
+        while (std::max(i, j) + h < SA.size() && s[i + h] == s[j + h]) ++h;
         LCP[rank[i] + 1] = h;
         if (h > 0) --h;
       }

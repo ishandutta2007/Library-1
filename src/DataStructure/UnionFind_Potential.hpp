@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Union-Find(ポテンシャル)
  * @category データ構造
@@ -5,15 +7,12 @@
  * @brief O(α(N))
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename Weight>
 struct UnionFind_Potential {
-  vector<int> par;
-  vector<Weight> val;
+  std::vector<int> par;
+  std::vector<Weight> val;
   UnionFind_Potential(int size) : par(size, -1), val(size, 0) {}
   bool unite(int v, int u, Weight w) {
     w += potential(u) - potential(v);

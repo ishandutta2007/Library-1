@@ -1,12 +1,11 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 永続配列
  * @category データ構造
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename T, int LOG = 3>
 struct PersistentArray {
@@ -21,11 +20,11 @@ struct PersistentArray {
 
  public:
   PersistentArray() : root(nullptr) {}
-  PersistentArray(size_t n, const T &val = T()) { build(vector<T>(n, val)); }
-  PersistentArray(const vector<T> &v) { build(v); }
+  PersistentArray(size_t n, const T &v = T()) { build(std::vector<T>(n, v)); }
+  PersistentArray(const std::vector<T> &v) { build(v); }
   const T get(const int &k) const { return get(root, k); }
   T &operator[](const int &k) { return reference_get(k, false); }
-  void build(const vector<T> &v) {
+  void build(const std::vector<T> &v) {
     root = nullptr;
     for (int i = 0; i < v.size(); i++) reference_get(i, true) = v[i];
   }

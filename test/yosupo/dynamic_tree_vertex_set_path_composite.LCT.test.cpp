@@ -1,12 +1,9 @@
 #define PROBLEM \
   "https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/LinkCutTree_Monoid.hpp"
 #include "src/Math/ModInt.hpp"
+using namespace std;
 #undef call_from_test
 
 using Mint = ModInt<998244353>;

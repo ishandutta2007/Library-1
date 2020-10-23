@@ -1,3 +1,6 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/DataStructure/RedBlackTree.hpp"
 /**
  * @title 赤黒木(永続)
  * @category データ構造
@@ -6,14 +9,7 @@
 // verify用:
 // https://atcoder.jp/contests/joisc2012/tasks/joisc2012_copypaste
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
-#include "src/DataStructure/RedBlackTree.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 template <typename M, size_t LIM = 1 << 22, size_t FULL = 1000>
 struct RedBlackTree_Persistent : RedBlackTree<M, LIM> {
@@ -34,15 +30,15 @@ struct RedBlackTree_Persistent : RedBlackTree<M, LIM> {
     return RBTP(c);
   }
   // [0,k) [k,size)
-  pair<RBTP, RBTP> split(int k) {
+  std::pair<RBTP, RBTP> split(int k) {
     auto tmp = RBT::split(this->root, k);
-    return make_pair(RBTP(tmp.first), RBTP(tmp.second));
+    return std::make_pair(RBTP(tmp.first), RBTP(tmp.second));
   }
   // [0,a) [a,b) [b,size)
-  tuple<RBTP, RBTP, RBTP> split3(int a, int b) {
+  std::tuple<RBTP, RBTP, RBTP> split3(int a, int b) {
     auto x = RBT::split(this->root, a);
     auto y = RBT::split(x.second, b - a);
-    return make_tuple(RBTP(x.first), RBTP(y.first), RBTP(y.second));
+    return std::make_tuple(RBTP(x.first), RBTP(y.first), RBTP(y.second));
   }
   void rebuild() {
     auto ret = RBT::dump();

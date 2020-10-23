@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Segment-Tree
  * @category データ構造
@@ -11,10 +13,7 @@
 // find_left, find_right verify
 // https://atcoder.jp/contests/code-festival-2014-qualb/tasks/code_festival_qualB_d
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename M>
 struct SegmentTree {
@@ -22,13 +21,13 @@ struct SegmentTree {
 
  private:
   const int n;
-  vector<T> dat;
+  std::vector<T> dat;
 
  public:
   SegmentTree() {}
   SegmentTree(int n_) : n(n_), dat(n << 1, M::ti()) {}
-  SegmentTree(int n_, T v) : SegmentTree(vector<T>(n_, v)) {}
-  SegmentTree(const vector<T> &v) : n(v.size()), dat(n << 1, M::ti()) {
+  SegmentTree(int n_, T v) : SegmentTree(std::vector<T>(n_, v)) {}
+  SegmentTree(const std::vector<T> &v) : n(v.size()), dat(n << 1, M::ti()) {
     for (int i = 0; i < (int)v.size(); i++) dat[i + n] = v[i];
     rebuild();
   }
@@ -58,7 +57,7 @@ struct SegmentTree {
   int find_right(const C &check, int l = 0) {
     assert(check(M::ti()));
     if (l == n) return n;
-    vector<int> idl, idr;
+    std::vector<int> idl, idr;
     for (int a = l + n, b = 2 * n; a < b; a >>= 1, b >>= 1) {
       if (a & 1) idl.push_back(a++);
       if (b & 1) idr.push_back(--b);
@@ -83,7 +82,7 @@ struct SegmentTree {
     if (r < 0) r = n;
     assert(check(M::ti()));
     if (r == 0) return 0;
-    vector<int> idl, idr;
+    std::vector<int> idl, idr;
     for (int a = n, b = r + n; a < b; a >>= 1, b >>= 1) {
       if (a & 1) idl.push_back(a++);
       if (b & 1) idr.push_back(--b);

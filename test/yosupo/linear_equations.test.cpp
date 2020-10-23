@@ -1,12 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/system_of_linear_equations"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/Matrix.hpp"
 #include "src/Math/ModInt.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

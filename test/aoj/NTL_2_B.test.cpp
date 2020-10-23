@@ -1,12 +1,8 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/6/NTL/2/NTL_2_B"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/BigInt.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

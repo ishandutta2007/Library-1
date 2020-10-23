@@ -1,13 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 赤黒木
  * @category データ構造
  * @brief O(logN)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename M, size_t LIM = 1 << 20>
 struct RedBlackTree {
@@ -31,8 +30,8 @@ struct RedBlackTree {
     Node(Node *l, Node *r, const T &k) : val(k), color(RED), ch{l, r} {}
   };
   struct nPool {
-    vector<Node> pool;
-    vector<Node *> stock;
+    std::vector<Node> pool;
+    std::vector<Node *> stock;
     int ptr;
     nPool(int sz) : pool(sz), stock(sz) { clear(); }
     inline Node *alloc() { return stock[--ptr]; }
@@ -73,7 +72,7 @@ struct RedBlackTree {
     }
     return pushup(r);
   }
-  Node *build(int l, int r, const vector<T> &v) {
+  Node *build(int l, int r, const std::vector<T> &v) {
     if (l + 1 >= r) return alloc(v[l]);
     return merge(build(l, (l + r) >> 1, v), build((l + r) >> 1, r, v));
   }
@@ -83,7 +82,7 @@ struct RedBlackTree {
     t->dat = M::f(M::f(dat(t->ch[0]), t->val), dat(t->ch[1]));
     return t;
   }
-  void dump(Node *r, typename vector<T>::iterator &it) {
+  void dump(Node *r, typename std::vector<T>::iterator &it) {
     if (r->ch[0] == nullptr) {
       *it++ = r->val;
       return;
@@ -142,9 +141,9 @@ struct RedBlackTree {
 
  public:
   RedBlackTree() : root(nullptr) {}
-  RedBlackTree(int n, T val = M::ti()) : RedBlackTree(vector<T>(n, val)) {}
-  RedBlackTree(const vector<T> &v) { root = build(0, (int)v.size(), v); }
-  void build(const vector<T> &v) { root = build(0, (int)v.size(), v); }
+  RedBlackTree(int n, T val = M::ti()) : RedBlackTree(std::vector<T>(n, val)) {}
+  RedBlackTree(const std::vector<T> &v) { root = build(0, (int)v.size(), v); }
+  void build(const std::vector<T> &v) { root = build(0, (int)v.size(), v); }
   void push_front(const T &v) { root = merge(alloc(v), root); }
   void push_back(const T &v) { root = merge(root, alloc(v)); }
   T pop_front() {
@@ -165,16 +164,16 @@ struct RedBlackTree {
     return RedBlackTree(c);
   }
   // [0,k) [k,size)
-  pair<RedBlackTree, RedBlackTree> split(int k) {
+  std::pair<RedBlackTree, RedBlackTree> split(int k) {
     auto tmp = split(root, k);
-    return make_pair(RedBlackTree(tmp.first), RedBlackTree(tmp.first));
+    return std::make_pair(RedBlackTree(tmp.first), RedBlackTree(tmp.first));
   }
   // [0,a) [a,b) [b,size)
-  tuple<RedBlackTree, RedBlackTree, RedBlackTree> split3(int a, int b) {
+  std::tuple<RedBlackTree, RedBlackTree, RedBlackTree> split3(int a, int b) {
     auto x = split(root, a);
     auto y = split(x.second, b - a);
-    return make_tuple(RedBlackTree(x.first), RedBlackTree(y.first),
-                      RedBlackTree(y.second));
+    return std::make_tuple(RedBlackTree(x.first), RedBlackTree(y.first),
+                           RedBlackTree(y.second));
   }
   void insert(int k, const T &v) {
     auto x = split(root, k);
@@ -198,8 +197,8 @@ struct RedBlackTree {
   }
   T operator[](int k) { return get(root, k); }
   void set_val(int k, const T &x) { set_val(root, k, x); }
-  vector<T> dump() {
-    vector<T> v((size_t)count(root));
+  std::vector<T> dump() {
+    std::vector<T> v((size_t)count(root));
     auto it = begin(v);
     dump(root, it);
     return v;

@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 行列
  * @category 数学
@@ -5,50 +7,49 @@
  *  linear_equations(A,b) 返り値 {解のうちの一つ,解空間の基底ベクトル}
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename K>
 struct Matrix {
  private:
-  vector<vector<K>> a;
+  std::vector<std::vector<K>> a;
 
  public:
   Matrix() {}
-  Matrix(size_t n, size_t m) : a(n, vector<K>(m, 0)) {}
-  Matrix(size_t n) : Matrix(n, n) {}
-  Matrix(vector<vector<K>> a) : a(a) {}
-  size_t height() const { return a.size(); }
-  size_t width() const { return a[0].size(); }
-  inline const vector<K> &operator[](size_t k) const { return a[k]; }
-  inline vector<K> &operator[](size_t k) { return a[k]; }
-  static Matrix diag(vector<K> v) {
+  Matrix(std::size_t n, std::size_t m) : a(n, std::vector<K>(m, 0)) {}
+  Matrix(std::size_t n) : Matrix(n, n) {}
+  Matrix(std::vector<std::vector<K>> a) : a(a) {}
+  std::size_t height() const { return a.size(); }
+  std::size_t width() const { return a[0].size(); }
+  inline const std::vector<K> &operator[](std::size_t k) const { return a[k]; }
+  inline std::vector<K> &operator[](std::size_t k) { return a[k]; }
+  static Matrix diag(std::vector<K> v) {
     Matrix mat(v.size());
-    for (size_t i = 0; i < v.size(); i++) mat[i][i] = v[i];
+    for (std::size_t i = 0; i < v.size(); i++) mat[i][i] = v[i];
     return mat;
   }
-  static Matrix I(size_t n, K e = {1}) { return diag(vector<K>(n, e)); }
+  static Matrix I(std::size_t n, K e = {1}) {
+    return diag(std::vector<K>(n, e));
+  }
   Matrix &operator+=(const Matrix &b) {
-    size_t n = height(), m = width();
-    for (size_t i = 0; i < n; i++)
-      for (size_t j = 0; j < m; j++) (*this)[i][j] += b[i][j];
+    std::size_t n = height(), m = width();
+    for (std::size_t i = 0; i < n; i++)
+      for (std::size_t j = 0; j < m; j++) (*this)[i][j] += b[i][j];
     return (*this);
   }
   Matrix &operator-=(const Matrix &b) {
-    size_t n = height(), m = width();
-    for (size_t i = 0; i < n; i++)
-      for (size_t j = 0; j < m; j++) (*this)[i][j] -= b[i][j];
+    std::size_t n = height(), m = width();
+    for (std::size_t i = 0; i < n; i++)
+      for (std::size_t j = 0; j < m; j++) (*this)[i][j] -= b[i][j];
     return (*this);
   }
   Matrix &operator*=(const Matrix &b) {
-    size_t n = height(), m = width(), l = b.width();
+    std::size_t n = height(), m = width(), l = b.width();
     assert(m == b.height());
-    vector<vector<K>> c(n, vector<K>(l, 0));
-    for (size_t i = 0; i < n; i++)
-      for (size_t j = 0; j < l; j++)
-        for (size_t k = 0; k < m; k++) c[i][j] += (*this)[i][k] * b[k][j];
+    std::vector<std::vector<K>> c(n, std::vector<K>(l, 0));
+    for (std::size_t i = 0; i < n; i++)
+      for (std::size_t j = 0; j < l; j++)
+        for (std::size_t k = 0; k < m; k++) c[i][j] += (*this)[i][k] * b[k][j];
     a.swap(c);
     return (*this);
   }
@@ -61,12 +62,12 @@ struct Matrix {
       if (n & 1) ret *= base;
     return ret;
   }
-  vector<K> operator*(const vector<K> &v) {
-    size_t n = height(), m = width();
+  std::vector<K> operator*(const std::vector<K> &v) {
+    std::size_t n = height(), m = width();
     assert(m == v.size());
-    vector<K> ret(n);
-    for (size_t i = 0; i < n; i++)
-      for (size_t j = 0; j < m; j++) ret[i] += (*this)[i][j] * v[j];
+    std::vector<K> ret(n);
+    for (std::size_t i = 0; i < n; i++)
+      for (std::size_t j = 0; j < m; j++) ret[i] += (*this)[i][j] * v[j];
     return ret;
   }
   bool operator==(const Matrix &b) const { return a == b.a; }
@@ -76,7 +77,7 @@ struct Matrix {
   using EF = enable_if<!is_floating_point<T>::value>;
   template <typename T, typename ET<T>::type * = nullptr>
   static bool is_zero(T x) {
-    return abs(x) < 1e-8;
+    return std::abs(x) < 1e-8;
   }
   template <typename T, typename EF<T>::type * = nullptr>
   static bool is_zero(T x) {
@@ -84,7 +85,7 @@ struct Matrix {
   }
   template <typename T, typename ET<T>::type * = nullptr>
   static bool compare(T x, T y) {
-    return abs(x) < abs(y);
+    return std::abs(x) < std::abs(y);
   }
   template <typename T, typename EF<T>::type * = nullptr>
   static bool compare(T x, T y) {
@@ -92,65 +93,67 @@ struct Matrix {
     return y != T(0);
   }
   // O(nm(m+l))
-  static pair<Matrix, Matrix> Gauss_Jordan(const Matrix &a, const Matrix &b) {
-    size_t n = a.height(), m = a.width(), l = b.width();
+  static std::pair<Matrix, Matrix> Gauss_Jordan(const Matrix &a,
+                                                const Matrix &b) {
+    std::size_t n = a.height(), m = a.width(), l = b.width();
     Matrix c(n, m + l);
-    for (size_t i = 0; i < n; i++)
-      for (size_t j = 0; j < m; j++) c[i][j] = a[i][j];
-    for (size_t i = 0; i < n; i++)
-      for (size_t j = 0; j < l; j++) c[i][j + m] = b[i][j];
-    for (size_t j = 0, d = 0; j < m && d < n; j++) {
+    for (std::size_t i = 0; i < n; i++)
+      for (std::size_t j = 0; j < m; j++) c[i][j] = a[i][j];
+    for (std::size_t i = 0; i < n; i++)
+      for (std::size_t j = 0; j < l; j++) c[i][j + m] = b[i][j];
+    for (std::size_t j = 0, d = 0; j < m && d < n; j++) {
       int p = d;
-      for (size_t i = d + 1; i < n; i++)
+      for (std::size_t i = d + 1; i < n; i++)
         if (compare(c[p][j], c[i][j])) p = i;
       if (is_zero(c[p][j])) continue;
-      swap(c[p], c[d]);
+      std::swap(c[p], c[d]);
       K invc = K(1) / c[d][j];
-      for (size_t k = j; k < m + l; k++) c[d][k] *= invc;
-      for (size_t i = 0; i < n; i++) {
+      for (std::size_t k = j; k < m + l; k++) c[d][k] *= invc;
+      for (std::size_t i = 0; i < n; i++) {
         if (i == d) continue;
         for (int k = m + l - 1; k >= (int)j; k--) c[i][k] -= c[i][j] * c[d][k];
       }
       d++;
     }
     Matrix reta(n, m), retb(n, l);
-    for (size_t i = 0; i < n; i++)
-      for (size_t j = 0; j < m; j++) reta[i][j] = c[i][j];
-    for (size_t i = 0; i < n; i++)
-      for (size_t j = 0; j < l; j++) retb[i][j] = c[i][j + m];
-    return make_pair(reta, retb);
+    for (std::size_t i = 0; i < n; i++)
+      for (std::size_t j = 0; j < m; j++) reta[i][j] = c[i][j];
+    for (std::size_t i = 0; i < n; i++)
+      for (std::size_t j = 0; j < l; j++) retb[i][j] = c[i][j + m];
+    return std::make_pair(reta, retb);
   }
   // O(nm^2)
-  static pair<vector<K>, vector<vector<K>>> linear_equations(
-      const Matrix &a, const vector<K> &b) {
-    size_t n = a.height(), m = a.width();
+  static std::pair<std::vector<K>, std::vector<std::vector<K>>>
+  linear_equations(const Matrix &a, const std::vector<K> &b) {
+    std::size_t n = a.height(), m = a.width();
     Matrix B(n, 1);
-    for (size_t i = 0; i < n; i++) B[i][0] = b[i];
+    for (std::size_t i = 0; i < n; i++) B[i][0] = b[i];
     auto p = Gauss_Jordan(a, B);
-    vector<int> jdx(n, -1), idx(m, -1);
-    for (size_t i = 0, j; i < n; i++) {
+    std::vector<int> jdx(n, -1), idx(m, -1);
+    for (std::size_t i = 0, j; i < n; i++) {
       for (j = 0; j < m; j++)
         if (!is_zero(p.first[i][j])) {
           jdx[i] = j, idx[j] = i;
           break;
         }
       if (j == m && !is_zero(p.second[i][0]))
-        return make_pair(vector<K>(), vector<vector<K>>());  // no solutions
+        return std::make_pair(std::vector<K>(),
+                              std::vector<std::vector<K>>());  // no solutions
     }
-    vector<K> c(m);
-    vector<vector<K>> d;
-    for (size_t j = 0; j < m; j++) {
+    std::vector<K> c(m);
+    std::vector<std::vector<K>> d;
+    for (std::size_t j = 0; j < m; j++) {
       if (idx[j] != -1)
         c[j] = p.second[idx[j]][0];
       else {
-        vector<K> v(m);
+        std::vector<K> v(m);
         v[j] = 1;
-        for (size_t i = 0; i < n; i++)
+        for (std::size_t i = 0; i < n; i++)
           if (jdx[i] != -1) v[jdx[i]] = -p.first[i][j];
-        d.push_back(v);
+        d.emplace_back(v);
       }
     }
-    return make_pair(c, d);
+    return std::make_pair(c, d);
   }
   // O(n^3)
   K det() const {
@@ -163,7 +166,7 @@ struct Matrix {
         if (compare(A[p][i], A[j][i])) p = j;
       if (is_zero(A[p][i])) return 0;
       if (p != i) ret = -ret;
-      swap(A[p], A[i]);
+      std::swap(A[p], A[i]);
       ret *= A[i][i];
       K inva = K(1) / A[i][i];
       for (int j = i + 1; j < n; j++)

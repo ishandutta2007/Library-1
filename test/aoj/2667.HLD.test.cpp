@@ -1,14 +1,9 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2667"
-
 // パス総和、部分木加算
-
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Graph/HeavyLightDecomposition.hpp"
 #include "src/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
-#undef call_from_test
+#include <bits/stdc++.h>
+using namespace std;
 
 signed main() {
   cin.tie(0);

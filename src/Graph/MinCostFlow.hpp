@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 最小費用流
  * @category グラフ
@@ -10,14 +12,12 @@
 // (Radix-HeapでないとTLEした -> 容量スケーリングならTLEしない)
 // https://atcoder.jp/contests/geocon2013/tasks/geocon2013_b (コスト実数)
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <class flow_t, class cost_t,
-          typename Heap = priority_queue<pair<cost_t, int>,
-                                         vector<pair<cost_t, int>>, greater<>>,
+          typename Heap
+          = std::priority_queue<pair<cost_t, int>,
+                                std::vector<pair<cost_t, int>>, std::greater<>>,
           int obj = 1>
 class MinCostFlow {
   class Edge {
@@ -61,8 +61,8 @@ class MinCostFlow {
 
  private:
   int n;
-  vector<vector<Edge>> adj;
-  vector<flow_t> b;
+  std::vector<std::vector<Edge>> adj;
+  std::vector<flow_t> b;
 
  public:
   MinCostFlow() : n(0) {}
@@ -72,9 +72,9 @@ class MinCostFlow {
     b.resize(n);
     return n - 1;
   }
-  vector<int> add_vertices(const int size) {
-    vector<int> ret(size);
-    iota(begin(ret), end(ret), n);
+  std::vector<int> add_vertices(const int size) {
+    std::vector<int> ret(size);
+    std::iota(ret.begin(), ret.end(), n);
     n += size;
     adj.resize(n);
     b.resize(n);
@@ -95,10 +95,10 @@ class MinCostFlow {
   const cost_t UNREACHABLE = numeric_limits<cost_t>::max();
   const cost_t EPS = 1e-7;
   cost_t farthest;
-  vector<cost_t> potential;
-  vector<cost_t> dist;
-  vector<int> excess_vs, deficit_vs;
-  vector<int> prev;
+  std::vector<cost_t> potential;
+  std::vector<cost_t> dist;
+  std::vector<int> excess_vs, deficit_vs;
+  std::vector<int> prev;
   Heap pq;
   Edge &rev(const Edge &e) { return adj[e.dst][e.rev]; }
   void push(Edge &e, const flow_t amount) {
@@ -123,7 +123,7 @@ class MinCostFlow {
     while (!pq.empty()) {
       cost_t d;
       int u;
-      tie(d, u) = pq.top();
+      std::tie(d, u) = pq.top();
       pq.pop();
       if (dist[u] - d + EPS < 0) continue;
       farthest = d;
@@ -185,7 +185,7 @@ class MinCostFlow {
   }
 
  public:
-  pair<bool, cost_t> flow_run() {
+  std::pair<bool, cost_t> flow_run() {
     potential.resize(n);
     flow_t inf_flow = 1;
     for (const auto t : b) inf_flow = max({inf_flow, t, -t});
@@ -208,7 +208,7 @@ class MinCostFlow {
       return {false, value / obj};
     }
   }
-  pair<bool, cost_t> st_flow_run(const int s, const int t, flow_t flow) {
+  std::pair<bool, cost_t> st_flow_run(const int s, const int t, flow_t flow) {
     add_supply(s, flow);
     add_demand(t, flow);
     return flow_run();
@@ -220,7 +220,7 @@ class MinCostFlow {
     add_edge(t, s, 0, inf_flow, 0);
     bool status;
     cost_t circulation_value;
-    tie(status, circulation_value) = flow_run();
+    std::tie(status, circulation_value) = flow_run();
     if (!status) {
       adj[s].pop_back();
       adj[t].pop_back();
@@ -232,15 +232,15 @@ class MinCostFlow {
     b[t] -= inf_flow;
     bool mf_status;
     cost_t mf_value;
-    tie(mf_status, mf_value) = flow_run();
+    std::tie(mf_status, mf_value) = flow_run();
     b[s] -= inf_flow;
     b[t] += inf_flow;
     adj[s].pop_back();
     adj[t].pop_back();
     return {true, mf_value, b[t]};
   }
-  vector<cost_t> get_potential() {
-    fill(begin(potential), end(potential), 0);
+  std::vector<cost_t> get_potential() {
+    std::fill(potential.begin(), potential.end(), 0);
     for (int i = 0; i < n; i++)
       for (const auto &es : adj)
         for (const auto &e : es)
@@ -262,6 +262,7 @@ class MinCostFlow {
 };
 
 template <class flow_t, class cost_t,
-          typename Heap = priority_queue<pair<cost_t, int>,
-                                         vector<pair<cost_t, int>>, greater<>>>
+          typename Heap
+          = std::priority_queue<std::pair<cost_t, int>,
+                                std::vector<pair<cost_t, int>>, std::greater<>>>
 using MaxGainFlow = MinCostFlow<flow_t, cost_t, Heap, -1>;

@@ -1,3 +1,7 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/Math/ModInt.hpp"
+#include "src/Math/FormalPowerSeries.hpp"
 /**
  * @title 多項式の拡張互除法
  * @category 数学
@@ -5,15 +9,7 @@
  * @see https://loj.ac/article/2773
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 template <class mint>
 FormalPowerSeries<mint> exgcd(
@@ -21,8 +17,8 @@ FormalPowerSeries<mint> exgcd(
     FormalPowerSeries<mint> &x,
     FormalPowerSeries<mint> &y) {  // ax + by = gcd(a, b)
   using poly = FormalPowerSeries<mint>;
-  using pv = array<poly, 2>;
-  using pm = array<pv, 2>;
+  using pv = std::array<poly, 2>;
+  using pm = std::array<pv, 2>;
   assert(a.deg() >= 0);
   assert(b.deg() >= 0);
   auto isI = [](const pm &m) {
@@ -58,7 +54,7 @@ FormalPowerSeries<mint> exgcd(
     pm R(hgcd(poly(p0.begin() + m, p0.end()), poly(p1.begin() + m, p1.end())));
     pv ab(mulv(R, pv{p0, p1}));
     if (ab[1].deg() < m) return R;
-    pair<poly, poly> qr(ab[0].quorem(ab[1]));
+    std::pair<poly, poly> qr(ab[0].quorem(ab[1]));
     int k = 2 * m - ab[1].deg();
     if ((int)qr.second.size() <= k) return mulQ_l(qr.first, R);
     return mul(hgcd(poly(ab[1].begin() + k, ab[1].end()),
@@ -70,7 +66,7 @@ FormalPowerSeries<mint> exgcd(
     pm M(hgcd(p0, p1));
     pv p2p3(mulv(M, pv{p0, p1}));
     if (p2p3[1].deg() == -1) return M;
-    pair<poly, poly> qr(p2p3[0].quorem(p2p3[1]));
+    std::pair<poly, poly> qr(p2p3[0].quorem(p2p3[1]));
     if (qr.second.deg() == -1) return mulQ_l(qr.first, M);
     return mul(cogcd(p2p3[1], qr.second), mulQ_l(qr.first, M));
   };
@@ -78,7 +74,7 @@ FormalPowerSeries<mint> exgcd(
   if (a.norm().deg() > b.norm().deg()) {
     c = cogcd(a, b);
   } else {
-    pair<poly, poly> qr(a.quorem(b));
+    std::pair<poly, poly> qr(a.quorem(b));
     c = mulQ_r(cogcd(b, qr.second), qr.first);
   }
   return a * (x = c[0][0]) + b * (y = c[0][1]);

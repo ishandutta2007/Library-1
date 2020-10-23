@@ -1,13 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 全方位木DP
  * @category グラフ
  * @see https://ei1333.hateblo.jp/entry/2018/12/21/004022
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename T, typename E = int>
 struct ReRooting {
@@ -16,13 +15,13 @@ struct ReRooting {
     E data;
     T dp, ndp;
   };
-  vector<vector<Edge>> adj;
+  std::vector<std::vector<Edge>> adj;
 
  private:
-  const function<T(T, T)> op;
+  const std::function<T(T, T)> op;
   const T id;
-  const function<T(T, E)> lift;
-  vector<T> subdp, dp;
+  const std::function<T(T, E)> lift;
+  std::vector<T> subdp, dp;
 
  private:
   void dfs_sub(int idx, int par) {
@@ -52,14 +51,14 @@ struct ReRooting {
 
  public:
   ReRooting(
-      int N, const function<T(T, T)> &op_, T id_,
-      const function<T(T, E)> &lift_
+      int N, const std::function<T(T, T)> &op_, T id_,
+      const std::function<T(T, E)> &lift_
       = [](const T &dp, const E &dat) { return dp; })
       : adj(N), op(op_), id(id_), lift(lift_), subdp(N, id_), dp(N, id_) {}
   void add_edge(int src, int dst, E d = E()) {
     adj[src].emplace_back((Edge){dst, d, id, id});
   }
-  vector<T> run() {
+  std::vector<T> run() {
     dfs_sub(0, -1);
     dfs_all(0, -1, id);
     return dp;

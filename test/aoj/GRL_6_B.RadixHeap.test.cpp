@@ -1,13 +1,9 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/6/GRL_6_B"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Graph/MinCostFlow.hpp"
 #include "src/DataStructure/RadixHeap.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

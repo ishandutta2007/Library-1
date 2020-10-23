@@ -1,17 +1,16 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title HL分解
  * @category グラフ
  * 可換性を要求
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct HeavyLightDecomposition {
-  vector<vector<int>> adj;
-  vector<int> sz, in, out, head, par;
+  std::vector<std::vector<int>> adj;
+  std::vector<int> sz, in, out, head, par;
 
   HeavyLightDecomposition(int n) : adj(n) {}
   void add_edge(int u, int v) {
@@ -30,7 +29,7 @@ struct HeavyLightDecomposition {
   }
   int lca(int u, int v) const {
     for (;; v = par[head[v]]) {
-      if (in[u] > in[v]) swap(u, v);
+      if (in[u] > in[v]) std::swap(u, v);
       if (head[u] == head[v]) return u;
     }
   }
@@ -39,7 +38,7 @@ struct HeavyLightDecomposition {
                bool edge = false) {
     T vl = ti, vr = ti;
     for (;; v = par[head[v]]) {
-      if (in[u] > in[v]) swap(u, v), swap(vl, vr);
+      if (in[u] > in[v]) std::swap(u, v), std::swap(vl, vr);
       if (head[u] == head[v]) break;
       vl = f(q(in[head[v]], in[v] + 1), vl);
     }
@@ -53,7 +52,7 @@ struct HeavyLightDecomposition {
   template <typename Q>
   void update_path(int u, int v, const Q &q, bool edge = false) {
     for (;; v = par[head[v]]) {
-      if (in[u] > in[v]) swap(u, v);
+      if (in[u] > in[v]) std::swap(u, v);
       if (head[u] == head[v]) break;
       q(in[head[v]], in[v] + 1);
     }
@@ -66,12 +65,12 @@ struct HeavyLightDecomposition {
 
  private:
   void dfs_sz(int v, int p) {
-    if (adj[v].size() && adj[v][0] == p) swap(adj[v][0], adj[v].back());
+    if (adj[v].size() && adj[v][0] == p) std::swap(adj[v][0], adj[v].back());
     for (auto &u : adj[v])
       if (u != p) {
         dfs_sz(u, v);
         sz[v] += sz[u];
-        if (sz[adj[v][0]] < sz[u]) swap(adj[v][0], u);
+        if (sz[adj[v][0]] < sz[u]) std::swap(adj[v][0], u);
       }
   }
   void dfs_hld(int v, int p, int &times) {

@@ -1,11 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/zalgorithm"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/String/z_algorithm.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

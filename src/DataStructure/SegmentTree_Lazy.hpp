@@ -1,13 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Segment-Tree(遅延伝搬)
  * @category データ構造
  * @brief O(logN)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename M>
 struct SegmentTree_Lazy {
@@ -16,8 +15,8 @@ struct SegmentTree_Lazy {
 
  private:
   const int height, n;
-  vector<T> dat;
-  vector<E> laz;
+  std::vector<T> dat;
+  std::vector<E> laz;
 
  private:
   inline T reflect(int k) {
@@ -40,8 +39,8 @@ struct SegmentTree_Lazy {
  public:
   SegmentTree_Lazy() {}
   SegmentTree_Lazy(int n_, T v1 = M::ti())
-      : SegmentTree_Lazy(vector<T>(n_, v1)) {}
-  SegmentTree_Lazy(const vector<T>& v)
+      : SegmentTree_Lazy(std::vector<T>(n_, v1)) {}
+  SegmentTree_Lazy(const std::vector<T>& v)
       : height(ceil(log2(v.size()))),
         n(1 << height),
         dat(n * 2, M::ti()),

@@ -1,39 +1,38 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 多倍長整数
  * @category 数学
  * pythonの多倍長整数を使うべき
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 namespace ntt {
 struct ModB {
-  static constexpr uint64_t mask = (1ull << 32) - 1;
-  static constexpr uint64_t mod = (((1ull << 32) - 1) << 32) + 1;
-  static constexpr uint64_t prim_root = 7;
+  static constexpr std::uint64_t mask = (1ull << 32) - 1;
+  static constexpr std::uint64_t mod = (((1ull << 32) - 1) << 32) + 1;
+  static constexpr std::uint64_t prim_root = 7;
   static constexpr int level = 32;
-  uint64_t x;
+  std::uint64_t x;
   ModB() : x(0) {}
-  ModB(uint64_t n) : x(n >= mod ? n - mod : n) {}
-  static constexpr uint64_t modulo() { return mod; }
+  ModB(std::uint64_t n) : x(n >= mod ? n - mod : n) {}
+  static constexpr std::uint64_t modulo() { return mod; }
   static ModB omega() { return ModB(prim_root).pow(mask); }
-  uint64_t get() const { return this->x; }
+  std::uint64_t get() const { return this->x; }
   ModB operator+(ModB rhs) const {
-    uint64_t tmp = mod - rhs.x;
+    std::uint64_t tmp = mod - rhs.x;
     return ModB(this->x >= tmp ? this->x - tmp : this->x + rhs.x);
   }
   ModB operator-(ModB rhs) const {
     return ModB(this->x < rhs.x ? this->x + (mod - rhs.x) : this->x - rhs.x);
   }
   ModB operator*(ModB rhs) const {
-    uint64_t lu = this->x >> 32, ld = uint32_t(this->x);
-    uint64_t ru = rhs.x >> 32, rd = uint32_t(rhs.x);
-    uint64_t a = lu * ru, c = ld * ru, d = ld * rd;
-    uint64_t b = lu * rd + (d >> 32);
-    uint64_t x = ~b;
+    std::uint64_t lu = this->x >> 32, ld = uint32_t(this->x);
+    std::uint64_t ru = rhs.x >> 32, rd = uint32_t(rhs.x);
+    std::uint64_t a = lu * ru, c = ld * ru, d = ld * rd;
+    std::uint64_t b = lu * rd + (d >> 32);
+    std::uint64_t x = ~b;
     if (c <= x) {
       c += b;
       a += c >> 32;
@@ -42,7 +41,7 @@ struct ModB {
       a += (c >> 32) + (1ull << 32);
     }
     d = uint32_t(a) * mask + uint32_t(d);
-    c = (uint64_t(uint32_t(c)) << 32);
+    c = (std::uint64_t(uint32_t(c)) << 32);
     c = c ? c - (a >> 32) : mod - (a >> 32);
     b = mod - c;
     return (d < b) ? ModB(d + c) : ModB(d - b);
@@ -50,7 +49,7 @@ struct ModB {
   ModB &operator+=(ModB rhs) { return *this = *this + rhs; }
   ModB &operator-=(ModB rhs) { return *this = *this - rhs; }
   ModB &operator*=(ModB rhs) { return *this = *this * rhs; }
-  ModB pow(uint64_t exp) const {
+  ModB pow(std::uint64_t exp) const {
     ModB ret = ModB(1);
     for (ModB base = *this; exp; exp >>= 1, base *= base)
       if (exp & 1) ret *= base;
@@ -132,45 +131,45 @@ ModB ff[size], gg[size];
 }  // namespace ntt
 
 struct BigInt {
-  constexpr static int64_t base = 1000000000, base_digits = 9;
+  constexpr static std::int64_t base = 1000000000, base_digits = 9;
 
  private:
   bool minus;
-  vector<int64_t> dat;
+  std::vector<int64_t> dat;
 
  public:
   BigInt() : minus(false), dat() {}
   BigInt(int64_t v) { *this = v; }
-  BigInt(const string &s) { read(s); }
+  BigInt(const std::string &s) { read(s); }
 
  public:
   void shrink() {
     while (dat.size() && !dat.back()) dat.pop_back();
     if (dat.empty()) minus = false;
   }
-  void read(const string &s) {
+  void read(const std::string &s) {
     minus = false;
     dat.clear();
-    int64_t pos = 0;
+    std::int64_t pos = 0;
     while (pos < (int64_t)s.size() && (s[pos] == '-' || s[pos] == '+')) {
       if (s[pos] == '-') minus = !minus;
       ++pos;
     }
-    for (int64_t i = s.size() - 1; i >= pos; i -= base_digits) {
-      int64_t x = 0;
-      for (int64_t j = max(pos, i - base_digits + 1); j <= i; j++)
+    for (std::int64_t i = s.size() - 1; i >= pos; i -= base_digits) {
+      std::int64_t x = 0;
+      for (std::int64_t j = std::max(pos, i - base_digits + 1); j <= i; j++)
         x = x * 10 + s[j] - '0';
       dat.push_back(x);
     }
     shrink();
   }
-  string to_string() const {
-    stringstream ss;
+  std::string to_string() const {
+    std::stringstream ss;
     if (minus) ss << '-';
     ss << (dat.empty() ? 0 : dat.back());
     for (int64_t i = (int64_t)dat.size() - 2; i >= 0; --i)
       ss << setw(base_digits) << setfill('0') << dat[i];
-    string ret;
+    std::string ret;
     ss >> ret;
     return ret;
   }
@@ -184,27 +183,27 @@ struct BigInt {
     return *this;
   }
   bool is_zero() const { return dat.empty() || (dat.size() == 1 && !dat[0]); }
-  BigInt operator>>(size_t size) const {
+  BigInt operator>>(std::size_t size) const {
     if (dat.size() <= size) return {};
     BigInt ret;
-    ret.dat = vector<int64_t>(dat.begin() + size, dat.end());
+    ret.dat = std::vector<int64_t>(dat.begin() + size, dat.end());
     return ret;
   }
-  BigInt operator<<(size_t size) const {
+  BigInt operator<<(std::size_t size) const {
     BigInt ret(*this);
     ret.dat.insert(ret.dat.begin(), size, 0);
     return ret;
   }
 
  private:
-  static vector<int64_t> mul_n(const vector<int64_t> &f,
-                               const vector<int64_t> &g) {
-    vector<int64_t> ret(f.size() + g.size() - 1, 0);
-    for (size_t i = 0; i < f.size(); i++)
-      for (size_t j = 0; j < g.size(); j++) ret[i + j] += f[i] * g[j];
+  static std::vector<int64_t> mul_n(const std::vector<int64_t> &f,
+                                    const std::vector<int64_t> &g) {
+    std::vector<int64_t> ret(f.size() + g.size() - 1, 0);
+    for (std::size_t i = 0; i < f.size(); i++)
+      for (std::size_t j = 0; j < g.size(); j++) ret[i + j] += f[i] * g[j];
     return ret;
   }
-  static void conv(const vector<int64_t> &f, const vector<int64_t> &g,
+  static void conv(const std::vector<int64_t> &f, const std::vector<int64_t> &g,
                    bool cyclic = false) {
     using namespace ntt;
     for (int i = 0; i < (int)f.size(); i++) ff[i] = f[i];
@@ -215,14 +214,15 @@ struct BigInt {
       convolute(ff, f.size(), gg, g.size(), cyclic);
     }
   }
-  static vector<int64_t> convert_base(const vector<int64_t> &a,
-                                      int64_t old_digits, int64_t new_digits) {
-    vector<int64_t> p(max(old_digits, new_digits) + 1);
+  static std::vector<int64_t> convert_base(const std::vector<int64_t> &a,
+                                           std::int64_t old_digits,
+                                           std::int64_t new_digits) {
+    std::vector<int64_t> p(max(old_digits, new_digits) + 1);
     p[0] = 1;
     for (int64_t i = 1; i < (int64_t)p.size(); i++) p[i] = p[i - 1] * 10;
-    vector<int64_t> res;
-    int64_t cur = 0;
-    int64_t cur_digits = 0;
+    std::vector<int64_t> res;
+    std::int64_t cur = 0;
+    std::int64_t cur_digits = 0;
     for (int64_t i = 0; i < (int64_t)a.size(); i++) {
       cur += a[i] * p[cur_digits];
       cur_digits += old_digits;
@@ -238,25 +238,25 @@ struct BigInt {
   }
   BigInt mul(const BigInt &v) const {
     if (this->is_zero() || v.is_zero()) return BigInt();
-    constexpr static int64_t nbase = 10000, nbase_digits = 4;
-    vector<int64_t> f = convert_base(this->dat, base_digits, nbase_digits);
-    vector<int64_t> g = convert_base(v.dat, base_digits, nbase_digits);
+    constexpr static std::int64_t nbase = 10000, nbase_digits = 4;
+    std::vector<int64_t> f = convert_base(this->dat, base_digits, nbase_digits);
+    std::vector<int64_t> g = convert_base(v.dat, base_digits, nbase_digits);
     while (f.size() < g.size()) f.push_back(0);
     while (g.size() < f.size()) g.push_back(0);
     while (f.size() & (f.size() - 1)) f.push_back(0), g.push_back(0);
-    vector<int64_t> h;
+    std::vector<int64_t> h;
     if (f.size() + g.size() < 750 || f.size() < 8 || g.size() < 8) {
       h = mul_n(f, g);
     } else {
       using namespace ntt;
       h.resize(f.size() + g.size() - 1);
       conv(f, g, false);
-      for (size_t i = 0; i < h.size(); i++) h[i] = ff[i].get();
+      for (std::size_t i = 0; i < h.size(); i++) h[i] = ff[i].get();
     }
     BigInt res = 0;
     res.minus = minus ^ v.minus;
     for (int64_t i = 0, carry = 0; i < (int64_t)h.size(); i++) {
-      int64_t cur = h[i] + carry;
+      std::int64_t cur = h[i] + carry;
       res.dat.push_back((int64_t)(cur % nbase));
       carry = (int64_t)(cur / nbase);
       if (i + 1 == (int)h.size() && carry > 0) h.push_back(0);
@@ -265,8 +265,8 @@ struct BigInt {
     res.shrink();
     return res;
   }
-  static pair<BigInt, BigInt> divmod(const BigInt &a1, const BigInt &b1) {
-    int64_t norm = base / (b1.dat.back() + 1);
+  static std::pair<BigInt, BigInt> divmod(const BigInt &a1, const BigInt &b1) {
+    std::int64_t norm = base / (b1.dat.back() + 1);
     BigInt a = a1.abs() * norm;
     BigInt b = b1.abs() * norm;
     BigInt q, r;
@@ -274,10 +274,10 @@ struct BigInt {
     for (int64_t i = a.dat.size() - 1; i >= 0; i--) {
       r *= base;
       r += a.dat[i];
-      int64_t s1 = r.dat.size() <= b.dat.size() ? 0 : r.dat[b.dat.size()];
-      int64_t s2
+      std::int64_t s1 = r.dat.size() <= b.dat.size() ? 0 : r.dat[b.dat.size()];
+      std::int64_t s2
           = r.dat.size() <= b.dat.size() - 1 ? 0 : r.dat[b.dat.size() - 1];
-      int64_t d = ((int64_t)base * s1 + s2) / b.dat.back();
+      std::int64_t d = ((int64_t)base * s1 + s2) / b.dat.back();
       r -= b * d;
       while (r < 0) r += b, --d;
       q.dat[i] = d;
@@ -285,21 +285,21 @@ struct BigInt {
     q.minus = a1.minus ^ b1.minus;
     r.minus = a1.minus;
     q.shrink(), r.shrink();
-    return make_pair(q, r / norm);
+    return std::make_pair(q, r / norm);
   }
   BigInt quo(const BigInt &b) const {
-    size_t preci = dat.size() - b.dat.size();
+    std::size_t preci = dat.size() - b.dat.size();
     BigInt t(1);
     BigInt pre;
-    size_t lim = min(int(preci), 3);
-    size_t blim = min(int(b.dat.size()), 6);
+    std::size_t lim = min(int(preci), 3);
+    std::size_t blim = min(int(b.dat.size()), 6);
     t = t << lim;
     while (pre != t) {
       BigInt rb = b >> (b.dat.size() - blim);
       if (blim != b.dat.size()) rb += BigInt(1);
       pre = t;
       t *= (BigInt(2) << (blim + lim)) - rb * t;
-      t.dat = vector<int64_t>(t.dat.begin() + lim + blim, t.dat.end());
+      t.dat = std::vector<int64_t>(t.dat.begin() + lim + blim, t.dat.end());
     }
     if (lim != preci) {
       pre = BigInt();
@@ -308,16 +308,16 @@ struct BigInt {
         if (blim != b.dat.size()) rb += BigInt({1});
         pre = t;
         t *= (BigInt(2) << (blim + lim)) - rb * t;
-        t.dat = vector<int64_t>(t.dat.begin() + lim + blim, t.dat.end());
-        size_t next_lim = min(lim * 2 + 1, preci);
+        t.dat = std::vector<int64_t>(t.dat.begin() + lim + blim, t.dat.end());
+        std::size_t next_lim = min(lim * 2 + 1, preci);
         if (next_lim != lim) t = t << next_lim - lim;
-        size_t next_blim = min(blim * 2 + 1, b.dat.size());
+        std::size_t next_blim = min(blim * 2 + 1, b.dat.size());
         lim = next_lim;
         blim = next_blim;
       }
     }
     BigInt ret = this->abs() * t;
-    ret.dat = vector<int64_t>(ret.dat.begin() + dat.size(), ret.dat.end());
+    ret.dat = std::vector<int64_t>(ret.dat.begin() + dat.size(), ret.dat.end());
     while ((ret + BigInt(1)) * b <= this->abs()) ret += BigInt(1);
     ret.minus = this->minus ^ b.minus;
     ret.shrink();
@@ -342,7 +342,7 @@ struct BigInt {
 
  public:
   friend istream &operator>>(istream &stream, BigInt &v) {
-    string s;
+    std::string s;
     stream >> s;
     v.read(s);
     return stream;
@@ -365,7 +365,7 @@ struct BigInt {
     if (v < 0) minus = !minus, v = -v;
     for (int64_t i = 0, carry = 0; i < (int64_t)dat.size() || carry; ++i) {
       if (i == (int64_t)dat.size()) dat.push_back(0);
-      int64_t cur = dat[i] * (int64_t)v + carry;
+      std::int64_t cur = dat[i] * (int64_t)v + carry;
       carry = (int64_t)(cur / base);
       dat[i] = (int64_t)(cur % base);
     }
@@ -376,7 +376,7 @@ struct BigInt {
   BigInt &operator/=(int64_t v) {
     if (v < 0) minus = !minus, v = -v;
     for (int64_t i = (int64_t)dat.size() - 1, rem = 0; i >= 0; --i) {
-      int64_t cur = dat[i] + rem * (int64_t)base;
+      std::int64_t cur = dat[i] + rem * (int64_t)base;
       dat[i] = (int64_t)(cur / v);
       rem = (int64_t)(cur % v);
     }
@@ -384,9 +384,9 @@ struct BigInt {
     return *this;
   }
   BigInt operator/(int64_t v) const { return BigInt(*this) /= v; }
-  int64_t operator%(int64_t v) const {
+  std::int64_t operator%(int64_t v) const {
     assert(v > 0 && !minus);
-    int64_t ret = 0;
+    std::int64_t ret = 0;
     for (int64_t i = dat.size() - 1; i >= 0; --i)
       ret = (dat[i] + ret * (int64_t)base) % v;
     return ret;

@@ -1,12 +1,11 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 幾何テンプレ
  * @category 幾何
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 namespace geometry {
 
@@ -182,14 +181,14 @@ Segment rotate(Segment s, Real theta) {
   return {rotate(s.p1, theta), rotate(s.p2, theta)};
 }
 
-vector<Point> cross_points(Line l, Line m) {
+std::vector<Point> cross_points(Line l, Line m) {
   Real a = cross(m.p2 - m.p1, l.p2 - l.p1);
   Real b = cross(l.p1 - m.p1, l.p2 - l.p1);
   if (sgn(a)) return {m.p1 + b / a * (m.p2 - m.p1)};  // properly crossing
   if (!sgn(b)) return {m.p1, m.p2};                   // same line
   return {};                                          // disjoint parallel
 }
-vector<Point> cross_points(Line l, Segment s) {
+std::vector<Point> cross_points(Line l, Segment s) {
   Real a = cross(s.p2 - s.p1, l.p2 - l.p1);
   Real b = cross(l.p1 - s.p1, l.p2 - l.p1);
   if (a < 0) a = -a, b = -b;
@@ -198,8 +197,10 @@ vector<Point> cross_points(Line l, Segment s) {
   if (!sgn(b)) return {s.p1, s.p2};                   // same line
   return {};                                          // disjoint parallel
 }
-vector<Point> cross_points(Segment s, Line l) { return cross_points(l, s); }
-vector<Point> cross_points(Segment s, Segment t) {
+std::vector<Point> cross_points(Segment s, Line l) {
+  return cross_points(l, s);
+}
+std::vector<Point> cross_points(Segment s, Segment t) {
   Real a = cross(s.p2 - s.p1, t.p2 - t.p1);
   Real b = cross(t.p1 - s.p1, t.p2 - t.p1);
   Real c = cross(s.p2 - s.p1, s.p1 - t.p1);
@@ -207,11 +208,11 @@ vector<Point> cross_points(Segment s, Segment t) {
   if (sgn(b) < 0 || sgn(a - b) < 0 || sgn(c) < 0 || sgn(a - c) < 0)
     return {};                                        // disjoint
   if (sgn(a)) return {s.p1 + b / a * (s.p2 - s.p1)};  // properly crossing
-  vector<Point> ps;                                   // same line
+  std::vector<Point> ps;                              // same line
   auto insert_if_possible = [&](Point p) {
     for (auto q : ps)
       if (sgn(dot(p - q, p - q)) == 0) return;
-    ps.push_back(p);
+    ps.emplace_back(p);
   };
   if (sgn(dot(s.p1 - t.p1, s.p2 - t.p1)) <= 0) insert_if_possible(t.p1);
   if (sgn(dot(s.p1 - t.p2, s.p2 - t.p2)) <= 0) insert_if_possible(t.p2);
@@ -255,7 +256,7 @@ struct Circle {
     int s = sgn(norm2(p - o) - r * r);
     return s < 0 ? IN : s == 0 ? ON : OUT;
   }
-  vector<Line> tangent(Point p) {
+  std::vector<Line> tangent(Point p) {
     Point u = p - o, v = orth(u);
     Real len = norm2(u) - r * r;
     if (sgn(len) < 0) return {};
@@ -270,7 +271,7 @@ Circle Line::reflect(Circle c) { return {reflect(c.o), c.r}; }
 Circle translate(Circle c, Point v) { return {c.o + v, c.r}; }
 Circle rotate(Circle c, Real theta) { return {rotate(c.o, theta), c.r}; }
 
-vector<Point> cross_points(Circle c, Circle d) {
+std::vector<Point> cross_points(Circle c, Circle d) {
   if (c.r < d.r) swap(c, d);
   Real g = norm2(c.o - d.o);
   if (sgn(g) == 0) {
@@ -289,7 +290,7 @@ vector<Point> cross_points(Circle c, Circle d) {
   Point q = c.o + eta * (d.o - c.o), v = mu * orth(d.o - c.o);
   return {q + v, q - v};
 }
-vector<Point> cross_points(Circle c, Line l) {
+std::vector<Point> cross_points(Circle c, Line l) {
   Point u = l.p2 - l.p1, v = l.p1 - c.o;
   Real a = norm2(u), b = dot(u, v) / a, t = (norm2(v) - c.r * c.r) / a;
   Real det = b * b - t;
@@ -298,8 +299,8 @@ vector<Point> cross_points(Circle c, Line l) {
   return {l.p1 - (b + sqrt(det)) * u,        // properly intersect
           l.p1 - (b - sqrt(det)) * u};
 }
-vector<Point> cross_points(Line l, Circle c) { return cross_points(c, l); }
-vector<Point> cross_points(Circle c, Segment s) {
+std::vector<Point> cross_points(Line l, Circle c) { return cross_points(c, l); }
+std::vector<Point> cross_points(Circle c, Segment s) {
   Point u = s.p2 - s.p1, v = s.p1 - c.o;
   Real a = norm2(u), b = dot(u, v) / a, t = (norm2(v) - c.r * c.r) / a;
   Real det = b * b - t;
@@ -307,19 +308,21 @@ vector<Point> cross_points(Circle c, Segment s) {
   if (sgn(det) == 0 && sgn(-b) >= 0 && sgn(1 - (-b)) >= 0)
     return {s.p1 - b * u};  // touch
   Real t1 = -b - sqrt(det), t2 = -b + sqrt(det);
-  vector<Point> qs;
-  if (sgn(t1) >= 0 && sgn(1 - t1) >= 0) qs.push_back(s.p1 + t1 * u);
-  if (sgn(t2) >= 0 && sgn(1 - t2) >= 0) qs.push_back(s.p1 + t2 * u);
+  std::vector<Point> qs;
+  if (sgn(t1) >= 0 && sgn(1 - t1) >= 0) qs.emplace_back(s.p1 + t1 * u);
+  if (sgn(t2) >= 0 && sgn(1 - t2) >= 0) qs.emplace_back(s.p1 + t2 * u);
   return qs;
 }
-vector<Point> cross_points(Segment s, Circle c) { return cross_points(c, s); }
+std::vector<Point> cross_points(Segment s, Circle c) {
+  return cross_points(c, s);
+}
 
 //-----------------------------------------------------------------------------
 // Polygon
 // assuming counterclockwise rotation
 //-----------------------------------------------------------------------------
-struct Polygon : vector<Point> {
-  using vector<Point>::vector;
+struct Polygon : std::vector<Point> {
+  using std::vector<Point>::vector;
   int prev(int i) { return i ? i - 1 : (int)this->size() - 1; }
   int next(int i) { return (i + 1 == (int)this->size() ? 0 : i + 1); }
   bool is_convex() {
@@ -349,13 +352,13 @@ struct Polygon : vector<Point> {
   bool contains(Segment s, int side = IN) {  // +2 for in, -2 for out
     int opp = side == IN ? OUT : IN;
     if (where(s.p1) == opp || where(s.p2) == opp) return false;
-    vector<Point> ps = {s.p1, s.p2};
+    std::vector<Point> ps = {s.p1, s.p2};
     for (int i = 0; i < (int)this->size(); i++)
       for (Point p : cross_points(s, Segment({(*this)[i], (*this)[next(i)]})))
-        ps.push_back(p);
+        ps.emplace_back(p);
     int n = ps.size();
     sort(ps.begin(), ps.end());
-    for (int i = 0; i + 1 < n; i++) ps.push_back((ps[i] + ps[i + 1]) / 2);
+    for (int i = 0; i + 1 < n; i++) ps.emplace_back((ps[i] + ps[i + 1]) / 2);
     for (Point p : ps)
       if (where(p) == opp) return false;
     return true;
@@ -365,7 +368,7 @@ struct Polygon : vector<Point> {
 Polygon Line::reflect(Polygon g) {
   reverse(g.begin(), g.end());
   Polygon res;
-  for (Point p : g) res.push_back(reflect(p));
+  for (Point p : g) res.emplace_back(reflect(p));
   return res;
 }
 Polygon translate(Polygon g, Point v) {
@@ -381,7 +384,7 @@ Polygon rotate(Polygon g, Real theta) {
 
 struct Convex : Polygon {
   using Polygon::Polygon;
-  pair<Point, Point> farthest() {
+  std::pair<Point, Point> farthest() {
     int u = 0, v = 1;
     Real best = -1;
     for (int i = 0, j = 1; i < (int)this->size(); ++i)
@@ -395,7 +398,7 @@ struct Convex : Polygon {
           break;
         }
       }
-    return make_pair((*this)[u], (*this)[v]);
+    return std::make_pair((*this)[u], (*this)[v]);
   }
   Real diameter() {
     Point p, q;
@@ -406,11 +409,11 @@ struct Convex : Polygon {
     Convex g;
     for (int i = 0; i < (int)this->size(); i++) {
       Point p = (*this)[i], q = (*this)[next(i)];
-      if (l.where(p) * side >= 0) g.push_back(p);
+      if (l.where(p) * side >= 0) g.emplace_back(p);
       if (l.where(p) * l.where(q) < 0) {
         Real a = cross(q - p, l.p2 - l.p1);
         Real b = cross(l.p1 - p, l.p2 - l.p1);
-        g.push_back(p + b / a * (q - p));
+        g.emplace_back(p + b / a * (q - p));
       }
     }
     return g;
@@ -420,7 +423,7 @@ struct Convex : Polygon {
 Convex Line::reflect(Convex g) {
   reverse(g.begin(), g.end());
   Convex res;
-  for (Point p : g) res.push_back(reflect(p));
+  for (Point p : g) res.emplace_back(reflect(p));
   return res;
 }
 Convex translate(Convex g, Point v) {
@@ -464,7 +467,7 @@ Real dist(Polygon g, Polygon h) {
   return res;
 }
 
-Convex convex_hull(vector<Point> ps) {
+Convex convex_hull(std::vector<Point> ps) {
   int n = ps.size(), k = 0;
   sort(ps.begin(), ps.end());
   Convex ch(2 * n);

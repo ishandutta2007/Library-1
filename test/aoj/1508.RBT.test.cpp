@@ -1,11 +1,7 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1508"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/RedBlackTree.hpp"
-#undef call_from_test
+using namespace std;
 
 struct RminQ {
   using T = int;

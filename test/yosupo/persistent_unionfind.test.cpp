@@ -1,12 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/persistent_unionfind"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/PersistentArray.hpp"
 #include "src/DataStructure/UnionFind_Persistent.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

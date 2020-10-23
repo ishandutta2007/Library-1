@@ -1,12 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/static_range_inversions_query"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Algorithm/Mo.hpp"
 #include "src/DataStructure/BinaryIndexedTree.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Li-Chao-Tree
  * @category データ構造
@@ -7,10 +9,7 @@
  * @brief 最大値取得したいなら(-a,-b)を挿入して-最小値を取得
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename T, T x_low = -(1 << 30), T x_high = (1 << 30),
           size_t LIM = (1 << 23)>
@@ -26,13 +25,13 @@ struct LiChaoTree {
     Node() : x(0, INF) {}
     Node(const Line &x) : x(x), ch{nullptr, nullptr} {}
     void *operator new(size_t) {
-      static vector<Node> pool(LIM);
+      static std::vector<Node> pool(LIM);
       return &pool[node_count++];
     }
   };
 
  private:
-  static constexpr T INF = numeric_limits<T>::max() / 2;
+  static constexpr T INF = std::numeric_limits<T>::max() / 2;
   static int node_count;
   Node *root;
 
@@ -51,7 +50,7 @@ struct LiChaoTree {
       if (m == r) --m;
       T t_m = t->x.get(m), x_m = x.get(m);
       if (t_m > x_m) {
-        swap(t->x, x);
+        std::swap(t->x, x);
         if (x_l >= t_l)
           t->ch[0] = insert_line(t->ch[0], x, l, m, t_l, t_m);
         else

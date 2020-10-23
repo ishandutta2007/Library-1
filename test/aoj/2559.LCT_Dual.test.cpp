@@ -1,13 +1,9 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2559"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/LinkCutTree_MonoidDual.hpp"
 #include "src/DataStructure/UnionFind.hpp"
 #include "src/Graph/MinimumSpanningTree_Kruskal.hpp"
-#undef call_from_test
+using namespace std;
 
 struct RchminQ {
   using T = long long;

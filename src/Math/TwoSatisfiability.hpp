@@ -1,3 +1,6 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/Graph/StronglyConnectedComponents.hpp"
 /**
  * @title 2-SAT
  * @category 数学
@@ -5,14 +8,7 @@
  *  solve():真偽値の割当を返す(充足不可能なら空)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
-#include "src/Graph/StronglyConnectedComponents.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 struct TwoSatisfiability {
  private:
@@ -30,9 +26,9 @@ struct TwoSatisfiability {
   void set_true(int u) { scc.add_edge(neg(u), u); }   // u <=> !u -> u
   void set_false(int u) { scc.add_edge(u, neg(u)); }  // !u <=> u -> !u
   inline int neg(int x) { return x >= sz ? x - sz : x + sz; }
-  vector<short> solve() {
-    vector<int> I = scc.get_SCC().second;
-    vector<short> ret(sz);
+  std::vector<short> solve() {
+    std::vector<int> I = scc.get_SCC().second;
+    std::vector<short> ret(sz);
     for (int i = 0; i < sz; i++) {
       if (I[i] == I[neg(i)]) return {};
       ret[i] = I[i] > I[neg(i)];

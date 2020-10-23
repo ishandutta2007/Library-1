@@ -1,12 +1,8 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_G"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

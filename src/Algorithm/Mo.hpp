@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Mo
  * @category アルゴリズム
@@ -5,14 +7,11 @@
  * @see https://ei1333.hateblo.jp/entry/2017/09/11/211011
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct Mo {
   int n;
-  vector<pair<int, int> > lr;
+  std::vector<std::pair<int, int> > lr;
   explicit Mo(int n) : n(n) {}
   /* [l, r) */
   void query(int l, int r) { lr.emplace_back(l, r); }
@@ -22,9 +21,9 @@ struct Mo {
            const ER &erase_right, const O &out) {
     int q = (int)lr.size();
     int bs = n / min<int>(n, sqrt(q));
-    vector<int> ord(q);
-    iota(begin(ord), end(ord), 0);
-    sort(begin(ord), end(ord), [&](int a, int b) {
+    std::vector<int> ord(q);
+    std::iota(ord.begin(), ord.end(), 0);
+    std::sort(ord.begin(), ord.end(), [&](int a, int b) {
       int ablock = lr[a].first / bs, bblock = lr[b].first / bs;
       if (ablock != bblock) return ablock < bblock;
       return (ablock & 1) ? lr[a].second > lr[b].second

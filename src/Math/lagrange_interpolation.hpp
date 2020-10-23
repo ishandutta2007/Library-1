@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title ラグランジュ補間
  * @category 数学
@@ -7,20 +9,17 @@
 
 // verify用:http://codeforces.com/contest/622/problem/F
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename K>
-K lagrange_interpolation(vector<K> &y, K t) {
+K lagrange_interpolation(std::vector<K> &y, K t) {
   int n = y.size() - 1;
-  vector<K> pro(n + 1, 1), orp(n + 1, 1);
+  std::vector<K> pro(n + 1, 1), orp(n + 1, 1);
   for (int i = 0; i < n; i++) pro[i + 1] = pro[i] * (t - K(i));
   for (int i = n; i > 0; i--) orp[i - 1] = orp[i] * (t - K(i));
   K fact = K(1);
   for (int i = 1; i <= n; i++) fact *= K(i);
-  vector<K> finv(n + 1, 1);
+  std::vector<K> finv(n + 1, 1);
   finv[n] = K(1) / fact;
   for (int i = n; i >= 1; i--) finv[i - 1] = finv[i] * K(i);
   K res(0);

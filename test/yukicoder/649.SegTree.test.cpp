@@ -1,18 +1,13 @@
 #define PROBLEM "https://yukicoder.me/problems/no/649"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/SegmentTree.hpp"
-#undef call_from_test
+using namespace std;
 
 struct RsumQ {
   using T = int;
   static T ti() { return 0; }
   static T f(const T &l, const T &r) { return l + r; }
 };
-
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);

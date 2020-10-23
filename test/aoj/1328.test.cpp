@@ -1,13 +1,8 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1328"
-
 // double型の行列の連立一次方程式のverify
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/Matrix.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

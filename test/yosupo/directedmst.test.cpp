@@ -1,13 +1,9 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/directedmst"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/UnionFind.hpp"
 #include "src/DataStructure/SkewHeap.hpp"
 #include "src/Graph/MinimumSpanningAborescense.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

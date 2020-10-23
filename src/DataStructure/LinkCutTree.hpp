@@ -1,13 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Link-Cut-Tree(シンプル)
  * @category データ構造
  * @brief O(logN)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct LinkCutTree {
   struct Node {
@@ -55,7 +54,7 @@ struct LinkCutTree {
     return r;
   }
   void toggle(Node *t) {
-    swap(t->ch[0], t->ch[1]);
+    std::swap(t->ch[0], t->ch[1]);
     t->rev ^= true;
   }
   Node *eval(Node *t) {
@@ -68,7 +67,7 @@ struct LinkCutTree {
   }
 
  private:
-  vector<Node> ns;
+  std::vector<Node> ns;
   size_t linkcnt;
 
  public:

@@ -1,13 +1,9 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/7/DPL/5/DPL_5_E"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/Combination.hpp"
 #include "src/Math/ModInt.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

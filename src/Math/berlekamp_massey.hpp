@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Berlekamp-Massey
  * @category 数学
@@ -8,18 +10,15 @@
 // verify用:
 // https://atcoder.jp/contests/tenka1-2015-qualb/tasks/tenka1_2015_qualB_c
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 // a[n] = c[0] * a[n-N] + c[1] * a[n-N+1] + ... + c[N-1] * a[n-1]
 // return c
 
 template <class T>
-vector<T> berlekamp_massey(const vector<T> &a) {
+std::vector<T> berlekamp_massey(const std::vector<T> &a) {
   const int N = (int)a.size();
-  vector<T> b = {T(-1)}, c = {T(-1)};
+  std::vector<T> b = {T(-1)}, c = {T(-1)};
   T y = T(1);
   for (int ed = 1; ed <= N; ed++) {
     int l = int(c.size()), m = int(b.size()) + 1;
@@ -30,7 +29,7 @@ vector<T> berlekamp_massey(const vector<T> &a) {
     T freq = x / y;
     if (l < m) {
       auto tmp = c;
-      c.insert(begin(c), m - l, T(0));
+      c.insert(c.begin(), m - l, T(0));
       for (int i = 0; i < m; i++) c[m - 1 - i] -= freq * b[m - 1 - i];
       b = tmp;
       y = x;

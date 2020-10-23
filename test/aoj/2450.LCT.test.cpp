@@ -1,13 +1,8 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2450"
-
 // Do use segment tree
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/LinkCutTree_MonoidLazy.hpp"
-#undef call_from_test
+using namespace std;
 
 struct RupdQ_RmaxsumQ {
   static constexpr long long INF = INT_MAX;

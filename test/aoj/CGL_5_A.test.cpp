@@ -1,15 +1,10 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/5/CGL_5_A"
-
 #define ERROR "0.00000001"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Geometry/!geometry_temp.hpp"
 #include "src/Geometry/closest_pair.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

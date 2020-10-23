@@ -1,13 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/184"
-
 //行列(F_2)のrankのverify
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Math/Matrix_mod2.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

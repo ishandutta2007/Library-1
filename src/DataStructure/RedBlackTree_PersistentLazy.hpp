@@ -1,3 +1,6 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/DataStructure/RedBlackTree_Lazy.hpp"
 /**
  * @title 赤黒木(永続遅延伝搬)
  * @category データ構造
@@ -5,14 +8,8 @@
  */
 
 // verify用: https://atcoder.jp/contests/arc030/tasks/arc030_4
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
 
-#define call_from_test
-#include "src/DataStructure/RedBlackTree_Lazy.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 template <typename M, size_t LIM = 1 << 22, size_t FULL = 1000>
 struct RedBlackTree_PersistentLazy : RedBlackTree_Lazy<M, LIM> {
@@ -33,15 +30,15 @@ struct RedBlackTree_PersistentLazy : RedBlackTree_Lazy<M, LIM> {
     return RBTPL(c);
   }
   // [0,k) [k,size)
-  pair<RBTPL, RBTPL> split(int k) {
+  std::pair<RBTPL, RBTPL> split(int k) {
     auto tmp = RBTL::split(this->root, k);
-    return make_pair(RBTPL(tmp.first), RBTPL(tmp.second));
+    return std::make_pair(RBTPL(tmp.first), RBTPL(tmp.second));
   }
   // [0,a) [a,b) [b,size)
-  tuple<RBTPL, RBTPL, RBTPL> split3(int a, int b) {
+  std::tuple<RBTPL, RBTPL, RBTPL> split3(int a, int b) {
     auto x = RBTL::split(this->root, a);
     auto y = RBTL::split(x.second, b - a);
-    return make_tuple(RBTPL(x.first), RBTPL(y.first), RBTPL(y.second));
+    return std::make_tuple(RBTPL(x.first), RBTPL(y.first), RBTPL(y.second));
   }
   void rebuild() {
     auto ret = RBTL::dump();

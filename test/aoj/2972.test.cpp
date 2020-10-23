@@ -1,16 +1,10 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2972"
-
 #define ERROR "0.0001"
-
 //焼きなまし法（実は凸関数だから三分探索や山登りでいいらしい）
 //点の距離しか使わないから幾何ライブラリは大げさ
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Geometry/!geometry_temp.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

@@ -1,12 +1,8 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/3/CGL_3_B"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Geometry/!geometry_temp.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

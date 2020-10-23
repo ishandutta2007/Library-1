@@ -1,12 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/649"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
 #include "src/DataStructure/BinaryTrie.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

@@ -1,13 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 赤黒木(遅延伝搬)
  * @category データ構造
  * @brief O(logN)
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename M, size_t LIM = 1 << 20>
 struct RedBlackTree_Lazy {
@@ -36,8 +35,8 @@ struct RedBlackTree_Lazy {
         : val(k), color(RED), ch{l, r}, lazy(M::ei()) {}
   };
   struct nPool {
-    vector<Node> pool;
-    vector<Node *> stock;
+    std::vector<Node> pool;
+    std::vector<Node *> stock;
     int ptr;
     nPool(int sz) : pool(sz), stock(sz) { clear(); }
     inline Node *alloc() { return stock[--ptr]; }
@@ -94,7 +93,7 @@ struct RedBlackTree_Lazy {
     }
     return pushup(r);
   }
-  Node *build(int l, int r, const vector<T> &v) {
+  Node *build(int l, int r, const std::vector<T> &v) {
     if (l + 1 >= r) return alloc(v[l]);
     return merge(build(l, (l + r) >> 1, v), build((l + r) >> 1, r, v));
   }
@@ -104,7 +103,7 @@ struct RedBlackTree_Lazy {
     t->dat = M::f(M::f(dat(t->ch[0]), t->val), dat(t->ch[1]));
     return t;
   }
-  void dump(Node *r, typename vector<T>::iterator &it, E lazy) {
+  void dump(Node *r, typename std::vector<T>::iterator &it, E lazy) {
     if (r->lazy != M::ei()) lazy = M::h(lazy, r->lazy);
     if (r->ch[0] == nullptr) {
       *it++ = M::g(r->val, lazy);
@@ -116,7 +115,7 @@ struct RedBlackTree_Lazy {
   inline Node *alloc(const T &val) { return &(*pool.alloc() = Node(val)); }
   inline int count(const Node *t) { return t ? t->cnt : 0; }
   inline const T dat(const Node *t) { return t ? t->dat : M::ti(); }
-  pair<Node *, Node *> split(Node *t, int k) {
+  std::pair<Node *, Node *> split(Node *t, int k) {
     if (!t) return {nullptr, nullptr};
     t = propagate(t);
     if (k == 0) return {nullptr, t};
@@ -166,9 +165,11 @@ struct RedBlackTree_Lazy {
  public:
   RedBlackTree_Lazy() : root(nullptr) {}
   RedBlackTree_Lazy(int n, T val = M::ti())
-      : RedBlackTree_Lazy(vector<T>(n, val)) {}
-  RedBlackTree_Lazy(const vector<T> &v) { root = build(0, (int)v.size(), v); }
-  void build(const vector<T> &v) { root = build(0, (int)v.size(), v); }
+      : RedBlackTree_Lazy(std::vector<T>(n, val)) {}
+  RedBlackTree_Lazy(const std::vector<T> &v) {
+    root = build(0, (int)v.size(), v);
+  }
+  void build(const std::vector<T> &v) { root = build(0, (int)v.size(), v); }
   void push_front(const T &v) { root = merge(alloc(v), root); }
   void push_back(const T &v) { root = merge(root, alloc(v)); }
   T pop_front() {
@@ -189,15 +190,15 @@ struct RedBlackTree_Lazy {
     return RBTL(c);
   }
   // [0,k) [k,size)
-  pair<RBTL, RBTL> split(int k) {
+  std::pair<RBTL, RBTL> split(int k) {
     auto tmp = split(root, k);
-    return make_pair(RBTL(tmp.first), RBTL(tmp.first));
+    return std::make_pair(RBTL(tmp.first), RBTL(tmp.first));
   }
   // [0,a) [a,b) [b,size)
-  tuple<RBTL, RBTL, RBTL> split3(int a, int b) {
+  std::tuple<RBTL, RBTL, RBTL> split3(int a, int b) {
     auto x = split(root, a);
     auto y = split(x.second, b - a);
-    return make_tuple(RBTL(x.first), RBTL(y.first), RBTL(y.second));
+    return std::make_tuple(RBTL(x.first), RBTL(y.first), RBTL(y.second));
   }
   void insert(int k, const T &v) {
     auto x = split(root, k);
@@ -228,8 +229,8 @@ struct RedBlackTree_Lazy {
     y.first->lazy = M::h(y.first->lazy, v);
     root = merge(x.first, merge(propagate(y.first), y.second));
   }
-  vector<T> dump() {
-    vector<T> v((size_t)count(root));
+  std::vector<T> dump() {
+    std::vector<T> v((size_t)count(root));
     auto it = begin(v);
     dump(root, it, M::ei());
     return v;

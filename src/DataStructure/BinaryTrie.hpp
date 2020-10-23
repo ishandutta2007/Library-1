@@ -1,3 +1,6 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/DataStructure/SegmentTree_Dynamic.hpp"
 /**
  * @title 二分Trie
  * @category データ構造
@@ -8,14 +11,7 @@
 // https://codeforces.com/contest/947/problem/C
 // https://codeforces.com/contest/966/problem/C
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 struct RsumQ {
   using T = int;

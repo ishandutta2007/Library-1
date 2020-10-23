@@ -1,11 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/scc"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Graph/StronglyConnectedComponents.hpp"
-#undef call_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

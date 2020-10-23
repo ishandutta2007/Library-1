@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Skew-Heap
  * @category データ構造
@@ -6,10 +8,7 @@
  * @brief add(v): 全体に作用素vを適用
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename T>
 struct Op_RaddQ {
@@ -43,9 +42,9 @@ struct SkewHeap {
     if (!a || !b) return a ? a : b;
     propagate(a);
     propagate(b);
-    if (Compare()(a->key, b->key)) swap(a, b);
+    if (Compare()(a->key, b->key)) std::swap(a, b);
     a->ch[1] = merge(b, a->ch[1]);
-    swap(a->ch[0], a->ch[1]);
+    std::swap(a->ch[0], a->ch[1]);
     return a;
   }
 

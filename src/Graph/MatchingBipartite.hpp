@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 最大マッチング(二部グラフ)
  * @category グラフ
@@ -8,16 +10,13 @@
  */
 // 被覆問題との関係 https://qiita.com/drken/items/7f98315b56c95a6181a4
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 struct MatchingBipartite {
  private:
-  vector<vector<int>> adj;
-  vector<int> pre, rt;
-  vector<int> lmate, rmate;
+  std::vector<std::vector<int>> adj;
+  std::vector<int> pre, rt;
+  std::vector<int> lmate, rmate;
 
   bool dfs(int v, const int &tstamp) {
     pre[v] = tstamp;
@@ -36,7 +35,7 @@ struct MatchingBipartite {
   MatchingBipartite(int n, int m)
       : adj(n), pre(n, -1), rt(n, -1), lmate(n, -1), rmate(m, -1) {}
   void add_edge(int l, int r) { adj[l].push_back(r); }
-  pair<int, pair<vector<int>, vector<int>>> get_matching() {
+  std::pair<int, std::pair<std::vector<int>, std::vector<int>>> get_matching() {
     int res = 0;
     queue<int> que;
     for (bool update = true; update;) {
@@ -61,11 +60,12 @@ struct MatchingBipartite {
         }
       }
       if (update)
-        fill(pre.begin(), pre.end(), -1), fill(rt.begin(), rt.end(), -1);
+        std::fill(pre.begin(), pre.end(), -1), fill(rt.begin(), rt.end(), -1);
     }
-    return make_pair(res, make_pair(lmate, rmate));
+    return std::make_pair(res, std::make_pair(lmate, rmate));
   }
-  pair<int, pair<vector<int>, vector<int>>> lexicographically_matching() {
+  std::pair<int, std::pair<std::vector<int>, std::vector<int>>>
+  lexicographically_matching() {
     int res = get_matching().first;
     int tstamp = -2;
     for (int i = 0; i < (int)adj.size(); i++) {
@@ -76,6 +76,6 @@ struct MatchingBipartite {
         rt[i] = -2;
       }
     }
-    return make_pair(res, make_pair(lmate, rmate));
+    return std::make_pair(res, std::make_pair(lmate, rmate));
   }
 };

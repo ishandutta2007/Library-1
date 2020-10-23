@@ -1,19 +1,18 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 離散対数
  * @category 数学
  * O(mod^(1/2))
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 int discrete_log(unsigned a, unsigned b, unsigned mod) {
   if (a == 0) return b == 0 ? (mod == 1 ? 0 : 1) : (b == 1 ? 0 : -1);
   auto mod_inv = [](unsigned x, unsigned mod) {
     int a = x, b = mod, u = 1, v = 0, t;
-    while (b) t = a / b, swap(a -= t * b, b), swap(u -= t * v, v);
+    while (b) t = a / b, std::swap(a -= t * b, b), std::swap(u -= t * v, v);
     return u >= 0 ? u % mod : (mod - (-u) % mod);
   };
   unsigned cnt = 0;
@@ -24,8 +23,8 @@ int discrete_log(unsigned a, unsigned b, unsigned mod) {
     b /= g, mod /= g;
     b = 1ull * mod_inv(a / g, mod) * b % mod;
   }
-  unsigned middle = ceil(sqrt(mod));
-  unordered_map<unsigned int, unsigned int> mp;
+  unsigned middle = std::ceil(std::sqrt(mod));
+  std::unordered_map<unsigned int, unsigned int> mp;
   unsigned int baby = 1;
   for (unsigned i = 0; i < middle; i++, baby = 1ull * baby * a % mod)
     mp.insert({baby, i});

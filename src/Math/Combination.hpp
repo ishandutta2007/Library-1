@@ -1,12 +1,11 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title 組み合わせ
  * @category 数学
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <class mint>
 struct Combination {

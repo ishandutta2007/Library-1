@@ -1,11 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/421"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define caint_from_test
 #include "src/Graph/MatchingBipartite.hpp"
-#undef caint_from_test
+using namespace std;
 
 signed main() {
   cin.tie(0);

@@ -1,12 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/529"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/Graph/TwoEdgeConnectedComponents.hpp"
 #include "src/DataStructure/LinkCutTree_Monoid.hpp"
-#undef call_from_test
+using namespace std;
 
 struct RmaxQ {
   using T = pair<long long, int>;

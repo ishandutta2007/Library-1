@@ -1,16 +1,12 @@
+#pragma once
+#include <bits/stdc++.h>
+#include "src/Geometry/!geometry_temp.hpp"
 /**
  * @title 偏角ソート
  * @category 幾何
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
-#include "src/Geometry/!geometry_temp.hpp"
-#undef call_from_test
-#endif
+// BEGIN CUT HERE
 
 namespace geometry {
 // usage: sort(ps.begin(),ps.end(), polar_angle(origin, direction));

@@ -1,12 +1,8 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_F"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/SegmentTree_Lazy.hpp"
-#undef call_from_test
+using namespace std;
 
 struct RupdQ_RminQ {
   using T = int;

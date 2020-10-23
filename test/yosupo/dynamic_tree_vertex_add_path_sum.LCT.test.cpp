@@ -1,12 +1,8 @@
 #define PROBLEM \
   "https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum"
-
 #include <bits/stdc++.h>
-using namespace std;
-
-#define call_from_test
 #include "src/DataStructure/LinkCutTree_Monoid.hpp"
-#undef call_from_test
+using namespace std;
 
 struct RsumQ {
   using T = long long;

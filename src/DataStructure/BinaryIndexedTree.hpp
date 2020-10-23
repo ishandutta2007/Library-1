@@ -1,3 +1,5 @@
+#pragma once
+#include <bits/stdc++.h>
 /**
  * @title Binary-Indexed-Tree
  * @category データ構造
@@ -5,17 +7,14 @@
  *  0-indexed
  */
 
-#ifndef call_from_test
-#include <bits/stdc++.h>
-using namespace std;
-#endif
+// BEGIN CUT HERE
 
 template <typename T>
 struct BinaryIndexedTree {
-  vector<T> dat;
+  std::vector<T> dat;
   BinaryIndexedTree(int n) : dat(n + 1, T(0)) {}
-  BinaryIndexedTree(int n, T a) : BinaryIndexedTree(vector<T>(n, a)) {}
-  BinaryIndexedTree(vector<T> y) : dat(y.size() + 1, 0) {
+  BinaryIndexedTree(int n, T a) : BinaryIndexedTree(std::vector<T>(n, a)) {}
+  BinaryIndexedTree(std::vector<T> y) : dat(y.size() + 1, 0) {
     for (size_t i = 0; i < y.size(); ++i) dat[i + 1] = y[i];
     for (int i = 1; i < (int)dat.size(); ++i)
       if (i + (i & -i) < (int)dat.size()) dat[i + (i & -i)] += dat[i];

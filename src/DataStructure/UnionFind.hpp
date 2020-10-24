@@ -15,7 +15,7 @@ struct UnionFind {
   UnionFind(int size) : par(size, -1) {}
   bool unite(int u, int v) {
     if ((u = root(u)) == (v = root(v))) return false;
-    if (par[u] > par[v]) swap(u, v);
+    if (par[u] > par[v]) std::swap(u, v);
     par[u] += par[v], par[v] = u;
     return true;
   }

@@ -17,7 +17,7 @@ struct UnionFind_Potential {
   bool unite(int v, int u, Weight w) {
     w += potential(u) - potential(v);
     if ((u = root(u)) == (v = root(v))) return false;
-    if (par[u] > par[v]) swap(u, v), w = -w;
+    if (par[u] > par[v]) std::swap(u, v), w = -w;
     par[u] += par[v], par[v] = u, val[v] = w;
     return true;
   }

@@ -28,7 +28,8 @@ class find_bucket_impl<false> {
 template <>
 class find_bucket_impl<true> {
  public:
-  static inline constexpr std::size_t find_bucket(uint64_t x, uint64_t last) {
+  static inline constexpr std::size_t find_bucket(std::uint64_t x,
+                                                  std::uint64_t last) {
     return x == last ? 0 : 64 - __builtin_clzll(x ^ last);
   }
 };
@@ -48,7 +49,7 @@ class encoder_impl_integer<key_t, false> {
 template <typename key_t>
 class encoder_impl_integer<key_t, true> {
  public:
-  typedef typename make_unsigned<key_t>::type ukey_t;
+  typedef typename std::make_unsigned<key_t>::type ukey_t;
   inline static constexpr ukey_t encode(key_t x) {
     return static_cast<ukey_t>(x)
            ^ (ukey_t(1) << ukey_t(std::numeric_limits<ukey_t>::digits - 1));
@@ -87,11 +88,12 @@ class encoder_impl_decimal {
   };
 };
 template <typename key_t>
-class encoder : public encoder_impl_integer<key_t, is_signed<key_t>::value> {};
+class encoder
+    : public encoder_impl_integer<key_t, std::is_signed<key_t>::value> {};
 template <>
 class encoder<float> : public encoder_impl_decimal<float, uint32_t> {};
 template <>
-class encoder<double> : public encoder_impl_decimal<double, uint64_t> {};
+class encoder<double> : public encoder_impl_decimal<double, std::uint64_t> {};
 }  // namespace internal
 
 template <typename key_t, typename val_t,
@@ -145,7 +147,7 @@ class RadixHeap {
     for (std::size_t j = 0; j < buckets_[i].size(); ++j) {
       const ukey_t x = buckets_[i][j].first;
       const std::size_t k = internal::find_bucket(x, last_);
-      buckets_[k].emplace_back(move(buckets_[i][j]));
+      buckets_[k].emplace_back(std::move(buckets_[i][j]));
       buckets_min_[k] = std::min(buckets_min_[k], x);
     }
     buckets_[i].clear();

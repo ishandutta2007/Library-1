@@ -90,9 +90,9 @@ struct LiChaoTree {
     T m = (l + r) / 2;
     if (m == r) --m;
     if (x <= m)
-      return min(t->x.get(x), query(t->ch[0], l, m, x));
+      return std::min(t->x.get(x), query(t->ch[0], l, m, x));
     else
-      return min(t->x.get(x), query(t->ch[1], m + 1, r, x));
+      return std::min(t->x.get(x), query(t->ch[1], m + 1, r, x));
   }
 
  public:

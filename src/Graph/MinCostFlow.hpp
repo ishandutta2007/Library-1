@@ -188,10 +188,10 @@ class MinCostFlow {
   std::pair<bool, cost_t> flow_run() {
     potential.resize(n);
     flow_t inf_flow = 1;
-    for (const auto t : b) inf_flow = max({inf_flow, t, -t});
+    for (const auto t : b) inf_flow = std::max({inf_flow, t, -t});
     for (const auto &es : adj)
       for (const auto &e : es)
-        inf_flow = max({inf_flow, e.residual_cap(), -e.residual_cap()});
+        inf_flow = std::max({inf_flow, e.residual_cap(), -e.residual_cap()});
     flow_t delta = 1;
     while (delta < inf_flow) delta *= 2;
     for (; delta; delta /= 2) {
@@ -216,7 +216,8 @@ class MinCostFlow {
   tuple<bool, cost_t, flow_t> max_flow_run(const int s, const int t) {
     assert(s != t);
     flow_t inf_flow = abs(b[s]);
-    for (const auto &e : adj[s]) inf_flow += max(e.cap, static_cast<flow_t>(0));
+    for (const auto &e : adj[s])
+      inf_flow += std::max(e.cap, static_cast<flow_t>(0));
     add_edge(t, s, 0, inf_flow, 0);
     bool status;
     cost_t circulation_value;

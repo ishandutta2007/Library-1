@@ -92,7 +92,7 @@ class MinCostFlow {
   void add_demand(const int v, const flow_t amount) { b[v] -= amount; }
 
  private:
-  const cost_t UNREACHABLE = numeric_limits<cost_t>::max();
+  const cost_t UNREACHABLE = std::numeric_limits<cost_t>::max();
   const cost_t EPS = 1e-7;
   cost_t farthest;
   std::vector<cost_t> potential;
@@ -139,7 +139,7 @@ class MinCostFlow {
       }
     }
     pq = decltype(pq)();
-    for (int v = 0; v < n; v++) potential[v] += min(dist[v], farthest);
+    for (int v = 0; v < n; v++) potential[v] += std::min(dist[v], farthest);
     return deficit_count > 0;
   }
   void primal(const flow_t delta) {
@@ -149,10 +149,10 @@ class MinCostFlow {
       int v;
       for (v = t; prev[v] != -1;) {
         Edge &r = adj[v][prev[v]], &e = adj[r.dst][r.rev];
-        f = min(f, e.residual_cap());
+        f = std::min(f, e.residual_cap());
         v = r.dst;
       }
-      f = min(f, b[v]);
+      f = std::min(f, b[v]);
       f -= f % delta;
       if (f <= 0) continue;
       for (v = t; prev[v] != -1;) {
@@ -246,8 +246,8 @@ class MinCostFlow {
       for (const auto &es : adj)
         for (const auto &e : es)
           if (e.residual_cap() > 0)
-            potential[e.dst] = min(potential[e.dst],
-                                   potential[adj[e.dst][e.rev].dst] + e.cost);
+            potential[e.dst] = std::min(
+                potential[e.dst], potential[adj[e.dst][e.rev].dst] + e.cost);
     return potential;
   }
   template <class T>

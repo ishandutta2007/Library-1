@@ -17,7 +17,7 @@ signed main() {
     return P(max(a.first, b.first), min(a.second, b.second));
   };
   vector<P> vp;
-  for (int i = 0; i < s.length(); i++) vp.emplace_back(sa[i], sa[i]);
+  for (int i = 0; i < (int)s.length(); i++) vp.emplace_back(sa[i], sa[i]);
   DisjointSparseTable<P> dst(vp, f);
 
   for (int i = 0; i < m; i++) {

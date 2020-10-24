@@ -48,7 +48,7 @@ struct MatchingBipartite {
         if (lmate[rt[v]] != -1) continue;
         for (int u : adj[v]) {
           if (rmate[u] == -1) {
-            for (; u != -1; v = pre[v]) rmate[u] = v, swap(lmate[v], u);
+            for (; u != -1; v = pre[v]) rmate[u] = v, std::swap(lmate[v], u);
             update = true;
             res++;
             break;

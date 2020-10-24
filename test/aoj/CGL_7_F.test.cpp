@@ -16,6 +16,6 @@ signed main() {
   auto ls = c.tangent(p);
   Point p1 = ls[0].p2, p2 = ls[1].p2;
   if (p2 < p1) swap(p1, p2);
-  cout << fixed << setprecision(12) << p1 << " " << p2 << endl;
+  cout << fixed << setprecision(12) << p1 << '\n' << p2 << '\n';
   return 0;
 }

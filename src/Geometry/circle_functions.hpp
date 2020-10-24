@@ -84,7 +84,7 @@ Circle min_enclosing_circle(std::vector<Point> ps) {
   std::mt19937 mt(seed_gen());
   std::shuffle(ps.begin(), ps.end(), mt);
   Circle c = {(ps[0] + ps[1]) / 2, dist(ps[0], ps[1]) / 2};
-  for (int i = 2; i < ps.size(); i++)
+  for (int i = 2; i < (int)ps.size(); i++)
     if (c.where(ps[i]) == OUT) {
       c = {(ps[0] + ps[i]) / 2, dist(ps[0], ps[i]) / 2};
       for (int j = 1; j < i; j++)

@@ -23,7 +23,7 @@ struct MaxFlow_Dinic {
   };
 
  private:
-  static constexpr flow_t FLOW_MAX = numeric_limits<flow_t>::max() / 2;
+  static constexpr flow_t FLOW_MAX = std::numeric_limits<flow_t>::max() / 2;
   int n;
   std::vector<std::vector<Edge>> adj;
   std::vector<int> level, iter;
@@ -32,7 +32,7 @@ struct MaxFlow_Dinic {
   int levelize(const int &s, const int &t) {
     level.assign(n, -1);
     level[s] = 0;
-    queue<int> que;
+    std::queue<int> que;
     que.push(s);
     while (!que.empty()) {
       int u = que.front();
@@ -76,7 +76,7 @@ struct MaxFlow_Dinic {
   }
   std::vector<int> add_vertices(const int size) {
     std::vector<int> ret(size);
-    iota(begin(ret), end(ret), n);
+    std::iota(ret.begin(), ret.end(), n);
     n += size;
     adj.resize(n);
     return ret;
@@ -124,8 +124,8 @@ struct MaxFlow_Dinic {
       for (auto &e : adj[i]) {
         if (e.isrev) continue;
         auto &rev_e = adj[e.dst][e.rev];
-        cerr << i << "->" << e.dst << " (flow: " << rev_e.cap << "/"
-             << e.cap + rev_e.cap << ")" << endl;
+        std::cerr << i << "->" << e.dst << " (flow: " << rev_e.cap << "/"
+                  << e.cap + rev_e.cap << ")" << '\n';
       }
     }
   }

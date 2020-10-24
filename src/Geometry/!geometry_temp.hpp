@@ -14,7 +14,7 @@ int sgn(Real x) {
   static constexpr Real EPS = 1e-8;
   return x < -EPS ? -1 : x > +EPS ? 1 : 0;
 }
-const Real PI = acos(-1.0);
+const Real PI = std::acos(-1.0);
 Real radian_to_degree(Real r) { return (r * 180.0 / PI); }
 Real degree_to_radian(Real d) { return (d * PI / 180.0); }
 enum {

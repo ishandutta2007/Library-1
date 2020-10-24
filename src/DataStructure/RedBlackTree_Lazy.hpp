@@ -81,7 +81,7 @@ struct RedBlackTree_Lazy {
   Node *submerge(Node *l, Node *r) {
     if (l->level == r->level) return alloc(l, r);
     bool b = l->level < r->level;
-    if (!b) swap(l, r);
+    if (!b) std::swap(l, r);
     r = propagate(r);
     Node *c = (r->ch[!b] = b ? submerge(l, r->ch[0]) : submerge(r->ch[1], l));
     if (r->color == BLACK && c->color == RED && c->ch[!b]

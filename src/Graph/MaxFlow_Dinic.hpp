@@ -52,7 +52,7 @@ struct MaxFlow_Dinic {
     for (int &i = iter[u]; i < adj[u].size(); ++i) {
       Edge &e = adj[u][i], &r = adj[e.dst][e.rev];
       if (e.cap > 0 && level[u] < level[e.dst]) {
-        flow_t f = dfs(e.dst, t, min(cur, e.cap));
+        flow_t f = dfs(e.dst, t, std::min(cur, e.cap));
         if (f > 0) {
           e.cap -= f;
           r.cap += f;

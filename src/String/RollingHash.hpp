@@ -29,7 +29,8 @@ struct RollingHash {
 
  public:
   static inline std::uint64_t generate_base() {
-    std::mt19937_64 mt(chrono::steady_clock::now().time_since_epoch().count());
+    std::mt19937_64 mt(
+        std::chrono::steady_clock::now().time_since_epoch().count());
     std::uniform_int_distribution<std::uint64_t> rand(1, RollingHash::mod - 1);
     return rand(mt);
   }
@@ -42,7 +43,7 @@ struct RollingHash {
     hash.assign(s.size() + 1, 0);
     pw.assign(s.size() + 1, 0);
     pw[0] = 1;
-    for (size_t i = 0; i < s.size(); i++) {
+    for (std::size_t i = 0; i < s.size(); i++) {
       pw[i + 1] = mul(pw[i], base);
       hash[i + 1] = add(mul(hash[i], base), s[i]);
     }
@@ -58,7 +59,7 @@ struct RollingHash {
   }
 };
 
-template <size_t SIZE>
+template <std::size_t SIZE>
 struct RollingHash_MultiBase {
   using Array = std::array<std::uint64_t, SIZE>;
   std::array<RollingHash, SIZE> rhs;
@@ -68,11 +69,11 @@ struct RollingHash_MultiBase {
       : RollingHash_MultiBase(std::vector<char>(s.begin(), s.end()), bs) {}
   template <typename T>
   RollingHash_MultiBase(const std::vector<T>& s, Array bs) : bases(bs) {
-    for (size_t i = 0; i < SIZE; i++) rhs[i] = RollingHash(s, bases[i]);
+    for (std::size_t i = 0; i < SIZE; i++) rhs[i] = RollingHash(s, bases[i]);
   }
   Array get_hash(int l, int r) const {
     Array ret;
-    for (size_t i = 0; i < SIZE; i++) ret[i] = rhs[i].get_hash(l, r);
+    for (std::size_t i = 0; i < SIZE; i++) ret[i] = rhs[i].get_hash(l, r);
     return ret;
   }
   bool equal(int l1, int r1, int l2, int r2) const {
@@ -84,13 +85,13 @@ struct RollingHash_MultiBase {
   static bool equal(const RollingHash_MultiBase& a,
                     const RollingHash_MultiBase& b, int l1, int r1, int l2,
                     int r2) {
-    for (size_t i = 0; i < SIZE; i++)
+    for (std::size_t i = 0; i < SIZE; i++)
       if (a.rhs[i].get_hash(l1, r1) != b.rhs[i].get_hash(l2, r2)) return false;
     return true;
   }
   static int lcp(const RollingHash_MultiBase& a, const RollingHash_MultiBase& b,
                  int l1, int r1, int l2, int r2) {
-    int len = min(r1 - l1, r2 - l2);
+    int len = std::min(r1 - l1, r2 - l2);
     int low = 0, high = len + 1;
     while (high - low > 1) {
       int mid = (low + high) / 2;

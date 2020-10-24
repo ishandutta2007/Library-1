@@ -11,7 +11,7 @@ struct modint_base {};
 }  // namespace internal
 
 template <std::uint64_t mod, std::uint64_t prim_root = 0>
-class ModInt : modint_base {
+class ModInt : internal::modint_base {
  private:
   using u64 = std::uint64_t;
   using u128 = __uint128_t;

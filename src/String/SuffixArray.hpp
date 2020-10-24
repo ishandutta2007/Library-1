@@ -20,8 +20,8 @@ struct SuffixArray {
     std::sort(SA.begin(), SA.end(),
               [&](int a, int b) { return s[a] == s[b] ? a > b : s[a] < s[b]; });
     std::vector<int> classes(s.size()), c(s.begin(), s.end()), cnt(s.size());
-    for (int len = 1; len < s.size(); len <<= 1) {
-      for (int i = 0; i < s.size(); i++) {
+    for (int len = 1; len < (int)s.size(); len <<= 1) {
+      for (int i = 0; i < (int)s.size(); i++) {
         if (i > 0 && c[SA[i - 1]] == c[SA[i]] && SA[i - 1] + len < s.size()
             && c[SA[i - 1] + len / 2] == c[SA[i] + len / 2]) {
           classes[SA[i]] = classes[SA[i - 1]];
@@ -31,7 +31,7 @@ struct SuffixArray {
       }
       std::iota(cnt.begin(), cnt.end(), 0);
       std::copy(SA.begin(), SA.end(), c.begin());
-      for (int i = 0; i < s.size(); i++) {
+      for (int i = 0; i < (int)s.size(); i++) {
         int s1 = c[i] - len;
         if (s1 >= 0) SA[cnt[classes[s1]]++] = s1;
       }
@@ -64,11 +64,11 @@ struct SuffixArray {
   // O(|S|)
   std::vector<int> get_lcp() {
     std::vector<int> rank(SA.size()), LCP(SA.size());
-    for (int i = 0; i < SA.size(); i++) rank[SA[i]] = i;
-    for (int i = 0, h = 0; i < SA.size(); i++) {
-      if (rank[i] + 1 < SA.size()) {
+    for (int i = 0; i < (int)SA.size(); i++) rank[SA[i]] = i;
+    for (int i = 0, h = 0; i < (int)SA.size(); i++) {
+      if (rank[i] + 1 < (int)SA.size()) {
         int j = SA[rank[i] + 1];
-        while (std::max(i, j) + h < SA.size() && s[i + h] == s[j + h]) ++h;
+        while (std::max(i, j) + h < (int)SA.size() && s[i + h] == s[j + h]) ++h;
         LCP[rank[i] + 1] = h;
         if (h > 0) --h;
       }

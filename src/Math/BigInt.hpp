@@ -62,17 +62,17 @@ struct ModB {
 
 template <typename mod_t>
 void convolute(mod_t *A, int s1, mod_t *B, int s2, bool cyclic = false) {
-  int s = (cyclic ? max(s1, s2) : s1 + s2 - 1);
+  int s = (cyclic ? std::max(s1, s2) : s1 + s2 - 1);
   int size = 1;
   while (size < s) size <<= 1;
   mod_t roots[mod_t::level] = {mod_t::omega()};
   for (int i = 1; i < mod_t::level; i++) roots[i] = roots[i - 1] * roots[i - 1];
-  fill(A + s1, A + size, 0);
+  std::fill(A + s1, A + size, 0);
   ntt_dit4(A, size, 1, roots);
   if (A == B && s1 == s2) {
     for (int i = 0; i < size; i++) A[i] *= A[i];
   } else {
-    fill(B + s2, B + size, 0);
+    std::fill(B + s2, B + size, 0);
     ntt_dit4(B, size, 1, roots);
     for (int i = 0; i < size; i++) A[i] *= B[i];
   }
@@ -108,7 +108,7 @@ void ntt_dit4(mod_t *A, int n, int sign, mod_t *roots) {
     const int m4 = m >> 2;
     mod_t dw = roots[mod_t::level - e];
     if (sign < 0) dw = dw.inverse();
-    const int block_size = max(m, (1 << 15) / int(sizeof(A[0])));
+    const int block_size = std::max(m, (1 << 15) / int(sizeof(A[0])));
     for (int k = 0; k < n; k += block_size) {
       mod_t w = one, w2 = one, w3 = one;
       for (int j = 0; j < m4; j++) {
@@ -168,7 +168,7 @@ struct BigInt {
     if (minus) ss << '-';
     ss << (dat.empty() ? 0 : dat.back());
     for (int64_t i = (int64_t)dat.size() - 2; i >= 0; --i)
-      ss << setw(base_digits) << setfill('0') << dat[i];
+      ss << std::setw(base_digits) << std::setfill('0') << dat[i];
     std::string ret;
     ss >> ret;
     return ret;
@@ -217,7 +217,7 @@ struct BigInt {
   static std::vector<int64_t> convert_base(const std::vector<int64_t> &a,
                                            std::int64_t old_digits,
                                            std::int64_t new_digits) {
-    std::vector<int64_t> p(max(old_digits, new_digits) + 1);
+    std::vector<int64_t> p(std::max(old_digits, new_digits) + 1);
     p[0] = 1;
     for (int64_t i = 1; i < (int64_t)p.size(); i++) p[i] = p[i - 1] * 10;
     std::vector<int64_t> res;
@@ -395,7 +395,7 @@ struct BigInt {
     if (minus != v.minus) return *this - (-v);
     BigInt res = v;
     for (int64_t i = 0, carry = 0;
-         i < (int64_t)max(dat.size(), v.dat.size()) || carry; ++i) {
+         i < (int64_t)std::max(dat.size(), v.dat.size()) || carry; ++i) {
       if (i == (int64_t)res.dat.size()) res.dat.push_back(0);
       res.dat[i] += carry + (i < (int64_t)dat.size() ? dat[i] : 0);
       carry = res.dat[i] >= base;

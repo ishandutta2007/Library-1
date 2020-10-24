@@ -15,9 +15,9 @@
 // BEGIN CUT HERE
 
 template <class flow_t, class cost_t,
-          typename Heap
-          = std::priority_queue<pair<cost_t, int>,
-                                std::vector<pair<cost_t, int>>, std::greater<>>,
+          typename Heap = std::priority_queue<
+              std::pair<cost_t, int>, std::vector<std::pair<cost_t, int>>,
+              std::greater<>>,
           int obj = 1>
 class MinCostFlow {
   class Edge {
@@ -119,7 +119,7 @@ class MinCostFlow {
                      end(deficit_vs));
     for (const auto v : excess_vs) pq.emplace(dist[v] = 0, v);
     farthest = 0;
-    size_t deficit_count = 0;
+    std::size_t deficit_count = 0;
     while (!pq.empty()) {
       cost_t d;
       int u;
@@ -262,7 +262,7 @@ class MinCostFlow {
 };
 
 template <class flow_t, class cost_t,
-          typename Heap
-          = std::priority_queue<std::pair<cost_t, int>,
-                                std::vector<pair<cost_t, int>>, std::greater<>>>
+          typename Heap = std::priority_queue<
+              std::pair<cost_t, int>, std::vector<std::pair<cost_t, int>>,
+              std::greater<>>>
 using MaxGainFlow = MinCostFlow<flow_t, cost_t, Heap, -1>;

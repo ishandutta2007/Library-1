@@ -93,7 +93,7 @@ struct RedBlackTree {
   inline Node *alloc(const T &val) { return &(*pool.alloc() = Node(val)); }
   inline int count(const Node *t) { return t ? t->cnt : 0; }
   inline const T dat(const Node *t) { return t ? t->dat : M::ti(); }
-  pair<Node *, Node *> split(Node *t, int k) {
+  std::pair<Node *, Node *> split(Node *t, int k) {
     if (!t) return {nullptr, nullptr};
     if (k == 0) return {nullptr, t};
     if (k >= count(t)) return {t, nullptr};

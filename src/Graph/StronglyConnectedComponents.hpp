@@ -15,7 +15,7 @@ struct StronglyConnectedComponents {
 
   StronglyConnectedComponents(int n) : adj(n) {}
   void add_edge(int src, int dst) { adj[src].push_back(dst); }
-  pair<std::vector<std::vector<int>>, std::vector<int>> get_SCC() {
+  std::pair<std::vector<std::vector<int>>, std::vector<int>> get_SCC() {
     std::vector<std::vector<int>> scc;
     std::vector<int> S, B, index(adj.size());
     std::function<void(int)> dfs = [&](int u) {
@@ -41,6 +41,6 @@ struct StronglyConnectedComponents {
     reverse(scc.begin(), scc.end());
     for (std::size_t u = 0; u < adj.size(); u++)
       index[u] = scc.size() - index[u] + adj.size();
-    return make_pair(scc, index);
+    return std::make_pair(scc, index);
   }
 };

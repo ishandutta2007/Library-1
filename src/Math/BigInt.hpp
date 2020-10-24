@@ -87,7 +87,7 @@ void rev_permute(mod_t *A, int n) {
   for (int i = 1; i < n; i++) {
     int h = nh;
     while (!((r ^= h) & h)) h >>= 1;
-    if (r > i) swap(A[i], A[r]);
+    if (r > i) srd::swap(A[i], A[r]);
   }
 }
 

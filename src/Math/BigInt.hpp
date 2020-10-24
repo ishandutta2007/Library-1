@@ -87,7 +87,7 @@ void rev_permute(mod_t *A, int n) {
   for (int i = 1; i < n; i++) {
     int h = nh;
     while (!((r ^= h) & h)) h >>= 1;
-    if (r > i) srd::swap(A[i], A[r]);
+    if (r > i) std::swap(A[i], A[r]);
   }
 }
 
@@ -294,8 +294,8 @@ struct BigInt {
     std::size_t preci = dat.size() - b.dat.size();
     BigInt t(1);
     BigInt pre;
-    std::size_t lim = min(int(preci), 3);
-    std::size_t blim = min(int(b.dat.size()), 6);
+    std::size_t lim = std::min(int(preci), 3);
+    std::size_t blim = std::min(int(b.dat.size()), 6);
     t = t << lim;
     while (pre != t) {
       BigInt rb = b >> (b.dat.size() - blim);
@@ -314,9 +314,9 @@ struct BigInt {
         t *= (BigInt(2) << (blim + lim)) - rb * t;
         t.dat = std::vector<std::int64_t>(t.dat.begin() + lim + blim,
                                           t.dat.end());
-        std::size_t next_lim = min(lim * 2 + 1, preci);
+        std::size_t next_lim = std::min(lim * 2 + 1, preci);
         if (next_lim != lim) t = t << next_lim - lim;
-        std::size_t next_blim = min(blim * 2 + 1, b.dat.size());
+        std::size_t next_blim = std::min(blim * 2 + 1, b.dat.size());
         lim = next_lim;
         blim = next_blim;
       }

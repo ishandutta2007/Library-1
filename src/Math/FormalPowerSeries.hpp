@@ -382,7 +382,7 @@ struct FormalPowerSeries : std::vector<mint> {
     f = mint(n) / f;
     for (int i = n; i > 0; i--) p[i - 1] = i == n ? f : p[i] * i;
     for (int i = 0; i < n; i++, cpw *= c) p[i] *= cpw;
-    p *= ret;
+    p *= ret, p.resize(n);
     std::reverse_copy(p.begin(), p.begin() + n, ret.begin());
     for (int i = n - 1; i >= 2; f *= i--) ret[i] *= f;
     return ret;

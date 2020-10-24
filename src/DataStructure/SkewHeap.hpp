@@ -18,7 +18,8 @@ struct Op_RaddQ {
   static E h(const E &l, const E &r) { return l + r; }
 };
 
-template <typename T, typename Compare = less<T>, typename Op = Op_RaddQ<T>>
+template <typename T, typename Compare = std::less<T>,
+          typename Op = Op_RaddQ<T>>
 struct SkewHeap {
   using E = typename Op::E;
   struct Node {

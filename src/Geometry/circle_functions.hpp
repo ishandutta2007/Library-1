@@ -129,7 +129,7 @@ std::pair<int, Point> max_circle_cover(std::vector<Point> ps, Real r) {
           }
         };
   Real w = 0;
-  for (Point p : ps) w = std::max({w, std::abs(p.x), std::abs(p.y)});
+  for (Point p : ps) w = std::max<Real>({w, std::abs(p.x), std::abs(p.y)});
   rec({0, 0}, w, ps);
   return {best, best_p};
 }

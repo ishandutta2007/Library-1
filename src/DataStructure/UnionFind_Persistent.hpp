@@ -17,7 +17,7 @@ struct UnionFind_Persistent {
   UnionFind_Persistent(int n) : par(n, -1) {}
   bool unite(int u, int v) {
     if ((u = root(u)) == (v = root(v))) return false;
-    if (par.get(u) > par.get(v)) swap(u, v);
+    if (par.get(u) > par.get(v)) std::swap(u, v);
     par[u] += par.get(v), par[v] = u;
     return true;
   }

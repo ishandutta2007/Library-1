@@ -48,7 +48,7 @@ struct MatchingGeneral {
             int u = f(x), v = f(y), w = root;
             if (u == v) continue;
             while (u != root || v != root) {
-              if (v != root) swap(u, v);
+              if (v != root) std::swap(u, v);
               if (edges[u].first == x && edges[u].second == y) {
                 w = u;
                 break;

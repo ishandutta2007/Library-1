@@ -47,7 +47,7 @@ FormalPowerSeries<mint> exgcd(
     return pm{pv{lhs[0][1], lhs[0][0] - lhs[0][1] * q},
               pv{lhs[1][1], lhs[1][0] - lhs[1][1] * q}};
   };
-  function<pm(poly, poly)> hgcd = [&](const poly &p0, const poly &p1) {
+  std::function<pm(poly, poly)> hgcd = [&](const poly &p0, const poly &p1) {
     assert(p0.deg() > p1.deg());
     int m = ((p0.deg() - 1) >> 1) + 1, n = p1.deg();
     if (n < m) return pm{pv{poly{1}, poly{}}, pv{poly{}, poly{1}}};
@@ -61,7 +61,7 @@ FormalPowerSeries<mint> exgcd(
                     poly(qr.second.begin() + k, qr.second.end())),
                mulQ_l(qr.first, R));
   };
-  function<pm(poly, poly)> cogcd = [&](const poly &p0, const poly &p1) {
+  std::function<pm(poly, poly)> cogcd = [&](const poly &p0, const poly &p1) {
     assert(p0.deg() > p1.deg());
     pm M(hgcd(p0, p1));
     pv p2p3(mulv(M, pv{p0, p1}));

@@ -213,7 +213,7 @@ class MinCostFlow {
     add_demand(t, flow);
     return flow_run();
   }
-  tuple<bool, cost_t, flow_t> max_flow_run(const int s, const int t) {
+  std::tuple<bool, cost_t, flow_t> max_flow_run(const int s, const int t) {
     assert(s != t);
     flow_t inf_flow = abs(b[s]);
     for (const auto &e : adj[s])

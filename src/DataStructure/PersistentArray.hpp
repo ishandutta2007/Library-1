@@ -35,7 +35,7 @@ struct PersistentArray {
     if (k == 0) return t->data;
     return get(t->child[k & ((1 << LOG) - 1)], k >> LOG);
   }
-  pair<Node *, T &> reference_get(Node *t, int k, bool destruct = false) {
+  std::pair<Node *, T &> reference_get(Node *t, int k, bool destruct = false) {
     t = t ? (destruct ? t : new Node(*t)) : new Node();
     if (k == 0) return {t, t->data};
     auto p = reference_get(t->child[k & ((1 << LOG) - 1)], k >> LOG, destruct);

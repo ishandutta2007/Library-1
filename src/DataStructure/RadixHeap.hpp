@@ -115,7 +115,7 @@ class RadixHeap {
   void emplace(key_t key, val_t value) { push(key, value); }
   std::pair<key_t, val_t> top() {
     pull();
-    return make_pair(encoder_t::decode(last_), buckets_[0].back().second);
+    return std::make_pair(encoder_t::decode(last_), buckets_[0].back().second);
   }
   std::pair<key_t, val_t> pop() {
     pull();

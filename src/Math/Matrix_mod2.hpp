@@ -92,7 +92,7 @@ struct Matrix_mod2 {
     return std::make_pair(c, d);
   }
   int rank() const {
-    int n = height(), m = width();
+    std::size_t n = height(), m = width();
     Matrix_mod2 b(n, 0);
     Matrix_mod2 p = Gauss_Jordan(*this, b).first;
     for (std::size_t i = 0, j; i < n; i++) {

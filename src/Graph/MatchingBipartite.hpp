@@ -37,7 +37,7 @@ struct MatchingBipartite {
   void add_edge(int l, int r) { adj[l].push_back(r); }
   std::pair<int, std::pair<std::vector<int>, std::vector<int>>> get_matching() {
     int res = 0;
-    queue<int> que;
+    std::queue<int> que;
     for (bool update = true; update;) {
       update = false;
       for (int i = 0; i < (int)adj.size(); i++)

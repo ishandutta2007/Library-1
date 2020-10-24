@@ -110,7 +110,7 @@ class RadixHeap {
     ++size_;
     const std::size_t k = internal::find_bucket(x, last_);
     buckets_[k].emplace_back(x, value);
-    buckets_min_[k] = min(buckets_min_[k], x);
+    buckets_min_[k] = std::min(buckets_min_[k], x);
   }
   void emplace(key_t key, val_t value) { push(key, value); }
   std::pair<key_t, val_t> top() {
@@ -120,7 +120,8 @@ class RadixHeap {
   std::pair<key_t, val_t> pop() {
     pull();
     --size_;
-    auto ret = make_pair(encoder_t::decode(last_), buckets_[0].back().second);
+    auto ret
+        = std::make_pair(encoder_t::decode(last_), buckets_[0].back().second);
     buckets_[0].pop_back();
     return ret;
   }
@@ -130,7 +131,7 @@ class RadixHeap {
  private:
   std::size_t size_;
   ukey_t last_;
-  std::array<std::vector<pair<ukey_t, val_t>>,
+  std::array<std::vector<std::pair<ukey_t, val_t>>,
              std::numeric_limits<ukey_t>::digits + 1>
       buckets_;
   std::array<ukey_t, std::numeric_limits<ukey_t>::digits + 1> buckets_min_;
@@ -145,7 +146,7 @@ class RadixHeap {
       const ukey_t x = buckets_[i][j].first;
       const std::size_t k = internal::find_bucket(x, last_);
       buckets_[k].emplace_back(move(buckets_[i][j]));
-      buckets_min_[k] = min(buckets_min_[k], x);
+      buckets_min_[k] = std::min(buckets_min_[k], x);
     }
     buckets_[i].clear();
     buckets_min_[i] = std::numeric_limits<ukey_t>::max();

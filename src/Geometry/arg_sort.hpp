@@ -16,9 +16,9 @@ struct polar_angle {
   const int s;  // +1 for ccw, -1 for cw
   polar_angle(Point origin = {0, 0}, int dir = +1) : o(origin), s(dir) {}
   int quad(Point p) const {
-    for (int i = 0; i < 4; ++i, swap(p.x = -p.x, p.y))
+    for (int i = 0; i < 4; ++i, std::swap(p.x = -p.x, p.y))
       if (p.x < 0 && p.y < 0) return 2 * i;
-    for (int i = 0; i < 4; ++i, swap(p.x = -p.x, p.y))
+    for (int i = 0; i < 4; ++i, std::swap(p.x = -p.x, p.y))
       if (p.x == 0 && p.y < 0) return 2 * i + 1;
     return 3;  // arg(0,0) = 0
   }

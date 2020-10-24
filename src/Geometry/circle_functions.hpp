@@ -124,12 +124,12 @@ std::pair<int, Point> max_circle_cover(std::vector<Point> ps, Real r) {
             for (int j = i + 1; j < 4; ++j)
               if (pss[i].size() < pss[j].size())
                 std::swap(pss[i], pss[j]), std::swap(qs[i], qs[j]);
-            if (pss[i].size() <= best) break;
+            if ((int)pss[i].size() <= best) break;
             rec(qs[i], w, pss[i]);
           }
         };
   Real w = 0;
-  for (Point p : ps) w = std::max({w, abs(p.x), abs(p.y)});
+  for (Point p : ps) w = std::max({w, std::abs(p.x), std::abs(p.y)});
   rec({0, 0}, w, ps);
   return {best, best_p};
 }

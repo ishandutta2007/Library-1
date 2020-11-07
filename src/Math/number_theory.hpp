@@ -31,13 +31,13 @@ void init(int n) {
     }
 }
 
-std::vector<pair<int, int>> prime_factorize(int n) {  // O(log n)
-  std::vector<pair<int, int>> res;
+std::vector<std::pair<int, int>> prime_factorize(int n) {  // O(log n)
+  std::vector<std::pair<int, int>> res;
   while (n > 1) {
     int p = mpf[n];
     int e = 0;
     while (mpf[n] == p) e++, n /= p;
-    res.push_back(make_pair(p, e));
+    res.push_back(std::make_pair(p, e));
   }
   return res;
 }

@@ -7,7 +7,7 @@
 
 // BEGIN CUT HERE
 
-template <class mint, std::size_t LIM = (1 << 23)>
+template <class mint, std::size_t LIM = (1 << 24)>
 struct Combination {
  private:
   static inline mint _fact[LIM], _finv[LIM];

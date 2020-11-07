@@ -36,7 +36,7 @@ struct LiChaoTree {
   Node *root;
 
  private:
-  Node *insert_line(Node *t, Line f, const T &x_l, const T &x_r) {
+  Node *addl(Node *t, Line f, const T &x_l, const T &x_r) {
     if (!t) return new Node(f);
     T y_l = f.get(x_l), y_r = f.get(x_r), ty_l = t->f.get(x_l),
       ty_r = t->f.get(x_r);
@@ -45,20 +45,20 @@ struct LiChaoTree {
     T x_m = x_l == x_r - 1 ? x_l : (x_l + x_r) / 2, ty_m = t->f.get(x_m),
       y_m = f.get(x_m);
     if (ty_m > y_m) std::swap(t->f, f), std::swap(y_l, ty_l);
-    if (ty_l >= y_l) t->ch[0] = insert_line(t->ch[0], f, x_l, x_m);
-    if (ty_l < y_l) t->ch[1] = insert_line(t->ch[1], f, x_m + 1, x_r);
+    if (ty_l >= y_l) t->ch[0] = addl(t->ch[0], f, x_l, x_m);
+    if (ty_l < y_l) t->ch[1] = addl(t->ch[1], f, x_m + 1, x_r);
     return t;
   }
-  Node *insert_segment(Node *t, const Line &f, const T &l, const T &r,
-                       const T &x_l, const T &x_r) {
+  Node *adds(Node *t, const Line &f, const T &l, const T &r, const T &x_l,
+             const T &x_r) {
     if (x_r < l || r < x_l) return t;
-    if (l <= x_l && x_r <= r) return insert_line(t, f, x_l, x_r);
+    if (l <= x_l && x_r <= r) return addl(t, f, x_l, x_r);
     T y_l = f.get(x_l), y_r = f.get(x_r);
     if (t && t->f.get(x_l) <= y_l && t->f.get(x_r) <= y_r) return t;
     if (!t) t = new Node(Line(0, INF));
     T x_m = x_l == x_r - 1 ? x_l : (x_l + x_r) / 2;
-    t->ch[0] = insert_segment(t->ch[0], f, l, r, x_l, x_m);
-    t->ch[1] = insert_segment(t->ch[1], f, l, r, x_m + 1, x_r);
+    t->ch[0] = adds(t->ch[0], f, l, r, x_l, x_m);
+    t->ch[1] = adds(t->ch[1], f, l, r, x_m + 1, x_r);
     return t;
   }
   T query(const Node *t, const T &x_l, const T &x_r, const T &x) const {
@@ -72,17 +72,12 @@ struct LiChaoTree {
  public:
   LiChaoTree() : root{nullptr} {}
   T get_inf() { return INF; }
-  void clear() {
-    node_count = 0;
-    root = nullptr;
-  }
+  void clear() { node_count = 0, root = nullptr; }
   // ax+b
-  void insert_line(T a, T b) {
-    root = insert_line(root, Line(a, b), lower, upper);
-  }
+  void insert_line(T a, T b) { root = addl(root, Line(a, b), lower, upper); }
   // ax+b for x in [l,r)
   void insert_segment(T l, T r, T a, T b) {
-    root = insert_segment(root, Line(a, b), l, r - 1, lower, upper);
+    root = adds(root, Line(a, b), l, r - 1, lower, upper);
   }
   T query(T x) const { return query(root, lower, upper, x); }
 };

@@ -32,7 +32,7 @@ struct SegmentTree_Dynamic {
 
  private:
   inline void push(Node *t, ll b) {
-    if ((t->xor_lazy >> (U)b) & (U)1) swap(t->ch[0], t->ch[1]);
+    if ((t->xor_lazy >> (U)b) & (U)1) std::swap(t->ch[0], t->ch[1]);
     if (t->ch[0] != nullptr) t->ch[0]->xor_lazy ^= t->xor_lazy;
     if (t->ch[1] != nullptr) t->ch[1]->xor_lazy ^= t->xor_lazy;
     t->xor_lazy = 0;

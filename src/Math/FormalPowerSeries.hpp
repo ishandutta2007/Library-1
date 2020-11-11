@@ -68,21 +68,21 @@ struct FormalPowerSeries : std::vector<mint> {
     static constexpr m64_2 iv = m64_2(m64_1::modulo()).inverse();
     static constexpr mint mod1 = m64_1::modulo();
     for (int i = b; i < e; i++) {
-      std::uint64_t r1 = f1[i].get(), r2 = f2[i].get();
+      std::uint64_t r1 = f1[i].val(), r2 = f2[i].val();
       ret[i] = mint(r1)
-               + mint((m64_2(r2 + m64_2::modulo() - r1) * iv).get()) * mod1;
+               + mint((m64_2(r2 + m64_2::modulo() - r1) * iv).val()) * mod1;
     }
   }
   template <typename T,
-            typename std::enable_if<!is_modint<T>::value>::type * = nullptr>
+            typename std::enable_if<is_integral<T>::value>::type * = nullptr>
   static inline void subst(m64_1 f1[], m64_2 f2[], int b, int e, T ret[]) {
     for (int i = b; i < e; i++) f1[i] = ret[i], f2[i] = ret[i];
   }
   template <typename T,
-            typename std::enable_if<is_modint<T>::value>::type * = nullptr>
+            typename std::enable_if<!is_integral<T>::value>::type * = nullptr>
   static inline void subst(m64_1 f1[], m64_2 f2[], int b, int e, T ret[]) {
     std::uint64_t tmp;
-    for (int i = b; i < e; i++) tmp = ret[i].get(), f1[i] = tmp, f2[i] = tmp;
+    for (int i = b; i < e; i++) tmp = ret[i].val(), f1[i] = tmp, f2[i] = tmp;
   }
   static inline mint get_inv(int i) {
     static mint INV[1 << 21];
@@ -281,9 +281,9 @@ struct FormalPowerSeries : std::vector<mint> {
       for (int j = i2 - 1; j >= 0; j--) b1[j] *= c1[j], b2[j] *= c2[j];
       idft(i2, b1), idft(i2, b2), crt(b1, b2, 0, i2, bf1);
       for (int j = i2 - 3; j >= 0; j--)
-        tmp = (f[j] - bf1[j]).get(), b1[j + i2] = tmp, b2[j + i2] = tmp;
-      tmp = (bf1[i2 - 2] - f[i2 - 2]).get(), b1[i2 - 2] = tmp, b2[i2 - 2] = tmp;
-      tmp = (-bf1[i2 - 1]).get(), b1[i2 - 1] = tmp, b2[i2 - 1] = tmp;
+        tmp = (f[j] - bf1[j]).val(), b1[j + i2] = tmp, b2[j + i2] = tmp;
+      tmp = (bf1[i2 - 2] - f[i2 - 2]).val(), b1[i2 - 2] = tmp, b2[i2 - 2] = tmp;
+      tmp = (-bf1[i2 - 1]).val(), b1[i2 - 1] = tmp, b2[i2 - 1] = tmp;
       std::fill_n(b1, i2 - 2, 0), std::fill_n(b2, i2 - 2, 0);
       b1[i - 2] = b1[i - 1] = 0, b2[i - 2] = b2[i - 1] = 0;
       subst(a1, a2, 0, i, bf2), dft(i, a1), dft(i, a2), dft(i, b1), dft(i, b2);
@@ -341,17 +341,17 @@ struct FormalPowerSeries : std::vector<mint> {
         std::fill(bf1 + n - cnt, bf1 + len, 0);
     std::fill_n(bf2, len, 0), bf2[0] = ret[0].inverse();
     std::uint64_t tmp;
-    tmp = ret[0].get(), b1[0] = tmp, b2[0] = tmp, b1[1] = 0, b2[1] = 0;
+    tmp = ret[0].val(), b1[0] = tmp, b2[0] = tmp, b1[1] = 0, b2[1] = 0;
     dft(2, b1), dft(2, b2);
     for (int i = 2, i2 = 1; i <= len; i <<= 1, i2 <<= 1) {
       for (int j = i2 - 1; j >= 0; j--)
         c1[j] = b1[j] * b1[j], c2[j] = b2[j] * b2[j];
       idft(i2, c1), idft(i2, c2), crt(c1, c2, 0, i2, ret.data() + i2);
       for (int j = i - 2; j >= i2; j--)
-        tmp = (ret[j] - bf1[j - i2] - bf1[j]).get(), c1[j] = tmp, c2[j] = tmp;
-      tmp = (ret[i - 1] - bf1[i2 - 1]).get(), c1[i2 - 1] = tmp,
+        tmp = (ret[j] - bf1[j - i2] - bf1[j]).val(), c1[j] = tmp, c2[j] = tmp;
+      tmp = (ret[i - 1] - bf1[i2 - 1]).val(), c1[i2 - 1] = tmp,
       c2[i2 - 1] = tmp;
-      tmp = (-bf1[i - 1]).get(), c1[i - 1] = tmp, c2[i - 1] = tmp;
+      tmp = (-bf1[i - 1]).val(), c1[i - 1] = tmp, c2[i - 1] = tmp;
       std::fill_n(c1, i2 - 1, 0), std::fill_n(c2, i2 - 1, 0),
           subst(a1, a2, 0, i, bf2);
       dft(i, a1), dft(i, a2), dft(i, c1), dft(i, c2);

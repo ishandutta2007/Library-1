@@ -3,9 +3,9 @@
 /**
  * @title Li-Chao-Tree
  * @category データ構造
- * 直線挿入:O(n log n)
- * 線分挿入:O(n log^2 n)
- * 最小値取得:O(n log n)
+ * 直線挿入:O(log n)
+ * 線分挿入:O(log^2 n)
+ * 最小値取得:O(log n)
  * 最大値取得したいなら(-a,-b)を挿入して-最小値を取得
  * 浮動小数点も行けるはず
  */

@@ -73,13 +73,13 @@ struct FormalPowerSeries : std::vector<mint> {
                + mint((m64_2(r2 + m64_2::modulo() - r1) * iv).val()) * mod1;
     }
   }
-  template <typename T,
-            typename std::enable_if<is_integral<T>::value>::type * = nullptr>
+  template <typename T, typename std::enable_if<
+                            std::is_integral<T>::value>::type * = nullptr>
   static inline void subst(m64_1 f1[], m64_2 f2[], int b, int e, T ret[]) {
     for (int i = b; i < e; i++) f1[i] = ret[i], f2[i] = ret[i];
   }
-  template <typename T,
-            typename std::enable_if<!is_integral<T>::value>::type * = nullptr>
+  template <typename T, typename std::enable_if<
+                            !std::is_integral<T>::value>::type * = nullptr>
   static inline void subst(m64_1 f1[], m64_2 f2[], int b, int e, T ret[]) {
     std::uint64_t tmp;
     for (int i = b; i < e; i++) tmp = ret[i].val(), f1[i] = tmp, f2[i] = tmp;

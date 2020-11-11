@@ -6,12 +6,8 @@
  */
 
 // BEGIN CUT HERE
-namespace internal {
-struct modint_base {};
-}  // namespace internal
-
 template <std::uint64_t mod, std::uint64_t prim_root = 0>
-class ModInt : internal::modint_base {
+class ModInt {
  private:
   using u64 = std::uint64_t;
   using u128 = __uint128_t;
@@ -56,7 +52,7 @@ class ModInt : internal::modint_base {
   ModInt operator/(const ModInt &rhs) const { return ModInt(*this) /= rhs; }
   bool operator==(const ModInt &rhs) const { return norm(x) == norm(rhs.x); }
   bool operator!=(const ModInt &rhs) const { return norm(x) != norm(rhs.x); }
-  u64 get() const {
+  u64 val() const {
     u64 ret = reduce(x) - mod;
     return ret + (mod & -(ret >> 63));
   }
@@ -81,16 +77,13 @@ class ModInt : internal::modint_base {
     auto ret = std::make_pair(ONE, ModInt(0));
     for (auto bs = std::make_pair(b, ONE); e; e >>= 1, bs = mul(bs, bs))
       if (e & 1) ret = mul(ret, bs);
-    return ret.first.get() * 2 < mod ? ret.first : -ret.first;
+    return ret.first.val() * 2 < mod ? ret.first : -ret.first;
   }
   friend std::istream &operator>>(std::istream &is, ModInt &rhs) {
     return is >> rhs.x, rhs.x = init(rhs.x), is;
   }
   friend std::ostream &operator<<(std::ostream &os, const ModInt &rhs) {
-    return os << rhs.get();
+    return os << rhs.val();
   }
   u64 x;
 };
-
-template <class T>
-using is_modint = std::is_base_of<internal::modint_base, T>;

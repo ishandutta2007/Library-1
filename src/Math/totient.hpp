@@ -6,12 +6,14 @@
  *  O(√N)
  * ついでにテトレーション
  */
+// verify用:
+// https://atcoder.jp/contests/summerfes2018-div1/tasks/summerfes2018_f
 
 // BEGIN CUT HERE
 
 long long totient(long long n) {
   long long ret = n;
-  for (int p = 2; p * p <= n; p++)
+  for (long long p = 2; p * p <= n; p++)
     if (n % p == 0) {
       ret -= ret / p;
       while (n % p == 0) n /= p;
@@ -28,7 +30,8 @@ long long tetration(long long a, long long b, long long mod) {
           if (c == 0) return MOD((d + 1) & 1);
           if (d == 0 || m == 1) return MOD(1);
           long long ret = MOD(1);
-          for (auto e = rec(c, d - 1, totient(m)); e; e >>= 1, c = MOD(c * c))
+          auto e = rec(c, d - 1, totient(m));
+          for (c = MOD(c); e; e >>= 1, c = MOD(c * c))
             if (e & 1) ret = MOD(ret * c);
           return ret;
         };

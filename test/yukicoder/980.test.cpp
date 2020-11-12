@@ -11,14 +11,12 @@ signed main() {
   using FPS = FormalPowerSeries<Mint>;
   Mint p;
   cin >> p;
-  int q_max = 2000000;
+  const int q_max = 2000000;
   FPS a(q_max);
-  a[0] = 0;
-  a[1] = 1;
-  for (int i = 2; i < q_max; i++) {
-    a[i] = p * a[i - 1] + a[i - 2];
-  }
+  a[0] = 0, a[1] = 1;
+  for (int i = 2; i < q_max; i++) a[i] = p * a[i - 1] + a[i - 2];
   FPS b = a * a;
+  b.resize(q_max + 1);
   int Q;
   cin >> Q;
   while (Q--) {

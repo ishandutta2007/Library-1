@@ -38,7 +38,7 @@ struct LiChaoTree {
 
  private:
   int sgn(const T &x) const {
-    static constexpr T EPS = 1e-12;
+    static constexpr T EPS = 1e-10;
     return x < -EPS ? -1 : x > +EPS ? 1 : 0;
   }
   Node *addl(Node *t, Line f, const T &x_l, const T &x_r) {
@@ -50,6 +50,7 @@ struct LiChaoTree {
     T x_m = (x_l + x_r) / 2;
     int dif_m = sgn(t->f.get(x_m) - f.get(x_m));
     if (dif_m > 0) std::swap(t->f, f), dif_l = -dif_l;
+    if (sgn(x_l - x_m) == 0) return t;
     if (dif_l > 0) t->ch[0] = addl(t->ch[0], f, x_l, x_m);
     if (dif_l < 0) t->ch[1] = addl(t->ch[1], f, x_m, x_r);
     return t;

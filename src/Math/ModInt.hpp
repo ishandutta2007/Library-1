@@ -6,6 +6,7 @@
  */
 
 // BEGIN CUT HERE
+
 template <std::uint64_t mod, std::uint64_t prim_root = 0>
 class ModInt {
  private:

@@ -1,6 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
+#include <bits/stdc++.h>
 /**
  * @title 形式的冪級数
  * @category 数学
@@ -9,7 +9,7 @@
 
 // BEGIN CUT HERE
 
-template <class mint>
+template <class mint, int LIM = (1 << 22)>
 struct FormalPowerSeries : std::vector<mint> {
   using FPS = FormalPowerSeries<mint>;
   using std::vector<mint>::vector;
@@ -17,9 +17,9 @@ struct FormalPowerSeries : std::vector<mint> {
   using m64_2 = ModInt<35012573396993, 3>;
 
  private:
-  static inline m64_1 a1[1 << 21], b1[1 << 21], c1[1 << 21];
-  static inline m64_2 a2[1 << 21], b2[1 << 21], c2[1 << 21];
-  static inline mint bf1[1 << 21], bf2[1 << 21];
+  static inline m64_1 a1[LIM], b1[LIM], c1[LIM];
+  static inline m64_2 a2[LIM], b2[LIM], c2[LIM];
+  static inline mint bf1[LIM], bf2[LIM];
   template <class mod_t>
   static inline void idft(int n, mod_t x[]) {
     static mod_t iW[1 << 20];
@@ -85,7 +85,7 @@ struct FormalPowerSeries : std::vector<mint> {
     for (int i = b; i < e; i++) tmp = ret[i].val(), f1[i] = tmp, f2[i] = tmp;
   }
   static inline mint get_inv(int i) {
-    static mint INV[1 << 21];
+    static mint INV[LIM];
     static int lim = 0;
     static constexpr std::uint64_t mod = mint::modulo();
     if (lim <= i) {
@@ -266,7 +266,7 @@ struct FormalPowerSeries : std::vector<mint> {
     assert((*this)[0] == mint(0));
     int n = this->size(), len = get_len(n);
     if (n == 1) return {1};
-    static mint b[1 << 21], f[1 << 21];
+    static mint b[LIM], f[LIM];
     std::copy_n(this->data(), n, bf1), std::fill(bf1 + n, bf1 + len, 0);
     FPS ret(len, 0);
     std::fill_n(bf2, len, 0), std::fill_n(c1, len, 0), std::fill_n(c2, len, 0);

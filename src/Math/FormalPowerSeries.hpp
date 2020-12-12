@@ -11,7 +11,7 @@
 
 template <class mint, int LIM = (1 << 22)>
 struct FormalPowerSeries : std::vector<mint> {
-  using FPS = FormalPowerSeries<mint>;
+  using FPS = FormalPowerSeries<mint, LIM>;
   using std::vector<mint>::vector;
   using m64_1 = ModInt<34703335751681, 3>;
   using m64_2 = ModInt<35012573396993, 3>;
@@ -22,7 +22,7 @@ struct FormalPowerSeries : std::vector<mint> {
   static inline mint bf1[LIM], bf2[LIM];
   template <class mod_t>
   static inline void idft(int n, mod_t x[]) {
-    static mod_t iW[1 << 20];
+    static mod_t iW[LIM];
     static constexpr std::uint64_t mod = mod_t::modulo();
     static constexpr unsigned pr = mod_t::pr_rt();
     static_assert(pr != 0);
@@ -45,7 +45,7 @@ struct FormalPowerSeries : std::vector<mint> {
   }
   template <class mod_t>
   static inline void dft(int n, mod_t x[]) {
-    static mod_t W[1 << 20];
+    static mod_t W[LIM];
     static constexpr std::uint64_t mod = mod_t::modulo();
     static constexpr unsigned pr = mod_t::pr_rt();
     static_assert(pr != 0);

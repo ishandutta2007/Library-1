@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/FormalPowerSeries.hpp"
-#include "src/Math/exgcd.hpp"
+#include "src/Math/extgcd.hpp"
 using namespace std;
 
 signed main() {
@@ -15,18 +15,16 @@ signed main() {
   Poly f(N), g(M), x, y;
   for (int i = 0; i < N; i++) cin >> f[i];
   for (int i = 0; i < M; i++) cin >> g[i];
-  Poly d = exgcd(f, g, x, y);
+  Poly d = extgcd(f, g, x, y);
   if (d.deg() != 0) {
     cout << -1 << '\n';
+  } else if (x.deg() == -1) {
+    cout << 0 << '\n';
   } else {
-    if (x.deg() == -1) {
-      cout << 0 << '\n';
-    } else {
-      cout << x.size() << '\n';
-      x /= d[0];
-      for (size_t i = 0; i < x.size(); i++) cout << (i ? " " : "") << x[i];
-      cout << '\n';
-    }
+    cout << x.size() << '\n';
+    x /= d[0];
+    for (size_t i = 0; i < x.size(); i++) cout << (i ? " " : "") << x[i];
+    cout << '\n';
   }
   return 0;
 }

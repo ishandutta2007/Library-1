@@ -11,11 +11,12 @@
 
 // BEGIN CUT HERE
 
+// ax + by = gcd(a, b)
 template <class mint>
-FormalPowerSeries<mint> exgcd(
-    FormalPowerSeries<mint> a, FormalPowerSeries<mint> b,
-    FormalPowerSeries<mint> &x,
-    FormalPowerSeries<mint> &y) {  // ax + by = gcd(a, b)
+FormalPowerSeries<mint> extgcd(FormalPowerSeries<mint> a,
+                               FormalPowerSeries<mint> b,
+                               FormalPowerSeries<mint> &x,
+                               FormalPowerSeries<mint> &y) {
   using poly = FormalPowerSeries<mint>;
   using pv = std::array<poly, 2>;
   using pm = std::array<pv, 2>;

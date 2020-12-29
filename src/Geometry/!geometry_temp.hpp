@@ -31,26 +31,13 @@ enum { DISJOINT = 0, TOUCH = 1, CROSSING = 2, OVERLAP = 3 };
 //-----------------------------------------------------------------------------
 struct Point {
   Real x, y;
-  Point &operator+=(Point p) {
-    x += p.x;
-    y += p.y;
-    return *this;
-  }
-  Point &operator-=(Point p) {
-    x -= p.x;
-    y -= p.y;
-    return *this;
-  }
-  Point &operator*=(Real a) {
-    x *= a;
-    y *= a;
-    return *this;
-  }
+  Point &operator+=(Point p) { return x += p.x, y += p.y, *this; }
+  Point &operator-=(Point p) { return x -= p.x, y -= p.y, *this; }
+  Point &operator*=(Real a) { return x *= a, y *= a, *this; }
   Point &operator/=(Real a) { return *this *= (1.0 / a); }
   Point operator-() const { return {-x, -y}; }
   bool operator<(Point p) const {
-    int s = sgn(x - p.x);
-    return s ? s < 0 : sgn(y - p.y) < 0;
+    return sgn(x - p.x) ? sgn(x - p.x) < 0 : sgn(y - p.y) < 0;
   }
 };
 bool operator==(Point p, Point q) { return !(p < q) && !(q < p); }
@@ -74,12 +61,10 @@ Point rotate(Point p, Real theta) {
           std::sin(theta) * p.x + std::cos(theta) * p.y};
 }
 std::istream &operator>>(std::istream &is, Point &p) {
-  is >> p.x >> p.y;
-  return is;
+  return is >> p.x >> p.y, is;
 }
 std::ostream &operator<<(std::ostream &os, Point p) {
-  os << p.x << " " << p.y;
-  return os;
+  return os << p.x << " " << p.y, os;
 }
 int ccw(Point p0, Point p1, Point p2) {
   Point a = p1 - p0, b = p2 - p0;
@@ -137,9 +122,9 @@ struct Line {
   Convex reflect(Convex g);
 };
 
-Line bisector(Point p, Point q) {  // p on leftside
-  Point m = (p + q) / 2;
-  return {m, m + orth(q - p)};
+// p on leftside
+Line bisector(Point p, Point q) {
+  return {(p + q) / 2, (p + q) / 2 + orth(q - p)};
 }
 
 struct Segment {
@@ -228,6 +213,16 @@ int intersect(Segment s, Segment t) {
   if ((cp[0] == s.p1 || cp[0] == s.p2 || cp[0] == t.p1 || cp[0] == t.p2))
     return TOUCH;
   return CROSSING;
+}
+
+// angle
+std::vector<Line> bisector(Line l, Line m) {
+  auto cp = cross_points(l, m);
+  if (cp.size() > 1) return {};
+  if (cp.size() == 0) return {Line{(l.p1 + m.p1) / 2, (l.p2 + m.p1) / 2}};
+  auto p = l.p1 - l.p2, q = m.p1 - m.p2;
+  p /= norm(p), q /= norm(q);
+  return {Line{cp[0], cp[0] + p + q}, Line{cp[0], cp[0] + p - q}};
 }
 
 Real dist(Line l, Point p) { return dist(p, l.project(p)); }
@@ -401,8 +396,7 @@ struct Convex : Polygon {
     return std::make_pair((*this)[u], (*this)[v]);
   }
   Real diameter() {
-    Point p, q;
-    std::tie(p, q) = farthest();
+    auto [p, q] = farthest();
     return dist(p, q);
   }
   Convex cut(Line l, int side = LEFT) {  // +1 for left, -1 for right
@@ -487,23 +481,16 @@ struct Visualizer {
   Visualizer(std::string s = "visualize.txt") : ofs(s) {
     ofs << std::fixed << std::setprecision(10);
   }
-  Visualizer &operator<<(Point p) {
-    ofs << p << '\n';
-    return *this;
-  }
+  Visualizer &operator<<(Point p) { return ofs << p << '\n', *this; }
   Visualizer &operator<<(Line l) {
-    Real A, B, C;
-    std::tie(A, B, C) = l.coef();
-    ofs << "Line " << A << " " << B << " " << C << '\n';
-    return *this;
+    auto [A, B, C] = l.coef();
+    return ofs << "Line " << A << " " << B << " " << C << '\n', *this;
   }
   Visualizer &operator<<(Segment s) {
-    ofs << "Segment " << s.p1 << " " << s.p2 << '\n';
-    return *this;
+    return ofs << "Segment " << s.p1 << " " << s.p2 << '\n', *this;
   }
   Visualizer &operator<<(Circle c) {
-    ofs << "Circle " << c.o << " " << c.r << '\n';
-    return *this;
+    return ofs << "Circle " << c.o << " " << c.r << '\n', *this;
   }
   Visualizer &operator<<(Polygon g) {
     ofs << "Polygon" << '\n';

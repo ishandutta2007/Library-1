@@ -16,10 +16,10 @@ signed main() {
   }
   auto ans = graph.get_matching();
   auto left = ans.second.first;
-  cout << ans.first << endl;
-  for (int i = 0; i < left.size(); i++)
+  cout << ans.first << '\n';
+  for (int i = 0; i < (int)left.size(); i++)
     if (left[i] != -1) {
-      cout << i << " " << left[i] << endl;
+      cout << i << " " << left[i] << '\n';
     }
   return 0;
 }

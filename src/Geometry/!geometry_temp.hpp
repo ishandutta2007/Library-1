@@ -314,7 +314,7 @@ std::vector<Point> cross_points(Segment s, Circle c) {
 
 //-----------------------------------------------------------------------------
 // Polygon
-// assustd::ming counterclockwise rotation
+// assuming counterclockwise rotation
 //-----------------------------------------------------------------------------
 struct Polygon : std::vector<Point> {
   using std::vector<Point>::vector;

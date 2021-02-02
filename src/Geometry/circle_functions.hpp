@@ -115,10 +115,7 @@ std::pair<int, Point> max_circle_cover(std::vector<Point> ps, Real r) {
               if (sgn(d - r) <= 0) ++lo;
               if (sgn(d - w * std::sqrt(2) - r) <= 0) pss[i].push_back(q);
             }
-            if (lo > best) {
-              best = lo;
-              best_p = qs[i];
-            }
+            if (lo > best) best = lo, best_p = qs[i];
           }
           for (int i = 0; i < 4; ++i) {
             for (int j = i + 1; j < 4; ++j)

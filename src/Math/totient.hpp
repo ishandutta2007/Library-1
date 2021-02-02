@@ -24,16 +24,14 @@ long long totient(long long n) {
 
 // a↑↑b = a^(a^(a^...))
 long long tetration(long long a, long long b, long long mod) {
-  std::function<long long(long long, long long, long long)> rec
-      = [&](long long c, long long d, long long m) {
-          auto MOD = [&](long long x) { return x < m ? x : x % m + m; };
-          if (c == 0) return MOD((d + 1) & 1);
-          if (d == 0 || m == 1) return MOD(1);
-          long long ret = MOD(1);
-          auto e = rec(c, d - 1, totient(m));
-          for (c = MOD(c); e; e >>= 1, c = MOD(c * c))
-            if (e & 1) ret = MOD(ret * c);
-          return ret;
-        };
-  return rec(a, b, mod) % mod;
+  auto rec = [&](auto f, long long c, long long d, long long m) -> long long {
+    auto MOD = [&](long long x) { return x < m ? x : x % m + m; };
+    if (c == 0) return MOD((d + 1) & 1);
+    if (d == 0 || m == 1) return MOD(1);
+    long long ret = MOD(1), e = f(f, c, d - 1, totient(m));
+    for (c = MOD(c); e; e >>= 1, c = MOD(c * c))
+      if (e & 1) ret = MOD(ret * c);
+    return ret;
+  };
+  return rec(rec, a, b, mod) % mod;
 }

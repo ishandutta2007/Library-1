@@ -9,37 +9,33 @@
 
 template <std::uint64_t mod, std::uint64_t prim_root = 0>
 class ModInt {
- private:
   using u64 = std::uint64_t;
   using u128 = __uint128_t;
   static constexpr u64 mul_inv(u64 n, int e = 6, u64 x = 1) {
     return e == 0 ? x : mul_inv(n, e - 1, x * (2 - x * n));
   }
-  static constexpr u64 inv = mul_inv(mod, 6, 1);
-  static constexpr u64 r2 = -u128(mod) % mod;
-  static constexpr u64 m2 = mod << 1;
-
- public:
-  static constexpr int level = __builtin_ctzll(mod - 1);
-  constexpr ModInt() : x(0) {}
-  constexpr ModInt(std::int64_t n) : x(init(n < 0 ? mod - (-n) % mod : n)) {}
-  ~ModInt() = default;
-  static constexpr u64 modulo() { return mod; }
+  static constexpr u64 inv = mul_inv(mod, 6, 1), r2 = -u128(mod) % mod;
   static constexpr u64 init(u64 w) { return reduce(u128(w) * r2); }
   static constexpr u64 reduce(const u128 w) {
     return u64(w >> 64) + mod - ((u128(u64(w) * inv) * mod) >> 64);
   }
-  static constexpr u64 norm(u64 x) { return x - (mod & -(x >= mod)); }
+
+ public:
+  constexpr ModInt() : x(0) {}
+  constexpr ModInt(std::int64_t n) : x(init(n < 0 ? mod - (-n) % mod : n)) {}
+  ~ModInt() = default;
+  static constexpr u64 modulo() { return mod; }
+  static constexpr u64 norm(u64 w) { return w - (mod & -(w >= mod)); }
   static constexpr u64 pr_rt() { return prim_root; }
   constexpr ModInt operator-() const {
     ModInt ret;
-    return ret.x = (m2 & -(x != 0)) - x, ret;
+    return ret.x = ((mod << 1) & -(x != 0)) - x, ret;
   }
   constexpr ModInt &operator+=(const ModInt &rhs) {
-    return x += rhs.x - m2, x += m2 & -(x >> 63), *this;
+    return x += rhs.x - (mod << 1), x += (mod << 1) & -(x >> 63), *this;
   }
   constexpr ModInt &operator-=(const ModInt &rhs) {
-    return x -= rhs.x, x += m2 & -(x >> 63), *this;
+    return x -= rhs.x, x += (mod << 1) & -(x >> 63), *this;
   }
   constexpr ModInt &operator*=(const ModInt &rhs) {
     return this->x = reduce(u128(this->x) * rhs.x), *this;

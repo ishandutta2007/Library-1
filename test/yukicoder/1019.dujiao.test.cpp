@@ -8,20 +8,22 @@ signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   using Mint = ModInt<998244353>;
-  auto g = [](int64_t N, int64_t dummy) {
-    int64_t x_max = sqrt(N);
+  auto hsum = [](long long N) {
+    long long x_max = sqrt(N);
     Mint S = 0;
-    for (int64_t x = 1; x <= x_max; x++) {
-      int64_t y_max = sqrt(N - x * x);
+    for (long long x = 1; x <= x_max; x++) {
+      long long y_max = sqrt(N - x * x);
       S += x * (1 + 2 * y_max);
     }
     return S;
   };
-  auto b = [](int64_t d) { return Mint(d * (d + 1) / 2); };
-  map<pair<int64_t, int64_t>, Mint> memo;
-  int64_t N;
+  auto gsum = [](long long n) {
+    long long d = sqrt(n);
+    return Mint(d * (d + 1) / 2);
+  };
+  long long N;
   cin >> N;
-  Mint ans = dujiao_sieve<Mint>(N, N, g, b, memo, 2);
+  Mint ans = dirichlet_inv_sum<Mint>(N, gsum, hsum);
   ans = Mint(24) * ans - Mint(16);
   cout << ans << endl;
   return 0;

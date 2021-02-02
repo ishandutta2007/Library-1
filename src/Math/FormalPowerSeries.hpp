@@ -1,6 +1,6 @@
 #pragma once
-#include "src/Math/ModInt.hpp"
 #include <bits/stdc++.h>
+#include "src/Math/ModInt.hpp"
 /**
  * @title 形式的冪級数
  * @category 数学
@@ -10,13 +10,11 @@
 // BEGIN CUT HERE
 
 template <class mint, int LIM = (1 << 22)>
-struct FormalPowerSeries : std::vector<mint> {
+class FormalPowerSeries : std::vector<mint> {
   using FPS = FormalPowerSeries<mint, LIM>;
   using std::vector<mint>::vector;
   using m64_1 = ModInt<34703335751681, 3>;
   using m64_2 = ModInt<35012573396993, 3>;
-
- private:
   static inline m64_1 a1[LIM], b1[LIM], c1[LIM];
   static inline m64_2 a2[LIM], b2[LIM], c2[LIM];
   static inline mint bf1[LIM], bf2[LIM];
@@ -131,10 +129,8 @@ struct FormalPowerSeries : std::vector<mint> {
     std::copy_n(this->begin(), n, bf1), std::fill(bf1 + n, bf1 + len, 0);
     FPS ret(len, 0);
     ret[0] = bf1[0].inverse();
-    for (int i = 1; i < 32 && i < n; i++) {
+    for (int i = 1; i < 32 && i < n; ret[i++] *= -ret[0])
       for (int j = 1; j <= i; j++) ret[i] += bf1[j] * ret[i - j];
-      ret[i] *= -ret[0];
-    }
     for (int i = 64; i <= len; i <<= 1) {
       subst(a1, a2, 0, i, bf1), subst(b1, b2, 0, i, ret.data());
       dft(i, a1), dft(i, b1), dft(i, a2), dft(i, b2);
@@ -161,7 +157,7 @@ struct FormalPowerSeries : std::vector<mint> {
     std::fill(b1 + len2, b1 + len, 0), std::fill(b2 + len2, b2 + len, 0);
     dft(len, a1), dft(len, b1), dft(len, a2), dft(len, b2);
     for (int i = 0; i < len; i++) b1[i] *= a1[i], b2[i] *= a2[i];
-    idft(len, b1), idft(len, b2), crt(b1, b2, 0, len >> 1, ret.data());
+    idft(len, b1), idft(len, b2), crt(b1, b2, 0, len2, ret.data());
     subst(b1, b2, 0, len2, ret.data()), subst(c1, c2, 0, len, bf2);
     std::fill(b1 + len2, b1 + len, 0), std::fill(b2 + len2, b2 + len, 0);
     dft(len, c1), dft(len, b1), dft(len, c2), dft(len, b2);
@@ -253,8 +249,7 @@ struct FormalPowerSeries : std::vector<mint> {
   }
   FPS inte() const {
     int len = this->size() + 1;
-    FPS ret(len);
-    ret[0] = 0;
+    FPS ret(len, 0);
     for (int i = len - 1; i >= 1; i--) ret[i] = (*this)[i - 1] * get_inv(i);
     return ret;
   }
@@ -266,7 +261,7 @@ struct FormalPowerSeries : std::vector<mint> {
     assert((*this)[0] == mint(0));
     int n = this->size(), len = get_len(n);
     if (n == 1) return {1};
-    static mint b[LIM], f[LIM];
+    static mint b[LIM], f[LIM / 2];
     std::copy_n(this->data(), n, bf1), std::fill(bf1 + n, bf1 + len, 0);
     FPS ret(len, 0);
     std::fill_n(bf2, len, 0), std::fill_n(c1, len, 0), std::fill_n(c2, len, 0);
@@ -420,6 +415,11 @@ struct FormalPowerSeries : std::vector<mint> {
     for (int i = ret.size() - 1; i >= 0; i--) ret[i] = -(*this)[i];
     return ret;
   }
+  FPS &operator+=(const mint &v) {
+    if (this->empty()) this->resize(1, 0);
+    return (*this)[0] += v, *this;
+  }
+  FPS &operator-=(const mint &v) { return *this += -v; }
   FPS &operator*=(const mint &v) {
     for (int i = this->size() - 1; i >= 0; i--) (*this)[i] *= v;
     return *this;
@@ -441,6 +441,8 @@ struct FormalPowerSeries : std::vector<mint> {
   FPS &operator*=(const FPS &r) { return *this = norm().mul(FPS(r).norm()); }
   FPS &operator/=(const FPS &r) { return *this = this->quo(r); }
   FPS &operator%=(const FPS &r) { return *this = this->quorem(r).second; }
+  FPS operator+(const mint &v) const { return FPS(*this) += v; }
+  FPS operator-(const mint &v) const { return FPS(*this) -= v; }
   FPS operator*(const mint &v) const { return FPS(*this) *= v; }
   FPS operator/(const mint &v) const { return FPS(*this) /= v; }
   FPS operator+(const FPS &r) const { return FPS(*this) += r; }

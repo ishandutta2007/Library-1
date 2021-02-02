@@ -2,27 +2,25 @@
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/dujiao_sieve.hpp"
-#include "src/Math/number_theory.hpp"
+#include "src/Math/NumberTheory.hpp"
+#include "src/Math/multiplicative_functions.hpp"
 using namespace std;
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
   using Mint = ModInt<998244353>;
-  using namespace number_theory;
+  using NT = NumberTheory;
+  using namespace multiplicative_functions;
   const int M = 1 << (200 / 9);
-  init(M);
-  auto phi = get_phi<Mint>(M);
+  auto phi = NT::multiplicative_table<Mint>(M, Totient<Mint>::f);
   for (int i = 2; i < M; i++) phi[i] += phi[i - 1];
-  auto g = [](int64_t N, int64_t dummy) {
-    return Mint(N) * Mint(N + 1) / Mint(2);
-  };
-  auto b = [](int64_t d) { return Mint(d); };
-  map<pair<int64_t, int64_t>, Mint> memo;
-  for (int i = 1; i < M; i++) memo[make_pair(i, i)] = phi[i];
+  auto hsum = [](long long N) { return Mint(N) * Mint(N + 1) / Mint(2); };
+  auto gsum = [](long long N) { return Mint(N); };
+  unordered_map<unsigned long long, Mint> memo;
+  for (int i = 1; i < M; i++) memo[i] = phi[i];
   int64_t N;
   cin >> N;
-  Mint ans = dujiao_sieve<Mint>(N, N, g, b, memo);
-  cout << ans << endl;
+  cout << dirichlet_inv_sum<Mint>(N, gsum, hsum, memo) << '\n';
   return 0;
 }

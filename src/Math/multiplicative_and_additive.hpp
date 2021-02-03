@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title 乗法的関数
+ * @title 乗法的関数と加法的関数
  * @category 数学
  * @see https://en.wikipedia.org/wiki/Arithmetic_function
  */
@@ -53,3 +53,30 @@ struct Dedekind {
   static std::vector<T> poly() { return {1, 1}; }
 };
 }  // namespace multiplicative_functions
+
+namespace additive_functions {
+// the total number of prime factors of n
+template <class T>
+struct BigOmega {
+  static constexpr T f(std::uint64_t, short e) { return e; }
+  static std::vector<T> poly() { return {1}; }
+};
+// the total number of different prime factors of n
+template <class T>
+struct LittleOmega {
+  static constexpr T f(std::uint64_t, short) { return 1; }
+  static std::vector<T> poly() { return {1}; }
+};
+// the sum of primes dividing n counting multiplicity
+template <class T>
+struct Sopfr {
+  static constexpr T f(std::uint64_t p, short e) { return p * e; }
+  static std::vector<T> poly() { return {0, 1}; }
+};
+// the sum of the distinct primes dividing n
+template <class T>
+struct Sopf {
+  static constexpr T f(std::uint64_t p, short) { return p; }
+  static std::vector<T> poly() { return {0, 1}; }
+};
+}  // namespace additive_functions

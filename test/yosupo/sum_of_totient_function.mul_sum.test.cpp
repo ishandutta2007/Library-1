@@ -1,8 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sum_of_totient_function"
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/multiplicative_sum.hpp"
-#include "src/Math/multiplicative_functions.hpp"
+#include "src/Math/prime_count.hpp"
+#include "src/Math/multiplicative_and_additive.hpp"
 using namespace std;
 
 signed main() {

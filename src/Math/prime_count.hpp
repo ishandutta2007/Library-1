@@ -9,7 +9,7 @@
 // verify用:
 // https://atcoder.jp/contests/abc172/tasks/abc172_d
 // https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d
-// https://atcoder.jp/contests/xmascon19/tasks/xmascon19_e
+// https://atcoder.jp/contests/xmascon19/tasks/xmascon19_e (加法的関数)
 
 // BEGIN CUT HERE
 

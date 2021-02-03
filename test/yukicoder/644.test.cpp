@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/NumberTheory.hpp"
-#include "src/Math/multiplicative_functions.hpp"
+#include "src/Math/multiplicative_and_additive.hpp"
 using namespace std;
 
 signed main() {

@@ -13,21 +13,24 @@
  * dirichlet_mul_sum : O(√N)
  */
 
-// verify用: https://atcoder.jp/contests/abc172/tasks/abc172_d
+// verify用:
+// https://atcoder.jp/contests/abc172/tasks/abc172_d
+// https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d
 
 // BEGIN CUT HERE
 
 // sum f s.t. f :=  h * g^(-1)
+
 template <class T, class G, class H>
-T dirichlet_inv_sum(std::uint64_t N, const G &gsum, const H &hsum,
-                    std::unordered_map<std::uint64_t, T> &memo) {
-  if (memo.count(N)) return memo[N];
+T dirichlet_inv_sum(unsigned long long N, const G &gsum, const H &hsum,
+                    std::unordered_map<unsigned long long, T> &memo) {
+  auto it = memo.find(N);
+  if (it != memo.end()) return it->second;
   T ret = hsum(N);
-  for (std::uint64_t d = 2, nN = N / d, nd; nN; nN = N / (d = nd)) {
-    nd = N / nN + 1;
-    ret -= dirichlet_inv_sum<T>(nN, gsum, hsum, memo)
-           * (gsum(nd - 1) - gsum(d - 1));
-  }
+  for (unsigned long long d = 2, nN = double(N) / d, nd; nN;
+       nN = double(N) / (d = nd))
+    ret -= dirichlet_inv_sum(nN, gsum, hsum, memo)
+           * (gsum((nd = double(N) / nN + 1) - 1) - gsum(d - 1));
   return memo[N] = ret / gsum(1);
 }
 template <class T, class G, class H>

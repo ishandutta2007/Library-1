@@ -1,11 +1,15 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title 素数カウントや乗法的関数の和
+ * @title 素数カウントなど
+ * 乗法的関数や加法的関数の和もあり
  * @category 数学
  */
 
-// verify用: https://atcoder.jp/contests/abc172/tasks/abc172_d
+// verify用:
+// https://atcoder.jp/contests/abc172/tasks/abc172_d
+// https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d
+// https://atcoder.jp/contests/xmascon19/tasks/xmascon19_e
 
 // BEGIN CUT HERE
 
@@ -62,9 +66,22 @@ std::uint64_t prime_count(std::uint64_t N) {
   return polynomial_prime_sum<std::uint64_t>(N, {1});
 }
 
+template <class T, class F>
+T additive_sum(std::uint64_t N, F f, std::vector<T> poly) {
+  const std::uint64_t sqrtN = std::sqrt(N);
+  auto [primes, s, l] = polynomial_prime_sum_table<T>(N, poly);
+  T ret = l[1];
+  for (std::uint64_t d = 2, nN = N / d, nd; nN; nN = N / (d = nd))
+    ret += (nN > sqrtN ? l[d] : s[nN]) * ((nd = N / nN + 1) - d);
+  for (std::uint64_t p : primes)
+    for (std::uint64_t pw = p * p, e = 2; pw <= N; e++, pw *= p)
+      ret += (f(p, e) - f(p, e - 1)) * (N / pw);
+  return ret;
+}
+
 template <class T = __int128_t, class F>
 T multiplicative_sum(std::uint64_t N, const F &f, const std::vector<T> &poly) {
-  const std::uint64_t sqrtN = sqrt(N);
+  const std::uint64_t sqrtN = std::sqrt(N);
   auto [primes, s, l] = polynomial_prime_sum_table<T>(N, poly);
   for (auto it = primes.rbegin(); it != primes.rend(); it++) {
     std::uint64_t p = *it, M = N / p, q = p * p;

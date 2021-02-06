@@ -10,7 +10,10 @@
 // BEGIN CUT HERE
 
 template <class mint, int LIM = (1 << 22)>
-class FormalPowerSeries : public std::vector<mint> {
+struct FormalPowerSeries : public std::vector<mint> {
+  using std::vector<mint>::vector;
+
+ private:
   using FPS = FormalPowerSeries<mint, LIM>;
   using m64_1 = ModInt<34703335751681, 3>;
   using m64_2 = ModInt<35012573396993, 3>;

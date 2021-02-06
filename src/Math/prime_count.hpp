@@ -40,7 +40,7 @@ auto polynomial_prime_sum_table(std::uint64_t N, const std::vector<T> &poly) {
     if (s[0][p] > s[0][p - 1]) {
       primes.emplace_back(p);
       std::uint64_t q = std::uint64_t(p) * p, M = N / p;
-      int t = sqrtN / p, u = min<std::uint64_t>(sqrtN, N / q);
+      int t = sqrtN / p, u = std::min<std::uint64_t>(sqrtN, N / q);
       for (T pw = 1; k < d; k++, pw *= p)
         if (!k || poly[k] != T(0)) {
           T tk = s[k][p - 1];
@@ -89,7 +89,7 @@ T multiplicative_sum(std::uint64_t N, const F &f, const std::vector<T> &poly) {
   auto [primes, s, l] = polynomial_prime_sum_table<T>(N, poly);
   for (auto it = primes.rbegin(); it != primes.rend(); it++) {
     std::uint64_t p = *it, M = N / p, q = p * p;
-    int t = sqrtN / p, u = min(sqrtN, N / q);
+    int t = sqrtN / p, u = std::min(sqrtN, N / q);
     T tk = s[p - 1];
     for (auto i = q; i <= sqrtN; i++) s[i] += (s[double(i) / p] - tk) * f(p, 1);
     for (int i = u; i > t; i--) l[i] += (s[double(M) / i] - tk) * f(p, 1);

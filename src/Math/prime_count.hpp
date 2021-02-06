@@ -57,13 +57,17 @@ auto polynomial_prime_sum_table(std::uint64_t N, const std::vector<T> &poly) {
   return std::make_tuple(primes, small, large);
 }
 
-template <class T>
-T polynomial_prime_sum(std::uint64_t N, const std::vector<T> &poly) {
-  return std::get<2>(polynomial_prime_sum_table<T>(N, poly))[1];
+auto prime_count_table(std::uint64_t N) {
+  return polynomial_prime_sum_table<std::uint64_t>(N, {1});
 }
 
 std::uint64_t prime_count(std::uint64_t N) {
-  return polynomial_prime_sum<std::uint64_t>(N, {1});
+  return std::get<2>(prime_count_table(N))[1];
+}
+
+template <class T>
+T polynomial_prime_sum(std::uint64_t N, const std::vector<T> &poly) {
+  return std::get<2>(polynomial_prime_sum_table<T>(N, poly))[1];
 }
 
 template <class T, class F>

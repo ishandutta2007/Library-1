@@ -68,12 +68,3 @@ std::uint64_t primitive_root(std::uint64_t p) {
     if (isok) return g;
   }
 }
-
-template <class T, class F>
-auto get_multiplicative(const F &f) {
-  return [f](std::uint64_t n) {
-    T ret = 1;
-    for (auto [p, e] : factorize_map(n)) ret *= f(p, e);
-    return ret;
-  };
-}

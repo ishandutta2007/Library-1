@@ -17,7 +17,8 @@
 template <class T = __int128_t>
 auto polynomial_prime_sum_table(std::uint64_t N, const std::vector<T> &poly) {
   const int sqrtN = std::sqrt(N), d = poly.size();
-  std::vector<T> primes, small(sqrtN + 1, 0), large(sqrtN + 1, 0);
+  std::vector<int> primes;
+  std::vector<T> small(sqrtN + 1, 0), large(sqrtN + 1, 0);
   std::vector<std::vector<T>> s(d, std::vector<T>(sqrtN + 1)),
       l(d, std::vector<T>(sqrtN + 1));
   for (int n = 1, k = 0; n <= sqrtN; n++, k = 0)
@@ -96,7 +97,8 @@ T multiplicative_sum(std::uint64_t N, const F &f, const std::vector<T> &poly) {
     for (int i = t; i >= 1; i--) l[i] += (l[i * p] - tk) * f(p, 1);
   }
   for (auto n = sqrtN; n; n--) s[n] += 1, l[n] += 1;
-  auto dfs = [&](auto rc, std::uint64_t n, std::size_t bg, T cf) -> T {
+  auto dfs = [&, primes = primes, s = s, l = l](auto rc, std::uint64_t n,
+                                                std::size_t bg, T cf) -> T {
     if (cf == T(0)) return T(0);
     T ret = cf * (n > sqrtN ? l[double(N) / n] : s[n]);
     for (auto i = bg; i < primes.size(); i++) {

@@ -17,7 +17,10 @@ class SubproductTree {
   std::vector<mint> xs;
   std::vector<poly> buf;
   void pre(int l, int r, int k) {
-    if (r - l == 1) return buf[k] = {-xs[l], 1}, ;
+    if (r - l == 1) {
+      buf[k] = {-xs[l], 1};
+      return;
+    }
     pre(l, (l + r) / 2, k * 2), pre((l + r) / 2, r, k * 2 + 1);
     buf[k] = buf[k * 2] * buf[k * 2 + 1];
   }

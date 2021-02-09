@@ -53,6 +53,6 @@ class SubproductTree {
              + buf[k * 2] * dfs(dfs, (l + r) / 2, r, k * 2 + 1);
     };
     poly ret = rec(rec, 0, n, 1);
-    return ret.retize(n), ret;
+    return ret.resize(n), ret;
   }
 };

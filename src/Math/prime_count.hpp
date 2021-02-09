@@ -38,7 +38,7 @@ auto polynomial_prime_sum_table(std::uint64_t N, const std::vector<T> &poly) {
   for (int k = 0; k < d; k++)
     for (int n = 1; n <= sqrtN; n++) s[k][n] -= 1, l[k][n] -= 1;
   for (int p = 2, k = 0; p <= sqrtN; p++, k = 0)
-    if (s[0][p] > s[0][p - 1]) {
+    if (s[0][p] != s[0][p - 1]) {
       primes.emplace_back(p);
       std::uint64_t q = std::uint64_t(p) * p, M = N / p;
       int t = sqrtN / p, u = std::min<std::uint64_t>(sqrtN, N / q);

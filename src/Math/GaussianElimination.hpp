@@ -68,15 +68,12 @@ class GaussianElimination {
   static auto row_reduction(std::vector<std::vector<bool>> &a,
                             int lim = 1 << 30) {
     int n = a.size(), m = a[0].size(), rank;
-    if (m < 512) {
-      std::vector<std::bitset<512>> b(n);
-      subst(b, a, n, m), rank = row_reduction<512>(b, lim), subst(a, b, n, m);
-    } else if (m < 1024) {
+    if (m < 1024) {
       std::vector<std::bitset<1024>> b(n);
       subst(b, a, n, m), rank = row_reduction<1024>(b, lim), subst(a, b, n, m);
     } else {
-      std::vector<std::bitset<2048>> b(n);
-      subst(b, a, n, m), rank = row_reduction<2048>(b, lim), subst(a, b, n, m);
+      std::vector<std::bitset<4096>> b(n);
+      subst(b, a, n, m), rank = row_reduction<4096>(b, lim), subst(a, b, n, m);
     }
     return std::make_pair(rank, rank == n);
   }

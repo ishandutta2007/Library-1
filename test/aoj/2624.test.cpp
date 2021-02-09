@@ -1,33 +1,32 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2624"
-//行列(F_2)の高速累乗と連立一次方程式のverify
+
 #include <bits/stdc++.h>
-#include "src/Math/Matrix_mod2.hpp"
+#include "src/Math/Matrix.hpp"
+#include "src/Math/GaussianElimination.hpp"
 using namespace std;
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
+  using GE = GaussianElimination;
+  using Mat = SquareMatrix<bool, 300>;
   int N;
   cin >> N;
-  Matrix_mod2 A(N);
+  Mat A;
   for (int i = 0; i < N; i++)
-    for (int j = 0; j < N; j++) {
-      cin >> A[i][j];
-    }
-  vector<int> v(N);
-  for (int i = 0; i < N; i++) cin >> v[i];
+    for (int j = 0, x; j < N; j++) cin >> x, A[i][j] = x;
+  vector<bool> v(N);
+  for (int i = 0, x; i < N; i++) cin >> x, v[i] = x;
   int T;
   cin >> T;
-  auto ans = Matrix_mod2::linear_equations(A.pow(T), v);
-  if (!ans.first.size()) {
-    cout << "none" << endl;
-  } else if (ans.second.size()) {
-    cout << "ambiguous" << endl;
+  auto [c, d] = GE::linear_equation(A.pow(T).to_vec(N, N), v);
+  if (c.empty()) {
+    cout << "none" << '\n';
+  } else if (!d.empty()) {
+    cout << "ambiguous" << '\n';
   } else {
-    for (int i = 0; i < N; i++) {
-      cout << (i ? " " : "") << ans.first[i];
-    }
-    cout << endl;
+    for (int i = 0; i < N; i++) { cout << (i ? " " : "") << c[i]; }
+    cout << '\n';
   }
   return 0;
 }

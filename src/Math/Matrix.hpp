@@ -3,175 +3,112 @@
 /**
  * @title 行列
  * @category 数学
- *  Gauss_Jordan(A,B) 拡大係数行列に対するガウスジョルダン法
- *  linear_equations(A,b) 返り値 {解のうちの一つ,解空間の基底ベクトル}
+ * 半環が載る
  */
 
 // BEGIN CUT HERE
 
-template <typename K>
-struct Matrix {
- private:
-  std::vector<std::vector<K>> a;
+struct has_I_impl {
+  template <class T>
+  static auto check(T &&x) -> decltype(x.I(), std::true_type{});
+  template <class T>
+  static auto check(...) -> std::false_type;
+};
+template <class T>
+class has_I : public decltype(has_I_impl::check<T>(std::declval<T>())) {};
+template <class T>
+inline constexpr bool has_I_v = has_I<T>::value;
 
- public:
-  Matrix() {}
-  Matrix(std::size_t n, std::size_t m) : a(n, std::vector<K>(m, 0)) {}
-  Matrix(std::size_t n) : Matrix(n, n) {}
-  Matrix(std::vector<std::vector<K>> a) : a(a) {}
-  std::size_t height() const { return a.size(); }
-  std::size_t width() const { return a[0].size(); }
-  inline const std::vector<K> &operator[](std::size_t k) const { return a[k]; }
-  inline std::vector<K> &operator[](std::size_t k) { return a[k]; }
-  static Matrix diag(std::vector<K> v) {
-    Matrix mat(v.size());
-    for (std::size_t i = 0; i < v.size(); i++) mat[i][i] = v[i];
-    return mat;
+template <class R, int N, int M>
+struct Matrix : public std::array<std::array<R, M>, N> {
+  static Matrix O() { return Matrix{}; }
+  Matrix &operator+=(const Matrix &r) {
+    for (int i = 0; i < N; i++)
+      for (int j = 0; j < M; j++) (*this)[i][j] += r[i][j];
+    return *this;
   }
-  static Matrix I(std::size_t n, K e = {1}) {
-    return diag(std::vector<K>(n, e));
-  }
-  Matrix &operator+=(const Matrix &b) {
-    std::size_t n = height(), m = width();
-    for (std::size_t i = 0; i < n; i++)
-      for (std::size_t j = 0; j < m; j++) (*this)[i][j] += b[i][j];
-    return (*this);
-  }
-  Matrix &operator-=(const Matrix &b) {
-    std::size_t n = height(), m = width();
-    for (std::size_t i = 0; i < n; i++)
-      for (std::size_t j = 0; j < m; j++) (*this)[i][j] -= b[i][j];
-    return (*this);
-  }
-  Matrix &operator*=(const Matrix &b) {
-    std::size_t n = height(), m = width(), l = b.width();
-    assert(m == b.height());
-    std::vector<std::vector<K>> c(n, std::vector<K>(l, 0));
-    for (std::size_t i = 0; i < n; i++)
-      for (std::size_t j = 0; j < l; j++)
-        for (std::size_t k = 0; k < m; k++) c[i][j] += (*this)[i][k] * b[k][j];
-    a.swap(c);
-    return (*this);
-  }
-  Matrix operator+(const Matrix &b) const { return (Matrix(*this) += b); }
-  Matrix operator-(const Matrix &b) const { return (Matrix(*this) -= b); }
-  Matrix operator*(const Matrix &b) const { return (Matrix(*this) *= b); }
-  Matrix pow(uint64_t n, K e = {1}) {
-    Matrix ret = I(height(), e);
-    for (Matrix base = *this; n; n >>= 1, base *= base)
-      if (n & 1) ret *= base;
+  Matrix operator+(const Matrix &r) const { return Matrix(*this) += r; }
+  template <int L>
+  Matrix<R, N, L> operator*(const Matrix<R, M, L> &r) const {
+    Matrix<R, N, L> ret;
+    for (int i = 0; i < N; i++)
+      for (int j = 0; j < L; j++)
+        for (int k = 0; k < M; k++) ret[i][j] += (*this)[i][k] * r[k][j];
     return ret;
   }
-  std::vector<K> operator*(const std::vector<K> &v) {
-    std::size_t n = height(), m = width();
-    assert(m == v.size());
-    std::vector<K> ret(n);
-    for (std::size_t i = 0; i < n; i++)
-      for (std::size_t j = 0; j < m; j++) ret[i] += (*this)[i][j] * v[j];
+  std::array<R, N> operator*(const std::array<R, M> &r) const {
+    std::array<R, N> ret;
+    for (int i = 0; i < N; i++)
+      for (int j = 0; j < M; j++) ret[i] += (*this)[i][j] * r[j];
     return ret;
   }
-  bool operator==(const Matrix &b) const { return a == b.a; }
-  template <typename T>
-  using ET = std::enable_if<std::is_floating_point<T>::value>;
-  template <typename T>
-  using EF = std::enable_if<!std::is_floating_point<T>::value>;
-  template <typename T, typename ET<T>::type * = nullptr>
-  static bool is_zero(T x) {
-    return std::abs(x) < 1e-8;
+  std::vector<std::vector<R>> to_vec() const {
+    std::vector<std::vector<R>> ret(N, std::vector<R>(M));
+    for (int i = 0; i < N; i++)
+      for (int j = 0; j < M; j++) ret[i][j] = (*this)[i][j];
+    return ret;
   }
-  template <typename T, typename EF<T>::type * = nullptr>
-  static bool is_zero(T x) {
-    return x == T(0);
+};
+
+template <int N, int M>
+struct Matrix<bool, N, M> : public std::array<std::bitset<M>, N> {
+  static Matrix O() { return Matrix{}; }
+  Matrix &operator+=(const Matrix &r) {
+    for (int i = 0; i < N; i++) (*this)[i] ^= r[i];
+    return *this;
   }
-  template <typename T, typename ET<T>::type * = nullptr>
-  static bool compare(T x, T y) {
-    return std::abs(x) < std::abs(y);
+  Matrix operator+(const Matrix &r) const { return Matrix(*this) += r; }
+  template <int L>
+  Matrix<bool, N, L> operator*(const Matrix<bool, M, L> &r) const {
+    Matrix<bool, L, M> t;
+    Matrix<bool, N, L> ret;
+    for (int i = 0; i < M; i++)
+      for (int j = 0; j < L; j++) t[j][i] = r[i][j];
+    for (int i = 0; i < N; i++)
+      for (int j = 0; j < L; j++) ret[i][j] = ((*this)[i] & t[j]).count() & 1;
+    return ret;
   }
-  template <typename T, typename EF<T>::type * = nullptr>
-  static bool compare(T x, T y) {
-    (void)x;
-    return y != T(0);
+  std::bitset<N> operator*(const std::bitset<N> &r) const {
+    std::bitset<N> ret;
+    for (int i = 0; i < N; i++) ret[i] = ((*this)[i] & r).count() & 1;
+    return ret;
   }
-  // O(nm(m+l))
-  static std::pair<Matrix, Matrix> Gauss_Jordan(const Matrix &a,
-                                                const Matrix &b) {
-    std::size_t n = a.height(), m = a.width(), l = b.width();
-    Matrix c(n, m + l);
-    for (std::size_t i = 0; i < n; i++)
-      for (std::size_t j = 0; j < m; j++) c[i][j] = a[i][j];
-    for (std::size_t i = 0; i < n; i++)
-      for (std::size_t j = 0; j < l; j++) c[i][j + m] = b[i][j];
-    for (std::size_t j = 0, d = 0; j < m && d < n; j++) {
-      int p = d;
-      for (std::size_t i = d + 1; i < n; i++)
-        if (compare(c[p][j], c[i][j])) p = i;
-      if (is_zero(c[p][j])) continue;
-      std::swap(c[p], c[d]);
-      K invc = K(1) / c[d][j];
-      for (std::size_t k = j; k < m + l; k++) c[d][k] *= invc;
-      for (std::size_t i = 0; i < n; i++) {
-        if (i == d) continue;
-        for (int k = m + l - 1; k >= (int)j; k--) c[i][k] -= c[i][j] * c[d][k];
-      }
-      d++;
-    }
-    Matrix reta(n, m), retb(n, l);
-    for (std::size_t i = 0; i < n; i++)
-      for (std::size_t j = 0; j < m; j++) reta[i][j] = c[i][j];
-    for (std::size_t i = 0; i < n; i++)
-      for (std::size_t j = 0; j < l; j++) retb[i][j] = c[i][j + m];
-    return std::make_pair(reta, retb);
+  std::vector<std::vector<bool>> to_vec() const {
+    std::vector<std::vector<bool>> ret(N, std::vector<bool>(M));
+    for (int i = 0; i < N; i++)
+      for (int j = 0; j < M; j++) ret[i][j] = (*this)[i][j];
+    return ret;
   }
-  // O(nm^2)
-  static std::pair<std::vector<K>, std::vector<std::vector<K>>>
-  linear_equations(const Matrix &a, const std::vector<K> &b) {
-    std::size_t n = a.height(), m = a.width();
-    Matrix B(n, 1);
-    for (std::size_t i = 0; i < n; i++) B[i][0] = b[i];
-    auto p = Gauss_Jordan(a, B);
-    std::vector<int> jdx(n, -1), idx(m, -1);
-    for (std::size_t i = 0, j; i < n; i++) {
-      for (j = 0; j < m; j++)
-        if (!is_zero(p.first[i][j])) {
-          jdx[i] = j, idx[j] = i;
-          break;
-        }
-      if (j == m && !is_zero(p.second[i][0]))
-        return std::make_pair(std::vector<K>(),
-                              std::vector<std::vector<K>>());  // no solutions
-    }
-    std::vector<K> c(m);
-    std::vector<std::vector<K>> d;
-    for (std::size_t j = 0; j < m; j++) {
-      if (idx[j] != -1)
-        c[j] = p.second[idx[j]][0];
-      else {
-        std::vector<K> v(m);
-        v[j] = 1;
-        for (std::size_t i = 0; i < n; i++)
-          if (jdx[i] != -1) v[jdx[i]] = -p.first[i][j];
-        d.emplace_back(v);
-      }
-    }
-    return std::make_pair(c, d);
+};
+
+template <class R, int N>
+struct SquareMatrix : public Matrix<R, N, N> {
+  using Matrix<R, N, N>::Matrix;
+  SquareMatrix(Matrix<R, N, N> m) { *this = m; }
+  template <typename T = R, typename std::enable_if_t<has_I_v<T>> * = nullptr>
+  static SquareMatrix I() {
+    SquareMatrix ret;
+    for (int i = 0; i < N; i++) ret[i][i] = T::I();
+    return ret;
   }
-  // O(n^3)
-  K det() const {
-    int n = height();
-    Matrix A(a);
-    K ret(1);
-    for (int i = 0; i < n; i++) {
-      int p = i;
-      for (int j = i + 1; j < n; j++)
-        if (compare(A[p][i], A[j][i])) p = j;
-      if (is_zero(A[p][i])) return 0;
-      if (p != i) ret = -ret;
-      std::swap(A[p], A[i]);
-      ret *= A[i][i];
-      K inva = K(1) / A[i][i];
-      for (int j = i + 1; j < n; j++)
-        for (int k = n - 1; k >= i; k--) A[j][k] -= inva * A[j][i] * A[i][k];
-    }
+  template <typename T = R, typename std::enable_if_t<!has_I_v<T>> * = nullptr>
+  static SquareMatrix I() {
+    SquareMatrix ret;
+    for (int i = 0; i < N; i++) ret[i][i] = T(1);
+    return ret;
+  }
+  SquareMatrix &operator=(const Matrix<R, N, N> &r) {
+    for (int i = 0; i < N; i++)
+      for (int j = 0; j < N; j++) (*this)[i][j] = r[i][j];
+    return *this;
+  }
+  SquareMatrix &operator*=(const SquareMatrix &r) {
+    return *this = (*this) * r;
+  }
+  SquareMatrix pow(std::uint64_t e) const {
+    SquareMatrix ret = I(), base = *this;
+    for (; e; e >>= 1, base *= base)
+      if (e & 1) ret *= base;
     return ret;
   }
 };

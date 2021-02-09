@@ -42,10 +42,10 @@ struct Matrix : public std::array<std::array<R, M>, N> {
       for (int j = 0; j < M; j++) ret[i] += (*this)[i][j] * r[j];
     return ret;
   }
-  std::vector<std::vector<R>> to_vec() const {
-    std::vector<std::vector<R>> ret(N, std::vector<R>(M));
-    for (int i = 0; i < N; i++)
-      for (int j = 0; j < M; j++) ret[i][j] = (*this)[i][j];
+  std::vector<std::vector<R>> to_vec(int n, int m) const {
+    std::vector<std::vector<R>> ret(n, std::vector<R>(m));
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < m; j++) ret[i][j] = (*this)[i][j];
     return ret;
   }
 };
@@ -73,10 +73,10 @@ struct Matrix<bool, N, M> : public std::array<std::bitset<M>, N> {
     for (int i = 0; i < N; i++) ret[i] = ((*this)[i] & r).count() & 1;
     return ret;
   }
-  std::vector<std::vector<bool>> to_vec() const {
-    std::vector<std::vector<bool>> ret(N, std::vector<bool>(M));
-    for (int i = 0; i < N; i++)
-      for (int j = 0; j < M; j++) ret[i][j] = (*this)[i][j];
+  std::vector<std::vector<bool>> to_vec(int n, int m) const {
+    std::vector<std::vector<bool>> ret(n, std::vector<bool>(m));
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < m; j++) ret[i][j] = (*this)[i][j];
     return ret;
   }
 };

@@ -87,7 +87,9 @@ T additive_sum(std::uint64_t N, F f, std::vector<T> poly) {
 template <class T = __int128_t, class F>
 T multiplicative_sum(std::uint64_t N, const F &f, const std::vector<T> &poly) {
   const std::uint64_t sqrtN = std::sqrt(N);
-  auto [primes, s, l] = polynomial_prime_sum_table<T>(N, poly);
+  std::vector<int> primes;
+  std::vector<T> s, l;
+  tie(primes, s, l) = polynomial_prime_sum_table<T>(N, poly);
   for (auto it = primes.rbegin(); it != primes.rend(); it++) {
     std::uint64_t p = *it, M = N / p, q = p * p;
     int t = sqrtN / p, u = std::min(sqrtN, N / q);
@@ -97,8 +99,7 @@ T multiplicative_sum(std::uint64_t N, const F &f, const std::vector<T> &poly) {
     for (int i = t; i >= 1; i--) l[i] += (l[i * p] - tk) * f(p, 1);
   }
   for (auto n = sqrtN; n; n--) s[n] += 1, l[n] += 1;
-  auto dfs = [&, primes = primes, s = s, l = l](auto rc, std::uint64_t n,
-                                                std::size_t bg, T cf) -> T {
+  auto dfs = [&](auto rc, std::uint64_t n, std::size_t bg, T cf) -> T {
     if (cf == T(0)) return T(0);
     T ret = cf * (n > sqrtN ? l[double(N) / n] : s[n]);
     for (auto i = bg; i < primes.size(); i++) {

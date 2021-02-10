@@ -35,7 +35,7 @@ T dirichlet_inv_sum(unsigned long long N, const G &gsum, const H &hsum,
 }
 template <class T, class G, class H>
 T dirichlet_inv_sum(std::uint64_t N, const G &gsum, const H &hsum) {
-  std::unordered_map<std::uint64_t, T> memo;
+  std::unordered_map<unsigned long long, T> memo;
   return dirichlet_inv_sum<T>(N, gsum, hsum, memo);
 }
 

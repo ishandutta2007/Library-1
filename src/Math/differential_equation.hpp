@@ -17,7 +17,7 @@ FormalPowerSeries<mint> differential_equation(
     std::function<FormalPowerSeries<mint>(FormalPowerSeries<mint>, int)> dF,
     mint f0, int deg) {
   FormalPowerSeries<mint> f{f0};
-  for (int e = 1, ne = 2; e < deg; e = ne, ne = min(e << 1, deg)) {
+  for (int e = 1, ne = 2; e < deg; e = ne, ne = std::min(e << 1, deg)) {
     auto a = dF(f, ne - 1), r = a.inte().exp(), h = a * f;
     h.resize(ne - 1), h = (F(f, ne - 1) - h).div(r).inte();
     f = (h + f0) * r, f.resize(ne);

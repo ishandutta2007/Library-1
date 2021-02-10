@@ -9,6 +9,9 @@
  * 120頂点ぐらいはいける
  */
 
+// verify用
+// https://yukicoder.me/problems/no/382 (120頂点)
+
 // BEGIN CUT HERE
 
 class MaxClique {

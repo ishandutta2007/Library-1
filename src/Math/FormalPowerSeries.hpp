@@ -318,7 +318,7 @@ struct FormalPowerSeries : public std::vector<mint> {
     return ret;
   }
   std::pair<FPS, FPS> cos_and_sin() const {
-    static constexpr mint imag = mint(-1).sqrt();
+    static mint imag = mint(-1).sqrt();
     static constexpr mint iv2 = mint(mint::modulo() - (mint::modulo() - 1) / 2);
     FPS a = (*this * imag).exp(), b = (*this * (-imag)).exp();
     return std::make_pair((a + b) * iv2, (a - b) * iv2 / imag);

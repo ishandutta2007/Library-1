@@ -63,17 +63,13 @@ struct BigInt {
     BigInt ret;
     return ret.dat = std::vector<unsigned>(dat.begin() + size, dat.end()), ret;
   }
-  BigInt base_shift_l(int size) const {
-    BigInt ret = *this;
-    return ret.dat.insert(ret.dat.begin(), size, 0), ret;
-  }
 
  public:
   BigInt() : neg(false), dat() {}
   BigInt(long long v) { *this = v; }
   BigInt(const std::string &s) { read(s); }
   void shrink() {
-    while (dat.size() && !dat.back()) dat.pop_back();
+    while (!dat.empty() && !dat.back()) dat.pop_back();
     if (dat.empty()) neg = false;
   }
   bool is_zero() const { return dat.empty() || (dat.size() == 1 && !dat[0]); }
@@ -154,8 +150,8 @@ struct BigInt {
     if (neg != r.neg) return *this + (-r);
     if (abs() < r.abs()) return -(r - *this);
     BigInt ret = *this;
-    for (unsigned i = 0, carry = 0; i < r.dat.size() || carry; i++) {
-      ret.dat[i] += base - (carry + (i < r.dat.size() ? r.dat[i] : 0));
+    for (int i = 0, carry = 0, ed = r.dat.size(); i < ed || carry; i++) {
+      ret.dat[i] += base - (carry + (i < ed ? r.dat[i] : 0));
       if (!(carry = (ret.dat[i] < base))) ret.dat[i] -= base;
     }
     return ret.shrink(), ret;
@@ -164,9 +160,9 @@ struct BigInt {
   BigInt &operator-=(const BigInt &r) { return *this = *this - r; }
   BigInt &operator*=(long long r) {
     if (r < 0) neg = !neg, r = -r;
-    for (long long i = 0, carry = 0; i < (long long)dat.size() || carry; i++) {
-      if (i == (long long)dat.size()) dat.emplace_back(0);
-      __uint128_t cur = (__uint128_t)r * dat[i] + carry;
+    for (long long i = 0, carry = 0, ed = dat.size(); i < ed || carry; i++) {
+      if (i == ed) dat.emplace_back(0);
+      long long cur = r * dat[i] + carry;
       carry = cur >> bdig, dat[i] = cur & (base - 1);
     }
     return shrink(), *this;
@@ -179,8 +175,7 @@ struct BigInt {
   }
   long long operator%(long long r) const {
     long long ret = 0;
-    for (int i = dat.size(); i;)
-      ret = (dat[--i] + (__uint128_t(ret) << bdig)) % r;
+    for (int i = dat.size(); i;) ret = (dat[--i] + (ret << bdig)) % r;
     return ret;
   }
   BigInt operator*(long long r) const { return BigInt(*this) *= r; }
@@ -263,17 +258,19 @@ struct BigInt {
   BigInt &operator>>=(unsigned size) {
     if (dat.size() * bdig <= size) return *this = 0;
     unsigned i = 0, j = size / bdig, k = size % bdig, mask = (1 << k) - 1;
-    for (; j + 1 < dat.size(); i++, j++)
+    for (unsigned ed = dat.size(); j + 1 < ed; i++, j++)
       dat[i] = (dat[j] >> k) | ((dat[j + 1] & mask) << (bdig - k));
     return dat[i] = (dat[j] >> k), dat.resize(i + 1), shrink(), *this;
   }
   BigInt &operator<<=(unsigned size) {
     if (is_zero()) return *this;
-    int i = dat.size(), k = size % bdig;
-    for (dat.emplace_back(0); i > 0; i--)
-      dat[i] = ((dat[i] << k) & (base - 1)) | (dat[i - 1] >> (bdig - k));
-    dat[0] = (dat[0] << k) & (base - 1);
-    return shrink(), dat.insert(dat.begin(), size / bdig, 0), *this;
+    int i = dat.size(), k = size % bdig, j;
+    dat.resize(dat.size() + size / bdig + 1);
+    for (j = dat.size() - 1; i > 0; j--, i--)
+      dat[j] = ((dat[i] << k) & (base - 1)) | (dat[i - 1] >> (bdig - k));
+    dat[j] = (dat[0] << k) & (base - 1);
+    std::fill_n(dat.begin(), size / bdig, 0);
+    return shrink(), *this;
   }
   BigInt operator>>(unsigned size) const { return BigInt(*this) >>= size; }
   BigInt operator<<(unsigned size) const { return BigInt(*this) <<= size; }

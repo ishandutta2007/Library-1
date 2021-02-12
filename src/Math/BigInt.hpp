@@ -254,7 +254,7 @@ struct BigInt {
       }
     }
     x *= this->abs(), x = x.base_shift_r(pb + (pb == qb));
-    if (this->abs() >= (x + 1) * r) x += 1;
+    if (this->abs() >= (x + 1) * r.abs()) x += 1;
     return x.neg = neg ^ r.neg, x.shrink(), x;
   }
   BigInt &operator/=(const BigInt &r) { return *this = *this / r; }

@@ -186,6 +186,7 @@ struct BigInt {
   BigInt operator*(long long r) const { return BigInt(*this) *= r; }
   BigInt operator/(long long r) const { return BigInt(*this) /= r; }
   BigInt operator*(const BigInt &r) const {
+    if (is_zero() || r.is_zero()) return 0;
     static ModB f[1 << 20], g[1 << 20];
     static long long h[1 << 20];
     int n = dat.size(), m = r.dat.size(), sz = n + m - 1;
@@ -207,11 +208,12 @@ struct BigInt {
     for (long long i = 0, carry = 0, cur; i < sz || carry; i++)
       cur = carry + (i < sz ? h[i] : 0), carry = cur >> bdig,
       ret.dat.emplace_back(cur & (base - 1));
-    return ret.neg = neg ^ r.neg, ret;
+    return ret.shrink(), ret.neg = neg ^ r.neg, ret;
   }
   BigInt &operator*=(const BigInt &r) { return *this = *this * r; }
   BigInt operator/(const BigInt &r) const {
-    if (r.dat.size() == 1 && r.dat.back() == 1) return *this;
+    if (r.dat.size() == 1 && r.dat.back() == 1) return r.neg ? -*this : *this;
+    if (this->abs() < r.abs()) return 0;
     if (r.able_ll()) return *this / r.convert_ll();
     static ModB f[1 << 20], g[1 << 20];
     int pb = dat.size(), qb = r.dat.size(), prec = std::max(pb - qb, 1),

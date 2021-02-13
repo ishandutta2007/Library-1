@@ -27,7 +27,7 @@ signed main() {
             A[ii] = m[i];
             ii++;
           }
-        vector<double> c = GE::linear_equation(A, b).first;
+        vector<double> c = GE::linear_equations(A, b).first;
         double u1 = 0, u2 = 0;
         for (int i = d; i >= 0; i--) {
           u1 += c[i] * m[k][i];

@@ -9,7 +9,7 @@
 // BEGIN CUT HERE
 
 struct BigInt {
-  static constexpr int bdig = 23, base = 1 << bdig;
+  static constexpr unsigned base = 10000000, bdig = 7;
   bool neg;
 
  private:
@@ -68,49 +68,36 @@ struct BigInt {
   BigInt() : neg(false), dat() {}
   BigInt(long long v) { *this = v; }
   BigInt(const std::string &s) { read(s); }
+  void read(const std::string &s) {
+    neg = false, dat.clear();
+    int pos = 0;
+    for (; pos < (int)s.size() && (s[pos] == '-' || s[pos] == '+'); ++pos)
+      if (s[pos] == '-') neg = !neg;
+    for (long long i = s.size() - 1, x = 0; i >= pos; i -= bdig, x = 0) {
+      for (int j = std::max<int>(pos, i - bdig + 1); j <= i; j++)
+        x = x * 10 + s[j] - '0';
+      dat.push_back(x);
+    }
+    shrink();
+  }
+  std::string to_str() const {
+    std::stringstream ss;
+    if (neg) ss << '-';
+    ss << (dat.empty() ? 0 : dat.back());
+    for (long long i = dat.size() - 2; i >= 0; --i)
+      ss << std::setw(bdig) << std::setfill('0') << dat[i];
+    std::string ret;
+    return ss >> ret, ret;
+  }
   void shrink() {
     while (!dat.empty() && !dat.back()) dat.pop_back();
     if (dat.empty()) neg = false;
   }
   bool is_zero() const { return dat.empty() || (dat.size() == 1 && !dat[0]); }
-  bool able_ll() const {
-    return dat.size() <= 2
-           || (dat.size() == 3 && !(dat.back() >> (63 - 2 * bdig)));
-  }
-  int ctz() const {
-    if (is_zero()) return -1;
-    int ret = 0, i;
-    for (i = 0; i < (int)dat.size() && !dat[i]; i++) ret += bdig;
-    return ret + __builtin_ctz(dat[i]);
-  }
-  void read(const std::string &s) {
-    dat.clear(), neg = s[0] == '-';
-    std::vector<short> v;
-    for (int i = s.length() - 1; i >= 0 && '0' <= s[i] && s[i] <= '9'; i--)
-      v.emplace_back(s[i] - '0');
-    for (int rem = 0; !v.empty(); dat.emplace_back(rem), rem = 0) {
-      for (int i = v.size() - 1, cur; i >= 0; i--)
-        cur = rem * 10 + v[i], v[i] = cur >> bdig, rem = cur & (base - 1);
-      while (v.size() && !v.back()) v.pop_back();
-    }
-  }
-  std::string to_str() const {
-    if (is_zero()) return "0";
-    auto v = dat;
-    std::string ret;
-    for (short rem = 0; !v.empty(); ret += rem + '0', rem = 0) {
-      for (int i = v.size() - 1, cur; i >= 0; i--)
-        cur = (rem << bdig) + v[i], v[i] = cur / 10, rem = cur % 10;
-      while (v.size() && !v.back()) v.pop_back();
-    }
-    if (neg) ret += '-';
-    std::reverse(ret.begin(), ret.end());
-    return ret;
-  }
   BigInt &operator=(long long r) {
     neg = false, dat.clear();
     if (r < 0) neg = true, r = -r;
-    for (; r; r >>= bdig) dat.emplace_back(r & (base - 1));
+    for (; r; r /= base) dat.emplace_back(r % base);
     return *this;
   }
   bool operator<(const BigInt &r) const {
@@ -163,19 +150,19 @@ struct BigInt {
     for (long long i = 0, carry = 0, ed = dat.size(); i < ed || carry; i++) {
       if (i == ed) dat.emplace_back(0);
       long long cur = r * dat[i] + carry;
-      carry = cur >> bdig, dat[i] = cur & (base - 1);
+      carry = cur / base, dat[i] = cur % base;
     }
     return shrink(), *this;
   }
   BigInt &operator/=(long long r) {
     if (r < 0) neg = !neg, r = -r;
     for (__int128_t i = dat.size() - 1, cur, rem = 0; i >= 0; i--)
-      cur = dat[i] + (rem << bdig), dat[i] = cur / r, rem = cur % r;
+      cur = dat[i] + (rem * base), dat[i] = cur / r, rem = cur % r;
     return shrink(), *this;
   }
   long long operator%(long long r) const {
     long long ret = 0;
-    for (int i = dat.size(); i;) ret = (dat[--i] + (ret << bdig)) % r;
+    for (int i = dat.size(); i;) ret = (dat[--i] + (ret * base)) % r;
     return ret;
   }
   BigInt operator*(long long r) const { return BigInt(*this) *= r; }
@@ -201,15 +188,14 @@ struct BigInt {
     }
     BigInt ret;
     for (long long i = 0, carry = 0, cur; i < sz || carry; i++)
-      cur = carry + (i < sz ? h[i] : 0), carry = cur >> bdig,
-      ret.dat.emplace_back(cur & (base - 1));
-    return ret.shrink(), ret.neg = neg ^ r.neg, ret;
+      cur = carry + (i < sz ? h[i] : 0), carry = cur / base,
+      ret.dat.emplace_back(cur % base);
+    return ret.neg = neg ^ r.neg, ret.shrink(), ret;
   }
   BigInt &operator*=(const BigInt &r) { return *this = *this * r; }
   BigInt operator/(const BigInt &r) const {
     if (r.dat.size() == 1 && r.dat.back() == 1) return r.neg ? -*this : *this;
     if (this->abs() < r.abs()) return 0;
-    if (r.able_ll()) return *this / r.convert_ll();
     int pb = dat.size(), qb = r.dat.size(), prec = std::max(pb - qb, 1),
         lim = std::min(prec, 3), rlim = std::min(qb, 6),
         nlim = std::min(lim * 2 + 1, prec), nrlim = std::min(rlim * 2 + 1, qb);
@@ -233,29 +219,6 @@ struct BigInt {
   BigInt &operator/=(const BigInt &r) { return *this = *this / r; }
   BigInt &operator%=(const BigInt &r) { return *this -= (*this / r) * r; }
   BigInt operator%(const BigInt &r) const { return BigInt(*this) %= r; }
-  BigInt &operator>>=(unsigned size) {
-    if (dat.size() * bdig <= size) return *this = 0;
-    unsigned i = 0, j = size / bdig, k = size % bdig, mask = (1 << k) - 1;
-    for (; j + 1 < dat.size(); i++, j++)
-      dat[i] = (dat[j] >> k) | ((dat[j + 1] & mask) << (bdig - k));
-    return dat[i] = (dat[j] >> k), dat.resize(i + 1), shrink(), *this;
-  }
-  BigInt &operator<<=(unsigned size) {
-    if (is_zero()) return *this;
-    int i = dat.size(), k = size % bdig;
-    for (dat.emplace_back(0); i > 0; i--)
-      dat[i] = ((dat[i] << k) & (base - 1)) | (dat[i - 1] >> (bdig - k));
-    dat[0] = (dat[0] << k) & (base - 1);
-    return shrink(), dat.insert(dat.begin(), size / bdig, 0), *this;
-  }
-  BigInt operator>>(unsigned size) const { return BigInt(*this) >>= size; }
-  BigInt operator<<(unsigned size) const { return BigInt(*this) <<= size; }
-  long long convert_ll() const {
-    assert(able_ll());
-    long long ret = 0;
-    for (int i = dat.size() - 1; i >= 0; i--) ret = (ret << bdig) + dat[i];
-    return neg ? -ret : ret;
-  }
   friend std::istream &operator>>(std::istream &is, BigInt &v) {
     std::string s;
     return is >> s, v.read(s), is;
@@ -264,21 +227,3 @@ struct BigInt {
     return os << v.to_str(), os;
   }
 };
-
-BigInt gcd(const BigInt &a, const BigInt &b) {
-  assert(!a.neg && !b.neg);
-  if (a.is_zero()) return b;
-  if (b.is_zero()) return a;
-  int y = a.ctz(), z = b.ctz();
-  BigInt x[2] = {a, b};
-  x[0] >>= y, x[1] >>= z;
-  bool id = 0;
-  while (true) {
-    if (x[id] < x[!id]) id = !id;
-    if ((x[id] -= x[!id]).is_zero()) break;
-    x[id] >>= x[id].ctz();
-  }
-  return x[!id] << std::min(y, z);
-}
-
-BigInt lcm(const BigInt &a, const BigInt &b) { return (a / gcd(a, b)) * b; }

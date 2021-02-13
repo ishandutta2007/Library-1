@@ -9,7 +9,7 @@
 // BEGIN CUT HERE
 
 struct BigInt {
-  static constexpr int bdig = 26, base = 1 << bdig;
+  static constexpr int bdig = 23, base = 1 << bdig;
   bool neg;
 
  private:
@@ -138,10 +138,10 @@ struct BigInt {
   BigInt operator+(const BigInt &r) const {
     if (neg != r.neg) return *this - (-r);
     BigInt ret = r;
-    for (int i = 0, ed = std::max(dat.size(), r.dat.size()), carry = 0;
+    for (unsigned i = 0, ed = std::max(dat.size(), r.dat.size()), carry = 0;
          i < ed || carry; i++) {
-      if (i == (int)ret.dat.size()) ret.dat.emplace_back(0);
-      ret.dat[i] += carry + (i < (int)dat.size() ? dat[i] : 0);
+      if (i == ret.dat.size()) ret.dat.emplace_back(0);
+      ret.dat[i] += carry + (i < dat.size() ? dat[i] : 0);
       if ((carry = (ret.dat[i] >= base))) ret.dat[i] -= base;
     }
     return ret;
@@ -150,8 +150,8 @@ struct BigInt {
     if (neg != r.neg) return *this + (-r);
     if (abs() < r.abs()) return -(r - *this);
     BigInt ret = *this;
-    for (int i = 0, carry = 0, ed = r.dat.size(); i < ed || carry; i++) {
-      ret.dat[i] += base - (carry + (i < ed ? r.dat[i] : 0));
+    for (unsigned i = 0, carry = 0; i < r.dat.size() || carry; i++) {
+      ret.dat[i] += base - (carry + (i < r.dat.size() ? r.dat[i] : 0));
       if (!(carry = (ret.dat[i] < base))) ret.dat[i] -= base;
     }
     return ret.shrink(), ret;
@@ -210,42 +210,20 @@ struct BigInt {
     if (r.dat.size() == 1 && r.dat.back() == 1) return r.neg ? -*this : *this;
     if (this->abs() < r.abs()) return 0;
     if (r.able_ll()) return *this / r.convert_ll();
-    static ModB f[1 << 20], g[1 << 20];
     int pb = dat.size(), qb = r.dat.size(), prec = std::max(pb - qb, 1),
-        lim = std::min(prec, 3), rlim = std::min(qb, 6);
+        lim = std::min(prec, 3), rlim = std::min(qb, 6),
+        nlim = std::min(lim * 2 + 1, prec), nrlim = std::min(rlim * 2 + 1, qb);
     BigInt x, prev, rr = r.base_shift_r(qb - rlim), c;
     x.dat.resize(lim + 1, 0), x.dat.back() = 1;
     c.dat.resize(rlim + lim + 1, 0), c.dat.back() = 2;
     while (x != prev) prev = x, x *= c - rr * x, x = x.base_shift_r(lim + rlim);
     if (lim != prec) {
-      for (prev.dat.clear(); x != prev;) {
-        prev = x;
-        int n = x.dat.size(), m = rr.dat.size(), sz = n + m - 1,
-            len1 = get_len(sz), len2 = get_len(rlim + lim + n),
-            nlim = std::min(lim * 2 + 1, prec),
-            nrlim = std::min(rlim * 2 + 1, qb);
-        for (int i = 0; i < n; i++) g[i] = x.dat[i];
-        for (int i = 0; i < m; i++) f[i] = rr.dat[i];
-        std::fill(g + n, g + len2, 0), std::fill(f + m, f + len1, 0);
-        dft(len1, f), dft(len2, g);
-        for (int i = 0; i < len1; i++) f[i] *= g[i];
-        idft(len1, f), x.dat.clear();
-        for (long long i = 0, carry = 0, cur; i < sz || carry; i++)
-          cur = carry + (i < sz ? f[i].val() : 0), carry = cur >> bdig,
-          x.dat.emplace_back(cur & (base - 1));
-        x = c - x, m = x.dat.size(), sz = n + m - 1;
-        for (int i = 0; i < m; i++) f[i] = x.dat[i];
-        std::fill(f + m, f + len2, 0), dft(len2, f);
-        for (int i = 0; i < len2; i++) f[i] *= g[i];
-        idft(len2, f), x.dat.clear();
-        for (long long i = 0, carry = 0, cur; i < sz || carry; i++) {
-          cur = carry + (i < sz ? f[i].val() : 0), carry = cur >> bdig;
-          if (i >= 2 * lim - nlim + rlim) x.dat.emplace_back(cur & (base - 1));
-        }
+      for (prev.neg = true; x != prev; lim = nlim, rlim = nrlim) {
+        nlim = std::min(lim * 2 + 1, prec), nrlim = std::min(rlim * 2 + 1, qb);
+        prev = x, x *= c - rr * x, x = x.base_shift_r(2 * lim - nlim + rlim);
         if (nrlim != rlim) rr = r.base_shift_r(qb - nrlim);
         if (nrlim != rlim || nlim != lim)
           c.dat.back() = 0, c.dat.resize(nrlim + nlim + 1, 0), c.dat.back() = 2;
-        lim = nlim, rlim = nrlim;
       }
     }
     x *= this->abs(), x = x.base_shift_r(pb + (pb == qb));
@@ -258,19 +236,17 @@ struct BigInt {
   BigInt &operator>>=(unsigned size) {
     if (dat.size() * bdig <= size) return *this = 0;
     unsigned i = 0, j = size / bdig, k = size % bdig, mask = (1 << k) - 1;
-    for (unsigned ed = dat.size(); j + 1 < ed; i++, j++)
+    for (; j + 1 < dat.size(); i++, j++)
       dat[i] = (dat[j] >> k) | ((dat[j + 1] & mask) << (bdig - k));
     return dat[i] = (dat[j] >> k), dat.resize(i + 1), shrink(), *this;
   }
   BigInt &operator<<=(unsigned size) {
     if (is_zero()) return *this;
-    int i = dat.size(), k = size % bdig, j;
-    dat.resize(dat.size() + size / bdig + 1);
-    for (j = dat.size() - 1; i > 0; j--, i--)
-      dat[j] = ((dat[i] << k) & (base - 1)) | (dat[i - 1] >> (bdig - k));
-    dat[j] = (dat[0] << k) & (base - 1);
-    std::fill_n(dat.begin(), size / bdig, 0);
-    return shrink(), *this;
+    int i = dat.size(), k = size % bdig;
+    for (dat.emplace_back(0); i > 0; i--)
+      dat[i] = ((dat[i] << k) & (base - 1)) | (dat[i - 1] >> (bdig - k));
+    dat[0] = (dat[0] << k) & (base - 1);
+    return shrink(), dat.insert(dat.begin(), size / bdig, 0), *this;
   }
   BigInt operator>>(unsigned size) const { return BigInt(*this) >>= size; }
   BigInt operator<<(unsigned size) const { return BigInt(*this) <<= size; }

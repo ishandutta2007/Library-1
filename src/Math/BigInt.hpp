@@ -14,7 +14,7 @@ struct BigInt {
 
  private:
   std::vector<unsigned> dat;
-  using ModB = ModInt<4611615649683210241, 11>;
+  using ModB = ModInt<4611685989973229569, 7>;
   template <class mod_t>
   static inline void idft(int n, mod_t x[]) {
     static mod_t iW[1 << 20];
@@ -194,6 +194,7 @@ struct BigInt {
   }
   BigInt &operator*=(const BigInt &r) { return *this = *this * r; }
   BigInt operator/(const BigInt &r) const {
+    if (is_zero()) return *this;
     if (r.dat.size() == 1 && r.dat.back() == 1) return r.neg ? -*this : *this;
     if (this->abs() < r.abs()) return 0;
     int pb = dat.size(), qb = r.dat.size(), prec = std::max(pb - qb, 1),

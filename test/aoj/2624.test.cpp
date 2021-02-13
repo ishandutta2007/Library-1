@@ -19,7 +19,7 @@ signed main() {
   for (int i = 0, x; i < N; i++) cin >> x, v[i] = x;
   int T;
   cin >> T;
-  auto [c, d] = GE::linear_equation(A.pow(T).to_vec(N, N), v);
+  auto [c, d] = GE::linear_equations(A.pow(T).to_vec(N, N), v);
   if (c.empty()) {
     cout << "none" << '\n';
   } else if (!d.empty()) {

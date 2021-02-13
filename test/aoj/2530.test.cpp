@@ -23,7 +23,7 @@ signed main() {
             for (int ni = i, nj = j; 0 <= ni && ni < R && 0 <= nj && nj < C;
                  ni += di, nj += dj)
               A[i * C + j][ni * C + nj] = 1;
-  auto [c, d] = GE::linear_equation(A, b);
+  auto [c, d] = GE::linear_equations(A, b);
   if (!c.empty())
     cout << ModInt<int(1e9 + 9)>(2).pow(d.size()) << endl;
   else

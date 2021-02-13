@@ -78,8 +78,8 @@ class GaussianElimination {
     return std::make_pair(rank, rank == n);
   }
   template <class K>
-  static std::pair<std::vector<K>, std::vector<std::vector<K>>> linear_equation(
-      std::vector<std::vector<K>> a, const std::vector<K> &b) {
+  static std::pair<std::vector<K>, std::vector<std::vector<K>>>
+  linear_equations(std::vector<std::vector<K>> a, const std::vector<K> &b) {
     int n = a.size(), m = a[0].size();
     for (int i = 0; i < n; i++) a[i].emplace_back(b[i]);
     int rank = row_reduction(a, m).first;

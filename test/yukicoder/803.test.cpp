@@ -23,7 +23,7 @@ signed main() {
     cin >> x >> l >> r, b[30 + i] = x;
     for (int j = l - 1; j <= r - 1; j++) A[30 + i][j] = 1;
   }
-  auto ans = GE::linear_equation(A, b);
+  auto ans = GE::linear_equations(A, b);
   if (ans.first.size())
     cout << ModInt<int(1e9 + 7)>(2).pow(ans.second.size()) << endl;
   else

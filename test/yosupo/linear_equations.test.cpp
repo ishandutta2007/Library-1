@@ -16,7 +16,7 @@ signed main() {
   for (int i = 0; i < N; i++)
     for (int j = 0; j < M; j++) cin >> A[i][j];
   for (int i = 0; i < N; i++) cin >> b[i];
-  auto [c, d] = GE::linear_equation(A, b);
+  auto [c, d] = GE::linear_equations(A, b);
   if (!c.size())
     cout << -1 << endl;
   else {

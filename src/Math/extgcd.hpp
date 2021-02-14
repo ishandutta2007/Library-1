@@ -63,7 +63,7 @@ FormalPowerSeries<mint> extgcd(FormalPowerSeries<mint> a,
                     poly(qr.second.begin() + k, qr.second.end())),
                mulQ_l(qr.first, R));
   };
-  auto cogcd = [&](auto recc, const poly &p0, const poly &p1) -> pm {
+  auto cogcd = [&, &hgcd](auto recc, const poly &p0, const poly &p1) -> pm {
     assert(p0.deg() > p1.deg());
     pm M(hgcd(hgcd, p0, p1));
     pv p2p3(mulv(M, pv{p0, p1}));

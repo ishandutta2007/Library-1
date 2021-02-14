@@ -48,29 +48,29 @@ FormalPowerSeries<mint> extgcd(FormalPowerSeries<mint> a,
     return pm{pv{lhs[0][1], lhs[0][0] - lhs[0][1] * q},
               pv{lhs[1][1], lhs[1][0] - lhs[1][1] * q}};
   };
-  auto hgcd = [&](auto rech, const poly &p0, const poly &p1) -> pm {
+  auto hgcd = [&](auto self, const poly &p0, const poly &p1) -> pm {
     assert(p0.deg() > p1.deg());
     int m = ((p0.deg() - 1) >> 1) + 1, n = p1.deg();
-    if (n < m) return pm{pv{poly{1}, poly{}}, pv{poly{}, poly{1}}};
-    pm R(rech(rech, poly(p0.begin() + m, p0.end()),
+    if (n < m) return pm{pv{poly(1, 1), poly()}, pv{poly(), poly(1, 1)}};
+    pm R(self(self, poly(p0.begin() + m, p0.end()),
               poly(p1.begin() + m, p1.end())));
     pv ab(mulv(R, pv{p0, p1}));
     if (ab[1].deg() < m) return R;
     std::pair<poly, poly> qr(ab[0].quorem(ab[1]));
     int k = 2 * m - ab[1].deg();
     if ((int)qr.second.size() <= k) return mulQ_l(qr.first, R);
-    return mul(rech(rech, poly(ab[1].begin() + k, ab[1].end()),
+    return mul(self(self, poly(ab[1].begin() + k, ab[1].end()),
                     poly(qr.second.begin() + k, qr.second.end())),
                mulQ_l(qr.first, R));
   };
-  auto cogcd = [&, &hgcd](auto recc, const poly &p0, const poly &p1) -> pm {
+  auto cogcd = [&](auto self, const poly &p0, const poly &p1) -> pm {
     assert(p0.deg() > p1.deg());
     pm M(hgcd(hgcd, p0, p1));
     pv p2p3(mulv(M, pv{p0, p1}));
     if (p2p3[1].deg() == -1) return M;
     std::pair<poly, poly> qr(p2p3[0].quorem(p2p3[1]));
     if (qr.second.deg() == -1) return mulQ_l(qr.first, M);
-    return mul(recc(recc, p2p3[1], qr.second), mulQ_l(qr.first, M));
+    return mul(self(self, p2p3[1], qr.second), mulQ_l(qr.first, M));
   };
   pm c;
   if (a.norm().deg() > b.norm().deg()) {

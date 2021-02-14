@@ -16,15 +16,7 @@ signed main() {
   for (int i = 0; i < N; i++) cin >> f[i];
   for (int i = 0; i < M; i++) cin >> g[i];
   Poly d = extgcd(f, g, x, y);
-  cerr << "x deg = " << x.deg() << '\n';
-  cerr << "y deg = " << y.deg() << '\n';
   if (d.deg() != 0) {
-    cerr << "d deg= " << d.deg() << '\n';
-    if (d.size() <= 10) {
-      cerr << "d = { ";
-      for (auto x : d) cerr << x << " ";
-      cerr << " }" << '\n';
-    }
     cout << -1 << '\n';
   } else if (x.deg() == -1) {
     cout << 0 << '\n';

@@ -14,7 +14,7 @@ signed main() {
   cin >> d >> k;
   vector<Mint> a(d), c(d);
   for (int i = 0; i < d; i++) cin >> a[i];
-  for (int i = 0; i < d; i++) cin >> c[i];
+  for (int i = 0; i < d; i++) cin >> c[d - i - 1];
   cout << kitamasa(c, a, k) << '\n';
   return 0;
 }

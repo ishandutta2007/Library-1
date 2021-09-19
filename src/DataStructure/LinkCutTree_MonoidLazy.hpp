@@ -78,10 +78,10 @@ struct LinkCutTree_MonoidLazy {
     return r;
   }
   void propagate(Node *t, E v) {
-    t->laz = M::h(t->laz, v);
-    t->val = M::g(t->val, v);
-    t->dat = M::g(t->dat, v);
-    t->rdat = M::g(t->rdat, v);
+    t->laz = M::composition(t->laz, v);
+    t->val = M::mapping(t->val, v);
+    t->dat = M::mapping(t->dat, v);
+    t->rdat = M::mapping(t->rdat, v);
   }
   void toggle(Node *t) {
     std::swap(t->ch[0], t->ch[1]);
@@ -147,7 +147,7 @@ struct LinkCutTree_MonoidLazy {
     expose(&ns[b]);
     return ns[b].dat;
   }
-  void update(int a, int b, E v) {
+  void apply(int a, int b, E v) {
     evert(a);
     expose(&ns[b]);
     propagate(&ns[b], v);

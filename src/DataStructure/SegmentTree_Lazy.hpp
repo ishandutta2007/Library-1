@@ -20,12 +20,12 @@ struct SegmentTree_Lazy {
 
  private:
   inline T reflect(int k) {
-    return laz[k] == M::ei() ? dat[k] : M::g(dat[k], laz[k]);
+    return laz[k] == M::ei() ? dat[k] : M::mapping(dat[k], laz[k]);
   }
   inline void eval(int k) {
     if (laz[k] == M::ei()) return;
-    laz[(k << 1) | 0] = M::h(laz[(k << 1) | 0], laz[k]);
-    laz[(k << 1) | 1] = M::h(laz[(k << 1) | 1], laz[k]);
+    laz[(k << 1) | 0] = M::composition(laz[(k << 1) | 0], laz[k]);
+    laz[(k << 1) | 1] = M::composition(laz[(k << 1) | 1], laz[k]);
     dat[k] = reflect(k);
     laz[k] = M::ei();
   }
@@ -49,12 +49,12 @@ struct SegmentTree_Lazy {
     for (int i = n - 1; i >= 1; i--)
       dat[i] = M::op(dat[i << 1 | 0], dat[i << 1 | 1]);
   }
-  void update(int a, int b, E x) {
+  void apply(int a, int b, E x) {
     thrust(a += n);
     thrust(b += n - 1);
     for (int l = a, r = b + 1; l < r; l >>= 1, r >>= 1) {
-      if (l & 1) laz[l] = M::h(laz[l], x), l++;
-      if (r & 1) --r, laz[r] = M::h(laz[r], x);
+      if (l & 1) laz[l] = M::composition(laz[l], x), l++;
+      if (r & 1) --r, laz[r] = M::composition(laz[r], x);
     }
     recalc(a);
     recalc(b);

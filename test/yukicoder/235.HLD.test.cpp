@@ -16,13 +16,13 @@ struct Mono {
   using E = Mint;
   static T ti() { return T(0, 0); }
   static E ei() { return E(0); }
-  static T f(const T &vl, const T &vr) {
+  static T op(const T &vl, const T &vr) {
     return T(vl.val + vr.val, vl.coef + vr.coef);
   }
-  static T g(const T &val, const E &op) {
+  static T mapping(const T &val, const E &op) {
     return T(val.val + val.coef * op, val.coef);
   }
-  static E h(const E &opl, const E &opr) { return opl + opr; }
+  static E composition(const E &opl, const E &opr) { return opl + opr; }
 };
 
 signed main() {
@@ -43,7 +43,7 @@ signed main() {
   hld.build(0);
   SegmentTree_Lazy<Mono> seg(N);
   for (int i = 0; i < N; i++) seg.set_val(hld.in[i], {S[i], C[i]});
-  auto q = [&](int a, int b) { return seg.query(a, b); };
+  auto q = [&](int a, int b) { return seg.fold(a, b); };
   int Q;
   cin >> Q;
   while (Q--) {
@@ -51,12 +51,12 @@ signed main() {
     cin >> op >> X >> Y;
     X--, Y--;
     if (op) {
-      cout << hld.query_path(X, Y, q, Mono::f, Mono::ti()).val << endl;
+      cout << hld.fold_path(X, Y, q, Mono::op, Mono::ti()).val << endl;
     } else {
       Mint Z;
       cin >> Z;
-      auto upd = [&](int a, int b) { seg.update(a, b, Z); };
-      hld.update_path(X, Y, upd);
+      auto upd = [&](int a, int b) { seg.apply(a, b, Z); };
+      hld.apply_path(X, Y, upd);
     }
   }
   return 0;

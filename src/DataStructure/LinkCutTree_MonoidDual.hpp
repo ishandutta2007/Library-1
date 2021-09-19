@@ -64,8 +64,8 @@ struct LinkCutTree_MonoidDual {
     return r;
   }
   void propagate(Node *t, E v) {
-    t->laz = M::h(t->laz, v);
-    t->val = M::g(t->val, v);
+    t->laz = M::composition(t->laz, v);
+    t->val = M::mapping(t->val, v);
   }
   void toggle(Node *t) {
     std::swap(t->ch[0], t->ch[1]);
@@ -122,7 +122,7 @@ struct LinkCutTree_MonoidDual {
     expose(&ns[k]);
     return ns[k].val;
   }
-  void update(int a, int b, E v) {
+  void apply(int a, int b, E v) {
     evert(a);
     expose(&ns[b]);
     propagate(&ns[b], v);

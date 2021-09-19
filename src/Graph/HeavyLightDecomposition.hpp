@@ -34,7 +34,7 @@ struct HeavyLightDecomposition {
     }
   }
   template <typename T, typename Q, typename F>
-  T query_path(int u, int v, const Q &q, const F &f, const T ti,
+  T fold_path(int u, int v, const Q &q, const F &f, const T ti,
                bool edge = false) {
     T vl = ti, vr = ti;
     for (;; v = par[head[v]]) {
@@ -45,12 +45,12 @@ struct HeavyLightDecomposition {
     return f(f(q(in[u] + edge, in[v] + 1), vl), vr);
   }
   template <typename T, typename Q>
-  T query_subtree(int v, const Q &q, bool edge = false) {
+  T fold_subtree(int v, const Q &q, bool edge = false) {
     return q(in[v] + edge, out[v]);
   }
 
   template <typename Q>
-  void update_path(int u, int v, const Q &q, bool edge = false) {
+  void apply_path(int u, int v, const Q &q, bool edge = false) {
     for (;; v = par[head[v]]) {
       if (in[u] > in[v]) std::swap(u, v);
       if (head[u] == head[v]) break;
@@ -59,7 +59,7 @@ struct HeavyLightDecomposition {
     q(in[u] + edge, in[v] + 1);
   }
   template <typename Q>
-  void update_subtree(int v, const Q &q, bool edge = false) {
+  void apply_subtree(int v, const Q &q, bool edge = false) {
     q(in[v] + edge, out[v]);
   }
 

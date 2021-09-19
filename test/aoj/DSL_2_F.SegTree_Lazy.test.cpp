@@ -10,8 +10,8 @@ struct RupdQ_RminQ {
   static T ti() { return INT_MAX; }
   static E ei() { return INT_MAX; }
   static T op(const T& l, const T& r) { return min(l, r); }
-  static T g(const T& l, const E& r) { return r == ei() ? l : r; }
-  static E h(const E& l, const E& r) { return r == ei() ? l : r; }
+  static T mapping(const T& l, const E& r) { return r == ei() ? l : r; }
+  static E composition(const E& l, const E& r) { return r == ei() ? l : r; }
 };
 
 signed main() {
@@ -28,7 +28,7 @@ signed main() {
     } else {
       int x;
       cin >> x;
-      seg.update(s, t + 1, x);
+      seg.apply(s, t + 1, x);
     }
   }
   return 0;

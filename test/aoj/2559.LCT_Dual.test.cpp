@@ -9,8 +9,8 @@ struct RchminQ {
   using T = long long;
   using E = long long;
   static E ei() { return INT_MAX; }
-  static T g(const T &l, const E &r) { return min(l, r); }
-  static E h(const E &l, const E &r) { return min(l, r); }
+  static T mapping(const T &l, const E &r) { return min(l, r); }
+  static E composition(const E &l, const E &r) { return min(l, r); }
 };
 
 signed main() {
@@ -38,7 +38,7 @@ signed main() {
   }
   for (auto e : graph.edges) {
     if (id[e.id] != -1) continue;
-    lct.update(e.u, e.v, e.cost);
+    lct.apply(e.u, e.v, e.cost);
   }
   long long ans[m];
   for (auto e : graph.edges) {

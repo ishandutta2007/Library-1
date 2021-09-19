@@ -22,12 +22,12 @@ struct RupdQ_RmaxsumQ {
     ret.size = a.size + b.size;
     return ret;
   }
-  static T g(const T &l, const E &r) {
+  static T mapping(const T &l, const E &r) {
     if (r == ei()) return l;
     return {r * l.size, max(r * l.size, r), max(r * l.size, r),
             max(r * l.size, r), l.size};
   }
-  static E h(const E &l, const E &r) { return r == ei() ? l : r; }
+  static E composition(const E &l, const E &r) { return r == ei() ? l : r; }
 };
 
 signed main() {
@@ -52,7 +52,7 @@ signed main() {
     cin >> t >> a >> b >> c;
     a--, b--;
     if (t == 1) {
-      lct.update(a, b, c);
+      lct.apply(a, b, c);
     } else {
       cout << lct.fold(a, b).max << endl;
     }

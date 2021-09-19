@@ -25,9 +25,9 @@ signed main() {
     cin >> op >> x >> y;
     if (op) {
       auto upd = [&](int l, int r) { bit.add_range(l, r, y); };
-      hld.update_subtree(x, upd, true);
+      hld.apply_subtree(x, upd, true);
     } else {
-      cout << hld.query_path(x, y, q, f, 0ll, true) << "\n";
+      cout << hld.fold_path(x, y, q, f, 0ll, true) << "\n";
     }
   }
   return 0;

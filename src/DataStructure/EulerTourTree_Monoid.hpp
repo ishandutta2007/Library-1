@@ -104,6 +104,7 @@ class EulerTourTree_Monoid {
     for (int i = 0; i < N; i++) n[i + n_st].s = n[i + n_st].d = i;
   }
 
+  T operator[](vertex_id x) const { return n[x + n_st].val; }
   bool edge_exist(vertex_id x, vertex_id y) {
     if (x > y) std::swap(x, y);
     return emp.count(((long long)x << 32) | (long long)y);
@@ -149,11 +150,18 @@ class EulerTourTree_Monoid {
   }
 
   void set_val(vertex_id x, T val) {
-    splay(x += n_st), n[x].val = M::op(n[x].val, val), pushup(x);
+    splay(x += n_st), n[x].val = val, pushup(x);
   }
 
   int tree_size(vertex_id x) { return splay(x += n_st), n[x].sz; }
   T tree_fold(vertex_id x) { return splay(x += n_st), n[x].sum; }
+  T subtree_fold(vertex_id x, vertex_id par = -1) {
+    if (par == -1) return tree_fold(x);
+    cut(x, par);
+    T ret = tree_fold(x);
+    link(x, par);
+    return ret;
+  }
 
   template <class Func>
   void hilevel_edges(vertex_id v, Func f) {

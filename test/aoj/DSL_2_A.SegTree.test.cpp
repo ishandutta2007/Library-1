@@ -7,7 +7,7 @@ using namespace std;
 struct RminQ {
   using T = int;
   static T ti() { return INT_MAX; }
-  static T f(const T &l, const T &r) { return min(l, r); }
+  static T op(const T &l, const T &r) { return min(l, r); }
 };
 
 signed main() {
@@ -20,7 +20,7 @@ signed main() {
     int com, x, y;
     cin >> com >> x >> y;
     if (com) {
-      cout << seg.query(x, y + 1) << endl;
+      cout << seg.fold(x, y + 1) << endl;
     } else {
       seg.set_val(x, y);
     }

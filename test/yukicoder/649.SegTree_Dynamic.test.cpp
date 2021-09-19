@@ -6,7 +6,7 @@ using namespace std;
 struct RsumQ {
   using T = int;
   static T ti() { return 0; }
-  static T f(const T &l, const T &r) { return l + r; }
+  static T op(const T &l, const T &r) { return l + r; }
 };
 signed main() {
   cin.tie(0);

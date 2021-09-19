@@ -7,7 +7,7 @@ using namespace std;
 struct Monoid {
   using T = long long;
   static inline T ti() { return 0; }
-  static inline T f(const T& lval, const T& rval) { return lval + rval; }
+  static inline T op(const T& lval, const T& rval) { return lval + rval; }
 };
 
 int main() {

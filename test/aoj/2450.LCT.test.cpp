@@ -13,7 +13,7 @@ struct RupdQ_RmaxsumQ {
   using E = long long;
   static T ti() { return {0ll, -INF, -INF, -INF, 0}; }
   static E ei() { return INF; }
-  static T f(const T &a, const T &b) {
+  static T op(const T &a, const T &b) {
     T ret;
     ret.sum = a.sum + b.sum;
     ret.max = max({a.max, b.max, a.rmax + b.lmax});
@@ -54,7 +54,7 @@ signed main() {
     if (t == 1) {
       lct.update(a, b, c);
     } else {
-      cout << lct.query(a, b).max << endl;
+      cout << lct.fold(a, b).max << endl;
     }
   }
   return 0;

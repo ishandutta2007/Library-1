@@ -9,7 +9,7 @@ struct RupdQ_RminQ {
   using E = int;
   static T ti() { return INT_MAX; }
   static E ei() { return INT_MAX; }
-  static T f(const T& l, const T& r) { return min(l, r); }
+  static T op(const T& l, const T& r) { return min(l, r); }
   static T g(const T& l, const E& r) { return r == ei() ? l : r; }
   static E h(const E& l, const E& r) { return r == ei() ? l : r; }
 };
@@ -24,7 +24,7 @@ signed main() {
     int com, s, t;
     cin >> com >> s >> t;
     if (com) {
-      cout << seg.query(s, t + 1) << endl;
+      cout << seg.fold(s, t + 1) << endl;
     } else {
       int x;
       cin >> x;

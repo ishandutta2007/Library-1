@@ -38,10 +38,10 @@ class EulerTourTree_Monoid {
     n[i].flag |= n[i].flag << 1, n[i].sum = n[i].val;
     if (n[i].ch[0])
       n[i].sz += n[n[i].ch[0]].sz, n[i].flag |= n[n[i].ch[0]].flag & 0b1010,
-          n[i].sum = M::f(n[n[i].ch[0]].sum, n[i].sum);
+          n[i].sum = M::op(n[n[i].ch[0]].sum, n[i].sum);
     if (n[i].ch[1])
       n[i].sz += n[n[i].ch[1]].sz, n[i].flag |= n[n[i].ch[1]].flag & 0b1010,
-          n[i].sum = M::f(n[i].sum, n[n[i].ch[1]].sum);
+          n[i].sum = M::op(n[i].sum, n[n[i].ch[1]].sum);
   }
 
   static int dir(node_id i) {
@@ -149,7 +149,7 @@ class EulerTourTree_Monoid {
   }
 
   void set_val(vertex_id x, T val) {
-    splay(x += n_st), n[x].val = M::f(n[x].val, val), pushup(x);
+    splay(x += n_st), n[x].val = M::op(n[x].val, val), pushup(x);
   }
 
   int tree_size(vertex_id x) { return splay(x += n_st), n[x].sz; }

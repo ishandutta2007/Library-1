@@ -47,18 +47,18 @@ struct SegmentTree_Dynamic {
     push(t, b);
     bool f = (pos >> (U)b) & (U)1;
     t->ch[f] = set_Node(t->ch[f], pos, val, b - 1);
-    t->dat = M::f(value(t->ch[0]), value(t->ch[1]));
+    t->dat = M::op(value(t->ch[0]), value(t->ch[1]));
     return t;
   }
-  T query_Node(const ll &l, const ll &r, Node *t, const ll &lb, const ll &ub,
+  T fold_Node(const ll &l, const ll &r, Node *t, const ll &lb, const ll &ub,
                ll b) {
     if (t == nullptr || ub <= l || r <= lb) return M::ti();
     push(t, b);
     if (l <= lb && ub <= r) return t->dat;
     ll c = (lb + ub) / 2;
-    T vl = query_Node(l, r, t->ch[0], lb, c, b - 1);
-    T vr = query_Node(l, r, t->ch[1], c, ub, b - 1);
-    return M::f(vl, vr);
+    T vl = fold_Node(l, r, t->ch[0], lb, c, b - 1);
+    T vr = fold_Node(l, r, t->ch[1], c, ub, b - 1);
+    return M::op(vl, vr);
   }
   template <typename C>
   ll find(Node *t, C &check, U bias) {
@@ -68,8 +68,8 @@ struct SegmentTree_Dynamic {
     for (ll b = height - 1; b >= 0; b--) {
       push(t, b);
       bool f = (bias >> (U)b) & (U)1;
-      if (!check(M::f(acc, value(t->ch[f]))))
-        acc = M::f(acc, value(t->ch[f])), f = !f;
+      if (!check(M::op(acc, value(t->ch[f]))))
+        acc = M::op(acc, value(t->ch[f])), f = !f;
       t = t->ch[f];
       if (!t) return -1;
       ret |= (U)f << (U)b;
@@ -90,9 +90,9 @@ struct SegmentTree_Dynamic {
   }
   void set_val(ll k, T x) { root = set_Node(root, k, x, height - 1); }
   //[l,r)
-  T query(ll l, ll r) { return query_Node(l, r, root, 0, n, height - 1); }
-  T operator[](ll k) { return query(k, k + 1); }
-  // min { i : check(query(0,i+1)) = true }
+  T fold(ll l, ll r) { return fold_Node(l, r, root, 0, n, height - 1); }
+  T operator[](ll k) { return fold(k, k + 1); }
+  // min { i : check(fold(0,i+1)) = true }
   template <typename C>
   ll find_first(C &check, U bias = 0) {
     return find(root, check, bias);

@@ -57,11 +57,11 @@ struct LinkCutTree_Monoid {
   void pushup(Node *t) {
     t->rdat = t->dat = t->val;
     if (t->ch[0])
-      t->dat = M::f(t->ch[0]->dat, t->dat),
-      t->rdat = M::f(t->rdat, t->ch[0]->rdat);
+      t->dat = M::op(t->ch[0]->dat, t->dat),
+      t->rdat = M::op(t->rdat, t->ch[0]->rdat);
     if (t->ch[1])
-      t->dat = M::f(t->dat, t->ch[1]->dat),
-      t->rdat = M::f(t->ch[1]->rdat, t->rdat);
+      t->dat = M::op(t->dat, t->ch[1]->dat),
+      t->rdat = M::op(t->ch[1]->rdat, t->rdat);
   }
   Node *expose(Node *x) {
     Node *r = nullptr;
@@ -125,7 +125,7 @@ struct LinkCutTree_Monoid {
   }
   T operator[](int k) { return ns[k].val; }
   // [a,b] closed section
-  T query(int a, int b) {
+  T fold(int a, int b) {
     evert(a);
     expose(&ns[b]);
     return ns[b].dat;

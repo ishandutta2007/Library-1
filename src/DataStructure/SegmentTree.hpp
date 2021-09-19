@@ -33,26 +33,26 @@ struct SegmentTree {
   }
   void set_val(int k, T x) {
     for (dat[k += n] = x; k >>= 1;)
-      dat[k] = M::f(dat[(k << 1) | 0], dat[(k << 1) | 1]);
+      dat[k] = M::op(dat[(k << 1) | 0], dat[(k << 1) | 1]);
   }
   void unsafe_set(int k, T x) { dat[k + n] = x; }
   void rebuild() {
     for (int i = n - 1; i >= 1; i--)
-      dat[i] = M::f(dat[i << 1 | 0], dat[i << 1 | 1]);
+      dat[i] = M::op(dat[i << 1 | 0], dat[i << 1 | 1]);
   }
   void clear() { fill(dat.begin(), dat.end(), M::ti()); }
   //[l,r)
-  inline T query(int l, int r) {
+  inline T fold(int l, int r) {
     T vl = M::ti(), vr = M::ti();
     for (int a = l + n, b = r + n; a < b; a >>= 1, b >>= 1) {
-      if (a & 1) vl = M::f(vl, dat[a++]);
-      if (b & 1) vr = M::f(dat[--b], vr);
+      if (a & 1) vl = M::op(vl, dat[a++]);
+      if (b & 1) vr = M::op(dat[--b], vr);
     }
-    return M::f(vl, vr);
+    return M::op(vl, vr);
   }
   T operator[](const int &k) const { return dat[k + n]; }
 
-  // max{ i : check(query(l,i+1)) = true}
+  // max{ i : check(fold(l,i+1)) = true}
   template <class C>
   int find_right(const C &check, int l = 0) {
     assert(check(M::ti()));
@@ -65,18 +65,18 @@ struct SegmentTree {
     for (auto itr = idr.rbegin(); itr != idr.rend(); itr++) idl.push_back(*itr);
     T val = M::ti();
     for (int i : idl) {
-      if (!check(M::f(val, dat[i]))) {
+      if (!check(M::op(val, dat[i]))) {
         while (i < n) {
           i = i << 1 | 0;
-          if (check(M::f(val, dat[i]))) val = M::f(val, dat[i++]);
+          if (check(M::op(val, dat[i]))) val = M::op(val, dat[i++]);
         }
         return i - n;
       }
-      val = M::f(val, dat[i]);
+      val = M::op(val, dat[i]);
     }
     return n;
   }
-  //   min { i : check(query(i,r)) = true }
+  //   min { i : check(fold(i,r)) = true }
   template <class C>
   int find_left(const C &check, int r = -1) {
     if (r < 0) r = n;
@@ -90,14 +90,14 @@ struct SegmentTree {
     for (auto itr = idl.rbegin(); itr != idl.rend(); itr++) idr.push_back(*itr);
     T val = M::ti();
     for (int i : idr) {
-      if (!check(M::f(dat[i], val))) {
+      if (!check(M::op(dat[i], val))) {
         while (i < n) {
           i = i << 1 | 1;
-          if (check(M::f(dat[i], val))) val = M::f(dat[i--], val);
+          if (check(M::op(dat[i], val))) val = M::op(dat[i--], val);
         }
         return i + 1 - n;
       }
-      val = M::f(dat[i], val);
+      val = M::op(dat[i], val);
     }
     return 0;
   }

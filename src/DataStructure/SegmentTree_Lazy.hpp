@@ -33,7 +33,7 @@ struct SegmentTree_Lazy {
     for (int i = height; i; i--) eval(k >> i);
   }
   inline void recalc(int k) {
-    while (k >>= 1) dat[k] = M::f(reflect((k << 1) | 0), reflect((k << 1) | 1));
+    while (k >>= 1) dat[k] = M::op(reflect((k << 1) | 0), reflect((k << 1) | 1));
   }
 
  public:
@@ -47,7 +47,7 @@ struct SegmentTree_Lazy {
         laz(n * 2, M::ei()) {
     for (int i = 0; i < (int)v.size(); i++) dat[i + n] = v[i];
     for (int i = n - 1; i >= 1; i--)
-      dat[i] = M::f(dat[i << 1 | 0], dat[i << 1 | 1]);
+      dat[i] = M::op(dat[i << 1 | 0], dat[i << 1 | 1]);
   }
   void update(int a, int b, E x) {
     thrust(a += n);
@@ -66,15 +66,15 @@ struct SegmentTree_Lazy {
     recalc(a);
   }
   //[a,b)
-  T query(int a, int b) {
+  T fold(int a, int b) {
     thrust(a += n);
     thrust(b += n - 1);
     T vl = M::ti(), vr = M::ti();
     for (int l = a, r = b + 1; l < r; l >>= 1, r >>= 1) {
-      if (l & 1) vl = M::f(vl, reflect(l++));
-      if (r & 1) vr = M::f(reflect(--r), vr);
+      if (l & 1) vl = M::op(vl, reflect(l++));
+      if (r & 1) vr = M::op(reflect(--r), vr);
     }
-    return M::f(vl, vr);
+    return M::op(vl, vr);
   }
-  T operator[](const int k) { return query(k, k + 1); }
+  T operator[](const int k) { return fold(k, k + 1); }
 };

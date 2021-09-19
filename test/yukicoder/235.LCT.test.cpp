@@ -15,7 +15,7 @@ struct Mono {
   using E = Mint;
   static T ti() { return T(0, 0); }
   static E ei() { return E(0); }
-  static T f(const T &vl, const T &vr) {
+  static T op(const T &vl, const T &vr) {
     return T(vl.val + vr.val, vl.coef + vr.coef);
   }
   static T g(const T &val, const E &op) {
@@ -48,7 +48,7 @@ signed main() {
     cin >> op >> X >> Y;
     X--, Y--;
     if (op) {
-      cout << lct.query(X, Y).val << endl;
+      cout << lct.fold(X, Y).val << endl;
     } else {
       Mint Z;
       cin >> Z;

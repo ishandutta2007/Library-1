@@ -8,7 +8,7 @@ using Mint = ModInt<998244353>;
 struct RcompositeQ {
   using T = pair<Mint, Mint>;
   static T ti() { return make_pair(Mint(1), Mint(0)); }
-  static T f(const T &l, const T &r) {
+  static T op(const T &l, const T &r) {
     return make_pair(r.first * l.first, r.first * l.second + r.second);
   }
 };
@@ -32,7 +32,7 @@ signed main() {
       int l, r;
       Mint x;
       cin >> l >> r >> x;
-      auto ans = seg.query(l, r);
+      auto ans = seg.fold(l, r);
       cout << ans.first * x + ans.second << endl;
     } else {
       int p;

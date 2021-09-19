@@ -7,7 +7,7 @@ using namespace std;
 struct RmaxQ {
   using T = pair<long long, int>;
   static T ti() { return T(-1, -1); }
-  static T f(const T &vl, const T &vr) { return vl.first > vr.first ? vl : vr; }
+  static T op(const T &vl, const T &vr) { return vl.first > vr.first ? vl : vr; }
 };
 signed main() {
   cin.tie(0);
@@ -49,7 +49,7 @@ signed main() {
       int u = index[--x], v = index[--y];
       long long ans;
       int i;
-      tie(ans, i) = lct.query(u, v);
+      tie(ans, i) = lct.fold(u, v);
       cout << ans << endl;
       if (ans != -1) {
         pq[i].pop();

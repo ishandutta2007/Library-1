@@ -7,7 +7,7 @@ using namespace std;
 struct RsumQ {
   using T = long long;
   static T ti() { return 0; }
-  static T f(const T &l, const T &r) { return l + r; }
+  static T op(const T &l, const T &r) { return l + r; }
 };
 
 signed main() {
@@ -42,7 +42,7 @@ signed main() {
     } else {
       int u, v;
       cin >> u >> v;
-      cout << lct.query(u, v) << endl;
+      cout << lct.fold(u, v) << endl;
     }
   }
   return 0;

@@ -18,10 +18,10 @@ struct Mono {
   static T op(const T &vl, const T &vr) {
     return T(vl.val + vr.val, vl.coef + vr.coef);
   }
-  static T g(const T &val, const E &op) {
+  static T mapping(const T &val, const E &op) {
     return T(val.val + val.coef * op, val.coef);
   }
-  static E h(const E &opl, const E &opr) { return opl + opr; }
+  static E composition(const E &opl, const E &opr) { return opl + opr; }
 };
 
 signed main() {
@@ -52,7 +52,7 @@ signed main() {
     } else {
       Mint Z;
       cin >> Z;
-      lct.update(X, Y, Z);
+      lct.apply(X, Y, Z);
     }
   }
   return 0;

@@ -8,8 +8,8 @@ struct RupdQ {
   using T = int;
   using E = int;
   static E ei() { return INT_MAX; }
-  static T g(const T& l, const E& r) { return r == ei() ? l : r; }
-  static E h(const E& l, const E& r) { return r == ei() ? l : r; }
+  static T mapping(const T& l, const E& r) { return r == ei() ? l : r; }
+  static E composition(const E& l, const E& r) { return r == ei() ? l : r; }
 };
 
 signed main() {
@@ -28,7 +28,7 @@ signed main() {
     } else {
       int s, t, x;
       cin >> s >> t >> x;
-      seg.update(s, t + 1, x);
+      seg.apply(s, t + 1, x);
     }
   }
   return 0;

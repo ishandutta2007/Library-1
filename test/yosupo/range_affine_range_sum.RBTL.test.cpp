@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
 //遅延伝搬のverify
 #include <bits/stdc++.h>
+
 #include "src/DataStructure/RedBlackTree_Lazy.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

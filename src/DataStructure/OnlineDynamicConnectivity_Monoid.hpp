@@ -1,5 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
+
 #include "src/DataStructure/EulerTourTree_Monoid.hpp"
 /**
  * @title Euler-Tour-Tree(モノイド)
@@ -69,6 +70,7 @@ struct OnlineDynamicConnectivity_Monoid {
         replace(x, y, k + 1);
       }
   }
+  T operator[](int x) const { return ett[0][x]; }
   void set_val(int x, T val) { ett[0].set_val(x, val); }
   int size(int x) { return ett[0].tree_size(x); }
   long long fold(int x) { return ett[0].tree_fold(x); }

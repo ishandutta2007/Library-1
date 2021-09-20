@@ -35,7 +35,7 @@ int main() {
       dicon.cut(u, v);
     } else if (t == 2) {
       cin >> u >> v;
-      dicon.set_val(u, v);
+      dicon.set_val(u, dicon[u] + v);
     } else {
       cin >> v;
       cout << dicon.fold(v) << '\n';

@@ -1,5 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
+
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
 /**
  * @title 二分Trie
@@ -16,7 +17,7 @@
 struct RsumQ {
   using T = int;
   static T ti() { return 0; }
-  static T f(const T &vl, const T &vr) { return vl + vr; }
+  static T op(const T &vl, const T &vr) { return vl + vr; }
 };
 struct BinaryTrie : public SegmentTree_Dynamic<RsumQ> {
   using ll = long long;
@@ -30,8 +31,8 @@ struct BinaryTrie : public SegmentTree_Dynamic<RsumQ> {
   }
   ll min_element(U bias = 0) { return kth_element(0, bias); }
   ll max_element(U bias = 0) { return kth_element(0, ~bias); }
-  int lower_bound(U val) { return query(0, val); }
-  int upper_bound(U val) { return query(0, val + 1); }
-  int count(U val) { return query(val, val + 1); }
+  int lower_bound(U val) { return fold(0, val); }
+  int upper_bound(U val) { return fold(0, val + 1); }
+  int count(U val) { return fold(val, val + 1); }
   int size() { return root ? root->dat : 0; }
 };

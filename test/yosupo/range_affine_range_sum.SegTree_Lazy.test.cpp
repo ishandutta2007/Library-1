@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
 #include <bits/stdc++.h>
+
 #include "src/DataStructure/SegmentTree_Lazy.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
@@ -15,13 +16,13 @@ struct RaffineQ_RsumQ {
   using E = pair<Mint, Mint>;
   static T ti() { return T(0, 0); }
   static E ei() { return make_pair(Mint(1), Mint(0)); }
-  static T f(const T &l, const T &r) {
+  static T op(const T &l, const T &r) {
     return T(l.val + r.val, l.size + r.size);
   }
-  static T g(const T &l, const E &r) {
+  static T mapping(const T &l, const E &r) {
     return T(r.first * l.val + r.second * l.size, l.size);
   }
-  static E h(const E &l, const E &r) {
+  static E composition(const E &l, const E &r) {
     return make_pair(r.first * l.first, r.first * l.second + r.second);
   }
 };
@@ -43,11 +44,11 @@ signed main() {
     int l, r;
     cin >> op >> l >> r;
     if (op) {
-      cout << seg.query(l, r).val << endl;
+      cout << seg.fold(l, r).val << endl;
     } else {
       Mint b, c;
       cin >> b >> c;
-      seg.update(l, r, {Mint(b), Mint(c)});
+      seg.apply(l, r, {Mint(b), Mint(c)});
     }
   }
   return 0;

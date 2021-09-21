@@ -1,14 +1,20 @@
 #define PROBLEM \
-  "https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_subtree_sum"
+  "https://judge.yosupo.jp/problem/dynamic_tree_subtree_add_subtree_sum"
 #include <bits/stdc++.h>
 
-#include "src/DataStructure/EulerTourTree_Monoid.hpp"
+#include "src/DataStructure/EulerTourTree_MonoidLazy.hpp"
 using namespace std;
 
-struct RsumQ {
+struct RsumQRaddQ {
   using T = long long;
+  using E = long long;
   static T ti() { return 0; }
+  static E ei() { return 0; }
   static T op(const T &l, const T &r) { return l + r; }
+  static T mapping(const T &t, const E &e, const std::size_t &sz) {
+    return t + e * sz;
+  }
+  static E composition(const E &l, const E &r) { return l + r; }
 };
 
 signed main() {
@@ -16,7 +22,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, Q;
   cin >> N >> Q;
-  EulerTourTree_Monoid<RsumQ> ett(N);
+  EulerTourTree_MonoidLazy<RsumQRaddQ> ett(N);
   for (int i = 0; i < N; i++) {
     long long a;
     cin >> a;
@@ -36,10 +42,10 @@ signed main() {
       ett.cut(u, v);
       ett.link(w, x);
     } else if (op == 1) {
-      int p;
+      int v, p;
       long long x;
-      cin >> p >> x;
-      ett.set_val(p, ett[p] + x);
+      cin >> v >> p >> x;
+      ett.apply_subtree(v, p, x);
     } else {
       int v, p;
       cin >> v >> p;

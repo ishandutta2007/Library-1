@@ -3,7 +3,7 @@
 
 #include "src/DataStructure/EulerTourTree_Monoid.hpp"
 /**
- * @title Euler-Tour-Tree(モノイド)
+ * @title Online-Dynamic-Connectivity(モノイド)
  * @category データ構造
  * @brief O(logN)
  */
@@ -73,6 +73,6 @@ struct OnlineDynamicConnectivity_Monoid {
   T operator[](int x) const { return ett[0][x]; }
   void set_val(int x, T val) { ett[0].set_val(x, val); }
   int size(int x) { return ett[0].tree_size(x); }
-  long long fold(int x) { return ett[0].tree_fold(x); }
+  T fold(int x) { return ett[0].fold_tree(x); }
   bool connected(int x, int y) { return ett[0].connected(x, y); }
 };

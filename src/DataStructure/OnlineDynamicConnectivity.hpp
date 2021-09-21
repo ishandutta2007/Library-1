@@ -1,9 +1,9 @@
 #pragma once
 #include <bits/stdc++.h>
 
-#include "src/DataStructure/EulerTourTree_Monoid.hpp"
+#include "src/DataStructure/EulerTourTree.hpp"
 /**
- * @title Online-Dynamic-Connectivity(モノイド)
+ * @title Online-Dynamic-Connectivity(シンプル)
  * @category データ構造
  * @brief link,cut: O(log^2 N)
  * @brief connected: O(log N)
@@ -11,14 +11,12 @@
 
 // BEGIN CUT HERE
 
-template <typename M>
-struct OnlineDynamicConnectivity_Monoid {
-  using T = typename M::T;
+struct OnlineDynamicConnectivity {
   int N;
-  std::vector<EulerTourTree_Monoid<M>> ett;
+  std::vector<EulerTourTree> ett;
   std::vector<std::vector<std::unordered_set<int>>> E;
 
-  OnlineDynamicConnectivity_Monoid(int N) : N(N) {
+  OnlineDynamicConnectivity(int N) : N(N) {
     ett.emplace_back(N), E.emplace_back(N);
   }
 
@@ -71,9 +69,6 @@ struct OnlineDynamicConnectivity_Monoid {
         replace(x, y, k + 1);
       }
   }
-  T operator[](int x) const { return ett[0][x]; }
-  void set_val(int x, T val) { ett[0].set_val(x, val); }
   int size(int x) { return ett[0].tree_size(x); }
-  T fold(int x) { return ett[0].fold_tree(x); }
   bool connected(int x, int y) { return ett[0].connected(x, y); }
 };

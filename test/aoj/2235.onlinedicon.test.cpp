@@ -1,4 +1,5 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/search/titles/2235"
+#define PROBLEM \
+  "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Summer/2235"
 #include <bits/stdc++.h>
 
 #include "src/DataStructure/EulerTourTree.hpp"

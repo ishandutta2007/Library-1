@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title Euler-Tour-Tree(モノイド)
+ * @title Euler-Tour-Tree(モノイド遅延伝搬)
  * @category データ構造
  * @brief O(logN)
  */
@@ -9,8 +9,9 @@
 // BEGIN CUT HERE
 
 template <typename M>
-class EulerTourTree_Monoid {
+class EulerTourTree_MonoidLazy {
   using T = typename M::T;
+  using E = typename M::E;
   using node_id = std::int_least32_t;
   using vertex_id = std::int_least32_t;
   struct Node {
@@ -19,7 +20,8 @@ class EulerTourTree_Monoid {
     std::size_t sz;
     std::int_least8_t flag;
     T val, sum;
-    Node(T init = M::ti()) : sz(1), val(init), sum(init) {}
+    E laz;
+    Node(T init = M::ti()) : sz(1), val(init), sum(init), laz(M::ei()) {}
   };
   static constexpr int NODE_SIZE = 303030 * 4;
   static struct Node n[NODE_SIZE];
@@ -39,6 +41,18 @@ class EulerTourTree_Monoid {
       n[i].sz += n[n[i].ch[1]].sz, n[i].flag |= n[n[i].ch[1]].flag & 0b1010,
           n[i].sum = M::op(n[i].sum, n[n[i].ch[1]].sum);
   }
+  static void propagate(node_id i, E v) {
+    n[i].laz = M::composition(n[i].laz, v);
+    n[i].val = M::mapping(n[i].val, v, n[i].s == n[i].d);
+    n[i].sum = M::mapping(n[i].sum, v, n[i].sz);
+  }
+  static void eval(node_id i) {
+    if (n[i].laz != M::ei()) {
+      if (n[i].ch[0]) propagate(n[i].ch[0], n[i].laz);
+      if (n[i].ch[1]) propagate(n[i].ch[1], n[i].laz);
+      n[i].laz = M::ei();
+    }
+  }
   static int dir(node_id i) {
     if (n[i].par) {
       if (n[n[i].par].ch[0] == i)
@@ -57,8 +71,12 @@ class EulerTourTree_Monoid {
     n[p].par = x;
   }
   static void splay(node_id i) {
-    for (int i_dir = dir(i), p_dir; i_dir < 2; rot(i), i_dir = dir(i))
-      if ((p_dir = dir(n[i].par)) < 2) rot(i_dir == p_dir ? n[i].par : i);
+    eval(i);
+    for (int i_dir = dir(i), p_dir; i_dir < 2; rot(i), i_dir = dir(i)) {
+      if ((p_dir = dir(n[i].par)) < 2) eval(n[n[i].par].par);
+      eval(n[i].par), eval(i);
+      if (p_dir < 2) rot(i_dir == p_dir ? n[i].par : i);
+    }
   }
   static node_id merge_back(node_id l, node_id r) {
     if (!l) return r;
@@ -71,10 +89,14 @@ class EulerTourTree_Monoid {
     node_id l = n[i].ch[0];
     return n[i].ch[0] = n[l].par = 0, pushup(i), std::make_pair(l, i);
   }
+
+ public:
   static void reroot(node_id v) {
     auto p = split(v);
     merge_back(p.second, p.first), splay(v);
   }
+
+ private:
   static bool same_root(node_id i, node_id j) {
     if (i) splay(i);
     if (j) splay(j);
@@ -82,12 +104,14 @@ class EulerTourTree_Monoid {
     while (n[j].par) j = n[j].par;
     return i == j;
   }
+
+ public:
   node_id n_st;
   std::unordered_map<std::uint64_t, node_id> emp;
 
  public:
-  EulerTourTree_Monoid() {}
-  EulerTourTree_Monoid(int N) : n_st(ni) {
+  EulerTourTree_MonoidLazy() {}
+  EulerTourTree_MonoidLazy(int N) : n_st(ni) {
     ni += N;
     for (int i = 0; i < N; i++) n[i + n_st].s = n[i + n_st].d = i;
   }
@@ -132,12 +156,17 @@ class EulerTourTree_Monoid {
     pushup(x);
   }
   void set_val(vertex_id x, T val) {
-    splay(x += n_st), n[x].val = val, pushup(x);
+    splay(x += n_st), n[x].val = val, eval(x);
+  }
+  void apply_tree(vertex_id x, E v) {
+    splay(x += n_st), propagate(x, v), eval(x);
+  }
+  void apply_subtree(vertex_id x, vertex_id par, E v) {
+    cut(x, par), apply_tree(x, v), link(x, par);
   }
   std::size_t tree_size(vertex_id x) { return splay(x += n_st), n[x].sz; }
   T fold_tree(vertex_id x) { return splay(x += n_st), n[x].sum; }
-  T fold_subtree(vertex_id x, vertex_id par = -1) {
-    if (par == -1) return fold_tree(x);
+  T fold_subtree(vertex_id x, vertex_id par) {
     cut(x, par);
     T ret = fold_tree(x);
     link(x, par);
@@ -172,4 +201,5 @@ class EulerTourTree_Monoid {
   }
 };
 template <typename M>
-typename EulerTourTree_Monoid<M>::Node EulerTourTree_Monoid<M>::n[NODE_SIZE];
+typename EulerTourTree_MonoidLazy<M>::Node
+    EulerTourTree_MonoidLazy<M>::n[NODE_SIZE];

@@ -1,7 +1,8 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1328"
+#define PROBLEM \
+  "https://onlinejudge.u-aizu.ac.jp/challenges/sources/ICPC/Regional/1328"
 // double型の行列の連立一次方程式のverify
-#include <bits/stdc++.h>
 
+#include <bits/stdc++.h>
 #include "src/Math/LUDecomposition.hpp"
 using namespace std;
 

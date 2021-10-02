@@ -44,7 +44,7 @@ class LUDecomposition {
         sgn = !sgn, std::swap(perm[pos], perm[piv.size()]),
         std::swap(dat[pos], dat[piv.size()]);
       for (std::size_t r = piv.size() + 1; r != rows; r++) {
-        auto m = dat[r][c] / dat[pos][c];
+        auto m = dat[r][c] / dat[piv.size()][c];
         dat[r][c] = 0, dat[r][piv.size()] = m;
         for (std::size_t i = c + 1; i != cols; i++)
           dat[r][i] -= dat[piv.size()][i] * m;

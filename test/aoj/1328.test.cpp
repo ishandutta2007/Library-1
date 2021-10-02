@@ -1,13 +1,13 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1328"
 // double型の行列の連立一次方程式のverify
 #include <bits/stdc++.h>
-#include "src/Math/GaussianElimination.hpp"
+
+#include "src/Math/LUDecompostion.hpp"
 using namespace std;
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  using GE = GaussianElimination;
   int d;
   while (cin >> d && d) {
     vector<vector<double>> m(d + 3, vector<double>(d + 1));
@@ -27,7 +27,7 @@ signed main() {
             A[ii] = m[i];
             ii++;
           }
-        vector<double> c = GE::linear_equations(A, b).first;
+        auto c = LUDecompostion(A).linear_equations(b);
         double u1 = 0, u2 = 0;
         for (int i = d; i >= 0; i--) {
           u1 += c[i] * m[k][i];

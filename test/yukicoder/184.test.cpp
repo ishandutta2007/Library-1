@@ -2,7 +2,7 @@
 //行列(F_2)のrankのverify
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecompostion.hpp"
+#include "src/Math/LUDecomposition.hpp"
 using namespace std;
 
 signed main() {
@@ -16,6 +16,6 @@ signed main() {
     cin >> a;
     for (int j = 0; j <= 60; j++) A[i][j] = (a >> j) & 1;
   }
-  cout << (1ll << LUDecompostion(A).rank()) << endl;
+  cout << (1ll << LUDecomposition(A).rank()) << endl;
   return 0;
 }

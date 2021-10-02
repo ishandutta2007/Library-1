@@ -2,7 +2,7 @@
 // ライツアウト
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecompostion.hpp"
+#include "src/Math/LUDecomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
@@ -23,7 +23,7 @@ signed main() {
             for (int ni = i, nj = j; 0 <= ni && ni < R && 0 <= nj && nj < C;
                  ni += di, nj += dj)
               A[i * C + j][ni * C + nj] = 1;
-  LUDecompostion lu(A);
+  LUDecomposition lu(A);
   if (!lu.linear_equations(b).empty())
     cout << ModInt<int(1e9 + 9)>(2).pow(lu.kernel().size()) << endl;
   else

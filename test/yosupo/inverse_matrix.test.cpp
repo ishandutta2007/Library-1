@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/inverse_matrix"
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecompostion.hpp"
+#include "src/Math/LUDecomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
@@ -14,7 +14,7 @@ signed main() {
   vector<vector<Mint>> A(N, vector<Mint>(N));
   for (int i = 0; i < N; i++)
     for (int j = 0; j < N; j++) cin >> A[i][j];
-  LUDecompostion lu(A);
+  LUDecomposition lu(A);
   auto ans = lu.inverse_matrix();
   if (ans.empty()) {
     cout << "-1" << '\n';

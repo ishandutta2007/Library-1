@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/system_of_linear_equations"
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecompostion.hpp"
+#include "src/Math/LUDecomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
@@ -16,7 +16,7 @@ signed main() {
   for (int i = 0; i < N; i++)
     for (int j = 0; j < M; j++) cin >> A[i][j];
   for (int i = 0; i < N; i++) cin >> b[i];
-  LUDecompostion lu(A);
+  LUDecomposition lu(A);
   auto res = lu.linear_equations(b);
   if (res.empty()) {
     cout << "-1" << '\n';

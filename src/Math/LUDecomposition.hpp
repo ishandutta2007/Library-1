@@ -10,7 +10,7 @@
 
 template <class K, std::size_t MAX_ROWS = (1 << 12),
           std::size_t MAX_COLS = MAX_ROWS>
-class LUDecompostion {
+class LUDecomposition {
   using Mat = std::vector<std::vector<K>>;
   Mat dat;
   std::vector<std::size_t> perm, piv;
@@ -27,7 +27,7 @@ class LUDecompostion {
   }
 
  public:
-  LUDecompostion(const Mat &A) : dat(A), perm(A.size()), sgn(false) {
+  LUDecomposition(const Mat &A) : dat(A), perm(A.size()), sgn(false) {
     std::size_t rows = A.size(), cols = A[0].size();
     std::iota(perm.begin(), perm.end(), 0);
     for (std::size_t c = 0; c != cols && piv.size() != rows; c++) {
@@ -112,7 +112,7 @@ class LUDecompostion {
 };
 
 template <std::size_t MAX_ROWS, std::size_t MAX_COLS>
-class LUDecompostion<bool, MAX_ROWS, MAX_COLS> {
+class LUDecomposition<bool, MAX_ROWS, MAX_COLS> {
  public:
   using Mat = std::vector<std::vector<bool>>;
   std::size_t rows, cols;
@@ -120,7 +120,7 @@ class LUDecompostion<bool, MAX_ROWS, MAX_COLS> {
   std::vector<std::size_t> perm, piv;
 
  public:
-  LUDecompostion(const Mat &A)
+  LUDecomposition(const Mat &A)
       : rows(A.size()), cols(A[0].size()), tdat(cols), tdat2(cols), perm(rows) {
     std::vector<std::bitset<MAX_COLS>> dat(rows);
     for (std::size_t i = 0; i < rows; i++)

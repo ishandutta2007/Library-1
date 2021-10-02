@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/803"
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecompostion.hpp"
+#include "src/Math/LUDecomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
@@ -23,7 +23,7 @@ signed main() {
     cin >> x >> l >> r, b[30 + i] = x;
     for (int j = l - 1; j <= r - 1; j++) A[30 + i][j] = 1;
   }
-  LUDecompostion lu(A);
+  LUDecomposition lu(A);
   if (!lu.linear_equations(b).empty())
     cout << ModInt<int(1e9 + 7)>(2).pow(lu.kernel().size()) << endl;
   else

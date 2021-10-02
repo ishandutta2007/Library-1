@@ -2,7 +2,7 @@
 
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecompostion.hpp"
+#include "src/Math/LUDecomposition.hpp"
 #include "src/Math/Matrix.hpp"
 using namespace std;
 
@@ -19,7 +19,7 @@ signed main() {
   for (int i = 0, x; i < N; i++) cin >> x, v[i] = x;
   int T;
   cin >> T;
-  LUDecompostion lu(A.pow(T).to_vec(N, N));
+  LUDecomposition lu(A.pow(T).to_vec(N, N));
   auto c = lu.linear_equations(v);
   if (c.empty()) {
     cout << "none" << '\n';

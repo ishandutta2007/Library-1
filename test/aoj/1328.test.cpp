@@ -2,7 +2,7 @@
 // double型の行列の連立一次方程式のverify
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecompostion.hpp"
+#include "src/Math/LUDecomposition.hpp"
 using namespace std;
 
 signed main() {
@@ -27,7 +27,7 @@ signed main() {
             A[ii] = m[i];
             ii++;
           }
-        auto c = LUDecompostion(A).linear_equations(b);
+        auto c = LUDecomposition(A).linear_equations(b);
         double u1 = 0, u2 = 0;
         for (int i = d; i >= 0; i--) {
           u1 += c[i] * m[k][i];

@@ -16,10 +16,12 @@ signed main() {
   for (int i = 0; i < N; i++) cin >> f[i];
   for (int i = 0; i < M; i++) cin >> g[i];
   auto [q, r] = f.quorem(g);
-  cout << q.size() << " " << r.size() << '\n';
-  for (int i = 0; i < (int)q.size(); i++) cout << (i ? " " : "") << q[i];
+  cout << q.deg() + 1 << " " << r.deg() + 1 << '\n';
+  if (q.deg() != -1)
+    for (int i = 0; i < (int)q.size(); i++) cout << (i ? " " : "") << q[i];
   cout << '\n';
-  for (int i = 0; i < (int)r.size(); i++) cout << (i ? " " : "") << r[i];
+  if (r.deg() != -1)
+    for (int i = 0; i < (int)r.size(); i++) cout << (i ? " " : "") << r[i];
   cout << '\n';
   return 0;
 }

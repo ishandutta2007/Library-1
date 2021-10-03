@@ -11,7 +11,6 @@
 struct has_I_impl {
   template <class T>
   static auto check(T &&x) -> decltype(x.I(), std::true_type{});
-  template <class T>
   static auto check(...) -> std::false_type;
 };
 template <class T>
@@ -85,16 +84,12 @@ template <class R, int N>
 struct SquareMatrix : public Matrix<R, N, N> {
   using Matrix<R, N, N>::Matrix;
   SquareMatrix(Matrix<R, N, N> m) { *this = m; }
-  template <typename T = R, typename std::enable_if_t<has_I_v<T>> * = nullptr>
   static SquareMatrix I() {
     SquareMatrix ret;
-    for (int i = 0; i < N; i++) ret[i][i] = T::I();
-    return ret;
-  }
-  template <typename T = R, typename std::enable_if_t<!has_I_v<T>> * = nullptr>
-  static SquareMatrix I() {
-    SquareMatrix ret;
-    for (int i = 0; i < N; i++) ret[i][i] = T(1);
+    if constexpr (has_I_v<R>)
+      for (int i = 0; i < N; i++) ret[i][i] = T::I();
+    else
+      for (int i = 0; i < N; i++) ret[i][i] = T(1);
     return ret;
   }
   SquareMatrix &operator=(const Matrix<R, N, N> &r) {

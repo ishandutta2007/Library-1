@@ -53,7 +53,7 @@ class EulerTourTree {
   }
   static void splay(node_id i) {
     for (int i_dir = dir(i), p_dir; i_dir < 2; rot(i), i_dir = dir(i))
-      if (p_dir < 2) rot(i_dir == p_dir ? n[i].par : i);
+      if ((p_dir = dir(n[i].par)) < 2) rot(i_dir == p_dir ? n[i].par : i);
   }
   static node_id merge_back(node_id l, node_id r) {
     if (!l) return r;

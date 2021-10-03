@@ -86,14 +86,10 @@ class EulerTourTree_MonoidDual {
     node_id l = n[i].ch[0];
     return n[i].ch[0] = n[l].par = 0, pushup(i), std::make_pair(l, i);
   }
-
- public:
   static void reroot(node_id v) {
     auto p = split(v);
     merge_back(p.second, p.first), splay(v);
   }
-
- private:
   static bool same_root(node_id i, node_id j) {
     if (i) splay(i);
     if (j) splay(j);
@@ -101,8 +97,6 @@ class EulerTourTree_MonoidDual {
     while (n[j].par) j = n[j].par;
     return i == j;
   }
-
- public:
   node_id n_st;
   std::unordered_map<std::uint64_t, node_id> emp;
 

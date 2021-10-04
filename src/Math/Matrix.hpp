@@ -11,6 +11,7 @@
 struct has_I_impl {
   template <class T>
   static auto check(T &&x) -> decltype(x.I(), std::true_type{});
+  template <class T>
   static auto check(...) -> std::false_type;
 };
 template <class T>

@@ -52,10 +52,8 @@ class EulerTourTree_MonoidDual {
   }
   static int dir(node_id i) {
     if (n[i].par) {
-      if (n[n[i].par].ch[0] == i)
-        return 0;
-      else if (n[n[i].par].ch[1] == i)
-        return 1;
+      if (n[n[i].par].ch[0] == i) return 0;
+      if (n[n[i].par].ch[1] == i) return 1;
     }
     return 2;
   }

@@ -88,9 +88,9 @@ struct SquareMatrix : public Matrix<R, N, N> {
   static SquareMatrix I() {
     SquareMatrix ret;
     if constexpr (has_I_v<R>)
-      for (int i = 0; i < N; i++) ret[i][i] = T::I();
+      for (int i = 0; i < N; i++) ret[i][i] = R::I();
     else
-      for (int i = 0; i < N; i++) ret[i][i] = T(1);
+      for (int i = 0; i < N; i++) ret[i][i] = R(1);
     return ret;
   }
   SquareMatrix &operator=(const Matrix<R, N, N> &r) {

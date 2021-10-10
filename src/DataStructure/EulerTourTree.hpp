@@ -129,7 +129,7 @@ class EulerTourTree {
   template <class Func>
   void hilevel_edges(vertex_id v, Func f) {
     splay(v += n_st);
-    while (v && (n[v].flag & 0b0010)) {
+    while (v && (n[v].flag & 0b0010))
       while (1) {
         if (n[v].flag & 0b0001) {
           f(n[v].s, n[v].d), splay(v), n[v].flag &= ~(0b0001), pushup(v);
@@ -137,12 +137,11 @@ class EulerTourTree {
         } else
           v = n[v].ch[!(n[v].ch[0] && (n[n[v].ch[0]].flag & 0b0010))];
       }
-    }
   }
   template <class Func>
   int subedges(vertex_id v, Func f) {
     splay(v += n_st);
-    while (v && (n[v].flag & 0b1000)) {
+    while (v && (n[v].flag & 0b1000))
       for (bool loop = true; loop;) {
         if (n[v].flag & 0b0100) {
           if (f(n[v].s)) return 1;
@@ -150,7 +149,6 @@ class EulerTourTree {
         } else
           v = n[v].ch[!(n[v].ch[0] && (n[n[v].ch[0]].flag & 0b1000))];
       }
-    }
     return 0;
   }
 };

@@ -8,18 +8,17 @@
  * set_balance() でランダムにsplayするのでならすことができるはず
  * 単位元は必要なし（遅延側も）
  * 区間reverseができる。（半群の可換性を仮定していないので無駄にメモリと時間を使うけど）
+ * 各ノードが部分木のサイズを保持しているのでmapping関数では引数としてsizeを渡せる
  */
 
 // BEGIN CUT HERE
 #define HAS_CHECK(member, Dummy)                              \
   template <class T>                                          \
-  class has_##member {                                        \
+  struct has_##member {                                       \
     template <class U, Dummy>                                 \
     static std::true_type check(U *);                         \
     static std::false_type check(...);                        \
     static T *mClass;                                         \
-                                                              \
-   public:                                                    \
     static const bool value = decltype(check(mClass))::value; \
   };
 #define HAS_MEMBER(member) HAS_CHECK(member, int dummy = (&U::member, 0))
@@ -36,34 +35,30 @@ using dual =
     std::conjunction<has_T<M>, has_E<M>, has_mapping<M>, has_composition<M>>;
 
 template <class M, bool reversible = false>
-struct SplayTree {
-  template <class T, class tDerived>
+class SplayTree {
+  template <class T, class tDerived, class F = std::nullptr_t>
   struct Node_B {
+    using E = F;
     T val;
     tDerived *ch[2];
     std::size_t size;
   };
   template <bool sg_, bool du_, bool rev_, typename tEnable = void>
-  struct Node_D : Node_B<M, Node_D<sg_, du_, rev_, tEnable>> {
-    using E = std::nullptr_t;
-  };
+  struct Node_D : Node_B<M, Node_D<sg_, du_, rev_, tEnable>> {};
   template <bool sg_, bool du_, bool rev_>
   struct Node_D<sg_, du_, rev_, typename std::enable_if_t<sg_ && !du_ && !rev_>>
       : Node_B<typename M::T, Node_D<sg_, du_, rev_>> {
-    using E = std::nullptr_t;
     typename M::T sum;
   };
   template <bool sg_, bool du_, bool rev_>
   struct Node_D<sg_, du_, rev_, typename std::enable_if_t<!sg_ && du_ && !rev_>>
-      : Node_B<typename M::T, Node_D<sg_, du_, rev_>> {
-    using E = typename M::E;
+      : Node_B<typename M::T, Node_D<sg_, du_, rev_>, typename M::E> {
     typename M::E lazy;
     bool lazy_flg = false;
   };
   template <bool sg_, bool du_, bool rev_>
   struct Node_D<sg_, du_, rev_, typename std::enable_if_t<sg_ && du_ && !rev_>>
-      : Node_B<typename M::T, Node_D<sg_, du_, rev_>> {
-    using E = typename M::E;
+      : Node_B<typename M::T, Node_D<sg_, du_, rev_>, typename M::E> {
     typename M::T sum;
     typename M::E lazy;
     bool lazy_flg = false;
@@ -71,27 +66,23 @@ struct SplayTree {
   template <bool sg_, bool du_, bool rev_>
   struct Node_D<sg_, du_, rev_, typename std::enable_if_t<!sg_ && !du_ && rev_>>
       : Node_B<M, Node_D<sg_, du_, rev_>> {
-    using E = std::nullptr_t;
     bool rev_flg = false;
   };
   template <bool sg_, bool du_, bool rev_>
   struct Node_D<sg_, du_, rev_, typename std::enable_if_t<sg_ && !du_ && rev_>>
       : Node_B<typename M::T, Node_D<sg_, du_, rev_>> {
-    using E = std::nullptr_t;
     typename M::T sum, rsum;
     bool rev_flg = false;
   };
   template <bool sg_, bool du_, bool rev_>
   struct Node_D<sg_, du_, rev_, typename std::enable_if_t<!sg_ && du_ && rev_>>
-      : Node_B<typename M::T, Node_D<sg_, du_, rev_>> {
-    using E = typename M::E;
+      : Node_B<typename M::T, Node_D<sg_, du_, rev_>, typename M::E> {
     typename M::E lazy;
     bool lazy_flg = false, rev_flg = false;
   };
   template <bool sg_, bool du_, bool rev_>
   struct Node_D<sg_, du_, rev_, typename std::enable_if_t<sg_ && du_ && rev_>>
-      : Node_B<typename M::T, Node_D<sg_, du_, rev_>> {
-    using E = typename M::E;
+      : Node_B<typename M::T, Node_D<sg_, du_, rev_>, typename M::E> {
     typename M::T sum, rsum;
     typename M::E lazy;
     bool lazy_flg = false, rev_flg = false;

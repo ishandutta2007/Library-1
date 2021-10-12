@@ -1,25 +1,82 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title Euler-Tour-Tree(シンプル)
+ * @title Euler-Tour-Tree
  * @category データ構造
  * @brief O(logN)
+ * 単位元は必要あり（遅延側は必要なし）
+ * 各ノードが部分木のサイズを保持しているのでmapping関数では引数としてsizeを渡せる
  */
 
 // BEGIN CUT HERE
 
+#define HAS_CHECK(member, Dummy)                              \
+  template <class T>                                          \
+  struct has_##member {                                       \
+    template <class U, Dummy>                                 \
+    static std::true_type check(U*);                          \
+    static std::false_type check(...);                        \
+    static T* mClass;                                         \
+    static const bool value = decltype(check(mClass))::value; \
+  };
+#define HAS_MEMBER(member) HAS_CHECK(member, int dummy = (&U::member, 0))
+#define HAS_TYPE(member) HAS_CHECK(member, class dummy = typename U::member)
+
+HAS_MEMBER(op);
+HAS_MEMBER(ti);
+HAS_MEMBER(mapping);
+HAS_MEMBER(composition)
+HAS_TYPE(T);
+HAS_TYPE(E);
+template <class M>
+using monoid = std::conjunction<has_T<M>, has_op<M>, has_ti<M>>;
+template <class M>
+using dual =
+    std::conjunction<has_T<M>, has_E<M>, has_mapping<M>, has_composition<M>>;
+
+template <typename M = void>
 class EulerTourTree {
   using node_id = std::int_least32_t;
   using vertex_id = std::int_least32_t;
-  struct Node {
+  template <class tDerived, class U = std::nullptr_t, class F = std::nullptr_t>
+  struct Node_B {
+    using T = U;
+    using E = F;
     vertex_id s, d;
     node_id ch[2], par;
     std::size_t sz;
     std::int_least8_t flag;
-    Node() : sz(1) {}
   };
+  template <bool mo_, bool du_, typename tEnable = void>
+  struct Node_D : Node_B<Node_D<mo_, du_, tEnable>> {};
+  template <bool mo_, bool du_>
+  struct Node_D<mo_, du_, typename std::enable_if_t<mo_ && !du_>>
+      : Node_B<Node_D<mo_, du_>, typename M::T> {
+    typename M::T val = M::ti(), sum = M::ti();
+  };
+  template <bool mo_, bool du_>
+  struct Node_D<mo_, du_, typename std::enable_if_t<!mo_ && du_>>
+      : Node_B<Node_D<mo_, du_>, typename M::T, typename M::E> {
+    typename M::T val;
+    typename M::E lazy;
+    bool lazy_flg;
+  };
+  template <bool mo_, bool du_>
+  struct Node_D<mo_, du_, typename std::enable_if_t<mo_ && du_>>
+      : Node_B<Node_D<mo_, du_>, typename M::T, typename M::E> {
+    typename M::T val = M::ti(), sum = M::ti();
+    typename M::E lazy;
+    bool lazy_flg;
+  };
+  using Node = Node_D<monoid<M>::value, dual<M>::value>;
+
+ public:
+  using T = typename Node::T;
+  using E = typename Node::E;
+
+ private:
   static constexpr int NODE_SIZE = 303030 * 4;
-  static struct Node n[NODE_SIZE];
+  static inline Node n[NODE_SIZE];
   static inline node_id ni = 1;
   node_id new_edge(int s, int d, bool hi) {
     int i = ni++, ri = ni++;
@@ -29,19 +86,38 @@ class EulerTourTree {
   static void pushup(node_id i) {
     n[i].sz = (n[i].s == n[i].d), n[i].flag &= 0b0101,
     n[i].flag |= n[i].flag << 1;
-    if (n[i].ch[0])
+    if constexpr (monoid<M>::value) n[i].sum = n[i].val;
+    if (n[i].ch[0]) {
       n[i].sz += n[n[i].ch[0]].sz, n[i].flag |= n[n[i].ch[0]].flag & 0b1010;
-    if (n[i].ch[1])
+      if constexpr (monoid<M>::value)
+        n[i].sum = M::op(n[n[i].ch[0]].sum, n[i].sum);
+    }
+    if (n[i].ch[1]) {
       n[i].sz += n[n[i].ch[1]].sz, n[i].flag |= n[n[i].ch[1]].flag & 0b1010;
+      if constexpr (monoid<M>::value)
+        n[i].sum = M::op(n[i].sum, n[n[i].ch[1]].sum);
+    }
   }
-  static int dir(node_id i) {
+  inline void propagate(node_id i, const E& v) {
+    n[i].lazy = n[i].lazy_flg ? M::composition(n[i].lazy, v) : v;
+    if (n[i].s == n[i].d) n[i].val = M::mapping(n[i].val, v, 1);
+    if constexpr (monoid<M>::value) n[i].sum = M::mapping(n[i].sum, v, n[i].sz);
+    n[i].lazy_flg = true;
+  }
+  inline void eval(node_id i) {
+    if (!n[i].lazy_flg) return;
+    if (n[i].ch[0]) propagate(n[i].ch[0], n[i].lazy);
+    if (n[i].ch[1]) propagate(n[i].ch[1], n[i].lazy);
+    n[i].lazy_flg = false;
+  }
+  inline int dir(node_id i) {
     if (n[i].par) {
       if (n[n[i].par].ch[0] == i) return 0;
       if (n[n[i].par].ch[1] == i) return 1;
     }
     return 2;
   }
-  static void rot(node_id x) {
+  inline void rot(node_id x) {
     node_id p = n[x].par;
     int d = dir(x);
     if ((n[p].ch[d] = n[x].ch[!d])) n[n[p].ch[d]].par = p;
@@ -49,26 +125,33 @@ class EulerTourTree {
     if ((d = dir(p)) < 2) n[n[p].par].ch[d] = x, pushup(n[p].par);
     n[p].par = x;
   }
-  static void splay(node_id i) {
-    for (int i_dir = dir(i), p_dir; i_dir < 2; rot(i), i_dir = dir(i))
-      if ((p_dir = dir(n[i].par)) < 2) rot(i_dir == p_dir ? n[i].par : i);
+  inline void splay(node_id i) {
+    if constexpr (dual<M>::value) eval(i);
+    for (int i_dir = dir(i), p_dir; i_dir < 2; rot(i), i_dir = dir(i)) {
+      p_dir = dir(n[i].par);
+      if constexpr (dual<M>::value) {
+        if (p_dir < 2) eval(n[n[i].par].par);
+        eval(n[i].par), eval(i);
+      }
+      if (p_dir < 2) rot(i_dir == p_dir ? n[i].par : i);
+    }
   }
-  static node_id merge_back(node_id l, node_id r) {
+  inline node_id merge_back(node_id l, node_id r) {
     if (!l) return r;
     if (!r) return l;
     while (n[l].ch[1]) l = n[l].ch[1];
     return splay(l), n[n[r].par = l].ch[1] = r, pushup(l), l;
   }
-  static std::pair<node_id, node_id> split(node_id i) {
+  inline std::pair<node_id, node_id> split(node_id i) {
     splay(i);
     node_id l = n[i].ch[0];
     return n[i].ch[0] = n[l].par = 0, pushup(i), std::make_pair(l, i);
   }
-  static void reroot(node_id v) {
+  inline void reroot(node_id v) {
     auto p = split(v);
     merge_back(p.second, p.first), splay(v);
   }
-  static bool same_root(node_id i, node_id j) {
+  inline bool same_root(node_id i, node_id j) {
     if (i) splay(i);
     if (j) splay(j);
     while (n[i].par) i = n[i].par;
@@ -84,6 +167,7 @@ class EulerTourTree {
     ni += N;
     for (int i = 0; i < N; i++) n[i + n_st].s = n[i + n_st].d = i;
   }
+  const T& operator[](vertex_id x) { return n[x + n_st].val; }
   bool edge_exist(vertex_id x, vertex_id y) {
     if (x > y) std::swap(x, y);
     return emp.count(((long long)x << 32) | (long long)y);
@@ -123,7 +207,36 @@ class EulerTourTree {
       n[x].flag &= ~(0b0100);
     pushup(x);
   }
+  void set_val(vertex_id x, T val) {
+    static_assert(monoid<M>::value || dual<M>::value,
+                  "\"set_val\" is not available\n");
+    splay(x += n_st), n[x].val = val, pushup(x);
+  }
   std::size_t tree_size(vertex_id x) { return splay(x += n_st), n[x].sz; }
+  T fold_tree(vertex_id x) {
+    static_assert(monoid<M>::value, "\"fold\" is not available\n");
+    return splay(x += n_st), n[x].sum;
+  }
+  T fold_subtree(vertex_id x, vertex_id par = -1) {
+    if (par == -1) return fold_tree(x);
+    cut(x, par);
+    T ret = fold_tree(x);
+    link(x, par);
+    return ret;
+  }
+  void apply_tree(vertex_id x, E v) {
+    static_assert(dual<M>::value, "\"apply\" is not available\n");
+    splay(x += n_st), propagate(x, v), eval(x);
+  }
+  void apply_subtree(vertex_id x, vertex_id par, E v) {
+    cut(x, par), apply_tree(x, v), link(x, par);
+  }
+  static std::string which_available() {
+    std::string ret = "";
+    if constexpr (monoid<M>::value) ret += "\"fold\" ";
+    if constexpr (dual<M>::value) ret += "\"apply\" ";
+    return ret;
+  }
   template <class Func>
   void hilevel_edges(vertex_id v, Func f) {
     splay(v += n_st);
@@ -150,4 +263,3 @@ class EulerTourTree {
     return 0;
   }
 };
-typename EulerTourTree::Node EulerTourTree::n[NODE_SIZE];

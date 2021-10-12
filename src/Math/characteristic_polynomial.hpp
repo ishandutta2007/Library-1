@@ -11,7 +11,7 @@ template <class K>
 std::vector<std::vector<K>> hessenberg(const std::vector<std::vector<K>> &a) {
   std::size_t n = a.size();
   auto ret = a;
-  for (std::size_t j = 0; j < n - 2; ++j) {
+  for (std::size_t j = 0; j + 2 < n; ++j) {
     for (std::size_t i = j + 1; i < n; ++i)
       if (ret[i][j] != 0) {
         std::swap(ret[j + 1], ret[i]);

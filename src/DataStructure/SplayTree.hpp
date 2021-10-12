@@ -220,18 +220,12 @@ class SplayTree {
   }
   std::size_t size() { return root ? root->size : 0; }
   void clear() { root = nullptr; }
-  const T &operator[](std::size_t k) {
-    splay(root, k);
-    return root->val;
-  }
+  const T &operator[](std::size_t k) { return splay(root, k), root->val; }
   void set_val(std::size_t k, T val) {
-    splay(root, k);
-    root->val = val;
-    pushup(root);
+    splay(root, k), root->val = val, pushup(root);
   }
   void set_balance() {
-    if (!root) return;
-    splay(root, xor128() % size()), splay(root, xor128() % size());
+    if (root) splay(root, xor128() % size()), splay(root, xor128() % size());
   }
   T fold(std::size_t a, std::size_t b) {
     static_assert(semigroup<M>::value, "\"fold\" is not available");

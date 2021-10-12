@@ -175,4 +175,10 @@ class LinkCutTree {
     static_assert(dual<M>::value, "\"apply\" is not available\n");
     evert(a), expose(&ns[b]), propagate(&ns[b], v), eval(&ns[b]);
   }
+  static std::string which_available() {
+    std::string ret = "";
+    if constexpr (semigroup<M>::value) ret += "\"fold\" ";
+    if constexpr (dual<M>::value) ret += "\"apply\" ";
+    return ret;
+  }
 };

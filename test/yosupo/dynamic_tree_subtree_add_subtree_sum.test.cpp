@@ -2,14 +2,13 @@
   "https://judge.yosupo.jp/problem/dynamic_tree_subtree_add_subtree_sum"
 #include <bits/stdc++.h>
 
-#include "src/DataStructure/EulerTourTree_MonoidLazy.hpp"
+#include "src/DataStructure/EulerTourTree.hpp"
 using namespace std;
 
 struct RsumQRaddQ {
   using T = long long;
   using E = long long;
   static T ti() { return 0; }
-  static E ei() { return 0; }
   static T op(const T &l, const T &r) { return l + r; }
   static T mapping(const T &t, const E &e, const std::size_t &sz) {
     return t + e * sz;
@@ -22,7 +21,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, Q;
   cin >> N >> Q;
-  EulerTourTree_MonoidLazy<RsumQRaddQ> ett(N);
+  EulerTourTree<RsumQRaddQ> ett(N);
   for (int i = 0; i < N; i++) {
     long long a;
     cin >> a;

@@ -2,8 +2,8 @@
   "https://judge.yosupo.jp/problem/dynamic_graph_vertex_add_component_sum"
 #include <bits/stdc++.h>
 
-#include "src/DataStructure/EulerTourTree_Monoid.hpp"
-#include "src/DataStructure/OnlineDynamicConnectivity_Monoid.hpp"
+#include "src/DataStructure/EulerTourTree.hpp"
+#include "src/DataStructure/OnlineDynamicConnectivity.hpp"
 using namespace std;
 
 struct Monoid {
@@ -17,7 +17,7 @@ int main() {
   ios::sync_with_stdio(false);
   int N, Q;
   cin >> N >> Q;
-  OnlineDynamicConnectivity_Monoid<Monoid> dicon(N);
+  OnlineDynamicConnectivity<Monoid> dicon(N);
   for (int i = 0; i < N; i++) {
     int a;
     cin >> a;

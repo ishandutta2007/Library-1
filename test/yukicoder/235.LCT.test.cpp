@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/235"
 #include <bits/stdc++.h>
-#include "src/DataStructure/LinkCutTree_MonoidLazy.hpp"
+#include "src/DataStructure/LinkCutTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
@@ -13,8 +13,6 @@ struct Mono {
     T(Mint v = 0, Mint s = 1) : val(v), coef(s) {}
   };
   using E = Mint;
-  static T ti() { return T(0, 0); }
-  static E ei() { return E(0); }
   static T op(const T &vl, const T &vr) {
     return T(vl.val + vr.val, vl.coef + vr.coef);
   }
@@ -29,7 +27,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N;
   cin >> N;
-  LinkCutTree_MonoidLazy<Mono> lct(N);
+  LinkCutTree<Mono> lct(N);
   Mint S[N], C[N];
   for (int i = 0; i < N; i++) cin >> S[i];
   for (int i = 0; i < N; i++) cin >> C[i];

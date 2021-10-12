@@ -1,6 +1,6 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2559"
 #include <bits/stdc++.h>
-#include "src/DataStructure/LinkCutTree_MonoidDual.hpp"
+#include "src/DataStructure/LinkCutTree.hpp"
 #include "src/DataStructure/UnionFind.hpp"
 #include "src/Graph/MinimumSpanningTree_Kruskal.hpp"
 using namespace std;
@@ -8,7 +8,6 @@ using namespace std;
 struct RchminQ {
   using T = long long;
   using E = long long;
-  static E ei() { return INT_MAX; }
   static T mapping(const T &l, const E &r) { return min(l, r); }
   static E composition(const E &l, const E &r) { return min(l, r); }
 };
@@ -27,7 +26,7 @@ signed main() {
     graph.add_edge(a, b, w);
   }
   auto res = graph.get_MST();
-  LinkCutTree_MonoidDual<RchminQ> lct(2 * n - 1, INT_MAX);
+  LinkCutTree<RchminQ> lct(2 * n - 1, INT_MAX);
   int id[m];
   fill(id, id + m, -1);
   int num = n;

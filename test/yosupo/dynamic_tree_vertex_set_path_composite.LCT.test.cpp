@@ -1,7 +1,7 @@
 #define PROBLEM \
   "https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite"
 #include <bits/stdc++.h>
-#include "src/DataStructure/LinkCutTree_Monoid.hpp"
+#include "src/DataStructure/LinkCutTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 #undef call_from_test
@@ -9,7 +9,6 @@ using namespace std;
 using Mint = ModInt<998244353>;
 struct RcompositeQ {
   using T = pair<Mint, Mint>;
-  static T ti() { return make_pair(Mint(1), Mint(0)); }
   static T op(const T &l, const T &r) {
     return make_pair(r.first * l.first, r.first * l.second + r.second);
   }
@@ -20,7 +19,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, Q;
   cin >> N >> Q;
-  LinkCutTree_Monoid<RcompositeQ> lct(N);
+  LinkCutTree<RcompositeQ> lct(N);
   for (int i = 0; i < N; i++) {
     Mint a, b;
     cin >> a >> b;

@@ -1,18 +1,16 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2450"
+#define PROBLEM \
+  "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Summer/2450"
 // Do use segment tree
 #include <bits/stdc++.h>
-#include "src/DataStructure/LinkCutTree_MonoidLazy.hpp"
+#include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;
 
 struct RupdQ_RmaxsumQ {
-  static constexpr long long INF = INT_MAX;
   struct T {
     long long sum, max, lmax, rmax;
     int size;
   };
   using E = long long;
-  static T ti() { return {0ll, -INF, -INF, -INF, 0}; }
-  static E ei() { return INF; }
   static T op(const T &a, const T &b) {
     T ret;
     ret.sum = a.sum + b.sum;
@@ -23,11 +21,10 @@ struct RupdQ_RmaxsumQ {
     return ret;
   }
   static T mapping(const T &l, const E &r) {
-    if (r == ei()) return l;
     return {r * l.size, max(r * l.size, r), max(r * l.size, r),
             max(r * l.size, r), l.size};
   }
-  static E composition(const E &l, const E &r) { return r == ei() ? l : r; }
+  static E composition(const E &l, const E &r) { return r; }
 };
 
 signed main() {
@@ -35,7 +32,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, Q;
   cin >> N >> Q;
-  LinkCutTree_MonoidLazy<RupdQ_RmaxsumQ> lct(N);
+  LinkCutTree<RupdQ_RmaxsumQ> lct(N);
   for (int i = 0; i < N; i++) {
     long long w;
     cin >> w;

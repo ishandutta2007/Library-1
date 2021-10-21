@@ -22,20 +22,19 @@
 #define HAS_MEMBER(member) HAS_CHECK(member, int dummy = (&U::member, 0))
 #define HAS_TYPE(member) HAS_CHECK(member, class dummy = typename U::member)
 
-HAS_MEMBER(op);
-HAS_MEMBER(ti);
-HAS_MEMBER(mapping);
-HAS_MEMBER(composition)
-HAS_TYPE(T);
-HAS_TYPE(E);
-template <class M>
-using monoid = std::conjunction<has_T<M>, has_op<M>, has_ti<M>>;
-template <class M>
-using dual =
-    std::conjunction<has_T<M>, has_E<M>, has_mapping<M>, has_composition<M>>;
-
 template <typename M = void>
 class EulerTourTree {
+  HAS_MEMBER(op);
+  HAS_MEMBER(ti);
+  HAS_MEMBER(mapping);
+  HAS_MEMBER(composition)
+  HAS_TYPE(T);
+  HAS_TYPE(E);
+  template <class L>
+  using monoid = std::conjunction<has_T<L>, has_op<L>, has_ti<L>>;
+  template <class L>
+  using dual =
+      std::conjunction<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
   using node_id = std::int_least32_t;
   using vertex_id = std::int_least32_t;
   template <class tDerived, class U = std::nullptr_t, class F = std::nullptr_t>

@@ -23,19 +23,19 @@
   };
 #define HAS_MEMBER(member) HAS_CHECK(member, int dummy = (&U::member, 0))
 #define HAS_TYPE(member) HAS_CHECK(member, class dummy = typename U::member)
-HAS_MEMBER(op);
-HAS_MEMBER(mapping);
-HAS_MEMBER(composition)
-HAS_TYPE(T);
-HAS_TYPE(E);
-template <class M>
-using semigroup = std::conjunction<has_T<M>, has_op<M>>;
-template <class M>
-using dual =
-    std::conjunction<has_T<M>, has_E<M>, has_mapping<M>, has_composition<M>>;
 
 template <class M, bool reversible = false>
 class SplayTree {
+  HAS_MEMBER(op);
+  HAS_MEMBER(mapping);
+  HAS_MEMBER(composition)
+  HAS_TYPE(T);
+  HAS_TYPE(E);
+  template <class L>
+  using semigroup = std::conjunction<has_T<L>, has_op<L>>;
+  template <class L>
+  using dual =
+      std::conjunction<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
   template <class T, class tDerived, class F = std::nullptr_t>
   struct Node_B {
     using E = F;

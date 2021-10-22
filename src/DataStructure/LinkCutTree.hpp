@@ -140,7 +140,9 @@ class LinkCutTree {
 
  public:
   LinkCutTree(std::size_t n) : ns(n) {}
-  LinkCutTree(std::size_t n, T val) : ns(n, {val}) {}
+  LinkCutTree(std::size_t n, T val) : ns(n) {
+    for (std::size_t i = n; i--;) ns[i].val = val;
+  }
   void evert(std::size_t k) { expose(&ns[k]), toggle(&ns[k]), eval(&ns[k]); }
   void link(std::size_t c, std::size_t p) {
     evert(c), expose(&ns[p]);

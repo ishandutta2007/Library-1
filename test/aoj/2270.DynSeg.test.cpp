@@ -5,7 +5,7 @@
 
 #include <bits/stdc++.h>
 #include "src/DataStructure/DynamicSegmentTree.hpp"
-#include "LinkCutTree.hpp"
+#include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;
 
 struct RsumQ {

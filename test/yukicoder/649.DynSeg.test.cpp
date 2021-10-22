@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/649"
 #include <bits/stdc++.h>
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
+#include "src/DataStructure/DynamicSegmentTree.hpp"
 using namespace std;
 
 struct RsumQ {
@@ -13,19 +13,18 @@ signed main() {
   ios::sync_with_stdio(0);
   int Q, K;
   cin >> Q >> K;
-  K--;
-  SegmentTree_Dynamic<RsumQ> seg((long long)1e18 + 10);
+  DynamicSegmentTree<RsumQ, false, 60> seg;
   while (Q--) {
     long long v;
     cin >> v;
     if (v == 1) {
       cin >> v;
-      seg.set_val(v, seg[v] + 1);
+      seg.set(v, seg[v] + 1);
     } else {
-      auto check = [&](int x) { return x > K; };
-      v = seg.find_first(check);
+      auto check = [&](int x) { return x >= K; };
+      v = seg.find_first(0, check);
       cout << v << endl;
-      if (v >= 0) seg.set_val(v, seg[v] - 1);
+      if (v >= 0) seg.set(v, seg[v] - 1);
     }
   }
   return 0;

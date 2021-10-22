@@ -36,8 +36,7 @@ signed main() {
     int a, b, c;
     cin >> a >> b >> c;
     int k = X ^ a, l = b ^ X, r = c ^ X;
-    cout << (X = seg[k].fold(--l, r));
-    if (i < Q2 - 1) cout << '\n';
+    cout << (X = seg[k].fold(--l, r)) << '\n';
   }
   return 0;
 }

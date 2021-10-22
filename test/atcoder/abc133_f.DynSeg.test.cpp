@@ -22,7 +22,8 @@ signed main() {
   }
   using PerArr = DynamicSegmentTree<int, true, 17>;
   PerArr Arr1[N], Arr2[N];
-  int sum[N] = {0};
+  int sum[N];
+  sum[0] = 0;
   auto dfs = [&adj, &Arr1, &Arr2, &sum](auto f, int v, int p) -> void {
     for (auto [u, c, d] : adj[v])
       if (u != p) {

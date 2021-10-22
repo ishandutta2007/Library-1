@@ -12,7 +12,7 @@ struct RsumQ {
   static T ti() { return 0; }
   static T op(T vl, T vr) { return vl + vr; }
 };
-signed KUPC2018_M() {
+signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
   using Seg = DynamicSegmentTree<RsumQ, false, 30, true>;

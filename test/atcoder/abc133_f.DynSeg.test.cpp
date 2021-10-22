@@ -6,7 +6,7 @@
 #include "src/DataStructure/DynamicSegmentTree.hpp"
 #include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;
-signed ABC133F() {
+signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
   int N, Q;

@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/cf17-final/tasks/cf17_final_e"
 #include <bits/stdc++.h>
-#include "Math/ModInt.hpp"
-#include "Graph/LinearSystemIncidence.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/Graph/LinearSystemIncidence.hpp"
 using namespace std;
 
 signed main() {

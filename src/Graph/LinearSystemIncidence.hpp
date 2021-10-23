@@ -7,11 +7,6 @@
  * O(V+E)
  */
 
-// verify
-// https://atcoder.jp/contests/cf17-final/tasks/cf17_final_e
-// https://atcoder.jp/contests/abc155/tasks/abc155_f
-// https://atcoder.jp/contests/agc035/tasks/agc035_b
-
 // BEGIN CUT HERE
 
 template <typename T>

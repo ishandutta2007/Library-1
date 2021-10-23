@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/abc155/tasks/abc155_f"
 #include <bits/stdc++.h>
-#include "Math/ModInt.hpp"
-#include "Graph/LinearSystemIncidence.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/Graph/LinearSystemIncidence.hpp"
 using namespace std;
 
 signed main() {

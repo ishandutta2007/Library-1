@@ -9,7 +9,7 @@
 
 namespace internal {
 template <std::uint64_t mod, std::uint64_t prim_root, class ModInt>
-class ModIntImpl {
+struct ModIntImpl {
   static constexpr std::uint64_t modulo() { return mod; }
   static constexpr std::uint64_t pr_rt() { return prim_root; }
   constexpr ModInt &operator/=(const ModInt &rhs) {

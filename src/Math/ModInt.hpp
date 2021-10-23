@@ -48,7 +48,8 @@ struct ModIntImpl {
 };
 }  // namespace internal
 template <std::uint64_t mod, std::uint64_t prim_root = 0>
-class ModInt : internal::ModIntImpl<mod, prim_root, ModInt<mod, prim_root>> {
+class ModInt
+    : public internal::ModIntImpl<mod, prim_root, ModInt<mod, prim_root>> {
   using u64 = std::uint64_t;
   using u128 = __uint128_t;
   static constexpr u64 mul_inv(u64 n, int e = 6, u64 x = 1) {
@@ -91,7 +92,7 @@ class ModInt : internal::ModIntImpl<mod, prim_root, ModInt<mod, prim_root>> {
 };
 template <std::uint64_t prim_root>
 class ModInt<2, prim_root>
-    : internal::ModIntImpl<2, prim_root, ModInt<2, prim_root>> {
+    : public internal::ModIntImpl<2, prim_root, ModInt<2, prim_root>> {
   bool x;
 
  public:

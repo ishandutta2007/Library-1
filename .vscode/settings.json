@@ -105,5 +105,6 @@
     "stack": "cpp",
     "source_location": "cpp",
     "syncstream": "cpp"
-  }
+  },
+  "editor.formatOnSave": true
 }

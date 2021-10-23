@@ -29,6 +29,7 @@ signed main() {
   int n = res.first.size();
   auto index = res.second;
   LinkCutTree<RmaxQ> lct(n);
+  for (int i = 0; i < n; i++) lct.set_val(i, {-1, i});
   for (int i = 0; i < M; i++) {
     auto [A, B] = edges[i];
     int u = index[A], v = index[B];

@@ -1,4 +1,4 @@
-#define PROBLEM                                                         \
+#define PROBLEM \
   "https://www.hackerrank.com/contests/happy-query-contest/challenges/minimum-history-query"
 
 // 永続化 の verify

@@ -11,11 +11,6 @@ template <std::uint64_t mod, std::uint64_t prim_root, class ModInt>
 struct ModIntImpl {
   static constexpr std::uint64_t modulo() { return mod; }
   static constexpr std::uint64_t pr_rt() { return prim_root; }
-  ModInt operator+(const ModInt &rhs) const { return ModInt(*this) += rhs; }
-  ModInt operator-(const ModInt &rhs) const { return ModInt(*this) -= rhs; }
-  ModInt operator*(const ModInt &rhs) const { return ModInt(*this) *= rhs; }
-  ModInt operator/(const ModInt &rhs) const { return ModInt(*this) /= rhs; }
-  constexpr bool operator!=(const ModInt &rhs) const { return !(*this == rhs); }
   friend std::ostream &operator<<(std::ostream &os, const ModInt &rhs) {
     return os << rhs.val();
   }
@@ -25,14 +20,13 @@ template <std::uint64_t mod, std::uint64_t prim_root = 0>
 class ModInt
     : public internal::ModIntImpl<mod, prim_root, ModInt<mod, prim_root>> {
   using u64 = std::uint64_t;
-  using u128 = __uint128_t;
   static constexpr u64 mul_inv(u64 n, int e = 6, u64 x = 1) {
     return e == 0 ? x : mul_inv(n, e - 1, x * (2 - x * n));
   }
-  static constexpr u64 inv = mul_inv(mod, 6, 1), r2 = -u128(mod) % mod;
-  static constexpr u64 init(u64 w) { return reduce(u128(w) * r2); }
-  static constexpr u64 reduce(const u128 w) {
-    return u64(w >> 64) + mod - ((u128(u64(w) * inv) * mod) >> 64);
+  static constexpr u64 inv = mul_inv(mod, 6, 1), r2 = -__uint128_t(mod) % mod;
+  static constexpr u64 init(u64 w) { return reduce(__uint128_t(w) * r2); }
+  static constexpr u64 reduce(const __uint128_t w) {
+    return u64(w >> 64) + mod - ((__uint128_t(u64(w) * inv) * mod) >> 64);
   }
   u64 x;
 
@@ -51,14 +45,17 @@ class ModInt
     return x -= rhs.x, x += (mod << 1) & -(x >> 63), *this;
   }
   constexpr ModInt &operator*=(const ModInt &rhs) {
-    return this->x = reduce(u128(this->x) * rhs.x), *this;
+    return this->x = reduce(__uint128_t(this->x) * rhs.x), *this;
   }
   constexpr ModInt &operator/=(const ModInt &rhs) {
     return this->operator*=(rhs.inverse());
   }
-  constexpr bool operator==(const ModInt &rhs) const {
-    return norm(x) == norm(rhs.x);
-  }
+  ModInt operator+(const ModInt &rhs) const { return ModInt(*this) += rhs; }
+  ModInt operator-(const ModInt &rhs) const { return ModInt(*this) -= rhs; }
+  ModInt operator*(const ModInt &rhs) const { return ModInt(*this) *= rhs; }
+  ModInt operator/(const ModInt &rhs) const { return ModInt(*this) /= rhs; }
+  bool operator==(const ModInt &rhs) const { return norm(x) == norm(rhs.x); }
+  bool operator!=(const ModInt &rhs) const { return !(*this == rhs); }
   constexpr ModInt pow(std::uint64_t k) const {
     ModInt ret = ModInt(1);
     for (ModInt base = *this; k; k >>= 1, base *= base)
@@ -98,7 +95,12 @@ struct ModInt<2, pr_rt> : internal::ModIntImpl<2, pr_rt, ModInt<2, pr_rt>> {
   constexpr ModInt &operator-=(const ModInt &rhs) { return x ^= rhs.x, *this; }
   constexpr ModInt &operator*=(const ModInt &rhs) { return x &= rhs.x, *this; }
   constexpr ModInt &operator/=(const ModInt &rhs) { return x &= rhs.x, *this; }
-  constexpr bool operator==(const ModInt &rhs) const { return x == rhs.x; }
+  ModInt operator+(const ModInt &rhs) const { return ModInt(*this) += rhs; }
+  ModInt operator-(const ModInt &rhs) const { return ModInt(*this) -= rhs; }
+  ModInt operator*(const ModInt &rhs) const { return ModInt(*this) *= rhs; }
+  ModInt operator/(const ModInt &rhs) const { return ModInt(*this) /= rhs; }
+  bool operator==(const ModInt &rhs) const { return x == rhs.x; }
+  bool operator!=(const ModInt &rhs) const { return !(*this == rhs); }
   constexpr ModInt pow(std::uint64_t k) const { return !k ? ModInt(1) : *this; }
   constexpr ModInt sqrt() const { return *this; }
   constexpr ModInt inverse() const { return *this; }

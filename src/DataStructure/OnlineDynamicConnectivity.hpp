@@ -3,7 +3,7 @@
 
 #include "src/DataStructure/EulerTourTree.hpp"
 /**
- * @title Online-Dynamic-Connectivity(シンプル)
+ * @title Online-Dynamic-Connectivity
  * @category データ構造
  * @brief link,cut: O(log^2 N)
  * @brief connected: O(log N)

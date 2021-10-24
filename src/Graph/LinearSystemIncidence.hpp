@@ -11,21 +11,17 @@
 
 template <typename T>
 class LinearSystemIncidence {
-  struct Edge {
-    int id, to;
-    bool fwd;
-  };
   int m;
   std::vector<T> x;
   std::vector<char> used;
-  std::vector<std::vector<Edge>> adj;
+  std::vector<std::vector<std::tuple<int, int, bool>>> adj;
   T dfs(std::vector<T> &b, int u) {
     used[u] = true;
     T ret = b[u];
-    for (Edge e : adj[u])
-      if (!used[e.to]) {
-        T tmp = dfs(b, e.to);
-        x[e.id] = e.fwd ? tmp : -tmp, ret += tmp;
+    for (auto [id, to, fwd] : adj[u])
+      if (!used[to]) {
+        T tmp = dfs(b, to);
+        x[id] = fwd ? tmp : -tmp, ret += tmp;
       }
     return ret;
   }

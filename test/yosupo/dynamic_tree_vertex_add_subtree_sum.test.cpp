@@ -2,7 +2,7 @@
   "https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_subtree_sum"
 #include <bits/stdc++.h>
 
-#include "src/DataStructure/EulerTourTree_Monoid.hpp"
+#include "src/DataStructure/EulerTourTree.hpp"
 using namespace std;
 
 struct RsumQ {
@@ -16,7 +16,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, Q;
   cin >> N >> Q;
-  EulerTourTree_Monoid<RsumQ> ett(N);
+  EulerTourTree<RsumQ> ett(N);
   for (int i = 0; i < N; i++) {
     long long a;
     cin >> a;

@@ -13,7 +13,7 @@ struct RsumQ {
   static T ti() { return 0; }
   static T op(T vl, T vr) { return vl + vr; }
 };
-signed AOJ_2270() {
+signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
   int N, Q;

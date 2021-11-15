@@ -21,7 +21,7 @@ int main() {
   for (int i = 0; i < N; i++) {
     int a;
     cin >> a;
-    dicon.set_val(i, a);
+    dicon.set(i, a);
   }
   int t;
   int u, v;
@@ -35,7 +35,7 @@ int main() {
       dicon.cut(u, v);
     } else if (t == 2) {
       cin >> u >> v;
-      dicon.set_val(u, dicon[u] + v);
+      dicon.set(u, dicon[u] + v);
     } else {
       cin >> v;
       cout << dicon.fold(v) << '\n';

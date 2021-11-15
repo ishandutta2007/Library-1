@@ -221,7 +221,7 @@ class SplayTree {
   std::size_t size() { return root ? root->size : 0; }
   void clear() { root = nullptr; }
   const T &operator[](std::size_t k) { return splay(root, k), root->val; }
-  void set_val(std::size_t k, T val) {
+  void set(std::size_t k, T val) {
     splay(root, k), root->val = val, pushup(root);
   }
   void set_balance() {

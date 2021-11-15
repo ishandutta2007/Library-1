@@ -9,7 +9,7 @@
  * 最大値取得したいなら(-a,-b)を挿入して-最小値を取得
  * 浮動小数点も行けるはず
  */
-// double型での使用 : https://atcoder.jp/contests/arc051/tasks/arc051_d
+
 // BEGIN CUT HERE
 
 template <typename T, std::size_t LIM = (1 << 23)>
@@ -59,8 +59,8 @@ struct LiChaoTree {
              const T &x_r) {
     if (sgn(x_r - l) <= 0 || 0 <= sgn(x_l - r)) return t;
     if (0 <= sgn(x_l - l) && sgn(x_r - r) <= 0) return addl(t, f, x_l, x_r);
-    if (t && sgn(t->f.get(x_l) - f.get(x_l)) <= 0
-        && sgn(t->f.get(x_r) - f.get(x_r)) <= 0)
+    if (t && sgn(t->f.get(x_l) - f.get(x_l)) <= 0 &&
+        sgn(t->f.get(x_r) - f.get(x_r)) <= 0)
       return t;
     if (!t) t = new Node(Line(0, INF));
     T x_m = (x_l + x_r) / 2;

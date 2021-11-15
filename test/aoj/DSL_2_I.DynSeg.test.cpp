@@ -4,7 +4,7 @@
 // 遅延伝搬のverify
 
 #include <bits/stdc++.h>
-#include "src/DataStructure/DynamicSegmentTree.hpp"
+#include "src/DataStructure/SegmentTree_Dynamic.hpp"
 
 using namespace std;
 
@@ -22,7 +22,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int n, q;
   cin >> n >> q;
-  DynamicSegmentTree<RSQandRUQ> seg(n, 0);
+  SegmentTree_Dynamic<RSQandRUQ> seg(n, 0);
   for (int i = 0; i < q; i++) {
     int op, s, t;
     cin >> op >> s >> t;

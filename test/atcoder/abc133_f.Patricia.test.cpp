@@ -3,7 +3,7 @@
 // 永続配列(at) の verify
 
 #include <bits/stdc++.h>
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
+#include "src/DataStructure/SegmentTree_Patricia.hpp"
 #include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;
 signed main() {
@@ -20,7 +20,7 @@ signed main() {
     adj[a].emplace_back(b, c, d);
     adj[b].emplace_back(a, c, d);
   }
-  using PerArr = SegmentTree_Dynamic<int, true, 17>;
+  using PerArr = SegmentTree_Patricia<int, true, 17>;
   PerArr Arr1[N], Arr2[N];
   int sum[N];
   sum[0] = 0;

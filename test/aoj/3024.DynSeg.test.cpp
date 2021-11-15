@@ -4,7 +4,7 @@
 // 永続化のverify
 
 #include <bits/stdc++.h>
-#include "src/DataStructure/DynamicSegmentTree.hpp"
+#include "src/DataStructure/SegmentTree_Dynamic.hpp"
 using namespace std;
 
 struct RMQ {
@@ -20,9 +20,9 @@ signed main() {
   int A[N], B[N];
   for (int i = 0; i < N; i++) cin >> A[i];
   for (int i = 0; i < N; i++) cin >> B[i];
-  DynamicSegmentTree<RMQ, true> seg[2] = {
-      DynamicSegmentTree<RMQ, true>(A, A + N),
-      DynamicSegmentTree<RMQ, true>(B, B + N)};
+  SegmentTree_Dynamic<RMQ, true> seg[2] = {
+      SegmentTree_Dynamic<RMQ, true>(A, A + N),
+      SegmentTree_Dynamic<RMQ, true>(B, B + N)};
   int Q;
   cin >> Q;
   for (int i = 0; i < Q; i++) {

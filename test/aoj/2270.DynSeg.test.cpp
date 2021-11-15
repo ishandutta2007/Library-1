@@ -4,7 +4,7 @@
 // 永続化 + find * 4 の verify
 
 #include <bits/stdc++.h>
-#include "src/DataStructure/DynamicSegmentTree.hpp"
+#include "src/DataStructure/SegmentTree_Dynamic.hpp"
 #include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;
 
@@ -31,7 +31,7 @@ signed main() {
     adj[b].push_back(a);
   }
   lct.evert(0);
-  using Seg = DynamicSegmentTree<RsumQ, true>;
+  using Seg = SegmentTree_Dynamic<RsumQ, true>;
   Seg segs[N + 1];
   auto dfs = [&adj, &segs, &x](auto f, int v, int p) -> void {
     segs[v] = segs[p];

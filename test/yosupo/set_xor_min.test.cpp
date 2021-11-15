@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/set_xor_min"
 #include <bits/stdc++.h>
-#include "src/DataStructure/DynamicSegmentTree.hpp"
+#include "src/DataStructure/SegmentTree_Dynamic.hpp"
 
 // find + xor の verify
 
@@ -14,7 +14,7 @@ struct RsumQ {
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  DynamicSegmentTree<RsumQ> S;
+  SegmentTree_Dynamic<RsumQ> S;
   auto check = [&](int x) { return x >= 1; };
   int Q;
   cin >> Q;

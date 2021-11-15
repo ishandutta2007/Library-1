@@ -3,7 +3,7 @@
 //遅延伝搬のverify
 
 #include <bits/stdc++.h>
-#include "src/DataStructure/DynamicSegmentTree.hpp"
+#include "src/DataStructure/SegmentTree_Dynamic.hpp"
 #include "src/Math/ModInt.hpp"
 
 using namespace std;
@@ -29,7 +29,7 @@ signed main() {
   cin >> N >> Q;
   Mint a[N];
   for (int i = 0; i < N; i++) cin >> a[i];
-  DynamicSegmentTree<RaffineQ_RsumQ> seg(a, a + N);
+  SegmentTree_Dynamic<RaffineQ_RsumQ> seg(a, a + N);
   while (Q--) {
     bool op;
     int l, r;

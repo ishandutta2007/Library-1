@@ -36,7 +36,7 @@ signed main() {
   for (int i = 0; i < N; i++) {
     long long w;
     cin >> w;
-    lct.set_val(i, {w, w, w, w, 1});
+    lct.set(i, {w, w, w, w, 1});
   }
   for (int i = 0; i < N - 1; i++) {
     int u, v;

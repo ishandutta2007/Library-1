@@ -31,7 +31,7 @@ signed main() {
   Mint S[N], C[N];
   for (int i = 0; i < N; i++) cin >> S[i];
   for (int i = 0; i < N; i++) cin >> C[i];
-  for (int i = 0; i < N; i++) lct.set_val(i, {S[i], C[i]});
+  for (int i = 0; i < N; i++) lct.set(i, {S[i], C[i]});
   for (int i = 0; i < N - 1; i++) {
     int A, B;
     cin >> A >> B;

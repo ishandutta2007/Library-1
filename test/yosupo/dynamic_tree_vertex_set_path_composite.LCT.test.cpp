@@ -23,7 +23,7 @@ signed main() {
   for (int i = 0; i < N; i++) {
     Mint a, b;
     cin >> a >> b;
-    lct.set_val(i, {a, b});
+    lct.set(i, {a, b});
   }
   for (int i = 0; i < N - 1; i++) {
     int u, v;
@@ -42,7 +42,7 @@ signed main() {
       int p;
       Mint c, d;
       cin >> p >> c >> d;
-      lct.set_val(p, {c, d});
+      lct.set(p, {c, d});
     } else {
       int u, v;
       Mint x;

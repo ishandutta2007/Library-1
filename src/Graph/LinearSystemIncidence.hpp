@@ -7,6 +7,11 @@
  * O(V+E)
  */
 
+// verify用:
+// https://atcoder.jp/contests/abc155/tasks/abc155_f
+// https://atcoder.jp/contests/agc035/tasks/agc035_b
+// https://atcoder.jp/contests/cf17-final/tasks/cf17_final_e
+
 // BEGIN CUT HERE
 
 template <typename T>
@@ -21,7 +26,10 @@ class LinearSystemIncidence {
     for (auto [id, to, fwd] : adj[u])
       if (!used[to]) {
         T tmp = dfs(b, to);
-        x[id] = fwd ? tmp : -tmp, ret += tmp;
+        if constexpr (std::is_same_v<T, bool>)
+          x[id] = tmp, ret ^= tmp;
+        else
+          x[id] = fwd ? tmp : -tmp, ret += tmp;
       }
     return ret;
   }

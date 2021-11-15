@@ -29,7 +29,7 @@ signed main() {
   int n = res.first.size();
   auto index = res.second;
   LinkCutTree<RmaxQ> lct(n);
-  for (int i = 0; i < n; i++) lct.set_val(i, {-1, i});
+  for (int i = 0; i < n; i++) lct.set(i, {-1, i});
   for (int i = 0; i < M; i++) {
     auto [A, B] = edges[i];
     int u = index[A], v = index[B];
@@ -44,14 +44,14 @@ signed main() {
     if (op == 1) {
       int u = index[--x];
       pq[u].push(y);
-      lct.set_val(u, make_pair(pq[u].top(), u));
+      lct.set(u, make_pair(pq[u].top(), u));
     } else {
       int u = index[--x], v = index[--y];
       auto [ans, i] = lct.fold(u, v);
       cout << ans << endl;
       if (ans != -1) {
         pq[i].pop();
-        lct.set_val(i, make_pair(pq[i].top(), i));
+        lct.set(i, make_pair(pq[i].top(), i));
       }
     }
   }

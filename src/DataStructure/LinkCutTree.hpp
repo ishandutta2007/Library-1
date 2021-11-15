@@ -170,9 +170,9 @@ class LinkCutTree {
     return ns[x].par ? u - &ns[0] : -1;
   }
   const T &operator[](std::size_t k) { return expose(&ns[k]), ns[k].val; }
-  void set_val(std::size_t k, T v) {
+  void set(std::size_t k, T v) {
     static_assert(semigroup<M>::value || dual<M>::value,
-                  "\"set_val\" is not available\n");
+                  "\"set\" is not available\n");
     expose(&ns[k]), ns[k].val = v;
     if constexpr (semigroup<M>::value) pushup(&ns[k]);
   }

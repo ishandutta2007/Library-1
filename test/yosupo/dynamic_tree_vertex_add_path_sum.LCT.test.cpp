@@ -18,7 +18,7 @@ signed main() {
   for (int i = 0; i < N; i++) {
     long long a;
     cin >> a;
-    lct.set_val(i, a);
+    lct.set(i, a);
   }
   for (int i = 0; i < N - 1; i++) {
     int u, v;
@@ -37,7 +37,7 @@ signed main() {
       int p;
       long long x;
       cin >> p >> x;
-      lct.set_val(p, lct[p] + x);
+      lct.set(p, lct[p] + x);
     } else {
       int u, v;
       cin >> u >> v;

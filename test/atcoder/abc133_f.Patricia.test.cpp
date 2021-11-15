@@ -27,16 +27,8 @@ signed main() {
   auto dfs = [&adj, &Arr1, &Arr2, &sum](auto f, int v, int p) -> void {
     for (auto [u, c, d] : adj[v])
       if (u != p) {
-        Arr1[u] = Arr1[v];
-        if (Arr1[u].is_null(c))
-          Arr1[u][c] = 1;
-        else
-          Arr1[u][c] += 1;
-        Arr2[u] = Arr2[v];
-        if (Arr2[u].is_null(c))
-          Arr2[u][c] = d;
-        else
-          Arr2[u][c] += d;
+        Arr1[u] = Arr1[v], Arr2[u] = Arr2[v];
+        Arr1[u][c] += 1, Arr2[u][c] += d;
         sum[u] = sum[v] + d;
         f(f, u, v);
       }

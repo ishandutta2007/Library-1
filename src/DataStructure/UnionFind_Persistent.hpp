@@ -12,7 +12,7 @@
 // BEGIN CUT HERE
 
 struct UnionFind_Persistent {
-  PersistentArray<int> par;
+  PersistentArray<int, 64> par;
   UnionFind_Persistent() {}
   UnionFind_Persistent(int n) : par(n, -1) {}
   bool unite(int u, int v) {

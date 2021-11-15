@@ -213,14 +213,31 @@ class SplayTree {
   }
   static std::string which_available() {
     std::string ret = "";
-    if constexpr (semigroup<M>::value) ret += "\"fold\" ";
+    if constexpr (semigroup<M>::value)
+      ret += "\"fold\" ";
+    else
+      ret += "\"at\" ";
     if constexpr (dual<M>::value) ret += "\"apply\" ";
     if constexpr (reversible) ret += "\"reverse\" ";
     return ret;
   }
   std::size_t size() { return root ? root->size : 0; }
   void clear() { root = nullptr; }
-  const T &operator[](std::size_t k) { return splay(root, k), root->val; }
+  template <class L = M,
+            typename std::enable_if_t<semigroup<L>::value> * = nullptr>
+  const T &operator[](id_t k) {
+    return get(k);
+  }
+  template <class L = M,
+            typename std::enable_if_t<!semigroup<L>::value> * = nullptr>
+  T &operator[](id_t k) {
+    return at(k);
+  }
+  const T &get(std::size_t k) { return splay(root, k), root->val; }
+  T &at(std::size_t k) {
+    static_assert(!semigroup<M>::value, "\"at\" is not available");
+    return splay(root, k), root->val;
+  }
   void set(std::size_t k, T val) {
     splay(root, k), root->val = val, pushup(root);
   }

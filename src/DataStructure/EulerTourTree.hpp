@@ -166,7 +166,17 @@ class EulerTourTree {
     ni += N;
     for (int i = 0; i < N; i++) n[i + n_st].s = n[i + n_st].d = i;
   }
-  const T& operator[](vertex_id x) { return n[x + n_st].val; }
+  const T& operator[](vertex_id x) { return get(x); }
+  const T& get(vertex_id x) {
+    static_assert(monoid<M>::value || dual<M>::value,
+                  "\"get\" is not available\n");
+    return n[x + n_st].val;
+  }
+  void set(vertex_id x, T val) {
+    static_assert(monoid<M>::value || dual<M>::value,
+                  "\"set\" is not available\n");
+    splay(x += n_st), n[x].val = val, pushup(x);
+  }
   bool edge_exist(vertex_id x, vertex_id y) {
     if (x > y) std::swap(x, y);
     return emp.count(((long long)x << 32) | (long long)y);
@@ -205,11 +215,6 @@ class EulerTourTree {
     else
       n[x].flag &= ~(0b0100);
     pushup(x);
-  }
-  void set(vertex_id x, T val) {
-    static_assert(monoid<M>::value || dual<M>::value,
-                  "\"set\" is not available\n");
-    splay(x += n_st), n[x].val = val, pushup(x);
   }
   std::size_t tree_size(vertex_id x) { return splay(x += n_st), n[x].sz; }
   T fold_tree(vertex_id x) {

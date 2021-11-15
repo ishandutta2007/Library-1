@@ -169,7 +169,12 @@ class LinkCutTree {
     Node *u = expose(&ns[y]);
     return ns[x].par ? u - &ns[0] : -1;
   }
-  const T &operator[](std::size_t k) { return expose(&ns[k]), ns[k].val; }
+  const T &operator[](std::size_t k) { return get(k); }
+  const T &get(std::size_t k) {
+    static_assert(semigroup<M>::value || dual<M>::value,
+                  "\"get\" is not available\n");
+    return expose(&ns[k]), ns[k].val;
+  }
   void set(std::size_t k, T v) {
     static_assert(semigroup<M>::value || dual<M>::value,
                   "\"set\" is not available\n");
@@ -186,6 +191,8 @@ class LinkCutTree {
   }
   static std::string which_available() {
     std::string ret = "";
+    if constexpr (semigroup<M>::value || dual<M>::value)
+      ret += "\"set\" \"get\" ";
     if constexpr (semigroup<M>::value) ret += "\"fold\" ";
     if constexpr (dual<M>::value) ret += "\"apply\" ";
     return ret;

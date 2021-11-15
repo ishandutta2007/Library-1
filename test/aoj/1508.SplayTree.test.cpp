@@ -27,7 +27,7 @@ signed main() {
     } else if (x == 1) {
       cout << splay.fold(y, z + 1) << '\n';
     } else {
-      splay.set_val(y, z);
+      splay.set(y, z);
     }
   }
   return 0;

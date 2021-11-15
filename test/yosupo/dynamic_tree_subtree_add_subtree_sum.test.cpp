@@ -25,7 +25,7 @@ signed main() {
   for (int i = 0; i < N; i++) {
     long long a;
     cin >> a;
-    ett.set_val(i, a);
+    ett.set(i, a);
   }
   for (int i = 0; i < N - 1; i++) {
     int u, v;

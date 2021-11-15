@@ -20,7 +20,7 @@ signed main() {
   for (int i = 0; i < N; i++) {
     long long a;
     cin >> a;
-    ett.set_val(i, a);
+    ett.set(i, a);
   }
   for (int i = 0; i < N - 1; i++) {
     int u, v;
@@ -39,7 +39,7 @@ signed main() {
       int p;
       long long x;
       cin >> p >> x;
-      ett.set_val(p, ett[p] + x);
+      ett.set(p, ett[p] + x);
     } else {
       int v, p;
       cin >> v >> p;

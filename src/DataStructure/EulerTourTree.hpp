@@ -206,9 +206,9 @@ class EulerTourTree {
       n[x].flag &= ~(0b0100);
     pushup(x);
   }
-  void set_val(vertex_id x, T val) {
+  void set(vertex_id x, T val) {
     static_assert(monoid<M>::value || dual<M>::value,
-                  "\"set_val\" is not available\n");
+                  "\"set\" is not available\n");
     splay(x += n_st), n[x].val = val, pushup(x);
   }
   std::size_t tree_size(vertex_id x) { return splay(x += n_st), n[x].sz; }

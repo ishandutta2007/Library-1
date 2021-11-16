@@ -7,7 +7,9 @@
  *  O(N)
  */
 
-// verify用:http://codeforces.com/contest/622/problem/F
+// verify用:
+// http://codeforces.com/contest/622/problem/F
+// https://atcoder.jp/contests/arc033/tasks/arc033_4
 
 // BEGIN CUT HERE
 

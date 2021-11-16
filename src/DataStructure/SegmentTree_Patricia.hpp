@@ -103,13 +103,13 @@ class SegmentTree_Patricia {
     return M::op(fold(t->ch[flg], l, r, bias), fold(t->ch[!flg], l, r, bias));
   }
   void set_val(Node *&t, const id_t &k, const T &val) {
-    if (!t) return t = new Node(k, HEIGHT + 1, val), void();
+    if (!t) return t = new Node{k, HEIGHT + 1, val}, void();
     if constexpr (persistent) t = new Node{*t};
     id_t bits = (k >> ((HEIGHT + 1) - t->len));
     if (bits != t->bits) {
       std::uint8_t i = 64 - __builtin_clzll(bits ^ t->bits);
       bool flg = (t->bits >> (i - 1)) & 1;
-      t->ch[flg] = new Node{*t}, t->ch[!flg] = new Node(k, HEIGHT + 1, val);
+      t->ch[flg] = new Node{*t}, t->ch[!flg] = new Node{k, HEIGHT + 1, val};
       t->len -= i, t->bits >>= i;
     } else if (t->len != HEIGHT + 1) {
       set_val(t->ch[(k >> (HEIGHT - t->len)) & 1], k, val);
@@ -118,13 +118,14 @@ class SegmentTree_Patricia {
     if constexpr (monoid<M>::value) pushup(t);
   }
   T &at_val(Node *&t, const id_t &k) {
-    if (!t) return t = new Node(k, HEIGHT + 1), t->val;
+    if (!t) return t = new Node{k, HEIGHT + 1, def_val()}, t->val;
     if constexpr (persistent) t = new Node{*t};
     id_t bits = (k >> ((HEIGHT + 1) - t->len));
     if (bits != t->bits) {
       std::uint8_t i = 64 - __builtin_clzll(bits ^ t->bits);
       bool flg = (t->bits >> (i - 1)) & 1;
-      t->ch[flg] = new Node{*t}, t->ch[!flg] = new Node(k, HEIGHT + 1);
+      t->ch[flg] = new Node{*t},
+      t->ch[!flg] = new Node{k, HEIGHT + 1, def_val()};
       t->len -= i, t->bits >>= i;
       return t->val;
     } else if (t->len != HEIGHT + 1) {
@@ -197,9 +198,8 @@ class SegmentTree_Patricia {
   SegmentTree_Patricia(T *bg, T *ed) {
     build(root, ed - bg, {0, 1LL << HEIGHT}, bg);
   }
-  SegmentTree_Patricia(const std::vector<T> &ar) {
-    build(root, ar.size(), {0, 1LL << HEIGHT}, ar.data());
-  }
+  SegmentTree_Patricia(const std::vector<T> &ar)
+      : SegmentTree_Patricia(ar.data(), ar.data() + ar.size()) {}
   void set(id_t k, T val) { set_val(root, k, val); }
   T get(id_t k) { return get_val(root, k); }
   bool is_null(id_t k) { return is_null(root, k); }

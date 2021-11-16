@@ -217,9 +217,8 @@ class SegmentTree_Dynamic {
   SegmentTree_Dynamic(T *bg, T *ed) {
     build(root, ed - bg, {0, 1LL << HEIGHT}, bg);
   }
-  SegmentTree_Dynamic(const std::vector<T> &ar) {
-    build(root, ar.size(), {0, 1LL << HEIGHT}, ar.data());
-  }
+  SegmentTree_Dynamic(const std::vector<T> &ar)
+      : SegmentTree_Dynamic(ar.data(), ar.data() + ar.size()) {}
   void set(id_t k, T val) { set_val(root, k, val, HEIGHT); }
   T get(id_t k) { return get_val(root, k, HEIGHT); }
   bool is_null(id_t k) { return is_null(root, k, HEIGHT); }

@@ -192,10 +192,10 @@ class SegmentTree_Patricia {
 
  public:
   SegmentTree_Patricia(Node *t = nullptr) : root(t) {}
-  SegmentTree_Patricia(std::size_t n, T val) {
+  SegmentTree_Patricia(std::size_t n, T val) : root(nullptr) {
     build(root, n, {0, 1LL << HEIGHT}, val);
   }
-  SegmentTree_Patricia(T *bg, T *ed) {
+  SegmentTree_Patricia(T *bg, T *ed) : root(nullptr) {
     build(root, ed - bg, {0, 1LL << HEIGHT}, bg);
   }
   SegmentTree_Patricia(const std::vector<T> &ar)

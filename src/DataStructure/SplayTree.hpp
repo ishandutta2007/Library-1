@@ -204,9 +204,8 @@ class SplayTree {
   SplayTree(Node *t = nullptr) : root(t) {}
   SplayTree(std::size_t n, T val) { root = make_tree(0, n, val); }
   SplayTree(T *beg, T *ed) { root = make_tree(beg, ed); }
-  SplayTree(const std::vector<T> &ar) {
-    root = make_tree(ar.data(), ar.data() + ar.size());
-  }
+  SplayTree(const std::vector<T> &ar)
+      : SplayTree(ar.data(), ar.data() + ar.size()) {}
   std::vector<T> dump() {
     std::vector<T> ret(size());
     return dump(ret.begin(), root), ret;

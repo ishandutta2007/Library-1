@@ -17,10 +17,7 @@ class SubproductTree {
   std::vector<mint> xs;
   std::vector<poly> buf;
   void pre(int l, int r, int k) {
-    if (r - l == 1) {
-      buf[k] = {-xs[l], 1};
-      return;
-    }
+    if (r - l == 1) return buf[k] = {-xs[l], 1}, void();
     pre(l, (l + r) / 2, k * 2), pre((l + r) / 2, r, k * 2 + 1);
     buf[k] = buf[k * 2] * buf[k * 2 + 1];
   }
@@ -49,8 +46,8 @@ class SubproductTree {
     std::vector<mint> vs = multi_eval(w);
     auto rec = [&](auto dfs, int l, int r, int k) -> poly {
       if (r - l == 1) return poly({ys[l] / vs[l]});
-      return buf[k * 2 + 1] * dfs(dfs, l, (l + r) / 2, k * 2)
-             + buf[k * 2] * dfs(dfs, (l + r) / 2, r, k * 2 + 1);
+      return buf[k * 2 + 1] * dfs(dfs, l, (l + r) / 2, k * 2) +
+             buf[k * 2] * dfs(dfs, (l + r) / 2, r, k * 2 + 1);
     };
     poly ret = rec(rec, 0, n, 1);
     return ret.resize(n), ret;

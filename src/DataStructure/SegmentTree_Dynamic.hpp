@@ -211,10 +211,10 @@ class SegmentTree_Dynamic {
 
  public:
   SegmentTree_Dynamic(Node *t = nullptr) : root(t) {}
-  SegmentTree_Dynamic(std::size_t n, T val) {
+  SegmentTree_Dynamic(std::size_t n, T val) : root(nullptr) {
     build(root, n, {0, 1LL << HEIGHT}, val);
   }
-  SegmentTree_Dynamic(T *bg, T *ed) {
+  SegmentTree_Dynamic(T *bg, T *ed) : root(nullptr) {
     build(root, ed - bg, {0, 1LL << HEIGHT}, bg);
   }
   SegmentTree_Dynamic(const std::vector<T> &ar)

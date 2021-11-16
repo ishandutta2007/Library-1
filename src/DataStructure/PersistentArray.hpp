@@ -3,11 +3,14 @@
 /**
  * @title 永続配列
  * @category データ構造
+ * M分木
+ * get: O(log_M N)
+ * at: O(M log_M N)
  */
 
 // BEGIN CUT HERE
 
-template <class T, std::size_t M = 32>
+template <class T, std::size_t M = 8>
 class PersistentArray {
   struct Node {
     T val;

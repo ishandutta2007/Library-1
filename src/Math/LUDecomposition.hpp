@@ -128,7 +128,8 @@ class LUDecomposition<bool, MAX_ROWS, MAX_COLS> {
     std::iota(perm.begin(), perm.end(), 0);
     std::bitset<MAX_COLS> mask;
     for (std::size_t c = 1; c < cols; c++) mask.set(c);
-    for (std::size_t c = 0; c != cols && piv.size() != rows; mask.reset(++c)) {
+    for (std::size_t c = 0; c < cols && piv.size() < rows; c++) {
+      mask.reset(c);
       auto pos = piv.size();
       for (std::size_t r = piv.size(); r < rows; r++)
         if (bool(dat[r][c])) pos = r, r = rows;
@@ -141,7 +142,7 @@ class LUDecomposition<bool, MAX_ROWS, MAX_COLS> {
         dat[r][c] = 0, dat[r][piv.size()] = m;
         if (m) dat[r] ^= dat[piv.size()] & mask;
       }
-      piv.emplace_back(c);
+      piv.push_back(c);
     }
     for (std::size_t j = 0; j < cols; j++)
       for (std::size_t i = j + 1; i < rows; i++) tdat[j][i] = dat[i][j];

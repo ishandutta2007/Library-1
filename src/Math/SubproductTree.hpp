@@ -8,6 +8,9 @@
  *  どちらもO(N log^2 N)
  */
 
+// verify用:
+// https://atcoder.jp/contests/arc033/tasks/arc033_4
+
 // BEGIN CUT HERE
 
 template <typename mint>

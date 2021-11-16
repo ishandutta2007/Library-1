@@ -10,6 +10,8 @@
  * 浮動小数点も行けるはず
  */
 
+// verify用: https://atcoder.jp/contests/arc051/tasks/arc051_d
+
 // BEGIN CUT HERE
 
 template <typename T, std::size_t LIM = (1 << 23)>

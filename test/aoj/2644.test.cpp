@@ -7,7 +7,6 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-
   string s;
   int m;
   cin >> s >> m;
@@ -31,8 +30,8 @@ signed main() {
     if (rx - lx <= 0 || ry - ly <= 0) {
       ans = 0;
     } else {
-      int a = dst.query(ly, ry).first;
-      int b = dst.query(lx, rx).second;
+      int a = dst.fold(ly, ry).first;
+      int b = dst.fold(lx, rx).second;
       if (b + (int)x.size() > a + (int)y.size())
         ans = 0;
       else

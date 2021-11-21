@@ -22,7 +22,7 @@
 #define HAS_MEMBER(member) HAS_CHECK(member, int dummy = (&U::member, 0))
 #define HAS_TYPE(member) HAS_CHECK(member, class dummy = typename U::member)
 
-template <typename M = void>
+template <typename M = void, std::size_t NODE_SIZE = 303030 * 4>
 class EulerTourTree {
   HAS_MEMBER(op);
   HAS_MEMBER(ti);
@@ -37,7 +37,7 @@ class EulerTourTree {
       std::conjunction<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
   using node_id = std::int_least32_t;
   using vertex_id = std::int_least32_t;
-  template <class tDerived, class U = std::nullptr_t, class F = std::nullptr_t>
+  template <class U = std::nullptr_t, class F = std::nullptr_t>
   struct Node_B {
     using T = U;
     using E = F;
@@ -47,22 +47,22 @@ class EulerTourTree {
     std::int_least8_t flag;
   };
   template <bool mo_, bool du_, typename tEnable = void>
-  struct Node_D : Node_B<Node_D<mo_, du_, tEnable>> {};
+  struct Node_D : Node_B<> {};
   template <bool mo_, bool du_>
   struct Node_D<mo_, du_, typename std::enable_if_t<mo_ && !du_>>
-      : Node_B<Node_D<mo_, du_>, typename M::T> {
+      : Node_B<typename M::T> {
     typename M::T val = M::ti(), sum = M::ti();
   };
   template <bool mo_, bool du_>
   struct Node_D<mo_, du_, typename std::enable_if_t<!mo_ && du_>>
-      : Node_B<Node_D<mo_, du_>, typename M::T, typename M::E> {
+      : Node_B<typename M::T, typename M::E> {
     typename M::T val;
     typename M::E lazy;
     bool lazy_flg;
   };
   template <bool mo_, bool du_>
   struct Node_D<mo_, du_, typename std::enable_if_t<mo_ && du_>>
-      : Node_B<Node_D<mo_, du_>, typename M::T, typename M::E> {
+      : Node_B<typename M::T, typename M::E> {
     typename M::T val = M::ti(), sum = M::ti();
     typename M::E lazy;
     bool lazy_flg;
@@ -74,7 +74,6 @@ class EulerTourTree {
   using E = typename Node::E;
 
  private:
-  static constexpr int NODE_SIZE = 303030 * 4;
   static inline Node n[NODE_SIZE];
   static inline node_id ni = 1;
   node_id new_edge(int s, int d, bool hi) {

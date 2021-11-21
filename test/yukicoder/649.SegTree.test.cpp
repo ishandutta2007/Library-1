@@ -15,8 +15,7 @@ signed main() {
   int Q, K;
   cin >> Q >> K;
   K--;
-  vector<long long> query;
-  vector<long long> x;
+  vector<long long> query, x;
   while (Q--) {
     long long v;
     cin >> v;

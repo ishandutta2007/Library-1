@@ -11,7 +11,7 @@
  * 各ノードが部分木のサイズを保持しているのでmapping関数では引数としてsizeを渡せる
  */
 
-// BEGIN CUT HERE
+// bgIN CUT HERE
 #define HAS_CHECK(member, Dummy)                              \
   template <class T>                                          \
   struct has_##member {                                       \
@@ -91,26 +91,36 @@ class SplayTree {
   using T = decltype(Node::val);
   using E = typename Node::E;
   Node *root;
-  Node *make_tree(T *beg, T *ed) {
-    if (beg == ed) return nullptr;
-    T *mid = beg + (ed - beg) / 2;
-    return pushup(
-        new Node{*mid, {make_tree(beg, mid), make_tree(mid + 1, ed)}});
+  Node *build(T *bg, T *ed) {
+    if (bg == ed) return nullptr;
+    T *mid = bg + (ed - bg) / 2;
+    return pushup(new Node{*mid, {build(bg, mid), build(mid + 1, ed)}});
   }
-  Node *make_tree(std::size_t beg, std::size_t ed, const T &val) {
-    if (beg == ed) return nullptr;
-    std::size_t mid = beg + (ed - beg) / 2;
+  Node *build(std::size_t bg, std::size_t ed, const T &val) {
+    if (bg == ed) return nullptr;
+    std::size_t mid = bg + (ed - bg) / 2;
     return pushup(
-        new Node{val, {make_tree(beg, mid, val), make_tree(mid + 1, ed, val)}});
+        new Node{val, {build(bg, mid, val), build(mid + 1, ed, val)}});
   }
   void dump(typename std::vector<T>::iterator itr, Node *t) {
     if (!t) return;
     if constexpr (dual<M>::value) eval_propagate(t);
     if constexpr (reversible) eval_toggle(t);
-    dump(itr, t->ch[0]);
     std::size_t sz = t->ch[0] ? t->ch[0]->size : 0;
-    *(itr + sz) = t->val;
-    dump(itr + sz + 1, t->ch[1]);
+    *(itr + sz) = t->val, dump(itr, t->ch[0]), dump(itr + sz + 1, t->ch[1]);
+  }
+  template <bool b>
+  void helper(Node *&t) {
+    if (!t->ch[b]) return;
+    t->size += t->ch[b]->size;
+    if constexpr (semigroup<M>::value)
+      if constexpr (b) {
+        t->sum = M::op(t->sum, t->ch[1]->sum);
+        if constexpr (reversible) t->rsum = M::op(t->ch[1]->rsum, t->rsum);
+      } else {
+        t->sum = M::op(t->ch[0]->sum, t->sum);
+        if constexpr (reversible) t->rsum = M::op(t->rsum, t->ch[0]->rsum);
+      }
   }
   inline Node *pushup(Node *t) {
     if (!t) return t;
@@ -119,45 +129,29 @@ class SplayTree {
       t->sum = t->val;
       if constexpr (reversible) t->rsum = t->val;
     }
-    if (t->ch[0]) {
-      t->size += t->ch[0]->size;
-      if constexpr (semigroup<M>::value) {
-        t->sum = M::op(t->ch[0]->sum, t->sum);
-        if constexpr (reversible) t->rsum = M::op(t->rsum, t->ch[0]->rsum);
-      }
-    }
-    if (t->ch[1]) {
-      t->size += t->ch[1]->size;
-      if constexpr (semigroup<M>::value) {
-        t->sum = M::op(t->sum, t->ch[1]->sum);
-        if constexpr (reversible) t->rsum = M::op(t->ch[1]->rsum, t->rsum);
-      }
-    }
-    return t;
+    return helper<0>(t), helper<1>(t), t;
   }
-  inline Node *propagate(Node *t, const E &x) {
+  inline void propagate(Node *t, const E &x) {
+    if (!t) return;
     t->lazy = t->lazy_flg ? M::composition(t->lazy, x) : x;
     if constexpr (semigroup<M>::value) {
       t->sum = M::mapping(t->sum, x, t->size);
       if constexpr (reversible) t->rsum = M::mapping(t->rsum, x, t->size);
     }
-    return t->val = M::mapping(t->val, x, 1), t->lazy_flg = true, t;
+    t->val = M::mapping(t->val, x, 1), t->lazy_flg = true;
   }
-  inline Node *toggle(Node *t) {
+  inline void toggle(Node *t) {
+    if (!t) return;
     if constexpr (semigroup<M>::value) std::swap(t->sum, t->rsum);
-    return std::swap(t->ch[0], t->ch[1]), t->rev_flg = !t->rev_flg, t;
+    std::swap(t->ch[0], t->ch[1]), t->rev_flg = !t->rev_flg;
   }
   inline void eval_propagate(Node *t) {
-    if (!t->lazy_flg) return;
-    if (t->ch[0]) propagate(t->ch[0], t->lazy);
-    if (t->ch[1]) propagate(t->ch[1], t->lazy);
-    t->lazy_flg = false;
+    if (t->lazy_flg)
+      propagate(t->ch[0], t->lazy), propagate(t->ch[1], t->lazy),
+          t->lazy_flg = false;
   }
   inline void eval_toggle(Node *t) {
-    if (!t->rev_flg) return;
-    if (t->ch[0]) toggle(t->ch[0]);
-    if (t->ch[1]) toggle(t->ch[1]);
-    t->rev_flg = false;
+    if (t->rev_flg) toggle(t->ch[0]), toggle(t->ch[1]), t->rev_flg = false;
   }
   inline void rot(Node *&t, bool d) {
     Node *s = t->ch[d];
@@ -167,8 +161,7 @@ class SplayTree {
     if (!t) return;
     if constexpr (dual<M>::value) eval_propagate(t);
     if constexpr (reversible) eval_toggle(t);
-    static std::size_t sz;
-    sz = t->ch[0] ? t->ch[0]->size : 0;
+    std::size_t sz = t->ch[0] ? t->ch[0]->size : 0;
     if (sz == k) return;
     bool d = sz < k;
     if (d) k -= sz + 1;
@@ -186,11 +179,11 @@ class SplayTree {
   template <class F>
   void query(std::size_t a, std::size_t b, const F &f) {
     if (size() == b) {
-      a-- ? splay(root, a), f(root->ch[1]), pushup(root) : f(root);
+      a-- ? (splay(root, a), f(root->ch[1]), pushup(root)) : (f(root), root);
     } else {
       splay(root, b);
       a-- ? (splay(root->ch[0], a), f(root->ch[0]->ch[1]), pushup(root->ch[0]))
-          : f(root->ch[0]);
+          : (f(root->ch[0]), root->ch[0]);
       pushup(root);
     }
   }
@@ -202,13 +195,13 @@ class SplayTree {
 
  public:
   SplayTree(Node *t = nullptr) : root(t) {}
-  SplayTree(std::size_t n, T val) { root = make_tree(0, n, val); }
-  SplayTree(T *beg, T *ed) { root = make_tree(beg, ed); }
+  SplayTree(std::size_t n, T val) { root = build(0, n, val); }
+  SplayTree(T *bg, T *ed) { root = build(bg, ed); }
   SplayTree(const std::vector<T> &ar)
       : SplayTree(ar.data(), ar.data() + ar.size()) {}
   std::vector<T> dump() {
     std::vector<T> ret(size());
-    return dump(ret.begin(), root), ret;
+    return dump(ret.bgin(), root), ret;
   }
   static std::string which_available() {
     std::string ret = "";
@@ -255,11 +248,11 @@ class SplayTree {
   }
   void apply(std::size_t a, std::size_t b, E x) {
     static_assert(dual<M>::value, "\"apply\" is not available");
-    query(a, b, [&](Node *t) { return propagate(t, x); });
+    query(a, b, [&](Node *t) { propagate(t, x); });
   }
   void reverse(std::size_t a, std::size_t b) {
     static_assert(reversible, "\"reverse\" is not available");
-    query(a, b, [&](Node *t) { return toggle(t); });
+    query(a, b, [&](Node *t) { toggle(t); });
   }
   std::pair<SplayTree, SplayTree> split(std::size_t k) {
     assert(k <= size());

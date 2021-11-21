@@ -79,22 +79,21 @@ class SegmentTree_Dynamic {
       else
         t = new Node{*(bg + b[0])};
     } else {
-      std::uint8_t h = __builtin_ctzll(b[1] - b[0]);
       t = new Node{def_val()};
       build(t->ch[0], n, {b[0], m}, bg), build(t->ch[1], n, {m, b[1]}, bg);
       if constexpr (monoid<M>::value) pushup(t);
     }
   }
   void dump(Node *t, const id_t &l, const id_t &r, std::array<id_t, 2> b,
-            typename std::vector<T>::iterator itr, std::uint8_t h) {
+            typename std::vector<T>::iterator itr) {
     if (r <= b[0] || b[1] <= l) return;
     if (l <= b[0] && b[1] <= r && !t) {
       for (id_t i = b[0]; i < b[1]; i++) *(itr + i) = def_val();
     } else if (b[1] - b[0] != 1) {
       if constexpr (dual<M>::value) eval(t, b[1] - b[0]);
       auto m = (b[0] + b[1]) >> 1;
-      dump(next(t, h, 0), l, r, {b[0], m}, itr, h - 1);
-      dump(next(t, h, 1), l, r, {m, b[1]}, itr, h - 1);
+      dump(t ? t->ch[0] : nullptr, l, r, {b[0], m}, itr);
+      dump(t ? t->ch[1] : nullptr, l, r, {m, b[1]}, itr);
     } else
       *(itr + b[0]) = t->val;
   }
@@ -105,8 +104,7 @@ class SegmentTree_Dynamic {
   }
   static inline void propagate(Node *&t, const E &x, const id_t &sz) {
     t->lazy = t->lazy_flg ? M::composition(t->lazy, x) : x;
-    t->val = M::mapping(t->val, x, sz);
-    t->lazy_flg = true;
+    t->val = M::mapping(t->val, x, sz), t->lazy_flg = true;
   }
   static inline void cp_node(Node *&t) {
     if (!t)
@@ -116,9 +114,8 @@ class SegmentTree_Dynamic {
   }
   static inline void eval(Node *&t, const id_t &sz) {
     if (!t->lazy_flg) return;
-    cp_node(t->ch[0]), cp_node(t->ch[1]);
+    cp_node(t->ch[0]), cp_node(t->ch[1]), t->lazy_flg = false;
     propagate(t->ch[0], t->lazy, sz / 2), propagate(t->ch[1], t->lazy, sz / 2);
-    t->lazy_flg = false;
   }
   T fold(Node *&t, const id_t &l, const id_t &r, std::array<id_t, 2> b,
          const id_t &bias) {
@@ -133,7 +130,6 @@ class SegmentTree_Dynamic {
   void apply(Node *&t, const id_t &l, const id_t &r, std::array<id_t, 2> b,
              const E &x) {
     if (r <= b[0] || b[1] <= l) return;
-    std::uint8_t h = __builtin_ctzll(b[1] - b[0]);
     id_t m = (b[0] + b[1]) >> 1;
     cp_node(t);
     if (l <= b[0] && b[1] <= r) return propagate(t, x, b[1] - b[0]), void();
@@ -284,13 +280,13 @@ class SegmentTree_Dynamic {
   }
   std::vector<T> dump(id_t bg, id_t ed) {
     std::vector<T> ret(ed - bg);
-    dump(root, bg, ed, {0, 1LL << HEIGHT}, ret.begin(), HEIGHT);
+    dump(root, bg, ed, {0, 1LL << HEIGHT}, ret.begin());
     return ret;
   }
   static std::string which_available() {
     std::string ret = "";
     if constexpr (monoid<M>::value)
-      ret += "\"fold\" \"find\"";
+      ret += "\"fold\" \"find\" ";
     else
       ret += "\"at\" ";
     if constexpr (dual<M>::value) ret += "\"apply\" ";

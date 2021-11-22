@@ -13,86 +13,58 @@
 // BEGIN CUT HERE
 
 template <typename cost_t>
-struct MinimumSpanningAborescense {
+class MinimumSpanningAborescense {
   struct Edge {
-    int src, dst, id;
+    std::size_t src, dst, id;
     cost_t cost;
     bool operator>(const Edge &r) const { return this->cost > r.cost; }
   };
   struct Op_Edge_add {
     using E = cost_t;
-    static E ei() { return 0; }
-    static Edge g(const Edge &l, const E &r) {
-      return Edge({l.src, l.dst, l.id, l.cost + r});
+    static Edge mapping(const Edge &l, const E &r) {
+      return Edge{l.src, l.dst, l.id, l.cost + r};
     }
-    static E h(const E &l, const E &r) { return l + r; }
+    static E composition(const E &l, const E &r) { return l + r; }
   };
   using Heap = SkewHeap<Edge, std::greater<Edge>, Op_Edge_add>;
-
- private:
-  int n;
-
- public:
+  std::size_t n;
   std::vector<Edge> edges;
 
  public:
-  MinimumSpanningAborescense(int n) : n(n) {}
-  void add_edge(int src, int dst, cost_t cost) {
-    edges.emplace_back(Edge{src, dst, (int)edges.size(), cost});
+  MinimumSpanningAborescense(std::size_t n) : n(n) {}
+  void add_edge(std::size_t src, std::size_t dst, cost_t cost) {
+    edges.emplace_back(Edge{src, dst, edges.size(), cost});
   }
   std::pair<cost_t, std::vector<Edge>> get_MSA(int root) {
     UnionFind uf(n);
     std::vector<Heap> heap(n);
     for (auto &e : edges) heap[e.dst].push(e);
     cost_t score = 0;
-    int m = edges.size();
+    std::size_t m = edges.size(), s = 0, u = s, cyc = 0, v;
     std::vector<int> seen(n, -1), paredge(m), ei, leaf(n, -1), par(n), usede(m);
-    seen[root] = root;
-    for (int s = 0; s < n; ++s) {
-      std::vector<int> path, ch;
-      int cyc = 0;
-      for (int u = s; seen[u] < 0;) {
-        path.push_back(u);
-        seen[u] = s;
+    for (seen[root] = root; s < n; u = ++s, cyc = 0)
+      for (std::vector<int> path, ch; seen[u] < 0; u = uf.root(v)) {
+        path.push_back(u), seen[u] = s;
         if (heap[u].empty()) return {-1, std::vector<Edge>()};
-        Edge min_e = heap[u].top();
-        score += min_e.cost;
-        heap[u].add(-min_e.cost);
-        heap[u].pop();
-        ei.push_back(min_e.id);
+        Edge min_e = heap[u].pop();
+        score += min_e.cost, heap[u].apply(-min_e.cost), ei.push_back(min_e.id);
         if (leaf[min_e.dst] == -1) leaf[min_e.dst] = min_e.id;
-        while (cyc) {
-          paredge[ch.back()] = min_e.id;
-          ch.pop_back();
-          cyc--;
-        }
+        for (; cyc; cyc--) paredge[ch.back()] = min_e.id, ch.pop_back();
         ch.push_back(min_e.id);
-        int v = uf.root(min_e.src);
-        if (seen[v] == s) {
-          Heap new_heap;
-          while (1) {
-            int w = path.back();
-            path.pop_back();
-            new_heap.merge(heap[w]);
-            cyc++;
-            if (!uf.unite(v, w)) break;
-          }
-          heap[uf.root(v)] = new_heap;
-          seen[uf.root(v)] = -1;
+        if (seen[v = uf.root(min_e.src)] != s) continue;
+        Heap new_heap;
+        for (int w; 1;) {
+          new_heap += heap[w = path.back()];
+          path.pop_back(), cyc++;
+          if (!uf.unite(v, w)) break;
         }
-        u = uf.root(v);
+        heap[uf.root(v)] = new_heap, seen[uf.root(v)] = -1;
       }
-    }
-    reverse(ei.begin(), ei.end());
     std::vector<Edge> es;
-    for (auto i : ei) {
-      if (usede[i]) continue;
-      es.emplace_back(edges[i]);
-      int x = leaf[edges[i].dst];
-      while (x != i) {
-        usede[x] = 1;
-        x = paredge[x];
-      }
+    for (auto it = ei.rbegin(); it != ei.rend(); it++) {
+      if (usede[*it]) continue;
+      es.emplace_back(edges[*it]);
+      for (int x = leaf[edges[*it].dst]; x != *it; x = paredge[x]) usede[x] = 1;
     }
     return {score, es};
   }

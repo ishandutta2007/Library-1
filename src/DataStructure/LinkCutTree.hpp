@@ -26,7 +26,7 @@ template <typename M = void>
 class LinkCutTree {
   HAS_MEMBER(op);
   HAS_MEMBER(mapping);
-  HAS_MEMBER(composition)
+  HAS_MEMBER(composition);
   HAS_TYPE(T);
   HAS_TYPE(E);
   template <class L>
@@ -103,6 +103,7 @@ class LinkCutTree {
       t->rsum = M::op(t->ch[1]->rsum, t->rsum);
   }
   inline void propagate(Node *t, const E &x) {
+    if (!t) return;
     t->lazy = t->lazy_flg ? M::composition(t->lazy, x) : x;
     t->val = M::mapping(t->val, x);
     if constexpr (semigroup<M>::value)
@@ -110,23 +111,17 @@ class LinkCutTree {
     t->lazy_flg = true;
   }
   inline void toggle(Node *t) {
+    if (!t) return;
     std::swap(t->ch[0], t->ch[1]);
     if constexpr (semigroup<M>::value) std::swap(t->sum, t->rsum);
     t->rev_flg = !t->rev_flg;
   }
   inline void eval(Node *t) {
-    if constexpr (dual<M>::value) {
-      if (t->lazy_flg) {
-        if (t->ch[0]) propagate(t->ch[0], t->lazy);
-        if (t->ch[1]) propagate(t->ch[1], t->lazy);
-        t->lazy_flg = false;
-      }
-    }
-    if (t->rev_flg) {
-      if (t->ch[0]) toggle(t->ch[0]);
-      if (t->ch[1]) toggle(t->ch[1]);
-      t->rev_flg = false;
-    }
+    if (t->rev_flg) toggle(t->ch[0]), toggle(t->ch[1]), t->rev_flg = false;
+    if constexpr (dual<M>::value)
+      if (t->lazy_flg)
+        propagate(t->ch[0], t->lazy), propagate(t->ch[1], t->lazy),
+            t->lazy_flg = false;
   }
   inline Node *expose(Node *t) {
     Node *r = nullptr;

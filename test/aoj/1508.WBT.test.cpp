@@ -1,4 +1,5 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1508"
+#define PROBLEM \
+  "https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1508"
 #include <bits/stdc++.h>
 #include "src/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
@@ -24,11 +25,10 @@ int main() {
     cin >> x >> y >> z;
     if (x == 0) {
       auto [a, b, c] = wbt.split3(y, z + 1);
-      auto val = b.pop_back();
-      b.push_front(val);
+      b.push_front(b.pop_back());
       wbt = a + b + c;
     } else if (x == 1)
-      cout << wbt.fold(y, z + 1) << endl;
+      cout << wbt.fold(y, z + 1) << '\n';
     else
       wbt.set(y, z);
     if (WBT::percentage_used() > 97) wbt.rebuild();

@@ -24,11 +24,10 @@ signed main() {
       auto [l, c, r] = splay.split3(y, z + 1);
       c.push_front(c.pop_back());
       splay = l + c + r;
-    } else if (x == 1) {
+    } else if (x == 1)
       cout << splay.fold(y, z + 1) << '\n';
-    } else {
+    else
       splay.set(y, z);
-    }
   }
   return 0;
 }

@@ -45,8 +45,8 @@ class WeightBalancedTree {
   struct Node_B {
     using E = F;
     T val;
-    node_id ch[2] = {0, 0};
     std::size_t size = 0;
+    node_id ch[2] = {0, 0};
   };
   template <bool sg_, bool du_, typename tEnable = void>
   struct Node_D : Node_B<M> {};
@@ -64,7 +64,7 @@ class WeightBalancedTree {
   using E = typename Node::E;
   using WBT = WeightBalancedTree;
   static inline Node n[NODE_SIZE];
-  static inline std::size_t ni = 1;
+  static inline node_id ni = 1;
   node_id root;
   static inline void pushup(node_id t) {
     n[t].size = n[n[t].ch[0]].size + n[n[t].ch[1]].size;
@@ -96,7 +96,7 @@ class WeightBalancedTree {
   static inline node_id submerge(std::array<node_id, 2> m) {
     if (n[m[0]].size > n[m[1]].size * 4) return helper<0>(m);
     if (n[m[1]].size > n[m[0]].size * 4) return helper<1>(m);
-    return n[ni] = Node{T(), {m[0], m[1]}}, pushup(ni), ni++;
+    return n[ni] = Node{T(), 0, {m[0], m[1]}}, pushup(ni), ni++;
   }
   static inline node_id merge(node_id l, node_id r) {
     return !l ? r : (!r ? l : submerge({l, r}));
@@ -119,9 +119,9 @@ class WeightBalancedTree {
   node_id build(std::size_t l, std::size_t r, const S &bg) {
     if (r - l == 1) {
       if constexpr (std::is_same_v<S, T>)
-        return n[ni] = Node{bg, {0, 0}, 1}, ni++;
+        return n[ni] = Node{bg, 1}, ni++;
       else
-        return n[ni] = Node{*(bg + l), {0, 0}, 1}, ni++;
+        return n[ni] = Node{*(bg + l), 1}, ni++;
     }
     return merge(build(l, (l + r) >> 1, bg), build((l + r) >> 1, r, bg));
   }
@@ -185,11 +185,11 @@ class WeightBalancedTree {
     auto [l, c] = split(tmp, a);
     return {WBT(l), WBT(c), WBT(r)};
   }
-  void push_back(T val) { n[ni] = Node{val}, root = merge(root, ni++); }
-  void push_front(T val) { n[ni] = Node{val}, root = merge(ni++, root); }
+  void push_back(T val) { n[ni] = Node{val, 1}, root = merge(root, ni++); }
+  void push_front(T val) { n[ni] = Node{val, 1}, root = merge(ni++, root); }
   void insert(std::size_t k, T val) {
     auto [l, r] = split(root, k);
-    n[ni] = Node{val}, root = merge(merge(l, ni++), r);
+    n[ni] = Node{val, 1}, root = merge(merge(l, ni++), r);
   }
   T pop_back() {
     assert(root);

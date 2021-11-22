@@ -32,7 +32,7 @@ template <typename M, std::size_t NODE_SIZE = 1 << 23>
 class WeightBalancedTree {
   HAS_MEMBER(op);
   HAS_MEMBER(mapping);
-  HAS_MEMBER(composition)
+  HAS_MEMBER(composition);
   HAS_TYPE(T);
   HAS_TYPE(E);
   template <class L>

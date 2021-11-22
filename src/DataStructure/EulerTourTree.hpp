@@ -27,7 +27,7 @@ class EulerTourTree {
   HAS_MEMBER(op);
   HAS_MEMBER(ti);
   HAS_MEMBER(mapping);
-  HAS_MEMBER(composition)
+  HAS_MEMBER(composition);
   HAS_TYPE(T);
   HAS_TYPE(E);
   template <class L>

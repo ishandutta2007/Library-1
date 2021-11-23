@@ -14,12 +14,9 @@
 long long totient(long long n) {
   long long ret = n;
   for (long long p = 2; p * p <= n; p++)
-    if (n % p == 0) {
-      ret -= ret / p;
-      while (n % p == 0) n /= p;
-    }
-  if (n > 1) ret -= ret / n;
-  return ret;
+    if (n % p == 0)
+      for (ret -= ret / p; n % p == 0;) n /= p;
+  return n > 1 ? ret - (ret / n) : ret;
 }
 
 // a↑↑b = a^(a^(a^...))

@@ -72,7 +72,8 @@ class SegmentTree_Patricia {
       std::uint8_t h = __builtin_ctzll(b[1] - b[0]);
       t = new Node{m >> h, std::uint8_t(HEIGHT + 1 - h), def_val()};
       build(t->ch[0], n, {b[0], m}, bg), build(t->ch[1], n, {m, b[1]}, bg);
-      if constexpr (monoid<M>::value) pushup(t);
+      if constexpr (monoid<M>::value)
+        t->val = M::op(t->ch[0]->val, t->ch[1]->val);
     }
   }
   void dump(Node *t, const id_t &l, const id_t &r, std::array<id_t, 2> b,
@@ -86,11 +87,6 @@ class SegmentTree_Patricia {
       dump(next(t, h, 1), l, r, {m, b[1]}, itr, h - 1);
     } else
       *(itr + b[0]) = t->val;
-  }
-  static inline void pushup(Node *&t) {
-    t->val = def_val();
-    if (t->ch[0]) t->val = M::op(t->ch[0]->val, t->val);
-    if (t->ch[1]) t->val = M::op(t->val, t->ch[1]->val);
   }
   T fold(Node *&t, const id_t &l, const id_t &r, const id_t &bias) {
     static id_t bits, b[2];
@@ -115,7 +111,8 @@ class SegmentTree_Patricia {
       set_val(t->ch[(k >> (HEIGHT - t->len)) & 1], k, val);
     } else
       return t->val = val, void();
-    if constexpr (monoid<M>::value) pushup(t);
+    if constexpr (monoid<M>::value)
+      t->val = M::op(t->ch[0]->val, t->ch[1]->val);
   }
   T &at_val(Node *&t, const id_t &k) {
     if (!t) return t = new Node{k, HEIGHT + 1, def_val()}, t->val;
@@ -127,10 +124,9 @@ class SegmentTree_Patricia {
       t->ch[flg] = new Node{*t},
       t->ch[!flg] = new Node{k, HEIGHT + 1, def_val()};
       t->len -= i, t->bits >>= i;
-      return t->val;
-    } else if (t->len != HEIGHT + 1) {
+      return t->ch[!flg]->val;
+    } else if (t->len != HEIGHT + 1)
       return at_val(t->ch[(k >> (HEIGHT - t->len)) & 1], k);
-    }
     return t->val;
   }
   bool is_null(Node *&t, const id_t &k) {

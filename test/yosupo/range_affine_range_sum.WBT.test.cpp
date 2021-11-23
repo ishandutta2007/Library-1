@@ -26,7 +26,8 @@ signed main() {
   cin >> N >> Q;
   Mint v[N];
   for (int i = 0; i < N; i++) cin >> v[i];
-  WeightBalancedTree<RaffineQ_RsumQ> wbt(v, v + N);
+  using WBT = WeightBalancedTree<RaffineQ_RsumQ>;
+  WBT wbt(v, v + N);
   while (Q--) {
     bool op;
     int l, r;
@@ -38,6 +39,7 @@ signed main() {
       cin >> b >> c;
       wbt.apply(l, r, {b, c});
     }
+    if (WBT::percentage_used() > 97) wbt.rebuild();
   }
   return 0;
 }

@@ -9,7 +9,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int Q;
   cin >> Q;
-  vector<WeightBalancedTree<int>> S(Q + 1);
+  vector<WeightBalancedTree<int, 1 << 24>> S(Q + 1);
   for (int i = 1; i <= Q; i++) {
     int op, t;
     cin >> op >> t;

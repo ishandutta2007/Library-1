@@ -152,20 +152,20 @@ class WeightBalancedTree {
   void set_val(node_id &t, std::size_t k, const T &x) {
     if (!n[t].ch[0]) return cp_node(t), n[t].val = x, void();
     if constexpr (dual<M>::value) eval(t);
-    bool flg = n[n[t].ch[0]].size <= k;
+    bool flg = n[n[t].ch[0]].size < k;
     set_val(n[t].ch[flg], flg ? k - n[n[t].ch[0]].size : k, x);
     if constexpr (semigroup<M>::value) pushup(t);
   }
   T get_val(node_id t, std::size_t k) {
     if (!n[t].ch[0]) return n[t].val;
     if constexpr (dual<M>::value) eval(t);
-    bool flg = n[n[t].ch[0]].size <= k;
+    bool flg = n[n[t].ch[0]].size < k;
     return get_val(n[t].ch[flg], flg ? k - n[n[t].ch[0]].size : k);
   }
   T &at_val(node_id t, std::size_t k) {
     if (!n[t].ch[0]) return n[t].val;
     if constexpr (dual<M>::value) eval(t);
-    bool flg = n[n[t].ch[0]].size <= k;
+    bool flg = n[n[t].ch[0]].size < k;
     return at_val(n[t].ch[flg], flg ? k - n[n[t].ch[0]].size : k);
   }
 

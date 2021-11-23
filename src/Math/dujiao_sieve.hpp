@@ -14,7 +14,6 @@
  */
 
 // verify用:
-// https://atcoder.jp/contests/abc172/tasks/abc172_d
 // https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d
 
 // BEGIN CUT HERE
@@ -29,8 +28,8 @@ T dirichlet_inv_sum(unsigned long long N, const G &gsum, const H &hsum,
   T ret = hsum(N);
   for (unsigned long long d = 2, nN = double(N) / d, nd; nN;
        nN = double(N) / (d = nd))
-    ret -= dirichlet_inv_sum(nN, gsum, hsum, memo)
-           * (gsum((nd = double(N) / nN + 1) - 1) - gsum(d - 1));
+    ret -= dirichlet_inv_sum(nN, gsum, hsum, memo) *
+           (gsum((nd = double(N) / nN + 1) - 1) - gsum(d - 1));
   return memo[N] = ret / gsum(1);
 }
 template <class T, class G, class H>

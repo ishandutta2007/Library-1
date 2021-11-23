@@ -10,9 +10,6 @@
  * @see https://en.wikipedia.org/wiki/Dirichlet_convolution
  */
 
-// verify用:
-// https://atcoder.jp/contests/agc038/tasks/agc038_c
-
 // BEGIN CUT HERE
 
 class NumberTheory {

@@ -11,7 +11,7 @@
  * 各ノードが部分木のサイズを保持しているのでmapping関数では引数としてsizeを渡せる
  */
 
-// bgIN CUT HERE
+// BEGIN CUT HERE
 #define HAS_CHECK(member, Dummy)                              \
   template <class T>                                          \
   struct has_##member {                                       \
@@ -201,7 +201,7 @@ class SplayTree {
       : SplayTree(ar.data(), ar.data() + ar.size()) {}
   std::vector<T> dump() {
     std::vector<T> ret(size());
-    return dump(ret.bgin(), root), ret;
+    return dump(ret.begin(), root), ret;
   }
   static std::string which_available() {
     std::string ret = "";

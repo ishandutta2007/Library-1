@@ -5,7 +5,7 @@
  * @category データ構造
  * @brief マージできるヒープ
  * @brief top: O(1), pop, push, merge: O(logN)
- * @brief add(v): 全体に作用素vを適用
+ * @brief apply(v): 全体に作用素vを適用
  */
 
 // BEGIN CUT HERE

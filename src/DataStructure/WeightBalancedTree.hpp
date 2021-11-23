@@ -238,7 +238,7 @@ class WeightBalancedTree {
     std::vector<T> ret(size());
     return dump(root, ret.begin()), ret;
   }
-  void clear() { root = nullptr; }
+  void clear() { root = 0; }
   static void reset() { ni = 1; }
   void rebuild() {
     auto dmp = dump();

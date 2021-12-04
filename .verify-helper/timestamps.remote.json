@@ -114,6 +114,7 @@
 "test/atcoder/abc172_d.numth.test.cpp": "2021-11-23 22:15:15 +0900",
 "test/atcoder/abc172_d.primecnt.test.cpp": "2021-11-23 22:15:15 +0900",
 "test/atcoder/agc038_c.numth.test.cpp": "2021-11-23 22:15:15 +0900",
+"test/atcoder/arc106_b.test.cpp": "2021-12-04 18:40:33 +0900",
 "test/yosupo/argsort.test.cpp": "2021-02-02 14:03:18 +0900",
 "test/yosupo/assignment.mcf.test.cpp": "2020-10-24 17:49:23 +0900",
 "test/yosupo/bernoulli.test.cpp": "2021-10-24 00:31:24 +0900",

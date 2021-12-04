@@ -12,17 +12,14 @@ signed main() {
   int N, M;
   cin >> N >> M;
   LinearSystemIncidence<long long> graph(N);
-  vector<long long> a(N), b(N);
+  vector<long long> a(N);
   for (int i = 0; i < N; i++) cin >> a[i];
-  for (int i = 0; i < N; i++) cin >> b[i], b[i] -= a[i];
-  for (int i = 0; i < M; i++) {
-    int c, d;
-    cin >> c >> d;
-    graph.add_edge(--c, --d);
-  }
+  for (int i = 0, b; i < N; i++) cin >> b, a[i] -= b;
+  for (int i = 0, c, d; i < M; i++) cin >> c >> d, graph.add_edge(--c, --d);
   if (M)
-    cout << (graph.solve(b).empty() ? "No" : "Yes") << '\n';
+    cout << (graph.solve(a).empty() ? "No" : "Yes") << '\n';
   else
-    cout << (b[0] ? "No" : "Yes") << '\n';
+    cout << (all_of(begin(a), end(a), [](auto t) { return !t; }) ? "Yes" : "No")
+         << '\n';
   return 0;
 }

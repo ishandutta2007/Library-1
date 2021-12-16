@@ -108,7 +108,7 @@ struct PushRelabel {
     flow_t ret = excess[t] + flow_lim;
     if constexpr (!freeze) {
       excess[s] += excess[t], excess[t] = 0;
-      if constexpr (global_freq) global_relabeling(s);
+      if constexpr (global_freq != 0) global_relabeling(s);
       calc(s);
       assert(excess == std::vector<flow_t>(n, 0));
     }

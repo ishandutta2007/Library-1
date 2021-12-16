@@ -4,13 +4,16 @@
  * @title 最小カット問題のk値への一般化
  * @category アルゴリズム
  * @see https://noshi91.hatenablog.com/entry/2021/06/29/044225
+ * phi関数等で ∞ を返すときはその大きさに注意 (大きすぎるとオーバーフロー)
  */
+
+// verify用: https://atcoder.jp/contests/kupc2019/tasks/kupc2019_h
 
 // BEGIN CUT HERE
 
-template <typename T, typename MF, typename Th, typename Ph>
+template <typename MF, typename Th, typename Ph>
 auto monge_mincut(int n, int k, Th theta, Ph phi) {
-  static_assert(std::is_same_v<T, typename MF::flow_t>);
+  using T = typename MF::flow_t;
   static constexpr T INF = std::numeric_limits<T>::max();
   T ret = 0;
   MF graph;

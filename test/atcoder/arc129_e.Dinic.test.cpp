@@ -6,8 +6,6 @@
 #include "src/Algorithm/monge_mincut.hpp"
 using namespace std;
 
-// 解無しの判定のverify
-
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
@@ -21,11 +19,11 @@ signed main() {
   vector<vector<long long>> W(N, vector<long long>(N));
   for (int i = 0; i < N; i++)
     for (int j = i + 1; j < N; j++) cin >> W[i][j];
-  auto theta = [&](int i, int k) { return C[i][k]; };
-  auto phi = [&](int i, int j, int k, int l) {
-    return abs(A[i][k] - A[j][l]) * W[i][j];
+  auto theta = [&](int i, int xi) { return C[i][xi]; };
+  auto phi = [&](int i, int j, int xi, int xj) {
+    return abs(A[i][xi] - A[j][xj]) * W[i][j];
   };
-  auto [ans, x] = monge_mincut<long long, MF>(N, M, theta, phi);
+  auto [ans, x] = monge_mincut<MF>(N, M, theta, phi);
   cout << ans << '\n';
   return 0;
 }

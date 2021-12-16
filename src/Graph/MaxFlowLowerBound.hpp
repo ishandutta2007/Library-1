@@ -8,6 +8,8 @@
  * 容量は負も可 (逆向きに流れる意味)
  */
 
+// verify用: https://yukicoder.me/problems/no/459
+
 // BEGIN CUT HERE
 
 template <typename FlowAlgo>
@@ -33,23 +35,48 @@ class MaxFlowLowerBound : public FlowAlgo {
     std::iota(ret.begin(), ret.end(), this->n - 2);
     return this->adj.resize(this->n += size), in.resize(this->n - 2, 0), ret;
   }
-  void add_edge(int src, int dst, flow_t lower, flow_t upper) {
+  struct EdgePtr {
+    friend class MaxFlowLowerBound;
+    MaxFlowLowerBound *instance;
+    int v, e;
+    flow_t u;
+    Edge &edge() { return instance->adj[v][e]; }
+    Edge &rev() {
+      Edge &e = edge();
+      return instance->adj[e.dst][e.rev];
+    }
+    EdgePtr(MaxFlowLowerBound *instance, int v, int e, flow_t u)
+        : instance(instance), v(v), e(e), u(u) {}
+
+   public:
+    EdgePtr() = default;
+    int src() { return v; }
+    int dst() { return edge().dst; }
+    flow_t flow() { return u - edge().cap; }
+    flow_t lower() { return flow() - rev().cap; }
+    flow_t upper() { return u; }
+  };
+  EdgePtr add_edge(int src, int dst, flow_t lower, flow_t upper) {
     assert(lower <= upper);
-    if (upper < 0) return add_edge(dst, src, -upper, -lower);
     src += 2, dst += 2;
     assert(0 <= src && src < this->n);
     assert(0 <= dst && dst < this->n);
     this->m++;
     int e = this->adj[src].size();
     int re = src == dst ? e + 1 : this->adj[dst].size();
-    if (lower <= 0) {
+    if (lower * upper <= 0) {
       this->adj[src].push_back(Edge{dst, re, upper});
       this->adj[dst].push_back(Edge{src, e, -lower});
-    } else {
+    } else if (lower > 0) {
       in[src - 2] -= lower, in[dst - 2] += lower;
       this->adj[src].push_back(Edge{dst, re, upper - lower});
       this->adj[dst].push_back(Edge{src, e, 0});
+    } else {
+      in[src - 2] -= upper, in[dst - 2] += upper;
+      this->adj[src].push_back(Edge{dst, re, 0});
+      this->adj[dst].push_back(Edge{src, e, upper - lower});
     }
+    return EdgePtr(this, src, e, upper);
   }
   flow_t maxflow(int s, int t) {
     static constexpr flow_t INF = std::numeric_limits<flow_t>::max();

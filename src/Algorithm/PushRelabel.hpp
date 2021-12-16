@@ -41,7 +41,7 @@ struct PushRelabel {
   std::vector<int> dist, dcnt;
   std::vector<flow_t> excess;
   inline void calc(int t) {
-    if constexpr (global_freq) global_relabeling(t);
+    if constexpr (global_freq != 0) global_relabeling(t);
     for (int tick = m * global_freq; !hque.empty();) {
       int i = hque.pop(), dnxt = n * 2 - 1;
       if constexpr (use_gap)
@@ -64,7 +64,7 @@ struct PushRelabel {
         }
         dist[i] = dnxt, hq_push(i);
       }
-      if constexpr (global_freq)
+      if constexpr (global_freq != 0)
         if (--tick == 0) tick = m * global_freq, global_relabeling(t);
     }
   }

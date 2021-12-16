@@ -1,7 +1,7 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/6/GRL_6_A"
 #include <bits/stdc++.h>
-#include "src/Algorithm/Dinic.hpp"
+#include "src/Algorithm/PushRelabel.hpp"
 #include "src/Graph/MaxFlow.hpp"
 using namespace std;
 
@@ -10,7 +10,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, M;
   cin >> N >> M;
-  MaxFlow<Dinic<long long>> graph(N);
+  MaxFlow<PushRelabel<long long>> graph(N);
   for (int i = 0; i < M; i++) {
     int u, v;
     long long c;

@@ -4,7 +4,7 @@
  * @title 数論いろいろ
  * @category 数学
  * 線形篩による素数列挙の前処理
- * 乗法的関数テーブル列挙 や gcd畳み込みなど
+ * 乗法的関数 テーブル列挙 や gcd畳み込みなど
  * @see https://37zigen.com/linear-sieve/
  * @see https://qiita.com/convexineq/items/afc84dfb9ee4ec4a67d5
  * @see https://en.wikipedia.org/wiki/Dirichlet_convolution
@@ -15,7 +15,7 @@
 class NumberTheory {
   static constexpr int MAX_N = 1 << 24;
   static inline int ps[MAX_N >> 4], mpf[MAX_N], psz = 0, lim = 2;
-  static void sieve(int N) {
+  static inline void sieve(int N) {
     if (lim > N) return;
     for (int d = lim; d <= N; d++) {
       if (!mpf[d]) mpf[d] = ps[psz++] = d;

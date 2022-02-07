@@ -40,8 +40,8 @@ class MaxFlowLowerBound : public FlowAlgo {
     MaxFlowLowerBound *instance;
     int v, e;
     flow_t u;
-    Edge &edge() { return instance->adj[v][e]; }
-    Edge &rev() {
+    const Edge &edge() { return instance->adj[v][e]; }
+    const Edge &rev() {
       Edge &e = edge();
       return instance->adj[e.dst][e.rev];
     }
@@ -50,11 +50,11 @@ class MaxFlowLowerBound : public FlowAlgo {
 
    public:
     EdgePtr() = default;
-    int src() { return v; }
-    int dst() { return edge().dst; }
-    flow_t flow() { return u - edge().cap; }
-    flow_t lower() { return flow() - rev().cap; }
-    flow_t upper() { return u; }
+    int src() const { return v; }
+    int dst() const { return edge().dst; }
+    flow_t flow() const { return u - edge().cap; }
+    flow_t lower() const { return flow() - rev().cap; }
+    flow_t upper() const { return u; }
   };
   EdgePtr add_edge(int src, int dst, flow_t lower, flow_t upper) {
     assert(lower <= upper);

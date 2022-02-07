@@ -4,6 +4,7 @@
  * @title 非不偏ゲーム (Conwayの構成)
  * @category ゲーム理論
  * メモ化再帰で2進分数を計算
+ * @see http://www.ivis.co.jp/text/20111102.pdf
  */
 
 // BEGIN CUT HERE

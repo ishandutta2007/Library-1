@@ -14,6 +14,6 @@ signed main() {
   for (auto &ai : a) cin >> ai;
   for (auto &bi : b) cin >> bi;
   auto c = SetPowerSeries<20>::convolution(a, b);
-  for (int i = 0; i < N; i++) cout << c[i] << " \n"[i == N - 1];
+  for (int i = 0; i < (1 << N); i++) cout << c[i] << " \n"[i + 1 == 1 << N];
   return 0;
 }

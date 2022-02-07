@@ -7,6 +7,7 @@
 
 // verify用:
 // https://atcoder.jp/contests/xmascon20/tasks/xmascon20_h
+// https://loj.ac/p/2340 (オンライン畳込み)
 
 // BEGIN CUT HERE
 

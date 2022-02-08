@@ -7,6 +7,7 @@
 
 // verify用:
 // https://atcoder.jp/contests/xmascon20/tasks/xmascon20_h
+//                        (オンライン畳込み2 or 合成 1-√(1-2f))
 // https://loj.ac/p/2340 (オンライン畳込み)
 
 // BEGIN CUT HERE
@@ -55,7 +56,6 @@ class SetPowerSeries {
     }
     ranked_moebius_trans(F, ret, sz);
   }
-
   template <typename T, class F>
   static inline void online_conv_naive(const T g[], T ret[], const F &phi,
                                        const int &sz) {
@@ -99,15 +99,31 @@ class SetPowerSeries {
     assert(sz == 1 << n && sz == g.size());
     return conv_trans(f.data(), g.data(), ret.data(), sz), ret;
   }
+  // f(S) = φ_S ( Σ_{T⊂S & T≠∅} g(T)f(S/T) )
   template <class T, class F = void (*)(int, T &)>  // O(n^2 2^n)
   static inline std::vector<T> online_convolution(
-      std::vector<T> g, T init, F phi = [](int, T &) {}) {
+      std::vector<T> g, T init, const F &phi = [](int, T &) {}) {
     const int sz = g.size(), n = __builtin_ctz(sz);
     std::vector<T> ret(sz);
     ret[0] = init;
     if (n <= 12) return online_conv_naive(g.data(), ret.data(), phi, sz), ret;
     assert(sz == 1 << n);
     return online_conv_trans(g.data(), ret.data(), phi, sz), ret;
+  }
+  // f(S) = φ_S ( (1/2) * Σ_{T⊂S & T≠∅ & T≠S} f(T)f(S/T) )
+  template <class T, class F>  // O(n^2 2^n)
+  static inline std::vector<T> online_convolution2(int sz, const F &phi) {
+    assert(__builtin_popcount(sz) == 1);
+    int mid = std::min(1 << 13, sz);
+    std::vector<T> ret(sz, 0);
+    for (int I = 1, s, t, u = 1; I < mid; I <<= 1)
+      for (t = s = 0; s < I; phi(u, ret[u]), t = ++s, u++)
+        for (ret[u] = 0; t; (--t) &= s) ret[u] += ret[I | (s ^ t)] * ret[t];
+    for (int I = mid; I < sz; I <<= 1) {
+      auto phi2 = [&](int s, T &x) { phi(s | I, x); };
+      phi(I, ret[I]), online_conv_trans(ret.data(), ret.data() + I, phi2, I);
+    }
+    return ret;
   }
   // F(f) : F[i] is coefficient of EGF ( = F^{(i)}(0) )
   // "f[φ] = 0" is required.

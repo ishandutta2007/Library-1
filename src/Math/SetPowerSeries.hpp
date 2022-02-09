@@ -95,7 +95,7 @@ class SetPowerSeries {
     assert(sz == 1 << n && sz == g.size());
     return conv_tr(f.data(), g.data(), ret.data(), sz), ret;
   }
-  // f(S) = φ_S ( Σ_{T⊂S & T≠∅} g(T)f(S/T) )
+  // f(S) = φ_S ( Σ_{T⊊S} f(T)g(S/T) )
   template <class T, class F = void (*)(int, T &)>  // O(n^2 2^n)
   static inline std::vector<T> online_convolution(
       std::vector<T> g, T init, const F &phi = [](int, T &) {}) {
@@ -106,7 +106,7 @@ class SetPowerSeries {
     assert(sz == 1 << n);
     return onconv_tr(g.data(), ret.data(), phi, sz), ret;
   }
-  // f(S) = φ_S ( (1/2) * Σ_{T⊂S & T≠∅ & T≠S} f(T)f(S/T) )
+  // f(S) = φ_S ( Σ_{∅≠T⊊S & (T<(S/T) as binary numbers) } f(T)f(S/T) )
   template <class T, class F>  // O(n^2 2^n)
   static inline std::vector<T> online_convolution2(int sz, const F &phi) {
     assert(__builtin_popcount(sz) == 1);
@@ -122,7 +122,7 @@ class SetPowerSeries {
     return ret;
   }
   // F(f) : F[i] is coefficient of EGF ( = F^{(i)}(0) )
-  // "f[φ] = 0" is required.
+  // "f[∅] = 0" is required.
   template <class T, class EGF>  // O(n^2 2^n)
   static inline std::vector<T> composite(const std::vector<T> &f,
                                          const EGF &F) {
@@ -140,7 +140,7 @@ class SetPowerSeries {
       for (j = sz2; j >= l; j >>= 1) conv_tr(h - j, g + l, h - j - j + l, l);
     return ret;
   }
-  // exp(f) : "f[φ] = 0" is required.
+  // exp(f) : "f[∅] = 0" is required.
   template <class T>  // O(n^2 2^n)
   static inline std::vector<T> exp(const std::vector<T> &f) {
     const int sz = f.size();
@@ -154,7 +154,7 @@ class SetPowerSeries {
     for (; l < sz; l <<= 1) conv_tr(h, g + l, h + l, l);
     return ret;
   }
-  // log(f) : "f[φ] = 1" is required.
+  // log(f) : "f[∅] = 1" is required.
   template <class T>  // O(n^2 2^n)
   static inline std::vector<T> log(std::vector<T> f) {
     const int sz = f.size(), m = __builtin_ctz(sz);
@@ -183,6 +183,7 @@ class SetPowerSeries {
   static inline std::vector<T> egf(std::vector<T> f) {
     const int sz = f.size(), n = __builtin_ctz(sz), md = 1 << 11, sz4 = sz >> 2;
     assert(sz == 1 << n);
+    if (n == 1) return {0, f[1]};
     int l = sz4, m;
     T *in = f.data() + l, *dp = in + l, tmp[sz4], *dp2;
     for (int s; l > md; conv_tr(dp, in, dp, l), in -= (l >>= 1))

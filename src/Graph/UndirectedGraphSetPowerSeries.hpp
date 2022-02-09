@@ -6,11 +6,12 @@
  * @category グラフ
  * @see
  * https://github.com/EntropyIncreaser/ioi2021-homework/blob/master/thesis/main.tex
+ * O(V 2^V) space
  */
 
 // verify用:
 // https://loj.ac/p/155 (Tutte 多項式)
-// https://loj.ac/p/3165 (acyclic_orientations (Tutte 多項式))
+// https://loj.ac/p/3165 (acyclic_orientations (Tutte 多項式, 彩色多項式))
 // https://loj.ac/p/6673 (オイラーグラフ)
 // https://loj.ac/p/6719 (カクタスグラフ)
 // https://loj.ac/p/6729 (二重点連結グラフ)
@@ -236,7 +237,7 @@ class UndirectedGraphSetPowerSeries {
     return SPS::template online_convolution<T>(g, 1);
   }
   template <class T>  // O(V^2 2^V)
-  inline std::vector<T> number_of_colorings_using_exactly_k_colors() const {
+  inline std::vector<T> colorings_using_exactly_k_colors_num() const {
     if (V == 0) return {0};  // impossible in any number of ways
     for (int i = V; i--;)
       if (adj[i][i]) return {0};  // impossible in any number of ways
@@ -247,7 +248,7 @@ class UndirectedGraphSetPowerSeries {
   }
   template <class T>  // O(V^2 2^V)
   inline poly<T> chromatic_polynomial() const {
-    auto e = number_of_colorings_using_exactly_k_colors<T>();
+    auto e = colorings_using_exactly_k_colors_num<T>();
     if (e.back() == 0) return {0};
     poly<T> ret(V + 1, 0);
     T tmp[V] = {1};

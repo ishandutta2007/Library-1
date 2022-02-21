@@ -88,7 +88,7 @@ class SetPowerSeries {
     SUBSET_REP(S, U, f.size()) f[S] -= f[U];
   }
   template <class T>  // O(n^2 2^n)
-  static inline std::vector<T> convolution(std::vector<T> f, std::vector<T> g) {
+  static inline std::vector<T> convolve(std::vector<T> f, std::vector<T> g) {
     const int sz = f.size(), n = __builtin_ctz(sz);
     std::vector<T> ret(sz);
     if (n <= 10) return conv_na(f.data(), g.data(), ret.data(), sz), ret;
@@ -97,7 +97,7 @@ class SetPowerSeries {
   }
   // f(S) = φ_S ( Σ_{T⊊S} f(T)g(S/T) )
   template <class T, class F = void (*)(int, T &)>  // O(n^2 2^n)
-  static inline std::vector<T> online_convolution(
+  static inline std::vector<T> online_convolve(
       std::vector<T> g, T init, const F &phi = [](int, T &) {}) {
     const int sz = g.size(), n = __builtin_ctz(sz);
     std::vector<T> ret(sz);
@@ -108,7 +108,7 @@ class SetPowerSeries {
   }
   // f(S) = φ_S ( Σ_{∅≠T⊊S & (T<(S/T) as binary numbers) } f(T)f(S/T) )
   template <class T, class F>  // O(n^2 2^n)
-  static inline std::vector<T> online_convolution2(int sz, const F &phi) {
+  static inline std::vector<T> online_convolve2(int sz, const F &phi) {
     assert(__builtin_popcount(sz) == 1);
     int mid = std::min(1 << 13, sz);
     std::vector<T> ret(sz, 0);

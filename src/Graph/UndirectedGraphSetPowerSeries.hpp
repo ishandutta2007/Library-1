@@ -31,10 +31,8 @@ class UndirectedGraphSetPowerSeries {
   unsigned adj[MAX_V][MAX_V] = {0}, edge[MAX_V] = {0};
   template <class T>
   static inline T pow(T x, int k) {
-    T ret = 1;
-    for (; k; k >>= 1, x *= x)
-      if (k & 1) ret *= x;
-    return ret;
+    for (T ret(1);; x *= x)
+      if (k & 1 ? ret *= x : 0; !(k >>= 1)) return ret;
   }
   template <class F>
   inline void bfs(int s, const F &f) const {
@@ -145,7 +143,7 @@ class UndirectedGraphSetPowerSeries {
   inline sps<T> connected_biparate_graph_num() const {
     sps<T> tmp = edge_space_size<T>(), ret(sz, 1);
     for (int s = sz; s--;) ret[s] /= tmp[s];
-    ret = SPS::convolution(ret, ret);
+    ret = SPS::convolve(ret, ret);
     for (int s = sz; s--;) ret[s] *= tmp[s];
     ret = SPS::log(ret);
     for (int s = sz; s--;) ret[s] /= 2;
@@ -222,7 +220,7 @@ class UndirectedGraphSetPowerSeries {
           for (int s = J, J2 = J * 2; s < I; s += J2)
             for (int u = s + J; u-- > s;)
               tmp2[t | u] -= ret[t2 | u] * adj[i][j];
-      tmp = SPS::convolution(tmp, SPS::exp(tmp2));
+      tmp = SPS::convolve(tmp, SPS::exp(tmp2));
       for (int t = 0; t < sz2; t += I)
         for (int u = I, t2 = t << 1; u--;) ret[t2 | I | u] = tmp[t | u];
     }
@@ -234,7 +232,7 @@ class UndirectedGraphSetPowerSeries {
     sps<T> g(sz, 0);
     for (int s = sz; --s;)
       if (k[s] == __builtin_popcount(s)) g[s] = (k[s] + 1) & 1 ? -1 : 1;
-    return SPS::template online_convolution<T>(g, 1);
+    return SPS::template online_convolve<T>(g, 1);
   }
   template <class T>  // O(V^2 2^V)
   inline std::vector<T> colorings_using_exactly_k_colors_num() const {
@@ -263,15 +261,15 @@ class UndirectedGraphSetPowerSeries {
     int sum[sz], s, t, lim = 2, i, j;
     T fum[10'000] = {0, 1};
     std::vector<T> g = {0}, h;
-    for (x -= 1, g.reserve(sz), h.reserve(sz), i = 0; i < V; i++) {
+    for (g.reserve(sz), h.reserve(sz), i = 0; i < V; i++) {
       for (sum[0] = j = 0; j < i; j++)
         for (s = t = 1 << j; s--;) sum[s | t] = sum[s] + adj[i][j];
       for (h.resize(s = 1 << i); s--; h[s] = g[s] * fum[sum[s]])
         for (; lim <= sum[s]; lim++) fum[lim] = fum[lim - 1] * y + 1;
       h = SPS::exp(h), std::copy(h.begin(), h.end(), std::back_inserter(g));
     }
-    for (t = ~0, bfs(sz, [&](int u) { t ^= u; }), s = sz; --s &= t;) g[s] *= x;
-    for (t = 0, i = V; i--;) t += adj[i][i];
-    return SPS::exp(g)[sz - 1] * pow(y, t);
+    for (x -= 1, t = ~0, j = 0, i = V; i--;) j += adj[i][i];
+    for (bfs((s = sz) - 1, [&](int u) { t ^= u; }); --s &= t;) g[s] *= x;
+    return SPS::exp(g)[sz - 1] * pow(y, j);
   }
 };

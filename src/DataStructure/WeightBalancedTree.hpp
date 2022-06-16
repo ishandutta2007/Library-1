@@ -16,6 +16,7 @@
 
 // BEGIN CUT HERE
 
+#ifndef HAS_CHECK
 #define HAS_CHECK(member, Dummy)                              \
   template <class T>                                          \
   struct has_##member {                                       \
@@ -27,6 +28,7 @@
   };
 #define HAS_MEMBER(member) HAS_CHECK(member, int dummy = (&U::member, 0))
 #define HAS_TYPE(member) HAS_CHECK(member, class dummy = typename U::member)
+#endif
 
 template <typename M, std::size_t NODE_SIZE = 1 << 23>
 class WeightBalancedTree {
@@ -142,16 +144,14 @@ class WeightBalancedTree {
   void apply(node_id &t, const std::size_t &l, const std::size_t &r,
              std::size_t bl, std::size_t br, const E &x) {
     if (r <= bl || br <= l) return;
-    cp_node(t);
-    if (l <= bl && br <= r) return propagate(t, x), void();
+    if (cp_node(t); l <= bl && br <= r) return propagate(t, x), void();
     eval(t);
     std::size_t m = bl + n[n[t].ch[0]].size;
     apply(n[t].ch[0], l, r, bl, m, x), apply(n[t].ch[1], l, r, m, br, x);
     if constexpr (semigroup<M>::value) pushup(t);
   }
   void set_val(node_id &t, std::size_t k, const T &x) {
-    cp_node(t);
-    if (!n[t].ch[0]) return n[t].val = x, void();
+    if (cp_node(t); !n[t].ch[0]) return n[t].val = x, void();
     if constexpr (dual<M>::value) eval(t);
     bool flg = n[n[t].ch[0]].size <= k;
     set_val(n[t].ch[flg], flg ? k - n[n[t].ch[0]].size : k, x);
@@ -164,8 +164,7 @@ class WeightBalancedTree {
     return get_val(n[t].ch[flg], flg ? k - n[n[t].ch[0]].size : k);
   }
   T &at_val(node_id t, std::size_t k) {
-    cp_node(t);
-    if (!n[t].ch[0]) return n[t].val;
+    if (cp_node(t); !n[t].ch[0]) return n[t].val;
     if constexpr (dual<M>::value) eval(t);
     bool flg = n[n[t].ch[0]].size <= k;
     return at_val(n[t].ch[flg], flg ? k - n[n[t].ch[0]].size : k);

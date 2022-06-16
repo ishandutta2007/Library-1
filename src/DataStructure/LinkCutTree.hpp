@@ -9,7 +9,7 @@
  */
 
 // BEGIN CUT HERE
-
+#ifndef HAS_CHECK
 #define HAS_CHECK(member, Dummy)                              \
   template <class T>                                          \
   struct has_##member {                                       \
@@ -21,6 +21,7 @@
   };
 #define HAS_MEMBER(member) HAS_CHECK(member, int dummy = (&U::member, 0))
 #define HAS_TYPE(member) HAS_CHECK(member, class dummy = typename U::member)
+#endif
 
 template <typename M = void>
 class LinkCutTree {

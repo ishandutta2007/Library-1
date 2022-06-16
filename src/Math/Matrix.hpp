@@ -103,6 +103,6 @@ struct SquareMatrix : public Matrix<R, N, N> {
   }
   SquareMatrix pow(std::uint64_t e) const {
     for (SquareMatrix ret = I(), b = *this;; b *= b)
-      if (e & 1 ? ret *= b : 0; !(e >>= 1)) return ret;
+      if (e & 1 ? ret *= b, !(e >>= 1) : !(e >>= 1)) return ret;
   }
 };

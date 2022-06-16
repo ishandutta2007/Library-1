@@ -69,8 +69,8 @@ struct FormalPowerSeries : public std::vector<mint> {
     static constexpr mint mod1 = m64_1::modulo();
     for (int i = b; i < e; i++) {
       std::uint64_t r1 = f1[i].val(), r2 = f2[i].val();
-      ret[i] = mint(r1)
-               + mint((m64_2(r2 + m64_2::modulo() - r1) * iv).val()) * mod1;
+      ret[i] =
+          mint(r1) + mint((m64_2(r2 + m64_2::modulo() - r1) * iv).val()) * mod1;
     }
   }
   template <typename T, typename std::enable_if<
@@ -311,8 +311,8 @@ struct FormalPowerSeries : public std::vector<mint> {
     while (cnt < n && (*this)[cnt] == mint(0)) cnt++;
     if (k * cnt >= (std::uint64_t)n) return FPS(n, 0);
     mint iv = (*this)[cnt].inverse();
-    FPS pt = ((FPS(this->begin() + cnt, this->end()) * iv).log() * k).exp()
-             * (*this)[cnt].pow(k),
+    FPS pt = ((FPS(this->begin() + cnt, this->end()) * iv).log() * k).exp() *
+             (*this)[cnt].pow(k),
         ret(n, 0);
     for (int i = k * cnt, j = 0; i < n; i++, j++) ret[i] = pt[j];
     return ret;

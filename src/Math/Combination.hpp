@@ -10,16 +10,14 @@
 template <class mint, std::size_t LIM = (1 << 24)>
 struct Combination {
  private:
-  static inline mint _fact[LIM], _finv[LIM];
+  static inline mint _fact[LIM] = {1}, _finv[LIM] = {1};
+  static inline int lim = 1;
   static inline void set(int sz) {
-    static int lim = 0;
-    if (lim <= sz) {
-      if (lim == 0) _fact[0] = _finv[0] = 1, lim = 1;
-      for (int i = lim; i <= sz; i++) _fact[i] = _fact[i - 1] * i;
-      _finv[sz] = mint(1) / _fact[sz];
-      for (int i = sz; i >= lim; i--) _finv[i - 1] = _finv[i] * i;
-      lim = sz + 1;
-    }
+    if (lim > sz) return;
+    for (int i = lim; i <= sz; i++) _fact[i] = _fact[i - 1] * i;
+    _finv[sz] = mint(1) / _fact[sz];
+    for (int i = sz; i >= lim; i--) _finv[i - 1] = _finv[i] * i;
+    lim = sz + 1;
   }
 
  public:

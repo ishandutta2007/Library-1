@@ -37,7 +37,8 @@ class SetPowerSeries {
   }
   template <typename T>
   static inline void conv_tr(const T f[], const T g[], T ret[], const int &sz) {
-    static T F[1 << MAX_N][MAX_N + 1], G[1 << MAX_N][MAX_N + 1], tmp[MAX_N + 1];
+    static T F[1 << MAX_N][MAX_N + 1], G[1 << MAX_N][MAX_N + 1];
+    T tmp[MAX_N + 1];
     ranked_zeta_tr(f, F, sz), ranked_zeta_tr(g, G, sz);
     const int n = __builtin_ctz(sz);
     for (int S = sz, c, d, e, bg; S--;) {
@@ -88,7 +89,8 @@ class SetPowerSeries {
     SUBSET_REP(S, U, f.size()) f[S] -= f[U];
   }
   template <class T>  // O(n^2 2^n)
-  static inline std::vector<T> convolve(std::vector<T> f, std::vector<T> g) {
+  static inline std::vector<T> convolve(const std::vector<T> &f,
+                                        const std::vector<T> &g) {
     const int sz = f.size(), n = __builtin_ctz(sz);
     std::vector<T> ret(sz);
     if (n <= 10) return conv_na(f.data(), g.data(), ret.data(), sz), ret;
@@ -98,7 +100,7 @@ class SetPowerSeries {
   // f(S) = φ_S ( Σ_{T⊊S} f(T)g(S/T) )
   template <class T, class F = void (*)(int, T &)>  // O(n^2 2^n)
   static inline std::vector<T> online_convolve(
-      std::vector<T> g, T init, const F &phi = [](int, T &) {}) {
+      const std::vector<T> &g, T init, const F &phi = [](int, T &) {}) {
     const int sz = g.size(), n = __builtin_ctz(sz);
     std::vector<T> ret(sz);
     ret[0] = init;
@@ -127,8 +129,7 @@ class SetPowerSeries {
   static inline std::vector<T> composite(const std::vector<T> &f,
                                          const EGF &F) {
     const int sz = f.size(), m = __builtin_ctz(sz), sz2 = sz >> 1;
-    assert(sz == 1 << m);
-    assert(f.at(0) == 0);
+    assert(sz == 1 << m), assert(f.at(0) == 0);
     std::vector<T> ret(sz);
     T *h = ret.data() + sz;
     const T *g = f.data();
@@ -144,8 +145,7 @@ class SetPowerSeries {
   template <class T>  // O(n^2 2^n)
   static inline std::vector<T> exp(const std::vector<T> &f) {
     const int sz = f.size();
-    assert(sz == 1 << __builtin_ctz(sz));
-    assert(f.at(0) == 0);
+    assert(sz == 1 << __builtin_ctz(sz)), assert(f.at(0) == 0);
     std::vector<T> ret(sz);
     T *h = ret.data();
     const T *g = f.data();
@@ -158,9 +158,8 @@ class SetPowerSeries {
   template <class T>  // O(n^2 2^n)
   static inline std::vector<T> log(std::vector<T> f) {
     const int sz = f.size(), m = __builtin_ctz(sz);
-    assert(sz == 1 << m);
-    assert(f.at(0) == T(1));
-    static T F[MAX_N + 1] = {0, 1};
+    assert(sz == 1 << m), assert(f.at(0) == T(1));
+    T F[MAX_N + 1] = {0, 1};
     for (int i = 2; i <= m; i++) F[i] = -F[i - 1] * (i - 1);
     return f[0] = 0, composite(f, F);
   }
@@ -177,7 +176,6 @@ class SetPowerSeries {
     for (; i >= 0; i--, pw *= f[0]) F[i] *= pw;
     return f[0] = 0, composite(f, F);
   }
-
   // {[X^{[n]}](f^k)/(k!)} for k=0,1,...,n
   template <class T>  // O(n^2 2^n)
   static inline std::vector<T> egf(std::vector<T> f) {
@@ -196,4 +194,5 @@ class SetPowerSeries {
     for (int i = n + 1; --i;) ret[i] = dp[(1 << (n - i)) - 1];
     return ret;
   }
+#undef SUBSET_REP
 };

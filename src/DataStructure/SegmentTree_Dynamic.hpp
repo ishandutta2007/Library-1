@@ -16,6 +16,7 @@
 
 // BEGIN CUT HERE
 
+#ifndef HAS_CHECK
 #define HAS_CHECK(member, Dummy)                              \
   template <class T>                                          \
   struct has_##member {                                       \
@@ -27,6 +28,7 @@
   };
 #define HAS_MEMBER(member) HAS_CHECK(member, int dummy = (&U::member, 0))
 #define HAS_TYPE(member) HAS_CHECK(member, class dummy = typename U::member)
+#endif
 
 template <typename M, bool persistent = false, std::uint8_t HEIGHT = 30>
 class SegmentTree_Dynamic {
@@ -138,15 +140,13 @@ class SegmentTree_Dynamic {
     if constexpr (monoid<M>::value) pushup(t);
   }
   void set_val(Node *&t, const id_t &k, const T &val, std::uint8_t h) {
-    cp_node(t);
-    if (!h) return t->val = val, void();
+    if (cp_node(t); !h) return t->val = val, void();
     if constexpr (dual<M>::value) eval(t, 1LL << h);
     set_val(t->ch[(k >> (h - 1)) & 1], k, val, h - 1);
     if constexpr (monoid<M>::value) pushup(t);
   }
   T &at_val(Node *&t, const id_t &k, std::uint8_t h) {
-    cp_node(t);
-    if (!h) return t->val;
+    if (cp_node(t); !h) return t->val;
     if constexpr (dual<M>::value) eval(t, 1LL << h);
     return at_val(t->ch[(k >> (h - 1)) & 1], k, h - 1);
   }
@@ -237,7 +237,7 @@ class SegmentTree_Dynamic {
     return fold(root, a, b, {0, 1LL << HEIGHT}, bias);
   }
   // find i s.t.
-  //  check(fold(k,i)) == False, check(fold(k,i+1)) == True
+  //  check(fold(a,i)) == False, check(fold(a,i+1)) == True
   // return -1 if not found
   template <class C>
   id_t find_first(id_t a, C check, id_t bias = 0) {
@@ -256,7 +256,7 @@ class SegmentTree_Dynamic {
     return find<0>(a, {0, 1LL << HEIGHT}, bias, HEIGHT, check, ts, sums);
   }
   // find i s.t.
-  //  check(fold(i+1,k)) == False, check(fold(i,k)) == True
+  //  check(fold(i+1,b)) == False, check(fold(i,b)) == True
   // return -1 if not found
   template <class C>
   id_t find_last(id_t b, C check, id_t bias = 0) {

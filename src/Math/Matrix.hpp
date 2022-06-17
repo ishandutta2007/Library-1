@@ -52,7 +52,7 @@ struct Matrix<bool, N, M> : public std::array<std::bitset<M>, N> {
     Matrix<bool, L, M> t;
     Matrix<bool, N, L> ret;
     for (int i = M; i--;)
-      for (int j = L; j--) t[j][i] = r[i][j];
+      for (int j = L; j--;) t[j][i] = r[i][j];
     for (int i = N; i--;)
       for (int j = L; j--;) ret[i][j] = ((*this)[i] & t[j]).count() & 1;
     return ret;

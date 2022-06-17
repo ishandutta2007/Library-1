@@ -16,9 +16,9 @@ template <typename T, T (*o)(), T (*i)(), T (*add)(T, T), T (*mul)(T, T)>
 struct SemiRing {
   T x;
   SemiRing() : x(o()) {}
-  SemiRing(T y) : x(y) {}
-  static T O() { return o(); }
-  static T I() { return i(); }
+  SemiRing(bool y) : x(y ? i() : o()) {}
+  template <class U>
+  SemiRing(U y) : x((T)y) {}
   SemiRing &operator+=(const SemiRing &r) {
     return x == o() ? *this = r : r.x == o() ? *this : *this = add(x, r.x);
   }
@@ -37,47 +37,49 @@ struct SemiRing {
     return os << r.x;
   }
 };
+template <class M>
+using Rig = SemiRing<typename M::T, M::o, M::i, M::add, M::mul>;
 
-template <class T>
+template <class Arith>
 struct MinPlus {
+  using T = Arith;
   static T o() { return std::numeric_limits<T>::max(); }
   static T i() { return T(0); }
   static T add(T vl, T vr) { return std::min(vl, vr); }
   static T mul(T vl, T vr) { return vl + vr; }
 };
 template <class T>
-using MinPlusRig = SemiRing<T, MinPlus<T>::o, MinPlus<T>::i, MinPlus<T>::add,
-                            MinPlus<T>::mul>;
+using MinPlusRig = Rig<MinPlus<T>>;
 
-template <class T>
+template <class Arith>
 struct MaxPlus {
+  using T = Arith;
   static T o() { return std::numeric_limits<T>::min(); }
   static T i() { return T(0); }
   static T add(T vl, T vr) { return std::max(vl, vr); }
   static T mul(T vl, T vr) { return vl + vr; }
 };
 template <class T>
-using MaxPlusRig = SemiRing<T, MaxPlus<T>::o, MaxPlus<T>::i, MaxPlus<T>::add,
-                            MaxPlus<T>::mul>;
+using MaxPlusRig = Rig<MaxPlus<T>>;
 
-template <class T>
+template <class Uint>
 struct BitwiseOrAnd {
+  using T = Uint;
   static T o() { return 0; }
   static T i() { return T(-1); }
   static T add(T vl, T vr) { return vl | vr; }
   static T mul(T vl, T vr) { return vl & vr; }
 };
 template <class T = unsigned long long>
-using BitwiseOrAndRig = SemiRing<T, BitwiseOrAnd<T>::o, BitwiseOrAnd<T>::i,
-                                 BitwiseOrAnd<T>::add, BitwiseOrAnd<T>::mul>;
+using BitwiseOrAndRig = Rig<BitwiseOrAnd<T>>;
 
-template <class T>
+template <class Uint>
 struct BitwiseXorAnd {
+  using T = Uint;
   static T o() { return 0; }
   static T i() { return T(-1); }
   static T add(T vl, T vr) { return vl ^ vr; }
   static T mul(T vl, T vr) { return vl & vr; }
 };
 template <class T = unsigned long long>
-using BitwiseXorAndRig = SemiRing<T, BitwiseXorAnd<T>::o, BitwiseXorAnd<T>::i,
-                                  BitwiseXorAnd<T>::add, BitwiseXorAnd<T>::mul>;
+using BitwiseXorAndRig = Rig<BitwiseXorAnd<T>>;

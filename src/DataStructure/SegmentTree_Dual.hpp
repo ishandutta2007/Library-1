@@ -12,51 +12,52 @@ template <typename M>
 struct SegmentTree_Dual {
   using T = typename M::T;
   using E = typename M::E;
-
- private:
-  const int height, n;
-  std::vector<T> val;
-  std::vector<E> laz;
-
- private:
-  inline void eval(int k) {
-    if (laz[k] == M::ei()) return;
-    laz[(k << 1) | 0] = M::composition(laz[(k << 1) | 0], laz[k]);
-    laz[(k << 1) | 1] = M::composition(laz[(k << 1) | 1], laz[k]);
-    laz[k] = M::ei();
-  }
-  inline void thrust(int k) {
-    for (int i = height; i; i--) eval(k >> i);
-  }
-
- public:
   SegmentTree_Dual() {}
   SegmentTree_Dual(int n_, T v1 = T())
-      : SegmentTree_Dual(std::vector<T>(n_, v1)) {}
-  SegmentTree_Dual(const std::vector<T>& v)
-      : height(ceil(log2(v.size()))),
-        n(1 << height),
+      : n(n_),
+        height(ceil(log2(n))),
+        val(n, v1),
+        laz(n * 2),
+        laz_flg(n * 2, false) {}
+  SegmentTree_Dual(const std::vector<T> &v)
+      : n(v.size()),
+        height(ceil(log2(n))),
         val(v),
-        laz(n * 2, M::ei()) {}
+        laz(n * 2),
+        laz_flg(n * 2, false) {}
   void apply(int a, int b, E x) {
-    thrust(a += n);
-    thrust(b += n - 1);
-    for (int l = a, r = b + 1; l < r; l >>= 1, r >>= 1) {
-      if (l & 1) laz[l] = M::composition(laz[l], x), l++;
-      if (r & 1) --r, laz[r] = M::composition(laz[r], x);
+    a += n, b += n;
+    for (int i = height; i >= 1; i--)
+      if (((a >> i) << i) != a) eval(a >> i);
+    for (int i = height; i >= 1; i--)
+      if (((b >> i) << i) != b) eval((b - 1) >> i);
+    for (int l = a, r = b; l < r; l >>= 1, r >>= 1) {
+      if (l & 1) propagate(l++, x);
+      if (r & 1) propagate(--r, x);
     }
   }
-  void set_val(int a, T x) {
-    thrust(a += n);
-    val[a - n] = x;
-    laz[a] = M::ei();
+  void set(int k, T x) {
+    for (int i = height; i; i--) eval((k + n) >> i);
+    val[k] = x, laz_flg[k + n] = false;
   }
   T operator[](const int k) {
-    thrust(k + n);
-    if (laz[k + n] != M::ei()) {
-      val[k] = M::mapping(val[k], laz[k + n]);
-      laz[k + n] = M::ei();
-    }
+    for (int i = height; i; i--) eval(k >> i);
+    if (laz_flg[k + n])
+      val[k] = M::mapping(val[k], laz[k + n]), laz_flg[k + n] = false;
     return val[k];
+  }
+
+ private:
+  const int n, height;
+  std::vector<T> val;
+  std::vector<E> laz;
+  std::vector<char> laz_flg;
+  inline void eval(int k) {
+    if (!laz_flg[k]) return;
+    propagate(k << 1 | 0, laz[k]), propagate(k << 1 | 1, laz[k]);
+    laz_flg[k] = false;
+  }
+  inline void propagate(int k, const E &x) {
+    laz[k] = laz_flg[k] ? M::composition(laz[k], x) : x, laz_flg[k] = true;
   }
 };

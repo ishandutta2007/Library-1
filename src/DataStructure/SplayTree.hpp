@@ -94,7 +94,7 @@ class SplayTree {
   using T = decltype(Node::val);
   using E = typename Node::E;
   Node *root;
-  Node *build(T *bg, T *ed) {
+  Node *build(const T *bg, const T *ed) {
     if (bg == ed) return nullptr;
     T *mid = bg + (ed - bg) / 2;
     return pushup(new Node{*mid, {build(bg, mid), build(mid + 1, ed)}});
@@ -199,7 +199,7 @@ class SplayTree {
  public:
   SplayTree(Node *t = nullptr) : root(t) {}
   SplayTree(std::size_t n, T val) { root = build(0, n, val); }
-  SplayTree(T *bg, T *ed) { root = build(bg, ed); }
+  SplayTree(const T *bg, const T *ed) { root = build(bg, ed); }
   SplayTree(const std::vector<T> &ar)
       : SplayTree(ar.data(), ar.data() + ar.size()) {}
   std::vector<T> dump() {

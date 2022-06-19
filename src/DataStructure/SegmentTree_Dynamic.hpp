@@ -187,7 +187,6 @@ class SegmentTree_Dynamic {
                    std::array<T, N> &sums) {
     static_assert(monoid<M>::value, "\"find\" is not available\n");
     static std::array<T, N> sums2;
-    assert(!check(M::ti()));
     if (std::all_of(ts.begin(), ts.end(), [](Node *t) { return !t; }))
       return -1;
     if (!h) {
@@ -216,7 +215,7 @@ class SegmentTree_Dynamic {
   SegmentTree_Dynamic(std::size_t n, T val) : root(nullptr) {
     build(root, n, {0, 1LL << HEIGHT}, val);
   }
-  SegmentTree_Dynamic(T *bg, T *ed) : root(nullptr) {
+  SegmentTree_Dynamic(const T *bg, const T *ed) : root(nullptr) {
     build(root, ed - bg, {0, 1LL << HEIGHT}, bg);
   }
   SegmentTree_Dynamic(const std::vector<T> &ar)

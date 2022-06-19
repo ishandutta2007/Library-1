@@ -48,7 +48,7 @@ struct SegmentTree_Dual {
   }
   void set_val(int a, T x) {
     thrust(a += n);
-    val[a] = x;
+    val[a - n] = x;
     laz[a] = M::ei();
   }
   T operator[](const int k) {

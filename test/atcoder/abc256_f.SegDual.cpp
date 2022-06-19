@@ -4,7 +4,7 @@
 
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
+#include "src/DataStructure/SegmentTree_Dual.hpp"
 using namespace std;
 
 using Mint = ModInt<998244353>;
@@ -14,7 +14,7 @@ struct Mono {
     Mint val;
   };
   using E = array<Mint, 3>;
-  static T mapping(T x, E mapp, int) {
+  static T mapping(T x, E mapp) {
     return {x.id, x.val + mapp[0] * (x.id + 1) * (x.id + 2) / 2 -
                       mapp[1] * (2 * x.id + 3) / 2 + mapp[2]};
   }
@@ -25,7 +25,7 @@ struct Mono {
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using Seg = SegmentTree_Dynamic<Mono>;
+  using Seg = SegmentTree_Dual<Mono>;
   int N, Q;
   cin >> N >> Q;
   Mint A[N], D[N];

@@ -18,31 +18,26 @@
 template <typename M>
 struct SegmentTree {
   using T = typename M::T;
-
- private:
-  const int n;
-  std::vector<T> dat;
-
- public:
   SegmentTree() {}
   SegmentTree(int n_) : n(n_), dat(n << 1, M::ti()) {}
-  SegmentTree(int n_, T v) : SegmentTree(std::vector<T>(n_, v)) {}
-  SegmentTree(const std::vector<T> &v) : n(v.size()), dat(n << 1, M::ti()) {
-    for (int i = 0; i < (int)v.size(); i++) dat[i + n] = v[i];
+  SegmentTree(int n_, T v) : n(n_), dat(n << 1, M::ti()) {
+    for (int i = n; i--;) dat[i + n] = v;
     rebuild();
   }
-  void set_val(int k, T x) {
+  SegmentTree(const std::vector<T> &v) : n(v.size()), dat(n << 1, M::ti()) {
+    for (int i = n; i--;) dat[i + n] = v[i];
+    rebuild();
+  }
+  void set(int k, T x) {
     for (dat[k += n] = x; k >>= 1;)
       dat[k] = M::op(dat[(k << 1) | 0], dat[(k << 1) | 1]);
   }
   void unsafe_set(int k, T x) { dat[k + n] = x; }
   void rebuild() {
-    for (int i = n - 1; i >= 1; i--)
-      dat[i] = M::op(dat[i << 1 | 0], dat[i << 1 | 1]);
+    for (int i = n; --i;) dat[i] = M::op(dat[i << 1 | 0], dat[i << 1 | 1]);
   }
   void clear() { fill(dat.begin(), dat.end(), M::ti()); }
-  //[l,r)
-  inline T fold(int l, int r) {
+  inline T fold(int l, int r) const {  //[l,r)
     T vl = M::ti(), vr = M::ti();
     for (int a = l + n, b = r + n; a < b; a >>= 1, b >>= 1) {
       if (a & 1) vl = M::op(vl, dat[a++]);
@@ -51,54 +46,40 @@ struct SegmentTree {
     return M::op(vl, vr);
   }
   T operator[](const int &k) const { return dat[k + n]; }
+  template <bool last>
+  static inline T calc_op(const T &v, const T &d) {
+    if constexpr (last)
+      return M::op(d, v);
+    else
+      return M::op(v, d);
+  }
+  // Case 0. find i s.t check(fold(k,i)) == False, check(fold(k,i+1)) == True
+  // Case 1. find i s.t check(fold(i+1,b)) == False, check(fold(i,b)) == True
+  // return -1 if not found
+  template <bool last, class C>
+  int find(const C &check, int k) const {
+    assert(!check(M::ti()));
+    std::vector<int> id[2];
+    int a = n + (k & -(!last)), b = n + n + ((k - n) & -(last));
+    for (; a < b; a >>= 1, b >>= 1) {
+      if (a & 1) id[0].push_back(a++);
+      if (b & 1) id[1].push_back(--b);
+    }
+    id[last].insert(id[last].end(), id[!last].rbegin(), id[!last].rend());
+    T val = M::ti();
+    for (int i : id[last]) {
+      if (T tmp = calc_op<last>(val, dat[i]); check(tmp)) {
+        while (i < n)
+          if (tmp = calc_op<last>(val, dat[i = i << 1 | last]); !check(tmp))
+            val = tmp, i -= last * 2 - 1;
+        return i - n + last;
+      } else
+        val = tmp;
+    }
+    return -1;
+  }
 
-  // max{ i : check(fold(l,i+1)) = true}
-  template <class C>
-  int find_right(const C &check, int l = 0) {
-    assert(check(M::ti()));
-    if (l == n) return n;
-    std::vector<int> idl, idr;
-    for (int a = l + n, b = 2 * n; a < b; a >>= 1, b >>= 1) {
-      if (a & 1) idl.push_back(a++);
-      if (b & 1) idr.push_back(--b);
-    }
-    for (auto itr = idr.rbegin(); itr != idr.rend(); itr++) idl.push_back(*itr);
-    T val = M::ti();
-    for (int i : idl) {
-      if (!check(M::op(val, dat[i]))) {
-        while (i < n) {
-          i = i << 1 | 0;
-          if (check(M::op(val, dat[i]))) val = M::op(val, dat[i++]);
-        }
-        return i - n;
-      }
-      val = M::op(val, dat[i]);
-    }
-    return n;
-  }
-  //   min { i : check(fold(i,r)) = true }
-  template <class C>
-  int find_left(const C &check, int r = -1) {
-    if (r < 0) r = n;
-    assert(check(M::ti()));
-    if (r == 0) return 0;
-    std::vector<int> idl, idr;
-    for (int a = n, b = r + n; a < b; a >>= 1, b >>= 1) {
-      if (a & 1) idl.push_back(a++);
-      if (b & 1) idr.push_back(--b);
-    }
-    for (auto itr = idl.rbegin(); itr != idl.rend(); itr++) idr.push_back(*itr);
-    T val = M::ti();
-    for (int i : idr) {
-      if (!check(M::op(dat[i], val))) {
-        while (i < n) {
-          i = i << 1 | 1;
-          if (check(M::op(dat[i], val))) val = M::op(dat[i--], val);
-        }
-        return i + 1 - n;
-      }
-      val = M::op(dat[i], val);
-    }
-    return 0;
-  }
+ private:
+  const int n;
+  std::vector<T> dat;
 };

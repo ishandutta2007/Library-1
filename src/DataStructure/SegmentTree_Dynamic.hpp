@@ -283,8 +283,7 @@ class SegmentTree_Dynamic {
   }
   std::vector<T> dump(id_t bg, id_t ed) {
     std::vector<T> ret(ed - bg);
-    dump(root, bg, ed, {0, 1LL << HEIGHT}, ret.begin());
-    return ret;
+    return dump(root, bg, ed, {0, 1LL << HEIGHT}, ret.begin()), ret;
   }
   static std::string which_available() {
     std::string ret = "";

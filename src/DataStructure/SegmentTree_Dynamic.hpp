@@ -105,8 +105,11 @@ class SegmentTree_Dynamic {
     if (t->ch[1]) t->val = M::op(t->val, t->ch[1]->val);
   }
   static inline void propagate(Node *&t, const E &x, const id_t &sz) {
-    t->lazy = t->lazy_flg ? M::composition(t->lazy, x) : x;
-    t->val = M::mapping(t->val, x, sz), t->lazy_flg = true;
+    t->lazy = t->lazy_flg ? M::composition(t->lazy, x) : x, t->lazy_flg = true;
+    if constexpr (monoid<M>::value)
+      t->val = M::mapping(t->val, x, sz);
+    else if (sz == 1)
+      t->val = M::mapping(t->val, x, sz);
   }
   static inline void cp_node(Node *&t) {
     if (!t)

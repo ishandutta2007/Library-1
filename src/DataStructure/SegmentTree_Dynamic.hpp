@@ -104,12 +104,15 @@ class SegmentTree_Dynamic {
     if (t->ch[0]) t->val = M::op(t->ch[0]->val, t->val);
     if (t->ch[1]) t->val = M::op(t->val, t->ch[1]->val);
   }
+  static inline T &reflect(Node *&t) {
+    if constexpr (dual<M>::value && !monoid<M>::value)
+      if (t->lazy_flg)
+        t->val = M::mapping(t->val, t->lazy, 1), t->lazy_flg = false;
+    return t->val;
+  }
   static inline void propagate(Node *&t, const E &x, const id_t &sz) {
     t->lazy = t->lazy_flg ? M::composition(t->lazy, x) : x, t->lazy_flg = true;
-    if constexpr (monoid<M>::value)
-      t->val = M::mapping(t->val, x, sz);
-    else if (sz == 1)
-      t->val = M::mapping(t->val, x, sz);
+    if constexpr (monoid<M>::value) t->val = M::mapping(t->val, x, sz);
   }
   static inline void cp_node(Node *&t) {
     if (!t)
@@ -136,20 +139,19 @@ class SegmentTree_Dynamic {
              const E &x) {
     if (r <= b[0] || b[1] <= l) return;
     id_t m = (b[0] + b[1]) >> 1;
-    cp_node(t);
-    if (l <= b[0] && b[1] <= r) return propagate(t, x, b[1] - b[0]), void();
+    if (cp_node(t); l <= b[0] && b[1] <= r) return propagate(t, x, b[1] - b[0]);
     eval(t, b[1] - b[0]);
     apply(t->ch[0], l, r, {b[0], m}, x), apply(t->ch[1], l, r, {m, b[1]}, x);
     if constexpr (monoid<M>::value) pushup(t);
   }
   void set_val(Node *&t, const id_t &k, const T &val, std::uint8_t h) {
-    if (cp_node(t); !h) return t->val = val, void();
+    if (cp_node(t); !h) return reflect(t) = val, void();
     if constexpr (dual<M>::value) eval(t, 1LL << h);
     set_val(t->ch[(k >> (h - 1)) & 1], k, val, h - 1);
     if constexpr (monoid<M>::value) pushup(t);
   }
   T &at_val(Node *&t, const id_t &k, std::uint8_t h) {
-    if (cp_node(t); !h) return t->val;
+    if (cp_node(t); !h) return reflect(t);
     if constexpr (dual<M>::value) eval(t, 1LL << h);
     return at_val(t->ch[(k >> (h - 1)) & 1], k, h - 1);
   }
@@ -161,7 +163,7 @@ class SegmentTree_Dynamic {
   }
   T get_val(Node *&t, const id_t &k, std::uint8_t h) {
     if (!t) return def_val();
-    if (!h) return t->val;
+    if (!h) return reflect(t);
     if constexpr (dual<M>::value) eval(t, 1LL << h);
     return get_val(t->ch[(k >> (h - 1)) & 1], k, h - 1);
   }
@@ -185,6 +187,7 @@ class SegmentTree_Dynamic {
                    std::array<T, N> &sums) {
     static_assert(monoid<M>::value, "\"find\" is not available\n");
     static std::array<T, N> sums2;
+    assert(!check(M::ti()));
     if (std::all_of(ts.begin(), ts.end(), [](Node *t) { return !t; }))
       return -1;
     if (!h) {

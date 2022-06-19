@@ -14,7 +14,6 @@ signed main() {
   ios::sync_with_stdio(0);
   int Q, K;
   cin >> Q >> K;
-  K--;
   vector<long long> query, x;
   while (Q--) {
     long long v;
@@ -32,17 +31,17 @@ signed main() {
   SegmentTree<RsumQ> seg(x.size());
   for (auto q : query) {
     if (q < 0) {
-      auto check = [&](int v) { return v <= K; };
-      int i = seg.find_right(check);
-      if (i < (int)x.size()) {
+      auto check = [&](int v) { return v >= K; };
+      int i = seg.find<0>(check, 0);
+      if (i != -1) {
         cout << x[i] << endl;
-        seg.set_val(i, seg[i] - 1);
+        seg.set(i, seg[i] - 1);
       } else {
         cout << -1 << endl;
       }
     } else {
       int i = lower_bound(x.begin(), x.end(), q) - x.begin();
-      seg.set_val(i, seg[i] + 1);
+      seg.set(i, seg[i] + 1);
     }
   }
   return 0;

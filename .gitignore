@@ -1,4 +1,4 @@
 .clang-format
 .vscode
 .DS_Store
-test/atcoder/arc085_c.*.test.cpp
+test/atcoder/arc085_c*.test.cpp

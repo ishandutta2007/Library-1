@@ -73,9 +73,17 @@ class WeightBalancedTree {
     if constexpr (semigroup<M>::value)
       n[t].val = M::op(n[n[t].ch[0]].val, n[n[t].ch[1]].val);
   }
+  static inline T &reflect(node_id t) {
+    if constexpr (dual<M>::value && !semigroup<M>::value)
+      if (n[t].lazy_flg)
+        n[t].val = M::mapping(n[t].val, n[t].lazy, 1), n[t].lazy_flg = false;
+    return n[t].val;
+  }
   static inline void propagate(node_id t, const E &x) {
     n[t].lazy = n[t].lazy_flg ? M::composition(n[t].lazy, x) : x;
-    n[t].val = M::mapping(n[t].val, x, n[t].size), n[t].lazy_flg = true;
+    if constexpr (semigroup<M>::value)
+      n[t].val = M::mapping(n[t].val, x, n[t].size);
+    n[t].lazy_flg = true;
   }
   static inline void cp_node(node_id &t) { n[t = ni++] = Node(n[t]); }
   static inline void eval(node_id t) {
@@ -128,7 +136,7 @@ class WeightBalancedTree {
     return merge(build(l, (l + r) >> 1, bg), build((l + r) >> 1, r, bg));
   }
   void dump(node_id t, typename std::vector<T>::iterator it) {
-    if (!n[t].ch[0]) return *it = n[t].val, void();
+    if (!n[t].ch[0]) return *it = reflect(t), void();
     if constexpr (dual<M>::value) eval(t);
     dump(n[t].ch[0], it), dump(n[t].ch[1], it + n[n[t].ch[0]].size);
   }
@@ -151,28 +159,32 @@ class WeightBalancedTree {
     if constexpr (semigroup<M>::value) pushup(t);
   }
   void set_val(node_id &t, std::size_t k, const T &x) {
-    if (cp_node(t); !n[t].ch[0]) return n[t].val = x, void();
+    if (cp_node(t); !n[t].ch[0]) return reflect(t) = x, void();
     if constexpr (dual<M>::value) eval(t);
     bool flg = n[n[t].ch[0]].size <= k;
     set_val(n[t].ch[flg], flg ? k - n[n[t].ch[0]].size : k, x);
     if constexpr (semigroup<M>::value) pushup(t);
   }
   T get_val(node_id t, std::size_t k) {
-    if (!n[t].ch[0]) return n[t].val;
+    if (!n[t].ch[0]) return reflect(t);
     if constexpr (dual<M>::value) eval(t);
     bool flg = n[n[t].ch[0]].size <= k;
     return get_val(n[t].ch[flg], flg ? k - n[n[t].ch[0]].size : k);
   }
   T &at_val(node_id t, std::size_t k) {
-    if (cp_node(t); !n[t].ch[0]) return n[t].val;
+    if (cp_node(t); !n[t].ch[0]) return reflect(t);
     if constexpr (dual<M>::value) eval(t);
     bool flg = n[n[t].ch[0]].size <= k;
     return at_val(n[t].ch[flg], flg ? k - n[n[t].ch[0]].size : k);
   }
+  static WBT id_to_wbt(node_id t) {
+    WBT ret;
+    return ret.root = t, ret;
+  }
 
  public:
-  WeightBalancedTree(node_id t = 0) : root(t) {}
-  WeightBalancedTree(std::size_t n, T val) { root = build(0, n, val); }
+  WeightBalancedTree() : root(0) {}
+  WeightBalancedTree(std::size_t n, T val = T()) { root = build(0, n, val); }
   WeightBalancedTree(const T *bg, const T *ed) { root = build(0, ed - bg, bg); }
   WeightBalancedTree(const std::vector<T> &ar)
       : WeightBalancedTree(ar.data(), ar.data() + ar.size()){};
@@ -180,12 +192,12 @@ class WeightBalancedTree {
   WBT operator+(WBT rhs) { return WBT(*this) += rhs; }
   std::pair<WBT, WBT> split(std::size_t k) {
     auto [l, r] = split(root, k);
-    return {WBT(l), WBT(r)};
+    return {id_to_wbt(l), id_to_wbt(r)};
   }
   std::tuple<WBT, WBT, WBT> split3(std::size_t a, std::size_t b) {
     auto [tmp, r] = split(root, b);
     auto [l, c] = split(tmp, a);
-    return {WBT(l), WBT(c), WBT(r)};
+    return {id_to_wbt(l), id_to_wbt(c), id_to_wbt(r)};
   }
   void push_back(T val) { n[ni] = Node{val, 1}, root = merge(root, ni++); }
   void push_front(T val) { n[ni] = Node{val, 1}, root = merge(ni++, root); }
@@ -196,18 +208,18 @@ class WeightBalancedTree {
   T pop_back() {
     assert(root);
     auto [l, t] = split(root, size() - 1);
-    return root = l, n[t].val;
+    return root = l, reflect(t);
   }
   T pop_front() {
     assert(root);
     auto [t, r] = split(root, 1);
-    return root = r, n[t].val;
+    return root = r, reflect(t);
   }
   T erase(std::size_t k) {
     assert(k < size());
     auto [l, tmp] = split(root, k);
     auto [t, r] = split(tmp, 1);
-    return root = merge(l, r), n[t].val;
+    return root = merge(l, r), reflect(t);
   }
   void set(std::size_t k, T val) { set_val(root, k, val); }
   T get(std::size_t k) { return get_val(root, k); }

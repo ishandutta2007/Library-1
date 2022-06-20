@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title 永続化Weight-Balanced-Tree
+ * @title 永続Weight-Balanced-Tree
  * @category データ構造
  * @brief O(logN)
  * 永続平衡二分木
@@ -76,13 +76,12 @@ class WeightBalancedTree {
   static inline T &reflect(node_id t) {
     if constexpr (dual<M>::value && !semigroup<M>::value)
       if (n[t].lazy_flg)
-        n[t].val = M::mapping(n[t].val, n[t].lazy, 1), n[t].lazy_flg = false;
+        M::mapping(n[t].val, n[t].lazy, 1), n[t].lazy_flg = false;
     return n[t].val;
   }
   static inline void propagate(node_id t, const E &x) {
-    n[t].lazy = n[t].lazy_flg ? M::composition(n[t].lazy, x) : x;
-    if constexpr (semigroup<M>::value)
-      n[t].val = M::mapping(n[t].val, x, n[t].size);
+    n[t].lazy_flg ? (M::composition(n[t].lazy, x), x) : n[t].lazy = x;
+    if constexpr (semigroup<M>::value) M::mapping(n[t].val, x, n[t].size);
     n[t].lazy_flg = true;
   }
   static inline void cp_node(node_id &t) { n[t = ni++] = Node(n[t]); }

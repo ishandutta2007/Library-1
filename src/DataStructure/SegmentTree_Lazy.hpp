@@ -17,8 +17,7 @@ struct SegmentTree_Lazy {
       : n(n_),
         height(ceil(log2(n))),
         dat(n * 2, M::ti()),
-        laz(n * 2),
-        laz_flg(n * 2, false) {}
+        laz(n * 2, {E(), false}) {}
   SegmentTree_Lazy(int n_, T v1) : SegmentTree_Lazy(n_) {
     for (int i = n; i--;) dat[i + n] = v1;
     for (int i = n; --i;) update(i);
@@ -29,7 +28,7 @@ struct SegmentTree_Lazy {
   }
   void unsafe_set(int k, T x) { dat[k + n] = x; }
   void rebuild() {
-    laz_flg.assign(n * 2, false);
+    for (int i = n + n; i--;) laz[i].flg = false;
     for (int i = n; --i;) update(i);
   }
   void apply(int a, int b, E x) {
@@ -50,7 +49,7 @@ struct SegmentTree_Lazy {
   void set(int k, T x) {
     int i = height;
     for (k += n; i; i--) eval(k >> i);
-    for (dat[k] = x, laz_flg[k] = false, i = 1; k >> i; i++) update(k >> i);
+    for (dat[k] = x, laz[k].flg = false, i = 1; k >> i; i++) update(k >> i);
   }
   T fold(int a, int b) {  //[a,b)
     a += n, b += n;
@@ -69,18 +68,20 @@ struct SegmentTree_Lazy {
 
  private:
   const int n, height;
+  struct Lazy {
+    E val;
+    bool flg;
+  };
   std::vector<T> dat;
-  std::vector<E> laz;
-  std::vector<char> laz_flg;
+  std::vector<Lazy> laz;
   inline void eval(int k) {
-    if (!laz_flg[k]) return;
-    propagate(k << 1 | 0, laz[k]), propagate(k << 1 | 1, laz[k]);
-    laz_flg[k] = false;
+    if (!laz[k].flg) return;
+    propagate(k << 1 | 0, laz[k].val), propagate(k << 1 | 1, laz[k].val);
+    laz[k].flg = false;
   }
   inline void propagate(int k, const E &x) {
     dat[k] = M::mapping(dat[k], x);
-    if (k < n)
-      laz[k] = laz_flg[k] ? M::composition(laz[k], x) : x, laz_flg[k] = true;
+    if (k < n) laz[k] = {laz[k].flg ? M::composition(laz[k].val, x) : x, true};
   }
   inline void update(int k) {
     dat[k] = M::op(dat[k << 1 | 0], dat[k << 1 | 1]);

@@ -14,17 +14,9 @@ struct SegmentTree_Dual {
   using E = typename M::E;
   SegmentTree_Dual() {}
   SegmentTree_Dual(int n_, T v1 = T())
-      : n(n_),
-        height(ceil(log2(n))),
-        val(n, v1),
-        laz(n * 2),
-        laz_flg(n * 2, false) {}
+      : n(n_), height(ceil(log2(n))), val(n, v1), laz(n * 2, {E(), false}) {}
   SegmentTree_Dual(const std::vector<T> &v)
-      : n(v.size()),
-        height(ceil(log2(n))),
-        val(v),
-        laz(n * 2),
-        laz_flg(n * 2, false) {}
+      : n(v.size()), height(ceil(log2(n))), val(v), laz(n * 2, {E(), false}) {}
   void apply(int a, int b, E x) {
     a += n, b += n;
     for (int i = height; i >= 1; i--)
@@ -38,26 +30,29 @@ struct SegmentTree_Dual {
   }
   void set(int k, T x) {
     for (int i = height; i; i--) eval((k + n) >> i);
-    val[k] = x, laz_flg[k + n] = false;
+    val[k] = x, laz[k + n].flg = false;
   }
   T operator[](const int k) {
-    for (int i = height; i; i--) eval(k >> i);
-    if (laz_flg[k + n])
-      val[k] = M::mapping(val[k], laz[k + n]), laz_flg[k + n] = false;
+    for (int i = height; i; i--) eval((k + n) >> i);
+    if (laz[k + n].flg)
+      val[k] = M::mapping(val[k], laz[k + n].val), laz[k + n].flg = false;
     return val[k];
   }
 
  private:
   const int n, height;
+  struct Lazy {
+    E val;
+    bool flg;
+  };
   std::vector<T> val;
-  std::vector<E> laz;
-  std::vector<char> laz_flg;
+  std::vector<Lazy> laz;
   inline void eval(int k) {
-    if (!laz_flg[k]) return;
-    propagate(k << 1 | 0, laz[k]), propagate(k << 1 | 1, laz[k]);
-    laz_flg[k] = false;
+    if (!laz[k].flg) return;
+    propagate(k << 1 | 0, laz[k].val), propagate(k << 1 | 1, laz[k].val);
+    laz[k].flg = false;
   }
   inline void propagate(int k, const E &x) {
-    laz[k] = laz_flg[k] ? M::composition(laz[k], x) : x, laz_flg[k] = true;
+    laz[k] = {laz[k].flg ? M::composition(laz[k].val, x) : x, true};
   }
 };

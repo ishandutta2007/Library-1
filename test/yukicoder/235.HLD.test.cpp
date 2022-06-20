@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/235"
 #include <bits/stdc++.h>
 #include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/SegmentTree_Lazy.hpp"
+#include "src/DataStructure/SegmentTree_Beats.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
@@ -9,20 +9,15 @@ using Mint = ModInt<int(1e9 + 7)>;
 
 struct Mono {
   struct T {
-    Mint val;
-    Mint coef;
-    T(Mint v = 0, Mint s = 1) : val(v), coef(s) {}
+    Mint val, coef;
   };
   using E = Mint;
-  static T ti() { return T(0, 0); }
-  static E ei() { return E(0); }
+  static T ti() { return {0, 0}; }
   static T op(const T &vl, const T &vr) {
-    return T(vl.val + vr.val, vl.coef + vr.coef);
+    return {vl.val + vr.val, vl.coef + vr.coef};
   }
-  static T mapping(const T &val, const E &op) {
-    return T(val.val + val.coef * op, val.coef);
-  }
-  static E composition(const E &opl, const E &opr) { return opl + opr; }
+  static bool mapping(T &v, const E &f) { return v.val += v.coef * f, true; }
+  static void composition(E &pre, const E &suf) { pre += suf; }
 };
 
 signed main() {
@@ -41,8 +36,9 @@ signed main() {
     hld.add_edge(A, B);
   }
   hld.build(0);
-  SegmentTree_Lazy<Mono> seg(N);
-  for (int i = 0; i < N; i++) seg.set_val(hld.in[i], {S[i], C[i]});
+  SegmentTree_Beats<Mono> seg(N);
+  for (int i = 0; i < N; i++) seg.unsafe_set(hld.in[i], {S[i], C[i]});
+  seg.rebuild();
   auto q = [&](int a, int b) { return seg.fold(a, b); };
   int Q;
   cin >> Q;

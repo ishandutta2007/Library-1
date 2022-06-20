@@ -8,8 +8,12 @@ using namespace std;
 struct RchminQ {
   using T = long long;
   using E = long long;
-  static T mapping(const T &l, const E &r) { return min(l, r); }
-  static E composition(const E &l, const E &r) { return min(l, r); }
+  static void mapping(T &v, const E &f) {
+    if (v > f) v = f;
+  }
+  static void composition(E &pre, const E &suf) {
+    if (pre > suf) pre = suf;
+  }
 };
 
 signed main() {

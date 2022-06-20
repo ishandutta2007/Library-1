@@ -20,11 +20,11 @@ struct RupdQ_RmaxsumQ {
     ret.size = a.size + b.size;
     return ret;
   }
-  static T mapping(const T &l, const E &r) {
-    return {r * l.size, max(r * l.size, r), max(r * l.size, r),
-            max(r * l.size, r), l.size};
+  static void mapping(T &v, const E &f) {
+    v.sum = f * v.size;
+    v.max = v.lmax = v.rmax = max(v.sum, f);
   }
-  static E composition(const E &l, const E &r) { return r; }
+  static void composition(E &pre, const E &suf) { pre = suf; }
 };
 
 signed main() {

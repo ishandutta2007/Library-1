@@ -7,9 +7,8 @@ using namespace std;
 struct RupdQ {
   using T = int;
   using E = int;
-  static E ei() { return INT_MAX; }
-  static T mapping(const T& l, const E& r) { return r == ei() ? l : r; }
-  static E composition(const E& l, const E& r) { return r == ei() ? l : r; }
+  static void mapping(T& v, const E& f) { v = f; }
+  static void composition(E& pre, const E& suf) { pre = suf; }
 };
 
 signed main() {

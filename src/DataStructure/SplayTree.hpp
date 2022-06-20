@@ -136,12 +136,12 @@ class SplayTree {
   }
   inline void propagate(Node *t, const E &x) {
     if (!t) return;
-    t->lazy = t->lazy_flg ? M::composition(t->lazy, x) : x;
+    t->lazy_flg ? (M::composition(t->lazy, x), x) : t->lazy = x;
     if constexpr (semigroup<M>::value) {
-      t->sum = M::mapping(t->sum, x, t->size);
-      if constexpr (reversible) t->rsum = M::mapping(t->rsum, x, t->size);
+      M::mapping(t->sum, x, t->size);
+      if constexpr (reversible) M::mapping(t->rsum, x, t->size);
     }
-    t->val = M::mapping(t->val, x, 1), t->lazy_flg = true;
+    M::mapping(t->val, x, 1), t->lazy_flg = true;
   }
   inline void toggle(Node *t) {
     if (!t) return;

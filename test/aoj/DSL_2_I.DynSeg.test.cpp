@@ -13,8 +13,8 @@ struct RSQandRUQ {
   using E = int;
   static T op(T l, T r) { return l + r; }
   static T ti() { return 0; }
-  static T mapping(T v, E f, int sz) { return f * sz; }
-  static T composition(E pre, E suf) { return suf; }
+  static void mapping(T& v, E f, int sz) { v = f * sz; }
+  static void composition(E& pre, E suf) { pre = suf; }
 };
 
 signed main() {

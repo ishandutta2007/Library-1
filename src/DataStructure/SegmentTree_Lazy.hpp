@@ -78,8 +78,9 @@ struct SegmentTree_Lazy {
     laz_flg[k] = false;
   }
   inline void propagate(int k, const E &x) {
-    laz[k] = laz_flg[k] ? M::composition(laz[k], x) : x, laz_flg[k] = true;
     dat[k] = M::mapping(dat[k], x);
+    if (k < n)
+      laz[k] = laz_flg[k] ? M::composition(laz[k], x) : x, laz_flg[k] = true;
   }
   inline void update(int k) {
     dat[k] = M::op(dat[k << 1 | 0], dat[k << 1 | 1]);

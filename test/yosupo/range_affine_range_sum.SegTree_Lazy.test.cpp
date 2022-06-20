@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
 #include <bits/stdc++.h>
 
-#include "src/DataStructure/SegmentTree_Lazy.hpp"
+#include "src/DataStructure/SegmentTree_Beats.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
@@ -10,20 +10,16 @@ using Mint = ModInt<998244353>;
 struct RaffineQ_RsumQ {
   struct T {
     Mint val;
-    int size;
-    T(Mint v = 0, int s = 1) : val(v), size(s) {}
+    int sz;
   };
   using E = pair<Mint, Mint>;
-  static T ti() { return T(0, 0); }
-  static E ei() { return make_pair(Mint(1), Mint(0)); }
-  static T op(const T &l, const T &r) {
-    return T(l.val + r.val, l.size + r.size);
+  static T ti() { return {0, 0}; }
+  static T op(const T &l, const T &r) { return {l.val + r.val, l.sz + r.sz}; }
+  static bool mapping(T &v, const E &f) {
+    return v.val = f.first * v.val + f.second * v.sz, true;
   }
-  static T mapping(const T &l, const E &r) {
-    return T(r.first * l.val + r.second * l.size, l.size);
-  }
-  static E composition(const E &l, const E &r) {
-    return make_pair(r.first * l.first, r.first * l.second + r.second);
+  static void composition(E &pre, const E &suf) {
+    pre = {pre.first * suf.first, suf.first * pre.second + suf.second};
   }
 };
 
@@ -38,7 +34,7 @@ signed main() {
     cin >> a;
     v[i] = {a, 1};
   }
-  SegmentTree_Lazy<RaffineQ_RsumQ> seg(v);
+  SegmentTree_Beats<RaffineQ_RsumQ> seg(v);
   while (Q--) {
     bool op;
     int l, r;

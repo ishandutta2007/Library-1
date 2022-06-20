@@ -8,8 +8,8 @@ using namespace std;
 struct RaddQ {
   using T = long long;
   using E = long long;
-  static T mapping(const T &t, const E &e, int sz) { return t + e; }
-  static E composition(const E &l, const E &r) { return l + r; }
+  static void mapping(T &t, const E &e, int sz) { t += e; }
+  static void composition(E &pre, const E &suf) { pre += suf; }
 };
 
 signed main() {

@@ -14,11 +14,11 @@ struct RaffineQ_RsumQ {
   using E = pair<Mint, Mint>;
   static T ti() { return 0; }
   static T op(const T &l, const T &r) { return l + r; }
-  static T mapping(const T &l, const E &r, int sz) {
-    return r.first * l + r.second * sz;
+  static void mapping(T &v, const E &f, int sz) {
+    v = f.first * v + f.second * sz;
   }
-  static E composition(const E &l, const E &r) {
-    return make_pair(r.first * l.first, r.first * l.second + r.second);
+  static void composition(E &pre, const E &suf) {
+    pre = {suf.first * pre.first, suf.first * pre.second + suf.second};
   }
 };
 

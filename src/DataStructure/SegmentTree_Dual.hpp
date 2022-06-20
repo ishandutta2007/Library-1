@@ -35,7 +35,7 @@ struct SegmentTree_Dual {
   T operator[](const int k) {
     for (int i = height; i; i--) eval((k + n) >> i);
     if (laz[k + n].flg)
-      val[k] = M::mapping(val[k], laz[k + n].val), laz[k + n].flg = false;
+      M::mapping(val[k], laz[k + n].val), laz[k + n].flg = false;
     return val[k];
   }
 
@@ -53,6 +53,7 @@ struct SegmentTree_Dual {
     laz[k].flg = false;
   }
   inline void propagate(int k, const E &x) {
-    laz[k] = {laz[k].flg ? M::composition(laz[k].val, x) : x, true};
+    laz[k].flg ? (M::composition(laz[k].val, x), x) : laz[k].val = x;
+    laz[k].flg = true;
   }
 };

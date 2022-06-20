@@ -14,12 +14,12 @@ struct Mono {
     Mint val;
   };
   using E = array<Mint, 3>;
-  static T mapping(T x, E mapp, int) {
-    return {x.id, x.val + mapp[0] * (x.id + 1) * (x.id + 2) / 2 -
-                      mapp[1] * (2 * x.id + 3) / 2 + mapp[2]};
+  static void mapping(T& x, const E& mapp, int) {
+    x.val += mapp[0] * (x.id + 1) * (x.id + 2) / 2 -
+             mapp[1] * (2 * x.id + 3) / 2 + mapp[2];
   }
-  static E composition(E pre, E suf) {
-    return {pre[0] + suf[0], pre[1] + suf[1], pre[2] + suf[2]};
+  static void composition(E& pre, const E& suf) {
+    pre[0] += suf[0], pre[1] += suf[1], pre[2] += suf[2];
   }
 };
 signed main() {

@@ -99,9 +99,9 @@ class EulerTourTree {
     }
   }
   inline void propagate(node_id i, const E& v) {
-    n[i].lazy = n[i].lazy_flg ? M::composition(n[i].lazy, v) : v;
-    if (n[i].s == n[i].d) n[i].val = M::mapping(n[i].val, v, 1);
-    if constexpr (monoid<M>::value) n[i].sum = M::mapping(n[i].sum, v, n[i].sz);
+    n[i].lazy_flg ? (M::composition(n[i].lazy, v), v) : n[i].lazy = v;
+    if (n[i].s == n[i].d) M::mapping(n[i].val, v, 1);
+    if constexpr (monoid<M>::value) M::mapping(n[i].sum, v, n[i].sz);
     n[i].lazy_flg = true;
   }
   inline void eval(node_id i) {

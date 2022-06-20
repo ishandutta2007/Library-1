@@ -10,10 +10,8 @@ struct RsumQRaddQ {
   using E = long long;
   static T ti() { return 0; }
   static T op(const T &l, const T &r) { return l + r; }
-  static T mapping(const T &t, const E &e, const std::size_t &sz) {
-    return t + e * sz;
-  }
-  static E composition(const E &l, const E &r) { return l + r; }
+  static void mapping(T &t, const E &e, const std::size_t &sz) { t += e * sz; }
+  static void composition(E &pre, const E &suf) { pre += suf; }
 };
 
 signed main() {

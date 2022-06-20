@@ -8,18 +8,14 @@ using Mint = ModInt<int(1e9 + 7)>;
 
 struct Mono {
   struct T {
-    Mint val;
-    Mint coef;
-    T(Mint v = 0, Mint s = 1) : val(v), coef(s) {}
+    Mint val, coef;
   };
   using E = Mint;
   static T op(const T &vl, const T &vr) {
-    return T(vl.val + vr.val, vl.coef + vr.coef);
+    return {vl.val + vr.val, vl.coef + vr.coef};
   }
-  static T mapping(const T &val, const E &op) {
-    return T(val.val + val.coef * op, val.coef);
-  }
-  static E composition(const E &opl, const E &opr) { return opl + opr; }
+  static void mapping(T &val, const E &op) { val.val += val.coef * op; }
+  static void composition(E &pre, const E &suf) { pre += suf; }
 };
 
 signed main() {

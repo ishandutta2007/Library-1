@@ -105,10 +105,10 @@ class LinkCutTree {
   }
   inline void propagate(Node *t, const E &x) {
     if (!t) return;
-    t->lazy = t->lazy_flg ? M::composition(t->lazy, x) : x;
-    t->val = M::mapping(t->val, x);
+    t->lazy_flg ? (M::composition(t->lazy, x), x) : t->lazy = x;
+    M::mapping(t->val, x);
     if constexpr (semigroup<M>::value)
-      t->sum = M::mapping(t->sum, x), t->rsum = M::mapping(t->rsum, x);
+      M::mapping(t->sum, x), M::mapping(t->rsum, x);
     t->lazy_flg = true;
   }
   inline void toggle(Node *t) {

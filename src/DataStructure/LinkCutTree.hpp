@@ -66,14 +66,14 @@ class LinkCutTree {
   using Node = Node_D<semigroup<M>::value, dual<M>::value>;
   using T = typename Node::T;
   using E = typename Node::E;
-  inline int dir(Node *&t) {
+  static inline int dir(Node *&t) {
     if (t->par) {
       if (t->par->ch[0] == t) return 0;
       if (t->par->ch[1] == t) return 1;
     }
     return 2;
   }
-  inline void rot(Node *t) {
+  static inline void rot(Node *t) {
     Node *p = t->par;
     int d = dir(t);
     if ((p->ch[d] = t->ch[!d])) p->ch[d]->par = p;
@@ -86,7 +86,7 @@ class LinkCutTree {
     }
     p->par = t;
   }
-  inline void splay(Node *t) {
+  static inline void splay(Node *t) {
     eval(t);
     for (int t_d = dir(t), p_d; t_d < 2; rot(t), t_d = dir(t)) {
       if ((p_d = dir(t->par)) < 2) eval(t->par->par);
@@ -94,7 +94,7 @@ class LinkCutTree {
       if (p_d < 2) rot(t_d == p_d ? t->par : t);
     }
   }
-  inline void pushup(Node *t) {
+  static inline void pushup(Node *t) {
     t->rsum = t->sum = t->val;
     if (t->ch[0])
       t->sum = M::op(t->ch[0]->sum, t->sum),
@@ -103,7 +103,7 @@ class LinkCutTree {
       t->sum = M::op(t->sum, t->ch[1]->sum),
       t->rsum = M::op(t->ch[1]->rsum, t->rsum);
   }
-  inline void propagate(Node *t, const E &x) {
+  static inline void propagate(Node *t, const E &x) {
     if (!t) return;
     t->lazy_flg ? (M::composition(t->lazy, x), x) : t->lazy = x;
     M::mapping(t->val, x);
@@ -111,20 +111,20 @@ class LinkCutTree {
       M::mapping(t->sum, x), M::mapping(t->rsum, x);
     t->lazy_flg = true;
   }
-  inline void toggle(Node *t) {
+  static inline void toggle(Node *t) {
     if (!t) return;
     std::swap(t->ch[0], t->ch[1]);
     if constexpr (semigroup<M>::value) std::swap(t->sum, t->rsum);
     t->rev_flg = !t->rev_flg;
   }
-  inline void eval(Node *t) {
+  static inline void eval(Node *t) {
     if (t->rev_flg) toggle(t->ch[0]), toggle(t->ch[1]), t->rev_flg = false;
     if constexpr (dual<M>::value)
       if (t->lazy_flg)
         propagate(t->ch[0], t->lazy), propagate(t->ch[1], t->lazy),
             t->lazy_flg = false;
   }
-  inline Node *expose(Node *t) {
+  static inline Node *expose(Node *t) {
     Node *r = nullptr;
     for (Node *p = t; p; r = p, p = p->par) {
       splay(p), p->ch[1] = r;

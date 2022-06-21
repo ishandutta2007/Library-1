@@ -172,6 +172,7 @@
 "test/yosupo/range_affine_range_sum.DynSeg.test.cpp": "2022-06-20 21:58:57 +0900",
 "test/yosupo/range_affine_range_sum.SegTree_Lazy.test.cpp": "2022-06-20 21:03:56 +0900",
 "test/yosupo/range_affine_range_sum.WBT.test.cpp": "2022-06-20 22:21:12 +0900",
+"test/yosupo/range_chmin_chmax_add_range_sum.test.cpp": "2022-06-21 22:59:53 +0900",
 "test/yosupo/range_kth_smallest.WM.test.cpp": "2020-10-23 23:21:18 +0900",
 "test/yosupo/scc.test.cpp": "2020-10-24 15:09:02 +0900",
 "test/yosupo/segment_add_get_min.test.cpp": "2021-11-21 22:42:04 +0900",

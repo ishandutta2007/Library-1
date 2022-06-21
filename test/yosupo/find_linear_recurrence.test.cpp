@@ -14,8 +14,7 @@ signed main() {
   for (int i = 0; i < N; i++) cin >> a[i];
   vector<Mint> c = berlekamp_massey(a);
   int d = c.size();
-  cout << d << endl;
-  for (int i = 0; i < d; i++) cout << (i ? " " : "") << c[d - 1 - i];
-  cout << endl;
+  cout << d << '\n';
+  for (int i = 0; i < d; i++) cout << c[i] << " \n"[i == d - 1];
   return 0;
 }

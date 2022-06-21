@@ -30,7 +30,7 @@ signed main() {
   for (int i = 0; i < N; i++) cin >> A[i], D[i] = A[i];
   for (int j = 0; j < 3; j++)
     for (int i = 1; i < N; i++) D[i] += D[i - 1];
-  Seg seg;
+  Seg seg(N);
   for (int i = 0; i < N; i++) seg.set(i, {i, D[i]});
   while (Q--) {
     int op, x;

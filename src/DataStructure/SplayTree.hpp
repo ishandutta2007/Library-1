@@ -94,18 +94,18 @@ class SplayTree {
   using T = decltype(Node::val);
   using E = typename Node::E;
   Node *root;
-  Node *build(const T *bg, const T *ed) {
+  static inline Node *build(const T *bg, const T *ed) {
     if (bg == ed) return nullptr;
     T *mid = bg + (ed - bg) / 2;
     return pushup(new Node{*mid, {build(bg, mid), build(mid + 1, ed)}});
   }
-  Node *build(std::size_t bg, std::size_t ed, const T &val) {
+  static inline Node *build(std::size_t bg, std::size_t ed, const T &val) {
     if (bg == ed) return nullptr;
     std::size_t mid = bg + (ed - bg) / 2;
     return pushup(
         new Node{val, {build(bg, mid, val), build(mid + 1, ed, val)}});
   }
-  void dump(typename std::vector<T>::iterator itr, Node *t) {
+  static inline void dump(typename std::vector<T>::iterator itr, Node *t) {
     if (!t) return;
     if constexpr (dual<M>::value) eval_propagate(t);
     if constexpr (reversible) eval_toggle(t);
@@ -113,7 +113,7 @@ class SplayTree {
     *(itr + sz) = t->val, dump(itr, t->ch[0]), dump(itr + sz + 1, t->ch[1]);
   }
   template <bool b>
-  void helper(Node *&t) {
+  static inline void helper(Node *&t) {
     if (!t->ch[b]) return;
     t->size += t->ch[b]->size;
     if constexpr (semigroup<M>::value)
@@ -125,16 +125,16 @@ class SplayTree {
         if constexpr (reversible) t->rsum = M::op(t->rsum, t->ch[0]->rsum);
       }
   }
-  inline Node *pushup(Node *t) {
+  static inline Node *pushup(Node *t) {
     if (!t) return t;
     t->size = 1;
     if constexpr (semigroup<M>::value) {
       t->sum = t->val;
-      if constexpr (reversible) t->rsum = t->val;
+      if constexpr (reversible) t->rsum = t->sum;
     }
     return helper<0>(t), helper<1>(t), t;
   }
-  inline void propagate(Node *t, const E &x) {
+  static inline void propagate(Node *t, const E &x) {
     if (!t) return;
     t->lazy_flg ? (M::composition(t->lazy, x), x) : t->lazy = x;
     if constexpr (semigroup<M>::value) {
@@ -143,24 +143,24 @@ class SplayTree {
     }
     M::mapping(t->val, x, 1), t->lazy_flg = true;
   }
-  inline void toggle(Node *t) {
+  static inline void toggle(Node *t) {
     if (!t) return;
     if constexpr (semigroup<M>::value) std::swap(t->sum, t->rsum);
     std::swap(t->ch[0], t->ch[1]), t->rev_flg = !t->rev_flg;
   }
-  inline void eval_propagate(Node *t) {
+  static inline void eval_propagate(Node *t) {
     if (t->lazy_flg)
       propagate(t->ch[0], t->lazy), propagate(t->ch[1], t->lazy),
           t->lazy_flg = false;
   }
-  inline void eval_toggle(Node *t) {
+  static inline void eval_toggle(Node *t) {
     if (t->rev_flg) toggle(t->ch[0]), toggle(t->ch[1]), t->rev_flg = false;
   }
-  inline void rot(Node *&t, bool d) {
+  static inline void rot(Node *&t, bool d) {
     Node *s = t->ch[d];
     t->ch[d] = s->ch[!d], s->ch[!d] = pushup(t), t = pushup(s);
   }
-  inline void splay(Node *&t, std::size_t k) {
+  static inline void splay(Node *&t, std::size_t k) {
     if (!t) return;
     if constexpr (dual<M>::value) eval_propagate(t);
     if constexpr (reversible) eval_toggle(t);
@@ -198,7 +198,7 @@ class SplayTree {
 
  public:
   SplayTree(Node *t = nullptr) : root(t) {}
-  SplayTree(std::size_t n, T val) { root = build(0, n, val); }
+  SplayTree(std::size_t n, T val = T()) { root = build(0, n, val); }
   SplayTree(const T *bg, const T *ed) { root = build(bg, ed); }
   SplayTree(const std::vector<T> &ar)
       : SplayTree(ar.data(), ar.data() + ar.size()) {}

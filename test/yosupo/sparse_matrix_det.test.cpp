@@ -3,6 +3,7 @@
 #include "src/Math/ModInt.hpp"
 #include "src/Math/berlekamp_massey.hpp"
 #include "src/Math/minimal_polynomial.hpp"
+#include "src/Math/SparseSquareMatrix.hpp"
 using namespace std;
 
 signed main() {

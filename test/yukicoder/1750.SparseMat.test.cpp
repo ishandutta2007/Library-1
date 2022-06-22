@@ -1,0 +1,27 @@
+#define PROBLEM "https://yukicoder.me/problems/no/1750"
+#include <bits/stdc++.h>
+#include "src/Math/ModInt.hpp"
+#include "src/Math/minimal_polynomial.hpp"
+#include "src/Math/SparseSquareMatrix.hpp"
+#include "src/Math/x_pow_mod.hpp"
+#include "src/Math/matrix_pow.hpp"
+using namespace std;
+
+signed main() {
+  cin.tie(0);
+  ios::sync_with_stdio(false);
+  using Mint = ModInt<998244353>;
+  long long N, M, T;
+  cin >> N >> M >> T;
+  SparseSquareMatrix<Mint> mat(N);
+  while (M--) {
+    int s, t;
+    cin >> s >> t;
+    mat.add_component(s, t, 1);
+    mat.add_component(t, s, 1);
+  }
+  vector<Mint> vec(N);
+  vec[0] = 1;
+  cout << matrix_pow(mat, vec, T)[0] << '\n';
+  return 0;
+}

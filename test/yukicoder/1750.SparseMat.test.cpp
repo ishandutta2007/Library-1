@@ -1,10 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1750"
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/minimal_polynomial.hpp"
-#include "src/Math/SparseSquareMatrix.hpp"
-#include "src/Math/x_pow_mod.hpp"
-#include "src/Math/matrix_pow.hpp"
+#include "src/LinearAlgebra/SparseSquareMatrix.hpp"
 using namespace std;
 
 signed main() {
@@ -22,6 +19,6 @@ signed main() {
   }
   vector<Mint> vec(N);
   vec[0] = 1;
-  cout << matrix_pow(mat, vec, T)[0] << '\n';
+  cout << MinimalPolynomial(mat, vec).pow(T)[0] << '\n';
   return 0;
 }

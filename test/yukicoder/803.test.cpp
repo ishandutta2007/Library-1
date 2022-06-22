@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/803"
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecomposition.hpp"
+#include "src/LinearAlgebra/LUDecomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 

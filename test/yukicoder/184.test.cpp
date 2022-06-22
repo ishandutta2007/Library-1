@@ -2,7 +2,7 @@
 //行列(F_2)のrankのverify
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecomposition.hpp"
+#include "src/LinearAlgebra/LUDecomposition.hpp"
 using namespace std;
 
 signed main() {

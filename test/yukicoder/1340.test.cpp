@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1340"
 #include <bits/stdc++.h>
-#include "src/Math/Matrix.hpp"
+#include "src/LinearAlgebra/Matrix.hpp"
 #include "src/Math/SemiRing.hpp"
 using namespace std;
 

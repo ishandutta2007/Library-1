@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 /**
  * @title 行列
- * @category 数学
+ * @category 線形代数
  * 半環が載る
  */
 

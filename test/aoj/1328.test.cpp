@@ -3,7 +3,7 @@
 // double型の行列の連立一次方程式のverify
 
 #include <bits/stdc++.h>
-#include "src/Math/LUDecomposition.hpp"
+#include "src/LinearAlgebra/LUDecomposition.hpp"
 using namespace std;
 
 signed main() {

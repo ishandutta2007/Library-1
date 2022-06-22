@@ -2,7 +2,8 @@
 #include <bits/stdc++.h>
 /**
  * @title 行列の特性多項式
- * @category 数学
+ * @category 線形代数
+ * O(N^3)
  */
 
 // BEGIN CUT HERE

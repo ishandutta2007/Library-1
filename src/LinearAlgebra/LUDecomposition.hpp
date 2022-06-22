@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 /**
  * @title LU分解
- * @category 数学
+ * @category 線形代数
  * bool型の場合のkernel関数 未verify
  */
 
@@ -15,15 +15,11 @@ class LUDecomposition {
   Mat dat;
   std::vector<std::size_t> perm, piv;
   bool sgn;
-  template <class T>
-  inline static constexpr bool IFPV = std::is_floating_point_v<T>;
-  template <class T, typename std::enable_if_t<IFPV<T>> * = nullptr>
-  static bool is_zero(T x) {
-    return std::abs(x) < 1e-8;
-  }
-  template <class T, typename std::enable_if_t<!IFPV<T>> * = nullptr>
-  static bool is_zero(T x) {
-    return x == T(0);
+  static bool is_zero(K x) {
+    if constexpr (std::is_floating_point_v<K>)
+      return std::abs(x) < 1e-8;
+    else
+      return x == T(0);
   }
 
  public:

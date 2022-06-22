@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/system_of_linear_equations"
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecomposition.hpp"
+#include "src/LinearAlgebra/LUDecomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 

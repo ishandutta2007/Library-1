@@ -2,8 +2,8 @@
 
 #include <bits/stdc++.h>
 
-#include "src/Math/LUDecomposition.hpp"
-#include "src/Math/Matrix.hpp"
+#include "src/LinearAlgebra/LUDecomposition.hpp"
+#include "src/LinearAlgebra/Matrix.hpp"
 using namespace std;
 
 signed main() {

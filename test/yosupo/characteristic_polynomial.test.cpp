@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/characteristic_polynomial"
 
 #include <bits/stdc++.h>
-#include "src/Math/characteristic_polynomial.hpp"
+#include "src/LinearAlgebra/characteristic_polynomial.hpp"
 #include "src/Math/ModInt.hpp"
 
 using namespace std;

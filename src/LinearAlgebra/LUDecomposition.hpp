@@ -19,7 +19,7 @@ class LUDecomposition {
     if constexpr (std::is_floating_point_v<K>)
       return std::abs(x) < 1e-8;
     else
-      return x == T(0);
+      return x == K(0);
   }
 
  public:

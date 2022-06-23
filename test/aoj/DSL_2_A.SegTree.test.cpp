@@ -22,7 +22,7 @@ signed main() {
     if (com) {
       cout << seg.fold(x, y + 1) << endl;
     } else {
-      seg.set_val(x, y);
+      seg.set(x, y);
     }
   }
   return 0;

@@ -23,16 +23,15 @@ signed main() {
     }
     vector<Mint> b(W);
     b[0] = 1;
-    MinimalPolynomial g(A, b);
     long long y = 0;
     for (int i = 0; i < N; i++) {
-      b = g.pow(obst[i].first - y);
+      b = MinimalPolynomial(A, b).pow(obst[i].first - y);
       int j = i;
       while (j < N && obst[i].first == obst[j].first) b[obst[j++].second] = 0;
       i = j - 1;
       y = obst[i].first;
     }
-    b = g.pow(H - 1 - y);
+    b = MinimalPolynomial(A, b).pow(H - 1 - y);
     cout << "Case " << ++cnt << ": " << b[W - 1] << '\n';
   }
   return 0;

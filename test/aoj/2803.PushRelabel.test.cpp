@@ -1,6 +1,6 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2803"
 #include <bits/stdc++.h>
-#include "src/Optimization/PushRelabel.hpp"
+#include "src/Optimization/MaxFlow_PushRelabel.hpp"
 #include "src/Optimization/MaxFlow.hpp"
 using namespace std;
 

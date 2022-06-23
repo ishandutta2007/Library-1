@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 /**
  * @title 最小カット問題のk値への一般化
- * @category アルゴリズム
+ * @category 最適化問題
  * @see https://noshi91.hatenablog.com/entry/2021/06/29/044225
  * phi関数等で ∞ を返すときはその大きさに注意 (大きすぎるとオーバーフロー)
  */

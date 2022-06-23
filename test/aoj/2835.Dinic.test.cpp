@@ -1,7 +1,7 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/RUPC/2835"
 #include <bits/stdc++.h>
-#include "src/Optimization/Dinic.hpp"
+#include "src/Optimization/MaxFlow_Dinic.hpp"
 #include "src/Optimization/MaxFlow.hpp"
 using namespace std;
 

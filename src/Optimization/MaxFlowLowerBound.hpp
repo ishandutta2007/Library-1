@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 /**
  * @title 最小流量制限付き最大流インターフェース
- * @category グラフ
+ * @category 最適化問題
  * アルゴリズム(Dinic等)はclassテンプレートで受け取る
  * @see https://snuke.hatenablog.com/entry/2016/07/10/043918
  * 容量は負も可 (逆向きに流れる意味)

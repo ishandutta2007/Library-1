@@ -64,8 +64,7 @@ class MinimalPolynomial {
     bs.erase(bs.begin() + dg + 1, bs.end());
   }
   static std::uint64_t get_rand(std::uint64_t l, std::uint64_t r) {
-    static std::random_device rd;
-    static std::mt19937_64 gen(rd());
+    static std::mt19937_64 gen(std::random_device{}());
     return std::uniform_int_distribution<std::uint64_t>(l, r)(gen);
   }
   Vec pow(std::uint64_t k) {  // M^k * b

@@ -1,7 +1,7 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/6/GRL_6_A"
 #include <bits/stdc++.h>
-#include "src/Optimization/Dinic.hpp"
+#include "src/Optimization/MaxFlow_Dinic.hpp"
 #include "src/Optimization/MaxFlow.hpp"
 using namespace std;
 

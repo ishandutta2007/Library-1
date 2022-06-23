@@ -1,9 +1,9 @@
 #define PROBLEM "https://atcoder.jp/contests/arc129/tasks/arc129_e"
 
 #include <bits/stdc++.h>
-#include "src/Algorithm/Dinic.hpp"
-#include "src/Graph/MaxFlow.hpp"
-#include "src/Algorithm/monge_mincut.hpp"
+#include "src/Optimization/Dinic.hpp"
+#include "src/Optimization/MaxFlow.hpp"
+#include "src/Optimization/monge_mincut.hpp"
 using namespace std;
 
 signed main() {

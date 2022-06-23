@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/assignment"
 #include <bits/stdc++.h>
-#include "src/Graph/MinCostFlow.hpp"
+#include "src/Optimization/MinCostFlow.hpp"
 using namespace std;
 
 signed main() {

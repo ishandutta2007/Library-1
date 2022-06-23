@@ -1,8 +1,8 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/challenges/sources/ICPC/Prelim/1615"
 #include <bits/stdc++.h>
-#include "src/Algorithm/PushRelabel.hpp"
-#include "src/Graph/MaxFlowLowerBound.hpp"
+#include "src/Optimization/PushRelabel.hpp"
+#include "src/Optimization/MaxFlowLowerBound.hpp"
 using namespace std;
 
 signed main() {

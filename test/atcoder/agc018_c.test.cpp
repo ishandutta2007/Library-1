@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/agc018/tasks/agc018_c"
 
 #include <bits/stdc++.h>
-#include "src/Algorithm/min_Lconvex.hpp"
+#include "src/Optimization/min_Lconvex.hpp"
 using namespace std;
 
 // O(MAX_A log log MAX_A)

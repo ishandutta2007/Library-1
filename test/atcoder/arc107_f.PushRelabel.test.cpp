@@ -1,9 +1,9 @@
 #define PROBLEM "https://atcoder.jp/contests/arc107/tasks/arc107_f"
 
 #include <bits/stdc++.h>
-#include "src/Algorithm/PushRelabel.hpp"
-#include "src/Graph/MaxFlow.hpp"
-#include "src/Algorithm/monge_mincut.hpp"
+#include "src/Optimization/PushRelabel.hpp"
+#include "src/Optimization/MaxFlow.hpp"
+#include "src/Optimization/monge_mincut.hpp"
 using namespace std;
 
 signed main() {

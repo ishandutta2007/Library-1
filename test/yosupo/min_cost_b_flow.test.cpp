@@ -18,12 +18,11 @@ ostream &operator<<(ostream &stream, const __int128_t &v) {
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using MCF = MinCostFlow<long long, long long>;
-  MCF graph;
-  vector<MCF::EdgePtr> edges;
+  using MCF = MinCostFlow<NetworkSimplex, long long, long long>;
   int N, M;
   cin >> N >> M;
-  graph.add_vertices(N);
+  MCF graph(N);
+  vector<MCF::EdgePtr> edges;
   for (int i = 0; i < N; i++) {
     long long b;
     cin >> b;
@@ -34,14 +33,12 @@ signed main() {
     cin >> s >> t >> l >> u >> c;
     edges.emplace_back(graph.add_edge(s, t, l, u, c));
   }
-  bool isok = graph.flow_run().first;
-  if (isok) {
-    cout << graph.get_result_value<__int128_t>() << endl;
-    auto potential = graph.get_potential();
-    for (auto p : potential) cout << p << endl;
-    for (auto &e : edges) cout << e.flow() << endl;
+  if (graph.b_flow()) {
+    cout << graph.get_result_value<__int128_t>() << '\n';
+    for (int i = 0; i < N; i++) cout << graph.get_potential(i) << '\n';
+    for (auto &e : edges) cout << e.flow() << '\n';
   } else {
-    cout << "infeasible" << endl;
+    cout << "infeasible" << '\n';
   }
   return 0;
 }

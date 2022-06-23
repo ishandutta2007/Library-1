@@ -6,7 +6,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using MCF = MinCostFlow<long long, long long>;
+  using MCF = MinCostFlow<NetworkSimplex, long long, long long>;
   int N;
   cin >> N;
   MCF graph;
@@ -24,9 +24,10 @@ signed main() {
       edges[i][j] = graph.add_edge(v_left[i], v_right[j], 0, 1, A);
     }
   }
-  cout << graph.flow_run().second << endl;
+  graph.b_flow();
+  cout << graph.get_result_value() << endl;
   for (int i = 0; i < N; i++)
     for (int j = 0; j < N; j++)
-      if (edges[i][j].flow()) cout << j << (i == N - 1 ? "\n" : " ");
+      if (edges[i][j].flow()) cout << j << " \n"[i == N - 1];
   return 0;
 }

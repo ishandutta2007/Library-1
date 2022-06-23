@@ -1,7 +1,7 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/6/GRL_6_B"
 #include <bits/stdc++.h>
-#include "src/Graph/MinCostFlow.hpp"
+#include "src/Optimization/MinCostFlow.hpp"
 #include "src/DataStructure/RadixHeap.hpp"
 using namespace std;
 

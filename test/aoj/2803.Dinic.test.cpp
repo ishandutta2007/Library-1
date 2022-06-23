@@ -1,7 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2803"
 #include <bits/stdc++.h>
-#include "src/Algorithm/Dinic.hpp"
-#include "src/Graph/MaxFlow.hpp"
+#include "src/Optimization/Dinic.hpp"
+#include "src/Optimization/MaxFlow.hpp"
 using namespace std;
 
 signed main() {

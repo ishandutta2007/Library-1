@@ -1,25 +1,18 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/min_cost_b_flow"
 #include <bits/stdc++.h>
-#include "src/Graph/MinCostFlow.hpp"
+#include "src/Optimization/MinCostFlow.hpp"
 using namespace std;
 
 ostream &operator<<(ostream &stream, const __int128_t &v) {
   if (v == 0) stream << "0";
   __int128_t tmp;
-  if (v < 0) {
-    stream << "-";
-    tmp = -v;
-  } else {
+  if (v < 0)
+    stream << "-", tmp = -v;
+  else
     tmp = v;
-  }
   std::string s;
-  while (tmp) {
-    s += '0' + (tmp % 10);
-    tmp /= 10;
-  }
-  std::reverse(s.begin(), s.end());
-  stream << s;
-  return stream;
+  while (tmp) s += '0' + (tmp % 10), tmp /= 10;
+  return std::reverse(s.begin(), s.end()), stream << s;
 }
 
 signed main() {

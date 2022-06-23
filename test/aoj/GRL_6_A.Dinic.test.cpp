@@ -1,8 +1,8 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/6/GRL_6_A"
 #include <bits/stdc++.h>
-#include "src/Algorithm/Dinic.hpp"
-#include "src/Graph/MaxFlow.hpp"
+#include "src/Optimization/Dinic.hpp"
+#include "src/Optimization/MaxFlow.hpp"
 using namespace std;
 
 signed main() {

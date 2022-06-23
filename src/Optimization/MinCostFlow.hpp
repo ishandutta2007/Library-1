@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 /**
  * @title 最小費用流
- * @category グラフ
+ * @category 最適化問題
  *  PrimalDual(容量スケーリング)
  *  O(m^2 log U log n)
  * @see https://misawa.github.io/others/flow/library_design.html

@@ -1,7 +1,7 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/challenges/sources/ICPC/Prelim/1615"
 #include <bits/stdc++.h>
-#include "src/Optimization/Dinic.hpp"
+#include "src/Optimization/MaxFlow_Dinic.hpp"
 #include "src/Optimization/MaxFlowLowerBound.hpp"
 using namespace std;
 

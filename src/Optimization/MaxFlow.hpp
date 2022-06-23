@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 /**
  * @title 最大流インターフェース
- * @category グラフ
+ * @category 最適化問題
  * アルゴリズム(Dinic等)はclassテンプレートで受け取る
  * EdgePtr:
  *  change_cap: 容量を変更, それに伴うフローのはみ出しを出力

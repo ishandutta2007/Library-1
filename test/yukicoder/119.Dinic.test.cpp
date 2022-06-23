@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/119"
 #include <bits/stdc++.h>
-#include "src/Optimization/Dinic.hpp"
+#include "src/Optimization/MaxFlow_Dinic.hpp"
 #include "src/Optimization/MaxFlow.hpp"
 #include "src/Optimization/monge_mincut.hpp"
 using namespace std;

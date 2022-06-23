@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 /**
  * @title L凸関数最小化(スケーリング法)
- * @category アルゴリズム
+ * @category 最適化問題
  *  O(2^n n^2 log (K/n)) * EVAL
  * @see https://opt-cp.com/agc018c-lconvex/#toc11
  */

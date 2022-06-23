@@ -1,8 +1,8 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title PushRelabel(Gap)
- * @category アルゴリズム
+ * @title 最大流 PushRelabel(Gap)
+ * @category 最適化問題
  *  O(n^2 √m)
  */
 

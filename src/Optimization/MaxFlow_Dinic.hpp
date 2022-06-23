@@ -1,8 +1,8 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title Dinic
- * @category アルゴリズム
+ * @title 最大流 Dinic
+ * @category 最適化問題
  *  O(n^2 m)
  * @see https://misawa.github.io/others/flow/dinic_time_complexity.html
  */

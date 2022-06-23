@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 
 #include "src/Automaton/dfa_dp.hpp"
-#include "NFA_to_DFA.hpp"
+#include "src/Automaton/NFA_to_DFA.hpp"
 using namespace std;
 
 struct Elevator {

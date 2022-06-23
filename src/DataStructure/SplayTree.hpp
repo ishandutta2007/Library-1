@@ -96,7 +96,7 @@ class SplayTree {
   Node *root;
   static inline Node *build(const T *bg, const T *ed) {
     if (bg == ed) return nullptr;
-    T *mid = bg + (ed - bg) / 2;
+    const T *mid = bg + (ed - bg) / 2;
     return pushup(new Node{*mid, {build(bg, mid), build(mid + 1, ed)}});
   }
   static inline Node *build(std::size_t bg, std::size_t ed, const T &val) {

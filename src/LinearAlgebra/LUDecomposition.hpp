@@ -28,7 +28,7 @@ class LUDecomposition {
     std::iota(perm.begin(), perm.end(), 0);
     for (std::size_t c = 0; c != cols && piv.size() != rows; c++) {
       auto pos = piv.size();
-      if constexpr (IFPV<K>) {
+      if constexpr (std::is_floating_point_v<K>) {
         for (std::size_t r = piv.size() + 1; r < rows; r++)
           if (std::abs(dat[pos][c]) < std::abs(dat[r][c])) pos = r;
       } else if (is_zero(dat[pos][c])) {

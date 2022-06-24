@@ -62,6 +62,17 @@ struct MaxPlus {
 template <class T>
 using MaxPlusRig = Rig<MaxPlus<T>>;
 
+template <class Arith>
+struct MinMax {
+  using T = Arith;
+  static T o() { return std::numeric_limits<T>::max(); }
+  static T i() { return std::numeric_limits<T>::min(); }
+  static T add(T vl, T vr) { return std::min(vl, vr); }
+  static T mul(T vl, T vr) { return std::max(vl, vr); }
+};
+template <class T>
+using MinMaxRig = Rig<MinMax<T>>;
+
 template <class Uint>
 struct BitwiseOrAnd {
   using T = Uint;

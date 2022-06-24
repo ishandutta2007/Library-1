@@ -1,4 +1,5 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2397"
+#define PROBLEM \
+  "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Spring/2397"
 
 #include <bits/stdc++.h>
 #include "src/LinearAlgebra/SparseSquareMatrix.hpp"

@@ -9,9 +9,12 @@ signed main() {
   int Q;
   cin >> Q;
   while (Q--) {
-    unsigned long long a;
+    long long a;
     cin >> a;
-    auto ans = factorize(a);
+    vector<long long> ans;
+    for (auto& [p, e] : Factors(a)) {
+      for (int i = 0; i < e; i++) ans.push_back(p);
+    }
     cout << ans.size();
     for (auto x : ans) cout << " " << x;
     cout << '\n';

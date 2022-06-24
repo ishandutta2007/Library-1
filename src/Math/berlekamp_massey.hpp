@@ -17,6 +17,7 @@
 template <class K>
 std::vector<K> berlekamp_massey(const std::vector<K> &a) {
   std::size_t n = a.size(), d = 0, m = 0, i, j;
+  if (n == 0) return {};
   std::vector<K> c(n), b(n), tmp;
   K x = 1, y, coef;
   const K Z = 0;

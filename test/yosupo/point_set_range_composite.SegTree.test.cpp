@@ -38,7 +38,7 @@ signed main() {
       int p;
       Mint c, d;
       cin >> p >> c >> d;
-      seg.set_val(p, {c, d});
+      seg.set(p, {c, d});
     }
   }
   return 0;

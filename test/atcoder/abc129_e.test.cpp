@@ -30,6 +30,6 @@ signed main() {
   auto dfa_le = DFA_SymbolMap(
       DFA_Le(L, 2), dfa_bin.alphabet(),
       [](const std::tuple<int, int, int> &a) { return std::get<2>(a); });
-  cout << dfa_dp<Mint>(dfa_bin & dfa_le, L.length());
+  cout << dfa_dp<Mint>(dfa_bin & dfa_le, L.length()) << '\n';
   return 0;
 }

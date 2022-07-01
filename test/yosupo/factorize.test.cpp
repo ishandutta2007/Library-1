@@ -12,9 +12,8 @@ signed main() {
     long long a;
     cin >> a;
     vector<long long> ans;
-    for (auto& [p, e] : Factors(a)) {
+    for (auto& [p, e] : Factors(a))
       for (int i = 0; i < e; i++) ans.push_back(p);
-    }
     cout << ans.size();
     for (auto x : ans) cout << " " << x;
     cout << '\n';

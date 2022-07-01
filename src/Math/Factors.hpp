@@ -69,12 +69,3 @@ constexpr std::uint64_t totient(const Factors &f) {
   return ret;
 }
 constexpr auto totient(std::uint64_t n) { return totient(Factors(n)); }
-constexpr std::uint64_t carmichael(const Factors &f) {
-  std::uint64_t ret = 1, i = 0, tmp = 1;
-  for (const auto &[p, e] : f) {
-    for (tmp = p - 1, i = e - (p == 2 && e > 2); --i;) tmp *= p;
-    ret = std::lcm(ret, tmp);
-  }
-  return ret;
-}
-constexpr auto carmichael(std::uint64_t n) { return carmichael(Factors(n)); }

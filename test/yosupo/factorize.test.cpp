@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/factorize"
 #include <bits/stdc++.h>
-#include "src/Math/factorize.hpp"
+#include "src/Math/Factors.hpp"
 using namespace std;
 
 signed main() {

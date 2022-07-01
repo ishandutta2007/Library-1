@@ -1,7 +1,7 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/6/NTL/1/NTL_1_D"
 #include <bits/stdc++.h>
-#include "src/Math/factorize.hpp"
+#include "src/Math/Factors.hpp"
 using namespace std;
 
 signed main() {

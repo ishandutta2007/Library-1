@@ -20,5 +20,5 @@ constexpr std::uint64_t rec(std::uint64_t a, std::uint64_t b, std::uint64_t m) {
     if (e& 1 ? ret = mod(__uint128_t(ret) * a) : 0; !(e >>= 1)) return ret;
 }
 constexpr std::uint64_t H4(std::uint64_t a, std::uint64_t b, std::uint64_t m) {
-  return (a = rec(a, b, m)) > m ? a - m : a;
+  return (a = rec(a, b, m)) >= m ? a - m : a;
 }

@@ -1,7 +1,5 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2647"
 #include <bits/stdc++.h>
-#include "src/DataStructure/UnionFind.hpp"
-#include "src/DataStructure/SkewHeap.hpp"
 #include "src/Graph/MinimumSpanningAborescense.hpp"
 using namespace std;
 

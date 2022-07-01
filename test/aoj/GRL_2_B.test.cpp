@@ -1,8 +1,6 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/2/GRL_2_B"
 #include <bits/stdc++.h>
-#include "src/DataStructure/UnionFind.hpp"
-#include "src/DataStructure/SkewHeap.hpp"
 #include "src/Graph/MinimumSpanningAborescense.hpp"
 using namespace std;
 

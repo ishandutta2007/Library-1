@@ -220,12 +220,12 @@ class SplayTree {
   void clear() { root = nullptr; }
   template <class L = M,
             typename std::enable_if_t<semigroup<L>::value> * = nullptr>
-  const T &operator[](id_t k) {
+  const T &operator[](std::size_t k) {
     return get(k);
   }
   template <class L = M,
             typename std::enable_if_t<!semigroup<L>::value> * = nullptr>
-  T &operator[](id_t k) {
+  T &operator[](std::size_t k) {
     return at(k);
   }
   const T &get(std::size_t k) { return splay(root, k), root->val; }

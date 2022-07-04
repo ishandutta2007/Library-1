@@ -12,7 +12,7 @@ signed main() {
   while (n--) {
     long long x;
     cin >> x;
-    cout << is_prime(x) << '\n';
+    cout << x << " " << is_prime(x) << '\n';
   }
   return 0;
 }

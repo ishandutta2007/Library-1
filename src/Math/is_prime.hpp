@@ -3,7 +3,7 @@
 /**
  * @title 素数判定
  * @category 数学
- *  O(N^(1/4))
+ *  O(log N)
  * constexpr で呼べる
  */
 

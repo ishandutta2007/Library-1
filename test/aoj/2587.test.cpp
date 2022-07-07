@@ -1,21 +1,21 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Prelim/2587"
 #include <bits/stdc++.h>
-
 #include "src/Automaton/dfa_dp.hpp"
 #include "src/Automaton/NFA_to_DFA.hpp"
 using namespace std;
 
 struct Elevator {
-  using state_t = int;
   using symbol_t = int;
   Elevator(int N_, const vector<int> &l, const vector<int> &h)
       : N(N_), low(l), high(h) {}
-  std::set<symbol_t> alphabet() const { return {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; }
-  state_t initial_state() const { return 0; }
-  std::set<state_t> transition(const state_t s, const symbol_t &c) const {
+  std::vector<symbol_t> alphabet() const {
+    return {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+  }
+  int initial_state() const { return 0; }
+  std::set<int> transition(int s, const symbol_t &c, int) const {
     int i = s / 5, j = s % 5;
-    if (i == N) return {};
+    if (i >= N) return {};
     if (j == 1) {
       if ((low[i] % 10) <= c) return {5 * (i + 1)};
     } else if (j == 2) {
@@ -37,7 +37,7 @@ struct Elevator {
     }
     return {};
   }
-  std::set<state_t> eps_transition(const state_t s) const {
+  std::set<int> eps_transition(int s) const {
     int i = s / 5, j = s % 5;
     if (j == 0 && low[i] / 10 == 0) {
       if (high[i] / 10 == 0) return {5 * i + 4};
@@ -45,7 +45,7 @@ struct Elevator {
     }
     return {};
   }
-  bool is_accept(const state_t s) const { return s == 5 * N; }
+  bool is_accept(int s) const { return s == 5 * N; }
 
  private:
   const int N;

@@ -4,62 +4,61 @@
 #include "src/Automaton/NFA_to_DFA.hpp"
 using namespace std;
 
-struct AororB {
-  using state_t = std::pair<int, int>;
+class AororB {
+  const long long A, B;
+
+ public:
   using symbol_t = int;
   AororB(long long A_, long long B_) : A(A_), B(B_) {}
-  std::set<symbol_t> alphabet() const { return {0, 1}; }
-  state_t initial_state() const { return {3, 59}; }
-  std::set<state_t> transition(const state_t s, const symbol_t &c) const {
-    const auto &[v, h] = s;
-    if (v == 0) return {{0, -1}};
-    long long l = A >> h, u = B >> h;
+  std::vector<symbol_t> alphabet() const { return {0, 1}; }
+  int initial_state() const { return 3; }
+  std::set<int> transition(int s, const symbol_t &c, int i) const {
+    if (i >= 60) return {};
+    if (s == 0) return {0};
+    long long l = A >> (59 - i), u = B >> (59 - i);
     if (l == u) {
-      if (c == (l & 1)) return {{3, h - 1}};
+      if (c == (l & 1)) return {3};
       return {};
     }
     if (c == 0) {
-      if (v == 1) {
+      if (s == 1) {
         if (l & 1) return {};
-        return {{1, h - 1}};
-      } else if (v == 2 || v == 4) {
-        if (u & 1) return {{0, -1}};
-        return {{v, h - 1}};
+        return {1};
+      } else if (s == 2 || s == 4) {
+        if (u & 1) return {0};
+        return {s};
       } else {
         if (l & 1) return {};
-        if (u & 1) return {{1, h - 1}};
-        return {{3, h - 1}};
+        if (u & 1) return {1};
+        return {3};
       }
     } else {
-      if (v == 1) {
-        if (l & 1) return {{1, h - 1}};
-        return {{0, -1}};
-      } else if (v == 2) {
-        if (u & 1) return {{4, h - 1}};
+      if (s == 1) {
+        if (l & 1) return {1};
+        return {0};
+      } else if (s == 2) {
+        if (u & 1) return {4};
         return {};
-      } else if (v == 4) {
-        if (u & 1) return {{0, -1}};
-        return {{4, h - 1}};
+      } else if (s == 4) {
+        if (u & 1) return {0};
+        return {4};
       } else {
         if (u - l == 1) {
-          if (l & 1) return {{3, h - 1}};
-          return {{3, h - 1}, {2, h - 1}};
+          if (l & 1) return {3};
+          return {3, 2};
         } else {
           if (l & 1) {
-            if (u & 1) return {{1, h - 1}};
-            return {{3, h - 1}};
+            if (u & 1) return {1};
+            return {3};
           }
-          if (u & 1) return {{0, -1}};
-          return {{4, h - 1}};
+          if (u & 1) return {0};
+          return {4};
         }
       }
     }
   }
-  std::set<state_t> eps_transition(const state_t) const { return {}; }
-  bool is_accept(const state_t s) const { return s.second == -1; }
-
- private:
-  const long long A, B;
+  std::set<int> eps_transition(const int) const { return {}; }
+  bool is_accept(int s) const { return true; }
 };
 
 signed main() {

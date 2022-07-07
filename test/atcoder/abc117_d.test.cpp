@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/abc117/tasks/abc117_d"
 #include <bits/stdc++.h>
 #include "src/Automaton/dfa_dp.hpp"
-#include "src/Automaton/DFA_Le.hpp"
+#include "src/Automaton/DFA_Inequality.hpp"
 using namespace std;
 
 signed main() {
@@ -19,6 +19,6 @@ signed main() {
     for (int i = N; i--;) val += (((A[i] >> k) & 1) ^ b) << k;
     return val;
   };
-  cout << dfa_dp<long long>(DFA_Le(K, 2, 41), 41, add, f, 0, 0) << '\n';
+  cout << dfa_dp<long long>(DFA_Inequality(K, 2, 41), 41, add, f, 0, 0) << '\n';
   return 0;
 }

@@ -14,10 +14,10 @@ signed main() {
   auto add = [](long long &l, const long long &r) {
     if (l < r) l = r;
   };
-  auto f = [&](const long long &x, int b, int k) {
-    long long val = x;
-    for (int i = N; i--;) val += (((A[i] >> k) & 1) ^ b) << k;
-    return val;
+  auto f = [&](long long x, int b, int k) {
+    int h = 40 - k;
+    for (int i = N; i--;) x += (((A[i] >> h) & 1) ^ b) << h;
+    return x;
   };
   cout << dfa_dp<long long>(DFA_Inequality(K, 2, 41), 41, add, f, 0, 0) << '\n';
   return 0;

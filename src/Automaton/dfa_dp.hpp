@@ -32,6 +32,10 @@ HAS_MEMBER(transition);
 HAS_MEMBER(is_accept);
 HAS_MEMBER(state_size);
 HAS_MEMBER(eps_transition);
+HAS_MEMBER(is_reject);
+#undef HAS_TYPE
+#undef HAS_MEMBER
+#undef HAS_CHECK
 template <class A>
 using is_automaton =
     std::conjunction<has_symbol_t<A>, has_alphabet<A>, has_initial_state<A>,

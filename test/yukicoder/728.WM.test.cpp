@@ -8,34 +8,17 @@ signed main() {
   ios::sync_with_stdio(0);
   int N;
   cin >> N;
-  int A[N];
+  int A[N], L[N], R[N];
   for (int i = 0; i < N; i++) cin >> A[i];
-  int L[N], R[N];
-  vector<int> vec(A, A + N);
-  for (int i = 0; i < N; i++) {
-    cin >> L[i] >> R[i];
-    vec.push_back(A[i] - L[i]);
-    vec.push_back(A[i] + R[i]);
-  }
-  sort(vec.begin(), vec.end());
-  vec.erase(unique(vec.begin(), vec.end()), vec.end());
-  auto id = [&](int x) {
-    return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-  };
-  vector<int> l(N), r(N);
-  for (int i = 0; i < N; i++) {
-    l[i] = id(A[i] - L[i]);
-    r[i] = id(A[i] + R[i]);
-  }
-  WaveletMatrix wml(l), wmr(r);
+  for (int i = 0; i < N; i++) cin >> L[i] >> R[i];
+  vector<int> r(N);
+  for (int i = 0; i < N; i++) r[i] = A[i] + R[i];
+  WaveletMatrix wm(r);
   long long ans = 0;
   for (int i = 0; i < N; i++) {
     int left = lower_bound(A, A + N, A[i] - L[i]) - A;
-    int right = upper_bound(A, A + N, A[i] + R[i]) - A;
-    int ai = id(A[i]);
-    ans += wmr.range_freq(left, i, ai, 4 * N);
-    ans += wml.range_freq(i + 1, right, 0, ai + 1);
+    ans += wm.count(left, i, A[i], INT_MAX);
   }
-  cout << ans / 2 << "\n";
+  cout << ans << "\n";
   return 0;
 }

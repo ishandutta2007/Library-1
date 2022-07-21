@@ -3,129 +3,101 @@
 /**
  * @title Wavelet行列
  * @category データ構造
- * 事前に座圧して使う
+ * 内部で座圧される
+ * ついでに区間内の種類数を答えるクエリも
+ * https://www.youtube.com/watch?v=Id7lmNxg21w
  */
 
 // BEGIN CUT HERE
 
-struct WaveletMatrix {
+template <class T = std::int64_t>
+class WaveletMatrix {
   struct SuccinctIndexableDictionary {
-    std::size_t length;
-    std::size_t blocks;
+    std::size_t len, blocks, zeros;
     std::vector<unsigned> bit, sum;
     SuccinctIndexableDictionary() = default;
-    SuccinctIndexableDictionary(std::size_t length)
-        : length(length), blocks((length + 31) >> 5) {
-      bit.assign(blocks, 0U);
-      sum.assign(blocks, 0U);
-    }
+    SuccinctIndexableDictionary(std::size_t len)
+        : len(len), blocks((len >> 5) + 1), bit(blocks, 0), sum(blocks, 0) {}
     void set(int k) { bit[k >> 5] |= 1U << (k & 31); }
     void build() {
-      sum[0] = 0U;
       for (std::size_t i = 1; i < blocks; i++)
         sum[i] = sum[i - 1] + __builtin_popcount(bit[i - 1]);
+      zeros = rank0(len);
     }
-    bool operator[](int k) { return (bool((bit[k >> 5] >> (k & 31)) & 1)); }
-    int rank(int k) {
-      return (sum[k >> 5]
-              + __builtin_popcount(bit[k >> 5] & ((1U << (k & 31)) - 1)));
+    bool operator[](int k) const { return (bit[k >> 5] >> (k & 31)) & 1; }
+    std::size_t rank(std::size_t k) const {
+      return (sum[k >> 5] +
+              __builtin_popcount(bit[k >> 5] & ((1U << (k & 31)) - 1)));
     }
-    int rank(bool val, int k) { return (val ? rank(k) : k - rank(k)); }
+    std::size_t rank0(std::size_t k) const { return k - rank(k); }
   };
-
- private:
-  unsigned sigma, height;
-  std::size_t length;
-  std::vector<SuccinctIndexableDictionary> matrix;
-  std::vector<int> mid;
-
- private:
-  std::pair<int, int> succ(bool f, int l, int r, int level) {
-    return {matrix[level].rank(f, l) + mid[level] * f,
-            matrix[level].rank(f, r) + mid[level] * f};
-  }
+  std::size_t len, lg;
+  std::vector<SuccinctIndexableDictionary> mat;
+  std::vector<T> vec;
 
  public:
   WaveletMatrix() = default;
-  WaveletMatrix(std::vector<int> v)
-      : WaveletMatrix(v, *max_element(v.begin(), v.end()) + 1) {}
-  WaveletMatrix(std::vector<int> v, unsigned s) : sigma(s), length(v.size()) {
-    height = 32 - __builtin_clz(sigma);
-    matrix.resize(height);
-    mid.resize(height);
-    std::vector<int> l(length), r(length);
-    for (int level = height - 1; level >= 0; level--) {
-      matrix[level] = SuccinctIndexableDictionary(length + 1);
-      int left = 0, right = 0;
-      for (std::size_t i = 0; i < length; i++) {
-        if (((v[i] >> level) & 1))
-          matrix[level].set(i), r[right++] = v[i];
-        else
-          l[left++] = v[i];
-      }
-      mid[level] = left;
-      matrix[level].build();
-      v.swap(l);
-      for (int i = 0; i < right; i++) v[left + i] = r[i];
+  WaveletMatrix(const std::vector<T> &v)
+      : len(v.size()), lg(32 - __builtin_clz(len)), mat(lg, len), vec(v) {
+    std::sort(vec.begin(), vec.end());
+    vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
+    std::vector<unsigned> cur(len), nex(len);
+    for (int i = len; i--;)
+      cur[i] = std::lower_bound(vec.begin(), vec.end(), v[i]) - vec.begin();
+    for (auto h = lg; h--; cur.swap(nex)) {
+      for (std::size_t i = 0; i < len; i++)
+        if ((cur[i] >> h) & 1) mat[h].set(i);
+      mat[h].build();
+      std::array it{nex.begin(), nex.begin() + mat[h].zeros};
+      for (std::size_t i = 0; i < len; i++) *it[mat[h][i]]++ = cur[i];
     }
-  }
-  // v[k]
-  int access(int k) {
-    int ret = 0;
-    for (int level = height - 1; level >= 0; level--) {
-      bool f = matrix[level][k];
-      if (f) ret |= 1 << level;
-      k = matrix[level].rank(f, k) + mid[level] * f;
-    }
-    return ret;
-  }
-  int operator[](int k) { return access(k); }
-  // count i s.t. (0 <= i < r) && v[i] == x
-  int rank(int x, int r) {
-    int l = 0;
-    for (int level = height - 1; level >= 0; level--)
-      std::tie(l, r) = succ((x >> level) & 1, l, r, level);
-    return r - l;
   }
   // k-th(0-indexed) smallest number in v[l,r)
-  int kth_smallest(int l, int r, int k) {
-    assert(0 <= k && k < r - l);
-    int ret = 0;
-    for (int level = height - 1; level >= 0; level--) {
-      int cnt = matrix[level].rank(false, r) - matrix[level].rank(false, l);
-      bool f = cnt <= k;
-      if (f) ret |= 1 << level, k -= cnt;
-      std::tie(l, r) = succ(f, l, r, level);
-    }
-    return ret;
+  T kth_smallest(int l, int r, int k) const {
+    assert(k < r - l);
+    std::size_t ret = 0;
+    for (auto h = lg; h--;)
+      if (auto l0 = mat[h].rank0(l), r0 = mat[h].rank0(r); k >= r0 - l0) {
+        k -= r0 - l0, ret |= 1 << h;
+        l += mat[h].zeros - l0, r += mat[h].zeros - r0;
+      } else
+        l = l0, r = r0;
+    return vec[ret];
   }
   // k-th(0-indexed) largest number in v[l,r)
-  int kth_largest(int l, int r, int k) {
+  T kth_largest(int l, int r, int k) const {
     return kth_smallest(l, r, r - l - k - 1);
   }
-  // count i s.t. (l <= i < r) && (v[i] < upper)
-  int range_freq(int l, int r, int upper) {
-    upper = std::min(upper, (int)sigma);
-    int ret = 0;
-    for (int level = height - 1; level >= 0; level--) {
-      bool f = ((upper >> level) & 1);
-      if (f) ret += matrix[level].rank(false, r) - matrix[level].rank(false, l);
-      std::tie(l, r) = succ(f, l, r, level);
-    }
+  // count i s.t. (l <= i < r) && (v[i] < ub)
+  std::size_t count(int l, int r, T ub) const {
+    std::size_t x = std::lower_bound(vec.begin(), vec.end(), ub) - vec.begin();
+    if (x >= 1 << lg) return r - l;
+    if (x == 0) return 0;
+    std::size_t ret = 0;
+    for (auto h = lg; h--;)
+      if (auto l0 = mat[h].rank0(l), r0 = mat[h].rank0(r); (x >> h) & 1)
+        ret += r0 - l0, l += mat[h].zeros - l0, r += mat[h].zeros - r0;
+      else
+        l = l0, r = r0;
     return ret;
   }
-  // count i s.t. (l <= i < r) && (lower <= v[i] < upper)
-  int range_freq(int l, int r, int lower, int upper) {
-    return range_freq(l, r, upper) - range_freq(l, r, lower);
+  // count i s.t. (l <= i < r) && (lb <= v[i] < ub)
+  std::size_t count(int l, int r, T lb, T ub) const {
+    return count(l, r, ub) - count(l, r, lb);
   }
-  // max v[i] s.t. (l <= i < r) && (v[i] < upper)
-  int prev_value(int l, int r, int upper) {
-    int cnt = range_freq(l, r, upper);
-    return cnt == 0 ? -1 : kth_smallest(l, r, cnt - 1);
+};
+
+class DQuery {
+  std::vector<int> next;
+  WaveletMatrix<int> wm;
+
+ public:
+  template <class T>
+  DQuery(const std::vector<T> &v) : next(v.size(), -1) {
+    std::map<T, int> mp;
+    for (int i = v.size(); i--; mp[v[i]] = i)
+      if (mp.count(v[i])) next[mp[v[i]]] = i;
+    wm = WaveletMatrix(next);
   }
-  // std::min v[i] s.t. (l <= i < r) && (lower <= v[i])
-  int next_value(int l, int r, int lower) {
-    int cnt = range_freq(l, r, lower);
-    return cnt == r - l ? -1 : kth_smallest(l, r, cnt);
-  }
+  std::size_t number_of_types(int l, int r) const { return wm.count(l, r, l); }
 };

@@ -29,10 +29,10 @@ signed main() {
   ios::sync_with_stdio(false);
   long long N;
   cin >> N;
-  auto dfa_le = DFA_Inequality(N, 10, 15);
+  auto dfa_le = DFA_Inequality(N, 10, 16);
   long long ans = 0;
-  for (int i = 1; i <= 15; i++)
-    ans += dfa_dp<long long>(dfa_le & DFA_Leading1s(i), 15);
+  for (int i = 1; i <= 16; i++)
+    ans += dfa_dp<long long>(dfa_le & DFA_Leading1s(i), 16);
   cout << ans << '\n';
   return 0;
 }

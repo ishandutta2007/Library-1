@@ -1,4 +1,5 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2674"
+#define PROBLEM \
+  "https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/HUPC/2674"
 // range_freq
 #include <bits/stdc++.h>
 #include "src/DataStructure/WaveletMatrix.hpp"
@@ -11,22 +12,14 @@ signed main() {
   cin >> D;
   vector<int> x(D);
   for (int i = 0; i < D; i++) cin >> x[i];
-  vector<int> v(x);
-  sort(v.begin(), v.end());
-  v.erase(unique(v.begin(), v.end()), v.end());
-  auto id
-      = [&](int a) { return lower_bound(v.begin(), v.end(), a) - v.begin(); };
-  vector<int> xx(D);
-  for (int i = 0; i < D; i++) xx[i] = id(x[i]);
-  WaveletMatrix wm(xx);
+  WaveletMatrix wm(x);
   int Q;
   cin >> Q;
   while (Q--) {
     int l, r, e;
-    cin >> l >> r >> e;
-    l--, r--;
-    int a = id(min(x[l], x[r]) - e), b = id(max(x[l], x[r]) + e + 1);
-    cout << r - l + 1 - wm.range_freq(l, r + 1, a, b) << "\n";
+    cin >> l >> r >> e, l--, r--;
+    int a = min(x[l], x[r]) - e, b = max(x[l], x[r]) + e + 1;
+    cout << r - l + 1 - wm.count(l, r + 1, a, b) << "\n";
   }
   return 0;
 }

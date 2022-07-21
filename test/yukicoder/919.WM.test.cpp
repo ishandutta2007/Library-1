@@ -10,13 +10,6 @@ signed main() {
   cin >> N;
   vector<int> A(N);
   for (int i = 0; i < N; i++) cin >> A[i];
-  vector<int> vec(A);
-  sort(vec.begin(), vec.end());
-  vec.erase(unique(vec.begin(), vec.end()), vec.end());
-  auto id = [&](int x) {
-    return lower_bound(vec.begin(), vec.end(), x) - vec.begin();
-  };
-  for (int i = 0; i < N; i++) A[i] = id(A[i]);
   WaveletMatrix wm(A);
   long long ans = 0;
   for (int K = 1; K <= N; K++) {
@@ -24,8 +17,8 @@ signed main() {
     long long L[M + 1], R[M + 1], Lsum = 0, Rsum = 0;
     L[0] = R[0] = 0;
     for (int i = 1; i <= M; i++) {
-      Lsum += vec[wm.kth_smallest(K * (i - 1), K * i, med)];
-      Rsum += vec[wm.kth_smallest(N - K * i, N - K * (i - 1), med)];
+      Lsum += wm.kth_smallest(K * (i - 1), K * i, med);
+      Rsum += wm.kth_smallest(N - K * i, N - K * (i - 1), med);
       L[i] = max(L[i - 1], Lsum);
       R[i] = max(R[i - 1], Rsum);
     }

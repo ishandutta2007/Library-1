@@ -14,7 +14,7 @@ signed main() {
   while (Q--) {
     int l, r, x;
     cin >> l >> r >> x;
-    cout << wm.count(l, r, x, x + 1) << "\n";
+    cout << (l < r ? wm.count(l, r, x, x + 1) : 0) << "\n";
   }
   return 0;
 }

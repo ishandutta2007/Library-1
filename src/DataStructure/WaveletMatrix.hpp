@@ -38,7 +38,10 @@ class WaveletMatrix {
  public:
   WaveletMatrix() = default;
   WaveletMatrix(const std::vector<T> &v)
-      : len(v.size()), lg(32 - __builtin_clz(len)), mat(lg, len), vec(v) {
+      : len(v.size()),
+        lg(32 - __builtin_clz(std::max(1u, len))),
+        mat(lg, len),
+        vec(v) {
     std::sort(vec.begin(), vec.end());
     vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
     std::vector<unsigned> cur(len), nex(len);
@@ -71,7 +74,7 @@ class WaveletMatrix {
   // count i s.t. (l <= i < r) && (v[i] < ub)
   std::size_t count(int l, int r, T ub) const {
     std::size_t x = std::lower_bound(vec.begin(), vec.end(), ub) - vec.begin();
-    if (x >= 1 << lg) return r - l;
+    if (x >= 1u << lg) return r - l;
     if (x == 0) return 0;
     std::size_t ret = 0;
     for (auto h = lg; h--;)

@@ -39,7 +39,7 @@ class WaveletMatrix {
   WaveletMatrix() = default;
   WaveletMatrix(const std::vector<T> &v)
       : len(v.size()),
-        lg(32 - __builtin_clz(std::max(1u, len))),
+        lg(32 - __builtin_clz(std::max<int>(len, 1))),
         mat(lg, len),
         vec(v) {
     std::sort(vec.begin(), vec.end());

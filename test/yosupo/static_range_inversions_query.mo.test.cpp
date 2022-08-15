@@ -12,8 +12,7 @@ signed main() {
   int A[N];
   for (int i = 0; i < N; i++) cin >> A[i];
   vector<int> v(A, A + N);
-  sort(v.begin(), v.end());
-  v.erase(unique(v.begin(), v.end()), v.end());
+  sort(v.begin(), v.end()), v.erase(unique(v.begin(), v.end()), v.end());
   for (int i = 0; i < N; i++)
     A[i] = lower_bound(v.begin(), v.end(), A[i]) - v.begin();
   Mo mo(N);
@@ -48,6 +47,5 @@ signed main() {
   auto out = [&](int q) { ans[q] = inv; };
   mo.run(addl, addr, erasel, eraser, out);
   for (int q = 0; q < Q; q++) cout << ans[q] << "\n";
-  cout << flush;
   return 0;
 }

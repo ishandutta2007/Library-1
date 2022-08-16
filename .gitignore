@@ -5,3 +5,4 @@ test/atcoder/arc085_c*.test.cpp
 test/atcoder/abc256_*.test.cpp
 test/atcoder/arc066_*.test.cpp
 test/hackerrank/minimum-history-query.DynSeg.test.cpp
+test/hackerrank/range-counting-query.Mo.test.cpp

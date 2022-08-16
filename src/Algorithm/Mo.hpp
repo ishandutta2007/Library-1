@@ -6,28 +6,26 @@
  *  O((N+Q)√N)
  * @see https://ei1333.hateblo.jp/entry/2017/09/11/211011
  */
-
+// verify用
+// https://www.hackerrank.com/contests/happy-query-contest/challenges/range-counting-query
 // BEGIN CUT HERE
 
 struct Mo {
   int n;
   std::vector<std::pair<int, int> > lr;
   explicit Mo(int n) : n(n) {}
-  /* [l, r) */
-  void query(int l, int r) { lr.emplace_back(l, r); }
-
+  void query(int l, int r) { lr.emplace_back(l, r); } /* [l, r) */
   template <typename AL, typename AR, typename EL, typename ER, typename O>
   void run(const AL &add_left, const AR &add_right, const EL &erase_left,
            const ER &erase_right, const O &out) {
-    int q = (int)lr.size();
-    int bs = n / std::min<int>(n, std::sqrt(q));
+    int q = (int)lr.size(), bs = n / std::min<int>(n, std::sqrt(q));
     std::vector<int> ord(q);
     std::iota(ord.begin(), ord.end(), 0);
     std::sort(ord.begin(), ord.end(), [&](int a, int b) {
       int ablock = lr[a].first / bs, bblock = lr[b].first / bs;
-      if (ablock != bblock) return ablock < bblock;
-      return (ablock & 1) ? lr[a].second > lr[b].second
-                          : lr[a].second < lr[b].second;
+      return ablock != bblock ? ablock < bblock
+             : (ablock & 1)   ? lr[a].second > lr[b].second
+                              : lr[a].second < lr[b].second;
     });
     int l = 0, r = 0;
     for (auto idx : ord) {

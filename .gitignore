@@ -7,3 +7,4 @@ test/atcoder/arc066_*.test.cpp
 test/hackerrank/minimum-history-query.DynSeg.test.cpp
 test/hackerrank/range-counting-query.Mo.test.cpp
 test/hackerrank/grid-xor-query.KDT.test.cpp
+test/atcoder/abc234_h.KDT.test.cpp

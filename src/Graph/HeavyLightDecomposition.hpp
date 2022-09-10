@@ -15,7 +15,10 @@ struct HeavyLightDecomposition {
   HeavyLightDecomposition(int n)
       : adj(n), sz(n, 1), in(n, 0), out(n, 0), head(n, 0), par(n, 0) {}
   void add_edge(int u, int v) { adj[u].push_back(v), adj[v].push_back(u); }
-  void build(int rt = 0) { dfs_sz(rt, -1), dfs_hld(rt, -1); }
+  void build(int rt = 0) {
+    int timestamp = 0;
+    dfs_sz(rt, -1), dfs_hld(rt, -1, timestamp);
+  }
   int lca(int u, int v) const {
     for (;; v = par[head[v]]) {
       if (in[u] > in[v]) std::swap(u, v);
@@ -58,11 +61,10 @@ struct HeavyLightDecomposition {
         if (dfs_sz(u, v), sz[v] += sz[u]; sz[adj[v][0]] < sz[u])
           std::swap(adj[v][0], u);
   }
-  void dfs_hld(int v, int p) {
-    static int times = 0;
-    par[v] = p, in[v] = times++;
+  void dfs_hld(int v, int p, int &ts) {
+    par[v] = p, in[v] = ts++;
     for (auto &u : adj[v])
-      if (u != p) head[u] = (adj[v][0] == u ? head[v] : u), dfs_hld(u, v);
-    out[v] = times;
+      if (u != p) head[u] = (adj[v][0] == u ? head[v] : u), dfs_hld(u, v, ts);
+    out[v] = ts;
   }
 };

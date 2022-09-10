@@ -19,8 +19,8 @@ signed main() {
   auto gsum = [](long long N) { return Mint(N); };
   unordered_map<unsigned long long, Mint> memo;
   for (int i = 1; i < M; i++) memo[i] = phi[i];
-  int64_t N;
+  long long N;
   cin >> N;
-  cout << dirichlet_inv_sum<Mint>(N, gsum, hsum, memo) << '\n';
+  cout << dirichlet_div_sum<Mint>(N, gsum, hsum, memo) << '\n';
   return 0;
 }

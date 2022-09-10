@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title 乗法的関数と加法的関数
+ * @title 乗法的関数・加法的関数
  * @category 数学
  * @see https://en.wikipedia.org/wiki/Arithmetic_function
  */

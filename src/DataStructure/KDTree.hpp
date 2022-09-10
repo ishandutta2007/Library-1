@@ -93,15 +93,14 @@ class KDTree {
     ns[i].lazy_flg = false;
     propagate(ns[i].ch[0], ns[i].lazy), propagate(ns[i].ch[1], ns[i].lazy);
   }
-  inline void build(int &i, Iter bg, Iter ed, std::uint8_t div = 0) {
-    static int cnt = 0;
+  inline void build(int &i, Iter bg, Iter ed, int &ts, std::uint8_t div = 0) {
     if (ed - bg < 1) return;
     const int n = ed - bg;
     auto md = bg + n / 2;
     std::nth_element(bg, md, ed, [div](const PosVal &l, const PosVal &r) {
       return l.first[div] < r.first[div];
     });
-    ns[i = cnt++].val = md->second;
+    ns[i = ts++].val = md->second;
     for (std::uint8_t j = K; j--; ns[i].pos[j] = md->first[j]) {
       auto [mn, mx] =
           std::minmax_element(bg, ed, [j](const PosVal &l, const PosVal &r) {
@@ -110,7 +109,8 @@ class KDTree {
       ns[i].range[j][0] = mn->first[j], ns[i].range[j][1] = mx->first[j];
     }
     if (std::uint8_t nex = (div + 1) % K; n > 1)
-      build(ns[i].ch[0], bg, md, nex), build(ns[i].ch[1], md + 1, ed, nex);
+      build(ns[i].ch[0], bg, md, ts, nex),
+          build(ns[i].ch[1], md + 1, ed, ts, nex);
     if constexpr (monoid<M>::value) pushup(i);
   }
   template <class F, class G, class H>
@@ -121,7 +121,8 @@ class KDTree {
     if constexpr (dual<M>::value) eval(i);
     T ret = M::op(fold(ns[i].ch[0], in, inall, outall),
                   fold(ns[i].ch[1], in, inall, outall));
-    return in(ns[i].pos) ? M::op(ret, ns[i].val) : ret;
+    ret = in(ns[i].pos) ? M::op(ret, ns[i].val) : ret;
+    return ret;
   }
   template <class F, class G, class H>
   inline void apply(int i, const F &in, const G &inall, const H &outall,
@@ -193,8 +194,8 @@ class KDTree {
 
  public:
   KDTree(std::vector<PosVal> v) : ns(v.size()) {
-    int root;
-    build(root, v.begin(), v.end());
+    int root, timestamp = 0;
+    build(root, v.begin(), v.end(), timestamp);
   }
   T get(std::array<pos_t, K> pos) {
     auto [ret, flg] = get(0, pos);

@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 #include "src/DataStructure/KDTree.hpp"
 
-// 典型 2Dセグ木 minクエリ
+// 典型2Dセグ木 minクエリ
 using namespace std;
 
 struct RminQ {
@@ -15,7 +15,8 @@ signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
   using KDT = KDTree<2, int, RminQ>;
-  for (int r, c, q; cin >> r >> c >> q && r != 0;) {
+  int r, c, q;
+  for (; cin >> r >> c >> q && r != 0;) {
     vector<typename KDT::PosVal> v;
     for (int i = 0; i < r; i++)
       for (int j = 0; j < c; j++) {
@@ -27,7 +28,7 @@ signed main() {
     while (q--) {
       int r1, c1, r2, c2;
       cin >> r1 >> c1 >> r2 >> c2;
-      cout << kdt.fold({r1, r2}, {c1, c2}) << '\n';
+      cout << kdt.fold({r1, r2}, {c1, c2}) << '\n' << flush;
     }
   }
   return 0;

@@ -1,4 +1,4 @@
-#define PROBLEM "https://www.hackerrank.com/challenges/cube-summation/problemv"
+#define PROBLEM "https://www.hackerrank.com/challenges/cube-summation"
 
 #include <bits/stdc++.h>
 #include "src/DataStructure/KDTree.hpp"

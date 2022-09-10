@@ -24,9 +24,9 @@ signed main() {
     if (c == 2)
       cin >> h2 >> w2;
     else if (c == 0) {
-      mp[{h1, w1}] = {0, 0};
       query.push_back({t + T, -1, h1, w1, h2, w2});
     }
+    mp[{h1, w1}] = {0, 0};
     query.push_back({t, c, h1, w1, h2, w2});
   }
   KDTree<2, int, RSQ> kdt({mp.begin(), mp.end()});

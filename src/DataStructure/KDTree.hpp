@@ -9,6 +9,7 @@
 // verify用
 // https://atcoder.jp/contests/s8pc-4/tasks/s8pc_4_g (オイラーツアー+遅延伝搬)
 // https://atcoder.jp/contests/past202004-open/tasks/past202004_n (双対)
+// https://atcoder.jp/contests/abc234/tasks/abc234_h (円形クエリ)
 
 // BEGIN CUT HERE
 

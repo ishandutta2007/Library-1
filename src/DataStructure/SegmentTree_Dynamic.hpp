@@ -13,6 +13,8 @@
 // https://codeforces.com/contest/947/problem/C (find+xor)
 // https://codeforces.com/contest/966/problem/C (find+xor)
 // https://codeforces.com/contest/295/problem/E (特殊モノイド+座圧サボり)
+// https://www.hackerrank.com/contests/happy-query-contest/challenges/minimum-history-query
+// (永続)
 
 // BEGIN CUT HERE
 

@@ -17,7 +17,7 @@ signed main() {
   for (int i = 2; i < M; i++) phi[i] += phi[i - 1];
   auto hsum = [](long long N) { return Mint(N) * Mint(N + 1) / Mint(2); };
   auto gsum = [](long long N) { return Mint(N); };
-  unordered_map<unsigned long long, Mint> memo;
+  unordered_map<uint64_t, Mint> memo;
   for (int i = 1; i < M; i++) memo[i] = phi[i];
   long long N;
   cin >> N;

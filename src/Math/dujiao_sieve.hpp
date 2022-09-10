@@ -19,9 +19,9 @@
 // BEGIN CUT HERE
 
 // sum f s.t. f :=  h * g^(-1)
-template <class T, class G, class H>
+template <class T, class G, class H, class Int>
 T dirichlet_div_sum(std::uint64_t N, const G &gsum, const H &hsum,
-                    std::unordered_map<std::uint64_t, T> &memo) {
+                    std::unordered_map<Int, T> &memo) {
   if (auto it = memo.find(N); it != memo.end()) return it->second;
   T ret = hsum(N), gs1 = gsum(1), gs = gs1, ngs;
   for (std::uint64_t d = 1, nN; nN = N / (d + 1); gs = ngs)

@@ -1,7 +1,7 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3072"
 #include <bits/stdc++.h>
 #include "src/Old/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
 using namespace std;
 
 signed main() {

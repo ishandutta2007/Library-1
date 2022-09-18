@@ -3,15 +3,15 @@
 // O(√N)
 
 #include <bits/stdc++.h>
-#include "src/Math/dujiao_sieve.hpp"
+#include "src/Math/DirichletConvSumTable.hpp"
 using namespace std;
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  auto gsum = [](long long n) { return n * (n + 1) / 2; };
   long long N;
   cin >> N;
-  cout << dirichlet_mul_sum<long long>(N, gsum, gsum) << '\n';
+  auto f = get_Id<long long>(N, (int)sqrt(N));
+  cout << dirichlet_mul_sum<long long>(f, f) << '\n';
   return 0;
 }

@@ -3,8 +3,7 @@
 .DS_Store
 test/atcoder/arc085_c*.test.cpp
 test/atcoder/arc066_*.test.cpp
-test/atcoder/abc*_ex.test.cpp
+test/atcoder/abc*_ex.*.cpp
 test/hackerrank/minimum-history-query.DynSeg.test.cpp
 test/hackerrank/range-counting-query.Mo.test.cpp
 test/hackerrank/grid-xor-query.KDT.test.cpp
-test/atcoder/abc234_ex.KDT.test.cpp

@@ -11,7 +11,7 @@ signed main() {
   using Mint = StaticModInt<998244353>;
   long long N, M;
   cin >> N >> M;
-  auto zeta = get_1<Mint>(M, int(pow(N, 2. / 3)));
+  auto zeta = get_1<Mint>(M, pow(M, 2. / 3));
   cout << zeta.pow2(N).sum() << '\n';
   return 0;
 }

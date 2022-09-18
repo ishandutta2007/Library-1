@@ -196,7 +196,9 @@ T dirichlet_mul_sum(const DirichletConvSumTable<T> &a,
   const std::size_t K = a.x.size() - 1, L = a.X.size() - 1, M = std::min(K, L);
   assert(a.N == b.N), assert(M <= b.x.size() - 1), assert(M <= b.X.size() - 1);
   assert(std::uint64_t(M + 1) * (M + 1) > a.N);
-  T ret = 0;
+  debug(M);
+  T ret = 0, A = 0, B = 0;
   for (int i = M; i; i--) ret += a.x[i] * b.X[i] + b.x[i] * a.X[i];
-  return ret -= a.X[M] * b.X[M];
+  for (int i = M; i; i--) A += a.x[i], B += b.x[i];
+  return ret -= A * B;
 }

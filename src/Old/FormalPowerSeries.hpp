@@ -1,6 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
+#include "src/Old/ModInt.hpp"
 /**
  * @title 形式的冪級数
  * @category 数学

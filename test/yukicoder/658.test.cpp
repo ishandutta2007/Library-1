@@ -1,8 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/658"
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
-#include "src/Math/kitamasa.hpp"
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
+#include "src/Old/kitamasa.hpp"
 using namespace std;
 
 signed main() {

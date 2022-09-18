@@ -25,7 +25,7 @@ signed main() {
               A[i * C + j][ni * C + nj] = 1;
   LUDecomposition lu(A);
   if (!lu.linear_equations(b).empty())
-    cout << ModInt<int(1e9 + 9)>(2).pow(lu.kernel().size()) << endl;
+    cout << StaticModInt<int(1e9 + 9)>(2).pow(lu.kernel().size()) << endl;
   else
     cout << 0 << endl;
   return 0;

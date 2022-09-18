@@ -10,7 +10,7 @@ signed main() {
   ios::sync_with_stdio(false);
   int n, k;
   cin >> n >> k;
-  using Mint = ModInt<int(1e9 + 7)>;
+  using Mint = StaticModInt<int(1e9 + 7)>;
   using C = Combination<Mint>;
   cout << C::nHr(k, n) << endl;
   return 0;

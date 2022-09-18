@@ -8,7 +8,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using Mint = ModInt<998244353>;
+  using Mint = StaticModInt<998244353>;
   using namespace multiplicative_functions;
   long long N;
   cin >> N;

@@ -6,7 +6,7 @@
 using namespace std;
 #undef call_from_test
 
-using Mint = ModInt<998244353>;
+using Mint = StaticModInt<998244353>;
 struct RcompositeQ {
   using T = pair<Mint, Mint>;
   static T op(const T &l, const T &r) {

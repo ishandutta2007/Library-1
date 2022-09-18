@@ -10,7 +10,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using Mint = ModInt<998244353>;
+  using Mint = StaticModInt<998244353>;
   const int MAX_A = 1e6;
   int N;
   cin >> N;

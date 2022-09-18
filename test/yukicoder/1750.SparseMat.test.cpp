@@ -7,7 +7,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using Mint = ModInt<998244353>;
+  using Mint = StaticModInt<998244353>;
   long long N, M, T;
   cin >> N >> M >> T;
   SparseSquareMatrix<Mint> mat(N);

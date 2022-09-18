@@ -7,7 +7,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  using Mint = ModInt<int(1e9 + 9)>;
+  using Mint = StaticModInt<int(1e9 + 9)>;
   const int SIZE = 500 * 6 + 10;
   Mint dp[SIZE] = {1};
   for (int x : {1, 5, 10, 50, 100, 500})

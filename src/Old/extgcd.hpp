@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
 /**
  * @title 多項式の拡張互除法
  * @category 数学
@@ -24,8 +24,8 @@ FormalPowerSeries<mint> extgcd(FormalPowerSeries<mint> a,
   assert(b.deg() >= 0);
   auto isI = [](const pm &m) {
     static constexpr mint ONE(1);
-    return m[0][1].deg() == -1 && m[1][0].deg() == -1 && m[0][0].deg() == 0
-           && m[0][0][0] == ONE && m[1][1].deg() == 0 && m[1][1][0] == ONE;
+    return m[0][1].deg() == -1 && m[1][0].deg() == -1 && m[0][0].deg() == 0 &&
+           m[0][0][0] == ONE && m[1][1].deg() == 0 && m[1][1][0] == ONE;
   };
   auto mulv = [&](const pm &lhs, const pv &rhs) {
     if (isI(lhs)) return rhs;

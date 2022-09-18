@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
 /**
  * @title 複数の値代入と多項式補間
  * @category 数学

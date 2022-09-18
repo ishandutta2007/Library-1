@@ -9,7 +9,7 @@
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
-using Mint = ModInt<998244353>;
+using Mint = StaticModInt<998244353>;
 struct RaffineRsumQ {
   using T = Mint;
   using E = pair<T, T>;

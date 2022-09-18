@@ -1,8 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/963"
 #include <bits/stdc++.h>
-#include <src/Math/ModInt.hpp>
-#include <src/Math/FormalPowerSeries.hpp>
-#include <src/Math/differential_equation.hpp>
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
+#include "src/Old/differential_equation.hpp"
 using namespace std;
 
 signed main() {
@@ -14,8 +14,9 @@ signed main() {
     auto ret = ((f * f) + 1) / 2;
     return ret.resize(deg), ret;
   };
-  auto dF
-      = [](const FPS &f, int deg) { return FPS(f.begin(), f.begin() + deg); };
+  auto dF = [](const FPS &f, int deg) {
+    return FPS(f.begin(), f.begin() + deg);
+  };
   int N;
   cin >> N;
   Mint ans = differential_equation<Mint>(F, dF, 1, N + 1)[N];

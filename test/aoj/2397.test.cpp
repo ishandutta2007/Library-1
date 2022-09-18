@@ -9,7 +9,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  using Mint = ModInt<int(1e9 + 9)>;
+  using Mint = StaticModInt<int(1e9 + 9)>;
   using Vec = array<Mint, 75>;
   using Mat = SquareMatrix<Mint, 75>;
   long long W, H, N;

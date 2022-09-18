@@ -9,7 +9,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  using Mint = ModInt<int(1e9 + 9)>;
+  using Mint = StaticModInt<int(1e9 + 9)>;
   long long W, H, N;
   for (int cnt = 0; cin >> W >> H >> N && W;) {
     pair<long long, int> obst[N];

@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/polynomial_taylor_shift"
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
 using namespace std;
 
 signed main() {

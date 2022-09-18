@@ -5,7 +5,7 @@
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
-using Mint = ModInt<int(1e9 + 7)>;
+using Mint = StaticModInt<int(1e9 + 7)>;
 
 struct Mono {
   struct T {

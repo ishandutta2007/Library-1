@@ -6,109 +6,135 @@
  */
 
 // BEGIN CUT HERE
-namespace internal {
-template <std::uint64_t mod, std::uint64_t prim_root, class ModInt>
+namespace modint_internal {
+using namespace std;
+struct modint_base {};
+struct sta_mint_base : modint_base {};
+struct dyn_mint_base : modint_base {};
+template <class mod_t>
+constexpr bool is_modint_v = is_base_of_v<modint_base, mod_t>;
+template <class mod_t>
+constexpr bool is_staticmodint_v = is_base_of_v<sta_mint_base, mod_t>;
+template <class mod_t>
+constexpr bool is_dynamicmodint_v = is_base_of_v<dyn_mint_base, mod_t>;
+using u64 = uint64_t;
+using u128 = __uint128_t;
+template <class D>
 struct ModIntImpl {
-  static constexpr std::uint64_t modulo() { return mod; }
-  static constexpr std::uint64_t pr_rt() { return prim_root; }
-  friend std::ostream &operator<<(std::ostream &os, const ModInt &rhs) {
-    return os << rhs.val();
+  static constexpr inline auto modulo() { return D::mod; }
+  constexpr D operator-() const { return D() -= (D &)*this; }
+  constexpr D &operator/=(const D &r) { return (D &)*this *= r.inv(); }
+  constexpr D operator+(const D &r) const { return D((D &)*this) += r; }
+  constexpr D operator-(const D &r) const { return D((D &)*this) -= r; }
+  constexpr D operator*(const D &r) const { return D((D &)*this) *= r; }
+  constexpr D operator/(const D &r) const { return D((D &)*this) /= r; }
+  constexpr bool operator!=(const D &r) const { return !((D &)*this == r); }
+  constexpr D pow(u64 k) const {
+    for (D ret(1), b((const D &)*this);; b *= b)
+      if (k & 1 ? ret *= b : 0; !(k >>= 1)) return ret;
+  }
+  constexpr D inv() const { return pow(D::mod - 2); }
+  friend ostream &operator<<(ostream &os, const D &r) { return os << r.val(); }
+  friend istream &operator>>(istream &is, D &r) {
+    long long v;
+    return is >> v, r = D(v), is;
   }
 };
-}  // namespace internal
-template <std::uint64_t mod, std::uint64_t prim_root = 0>
-class ModInt
-    : public internal::ModIntImpl<mod, prim_root, ModInt<mod, prim_root>> {
-  using u64 = std::uint64_t;
-  static constexpr u64 mul_inv(u64 n, int e = 6, u64 x = 1) {
-    return e == 0 ? x : mul_inv(n, e - 1, x * (2 - x * n));
+template <class B>
+struct ModInt_Na : public B, public ModIntImpl<ModInt_Na<B>> {
+  using DUint = conditional_t<is_same_v<typename B::Uint, u64>, u128, u64>;
+  friend ModIntImpl<ModInt_Na<B>>;
+  constexpr ModInt_Na() = default;
+  template <class T, enable_if_t<is_integral_v<T>, nullptr_t> = nullptr>
+  constexpr ModInt_Na(T n) : x(n < 0 ? B::mod - ((-n) % B::mod) : n % B::mod) {}
+  template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr>
+  constexpr ModInt_Na(T n) : ModInt_Na(n.val()) {}
+#define ASSIGN(m, p) return x m## = B::mod & -((x p## = r.x) >= B::mod), *this
+  constexpr ModInt_Na &operator+=(const ModInt_Na &r) { ASSIGN(-, +); }
+  constexpr ModInt_Na &operator-=(const ModInt_Na &r) { ASSIGN(+, -); }
+#undef ASSIGN
+  constexpr ModInt_Na &operator*=(const ModInt_Na &r) {
+    return x = (DUint)(x)*r.x % B::mod, *this;
   }
-  static constexpr u64 inv = mul_inv(mod, 6, 1), r2 = -__uint128_t(mod) % mod;
-  static constexpr u64 init(u64 w) { return reduce(__uint128_t(w) * r2); }
-  static constexpr u64 reduce(const __uint128_t w) {
-    return u64(w >> 64) + mod - ((__uint128_t(u64(w) * inv) * mod) >> 64);
-  }
-  u64 x;
+  constexpr bool operator==(const ModInt_Na &r) const { return x == r.x; }
+  constexpr auto val() const { return x; }
 
- public:
-  constexpr ModInt() : x(0) {}
-  constexpr ModInt(std::int64_t n) : x(init(n < 0 ? mod - (-n) % mod : n)) {}
-  static constexpr u64 norm(u64 w) { return w - (mod & -(w >= mod)); }
-  constexpr ModInt operator-() const {
-    ModInt ret;
-    return ret.x = ((mod << 1) & -(x != 0)) - x, ret;
-  }
-  constexpr ModInt &operator+=(const ModInt &rhs) {
-    return x += rhs.x - (mod << 1), x += (mod << 1) & -(x >> 63), *this;
-  }
-  constexpr ModInt &operator-=(const ModInt &rhs) {
-    return x -= rhs.x, x += (mod << 1) & -(x >> 63), *this;
-  }
-  constexpr ModInt &operator*=(const ModInt &rhs) {
-    return this->x = reduce(__uint128_t(this->x) * rhs.x), *this;
-  }
-  constexpr ModInt &operator/=(const ModInt &rhs) {
-    return this->operator*=(rhs.inverse());
-  }
-  ModInt operator+(const ModInt &rhs) const { return ModInt(*this) += rhs; }
-  ModInt operator-(const ModInt &rhs) const { return ModInt(*this) -= rhs; }
-  ModInt operator*(const ModInt &rhs) const { return ModInt(*this) *= rhs; }
-  ModInt operator/(const ModInt &rhs) const { return ModInt(*this) /= rhs; }
-  bool operator==(const ModInt &rhs) const { return norm(x) == norm(rhs.x); }
-  bool operator!=(const ModInt &rhs) const { return !(*this == rhs); }
-  constexpr ModInt pow(std::uint64_t k) const {
-    ModInt ret = ModInt(1);
-    for (ModInt base = *this; k; k >>= 1, base *= base)
-      if (k & 1) ret *= base;
-    return ret;
-  }
-  constexpr ModInt inverse() const { return pow(mod - 2); }
-  constexpr ModInt sqrt() const {
-    if (*this == ModInt(0) || mod == 2) return *this;
-    if (pow((mod - 1) >> 1) != 1) return ModInt(0);  // no solutions
-    ModInt ONE = 1, b(2), w(b * b - *this);
-    while (w.pow((mod - 1) >> 1) == ONE) b += ONE, w = b * b - *this;
-    auto mul = [&](std::pair<ModInt, ModInt> u, std::pair<ModInt, ModInt> v) {
-      ModInt a = (u.first * v.first + u.second * v.second * w);
-      ModInt b = (u.first * v.second + u.second * v.first);
-      return std::make_pair(a, b);
-    };
-    std::uint64_t e = (mod + 1) >> 1;
-    auto ret = std::make_pair(ONE, ModInt(0));
-    for (auto bs = std::make_pair(b, ONE); e; e >>= 1, bs = mul(bs, bs))
-      if (e & 1) ret = mul(ret, bs);
-    return ret.first.val() * 2 < mod ? ret.first : -ret.first;
-  }
-  constexpr u64 val() const {
-    u64 ret = reduce(x) - mod;
-    return ret + (mod & -(ret >> 63));
-  }
-  friend std::istream &operator>>(std::istream &is, ModInt &rhs) {
-    return is >> rhs.x, rhs.x = init(rhs.x), is;
-  }
+ private:
+  typename B::Uint x = 0;
 };
-template <std::uint64_t pr_rt>
-struct ModInt<2, pr_rt> : internal::ModIntImpl<2, pr_rt, ModInt<2, pr_rt>> {
-  constexpr ModInt(std::int64_t n = 0) : x(n & 1) {}
-  constexpr ModInt operator-() const { return *this; }
-  constexpr ModInt &operator+=(const ModInt &rhs) { return x ^= rhs.x, *this; }
-  constexpr ModInt &operator-=(const ModInt &rhs) { return x ^= rhs.x, *this; }
-  constexpr ModInt &operator*=(const ModInt &rhs) { return x &= rhs.x, *this; }
-  constexpr ModInt &operator/=(const ModInt &rhs) { return x &= rhs.x, *this; }
-  ModInt operator+(const ModInt &rhs) const { return ModInt(*this) += rhs; }
-  ModInt operator-(const ModInt &rhs) const { return ModInt(*this) -= rhs; }
-  ModInt operator*(const ModInt &rhs) const { return ModInt(*this) *= rhs; }
-  ModInt operator/(const ModInt &rhs) const { return ModInt(*this) /= rhs; }
-  bool operator==(const ModInt &rhs) const { return x == rhs.x; }
-  bool operator!=(const ModInt &rhs) const { return !(*this == rhs); }
-  constexpr ModInt pow(std::uint64_t k) const { return !k ? ModInt(1) : *this; }
-  constexpr ModInt sqrt() const { return *this; }
-  constexpr ModInt inverse() const { return *this; }
-  constexpr std::uint64_t val() const { return x; }
-  friend std::istream &operator>>(std::istream &is, ModInt &rhs) {
-    return is >> rhs.x, is;
+template <class B>
+struct ModInt_Mon : public B, public ModIntImpl<ModInt_Mon<B>> {
+  using Uint = u64;
+  using mod_t = ModInt_Mon;
+  friend ModIntImpl<ModInt_Mon<B>>;
+  constexpr ModInt_Mon() = default;
+  template <class T, enable_if_t<is_integral_v<T>, nullptr_t> = nullptr>
+  constexpr ModInt_Mon(T n)
+      : x(mul(n < 0 ? B::mod - ((-n) % B::mod) : n % B::mod, B::r2)) {}
+  template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr>
+  constexpr ModInt_Mon(T n) : ModInt_Mon(n.val()) {}
+#define ASGN(op, a) return x op## = a, x += (B::mod << 1) & -(x >> 63), *this
+  constexpr mod_t &operator+=(const mod_t &r) { ASGN(+, r.x - (B::mod << 1)); }
+  constexpr mod_t &operator-=(const mod_t &r) { ASGN(-, r.x); }
+#undef ASGN
+  constexpr mod_t &operator*=(const mod_t &r) { return x = mul(x, r.x), *this; }
+  constexpr bool operator==(const mod_t &r) const { return norm() == r.norm(); }
+  constexpr u64 val() const {
+    u64 ret = reduce(x) - B::mod;
+    return ret + (B::mod & -(ret >> 63));
   }
 
  private:
-  bool x;
+  static constexpr inline u64 reduce(const u128 &w) {
+    return u64(w >> 64) + B::mod - ((u128(u64(w) * B::iv) * B::mod) >> 64);
+  }
+  static constexpr inline u64 mul(u64 l, u64 r) { return reduce(u128(l) * r); }
+  u64 x = 0;
+  constexpr inline u64 norm() const { return x - (B::mod & -(x >= B::mod)); }
 };
+constexpr u64 mul_inv(u64 n, int e = 6, u64 x = 1) {
+  return e ? mul_inv(n, e - 1, x * (2 - x * n)) : x;
+}
+template <u64 MOD>
+struct StaticB_Na : sta_mint_base {
+ protected:
+  using Uint = conditional_t < MOD<UINT_MAX, uint32_t, u64>;
+  static constexpr Uint mod = MOD;
+};
+template <u64 MOD>
+struct StaticB_Mon : sta_mint_base {
+ protected:
+  static_assert(MOD & 1);
+  static constexpr u64 mod = MOD, iv = mul_inv(mod), r2 = -u128(mod) % mod;
+};
+template <class Int, int id = -1>
+struct DynamicB_Na : dyn_mint_base {
+  static_assert(is_integral_v<Int>);
+  static inline void set_mod(Int m) { mod = m; }
+
+ protected:
+  using Uint = make_unsigned_t<Int>;
+  static inline Uint mod;
+};
+template <int id>
+struct DynamicB_Mon : dyn_mint_base {
+  static inline void set_mod(u64 m) {
+    assert(m & 1), iv = mul_inv(mod = m), r2 = -u128(m) % m;
+  }
+
+ protected:
+  static inline u64 mod, iv, r2;
+};
+template <u64 mod>
+using StaticModInt =
+    conditional_t<mod &(mod >= UINT_MAX), ModInt_Mon<StaticB_Mon<mod>>,
+                  ModInt_Na<StaticB_Na<mod>>>;
+struct Montgomery {};
+template <class Int, int id = -1>
+using DynamicModInt =
+    conditional_t<is_same_v<Int, Montgomery>, ModInt_Mon<DynamicB_Mon<id>>,
+                  ModInt_Na<DynamicB_Na<Int, id>>>;
+}  // namespace modint_internal
+using modint_internal::DynamicModInt, modint_internal::StaticModInt,
+    modint_internal::Montgomery, modint_internal::is_dynamicmodint_v,
+    modint_internal::is_modint_v, modint_internal::is_staticmodint_v;

@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
 /**
  * @title 線形漸化式の高速計算
  * @category 数学

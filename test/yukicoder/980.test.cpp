@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/980"
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
 using namespace std;
 
 signed main() {

@@ -1,9 +1,9 @@
 #define PROBLEM \
   "https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind"
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
-#include "src/Math/fps_sequence.hpp"
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
+#include "src/Old/fps_sequence.hpp"
 using namespace std;
 
 signed main() {

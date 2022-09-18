@@ -1,8 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/polynomial_interpolation"
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
-#include "src/Math/SubproductTree.hpp"
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
+#include "src/Old/SubproductTree.hpp"
 using namespace std;
 
 signed main() {

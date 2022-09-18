@@ -25,8 +25,8 @@ signed main() {
   }
   LUDecomposition lu(A);
   if (!lu.linear_equations(b).empty())
-    cout << ModInt<int(1e9 + 7)>(2).pow(lu.kernel().size()) << endl;
+    cout << StaticModInt<int(1e9 + 7)>(2).pow(lu.kernel().size()) << '\n';
   else
-    cout << 0 << endl;
+    cout << 0 << '\n';
   return 0;
 }

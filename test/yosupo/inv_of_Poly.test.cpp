@@ -1,8 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/inv_of_polynomials"
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FormalPowerSeries.hpp"
-#include "src/Math/extgcd.hpp"
+#include "src/Old/ModInt.hpp"
+#include "src/Old/FormalPowerSeries.hpp"
+#include "src/Old/extgcd.hpp"
 using namespace std;
 
 signed main() {

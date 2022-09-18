@@ -7,7 +7,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using Mint = ModInt<int(1e9 + 7)>;
+  using Mint = StaticModInt<int(1e9 + 7)>;
   int H, W;
   cin >> H >> W;
   if (H < W) swap(H, W);

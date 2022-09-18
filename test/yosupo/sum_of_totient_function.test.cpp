@@ -7,7 +7,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using Mint = ModInt<998244353>;
+  using Mint = StaticModInt<998244353>;
   long long N;
   cin >> N;
   cout << get_phi<Mint>(N, int(pow(N, 2. / 3))).sum() << '\n';

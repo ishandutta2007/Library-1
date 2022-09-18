@@ -7,7 +7,7 @@
 #include "src/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
 
-using Mint = ModInt<998244353>;
+using Mint = StaticModInt<998244353>;
 struct Mono {
   struct T {
     Mint val, coef[2];

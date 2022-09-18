@@ -1,6 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sum_of_floor_of_linear"
 #include <bits/stdc++.h>
-#include "src/Math/ModInt.hpp"
 #include "src/Math/AllPurposeEuclid.hpp"
 using namespace std;
 

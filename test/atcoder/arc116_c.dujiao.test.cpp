@@ -8,7 +8,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  using Mint = ModInt<998244353>;
+  using Mint = StaticModInt<998244353>;
   long long N, M;
   cin >> N >> M;
   auto zeta = get_1<Mint>(M, int(pow(N, 2. / 3)));

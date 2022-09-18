@@ -25,7 +25,7 @@ class DFA_Variety {
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  using Mint = ModInt<998244353>;
+  using Mint = StaticModInt<998244353>;
   string N;
   cin >> N;
   int M;

@@ -4,7 +4,7 @@
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
-using Mint = ModInt<998244353>;
+using Mint = StaticModInt<998244353>;
 struct RcompositeQ {
   using T = pair<Mint, Mint>;
   static T ti() { return make_pair(Mint(1), Mint(0)); }

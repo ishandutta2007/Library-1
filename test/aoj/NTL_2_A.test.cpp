@@ -1,7 +1,7 @@
 #define PROBLEM \
   "https://onlinejudge.u-aizu.ac.jp/courses/library/6/NTL/2/NTL_2_A"
 #include <bits/stdc++.h>
-#include "src/Math/BigInt.hpp"
+#include "src/Old/BigInt.hpp"
 using namespace std;
 
 signed main() {

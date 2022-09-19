@@ -29,7 +29,7 @@ std::vector<mod_t> log(const std::vector<mod_t> &p) {
 template <class mod_t, std::size_t _Nm = 1 << 22>
 std::vector<mod_t> exp(const std::vector<mod_t> &p) {
   static constexpr int _Nm2 = _Nm * 2 / 15;
-  static constexpr int TH = 64 << ((!is_ntt<mod_t, _Nm>()) << 1);
+  static constexpr int TH = 64 << ((!is_nttfriend<mod_t, _Nm>()) << 1);
   using GAdp = GlobalArray<mod_t, _Nm, 1>;
   using GAr = GlobalArray<mod_t, _Nm, 2>;
   using GA = GlobalArray<mod_t, _Nm2, 0>;

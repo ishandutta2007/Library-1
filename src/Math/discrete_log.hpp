@@ -1,9 +1,9 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title 離散対数
+ * @title 離散対数 $\mathbb{Z}/m\mathbb{Z}$
  * @category 数学
- * O(mod^(1/2))
+ * O(√mod)
  */
 
 // BEGIN CUT HERE

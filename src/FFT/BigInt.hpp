@@ -76,6 +76,8 @@ class BigInt {
   }
   BigInt operator-(const BigInt &r) const {
     if (neg != r.neg) return *this + (-r);
+    if (r.is_zero()) return *this;
+    if (is_zero()) return -r;
     auto [ret, tmp] =
         abs() > r.abs() ? std::make_pair(*this, &r) : std::make_pair(r, this);
     int car = 0, i, n = ret.dat.size(), m = tmp->dat.size();
@@ -115,6 +117,7 @@ class BigInt {
     return ret;
   }
   BigInt operator/(const BigInt &r) const {
+    assert(!r.is_zero());
     if (r.dat.size() == 1 && r.dat.back() == 1) return r.neg ? -*this : *this;
     BigInt a = this->abs(), b = r.abs();
     if (a < b) return 0;

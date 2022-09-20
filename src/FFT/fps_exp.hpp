@@ -77,7 +77,7 @@ std::vector<mod_t> pow(const std::vector<mod_t> &p, std::uint64_t k) {
   int n = p.size(), cnt = 0;
   if (GA::bf[0] = 1; k) {
     while (cnt < n && p[cnt] == Z) cnt++;
-    std::cerr << "cnt: " << cnt << '\n';
+    std::cout << "cnt: " << cnt << '\n';
     const __int128_t ofs = (__int128_t)k * cnt, sz = n - ofs;
     if (sz <= 0) return std::vector<mod_t>(n, Z);
     const mod_t p0 = p[cnt], iv = mod_t(1) / p0, pk = p0.pow(k);

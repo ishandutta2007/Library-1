@@ -76,6 +76,10 @@ class Sieve {
   // O(N log k / log N + N)
   template <class T>
   static std::vector<T> pow_table(int N, std::uint64_t k) {
+    if (k == 0) {
+      std::vector<T> ret(N + 1, 0);
+      return ret[0] = 1, ret;
+    }
     auto f = [k](int p, short) {
       T ret = 1, b = p;
       for (auto e = k;; b *= b)

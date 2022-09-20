@@ -10,6 +10,6 @@ signed main() {
   using Mint = StaticModInt<998244353>;
   long long N;
   cin >> N;
-  cout << get_phi<Mint>(N, int(pow(N, 2. / 3))).sum() << '\n';
+  cout << get_phi<Mint>(N, powl(N, 2. / 3)).sum() << '\n';
   return 0;
 }

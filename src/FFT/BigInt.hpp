@@ -105,7 +105,8 @@ class BigInt {
       std::fill_n(g + m, len - m, 0), NTT::dft(len, g);
       for (i = len; i--;) f[i] *= g[i];
       for (NTT::idft(len, f), i = len; i < sz; f[i - len] -= h[i], i++)
-        for (h[i] = 0, j = i - m + 1; j < n; j++) h[i] += dat[j] * r.dat[i - j];
+        for (h[i] = 0, j = i - m + 1; j < n; j++)
+          h[i] += (long long)dat[j] * r.dat[i - j];
       for (i = std::min(sz, len); i--;) h[i] = f[i].val();
     } else
       for (std::fill_n(h, sz, 0); i--;)

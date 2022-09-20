@@ -20,7 +20,7 @@ std::vector<mod_t> sqrt(const std::vector<mod_t> &p) {
   using GNA2 = GlobalNTTArray<mod_t, _Nm2, 2>;
   using GNA3 = GlobalNTTArray<mod_t, _Nm2, 3>;
   using GNA2D1 = GlobalNTTArray2D<mod_t, _Nm2, 16, 1>;
-  static constexpr int TH = 128 << ((!is_ntt<mod_t, _Nm2>()) << 1);
+  static constexpr int TH = 128 << ((!is_nttfriend<mod_t, _Nm2>()) << 1);
   const mod_t Z(0), miv2((mod_t::modulo() - 1) >> 1);
   std::copy(p.begin(), p.end(), GAp::bf);
   int n = p.size(), cnt = 0;

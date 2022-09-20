@@ -104,12 +104,12 @@ class BigInt {
       std::fill_n(f + n, len - n, 0), NTT::dft(len, f);
       std::fill_n(g + m, len - m, 0), NTT::dft(len, g);
       for (i = len; i--;) f[i] *= g[i];
-      for (NTT::idft(len, f), i = std::min(sz, len); i--;) h[i] = f[i].val();
-      for (i = len, j; i < sz; h[i - len] -= h[i], i++)
+      for (NTT::idft(len, f), i = len; i < sz; f[i - len] -= h[i], i++)
         for (h[i] = 0, j = i - m + 1; j < n; j++) h[i] += dat[j] * r.dat[i - j];
+      for (i = std::min(sz, len); i--;) h[i] = f[i].val();
     } else
       for (std::fill_n(h, sz, 0); i--;)
-        for (int j = m; j--;) h[i + j] += (long long)dat[i] * r.dat[j];
+        for (j = m; j--;) h[i + j] += (long long)dat[i] * r.dat[j];
     BigInt ret(neg ^ r.neg, Vec(sz));
     long long car = 0;
     for (int i = 0; i < sz; i++, car /= BASE) ret.dat[i] = (car += h[i]) % BASE;

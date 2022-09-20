@@ -8,7 +8,7 @@
  */
 
 // BEGIN CUT HERE
-template <std::size_t _Nm, class mod_t>
+template <class mod_t, std::size_t _Nm = 1 << 22>
 std::vector<mod_t> div(const std::vector<mod_t> &p,
                        const std::vector<mod_t> &q) {
   using GAp = GlobalArray<mod_t, _Nm, 0>;

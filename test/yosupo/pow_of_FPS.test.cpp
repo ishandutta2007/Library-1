@@ -7,7 +7,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  int N, M;
+  long long N, M;
   cin >> N >> M;
   using Mint = StaticModInt<998244353>;
   vector<Mint> a(N);

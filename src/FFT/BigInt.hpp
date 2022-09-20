@@ -36,6 +36,7 @@ class BigInt {
     if (dat.empty()) neg = false;
   }
   std::string to_str() const {
+    if (is_zero()) return "0";
     std::stringstream ss;
     if (neg) ss << '-';
     ss << (dat.empty() ? 0 : dat.back());

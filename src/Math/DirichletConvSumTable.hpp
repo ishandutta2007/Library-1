@@ -74,9 +74,8 @@ struct DirichletConvSumTable {
     auto B = [&](std::uint64_t n) { return n <= K ? B_l[n] : X[N / n]; };
     std::uint64_t n;
     for (std::size_t l = L, m; l; X[l--] /= r.x[1])
-      for (m = std::sqrt(n = N / l), X[l] += A(m) * B(m) - x[1] * A(n); m > 1;
-           m--)
-        X[l] -= r.x[m] * B(n / m) + x[m] * A(n / m);
+      for (m = std::sqrt(n = N / l), X[l] += A(m) * B(m) - x[1] * A(n); m > 1;)
+        X[l] -= r.x[m] * B(n / m) + x[m] * A(n / m), m--;
     return *this;
   }
   DirichletConvSumTable square() const {

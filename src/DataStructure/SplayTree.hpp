@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title Splay木
+ * @title Splay-Tree
  * @category データ構造
  * @brief O(logN)
  * 木の深さが10^5ぐらいになると再帰関数がスタックオーバーフロー起こすので注意

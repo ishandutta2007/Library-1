@@ -4,7 +4,7 @@
 #include "src/Math/ModInt.hpp"
 
 /**
- * @title Number Theoretic Transform
+ * @title Number-Theoretic-Transform
  * @category FFT
  */
 

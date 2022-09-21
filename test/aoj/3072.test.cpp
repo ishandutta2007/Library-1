@@ -1,22 +1,19 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3072"
 #include <bits/stdc++.h>
-#include "src/Old/ModInt.hpp"
-#include "src/Old/FormalPowerSeries.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/FFT/fps_inv.hpp"
 using namespace std;
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using Mint = ModInt<998244353>;
-  using FPS = FormalPowerSeries<Mint>;
+  using Mint = StaticModInt<998244353>;
   int N, K, P;
   cin >> N >> K >> P;
-  Mint p = Mint(P) / Mint(100);
-  Mint q = Mint(1) - p;
-  FPS f(N + 1, -p * p / Mint(N));
-  f[0] = p;
-  f.resize(K);
-  auto g = f.inv();
+  Mint p = Mint(P) / 100, q = Mint(1) - p;
+  vector<Mint> f(N + 1, -p * p / N);
+  f[0] = p, f.resize(K);
+  auto g = inv(f);
   Mint ans(1);
   for (int i = 1; i < K; i++) ans -= g[i] * q;
   cout << ans << endl;

@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title 組み合わせ
+ * @title 二項係数など
  * @category 数学
  */
 

@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/3046"
 #include <bits/stdc++.h>
-#include "src/Old/ModInt.hpp"
-#include "src/Old/FormalPowerSeries.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/FFT/fps_inv.hpp"
 using namespace std;
 
 signed main() {
@@ -11,17 +11,14 @@ signed main() {
   cin >> K;
   int N;
   cin >> N;
-  using Mint = ModInt<int(1e9 + 7)>;
-  using FPS = FormalPowerSeries<Mint>;
-  FPS f(1e5 + 10, 0);
+  using Mint = StaticModInt<int(1e9 + 7)>;
+  vector<Mint> f(1e5 + 10, 0);
   for (int i = 0; i < N; i++) {
     int x;
-    cin >> x;
-    f[x] = -1;
+    cin >> x, f[x] = -1;
   }
-  f[0] = 1;
-  f.resize(K + 1);
-  FPS ans = f.inv();
+  f[0] = 1, f.resize(K + 1);
+  auto ans = inv(f);
   cout << ans[K] << endl;
   return 0;
 }

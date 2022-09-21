@@ -4,7 +4,7 @@
 #include "src/FFT/convolve.hpp"
 
 /**
- * @title Bostan-Mori
+ * @title 線形漸化的数列の第$k$項
  * @category FFT
  * https://qiita.com/ryuhe1/items/da5acbcce4ac1911f47a
  */
@@ -92,7 +92,7 @@ mod_t div_at(std::vector<mod_t> p, std::vector<mod_t> q, std::uint64_t k) {
     else
       m <= 340 ? div_at_na(p, q, k) : div_at_ntt<_Nm>(p, q, k);
   }
-  p.resize(k + 1, ret), q.resize(k + 1, ret), q = inv<_Nm, mod_t>(q);
+  p.resize(k + 1, ret), q.resize(k + 1, ret), q = inv<mod_t, _Nm>(q);
   for (int i = k; i >= 0; i--) ret += q[i] * p[k - i];
   return ret;
 }

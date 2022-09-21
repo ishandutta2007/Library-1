@@ -1,18 +1,17 @@
 #define PROBLEM "https://yukicoder.me/problems/no/215"
 #include <bits/stdc++.h>
-#include "src/Old/ModInt.hpp"
-#include "src/Old/FormalPowerSeries.hpp"
-#include "src/Old/kitamasa.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/FFT/bostan_mori.hpp"
+#include "src/FFT/convolve.hpp"
 using namespace std;
 
-using Mint = ModInt<int(1e9 + 7)>;
+using Mint = StaticModInt<int(1e9 + 7)>;
 Mint dp1[301][300 * 13 + 1];
 Mint dp2[301][300 * 12 + 1];
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
-  using FPS = FormalPowerSeries<Mint>;
   long long N;
   int P, C;
   cin >> N >> P >> C;
@@ -27,14 +26,10 @@ signed main() {
     for (int i = 0; i < C; i++)
       for (int j = 0; j < max_c; j++)
         if (j + v < max_c) dp2[i + 1][j + v] += dp2[i][j];
-  FPS p(max_p), c(max_c);
-  for (int i = 0; i < max_p; i++) p[i] = dp1[P][i];
-  for (int i = 0; i < max_c; i++) c[i] = dp2[C][i];
-  FPS pc = p * c;
-  vector<Mint> coefs(pc.size() - 1), a(pc.size() - 1, 1);
-  for (int i = 0; i < (int)pc.size() - 1; i++) {
-    coefs[i] = pc[pc.size() - 1 - i];
-  }
-  cout << kitamasa(coefs, a, N + a.size() - 1) << endl;
+  vector<Mint> p(dp1[P], dp1[P] + max_p), c(dp2[C], dp2[C] + max_c);
+  auto pc = convolve(p, c);
+  pc.erase(pc.begin());
+  cout << linear_recurrence(pc, vector<Mint>(pc.size(), 1), N + pc.size() - 1)
+       << '\n';
   return 0;
 }

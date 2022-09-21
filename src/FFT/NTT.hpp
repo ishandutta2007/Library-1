@@ -83,11 +83,13 @@ struct NTTArrayImpl : public B {
 #define DFT(fft, _) B::ntt##_::fft(e - b, this->dat##_ + b)
 #define ZEROS(op, _) std::fill_n(this->dat##_ + b, e - b, B::Z##_)
 #define SET(op, _) std::copy(x + b, x + e, this->dat##_ + b)
+#define SET_SINGLE(op, _) this->dat##_[i] = x;
 #define SUBST(op, _) std::copy(r.dat##_ + b, r.dat##_ + e, this->dat##_ + b)
   FUNC(dft, dft, DFT, int b, int e)
   FUNC(idft, idft, DFT, int b, int e)
   FUNC(__, zeros, ZEROS, int b, int e)
   FUNC(__, set, SET, const T x[], int b, int e)
+  FUNC(__, set, SET_SINGLE, int i, T x)
   template <class C>
   FUNC(__, subst, SUBST, const NTTArrayImpl<T, C> &r, int b, int e)
   inline void get(T x[], int b, int e) const {
@@ -124,6 +126,7 @@ struct NTTArrayImpl : public B {
 #undef DFT
 #undef ZEROS
 #undef SET
+#undef SET_SINGLE
 #undef SUBST
 #undef ASGN
 #undef ASSIGN

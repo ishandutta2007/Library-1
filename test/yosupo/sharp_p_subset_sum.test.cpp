@@ -12,7 +12,8 @@ signed main() {
   using Mint = StaticModInt<998244353>;
   int N, T;
   cin >> N >> T;
-  int c[T + 1] = {0};
+  int c[T + 1];
+  fill_n(c, T + 1, 0);
   for (int i = 0; i < N; i++) {
     int s;
     cin >> s, c[s]++;

@@ -5,6 +5,7 @@
 /**
  * @title 複数の値代入と多項式補間
  * @category FFT
+ * どちらもO(N log^2 N)
  */
 
 // BEGIN CUT HERE

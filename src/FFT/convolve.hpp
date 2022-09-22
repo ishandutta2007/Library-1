@@ -18,6 +18,7 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &p,
   using GNA2 = GlobalNTTArray<mod_t, _Nm, 2>;
   static constexpr int TH = 74, TMP = 7 * nttarray_type<mod_t, _Nm>;
   const int n = p.size(), m = q.size(), r_len = n + m - 1;
+  if (!n || !m) return std::vector<mod_t>();
   if (std::min(n, m) < TH) {
     std::fill_n(GAr::bf, r_len, mod_t(0));
     std::copy(p.begin(), p.end(), GAp::bf);

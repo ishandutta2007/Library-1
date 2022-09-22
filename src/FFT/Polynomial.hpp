@@ -81,6 +81,7 @@ class Polynomial : public std::vector<mod_t> {
 
  public:
   using std::vector<mod_t>::vector;
+  Polynomial(mod_t a) : Polynomial(1, a) {}
   Polynomial(const std::vector<mod_t> &p) : Polynomial(p.begin(), p.end()) {}
   Polynomial(const XP_plus_C &xpc) : Polynomial(xpc.x.pow() + 1) {
     (*this)[xpc.x.pow()] = 1, (*this)[0] = xpc.c;

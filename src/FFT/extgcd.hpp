@@ -36,7 +36,7 @@ Polynomial<mod_t, _Nm> extgcd(Polynomial<mod_t, _Nm> a,
   auto hgcd = [&](auto self, const Poly &p0, const Poly &p1) -> PolyMat {
     assert(p0.deg() > p1.deg());
     int m = ((p0.deg() - 1) >> 1) + 1, n = p1.deg();
-    if (n < m) return {Poly{1}, Poly(), Poly(), Poly{1}};
+    if (n < m) return {mod_t(1), Poly(), Poly(), mod_t(1)};
     PolyMat R = self(self, SUF(p0, m), SUF(p1, m));
     Poly b = R[2] * p0 + R[3] * p1;
     if (b.deg() < m) return R;

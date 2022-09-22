@@ -16,6 +16,7 @@ signed main() {
   for (int i = 0; i < M; i++) cin >> g[i];
   auto d = extgcd(f, g, x, y);
   cerr << "d.deg() = " << d.deg() << '\n';
+  cerr << "x.deg() = " << x.deg() << '\n';
   if (d.deg() != 0) {
     cout << -1 << '\n';
   } else if (x.deg() == -1) {

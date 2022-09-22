@@ -109,16 +109,16 @@ class Polynomial : public std::vector<mod_t> {
   Poly operator-(const Poly &r) const { return Poly(*this) -= r; }
   Poly operator*(const Poly &r) const { return convolve<mod_t, _Nm>(*this, r); }
   Poly operator/(const Poly &r) const {
-    const int m = r.deg(), qsz = deg() - m + 1, ln = get_len(qsz);
+    const int m = r.deg(), qsz = deg() - m + 1, ln = bsf(get_len(qsz));
     assert(m >= 0);
     if (qsz <= 0) return Poly{Z};
-    return m + 3 < A * ln + B || ln <= 64 ? quorem_na(r).first : quo(r);
+    return m + 3 < A * ln + B || qsz <= 64 ? quorem_na(r).first : quo(r);
   }
   std::pair<Poly, Poly> quorem(const Poly &r) const {
-    const int n = deg(), m = r.deg(), qsz = n - m + 1, ln = get_len(qsz);
+    const int n = deg(), m = r.deg(), qsz = n - m + 1, ln = bsf(get_len(qsz));
     assert(m >= 0);
     if (qsz <= 0) return {Poly{Z}, Poly(this->begin(), this->begin() + n + 1)};
-    return m < A * ln + B || ln <= 64 ? quorem_na(r) : quorem_ntt(r);
+    return m < A * ln + B || qsz <= 64 ? quorem_na(r) : quorem_ntt(r);
   }
   Poly operator%(const Poly &r) const { return quorem(r).second; }
   Poly &operator+=(const mod_t r) { return *this[0] += r, *this; }

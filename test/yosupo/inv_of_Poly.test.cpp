@@ -1,21 +1,20 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/inv_of_polynomials"
 #include <bits/stdc++.h>
-#include "src/Old/ModInt.hpp"
-#include "src/Old/FormalPowerSeries.hpp"
-#include "src/Old/extgcd.hpp"
+#include "src/Math/ModInt.hpp"
+#include "src/FFT/Polynomial.hpp"
+#include "src/FFT/extgcd.hpp"
 using namespace std;
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  using Mint = ModInt<998244353>;
-  using Poly = FormalPowerSeries<Mint>;
+  using Mint = StaticModInt<998244353>;
   int N, M;
   cin >> N >> M;
-  Poly f(N), g(M), x, y;
+  Polynomial<Mint> f(N), g(M), x, y;
   for (int i = 0; i < N; i++) cin >> f[i];
   for (int i = 0; i < M; i++) cin >> g[i];
-  Poly d = extgcd(f, g, x, y);
+  auto d = extgcd(f, g, x, y);
   if (d.deg() != 0) {
     cout << -1 << '\n';
   } else if (x.deg() == -1) {
@@ -23,8 +22,8 @@ signed main() {
   } else {
     cout << x.size() << '\n';
     x /= d[0];
-    for (size_t i = 0; i < x.size(); i++) cout << (i ? " " : "") << x[i];
-    cout << '\n';
+    for (int i = 0, ed = x.size(); i < ed; i++)
+      cout << x[i] << " \n"[i == ed - 1];
   }
   return 0;
 }

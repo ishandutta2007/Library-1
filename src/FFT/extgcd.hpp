@@ -4,7 +4,7 @@
 /**
  * @title 多項式の拡張互除法
  * @category FFT
- *  O(Nlog^2N)
+ *  O(N log^2 N)
  */
 
 // BEGIN CUT HERE
@@ -18,10 +18,9 @@ Polynomial<mod_t, _Nm> extgcd(Polynomial<mod_t, _Nm> a,
   using Poly = Polynomial<mod_t, _Nm>;
   using PVec = std::array<Poly, 2>;
   using PMat = std::array<PVec, 2>;
-  assert(a.deg() >= 0);
-  assert(b.deg() >= 0);
+  assert(a.deg() >= 0), assert(b.deg() >= 0);
   auto isI = [](const PMat &m) {
-    static constexpr mod_t ONE(1);
+    const mod_t ONE(1);
     return m[0][1].deg() == -1 && m[1][0].deg() == -1 && m[0][0].deg() == 0 &&
            m[0][0][0] == ONE && m[1][1].deg() == 0 && m[1][1][0] == ONE;
   };
@@ -45,7 +44,7 @@ Polynomial<mod_t, _Nm> extgcd(Polynomial<mod_t, _Nm> a,
   auto hgcd = [&](auto self, const Poly &p0, const Poly &p1) -> PMat {
     assert(p0.deg() > p1.deg());
     int m = ((p0.deg() - 1) >> 1) + 1, n = p1.deg();
-    if (n < m) return PMat{PVec{Poly(1, 1), Poly()}, PVec{Poly(), Poly(1, 1)}};
+    if (n < m) return PMat{PVec{Poly{1}, Poly()}, PVec{Poly(), Poly{1}}};
     PMat R(self(self, Poly(p0.begin() + m, p0.end()),
                 Poly(p1.begin() + m, p1.end())));
     PVec ab(mulv(R, PVec{p0, p1}));
@@ -57,7 +56,7 @@ Polynomial<mod_t, _Nm> extgcd(Polynomial<mod_t, _Nm> a,
                     Poly(qr.second.begin() + k, qr.second.end())),
                mulQ_l(qr.first, R));
   };
-  auto cogcd = [&](const Poly &p0, const Poly &p1) -> PMat {
+  auto cogcd = [&](auto self, const Poly &p0, const Poly &p1) -> PMat {
     assert(p0.deg() > p1.deg());
     PMat M(hgcd(hgcd, p0, p1));
     PVec p2p3(mulv(M, PVec{p0, p1}));
@@ -66,12 +65,12 @@ Polynomial<mod_t, _Nm> extgcd(Polynomial<mod_t, _Nm> a,
     if (qr.second.deg() == -1) return mulQ_l(qr.first, M);
     return mul(self(self, p2p3[1], qr.second), mulQ_l(qr.first, M));
   };
-  if (a.shrink().deg() <= b.shrink().deg()) {
+  if (a.shrink().size() <= b.shrink().size()) {
     std::pair<Poly, Poly> qr(a.quorem(b));
-    PMat c(cogcd(b, qr.second));
+    PMat c(cogcd(cogcd, b, qr.second));
     return a * (x = c[0][1]) + b * (y = c[0][0] - c[0][1] * qr.first);
   } else {
-    PMat c(cogcd(a, b));
+    PMat c(cogcd(cogcd, a, b));
     return a * (x = c[0][0]) + b * (y = c[0][1]);
   }
 }

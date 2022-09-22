@@ -109,13 +109,13 @@ class Polynomial : public std::vector<mod_t> {
   Poly operator-(const Poly &r) const { return Poly(*this) -= r; }
   Poly operator*(const Poly &r) const { return convolve<mod_t, _Nm>(*this, r); }
   Poly operator/(const Poly &r) const {
-    const int m = r.deg(), qsz = deg() - m + 1, ln = bsf(get_len(qsz));
+    const int m = r.deg(), qsz = deg() - m + 1, ln = get_len(qsz);
     assert(m >= 0);
     if (qsz <= 0) return Poly{Z};
     return m + 3 < A * ln + B || ln <= 64 ? quorem_na(r).first : quo(r);
   }
   std::pair<Poly, Poly> quorem(const Poly &r) const {
-    const int n = deg(), m = r.deg(), qsz = n - m + 1, ln = bsf(get_len(qsz));
+    const int n = deg(), m = r.deg(), qsz = n - m + 1, ln = get_len(qsz);
     assert(m >= 0);
     if (qsz <= 0) return {Poly{Z}, Poly(this->begin(), this->begin() + n + 1)};
     return m < A * ln + B || ln <= 64 ? quorem_na(r) : quorem_ntt(r);
@@ -148,7 +148,7 @@ class Polynomial : public std::vector<mod_t> {
     return taylor_shift(xpc.c).scale(xpc.x.pow());
   }
   Poly operator()(const Poly &q) const {  // f(g) mod x^n
-    const int n = this->deg() + 1, k = std::ceil(std::sqrt(n));
+    const std::size_t n = this->deg() + 1, k = std::ceil(std::sqrt(n));
     std::vector<Poly> pw1(k + 1), pw2(k + 1);
     if (pw1[0] = {1}, pw1[1] = q; q.size() > n) pw1[1].resize(n);
     for (int i = 2; i <= k; ++i)
@@ -192,6 +192,7 @@ class Polynomial : public std::vector<mod_t> {
     return ret;
   }
   friend std::ostream &operator<<(std::ostream &os, const Poly &p) {
+    if (p.deg() == -1) return os << 0;
     for (int i = 0, e = p.deg(); i <= e; i++) {
       if (p[i] == Z) continue;
       if (i == 0 || p[i] != mod_t(1)) os << p[i];

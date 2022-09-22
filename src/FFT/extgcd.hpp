@@ -3,9 +3,8 @@
 #include "src/FFT/Polynomial.hpp"
 /**
  * @title 多項式の拡張互除法
- * @category 数学
+ * @category FFT
  *  O(Nlog^2N)
- * @see https://loj.ac/article/2773
  */
 
 // BEGIN CUT HERE

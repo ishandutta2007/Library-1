@@ -148,7 +148,7 @@ class Polynomial : public std::vector<mod_t> {
     return taylor_shift(xpc.c).scale(xpc.x.pow());
   }
   Poly operator()(const Poly &q) const {  // f(g) mod x^n
-    const std::size_t n = this->deg() + 1, k = std::ceil(std::sqrt(n));
+    const int n = this->deg() + 1, k = std::ceil(std::sqrt(n));
     std::vector<Poly> pw1(k + 1), pw2(k + 1);
     if (pw1[0] = {1}, pw1[1] = q; q.size() > n) pw1[1].resize(n);
     for (int i = 2; i <= k; ++i)
@@ -158,11 +158,11 @@ class Polynomial : public std::vector<mod_t> {
       if (pw2[i] = pw2[i - 1] * pw2[1]; pw2[i].size() > n) pw2[i].resize(n);
     Poly ret(n, Z), f;
     for (int i = 0, j; i <= k; ++i) {
-      for (f.assign(n, Z), j = std::min(k, std::max(0u, n - k * i)); j--;) {
+      for (f.assign(n, Z), j = std::min(k, std::max(0, n - k * i)); j--;) {
         mod_t coef = (*this)[k * i + j];
         for (int d = pw1[j].size(); d--;) f[d] += pw1[j][d] * coef;
       }
-      for (f *= pw2[i], j = std::min(n, f.size()); j--;) ret[j] += f[j];
+      for (f *= pw2[i], j = std::min<int>(n, f.size()); j--;) ret[j] += f[j];
     }
     return ret;
   }

@@ -251,6 +251,7 @@
 "test/yukicoder/649.DynSeg.test.cpp": "2022-09-10 14:49:37 +0900",
 "test/yukicoder/649.Patricia.test.cpp": "2021-11-23 17:04:27 +0900",
 "test/yukicoder/649.SegTree.test.cpp": "2022-06-19 23:17:16 +0900",
+"test/yukicoder/658.test.cpp": "2022-09-22 22:33:11 +0900",
 "test/yukicoder/665.test.cpp": "2022-09-19 00:53:55 +0900",
 "test/yukicoder/728.KDT.test.cpp": "2022-09-10 23:27:14 +0900",
 "test/yukicoder/728.WM.test.cpp": "2022-07-21 16:46:40 +0900",
@@ -261,5 +262,6 @@
 "test/yukicoder/880.Beats.test.cpp": "2022-06-20 21:03:56 +0900",
 "test/yukicoder/886.numth.test.cpp": "2022-09-21 11:13:45 +0900",
 "test/yukicoder/919.WM.test.cpp": "2022-07-21 16:46:40 +0900",
-"test/yukicoder/963.test.cpp": "2022-09-19 00:53:55 +0900"
+"test/yukicoder/963.test.cpp": "2022-09-19 00:53:55 +0900",
+"test/yukicoder/980.test.cpp": "2022-09-22 22:33:11 +0900"
 }

@@ -158,7 +158,7 @@ class Polynomial : public std::vector<mod_t> {
       if (pw2[i] = pw2[i - 1] * pw2[1]; pw2[i].size() > n) pw2[i].resize(n);
     Poly ret(n, Z), f;
     for (int i = 0, j; i <= k; ++i) {
-      for (f.assign(n, Z), j = std::min(k, std::max(0, n - k * i)); j--;) {
+      for (f.assign(n, Z), j = std::min(k, std::max(0u, n - k * i)); j--;) {
         mod_t coef = (*this)[k * i + j];
         for (int d = pw1[j].size(); d--;) f[d] += pw1[j][d] * coef;
       }

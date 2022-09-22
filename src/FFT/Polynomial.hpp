@@ -93,7 +93,7 @@ class Polynomial : public std::vector<mod_t> {
   inline Poly &shrink() { return this->resize(std::max(deg() + 1, 1)), *this; }
 #define ASSIGN(op)                                \
   Poly &operator op##=(const Poly &r) {           \
-    const int n = r.deg() + 1;                    \
+    const std::size_t n = r.deg() + 1;            \
     if (this->size() < n) this->resize(n);        \
     for (int i = n; i--;) (*this)[i] op## = r[i]; \
     return shrink();                              \

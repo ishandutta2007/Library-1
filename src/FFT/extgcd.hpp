@@ -11,8 +11,8 @@
 
 // ax + by = gcd(a, b)
 template <class mod_t, std::size_t _Nm>
-Polynomial<mod_t, _Nm> extgcd(Polynomial<mod_t, _Nm> a,
-                              Polynomial<mod_t, _Nm> b,
+Polynomial<mod_t, _Nm> extgcd(const Polynomial<mod_t, _Nm> &a,
+                              const Polynomial<mod_t, _Nm> &b,
                               Polynomial<mod_t, _Nm> &x,
                               Polynomial<mod_t, _Nm> &y) {
   using Poly = Polynomial<mod_t, _Nm>;
@@ -45,7 +45,7 @@ Polynomial<mod_t, _Nm> extgcd(Polynomial<mod_t, _Nm> a,
     return {A.first * M[2] + A.second * (M[0] - qr.first * M[2]),
             A.first * M[3] + A.second * (M[1] - qr.first * M[3])};
   };
-  if (a.norm().size() <= b.norm().size()) {
+  if (a.deg() <= b.deg()) {
     std::pair<Poly, Poly> qr = a.quorem(b);
     std::tie(y, x) = cogcd(cogcd, b, qr.second), y -= x * qr.first;
   } else

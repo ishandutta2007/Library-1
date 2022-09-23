@@ -29,8 +29,7 @@ Polynomial<mod_t, _Nm> extgcd(const Polynomial<mod_t, _Nm> &a,
           A[2] * R[0] + A[3] * R[2], A[2] * R[1] + A[3] * R[3]};
   auto hgcd = [&](auto self, const Poly &p0, const Poly &p1) -> PolyMat {
     int o = p0.deg(), m = (o + 1) / 2, n = p1.deg(), k = (o + m + 1) / 2;
-    if (assert(o > n); n < k) return {Poly(), mod_t(1), mod_t(1), -p0 / p1};
-    if (n < (((o + 1) * 3 + m) >> 2)) {
+    if (assert(o > n); n < (((o + 1) * 3 + m) >> 2)) {
       Poly tmp = SUF(p0, m, o + 1) / SUF(p1, m, n + 1), p3 = p0 - tmp * p1;
       std::pair<Poly, Poly> qr = p1.quorem(p3);
       PolyMat R = {mod_t(1), -tmp, -qr.first, qr.first * tmp + mod_t(1)};

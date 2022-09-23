@@ -122,8 +122,8 @@ class Polynomial : public std::vector<mod_t> {
     return m < A * ln + B || qsz <= 64 ? quorem_na(r) : quorem_ntt(r);
   }
   Poly operator%(const Poly &r) const { return quorem(r).second; }
-  Poly &operator+=(const mod_t r) { return *this[0] += r, *this; }
-  Poly &operator-=(const mod_t r) { return *this[0] -= r, *this; }
+  Poly &operator+=(const mod_t r) { return (*this)[0] += r, *this; }
+  Poly &operator-=(const mod_t r) { return (*this)[0] -= r, *this; }
   Poly &operator*=(const mod_t r) {
     for (mod_t &c : *this) c *= r;
     return shrink();

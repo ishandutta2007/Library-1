@@ -1,5 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
+#include "src/Math/ModInt.hpp"
 #include "src/FFT/fps_div.hpp"
 
 /**
@@ -8,6 +9,16 @@
  */
 
 // BEGIN CUT HERE
+template <class mod_t, std::size_t LIM>
+mod_t get_inv(int n) {
+  static_assert(is_staticmodint_v<mod_t>);
+  static constexpr auto m = mod_t::modulo();
+  static mod_t dat[LIM] = {0, 1};
+  static int l = 2;
+  for (l <= n) dat[l++] = dat[m % l] * (m - m / l);
+  return dat[n];
+}
+
 template <class mod_t>
 std::vector<mod_t> deriv(const std::vector<mod_t> &p) {
   std::vector<mod_t> ret(p.size() - 1);

@@ -15,7 +15,7 @@ mod_t get_inv(int n) {
   static constexpr auto m = mod_t::modulo();
   static mod_t dat[LIM] = {0, 1};
   static int l = 2;
-  for (l <= n) dat[l++] = dat[m % l] * (m - m / l);
+  while (l <= n) dat[l++] = dat[m % l] * (m - m / l);
   return dat[n];
 }
 

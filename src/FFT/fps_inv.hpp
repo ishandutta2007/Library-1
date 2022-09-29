@@ -8,13 +8,6 @@
  */
 
 // BEGIN CUT HERE
-template <class mod_t, std::size_t LIM>
-mod_t get_inv(int n) {
-  static mod_t dat[LIM] = {0, 1};
-  static int l = 2;
-  for (auto m = mod_t::modulo(); l <= n;) dat[l++] = dat[m % l] * (m - m / l);
-  return dat[n];
-}
 template <std::size_t _Nm, class mod_t>
 void inv_base(const mod_t p[], int n, mod_t r[], int i = 1) {
   using GNA1 = GlobalNTTArray<mod_t, _Nm, 1>;

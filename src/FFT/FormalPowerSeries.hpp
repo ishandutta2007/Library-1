@@ -250,6 +250,7 @@ template <class mod_t, std::size_t _Nm>
 FormalPowerSeries<mod_t, _Nm> pow(const FormalPowerSeries<mod_t, _Nm> &fps,
                                   std::uint64_t k) {
   using FPS = FormalPowerSeries<mod_t, _Nm>;
+  if (!k) return FPS(1);
   return FPS([h = fps.h_, kk = mod_t(k), k, cnt = 0ull,
               s = std::optional<std::function<mod_t(int)>>()](int i) mutable {
     if (s) return (std::uint64_t)i < cnt ? mod_t(0) : (*s)(i - (int)cnt);

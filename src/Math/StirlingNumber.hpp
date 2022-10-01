@@ -13,12 +13,6 @@
 class StirlingNumber {
   const std::uint16_t p;
   std::vector<std::vector<std::uint16_t>> c, s1, s2;
-  void buildC() {
-    c.resize(p), c[0] = {1};
-    for (int i = 1, j; i < p; i++)
-      for (c[i] = c[i - 1], c[i].emplace_back(0), j = 1; j <= i; j++)
-        c[i][j] -= p & -((c[i][j] += c[i - 1][j - 1]) >= p);
-  }
   void buildS1() {
     s1.resize(p), s1[0] = {1};
     for (int i = 1, j, t; i < p; s1[i][i] = 1, i++)
@@ -34,15 +28,18 @@ class StirlingNumber {
 
  public:
   StirlingNumber(std::uint32_t p_, bool first = true, bool second = true)
-      : p(p_) {
-    assert(is_prime(p_)), assert(p_ < (1 << 15)), buildC();
+      : p(p_), c(p) {
+    assert(is_prime(p_)), assert(p_ < (1 << 15)), c[0] = {1};
+    for (int i = 1, j; i < p; i++)
+      for (c[i] = c[i - 1], c[i].emplace_back(0), j = 1; j <= i; j++)
+        c[i][j] -= p & -((c[i][j] += c[i - 1][j - 1]) >= p);
     if (first) buildS1();
     if (second) buildS2();
   }
   int nCk(std::uint64_t n, std::uint64_t k) {
     if (k > n) return 0;
     int ret = 1, i, j;
-    for (; k = std::min(k, n - k); ret = ret * c[i][j] % p, n /= p, k /= p)
+    for (k = std::min(k, n - k); k; ret = ret * c[i][j] % p, n /= p, k /= p)
       if (i = n % p, j = k % p; j > i) return 0;
     return ret;
   }

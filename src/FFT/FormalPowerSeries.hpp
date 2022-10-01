@@ -252,9 +252,10 @@ FormalPowerSeries<mod_t, _Nm> pow(const FormalPowerSeries<mod_t, _Nm> &fps,
   using FPS = FormalPowerSeries<mod_t, _Nm>;
   return FPS([h = fps.h_, kk = mod_t(k), k, cnt = 0ull,
               s = std::optional<std::function<mod_t(int)>>()](int i) mutable {
-    if (s) return (unsigned long long)i < cnt ? mod_t(0) : (*s)(i - (int)cnt);
+    if (s) return (std::uint64_t)i < cnt ? mod_t(0) : (*s)(i - (int)cnt);
     mod_t v(h(i));
     if (v == mod_t(0)) return cnt++, mod_t(0);
+    cout << cnt << '\n';
     cnt *= k;
     FPS t0([os = i, iv = mod_t(1) / v, h](int i) { return h(i + os) * iv; });
     FPS t1([h0 = log(t0).handle(), kk](int i) { return h0(i) * kk; });

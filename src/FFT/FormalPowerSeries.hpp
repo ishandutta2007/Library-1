@@ -184,7 +184,7 @@ class FormalPowerSeries {
     auto rc = std::make_shared<RelaxedConvolution<mod_t, _Nm>>(
         [h = h_](int i) { return h(i); },
         [h = h_, iv = mod_t()](int i, const auto &c) mutable {
-          return i == 0 ? T(iv = mod_t(1) / h(0)) : -(c[i] + h(i) * iv) * iv;
+          return i ? -(c[i] + h(i) * iv) * iv : (iv = mod_t(1) / h(0));
         });
     return FPS(
         [rc](int i) { return rc->next(), rc->multiplier()[i]; });  // safe

@@ -1,6 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1080"
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
+#include "src/FFT/fps_inv.hpp"
 #include "src/FFT/fps_exp.hpp"
 #include "src/Math/mod_sqrt.hpp"
 using namespace std;
@@ -17,9 +18,7 @@ signed main() {
   for (int i = 1; i <= N; fact *= (i++)) f[i] = Mint(i + 1) * (i + 1);
   Mint im = sqrt(MOD - 1, MOD), iv2 = (MOD + 1) / 2;
   for (auto& x : f) x *= im;
-  vector<Mint> g(f);
-  for (auto& x : g) x = -x;
-  auto exp_pi = exp(f), exp_mi = exp(g);
+  auto exp_pi = exp(f), exp_mi = inv(exp_pi);
   for (int i = 1; i <= N; i++) {
     Mint ans = (exp_pi[i] + exp_mi[i]) - im * (exp_pi[i] - exp_mi[i]);
     ans *= iv2 * fact;

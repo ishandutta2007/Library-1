@@ -277,3 +277,12 @@ struct GlobalArray {
 constexpr std::uint32_t get_len(std::uint32_t n) {
   return (n |= (n |= (n |= (n |= (n |= (--n) >> 1) >> 2) >> 4) >> 8) >> 16) + 1;
 }
+template <class mod_t, std::size_t LIM>
+mod_t get_inv(int n) {
+  static_assert(is_staticmodint_v<mod_t>);
+  static constexpr auto m = mod_t::modulo();
+  static mod_t dat[LIM] = {0, 1};
+  static int l = 2;
+  while (l <= n) dat[l++] = dat[m % l] * (m - m / l);
+  return dat[n];
+}

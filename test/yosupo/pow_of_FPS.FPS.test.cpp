@@ -7,7 +7,7 @@ using namespace std;
 signed main() {
   using Mint = StaticModInt<998244353>;
   using FPS = FormalPowerSeries<Mint>;
-  int N, M;
+  long long N, M;
   cin >> N >> M;
   std::vector<Mint> A(N);
   for (int i = 0; i < N; i++) cin >> A[i];

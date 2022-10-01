@@ -33,7 +33,12 @@ struct ModIntImpl {
     for (D ret(1), b((const D &)*this);; b *= b)
       if (k & 1 ? ret *= b : 0; !(k >>= 1)) return ret;
   }
-  constexpr D inv() const { return pow(D::mod - 2); }
+  constexpr D inv() const {
+    typename D::Int x = 1, y = 0, a = ((D *)this)->val(), b = D::mod;
+    for (typename D::Int q = 0, z = 0, c = 0; b;)
+      z = x, c = a, x = y, y = z - y * (q = a / b), a = b, b = c - b * q;
+    return assert(a == 1), D(x);
+  }
   friend ostream &operator<<(ostream &os, const D &r) { return os << r.val(); }
   friend istream &operator>>(istream &is, D &r) {
     long long v;
@@ -42,6 +47,7 @@ struct ModIntImpl {
 };
 template <class B>
 struct ModInt_Na : public B, public ModIntImpl<ModInt_Na<B>> {
+  using Int = make_signed_t<typename B::Uint>;
   using DUint = conditional_t<is_same_v<typename B::Uint, u64>, u128, u64>;
   friend ModIntImpl<ModInt_Na<B>>;
   constexpr ModInt_Na() = default;
@@ -64,7 +70,7 @@ struct ModInt_Na : public B, public ModIntImpl<ModInt_Na<B>> {
 };
 template <class B>
 struct ModInt_Mon : public B, public ModIntImpl<ModInt_Mon<B>> {
-  using Uint = u64;
+  using Int = int64_t;
   using mod_t = ModInt_Mon;
   friend ModIntImpl<ModInt_Mon<B>>;
   constexpr ModInt_Mon() = default;

@@ -2,7 +2,7 @@
   "https://judge.yosupo.jp/problem/stirling_number_of_the_first_kind"
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
-#include "src/FFT/fps_sequences.hpp"
+#include "src/FFT/sequences.hpp"
 using namespace std;
 
 signed main() {

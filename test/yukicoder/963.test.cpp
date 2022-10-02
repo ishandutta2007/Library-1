@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/963"
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
-#include "src/FFT/fps_sequences.hpp"
+#include "src/FFT/sequences.hpp"
 using namespace std;
 
 signed main() {

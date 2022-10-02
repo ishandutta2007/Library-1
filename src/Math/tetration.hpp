@@ -2,9 +2,10 @@
 #include <bits/stdc++.h>
 #include "src/Math/Factors.hpp"
 /**
- * @title テトレーション $H_4(a,b) = a\upuparrows b = a^{a^{\cdot^{\cdot^{a}}}}$
+ * @title テトレーション $H_4(a,b) = a^{a^{\cdot^{\cdot^{a}}}}$
+ * $\mathbb{Z}/m\mathbb{Z}$
  * @category 数学
- *  O(N^(1/4))
+ *  O(m^(1/4))
  */
 // verify用:
 // https://atcoder.jp/contests/summerfes2018-div1/tasks/summerfes2018_f

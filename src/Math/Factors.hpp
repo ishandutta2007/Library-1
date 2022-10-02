@@ -69,3 +69,16 @@ constexpr std::uint64_t totient(const Factors &f) {
   return ret;
 }
 constexpr auto totient(std::uint64_t n) { return totient(Factors(n)); }
+
+constexpr std::uint64_t primitive_root(std::uint64_t p) {
+  if (assert(is_prime(p)); p == 2) return 1;
+  auto f = Factors(p - 1);
+  for (std::uint64_t ret = 2, pw = 0, x = 0, k = 0, ng = 0;; ret++) {
+    for (auto [q, e] : f) {
+      for (pw = 1, x = ret, k = (p - 1) / q;; x = mul(x, x, p))
+        if (k & 1 ? pw = mul(pw, x, p) : 0; !(k >>= 1)) break;
+      if (ng = (pw == 1)) break;
+    }
+    if (!ng) return ret;
+  }
+}

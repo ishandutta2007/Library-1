@@ -20,6 +20,10 @@ signed main() {
     cout << 0 << endl;
     return 0;
   }
+  if (r == 0) {
+    cout << (d ? 0 : 1) << '\n';
+    return 0;
+  }
   vector<Mint> sum(d + 2), rpow(d + 2), pd = Sieve<>::pow_table<Mint>(d + 2, d);
   rpow[0] = 1, sum[0] = rpow[0] * pd[0];
   for (int i = 1; i <= d + 1; i++) rpow[i] = rpow[i - 1] * r;

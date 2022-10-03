@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title 平方根 $\mathbb{F}_p$
+ * @title 平方根 ($\mathbb{F}_p$)
  * @category 数学
  * O(log p)
  */

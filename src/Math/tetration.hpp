@@ -2,8 +2,7 @@
 #include <bits/stdc++.h>
 #include "src/Math/Factors.hpp"
 /**
- * @title テトレーション $H_4(a,b) = a^{a^{\cdot^{\cdot^{a}}}}$
- * $\mathbb{Z}/m\mathbb{Z}$
+ * @title テトレーション $a\upuparrows b$ ($\mathbb{Z}/m\mathbb{Z}$)
  * @category 数学
  *  O(m^(1/4))
  */

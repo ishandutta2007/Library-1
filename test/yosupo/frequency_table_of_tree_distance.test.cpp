@@ -2,14 +2,13 @@
   "https://judge.yosupo.jp/problem/frequency_table_of_tree_distance"
 // 木の重心分解
 #include <bits/stdc++.h>
-#include "src/Old/ModInt.hpp"
-#include "src/Old/FormalPowerSeries.hpp"
+#include "src/FFT/Polynomial.hpp"
 using namespace std;
 
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(0);
-  using FPS = FormalPowerSeries<long long>;
+  using Poly = Polynomial<long long>;
   int N;
   cin >> N;
   vector<int> tree[N];
@@ -35,16 +34,16 @@ signed main() {
     return v;
   };
 
-  FPS ans(N + 1);
+  Poly ans(N + 1, 0);
   function<void(int)> dfs = [&](int rt) {
     int c = centroid(rt, -1, sz_dfs(rt, -1) / 2);
     used[c] = true;
-    FPS cnt({1});
+    Poly cnt({1});
     for (int ch : tree[c])
       if (!used[ch]) {
         queue<tuple<int, int, int>> que;
         que.emplace(ch, c, 1);
-        FPS num;
+        Poly num;
         while (!que.empty()) {
           int v, p, d;
           tie(v, p, d) = que.front();

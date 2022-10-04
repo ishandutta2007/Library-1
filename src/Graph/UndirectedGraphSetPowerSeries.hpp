@@ -10,6 +10,7 @@
  */
 
 // verify用:
+// https://atcoder.jp/contests/abc253/tasks/abc253_h (全域木)
 // https://loj.ac/p/155 (Tutte 多項式)
 // https://loj.ac/p/3165 (acyclic_orientations (Tutte 多項式, 彩色多項式))
 // https://loj.ac/p/6673 (オイラーグラフ)
@@ -159,24 +160,30 @@ class UndirectedGraphSetPowerSeries {
     auto ret = loop_ignored_biconnected_graph_num<T>();
     return loop_ignored_to_loop_permitted(ret), ret;
   }
-  template <class T>  // O(V^3 2^V)
+  template <class T>  // O(V^2 2^V)
   inline sps<T> spanning_tree_num() const {
-    sps<T> ret(sz, 0);
-    for (int i = V; i--;)
-      for (int j = i; j--;) ret[(1 << i) | (1 << j)] = adj[i][j];
-    return biconnect_to_connect(ret), ret;
+    sps<int> e = edge_space_rank();
+    sps<T> ret = {0, 1};
+    ret.reserve(sz);
+    for (int I = 2; I < sz; I <<= 1) {
+      sps<T> g(ret);
+      for (int s = I; --s;) g[s] *= e[s | I] - e[s] - e[I];
+      g = SPS::exp(g);
+      std::copy(g.begin(), g.end(), std::back_inserter(ret));
+    }
+    return ret;
   }
-  template <class T>  // O(V^3 2^V)
+  template <class T>  // O(V^2 2^V)
   inline sps<T> forest_num() const {
     return SPS::exp(spanning_tree_num<T>());
   }
-  template <class T>  // O(V^3 2^V)
+  template <class T>  // O(V^2 2^V)
   inline sps<T> rooted_spanning_tree_num() const {
     auto ret = spanning_tree_num<T>();
     for (int s = sz; s--;) ret[s] *= __builtin_popcount(s);
     return ret;
   }
-  template <class T>  // O(V^3 2^V)
+  template <class T>  // O(V^2 2^V)
   inline sps<T> rooted_forest_num() const {
     return SPS::exp(rooted_spanning_tree_num<T>());
   }

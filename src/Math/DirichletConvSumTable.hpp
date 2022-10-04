@@ -10,6 +10,7 @@
 
 // verify用:
 // https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d
+// https://atcoder.jp/contests/abc239/tasks/abc239_h (semi relaxed)
 
 // BEGIN CUT HERE
 
@@ -42,8 +43,8 @@ struct DirichletConvSumTable {
     assert(N <= std::uint64_t(K) * L), assert(N == r.N);
     assert(K == r.x.size() - 1), assert(L == r.X.size() - 1);
     std::vector<T> c(K + 1, 0), C(L + 1, 0), A_l(K + 1, 0), B_l(K + 1, 0);
-    for (int i = 1; i <= K; i++) A_l[i] = A_l[i - 1] + x[i];
-    for (int i = 1; i <= K; i++) B_l[i] = B_l[i - 1] + r.x[i];
+    for (std::size_t i = 1; i <= K; i++) A_l[i] = A_l[i - 1] + x[i];
+    for (std::size_t i = 1; i <= K; i++) B_l[i] = B_l[i - 1] + r.x[i];
     auto A = [&](std::uint64_t n) { return n <= K ? A_l[n] : X[N / n]; };
     auto B = [&](std::uint64_t n) { return n <= K ? B_l[n] : r.X[N / n]; };
     std::uint64_t n;
@@ -200,4 +201,24 @@ T dirichlet_mul_sum(const DirichletConvSumTable<T> &a,
   for (int i = M; i; i--) ret += a.x[i] * b.X[i] + b.x[i] * a.X[i];
   for (int i = M; i; i--) A += a.x[i], B += b.x[i];
   return ret -= A * B;
+}
+
+template <class mod_t>  // return ∑g s.t. s+t∑g = ∑f*g
+auto SemiRelaxed(const DirichletConvSumTable<mod_t> &F, mod_t s, mod_t t) {
+  const std::size_t K = F.x.size() - 1, L = F.X.size() - 1;
+  assert(F.N <= std::uint64_t(K) * L), assert(F.x[1] != t);
+  std::vector<mod_t> A_l(K + 1, 0), B_l(K + 1, 0), g(K + 1, 0), G(L + 1, 0);
+  g[1] = s;
+  for (std::size_t j = 1, i, ed; j <= K; j++)
+    for (g[j] /= F.x[1] - t, i = 2, ed = K / j; i <= ed; i++)
+      g[i * j] -= F.x[i] * g[j];
+  for (std::size_t i = 1; i <= K; i++) A_l[i] = A_l[i - 1] + F.x[i];
+  for (std::size_t i = 1; i <= K; i++) B_l[i] = B_l[i - 1] + g[i];
+  auto A = [&](std::uint64_t n) { return n <= K ? A_l[n] : F.X[F.N / n]; };
+  auto B = [&](std::uint64_t n) { return n <= K ? B_l[n] : G[F.N / n]; };
+  std::uint64_t n;
+  for (std::size_t l = L, m; l; (G[l--] += s) /= F.x[1] - t)
+    for (m = std::sqrt(n = F.N / l), G[l] = A(m) * B(m) - g[1] * A(n); m > 1;)
+      G[l] -= F.x[m] * B(n / m) + g[m] * A(n / m), m--;
+  return DirichletConvSumTable<mod_t>(F.N, g, G);
 }

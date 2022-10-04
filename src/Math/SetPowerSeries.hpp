@@ -13,6 +13,7 @@
 // https://atcoder.jp/contests/xmascon20/tasks/xmascon20_h
 //                        (オンライン畳込み2 or 合成 1-√(1-2f))
 // https://loj.ac/p/2340 (オンライン畳込み)
+// https://atcoder.jp/contests/abc253/tasks/abc253_h (egf)
 
 // BEGIN CUT HERE
 

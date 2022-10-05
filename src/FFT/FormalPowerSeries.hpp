@@ -263,16 +263,19 @@ template <class mod_t, std::size_t _Nm>
 FormalPowerSeries<mod_t, _Nm> pow(const FormalPowerSeries<mod_t, _Nm> &fps,
                                   std::uint64_t k) {
   using FPS = FormalPowerSeries<mod_t, _Nm>;
+  if (!k) return FPS(1);
   return FPS([h = fps.h_, kk = mod_t(k), k, cnt = 0ull,
               s = std::optional<std::function<mod_t(int)>>()](int i) mutable {
     if (s) return (std::uint64_t)i < cnt ? mod_t(0) : (*s)(i - (int)cnt);
-    mod_t v(h(i));
+    mod_t v = h(i);
     if (v == mod_t(0)) return cnt++, mod_t(0);
     cnt *= k;
     FPS t0([os = i, iv = mod_t(1) / v, h](int i) { return h(i + os) * iv; });
-    FPS t1([h0 = log(t0).handle(), kk](int i) { return h0(i) * kk; });
-    s.emplace(
-        [vk = v.pow(k), h1 = exp(t1).handle()](int i) { return h1(i) * vk; });
+    FPS t1(
+        [h0 = log<mod_t, _Nm>(t0).handle(), kk](int i) { return h0(i) * kk; });
+    s.emplace([vk = v.pow(k), h1 = exp<mod_t, _Nm>(t1).handle()](int i) {
+      return h1(i) * vk;
+    });
     return cnt ? mod_t(0) : (*s)(i);
   });
 }

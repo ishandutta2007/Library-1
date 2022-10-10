@@ -18,26 +18,26 @@
 // BEGIN CUT HERE
 
 template <unsigned short MAX_N = 21>
-class SetPowerSeries {
+struct SetPowerSeries {
 #define SUBSET_REP(i, j, n)                           \
   for (int _ = (n); _ >>= 1;)                         \
     for (int __ = 0, _2 = _ << 1; __ < (n); __ += _2) \
       for (int j = __, i = j | _, ___ = i; j < ___; j++, i++)
   template <typename T>
   static inline void ranked_zeta_tr(const T f[], T ret[][MAX_N + 1],
-                                    const int &sz) {
+                                    const int sz) {
     for (int S = sz, c; S--;)
       ret[S][c = __builtin_popcount(S)] = f[S], std::fill_n(ret[S], c, 0);
     SUBSET_REP(S, U, sz)
     for (int d = __builtin_popcount(S); d--;) ret[S][d] += ret[U][d];
   }
   template <typename T>
-  static inline void conv_na(const T f[], const T g[], T ret[], const int &sz) {
+  static inline void conv_na(const T f[], const T g[], T ret[], const int sz) {
     for (int s = sz, t; s--;)
-      for (ret[t = s] = f[s] * g[0]; t; (--t) &= s) ret[s] += f[s ^ t] * g[t];
+      for (ret[t = s] = f[s] * g[0]; t; --t &= s) ret[s] += f[s ^ t] * g[t];
   }
   template <typename T>
-  static inline void conv_tr(const T f[], const T g[], T ret[], const int &sz) {
+  static inline void conv_tr(const T f[], const T g[], T ret[], const int sz) {
     static T F[1 << MAX_N][MAX_N + 1], G[1 << MAX_N][MAX_N + 1];
     T tmp[MAX_N + 1];
     ranked_zeta_tr(f, F, sz), ranked_zeta_tr(g, G, sz);
@@ -56,13 +56,13 @@ class SetPowerSeries {
   }
   template <typename T, class F>
   static inline void onconv_na(const T g[], T ret[], const F &phi,
-                               const int &sz) {
+                               const int sz) {
     for (int s = 1, t; s < sz; phi(s, ret[s]), s++)
-      for (ret[t = s] = 0; t; (--t) &= s) ret[s] += ret[s ^ t] * g[t];
+      for (ret[t = s] = 0; t; --t &= s) ret[s] += ret[s ^ t] * g[t];
   }
   template <typename T, class F>
   static inline void onconv_tr(const T g[], T ret[], const F &phi,
-                               const int &sz) {
+                               const int sz) {
     static T G[1 << MAX_N][MAX_N + 1], mat[MAX_N + 1][1 << MAX_N];
     const int n = __builtin_ctz(sz);
     ranked_zeta_tr(g, G, sz), std::fill_n(mat[0], sz, ret[0]);
@@ -113,13 +113,13 @@ class SetPowerSeries {
   template <class T, class F>  // O(n^2 2^n)
   static inline std::vector<T> online_convolve2(int sz, const F &phi) {
     assert(__builtin_popcount(sz) == 1);
-    int mid = std::min(1 << 13, sz);
+    int I = 1, ed = std::min(1 << 13, sz);
     std::vector<T> ret(sz, 0);
-    for (int I = 1, s, t, u = 1; I < mid; I <<= 1)
+    for (int s, t, u = 1; I < ed; I <<= 1)
       for (t = s = 0; s < I; phi(u, ret[u]), t = ++s, u++)
-        for (ret[u] = 0; t; (--t) &= s) ret[u] += ret[I | (s ^ t)] * ret[t];
+        for (ret[u] = 0; t; --t &= s) ret[u] += ret[u ^ t] * ret[t];
     T *h = ret.data();
-    for (int I = mid; I < sz; I <<= 1)
+    for (; I < sz; I <<= 1)
       phi(I, ret[I]), onconv_tr(
                           h, h + I, [&](int s, T &x) { phi(s | I, x); }, I);
     return ret;
@@ -146,23 +146,29 @@ class SetPowerSeries {
   template <class T>  // O(n^2 2^n)
   static inline std::vector<T> exp(const std::vector<T> &f) {
     const int sz = f.size();
-    assert(sz == 1 << __builtin_ctz(sz)), assert(f.at(0) == 0);
-    std::vector<T> ret(sz);
-    T *h = ret.data();
+    assert(!(sz & (sz - 1))), assert(f.at(0) == 0);
+    T h[sz];
     const T *g = f.data();
     int l = 1, ed = std::min(sz, 1 << 11);
     for (h[0] = 1; l < ed; l <<= 1) conv_na(h, g + l, h + l, l);
     for (; l < sz; l <<= 1) conv_tr(h, g + l, h + l, l);
-    return ret;
+    return std::vector<T>(h, h + sz);
   }
   // log(f) : "f[∅] = 1" is required.
   template <class T>  // O(n^2 2^n)
-  static inline std::vector<T> log(std::vector<T> f) {
-    const int sz = f.size(), m = __builtin_ctz(sz);
-    assert(sz == 1 << m), assert(f.at(0) == T(1));
-    T F[MAX_N + 1] = {0, 1};
-    for (int i = 2; i <= m; i++) F[i] = -F[i - 1] * (i - 1);
-    return f[0] = 0, composite(f, F);
+  static inline std::vector<T> log(const std::vector<T> &f) {
+    const int sz = f.size();
+    assert(!(sz & (sz - 1))), assert(f.at(0) == T(1));
+    int I = 2, ed = std::min(sz, 1 << 13);
+    T h[sz];
+    for (std::copy_n(f.begin(), ed, h); I < ed; I <<= 1)
+      for (int s = 1, u = s | I; s < I; s++, u++)
+        for (int t = s; t; --t &= s) h[u] -= h[u ^ t] * f[t];
+    const T *g = f.data();
+    for (; I < sz; I <<= 1)
+      h[I] = g[I], onconv_tr(
+                       g, h + I, [&](int s, T &x) { x = g[I | s] - x; }, I);
+    return h[0] = 0, std::vector<T>(h, h + sz);
   }
   // f^k
   template <class T>  // O(n^2 2^n)

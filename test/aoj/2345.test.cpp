@@ -1,4 +1,5 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2345"
+#define ERROR "0.000000001"
 
 // double型, log
 
@@ -10,6 +11,7 @@ using namespace std;
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
+  cout << fixed << setprecision(12);
   int N, M, P;
   cin >> N >> M >> P;
   UndirectedGraphSetPowerSeries g(N);
@@ -24,8 +26,7 @@ signed main() {
     vector<double> h(e.size());
     for (int s = e.size(); s--;) h[s] = pow(100. / P, e[s]);
     auto f = SetPowerSeries<>::log(h);
-    cout << fixed << setprecision(12)
-         << f.back() * pow(double(P) / 100, e.back()) << '\n';
+    cout << f.back() * pow(double(P) / 100, e.back()) << '\n';
   }
   return 0;
 }

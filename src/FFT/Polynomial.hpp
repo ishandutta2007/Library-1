@@ -207,3 +207,8 @@ class Polynomial : public std::vector<mod_t> {
     return os;
   }
 };
+
+#define __POLYNOMIAL Polynomial<mod_t, _Nm>
+#ifdef __FPS_DIVAT
+__FPS_DIVAT(__POLYNOMIAL)
+#endif

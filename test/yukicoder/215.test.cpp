@@ -20,16 +20,16 @@ signed main() {
   dp2[0][0] = 1;
   for (int v : {2, 3, 5, 7, 11, 13})
     for (int i = 0; i < P; i++)
-      for (int j = 0; j < max_p; j++)
-        if (j + v < max_p) dp1[i + 1][j + v] += dp1[i][j];
+      for (int j = 0; j + v < max_p; j++) dp1[i + 1][j + v] += dp1[i][j];
   for (int v : {4, 6, 8, 9, 10, 12})
     for (int i = 0; i < C; i++)
-      for (int j = 0; j < max_c; j++)
-        if (j + v < max_c) dp2[i + 1][j + v] += dp2[i][j];
+      for (int j = 0; j + v < max_c; j++) dp2[i + 1][j + v] += dp2[i][j];
   vector<Mint> p(dp1[P], dp1[P] + max_p), c(dp2[C], dp2[C] + max_c);
-  auto pc = convolve(p, c);
-  pc.erase(pc.begin());
-  cout << linear_recurrence(pc, vector<Mint>(pc.size(), 1), N + pc.size() - 1)
-       << '\n';
+  auto f = convolve(p, c), g = f;
+  int d = f.size();
+  for (int i = 0; i < d; i++) f[0] -= f[i];
+  for (int i = 1; i < d; i++) f[i] += f[i - 1];
+  g[0] -= 1;
+  cout << div_at(f, g, N - 1) << '\n';
   return 0;
 }

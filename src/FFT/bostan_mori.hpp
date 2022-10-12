@@ -79,25 +79,31 @@ void div_at_ntt_fast(std::vector<mod_t> &p, std::vector<mod_t> &q,
   }
   NTT::idft(len2, p.data()), NTT::idft(len2, q.data());
 }
-template <class mod_t, std::size_t _Nm = 1 << 22>
-mod_t div_at(std::vector<mod_t> p, std::vector<mod_t> q, std::uint64_t k) {
-  const int n = deg(p) + 1, m = deg(q) + 1;
-  assert(m != 0);
-  mod_t ret = 0;
-  if (n == 0) return ret;
-  if (m == 1) return k <= (std::uint64_t)n ? p[k] / q[0] : ret;
-  if (k >= m) {
-    if constexpr (is_nttfriend<mod_t, _Nm>())
-      m <= 44 ? div_at_na(p, q, k) : div_at_ntt_fast<_Nm>(p, q, k);
-    else
-      m <= 340 ? div_at_na(p, q, k) : div_at_ntt<_Nm>(p, q, k);
-  }
-  p.resize(k + 1, ret), q.resize(k + 1, ret), q = inv<mod_t, _Nm>(q);
-  for (int i = k; i >= 0; i--) ret += q[i] * p[k - i];
-  return ret;
-}
 }  // namespace div_at_internal
-using div_at_internal::div_at;
+#define __FPS_DIVAT(Vec)                                                \
+  template <class mod_t, std::size_t _Nm = 1 << 22>                     \
+  mod_t div_at(Vec p, Vec q, std::uint64_t k) {                         \
+    using namespace div_at_internal;                                    \
+    const int n = deg(p) + 1, m = deg(q) + 1;                           \
+    assert(m != 0);                                                     \
+    mod_t ret = 0;                                                      \
+    if (n == 0) return ret;                                             \
+    if (m == 1) return k <= (std::uint64_t)n ? p[k] / q[0] : ret;       \
+    if (k >= m) {                                                       \
+      if constexpr (is_nttfriend<mod_t, _Nm>())                         \
+        m <= 44 ? div_at_na(p, q, k) : div_at_ntt_fast<_Nm>(p, q, k);   \
+      else                                                              \
+        m <= 340 ? div_at_na(p, q, k) : div_at_ntt<_Nm>(p, q, k);       \
+    }                                                                   \
+    p.resize(k + 1, ret), q.resize(k + 1, ret), q = inv<mod_t, _Nm>(q); \
+    for (int i = k; i >= 0; i--) ret += q[i] * p[k - i];                \
+    return ret;                                                         \
+  }
+
+__FPS_DIVAT(std::vector<mod_t>)
+#ifdef __POLYNOMIAL
+__FPS_DIVAT(__POLYNOMIAL)
+#endif
 
 // a[n] = c[0] * a[n-1] + c[1] * a[n-2] + ... + c[d-1] * a[n-d]
 // return a[k]

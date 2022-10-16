@@ -16,13 +16,15 @@ template <class mod_t>
 struct NumberTheoreticTransform {
   static inline void dft(int n, mod_t x[]) {
     for (int m = n, h = 0, i0 = 0; m >>= 1; h = 0, i0 = 0)
-      for (mod_t prod = 1, u; i0 < n; prod *= r2[bsf(++h)], i0 += (m << 1))
+      for (mod_t prod = 1, u; i0 < n;
+           prod *= r2[__builtin_ctz(++h)], i0 += (m << 1))
         for (int i = i0; i < i0 + m; ++i)
           x[i + m] = x[i] - (u = prod * x[i + m]), x[i] += u;
   }
   static inline void idft(int n, mod_t x[]) {
     for (int m = 1, h = 0, i0 = 0; m < n; m <<= 1, h = 0, i0 = 0)
-      for (mod_t prod = 1, y; i0 < n; prod *= ir2[bsf(++h)], i0 += (m << 1))
+      for (mod_t prod = 1, y; i0 < n;
+           prod *= ir2[__builtin_ctz(++h)], i0 += (m << 1))
         for (int i = i0; i < i0 + m; ++i)
           y = x[i] - x[i + m], x[i] += x[i + m], x[i + m] = prod * y;
     for (const mod_t iv = mod_t(1) / n; n--;) x[n] *= iv;
@@ -33,11 +35,11 @@ struct NumberTheoreticTransform {
   static void odd_dft(int n, mod_t x[]) {
     mod_t prod = iv2;
     for (int i = 0, j = 0; i < n; i += 2, j++)
-      x[j] = prod * (x[i] - x[i + 1]), prod *= ir2[bsf(~((u64)j))];
+      x[j] = prod * (x[i] - x[i + 1]), prod *= ir2[__builtin_ctzll(~((u64)j))];
   }
   static void dft_doubling(int n, mod_t x[]) {
     std::copy_n(x, n, x + n), idft(n, x + n);
-    mod_t k(1), t(rt[bsf(n << 1)]);
+    mod_t k(1), t(rt[__builtin_ctz(n << 1)]);
     for (int i = 0; i < n; i++) x[n + i] *= k, k *= t;
     dft(n, x + n);
   }
@@ -52,7 +54,7 @@ struct NumberTheoreticTransform {
   }            // return ω (primitive 2^e th root)
   static_assert(mod_t::modulo() & 1);
   static_assert(is_prime(mod_t::modulo()));
-  static constexpr std::uint8_t E = bsf(mod_t::modulo() - 1);
+  static constexpr std::uint8_t E = __builtin_ctzll(mod_t::modulo() - 1);
   static constexpr auto roots(mod_t w) {
     std::array<mod_t, E + 1> ret = {};
     for (std::uint8_t e = E; e; e--, w *= w) ret[e] = w;
@@ -227,7 +229,7 @@ constexpr bool is_nttfriend() {
     return false;
   else
     return (T::modulo() & is_prime(T::modulo())) &&
-           _Nm <= (1ULL << bsf(T::modulo() - 1));
+           _Nm <= (1ULL << __builtin_ctzll(T::modulo() - 1));
 }
 constexpr std::uint32_t MOD32 = 0x7e000001;
 constexpr u64 MOD64_1 = 0x3ffffffffa000001, MOD64_2 = 0x3fffffffea000001,

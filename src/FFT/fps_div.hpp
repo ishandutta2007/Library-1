@@ -30,11 +30,11 @@ std::vector<mod_t> div(const std::vector<mod_t> &p,
                            : is_nttarraydouble<mod_t, _Nm2> ? 85
                                                             : 129;
   const int n = p.size(), len = get_len(n), R = len < TH2 ? 8 : 16;
-  const int l = q.size(), lnR = bsf(R);
+  const int l = q.size(), lnR = __builtin_ctz(R);
   std::copy(p.begin(), p.end(), GAp::bf);
   std::copy(q.begin(), q.end(), GAq::bf);
   const mod_t iv0 = mod_t(1) / GAq::bf[0];
-  if (l < A * bsf(len) + B || TH >= n) {
+  if (l < A * __builtin_ctz(len) + B || TH >= n) {
     for (int i = 0; i < n; GAp::bf[i++] *= iv0)
       for (int j = std::min(i + 1, l); --j;)
         GAp::bf[i] -= GAp::bf[i - j] * GAq::bf[j];

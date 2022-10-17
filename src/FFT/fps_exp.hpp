@@ -44,14 +44,15 @@ std::vector<mod_t> exp(const std::vector<mod_t> &p) {
   for (int i = n; --i;) GAdp::bf[i] *= i;
   std::fill_n(GAr::bf, n, mod_t(0)), GAr::bf[0] = 1;
   for (int r = m, d = 0, R, k, i; r > TH; d += k) {
-    k = (r /= (R = get_len(bsf(r) + 1) >> 1)) << 1;
+    k = (r /= (R = get_len(__builtin_ctz(r) + 1) >> 1)) << 1;
     for (i = std::min(R - 1, (n - 1) / r); i--;)
       GNA2D1::bf[i].set(GAdp::bf + i * r - d, d, d + k),
           GNA2D1::bf[i].dft(d, d + k);
   }
   auto rec = [&](auto f, int l, int r, int d) -> void {
     if (int i = l | (!l), ed = std::min(r, n), j; r - l > TH) {
-      int R = get_len(bsf(r - l) + 1) >> 1, len = (r - l) / R, k = len << 1;
+      int R = get_len(__builtin_ctz(r - l) + 1) >> 1, len = (r - l) / R,
+          k = len << 1;
       for (i = 0, ed = std::min(R, (n - l + len - 1) / len);; i++) {
         if (mod_t *ret = GAr::bf + l + i * len, *bf = GA::bf + d + len; i) {
           for (GNA1::bf.zeros(d, d + k), j = i; j--;)

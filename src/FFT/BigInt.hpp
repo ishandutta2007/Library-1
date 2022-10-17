@@ -100,7 +100,7 @@ class BigInt {
     if (int i = n, j; std::min(n, m) >= 74) {
       for (i = n; i--;) f[i] = dat[i];
       for (i = m; i--;) g[i] = r.dat[i];
-      const int l = get_len(std::max(n, m)), bl = bsf(l) + 6;
+      const int l = get_len(std::max(n, m)), bl = __builtin_ctz(l) + 6;
       const int len = sz - l < bl * bl * 7 - 74 ? l : get_len(sz);
       std::fill_n(f + n, len - n, 0), NTT::dft(len, f);
       std::fill_n(g + m, len - m, 0), NTT::dft(len, g);

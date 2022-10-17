@@ -30,8 +30,9 @@ std::vector<mod_t> sqrt(const std::vector<mod_t> &p) {
   mod_t *bf = GAr::bf + (cnt >> 1), *pbf = GAp::bf + cnt;
   std::fill_n(GAr::bf, n, Z), bf[0] = sqrt(pbf[0].val(), mod_t::modulo());
   if (bf[0] * bf[0] != pbf[0]) return {};  // no solution
-  const int nn = n - cnt, len = get_len(nn), R = get_len(bsf(len) + 1) >> 1;
-  int m = TH >= nn ? nn : len, lnR = bsf(R), i = 2;
+  const int nn = n - cnt, len = get_len(nn),
+            R = get_len(__builtin_ctz(len) + 1) >> 1;
+  int m = TH >= nn ? nn : len, lnR = __builtin_ctz(R), i = 2;
   while (m > TH) m >>= lnR;
   const mod_t miv = mod_t(mod_t::modulo() - 1) / (bf[0] + bf[0]);
   for ((bf[1] -= pbf[1]) *= miv; i < m; (bf[i] -= pbf[i]) *= miv, i++) {

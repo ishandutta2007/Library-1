@@ -54,7 +54,7 @@ std::vector<mod_t> inv(const std::vector<mod_t> &p) {
       for (bfk[j = i] = Z; j--;) bfk[i] += bfk[j] * pbfk[i - j];
     return std::vector<mod_t>(bfk, bfk + n);
   }
-  const int bl = std::max(bsf(get_len(n)) - lnR, TH3);
+  const int bl = std::max(__builtin_ctz(get_len(n)) - lnR, TH3);
   int l = ((n >> bl) + ((((1 << bl) - 1) & n) > (C * bl + D))) << bl;
   const int m = l & -l, m2 = m << 1, ed = (l + m - 1) / m;
   if (inv_base<_Nm2>(pbfk, m, bfk); 1 < ed)

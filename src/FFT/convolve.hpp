@@ -27,7 +27,7 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &p,
       for (int j = m; j--;) GAr::bf[i + j] += GAp::bf[i] * GAq::bf[j];
   } else {
     const int l = get_len(std::max(n, m)),
-              bl = bsf(l) + 2 * nttarray_type<mod_t, _Nm> - 6;
+              bl = __builtin_ctz(l) + 2 * nttarray_type<mod_t, _Nm> - 6;
     const int len = r_len - l < bl * bl * TMP - TH ? l : get_len(r_len);
     GNA1::bf.set(p.data(), 0, n), GNA1::bf.zeros(n, len), GNA1::bf.dft(0, len);
     if (&p == &q)

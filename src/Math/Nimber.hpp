@@ -12,22 +12,7 @@ class Nimber {
   using u64 = std::uint64_t;
   using u32 = std::uint32_t;
   using u16 = std::uint16_t;
-  static inline const auto pw = [](u32 x, u32 y) {
-    constexpr u16 f2n[16] = {
-        0x0001u, 0x2827u, 0x392bu, 0x8000u, 0x20fdu, 0x4d1du, 0xde4au, 0x0a17u,
-        0x3464u, 0xe3a9u, 0x6d8du, 0x34bcu, 0xa921u, 0xa173u, 0x0ebcu, 0x0e69u};
-    std::array<u16, 65536> pw = {1};
-    for (int i = 1; i < 65535; ++i)
-      pw[i] = (pw[i - 1] << 1) ^ (0x1681fu & (-(pw[i - 1] >= 0x8000u)));
-    for (int i = 1; i < 65535; pw[i++] = y)
-      for (x = pw[i], y = 0; x; x &= x - 1) y ^= f2n[__builtin_ctz(x)];
-    return pw[65535] = 1, pw;
-  }(0, 0);
-  static inline const auto ln = []() {
-    std::array<u16, 65536> ln = {};
-    for (int i = 1; i < 65535; i++) ln[pw[i]] = i;
-    return ln;
-  }();
+  static inline std::array<u16, 65536> pw, ln;
   template <u16 h = 3>
   static inline u16 half(u16 A) {
     return A ? pw[(ln[A] + h) % 65535] : 0;
@@ -79,6 +64,15 @@ class Nimber {
   u64 x;
 
  public:
+  static inline void init(u32 x = 0, u32 y = 0) {
+    constexpr u16 f2n[16] = {
+        0x0001u, 0x2827u, 0x392bu, 0x8000u, 0x20fdu, 0x4d1du, 0xde4au, 0x0a17u,
+        0x3464u, 0xe3a9u, 0x6d8du, 0x34bcu, 0xa921u, 0xa173u, 0x0ebcu, 0x0e69u};
+    for (int i = pw[0] = pw[65535] = 1; i < 65535; ++i)
+      pw[i] = (pw[i - 1] << 1) ^ (0x1681fu & (-(pw[i - 1] >= 0x8000u)));
+    for (int i = 1; i < 65535; ln[pw[i] = y] = i, i++)
+      for (x = pw[i], y = 0; x; x &= x - 1) y ^= f2n[__builtin_ctz(x)];
+  }
   Nimber(u64 x_ = 0) : x(x_) {}
   Nimber &operator+=(const Nimber &r) { return x ^= r.x, *this; }
   Nimber &operator-=(const Nimber &r) { return x ^= r.x, *this; }

@@ -6,7 +6,7 @@ using namespace std;
 void test(int X) {
   mt19937 mt(X);
   uniform_int_distribution<uint64_t> rng(1, ULLONG_MAX);
-  static constexpr int N = 10000;
+  static constexpr int N = 100000;
   static Nimber a[N], b[N], c[N];
   for (int i = 0; i < N; i++)
     a[i] = rng(mt), b[i] = rng(mt), c[i] = a[i] * b[i];
@@ -19,6 +19,7 @@ void test(int X) {
 signed main() {
   cin.tie(0);
   ios::sync_with_stdio(false);
+  Nimber::init();
   int A, B;
   cin >> A >> B;
   test(A), test(B);

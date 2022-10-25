@@ -6,6 +6,9 @@
  * @see https://en.wikipedia.org/wiki/Nimber
  * @see https://natsugiri.hatenablog.com/entry/2020/03/29/073605
  */
+// verify用:
+// https://codeforces.com/contest/1314/problem/F (離散対数)
+// https://atcoder.jp/contests/wtf19-open/tasks/wtf19_c2 (離散対数)
 
 // BEGIN CUT HERE
 class Nimber {
@@ -101,7 +104,8 @@ class Nimber {
     return -1;
   }
   static inline u64 log(u64 A, u64 B) {
-    if (!A) return B == 0 ? 1 : B == 1 ? 0 : u64(-1);
+    if (B == 1) return 0;
+    if (!A) return B == 0 ? 1 : u64(-1);
     static constexpr int P0 = 641, P1 = 65535, P2 = 65537, P3 = 6700417;
     static constexpr int iv10 = 40691, iv21 = 32768, iv20 = 45242,
                          iv32 = 3317441, iv31 = 3350208, iv30 = 3883315;

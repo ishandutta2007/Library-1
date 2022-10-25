@@ -47,14 +47,14 @@ struct ModIntImpl {
 };
 template <class B>
 struct ModInt_Na : public B, public ModIntImpl<ModInt_Na<B>> {
-  using Int = make_signed_t<typename B::Uint>;
-  using DUint = conditional_t<is_same_v<typename B::Uint, u64>, u128, u64>;
+  using Int = typename B::Int;
+  using DUint = conditional_t<is_same_v<typename B::Uint, uint32_t>, u64, u128>;
   friend ModIntImpl<ModInt_Na<B>>;
   constexpr ModInt_Na() = default;
-  template <class T, enable_if_t<is_integral_v<T>, nullptr_t> = nullptr>
-  constexpr ModInt_Na(T n) : x(n < 0 ? B::mod - ((-n) % B::mod) : n % B::mod) {}
   template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr>
   constexpr ModInt_Na(T n) : ModInt_Na(n.val()) {}
+  template <class T>
+  constexpr ModInt_Na(T n) : x(n < 0 ? B::mod - ((-n) % B::mod) : n % B::mod) {}
 #define ASSIGN(m, p) return x m## = B::mod & -((x p## = r.x) >= B::mod), *this
   constexpr ModInt_Na &operator+=(const ModInt_Na &r) { ASSIGN(-, +); }
   constexpr ModInt_Na &operator-=(const ModInt_Na &r) { ASSIGN(+, -); }
@@ -74,11 +74,11 @@ struct ModInt_Mon : public B, public ModIntImpl<ModInt_Mon<B>> {
   using mod_t = ModInt_Mon;
   friend ModIntImpl<ModInt_Mon<B>>;
   constexpr ModInt_Mon() = default;
-  template <class T, enable_if_t<is_integral_v<T>, nullptr_t> = nullptr>
-  constexpr ModInt_Mon(T n)
-      : x(mul(n < 0 ? B::mod - ((-n) % B::mod) : n % B::mod, B::r2)) {}
   template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr>
   constexpr ModInt_Mon(T n) : ModInt_Mon(n.val()) {}
+  template <class T>
+  constexpr ModInt_Mon(T n)
+      : x(mul(n < 0 ? B::mod - ((-n) % B::mod) : n % B::mod, B::r2)) {}
 #define ASGN(op, a) return x op## = a, x += (B::mod << 1) & -(x >> 63), *this
   constexpr mod_t &operator+=(const mod_t &r) { ASGN(+, r.x - (B::mod << 1)); }
   constexpr mod_t &operator-=(const mod_t &r) { ASGN(-, r.x); }
@@ -104,7 +104,10 @@ constexpr u64 mul_inv(u64 n, int e = 6, u64 x = 1) {
 template <u64 MOD>
 struct StaticB_Na : sta_mint_base {
  protected:
-  using Uint = conditional_t < MOD<UINT_MAX, uint32_t, u64>;
+  using Int = conditional_t < MOD < INT_MAX, int32_t,
+        conditional_t<MOD<LLONG_MAX, int64_t, __int128_t>>;
+  using Uint = conditional_t < MOD < INT_MAX, uint32_t,
+        conditional_t<MOD<LLONG_MAX, u64, u128>>;
   static constexpr Uint mod = MOD;
 };
 template <u64 MOD>
@@ -113,12 +116,13 @@ struct StaticB_Mon : sta_mint_base {
   static_assert(MOD & 1);
   static constexpr u64 mod = MOD, iv = mul_inv(mod), r2 = -u128(mod) % mod;
 };
-template <class Int, int id = -1>
+template <class I, int id = -1>
 struct DynamicB_Na : dyn_mint_base {
-  static_assert(is_integral_v<Int>);
-  static inline void set_mod(Int m) { mod = m; }
+  static_assert(is_integral_v<I>);
+  static inline void set_mod(I m) { mod = m; }
 
  protected:
+  using Int = I;
   using Uint = make_unsigned_t<Int>;
   static inline Uint mod;
 };
@@ -133,8 +137,8 @@ struct DynamicB_Mon : dyn_mint_base {
 };
 template <u64 mod>
 using StaticModInt =
-    conditional_t<mod &(mod >= UINT_MAX), ModInt_Mon<StaticB_Mon<mod>>,
-                  ModInt_Na<StaticB_Na<mod>>>;
+    conditional_t<mod &(INT_MAX <= mod) & (mod < LLONG_MAX),
+                  ModInt_Mon<StaticB_Mon<mod>>, ModInt_Na<StaticB_Na<mod>>>;
 struct Montgomery {};
 template <class Int, int id = -1>
 using DynamicModInt =

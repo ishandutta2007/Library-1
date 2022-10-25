@@ -7,7 +7,7 @@
  */
 
 // BEGIN CUT HERE
-int discrete_log(unsigned a, unsigned b, unsigned mod) {
+int discrete_logarithm(unsigned a, unsigned b, unsigned mod) {
   if (a == 0) return b == 0 ? (mod == 1 ? 0 : 1) : (b == 1 ? 0 : -1);
   using u32 = unsigned;
   auto mul = [&mod](u32 &x, u32 y) { x = (std::uint64_t)x * y % mod; };

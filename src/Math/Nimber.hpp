@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title Nimber
+ * @title Nimber $\mathbb{F}_{2^{64}}$
  * @category 数学
  * @see https://en.wikipedia.org/wiki/Nimber
  * @see https://natsugiri.hatenablog.com/entry/2020/03/29/073605
@@ -61,6 +61,65 @@ class Nimber {
     a0 ^= half(a1) ^ half<6>(a3), a2 ^= half(a3), a1 ^= half(a3 ^ a2);
     return (u64(a3) << 48) | (u64(a2) << 32) | (u32(a1) << 16) | a0;
   }
+  static inline u64 pow(u64 A, u64 k) {
+    for (u64 ret = 1;; A = square(A))
+      if (k & 1 ? ret = mul(ret, A) : 0; !(k >>= 1)) return ret;
+  }
+  template <int mod>
+  static inline int mdif(int a, int b) {
+    return a += mod & -((a -= b) < 0);
+  }
+  template <int mod>
+  static inline int mmul(int a, int b) {
+    return u64(a) * b % mod;
+  }
+  static inline int minv(int a, int mod) {
+    int x = 1, y = 0, t = mod;
+    for (int q, z, u; t;)
+      z = x, u = a, x = y, y = z - y * (q = a / t), a = t, t = u - t * q;
+    return x < 0 ? mod - (-x) % mod : x % mod;
+  }
+  static inline int log16(u16 A, u16 B) {
+    int a = ln[A], b = ln[B], mod = 65535;
+    if (a == 0) return b == 0 ? 1 : -1;
+    if (int g = std::gcd(a, mod); g != 1) {
+      if (b % g != 0) return -1;
+      a /= g, b /= g, mod /= g;
+    }
+    return u32(b) * minv(a, mod) % mod;
+  }
+  template <int pa, int mid>
+  static inline int bsgs(u64 x, u64 y) {
+    std::unordered_map<u64, int> memo;
+    u64 big = 1, now = 1;
+    for (int i = 0; i < mid; i++) memo[y] = i, y = mul(y, x), big = mul(big, x);
+    for (int step = 0; step < pa; step += mid) {
+      now = mul(now, big);
+      if (auto it = memo.find(now); it != memo.end())
+        return (step + mid) - it->second;
+    }
+    return -1;
+  }
+  static inline u64 log(u64 A, u64 B) {
+    if (!A) return B == 0 ? 1 : B == 1 ? 0 : u64(-1);
+    static constexpr int P0 = 641, P1 = 65535, P2 = 65537, P3 = 6700417;
+    static constexpr int iv10 = 40691, iv21 = 32768, iv20 = 45242,
+                         iv32 = 3317441, iv31 = 3350208, iv30 = 3883315;
+    int a0 = bsgs<651, 26>(pow(A, 0x663d80ff99c27f), pow(B, 0x663d80ff99c27f));
+    if (a0 == -1) return u64(-1);
+    int a1 = log16(pow(A, 0x1000100010001), pow(B, 0x1000100010001));
+    if (a1 == -1) return u64(-1);
+    int a2 = bsgs<65547, 257>(pow(A, 0xffff0000ffff), pow(B, 0xffff0000ffff));
+    if (a2 == -1) return u64(-1);
+    int a3 = bsgs<6700427, 2589>(pow(A, 0x280fffffd7f), pow(B, 0x280fffffd7f));
+    if (a3 == -1) return u64(-1);
+    int x1 = mmul<P1>(mdif<P1>(a1, a0), iv10);
+    int x2 = mdif<P2>(mmul<P2>(mdif<P2>(a2, a0), iv20), mmul<P2>(x1, iv21));
+    int x3 =
+        mdif<P3>(mdif<P3>(mmul<P3>(mdif<P3>(a3, a0), iv30), mmul<P3>(x1, iv31)),
+                 mmul<P3>(x2, iv32));
+    return u64(P0) * (u64(P1) * (u64(P2) * x3 + x2) + x1) + a0;
+  }
   u64 x;
 
  public:
@@ -91,10 +150,8 @@ class Nimber {
                   (u32(sqrt(a1)) << 16) | sqrt(a0));
   }
   u64 val() const { return x; }
-  Nimber pow(u64 k) const {
-    for (u64 ret = 1, b = x;; b = square(b))
-      if (k & 1 ? ret = mul(ret, b) : 0; !(k >>= 1)) return Nimber(ret);
-  }
+  Nimber pow(u64 k) const { return Nimber(pow(x, k)); }
+  u64 log(const Nimber &r) const { return log(x, r.x); }
   bool operator==(const Nimber &r) const { return x == r.x; }
   bool operator!=(const Nimber &r) const { return x != r.x; }
   bool operator<(const Nimber &r) const { return x < r.x; }

@@ -17,11 +17,10 @@ class MatchingBipartite {
   std::vector<int> pre, rt, lmate, rmate;
   bool dfs(int v, const int &tstamp) {
     pre[v] = tstamp;
-    for (int u : adj[v]) {
-      int w = rmate[u];
-      if (w == -1 || (rt[w] != -2 && pre[w] != tstamp && dfs(w, tstamp)))
+    for (int u : adj[v])
+      if (int w = rmate[u];
+          w == -1 || (rt[w] != -2 && pre[w] != tstamp && dfs(w, tstamp)))
         return rmate[u] = v, lmate[v] = u, true;
-    }
     return false;
   }
 
@@ -37,8 +36,7 @@ class MatchingBipartite {
         if (lmate[i] == -1) que.push(rt[i] = i);
       while (!que.empty()) {
         int v = que.front();
-        que.pop();
-        if (lmate[rt[v]] != -1) continue;
+        if (que.pop(); lmate[rt[v]] != -1) continue;
         for (int u : adj[v]) {
           if (rmate[u] == -1) {
             for (; u != -1; v = pre[v]) rmate[u] = v, std::swap(lmate[v], u);

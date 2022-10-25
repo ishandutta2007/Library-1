@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/discrete_logarithm_mod"
 #include <bits/stdc++.h>
-#include "src/Math/discrete_log.hpp"
+#include "src/Math/discrete_logarithm.hpp"
 using namespace std;
 
 signed main() {
@@ -11,7 +11,7 @@ signed main() {
   while (T--) {
     int X, Y, M;
     cin >> X >> Y >> M;
-    cout << discrete_log(X, Y, M) << '\n';
+    cout << discrete_logarithm(X, Y, M) << '\n';
   }
   return 0;
 }

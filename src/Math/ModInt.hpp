@@ -53,7 +53,8 @@ struct ModInt_Na : public B, public ModIntImpl<ModInt_Na<B>> {
   constexpr ModInt_Na() = default;
   template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr>
   constexpr ModInt_Na(T n) : ModInt_Na(n.val()) {}
-  template <class T>
+  template <class T,
+            enable_if_t<is_convertible_v<T, __int128_t>, nullptr_t> = nullptr>
   constexpr ModInt_Na(T n) : x(n < 0 ? B::mod - ((-n) % B::mod) : n % B::mod) {}
 #define ASSIGN(m, p) return x m## = B::mod & -((x p## = r.x) >= B::mod), *this
   constexpr ModInt_Na &operator+=(const ModInt_Na &r) { ASSIGN(-, +); }
@@ -76,7 +77,8 @@ struct ModInt_Mon : public B, public ModIntImpl<ModInt_Mon<B>> {
   constexpr ModInt_Mon() = default;
   template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr>
   constexpr ModInt_Mon(T n) : ModInt_Mon(n.val()) {}
-  template <class T>
+  template <class T,
+            enable_if_t<is_convertible_v<T, __int128_t>, nullptr_t> = nullptr>
   constexpr ModInt_Mon(T n)
       : x(mul(n < 0 ? B::mod - ((-n) % B::mod) : n % B::mod, B::r2)) {}
 #define ASGN(op, a) return x op## = a, x += (B::mod << 1) & -(x >> 63), *this

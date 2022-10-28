@@ -18,7 +18,9 @@ int main() {
     M1.add_edge(s, t);
     parts[t].push_back(i);
   }
-  PartitionMatroid M2(M, parts, vector<int>(N, 1));
+  vector<int> R(N, 1);
+  R[r] = 0;
+  PartitionMatroid M2(M, parts, R);
   auto S = weighted_matroid_intersection<-1>(M, M1, M2, w);
   int ans = 0;
   for (int e : S[N - 1]) ans += w[e];

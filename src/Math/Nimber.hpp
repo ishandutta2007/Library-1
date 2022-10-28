@@ -105,7 +105,8 @@ class Nimber {
   }
   static inline u64 log(u64 A, u64 B) {
     if (B == 1) return 0;
-    if (!A) return B == 0 ? 1 : u64(-1);
+    if (!A && !B) return 1;
+    if (!A || !B) return u64(-1);
     static constexpr int P0 = 641, P1 = 65535, P2 = 65537, P3 = 6700417;
     static constexpr int iv10 = 40691, iv21 = 32768, iv20 = 45242,
                          iv32 = 3317441, iv31 = 3350208, iv30 = 3883315;

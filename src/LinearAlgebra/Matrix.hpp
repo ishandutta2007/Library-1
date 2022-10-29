@@ -10,7 +10,7 @@
 
 template <class R, int N, int M>
 struct Matrix : public std::array<std::array<R, M>, N> {
-  static Matrix O() { return Matrix{}; }
+  static constexpr Matrix O() { return Matrix{}; }
   Matrix &operator+=(const Matrix &r) {
     for (int i = N; i--;)
       for (int j = M; j--;) (*this)[i][j] += r[i][j];
@@ -41,7 +41,7 @@ struct Matrix : public std::array<std::array<R, M>, N> {
 
 template <int N, int M>
 struct Matrix<bool, N, M> : public std::array<std::bitset<M>, N> {
-  static Matrix O() { return Matrix{}; }
+  static constexpr Matrix O() { return Matrix{}; }
   Matrix &operator+=(const Matrix &r) {
     for (int i = N; i--;) (*this)[i] ^= r[i];
     return *this;
@@ -74,7 +74,7 @@ template <class R, int N>
 struct SquareMatrix : public Matrix<R, N, N> {
   using Matrix<R, N, N>::Matrix;
   SquareMatrix(Matrix<R, N, N> m) { *this = m; }
-  static SquareMatrix I() {
+  static constexpr SquareMatrix I() {
     SquareMatrix ret = {};
     for (int i = N; i--;) ret[i][i] = R(true);
     return ret;

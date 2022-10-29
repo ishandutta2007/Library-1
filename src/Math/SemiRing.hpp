@@ -7,8 +7,9 @@
  */
 
 // verify用
-// https://atcoder.jp/contests/abc009/tasks/abc009_4
+// https://atcoder.jp/contests/abc009/tasks/abc009_4 (BitwiseXorAnd)
 // https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_b
+// (max+の一次関数)
 
 // BEGIN CUT HERE
 
@@ -17,7 +18,8 @@ struct SemiRing {
   T x;
   SemiRing() : x(o()) {}
   SemiRing(bool y) : x(y ? i() : o()) {}
-  template <class U>
+  template <class U,
+            std::enable_if_t<std::is_convertible_v<U, T>, nullptr_t> = nullptr>
   SemiRing(U y) : x((T)y) {}
   SemiRing &operator+=(const SemiRing &r) {
     return x == o() ? *this = r : r.x == o() ? *this : *this = add(x, r.x);

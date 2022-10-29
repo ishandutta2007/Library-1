@@ -9,9 +9,7 @@ signed main() {
   string s;
   cin >> s;
   vector<int> ans = z_algorithm(s);
-  for (int i = 0; i < s.size(); i++) {
-    cout << (i ? " " : "") << ans[i];
-  }
-  cout << endl;
+  int N = s.length();
+  for (int i = 0; i < N; i++) cout << ans[i] << " \n"[i == N - 1];
   return 0;
 }

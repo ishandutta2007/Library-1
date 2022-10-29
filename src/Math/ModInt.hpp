@@ -39,6 +39,9 @@ struct ModIntImpl {
       z = x, c = a, x = y, y = z - y * (q = a / b), a = b, b = c - b * q;
     return assert(a == 1), D(x);
   }
+  constexpr bool operator<(const D &r) const {
+    return ((D *)this)->val() < r.val();
+  }  // for set or map
   friend ostream &operator<<(ostream &os, const D &r) { return os << r.val(); }
   friend istream &operator>>(istream &is, D &r) {
     long long v;

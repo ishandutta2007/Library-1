@@ -1,6 +1,6 @@
-#define PROBLEM \
-  "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ALDS1_14_B"
+#define PROBLEM "https://judge.yosupo.jp/problem/zalgorithm"
 #include <bits/stdc++.h>
+
 #include "src/Math/ModInt.hpp"
 #include "src/Math/CartesianProduct.hpp"
 #include "src/String/RollingHash.hpp"
@@ -14,12 +14,12 @@ signed main() {
   using RH = RollingHash<K>;
   K base = {get_rand(2, (1ll << 61) - 2), get_rand(2, (1ll << 61) - 2)};
   RH::set_base(base);
-  string T, P;
-  cin >> T >> P;
-  RH rt(T), rp(P);
-  int N = P.length(), M = T.length();
-  auto hash = rp.get_hash();
-  for (int i = 0; i + N <= M; i++)
-    if (rt.get_hash(i, i + N) == hash) cout << i << "\n";
+  string S;
+  cin >> S;
+  RH rh(S);
+  int N = S.length();
+  for (int i = 0; i < N; i++) {
+    cout << lcp(rh, rh.sub(i, N)) << " \n"[i == N - 1];
+  }
   return 0;
 }

@@ -9,6 +9,7 @@
 // verify用:
 // https://codeforces.com/contest/1314/problem/F (離散対数)
 // https://atcoder.jp/contests/wtf19-open/tasks/wtf19_c2 (離散対数)
+// https://atcoder.jp/contests/abc274/tasks/abc274_h (ロリハに乗せる)
 
 // BEGIN CUT HERE
 class Nimber {

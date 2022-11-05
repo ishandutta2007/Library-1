@@ -7,22 +7,22 @@
 
 // BEGIN CUT HERE
 
-template <class mint, std::size_t LIM = (1 << 24)>
+template <class mint>
 struct Combination {
  private:
-  static inline mint _fact[LIM] = {1}, _finv[LIM] = {1};
-  static inline int lim = 1;
+  static inline std::vector<mint> fc = {1}, iv = {1};
   static inline void set(int sz) {
+    int lim = fc.size(), i;
     if (lim > sz) return;
-    for (int i = lim; i <= sz; i++) _fact[i] = _fact[i - 1] * i;
-    _finv[sz] = mint(1) / _fact[sz];
-    for (int i = sz; i >= lim; i--) _finv[i - 1] = _finv[i] * i;
-    lim = sz + 1;
+    for (fc.resize(sz + 1), iv.resize(sz + 1), i = lim; i <= sz; i++)
+      fc[i] = fc[i - 1] * i;
+    for (iv[sz] = mint(1) / fc[sz], i = sz; i >= lim; i--)
+      iv[i - 1] = iv[i] * i;
   }
 
  public:
-  static inline mint fact(int n) { return set(n), n < 0 ? mint(0) : _fact[n]; }
-  static inline mint finv(int n) { return set(n), n < 0 ? mint(0) : _finv[n]; }
+  static inline mint fact(int n) { return set(n), n < 0 ? mint(0) : fc[n]; }
+  static inline mint finv(int n) { return set(n), n < 0 ? mint(0) : iv[n]; }
   static mint nPr(int n, int r) { return fact(n) * finv(n - r); }
   static mint nCr(int n, int r) { return nPr(n, r) * finv(r); }
   static mint nHr(int n, int r) { return !r ? mint(1) : nCr(n + r - 1, r); }

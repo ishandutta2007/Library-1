@@ -208,12 +208,9 @@ class FormalPowerSeries {
       if (v == mod_t(0)) return cnt++, mod_t(0);
       cnt *= k;
       FPS t0([os = i, iv = mod_t(1) / v, h](int i) { return h(i + os) * iv; });
-      FPS t1([h0 = log<mod_t, _Nm>(t0).handle(), kk](int i) {
-        return h0(i) * kk;
-      });
-      s.emplace([vk = v.pow(k), h1 = exp<mod_t, _Nm>(t1).handle()](int i) {
-        return h1(i) * vk;
-      });
+      FPS t1([h0 = log(t0).handle(), kk](int i) { return h0(i) * kk; });
+      s.emplace(
+          [vk = v.pow(k), h1 = exp(t1).handle()](int i) { return h1(i) * vk; });
       return cnt ? mod_t(0) : (*s)(i);
     });
   }
@@ -236,23 +233,22 @@ class FormalPowerSeries {
     }));
   }
   friend FPS PSET(const FPS &fps) {  //  POWERSET `fps[0]==0` is required
-    return exp(FPS<mod_t, _Nm>(
-        [h = fps.h_, cache = std::make_shared<std::vector<mod_t>>()](int i) {
-          if (i == 0) return mod_t(0);
-          if ((i & (i - 1)) == 0) {
-            cache->resize(i * 2, mod_t(0));
-            for (int j = 1; j < i; ++j) {
-              mod_t hj = h(j);
-              for (int k = (i + j - 1) / j, ed = (i * 2 + j - 1) / j; k < ed;
-                   k++)
-                if (k & 1)
-                  cache->at(j * k) += hj * get_inv<mod_t, _Nm>(k);
-                else
-                  cache->at(j * k) -= hj * get_inv<mod_t, _Nm>(k);
-            }
-          }
-          return mod_t(cache->at(i) += h(i));
-        }));
+    return exp(FPS([h = fps.h_,
+                    cache = std::make_shared<std::vector<mod_t>>()](int i) {
+      if (i == 0) return mod_t(0);
+      if ((i & (i - 1)) == 0) {
+        cache->resize(i * 2, mod_t(0));
+        for (int j = 1; j < i; ++j) {
+          mod_t hj = h(j);
+          for (int k = (i + j - 1) / j, ed = (i * 2 + j - 1) / j; k < ed; k++)
+            if (k & 1)
+              cache->at(j * k) += hj * get_inv<mod_t, _Nm>(k);
+            else
+              cache->at(j * k) -= hj * get_inv<mod_t, _Nm>(k);
+        }
+      }
+      return mod_t(cache->at(i) += h(i));
+    }));
   };
   FPS operator+(const FPS &rhs) const {
     return FPS([h0 = h_, h1 = rhs.h_](int i) { return h0(i) + h1(i); });

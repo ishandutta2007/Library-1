@@ -153,3 +153,13 @@ using DynamicModInt =
 using modint_internal::DynamicModInt, modint_internal::StaticModInt,
     modint_internal::Montgomery, modint_internal::is_dynamicmodint_v,
     modint_internal::is_modint_v, modint_internal::is_staticmodint_v;
+template <class mod_t, std::size_t LIM>
+mod_t get_inv(int n) {
+  static_assert(is_modint_v<mod_t>);
+  static const auto m = mod_t::modulo();
+  static mod_t dat[LIM];
+  static int l = 1;
+  if (l == 1) dat[l++] = 1;
+  while (l <= n) dat[l++] = dat[m % l] * (m - m / l);
+  return dat[n];
+}

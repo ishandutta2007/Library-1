@@ -1,9 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1080"
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
-#include "src/FFT/fps_inv.hpp"
-#include "src/FFT/fps_exp.hpp"
 #include "src/Math/mod_sqrt.hpp"
+#include "src/Math/sparse_fps.hpp"
 using namespace std;
 
 signed main() {
@@ -13,13 +12,14 @@ signed main() {
   using Mint = StaticModInt<MOD>;
   int N;
   cin >> N;
-  vector<Mint> f(N + 1);
-  for (int i = 1; i <= N; i++) f[i] = Mint(i + 1) * (i + 1);
   Mint im = sqrt(MOD - 1, MOD), cf = Mint(1) / (im + 1);
-  for (auto& x : f) x *= im;
-  auto exp_pi = exp(f), exp_mi = inv(exp_pi);
+  vector<Mint> f = {0, 4, -3, 1}, g = {1, -3, 3, -1};  // 4x+9x^2+... = f/g
+  for (auto &x : f) x *= im;
+  auto exp_pi = sparse_exp_of_div(f, g, N + 1);
+  for (auto &x : f) x = -x;
+  auto exp_mi = sparse_exp_of_div(f, g, N + 1);
   for (int i = 2; i <= N; i++) cf *= i;
-  for (auto& x : f) x *= im;
+  for (auto &x : f) x *= im;
   for (int i = 1; i <= N; i++)
     cout << (exp_pi[i] + im * exp_mi[i]) * cf << '\n';
   return 0;

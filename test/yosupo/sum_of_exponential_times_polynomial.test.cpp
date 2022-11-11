@@ -6,7 +6,7 @@
 #include "src/Math/Combination.hpp"
 #include "src/Math/ModInt.hpp"
 #include "src/Math/Sieve.hpp"
-#include "src/Math/lagrange_interpolation.hpp"
+#include "src/FFT/sample_points_shift.hpp"
 using namespace std;
 
 signed main() {
@@ -30,7 +30,7 @@ signed main() {
   for (int i = 1; i <= d + 1; i++) sum[i] = sum[i - 1] + rpow[i] * pd[i];
   Mint ans = 0;
   if (r == 1)
-    ans = lagrange_interpolation<Mint>(sum, n);
+    ans = sample_points_shift<Mint>(sum, n)[0];
   else {
     for (int i = 0; i <= d; i++) {
       Mint tmp = C::nCr(d + 1, i + 1) * rpow[d - i] * sum[i];
@@ -43,7 +43,7 @@ signed main() {
       y[i] = Mint(sum[i] - ans) * rinvpow;
       rinvpow *= rinv;
     }
-    ans += Mint(r).pow(n) * lagrange_interpolation<Mint>(y, n);
+    ans += Mint(r).pow(n) * sample_points_shift<Mint>(y, n)[0];
   }
   cout << ans << '\n';
   return 0;

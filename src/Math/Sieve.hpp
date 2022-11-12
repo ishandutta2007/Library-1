@@ -63,22 +63,22 @@ class Sieve {
                                                                const F &f) {
     std::vector<T> ret(N + 1);
     sieve(N);
-    if (int n = 4; 2 <= N)
-      for (ret[2] = f(2, 1); n <= N; n += 2) ret[n] = ret[2] * ret[n >> 1];
     for (int n = 3, i = 1; n <= N; n += 2, i++)
       ret[n] = lpf[i] == n ? f(n, 1) : ret[lpf[i]] * ret[n / lpf[i]];
+    if (int n = 4; 2 <= N)
+      for (ret[2] = f(2, 1); n <= N; n += 2) ret[n] = ret[2] * ret[n >> 1];
     return ret[1] = 1, ret;
   }
   template <class T, class F>
   static inline std::vector<T> multiplicative_table(int N, const F &f) {
     std::vector<T> ret(N + 1);
     set_lpfe(N);
-    for (int n = 2, t; n <= N; n += 2)
-      t = __builtin_ctz(n),
-      ret[n] = n & (n - 1) ? ret[n & -n] * ret[n >> t] : f(2, t);
     for (int n = 3, i = 1; n <= N; n += 2, i++)
       ret[n] = lpfpw[i] == n ? f(lpf[i], lpfe[i])
                              : ret[lpfpw[i]] * ret[n / lpfpw[i]];
+    for (int n = 2, t; n <= N; n += 2)
+      t = __builtin_ctz(n),
+      ret[n] = n & (n - 1) ? ret[n & -n] * ret[n >> t] : f(2, t);
     return ret[1] = 1, ret;
   }
   // O(N log k / log N + N)

@@ -16,23 +16,24 @@
 
 template <int LIM = 1 << 24>
 class Sieve {
- public:
-  static inline int ps[LIM >> 4], lpf[LIM], lpfe[LIM], lpfpw[LIM], psz = 0;
+  static inline int ps[LIM >> 4], lpf[LIM >> 1], lpfpw[LIM >> 1], psz = 0;
+  static inline std::int8_t lpfe[LIM >> 1];
   static inline void sieve(int N) {  // O(N)
-    static int n = 2;
-    for (; n <= N; n++) {
-      if (!lpf[n]) lpf[n] = ps[psz++] = n;
-      for (int j = 0, e = std::min(lpf[n], N / n); j < psz && ps[j] <= e; j++)
-        lpf[ps[j] * n] = ps[j];
+    static int n = 2, i = 1;
+    if (n == 2) ps[psz++] = 2, n++;
+    for (; n <= N; n += 2, i++) {
+      if (!lpf[i]) lpf[i] = ps[psz++] = n;
+      for (int j = 1, e = std::min(lpf[i], N / n); j < psz && ps[j] <= e; j++)
+        lpf[(ps[j] * n) >> 1] = ps[j];
     }
   }
   static inline void set_lpfe(int N) {  // O(N)
-    static int n = 2;
+    static int n = 3, i = 1;
     if (N < n) return;
-    sieve(N), std::fill(lpfe + n, lpfe + N + 1, 1);
-    for (std::copy(lpf + n, lpf + N + 1, lpfpw + n); n <= N; n++)
-      if (int m = n / lpf[n]; lpf[n] == lpf[m])
-        lpfe[n] += lpfe[m], lpfpw[n] *= lpfpw[m];
+    sieve(N), std::copy(lpf + i, lpf + (N >> 1) + 1, lpfpw + i);
+    for (std::fill(lpfe + i, lpfe + (N >> 1) + 1, 1); n <= N; n += 2, i++)
+      if (int j = (n / lpf[i]) >> 1; lpf[i] == lpf[j])
+        lpfe[i] += lpfe[j], lpfpw[i] *= lpfpw[j];
   }
 
  public:
@@ -40,7 +41,9 @@ class Sieve {
   // O(log n)
   static std::map<int, short> factorize(int n) {
     std::map<int, short> ret;
-    for (set_lpfe(n); n > 1;) ret[lpf[n]] = lpfe[n], n /= lpfpw[n];
+    if (int t; !(n & 1)) ret[2] = t = __builtin_ctz(n), n >>= t;
+    if (int i = n >> 1; n > 1)
+      for (set_lpfe(n); n > 1; i = n >> 1) ret[lpf[i]] = lpfe[i], n /= lpfpw[i];
     return ret;
   }
   // O(log n)
@@ -60,17 +63,22 @@ class Sieve {
                                                                const F &f) {
     std::vector<T> ret(N + 1);
     sieve(N);
-    for (int i = 2; i <= N; i++)
-      ret[i] = lpf[i] == i ? f(i, 1) : ret[lpf[i]] * ret[i / lpf[i]];
+    if (int n = 4; 2 <= N)
+      for (ret[2] = f(2, 1); n <= N; n += 2) ret[n] = ret[2] * ret[n >> 1];
+    for (int n = 3, i = 1; n <= N; n += 2, i++)
+      ret[n] = lpf[i] == n ? f(n, 1) : ret[lpf[i]] * ret[n / lpf[i]];
     return ret[1] = 1, ret;
   }
   template <class T, class F>
   static inline std::vector<T> multiplicative_table(int N, const F &f) {
     std::vector<T> ret(N + 1);
     set_lpfe(N);
-    for (int i = 2; i <= N; i++)
-      ret[i] = lpfpw[i] == i ? f(lpf[i], lpfe[i])
-                             : ret[lpfpw[i]] * ret[i / lpfpw[i]];
+    for (int n = 2, t; n <= N; n += 2)
+      t = __builtin_ctz(n),
+      ret[n] = n & (n - 1) ? ret[n & -n] * ret[n >> t] : f(2, t);
+    for (int n = 3, i = 1; n <= N; n += 2, i++)
+      ret[n] = lpfpw[i] == n ? f(lpf[i], lpfe[i])
+                             : ret[lpfpw[i]] * ret[n / lpfpw[i]];
     return ret[1] = 1, ret;
   }
   // O(N log k / log N + N)

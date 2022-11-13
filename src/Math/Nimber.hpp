@@ -92,16 +92,21 @@ class Nimber {
     }
     return u32(b) * minv(a, mod) % mod;
   }
-  template <int pa, int mid>
+  template <int period, int size>
   static inline int bsgs(u64 x, u64 y) {
-    std::unordered_map<u64, int> memo;
-    u64 big = 1, now = 1;
-    for (int i = 0; i < mid; i++) memo[y] = i, y = mul(y, x), big = mul(big, x);
-    for (int step = 0; step < pa; step += mid) {
-      now = mul(now, big);
-      if (auto it = memo.find(now); it != memo.end())
-        return (step + mid) - it->second;
-    }
+    static constexpr int mask = size - 1;
+    std::pair<u64, int> vs[size];
+    int os[size + 1] = {};
+    u64 so[size], big = 1;
+    for (int i = 0; i < size; i++, big = mul(big, x))
+      os[(so[i] = big) & mask]++;
+    for (int i = 1; i < size; i++) os[i] += os[i - 1];
+    for (int i = 0; i < size; i++) vs[--os[so[i] & mask]] = {so[i], i};
+    os[size] = size;
+    for (int t = 0; t < period; t += size, y = mul(y, big))
+      for (int m = (y & mask), i = os[m], ret; i < os[m + 1]; ++i)
+        if (y == vs[i].first)
+          return (ret = vs[i].second - t) < 0 ? ret + period : ret;
     return -1;
   }
   static inline u64 log(u64 A, u64 B) {
@@ -111,13 +116,13 @@ class Nimber {
     static constexpr int P0 = 641, P1 = 65535, P2 = 65537, P3 = 6700417;
     static constexpr int iv10 = 40691, iv21 = 32768, iv20 = 45242,
                          iv32 = 3317441, iv31 = 3350208, iv30 = 3883315;
-    int a0 = bsgs<651, 26>(pow(A, 0x663d80ff99c27f), pow(B, 0x663d80ff99c27f));
+    int a0 = bsgs<P0, 16>(pow(A, 0x663d80ff99c27f), pow(B, 0x663d80ff99c27f));
     if (a0 == -1) return u64(-1);
     int a1 = log16(pow(A, 0x1000100010001), pow(B, 0x1000100010001));
     if (a1 == -1) return u64(-1);
-    int a2 = bsgs<65547, 257>(pow(A, 0xffff0000ffff), pow(B, 0xffff0000ffff));
+    int a2 = bsgs<P2, 256>(pow(A, 0xffff0000ffff), pow(B, 0xffff0000ffff));
     if (a2 == -1) return u64(-1);
-    int a3 = bsgs<6700427, 2589>(pow(A, 0x280fffffd7f), pow(B, 0x280fffffd7f));
+    int a3 = bsgs<P3, 2048>(pow(A, 0x280fffffd7f), pow(B, 0x280fffffd7f));
     if (a3 == -1) return u64(-1);
     int x1 = mmul<P1>(mdif<P1>(a1, a0), iv10);
     int x2 = mdif<P2>(mmul<P2>(mdif<P2>(a2, a0), iv20), mmul<P2>(x1, iv21));

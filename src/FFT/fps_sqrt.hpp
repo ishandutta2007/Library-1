@@ -1,7 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
 #include "src/FFT/fps_inv.hpp"
-#include "src/Math/mod_sqrt.hpp"
 
 /**
  * @title 形式的冪級数 sqrt
@@ -28,7 +27,7 @@ std::vector<mod_t> sqrt(const std::vector<mod_t> &p) {
   if (cnt == n) return p;
   if (cnt & 1) return {};  // no solution
   mod_t *bf = GAr::bf + (cnt >> 1), *pbf = GAp::bf + cnt;
-  std::fill_n(GAr::bf, n, Z), bf[0] = sqrt(pbf[0].val(), mod_t::modulo());
+  std::fill_n(GAr::bf, n, Z), bf[0] = pbf[0].sqrt();
   if (bf[0] * bf[0] != pbf[0]) return {};  // no solution
   const int nn = n - cnt, len = get_len(nn),
             R = get_len(__builtin_ctz(len) + 1) >> 1;

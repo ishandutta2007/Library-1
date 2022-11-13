@@ -6,6 +6,9 @@
  * 半環が載る
  */
 
+// verify用
+// https://atcoder.jp/contests/arc027/tasks/arc027_4 セグ木に乗せる(MLギリギリ)
+
 // BEGIN CUT HERE
 
 template <class R, int N, int M>

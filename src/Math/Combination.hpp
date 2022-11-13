@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 /**
- * @title 二項係数など
+ * @title 二項係数など (階乗前計算) ($\mathbb{F}_p$)
  * @category 数学
  */
 

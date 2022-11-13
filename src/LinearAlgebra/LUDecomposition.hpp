@@ -179,10 +179,8 @@ class LUDecomposition<bool, MAX_ROWS, MAX_COLS> {
     }
     for (std::size_t i = rank(); i != rows; i++)
       if (bool(y[i])) return {};  // no solution
-    for (std::size_t i = rank(); i--;) {
-      x[piv[i]] = y[i];
-      if (x[piv[i]]) y ^= tdat2[piv[i]];
-    }
+    for (std::size_t i = rank(); i--;)
+      if (x[piv[i]] = y[i]; x[piv[i]]) y ^= tdat2[piv[i]];
     return x;
   }
   Mat inverse_matrix() const {

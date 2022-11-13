@@ -1,5 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
+#include "src/Math/mod_inv.hpp"
 /**
  * @title ModInt
  * @category 数学
@@ -10,13 +11,13 @@ namespace modint_internal {
 using namespace std;
 struct modint_base {};
 struct sta_mint_base : modint_base {};
-struct dyn_mint_base : modint_base {};
+struct run_mint_base : modint_base {};
 template <class mod_t>
 constexpr bool is_modint_v = is_base_of_v<modint_base, mod_t>;
 template <class mod_t>
 constexpr bool is_staticmodint_v = is_base_of_v<sta_mint_base, mod_t>;
 template <class mod_t>
-constexpr bool is_dynamicmodint_v = is_base_of_v<dyn_mint_base, mod_t>;
+constexpr bool is_runtimemodint_v = is_base_of_v<run_mint_base, mod_t>;
 using u64 = uint64_t;
 using u128 = __uint128_t;
 template <class D>
@@ -34,10 +35,22 @@ struct ModIntImpl {
       if (k & 1 ? ret *= b : 0; !(k >>= 1)) return ret;
   }
   constexpr D inv() const {
-    typename D::Int x = 1, y = 0, a = ((D *)this)->val(), b = D::mod;
-    for (typename D::Int q = 0, z = 0, c = 0; b;)
-      z = x, c = a, x = y, y = z - y * (q = a / b), a = b, b = c - b * q;
-    return assert(a == 1), D(x);
+    return mod_inv<typename D::Int>(((D *)this)->val(), D::mod);
+  }
+  constexpr D sqrt() const {
+    if (((D *)this)->val() <= 1 || D::mod == 2) return *(D *)this;
+    u64 e = (D::mod - 1) >> 1;
+    D b = 0, d = -(*this), ret = 1, r2 = 0, b2 = 1;
+    if (this->pow(e) != 1) return 0;  // no solution
+    while (d.pow(e) == 1) d += b * 2 + 1, b += 1;
+    auto mult = [d](D &u1, D &u2, D v1, D v2) {
+      D tmp = u1 * v1 + u2 * v2 * d;
+      u2 = u1 * v2 + u2 * v1, u1 = tmp;
+    };
+    for (++e;; mult(b, b2, b, b2)) {
+      if (e & 1) mult(ret, r2, b, b2);
+      if (!(e >>= 1)) return ret.val() <= D::mod / 2 ? ret : -ret;
+    }
   }
   constexpr bool operator<(const D &r) const {
     return ((D *)this)->val() < r.val();
@@ -68,6 +81,7 @@ struct ModInt_Na : public B, public ModIntImpl<ModInt_Na<B>> {
   }
   constexpr bool operator==(const ModInt_Na &r) const { return x == r.x; }
   constexpr auto val() const { return x; }
+  constexpr auto norm() const { return x; }
 
  private:
   typename B::Uint x = 0;
@@ -94,6 +108,7 @@ struct ModInt_Mon : public B, public ModIntImpl<ModInt_Mon<B>> {
     u64 ret = reduce(x) - B::mod;
     return ret + (B::mod & -(ret >> 63));
   }
+  constexpr inline u64 norm() const { return x - (B::mod & -(x >= B::mod)); }
 
  private:
   static constexpr inline u64 reduce(const u128 &w) {
@@ -101,7 +116,6 @@ struct ModInt_Mon : public B, public ModIntImpl<ModInt_Mon<B>> {
   }
   static constexpr inline u64 mul(u64 l, u64 r) { return reduce(u128(l) * r); }
   u64 x = 0;
-  constexpr inline u64 norm() const { return x - (B::mod & -(x >= B::mod)); }
 };
 constexpr u64 mul_inv(u64 n, int e = 6, u64 x = 1) {
   return e ? mul_inv(n, e - 1, x * (2 - x * n)) : x;
@@ -122,7 +136,7 @@ struct StaticB_Mon : sta_mint_base {
   static constexpr u64 mod = MOD, iv = mul_inv(mod), r2 = -u128(mod) % mod;
 };
 template <class I, int id = -1>
-struct DynamicB_Na : dyn_mint_base {
+struct RuntimeB_Na : run_mint_base {
   static_assert(is_integral_v<I>);
   static inline void set_mod(I m) { mod = m; }
 
@@ -132,7 +146,7 @@ struct DynamicB_Na : dyn_mint_base {
   static inline Uint mod;
 };
 template <int id>
-struct DynamicB_Mon : dyn_mint_base {
+struct RuntimeB_Mon : run_mint_base {
   static inline void set_mod(u64 m) {
     assert(m & 1), iv = mul_inv(mod = m), r2 = -u128(m) % m;
   }
@@ -146,12 +160,12 @@ using StaticModInt =
                   ModInt_Mon<StaticB_Mon<mod>>, ModInt_Na<StaticB_Na<mod>>>;
 struct Montgomery {};
 template <class Int, int id = -1>
-using DynamicModInt =
-    conditional_t<is_same_v<Int, Montgomery>, ModInt_Mon<DynamicB_Mon<id>>,
-                  ModInt_Na<DynamicB_Na<Int, id>>>;
+using RuntimeModInt =
+    conditional_t<is_same_v<Int, Montgomery>, ModInt_Mon<RuntimeB_Mon<id>>,
+                  ModInt_Na<RuntimeB_Na<Int, id>>>;
 }  // namespace modint_internal
-using modint_internal::DynamicModInt, modint_internal::StaticModInt,
-    modint_internal::Montgomery, modint_internal::is_dynamicmodint_v,
+using modint_internal::RuntimeModInt, modint_internal::StaticModInt,
+    modint_internal::Montgomery, modint_internal::is_runtimemodint_v,
     modint_internal::is_modint_v, modint_internal::is_staticmodint_v;
 template <class mod_t, std::size_t LIM>
 mod_t get_inv(int n) {

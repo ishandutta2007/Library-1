@@ -1,7 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/mod_sqrt.hpp"
 /**
  * @title 疎な形式的冪級数
  * @category 数学
@@ -107,7 +106,7 @@ std::vector<mod_t> sparse_sqrt(const std::vector<mod_t> &f, int n) {
   for (int i = cnt + 1; i < ed; i++)
     if (f[i] != mod_t(0)) dat.emplace_back(i - cnt, f[i]);
   mod_t *bf = ret.data() + ofs, mk = mod_t(1) / 2, iv = mod_t(1) / f[cnt];
-  bf[0] = sqrt(f[cnt].val(), mod_t::modulo());
+  bf[0] = f[cnt].sqrt();
   if (bf[0] * bf[0] != f[cnt]) return {};  // no solution
   for (int i = 1; i < sz; bf[i] *= get_inv<mod_t, _Nm>(i) * iv, i++)
     for (auto &&[j, v] : dat) {

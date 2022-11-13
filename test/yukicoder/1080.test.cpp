@@ -3,7 +3,6 @@
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/fps_inv.hpp"
 #include "src/FFT/fps_exp.hpp"
-#include "src/Math/mod_sqrt.hpp"
 using namespace std;
 
 signed main() {
@@ -15,7 +14,7 @@ signed main() {
   cin >> N;
   vector<Mint> f(N + 1);
   for (int i = 1; i <= N; i++) f[i] = Mint(i + 1) * (i + 1);
-  Mint im = sqrt(MOD - 1, MOD), cf = Mint(1) / (im + 1);
+  Mint im = Mint(-1).sqrt(), cf = Mint(1) / (im + 1);
   for (auto& x : f) x *= im;
   auto exp_pi = exp(f), exp_mi = inv(exp_pi);
   for (int i = 2; i <= N; i++) cf *= i;

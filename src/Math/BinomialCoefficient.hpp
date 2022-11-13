@@ -1,6 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 #include "src/Math/Factors.hpp"
+#include "src/Math/mod_inv.hpp"
 /**
  * @title 二項係数 ($\mathbb{Z}/m\mathbb{Z}$)
  * @category 数学
@@ -9,12 +10,6 @@
 
 // BEGIN CUT HERE
 class BinomialCoefficient {  // mod <= 1e6
-  static inline constexpr int inv_mod(int a, int mod) {
-    int x = 1, y = 0, b = mod;
-    for (int q = 0, z = 0, c = 0; b;)
-      z = x, c = a, x = y, y = z - y * (q = a / b), a = b, b = c - b * q;
-    return assert(a == 1), x < 0 ? mod - (-x) % mod : x % mod;
-  }
   using i64 = std::int64_t;
   struct ModPe {
     ModPe() = default;
@@ -51,7 +46,7 @@ class BinomialCoefficient {  // mod <= 1e6
         }
       if (x >= e * (p - 1)) return 0;
       if (p > 2) x /= p - 1;
-      int ret = i64(num) * inv_mod(den, pe) % pe * ppows[x] % pe;
+      int ret = i64(num) * mod_inv(den, pe) % pe * ppows[x] % pe;
       return (s & mask) && ret > 0 ? pe - ret : ret;
     }
     int p, e, mask, pe, q, pp;
@@ -68,7 +63,7 @@ class BinomialCoefficient {  // mod <= 1e6
     int prod = 1;
     for (auto [p, e] : f) {
       binom_pp.emplace_back(ModPe(p, e, pre_size));
-      iprods.push_back(inv_mod(prod, binom_pp.back().pe));
+      iprods.push_back(mod_inv(prod, binom_pp.back().pe));
       prod *= binom_pp.back().pe;
     }
   }

@@ -239,7 +239,7 @@ constexpr bool threshold(u64 val, u64 s, u64 m) {
 }
 template <class T>
 constexpr u64 max_value() {
-  if constexpr (is_dynamicmodint_v<T>)
+  if constexpr (is_runtimemodint_v<T>)
     return std::numeric_limits<typename T::Uint>::max();
   else if constexpr (is_staticmodint_v<T>)
     return T::modulo();

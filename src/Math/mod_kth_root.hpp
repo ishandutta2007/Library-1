@@ -11,7 +11,7 @@
  */
 
 // verify用
-//  https://yukicoder.me/problems/no/981 (制約が厳しい, sp judge)
+// https://yukicoder.me/problems/no/981 (厳しい制約のケースあり, sp judge)
 
 // BEGIN CUT HERE
 namespace kth_root_internal {

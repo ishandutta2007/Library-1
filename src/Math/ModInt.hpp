@@ -33,7 +33,7 @@ struct RuntimeB {
 template <class Int, class Uint, class B>
 struct ModInt : public B {
   static constexpr inline auto modulo() { return B::md.modulo(); }
-  constexpr ModInt() : x(0);
+  constexpr ModInt() : x(0) {}
   constexpr ModInt(const ModInt &r) : x(r.x) {}
   template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr>
   constexpr ModInt(T v) : ModInt(v.val()) {}

@@ -57,11 +57,11 @@ struct ModInt : public B {
   constexpr ModInt &operator-=(const ModInt &r) { return *this = *this - r; }
   constexpr ModInt &operator*=(const ModInt &r) { return *this = *this * r; }
   constexpr ModInt &operator/=(const ModInt &r) { return *this = *this / r; }
-  constexpr bool operator==(const ModInt &r) {
+  constexpr bool operator==(const ModInt &r) const {
     return B::md.norm(x) == B::md.norm(r.x);
   }
-  constexpr bool operator!=(const ModInt &r) { return !(*this == r); }
-  constexpr bool operator<(const ModInt &r) {
+  constexpr bool operator!=(const ModInt &r) const { return !(*this == r); }
+  constexpr bool operator<(const ModInt &r) const {
     return B::md.norm(x) < B::md.norm(r.x);
   }
   constexpr inline ModInt inv() const { return mod_inv<Int>(val(), modulo()); }

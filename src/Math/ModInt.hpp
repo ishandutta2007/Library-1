@@ -19,12 +19,12 @@ constexpr bool is_staticmodint_v = is_base_of_v<sta_mint_base, mod_t>;
 template <class mod_t>
 constexpr bool is_runtimemodint_v = is_base_of_v<run_mint_base, mod_t>;
 template <class mod_pro_t, u64 MOD>
-struct StaticB {
+struct StaticB : sta_mint_base {
  protected:
   static constexpr mod_pro_t md = mod_pro_t(MOD);
 };
 template <class mod_pro_t, int id>
-struct RuntimeB {
+struct RuntimeB : run_mint_base {
   static inline void set_mod(u64 m) { md = mod_pro_t(m); }
 
  protected:

@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/tetration_mod"
 #include <bits/stdc++.h>
-#include "src/Math/tetration.hpp"
+#include "src/Math/mod_tetration.hpp"
 using namespace std;
 
 signed main() {
@@ -11,7 +11,7 @@ signed main() {
   while (T--) {
     int A, B, M;
     cin >> A >> B >> M;
-    cout << H4(A, B, M) << '\n';
+    cout << mod_tetration(A, B, M) << '\n';
   }
   return 0;
 }

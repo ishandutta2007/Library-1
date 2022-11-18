@@ -5,10 +5,8 @@
  * @category 最適化問題
  *  O(n^2 √m)
  */
-
 // verify用: https://loj.ac/p/127 (Dinicだと落ちる)
 // BEGIN CUT HERE
-
 template <class flow_t, unsigned global_freq = 4, bool use_gap = true,
           bool freeze = false>
 struct PushRelabel {
@@ -25,13 +23,13 @@ struct PushRelabel {
     int se, so;
     void init(int _n) { even.resize(_n), odd.resize(_n), se = so = 0; };
     void clear() { se = so = 0; }
-    bool empty() const { return se + so == 0; }
+    inline bool empty() const { return se + so == 0; }
     void push(int i, int h) { (h & 1 ? odd[so++] : even[se++]) = {i, h}; }
-    int highest() const {
+    inline int highest() const {
       int a = se ? even[se - 1].second : -1, b = so ? odd[so - 1].second : -1;
       return a > b ? a : b;
     }
-    int pop() {
+    inline int pop() {
       if (!se || (so && odd[so - 1].second > even[se - 1].second))
         return odd[--so].first;
       return even[--se].first;
@@ -94,23 +92,17 @@ struct PushRelabel {
           dist[e.dst] = dist[now] + 1, q.push(e.dst);
     }
   }
-  flow_t flow(int s, int t, flow_t flow_lim) {
-    assert(0 <= s && s < n);
-    assert(0 <= t && t < n);
-    assert(s != t);
-    hque.init(n);
-    excess.assign(n, 0);
-    excess[s] += flow_lim, excess[t] -= flow_lim;
-    dist.assign(n, 0), dist[s] = n;
+  flow_t flow(int s, int t, flow_t flow_lim, flow_t ret = 0) {
+    assert(0 <= s && s < n), assert(0 <= t && t < n), assert(s != t);
+    hque.init(n), excess.assign(n, 0), excess[s] += flow_lim;
+    excess[t] -= flow_lim, dist.assign(n, 0), dist[s] = n;
     if constexpr (use_gap) gap = 1, dcnt.assign(n + 1, 0), dcnt[0] = n - 1;
     for (auto &e : adj[s]) push(s, e);
-    calc(t);
-    flow_t ret = excess[t] + flow_lim;
+    calc(t), ret = excess[t] + flow_lim;
     if constexpr (!freeze) {
       excess[s] += excess[t], excess[t] = 0;
       if constexpr (global_freq != 0) global_relabeling(s);
-      calc(s);
-      assert(excess == std::vector<flow_t>(n, 0));
+      calc(s), assert(excess == std::vector<flow_t>(n, 0));
     }
     return ret;
   }

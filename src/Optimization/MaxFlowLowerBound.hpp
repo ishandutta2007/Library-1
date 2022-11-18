@@ -11,7 +11,6 @@
 // verify用: https://yukicoder.me/problems/no/459
 
 // BEGIN CUT HERE
-
 template <typename FlowAlgo>
 class MaxFlowLowerBound : public FlowAlgo {
   using Edge = typename FlowAlgo::Edge;
@@ -20,9 +19,8 @@ class MaxFlowLowerBound : public FlowAlgo {
   int add_edge(int src, int dst, flow_t cap) {
     int e = this->adj[src].size();
     int re = src == dst ? e + 1 : this->adj[dst].size();
-    this->adj[src].push_back(Edge{dst, re, cap});
-    this->adj[dst].push_back(Edge{src, e, 0});
-    return this->m++, re;
+    return this->adj[src].push_back(Edge{dst, re, cap}),
+           this->adj[dst].push_back(Edge{src, e, 0}), this->m++, re;
   }
 
  public:
@@ -57,13 +55,11 @@ class MaxFlowLowerBound : public FlowAlgo {
     flow_t upper() const { return u; }
   };
   EdgePtr add_edge(int src, int dst, flow_t lower, flow_t upper) {
-    assert(lower <= upper);
-    src += 2, dst += 2;
-    assert(0 <= src && src < this->n);
-    assert(0 <= dst && dst < this->n);
+    assert(lower <= upper), src += 2, dst += 2;
+    assert(0 <= src && src < this->n), assert(0 <= dst && dst < this->n);
     this->m++;
-    int e = this->adj[src].size();
-    int re = src == dst ? e + 1 : this->adj[dst].size();
+    int e = this->adj[src].size(),
+        re = src == dst ? e + 1 : this->adj[dst].size();
     if (lower * upper <= 0) {
       this->adj[src].push_back(Edge{dst, re, upper});
       this->adj[dst].push_back(Edge{src, e, -lower});

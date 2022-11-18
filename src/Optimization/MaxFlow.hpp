@@ -62,7 +62,7 @@ struct MaxFlow : public FlowAlgo {
     }
   };
   EdgePtr add_edge(int src, int dst, flow_t cap, bool bidir = false) {
-    assert(0 <= src && src < this->n) assert(0 <= dst && dst < this->n);
+    assert(0 <= src && src < this->n), assert(0 <= dst && dst < this->n);
     assert(0 <= cap);
     int e = this->adj[src].size();
     int re = src == dst ? e + 1 : this->adj[dst].size();

@@ -10,7 +10,6 @@
  */
 
 // BEGIN CUT HERE
-
 template <typename FlowAlgo>
 struct MaxFlow : public FlowAlgo {
   using FlowAlgo::FlowAlgo;
@@ -63,14 +62,13 @@ struct MaxFlow : public FlowAlgo {
     }
   };
   EdgePtr add_edge(int src, int dst, flow_t cap, bool bidir = false) {
-    assert(0 <= src && src < this->n);
-    assert(0 <= dst && dst < this->n);
+    assert(0 <= src && src < this->n) assert(0 <= dst && dst < this->n);
     assert(0 <= cap);
     int e = this->adj[src].size();
     int re = src == dst ? e + 1 : this->adj[dst].size();
-    this->adj[src].push_back(Edge{dst, re, cap});
-    this->adj[dst].push_back(Edge{src, e, cap * bidir});
-    return this->m++, EdgePtr{this, src, e, bidir};
+    return this->adj[src].push_back(Edge{dst, re, cap}),
+           this->adj[dst].push_back(Edge{src, e, cap * bidir}), this->m++,
+           EdgePtr{this, src, e, bidir};
   }
   flow_t maxflow(int s, int t) {
     return maxflow(s, t, std::numeric_limits<flow_t>::max());
@@ -82,9 +80,8 @@ struct MaxFlow : public FlowAlgo {
     std::vector<bool> visited(this->n);
     static std::queue<int> que;
     for (que.push(s); !que.empty();) {
-      int p = que.front();
-      que.pop(), visited[p] = true;
-      for (const auto &e : this->adj[p])
+      s = que.front(), que.pop(), visited[s] = true;
+      for (const auto &e : this->adj[s])
         if (e.cap && !visited[e.dst]) visited[e.dst] = true, que.push(e.dst);
     }
     return visited;

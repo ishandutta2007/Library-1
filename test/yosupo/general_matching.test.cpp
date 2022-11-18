@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/general_matching"
 #include <bits/stdc++.h>
-#include "src/Graph/MatchingGeneral.hpp"
+#include "src/Optimization/Matching.hpp"
 using namespace std;
 
 signed main() {
@@ -8,7 +8,7 @@ signed main() {
   ios::sync_with_stdio(0);
   int N, M;
   cin >> N >> M;
-  MatchingGeneral graph(N);
+  Matching graph(N);
   while (M--) {
     int u, v;
     cin >> u >> v;

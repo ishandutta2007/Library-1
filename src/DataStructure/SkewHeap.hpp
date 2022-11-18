@@ -48,8 +48,8 @@ struct SkewHeap {
   Node *root;
   static inline void propagate(Node *&t, const E &x) {
     if (!t) return;
-    t->lazy = t->lazy_flg ? M::composition(t->lazy, x) : x;
-    t->key = M::mapping(t->key, x), t->lazy_flg = true;
+    t->lazy_flg ? (M::composition(t->lazy, x), x) : (t->lazy = x);
+    M::mapping(t->key, x), t->lazy_flg = true;
   }
   static inline void eval(Node *t) {
     if (t->lazy_flg)

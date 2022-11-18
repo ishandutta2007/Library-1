@@ -21,12 +21,9 @@ class MinimumSpanningAborescense {
   };
   struct Op_Edge_add {
     using E = cost_t;
-    static Edge mapping(const Edge &l, const E &r) {
-      return Edge{l.src, l.dst, l.id, l.cost + r};
-    }
-    static E composition(const E &l, const E &r) { return l + r; }
+    static void mapping(Edge &l, const E &r) { l.cost += r; }
+    static void composition(E &l, const E &r) { l += r; }
   };
-  using Heap = SkewHeap<Edge, std::greater<Edge>, Op_Edge_add>;
   std::size_t n;
   std::vector<Edge> edges;
 
@@ -37,30 +34,27 @@ class MinimumSpanningAborescense {
   }
   std::pair<cost_t, std::vector<Edge>> get_MSA(int root) {
     UnionFind uf(n);
-    std::vector<Heap> heap(n);
-    for (auto &e : edges) heap[e.dst].push(e);
+    std::vector<SkewHeap<Edge, std::greater<Edge>, Op_Edge_add>> h(n);
+    std::vector<Edge> es;
+    for (auto &e : edges) h[e.dst].push(e);
     cost_t score = 0;
     std::size_t m = edges.size(), s = 0, u = s, cyc = 0, v;
     std::vector<int> seen(n, -1), paredge(m), ei, leaf(n, -1), par(n), usede(m);
     for (seen[root] = root; s < n; u = ++s, cyc = 0)
-      for (std::vector<int> path, ch; seen[u] < 0; u = uf.root(v)) {
-        path.push_back(u), seen[u] = s;
-        if (heap[u].empty()) return {-1, std::vector<Edge>()};
-        Edge min_e = heap[u].pop();
-        score += min_e.cost, heap[u].apply(-min_e.cost), ei.push_back(min_e.id);
+      for (std::vector<int> p, ch; seen[u] < 0; u = uf.root(v)) {
+        if (p.push_back(u), seen[u] = s; h[u].empty()) return {-1, es};
+        Edge min_e = h[u].pop();
+        score += min_e.cost, h[u].apply(-min_e.cost), ei.push_back(min_e.id);
         if (leaf[min_e.dst] == -1) leaf[min_e.dst] = min_e.id;
         for (; cyc; cyc--) paredge[ch.back()] = min_e.id, ch.pop_back();
-        ch.push_back(min_e.id);
-        if (seen[v = uf.root(min_e.src)] != s) continue;
-        Heap new_heap;
-        for (int w; 1;) {
-          new_heap += heap[w = path.back()];
-          path.pop_back(), cyc++;
-          if (!uf.unite(v, w)) break;
+        if (ch.push_back(min_e.id); seen[v = uf.root(min_e.src)] != s) continue;
+        SkewHeap<Edge, std::greater<Edge>, Op_Edge_add> new_h;
+        for (int w;;) {
+          new_h += h[w = p.back()];
+          if (p.pop_back(), cyc++; !uf.unite(v, w)) break;
         }
-        heap[uf.root(v)] = new_heap, seen[uf.root(v)] = -1;
+        h[uf.root(v)] = new_h, seen[uf.root(v)] = -1;
       }
-    std::vector<Edge> es;
     for (auto it = ei.rbegin(); it != ei.rend(); it++) {
       if (usede[*it]) continue;
       es.emplace_back(edges[*it]);

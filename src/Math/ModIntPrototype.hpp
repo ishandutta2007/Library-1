@@ -50,7 +50,7 @@ class MIntPro_Na {
   constexpr inline Uint plus(Uint l, Uint r) const { BOP(-, +); }
   constexpr inline Uint diff(Uint l, Uint r) const { BOP(+, -); }
 #undef BOP
-  constexpr inline Uint set(Uint n) const { return n % mod; }
+  constexpr inline Uint set(u64 n) const { return n % mod; }
   static constexpr inline Uint get(Uint n) { return n; }
   static constexpr inline Uint norm(Uint n) { return n; }
   constexpr Uint modulo() const { return mod; }

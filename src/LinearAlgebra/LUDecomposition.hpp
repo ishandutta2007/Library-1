@@ -190,7 +190,11 @@ class LUDecomposition<bool, MAX_ROWS, MAX_COLS> {
     for (std::size_t i = 0; i < rows; b[i++] = 0)
       b[i] = 1, ret.emplace_back(linear_equations(b));
     for (std::size_t i = 0; i < rows; i++)
-      for (std::size_t j = 0; j < i; j++) std::swap(ret[i][j], ret[j][i]);
+      for (std::size_t j = 0; j < i; j++) {
+        bool tmp = ret[i][j];
+        ret[i][j] = ret[j][i];
+        ret[j][i] = tmp;
+      }
     return ret;
   }
 };

@@ -11,7 +11,7 @@ template <class DFA, class S, class F>
 struct DFA_SymbolMap {
   using symbol_t = S;
   DFA_SymbolMap(const DFA &dfa_, const std::vector<symbol_t> &alp_, const F &f_)
-      : state_size(dfa_.state_size), dfa(dfa_), alp(alp_), f(f_) {
+      : dfa(dfa_), alp(alp_), f(f_) {
     static_assert(is_dfa_v<DFA>);
   }
   std::vector<symbol_t> alphabet() const { return alp; }
@@ -20,7 +20,7 @@ struct DFA_SymbolMap {
     return dfa.transition(s, f(a), i);
   }
   inline bool is_accept(int s) const { return dfa.is_accept(s); }
-  const int state_size;
+  inline int state_size() const { return dfa.state_size(); }
 
  private:
   const DFA dfa;
@@ -33,9 +33,7 @@ struct DFA_Intersection {
   using symbol_t = typename DFA0::symbol_t;
   static_assert(std::is_same_v<symbol_t, typename DFA1::symbol_t>);
   DFA_Intersection(const DFA0 &dfa0_, const DFA1 &dfa1_)
-      : state_size(dfa0_.state_size * dfa1_.state_size),
-        dfa0(dfa0_),
-        dfa1(dfa1_) {
+      : dfa0(dfa0_), dfa1(dfa1_) {
     static_assert(is_dfa_v<DFA0>);
     static_assert(is_dfa_v<DFA1>);
   }
@@ -55,14 +53,16 @@ struct DFA_Intersection {
     auto [s0, s1] = projection(s);
     return dfa0.is_accept(s0) && dfa1.is_accept(s1);
   }
-  const int state_size;
+  inline int state_size() const {
+    return dfa0.state_size() * dfa1.state_size();
+  }
 
  private:
   inline int product(int s0, int s1) const {
-    return s0 == -1 || s1 == -1 ? -1 : s0 + s1 * dfa0.state_size;
+    return s0 == -1 || s1 == -1 ? -1 : s0 + s1 * dfa0.state_size();
   }
   inline std::pair<int, int> projection(int s) const {
-    return {s % dfa0.state_size, s / dfa0.state_size};
+    return {s % dfa0.state_size(), s / dfa0.state_size()};
   }
   const DFA0 dfa0;
   const DFA1 dfa1;

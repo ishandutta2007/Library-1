@@ -10,7 +10,7 @@ class DFA_Leading1s {
 
  public:
   using symbol_t = int;
-  DFA_Leading1s(int n_) : n(n_), state_size(n + 1) {}
+  DFA_Leading1s(int n_) : n(n_) {}
   inline std::vector<symbol_t> alphabet() const {
     return {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
   }
@@ -21,7 +21,7 @@ class DFA_Leading1s {
     return a == 1 ? s + 1 : -1;
   }
   inline bool is_accept(int s) const { return s == n; }
-  const int state_size;
+  inline int state_size() const { return n + 1; }
 };
 
 signed main() {

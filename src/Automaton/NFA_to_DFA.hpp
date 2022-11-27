@@ -18,7 +18,7 @@ constexpr bool is_nfa_v =
 template <class NFA>
 struct NFA_to_DFA {
   using symbol_t = typename NFA::symbol_t;
-  NFA_to_DFA(NFA &&nfa_) : state_size(0), nfa(std::move(nfa_)) {
+  NFA_to_DFA(NFA &&nfa_) : size(0), nfa(std::move(nfa_)) {
     static_assert(is_nfa_v<NFA>);
     std::set<int> ss{initial_state_()};
     for (int i = 0; !ss.empty(); i++) {
@@ -42,9 +42,10 @@ struct NFA_to_DFA {
     return std::any_of(ss.begin(), ss.end(),
                        [&](int x) { return nfa.is_accept(x); });
   }
-  int state_size;
+  inline int state_size() const { return size; }
 
  private:
+  int size;
   NFA nfa;
   std::vector<std::set<int>> states;
   std::map<std::set<int>, int> mp;
@@ -52,7 +53,7 @@ struct NFA_to_DFA {
   inline int mapping(const std::set<int> &ss) {
     if (ss.empty()) return -1;
     if (mp.count(ss)) return mp[ss];
-    return states.push_back(ss), mp[ss] = state_size++;
+    return states.push_back(ss), mp[ss] = size++;
   }
   inline int transition_(int s, const symbol_t &c, int i) {
     std::set<int> ss;

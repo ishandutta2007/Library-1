@@ -52,7 +52,7 @@ T dfa_dp(const DFA &dfa, int len, const Add &add, const F &f, const T t0 = T(0),
          const T init = T(1)) {
   static_assert(is_dfa_v<DFA>);
   const auto alphabet = dfa.alphabet();
-  const int S = dfa.state_size;
+  const int S = dfa.state_size();
   std::vector<T> dp(S, t0);
   std::vector<char> visit(S, false);
   dp[dfa.initial_state()] = init, visit[dfa.initial_state()] = true;

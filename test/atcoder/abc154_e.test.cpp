@@ -10,7 +10,7 @@ class DFA_AEZ {
 
  public:
   using symbol_t = int;
-  DFA_AEZ(int k) : K(k), state_size(K + 1) {}
+  DFA_AEZ(int k) : K(k) {}
   std::vector<symbol_t> alphabet() const {
     return {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
   }
@@ -19,7 +19,7 @@ class DFA_AEZ {
     return (s += (a != 0)) > K ? -1 : s;
   }
   bool is_accept(int s) const { return s == K; }
-  const int state_size;
+  inline int state_size() const { return K + 1; }
 };
 signed main() {
   cin.tie(0);

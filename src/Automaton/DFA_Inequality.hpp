@@ -1,6 +1,5 @@
 #pragma once
 #include <bits/stdc++.h>
-#include "src/Automaton/dfa_dp.hpp"
 /**
  * @title $N$以下(以上)の非負整数を受理するDFA
  * @category オートマトン
@@ -37,7 +36,7 @@ struct DFA_Inequality {     // view from the top digit
       return a > str[i] ? -1 : 1;
   }
   inline bool is_accept(int s) const { return s >= 0; }
-  const int state_size = 2;
+  inline int state_size() const { return 2; }
 
  private:
   std::vector<symbol_t> str, alp;

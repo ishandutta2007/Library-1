@@ -18,7 +18,7 @@ struct DFA_SameLen {
     return u == 1;
   }
   inline bool is_accept(int s) const { return s >= 0; }
-  const int state_size = 2;
+  inline int state_size() const { return 2; }
 };
 signed main() {
   cin.tie(0);

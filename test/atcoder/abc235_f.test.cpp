@@ -20,7 +20,7 @@ class DFA_Variety {
     return s | ((a || s) << a);
   }
   inline bool is_accept(int s) const { return (s & conclude) == conclude; }
-  static constexpr int state_size = 1 << 10;
+  inline int state_size() const { return 1 << 10; }
 };
 signed main() {
   cin.tie(0);

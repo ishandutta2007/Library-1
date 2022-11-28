@@ -28,8 +28,8 @@ inline Int peth_root(Int c, Int pi, int ei, const mod_pro_t &md) {
   for (int i = t; --i;) ptm1 *= pi;
   for (Int v = md.set(2);; v = md.plus(v, ONE))
     if (vs = pow(v, s, md), bs = md.norm(pow(vs, ptm1, md)); bs != ONE) break;
-  int size = 1 << __lg(int(sqrt(pi)) + 1), mask = size - 1, os[size + 1],
-      vsc[size];
+  int size = 1 << __lg(int(sqrt(pi)) + 1), mask = size - 1, vsc[size];
+  std::vector<int> os(size + 1);
   Int vf[size];
   Int x = ONE, vspe = pow(vs, pe, md);
   for (int i = 0; i < size; i++, x = md.mul(x, bs)) os[md.norm(x) & mask]++;

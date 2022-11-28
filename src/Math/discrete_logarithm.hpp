@@ -18,7 +18,8 @@ int discrete_logarithm(int a, int b, int mod) {
     if (b % g != 0) return -1;  // no solution
   }
   int baby = 1, size = 1 << std::__lg(int(std::sqrt(mod)) + 1), mask = size - 1,
-      os[size + 1], vs[size][2];
+      vs[size][2];
+  std::vector<int> os(size + 1);
   for (int i = 0; i < size; i++, mul(baby, a)) os[baby & mask]++;
   for (int i = 1; i < size; i++) os[i] += os[i - 1];
   os[size] = size, baby = 1;

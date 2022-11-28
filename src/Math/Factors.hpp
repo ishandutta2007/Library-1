@@ -71,7 +71,7 @@ template <class Uint, class mod_pro_t>
 constexpr Uint inner_primitive_root(Uint p) {
   const mod_pro_t md(p);
   const auto f = Factors(p - 1);
-  for (Uint ret = 2, one = md.set(1), pw = 0, x = 0, k = 0, ng = 0;; ret++) {
+  for (Uint ret = 2, one = md.set(1), ng = 0;; ret++) {
     for (auto [q, e] : f)
       if (ng = (md.norm(pow(md.set(ret), (p - 1) / q, md)) == one)) break;
     if (!ng) return ret;

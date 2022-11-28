@@ -63,7 +63,7 @@ Int inner_kth_root(Int a, u64 k, Int p) {
   return md.get(a);
 }
 int64_t mod_kth_root(int64_t a, u64 k, int64_t p) {
-  assert(p > 0), assert(a > 0), assert(is_prime(p)), a %= p;
+  assert(p > 0), assert(a >= 0), assert(is_prime(p)), a %= p;
   if (p < INT_MAX) return inner_kth_root<int, MIntPro_Na<u32>>(a, k, p);
   return inner_kth_root<int64_t, MIntPro_Montg>(a, k, p);
 }

@@ -183,7 +183,7 @@ class LUDecomposition<bool> {
     for (std::size_t r = (rank() >> 7) + 1; r < row128; r++)
       if (y[r]) return {};  // no solution
     for (std::size_t i = rank(); i--;)
-      if (std::size_t k = piv[i]; (x[k] = (y[i >> 7] >> (i & 128)) & 1)) {
+      if (std::size_t k = piv[i]; (x[k] = (y[i >> 7] >> (i & 127)) & 1)) {
         for (std::size_t r = i >> 7; r--;) y[r] ^= tdat[k][r];
         y[i >> 7] ^= tdat[k][i >> 7] & ((u128(1) << (i & 127)) - 1);
       }

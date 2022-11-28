@@ -1,4 +1,4 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2624"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2624"
 
 #include <bits/stdc++.h>
 
@@ -26,10 +26,7 @@ signed main() {
   } else if (!lu.kernel().empty()) {
     cout << "ambiguous" << '\n';
   } else {
-    for (int i = 0; i < N; i++) {
-      cout << (i ? " " : "") << c[i];
-    }
-    cout << '\n';
+    for (int i = 0; i < N; i++) cout << c[i] << " \n"[i == N - 1];
   }
   return 0;
 }

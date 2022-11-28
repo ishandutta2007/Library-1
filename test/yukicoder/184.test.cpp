@@ -16,6 +16,6 @@ signed main() {
     cin >> a;
     for (int j = 0; j <= 60; j++) A[i][j] = (a >> j) & 1;
   }
-  cout << (1ll << LUDecomposition<bool, 112345, 61>(A).rank()) << endl;
+  cout << (1ll << LUDecomposition(A).rank()) << endl;
   return 0;
 }

@@ -1,4 +1,4 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2530"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2530"
 // ライツアウト
 #include <bits/stdc++.h>
 

@@ -15,7 +15,7 @@
 // BEGIN CUT HERE
 namespace math_internal {
 template <class Int, class mod_pro_t>
-constexpr inline Int peth_root(Int c, Int pi, int ei, const mod_pro_t &md) {
+inline Int peth_root(Int c, Int pi, int ei, const mod_pro_t &md) {
   const Int p = md.modulo();
   int t = 0;
   Int s = p - 1, pe = 1;
@@ -28,9 +28,9 @@ constexpr inline Int peth_root(Int c, Int pi, int ei, const mod_pro_t &md) {
   for (int i = t; --i;) ptm1 *= pi;
   for (Int v = md.set(2);; v = md.plus(v, ONE))
     if (vs = pow(v, s, md), bs = md.norm(pow(vs, ptm1, md)); bs != ONE) break;
-  int size = 1 << __lg(int(sqrt(pi)) + 1), mask = size - 1, os[size + 1] = {},
-      vsc[size] = {};
-  Int vf[size] = {};
+  int size = 1 << __lg(int(sqrt(pi)) + 1), mask = size - 1, os[size + 1],
+      vsc[size];
+  Int vf[size];
   Int x = ONE, vspe = pow(vs, pe, md);
   for (int i = 0; i < size; i++, x = md.mul(x, bs)) os[md.norm(x) & mask]++;
   for (int i = 1; i < size; i++) os[i] += os[i - 1];
@@ -52,7 +52,7 @@ constexpr inline Int peth_root(Int c, Int pi, int ei, const mod_pro_t &md) {
   return z;
 }
 template <class Int, class mod_pro_t>
-constexpr Int inner_kth_root(Int a, u64 k, Int p) {
+Int inner_kth_root(Int a, u64 k, Int p) {
   if (k == 0) return a == 1 ? a : -1;
   if (a <= 1 || k <= 1) return a;
   const mod_pro_t md(p);
@@ -62,7 +62,7 @@ constexpr Int inner_kth_root(Int a, u64 k, Int p) {
   for (auto [pi, ei] : Factors(g)) a = peth_root<Int>(a, pi, ei, md);
   return md.get(a);
 }
-constexpr int64_t mod_kth_root(int64_t a, u64 k, int64_t p) {
+int64_t mod_kth_root(int64_t a, u64 k, int64_t p) {
   assert(p > 0), assert(a > 0), assert(is_prime(p)), a %= p;
   if (p < INT_MAX) return inner_kth_root<int, MIntPro_Na<u32>>(a, k, p);
   return inner_kth_root<int64_t, MIntPro_Montg>(a, k, p);

@@ -9,6 +9,7 @@
  */
 
 // BEGIN CUT HERE
+namespace ntt_internal {
 template <class mod_t>
 std::vector<mod_t> deriv(const std::vector<mod_t> &p) {
   std::vector<mod_t> ret(p.size() - 1);
@@ -26,7 +27,6 @@ std::vector<mod_t> log(const std::vector<mod_t> &p) {
   assert(p[0] == mod_t(1));
   return integ<mod_t, _Nm>(div<mod_t, _Nm>(deriv(p), p));
 }
-
 template <class mod_t, std::size_t _Nm = 1 << 22>
 std::vector<mod_t> exp(const std::vector<mod_t> &p) {
   static constexpr int _Nm2 = _Nm * 2 / 15;
@@ -71,7 +71,6 @@ std::vector<mod_t> exp(const std::vector<mod_t> &p) {
   };
   return rec(rec, 0, m, 0), std::vector<mod_t>(GAr::bf, GAr::bf + n);
 }
-
 template <class mod_t, std::size_t _Nm = 1 << 22>
 std::vector<mod_t> pow(const std::vector<mod_t> &p, std::uint64_t k) {
   using GA = GlobalArray<mod_t, _Nm, 4>;
@@ -92,3 +91,6 @@ std::vector<mod_t> pow(const std::vector<mod_t> &p, std::uint64_t k) {
     std::fill_n(GA::bf + 1, n - 1, Z);
   return std::vector<mod_t>(GA::bf, GA::bf + n);
 }
+}  // namespace ntt_internal
+using ntt_internal::deriv, ntt_internal::integ, ntt_internal::log,
+    ntt_internal::exp, ntt_internal::pow;

@@ -16,7 +16,7 @@
 namespace math_internal {
 template <class Int, class mod_pro_t>
 inline Int peth_root(Int c, Int pi, int ei, const mod_pro_t &md) {
-  const Int p = md.modulo();
+  const Int p = md.mod;
   int t = 0;
   Int s = p - 1, pe = 1;
   while (s % pi == 0) s /= pi, ++t;

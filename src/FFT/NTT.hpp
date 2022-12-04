@@ -356,7 +356,7 @@ constexpr uint8_t nttarray_type =
 template <class T, size_t LIM, bool vec>
 using NTTArrayB =
     conditional_t<is_nttfriend<T, LIM>(),
-                  NTTArrayB_<0, max_value<T>(), 0, 0, 0, 0, LIM, vec>,
+                  NTTArrayB_<1, max_value<T>(), 0, 0, 0, 0, LIM, vec>,
                   NTTArrayB_<nttarray_type<T, LIM>, MOD32_1, MOD32_2, MOD32_3,
                              MOD32_4, MOD32_5, LIM, vec>>;
 template <class T, size_t LIM, bool vec>

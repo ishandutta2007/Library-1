@@ -30,9 +30,10 @@ struct RuntimeB : run_mint_base {
  protected:
   static inline mod_pro_t md;
 };
-template <class Int, class Uint, class B>
+template <class Int, class U, class B>
 struct ModInt : public B {
-  static constexpr inline auto modulo() { return B::md.modulo(); }
+  using Uint = U;
+  static constexpr inline auto modulo() { return B::md.mod; }
   constexpr ModInt() : x(0) {}
   constexpr ModInt(const ModInt &r) : x(r.x) {}
   template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr>
@@ -40,7 +41,7 @@ struct ModInt : public B {
   template <class T,
             enable_if_t<is_convertible_v<T, __int128_t>, nullptr_t> = nullptr>
   constexpr ModInt(T n)
-      : x(B::md.set(n < 0 ? modulo() - ((-n) % modulo()) : n)) {}
+      : x(B::md.set((n %= B::md.mod) < 0 ? n + B::md.mod : n)) {}
   constexpr ModInt operator-() const { return ModInt() - *this; }
 #define FUNC(name, op)          \
   constexpr ModInt name const { \
@@ -64,7 +65,7 @@ struct ModInt : public B {
   constexpr bool operator<(const ModInt &r) const {
     return B::md.norm(x) < B::md.norm(r.x);
   }
-  constexpr inline ModInt inv() const { return mod_inv<Int>(val(), modulo()); }
+  constexpr inline ModInt inv() const { return mod_inv<Int>(val(), B::md.mod); }
   constexpr inline Uint val() const { return B::md.get(x); }
   friend ostream &operator<<(ostream &os, const ModInt &r) {
     return os << r.val();

@@ -8,6 +8,7 @@
  */
 
 // BEGIN CUT HERE
+namespace ntt_internal {
 template <std::size_t _Nm, class mod_t>
 void inv_base(const mod_t p[], int n, mod_t r[], int i = 1) {
   using GNA1 = GlobalNTTArray<mod_t, _Nm, 1>;
@@ -38,9 +39,10 @@ std::vector<mod_t> inv(const std::vector<mod_t> &p) {
   using GNA2 = GlobalNTTArray<mod_t, _Nm2, 2>;
   using GNA2D1 = GlobalNTTArray2D<mod_t, _Nm2, 16, 1>;
   using GNA2D2 = GlobalNTTArray2D<mod_t, _Nm2, 16, 2>;
-  static constexpr int TH2 = is_nttfriend<mod_t, _Nm2>()
-                                 ? 115
-                                 : (is_nttarraydouble<mod_t, _Nm2> ? 384 : 452);
+  static constexpr int TH2 =
+      is_nttfriend<mod_t, _Nm2>()
+          ? 115
+          : ((nttarray_type<mod_t, _Nm2>) == 2 ? 384 : 452);
   static constexpr int C = nttarray_type<mod_t, _Nm> << 1, lnR = 4;
   static constexpr int TH3 = 5 + ((nttarray_type<mod_t, _Nm> == 3) << 1);
   static constexpr int D = 10 * nttarray_type<mod_t, _Nm>;
@@ -82,3 +84,5 @@ std::vector<mod_t> inv(const std::vector<mod_t> &p) {
       for (GAr::bf[j = l] = Z; j--;) GAr::bf[l] += GAr::bf[j] * GAp::bf[l - j];
   return std::vector<mod_t>(GAr::bf, GAr::bf + n);
 }
+}  // namespace ntt_internal
+using ntt_internal::inv;

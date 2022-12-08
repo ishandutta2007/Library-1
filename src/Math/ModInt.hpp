@@ -37,7 +37,7 @@ struct ModInt : public B {
   constexpr ModInt() : x(0) {}
   constexpr ModInt(const ModInt &r) : x(r.x) {}
   template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr>
-  constexpr ModInt(T v) : x(B::md.set(v.val())) {}
+  constexpr ModInt(T v) : x(B::md.set(v.val() % B::md.mod)) {}
   template <class T,
             enable_if_t<is_convertible_v<T, __int128_t>, nullptr_t> = nullptr>
   constexpr ModInt(T n)

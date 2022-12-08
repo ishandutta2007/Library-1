@@ -8,15 +8,22 @@
  */
 
 // BEGIN CUT HERE
-template <class mod_t, std::size_t _Nm = 1 << 22>
+template <class mod_t, std::size_t LIM = 1 << 22>
 std::vector<mod_t> convolve(const std::vector<mod_t> &p,
                             const std::vector<mod_t> &q) {
-  using GNA1 = GlobalNTTArray<mod_t, _Nm, 1>;
-  using GAr = GlobalArray<mod_t, _Nm, 0>;
-  using GAp = GlobalArray<mod_t, _Nm, 1>;
-  using GAq = GlobalArray<mod_t, _Nm, 2>;
-  using GNA2 = GlobalNTTArray<mod_t, _Nm, 2>;
-  static constexpr int TH = 74, TMP = 7 * nttarray_type<mod_t, _Nm>;
+  using GNA1 = GlobalNTTArray<mod_t, LIM, 1>;
+  using GAr = GlobalArray<mod_t, LIM, 0>;
+  using GAp = GlobalArray<mod_t, LIM, 1>;
+  using GAq = GlobalArray<mod_t, LIM, 2>;
+  using GNA2 = GlobalNTTArray<mod_t, LIM, 2>;
+  static constexpr int t = nttarr_cat<mod_t, LIM>;
+  static constexpr int TH = (int[]){70, 30, 70, 100, 135, 150}[t];
+  auto f = [](int l) -> int {
+    static constexpr double B[] = {
+        (double[]){8.288, 5.418, 7.070, 9.676, 11.713, 13.374}[t],
+        (double[]){8.252, 6.578, 9.283, 12.810, 13.853, 15.501}[t]};
+    return std::round(std::pow(l, 0.535) * B[__builtin_ctz(l) & 1]);
+  };
   const int n = p.size(), m = q.size(), r_len = n + m - 1;
   if (!n || !m) return std::vector<mod_t>();
   if (std::min(n, m) < TH) {
@@ -26,9 +33,8 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &p,
     for (int i = n; i--;)
       for (int j = m; j--;) GAr::bf[i + j] += GAp::bf[i] * GAq::bf[j];
   } else {
-    const int l = get_len(std::max(n, m)),
-              bl = __builtin_ctz(l) + 2 * nttarray_type<mod_t, _Nm> - 6;
-    const int len = r_len - l < bl * bl * TMP - TH ? l : get_len(r_len);
+    const int l = get_len(std::max(n, m));
+    const int len = r_len - l <= f(l) ? l : get_len(r_len);
     GNA1::bf.set(p.data(), 0, n), GNA1::bf.zeros(n, len), GNA1::bf.dft(0, len);
     if (&p == &q)
       GNA1::bf.mul(GNA1::bf, 0, len);

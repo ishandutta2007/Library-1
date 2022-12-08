@@ -225,23 +225,23 @@ using u8 = uint8_t;
                          iv53 = iv54 / mint3::modulo(),     \
                          iv52 = iv53 / mint2::modulo(),     \
                          iv51 = iv52 / mint1::modulo();
-template <u8 type, u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM, bool vec>
+template <u8 type, u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM, bool vec>
 struct NTTArrayB_ {
   ARR(1)
 };
-template <u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
+template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
 struct NTTArrayB_<2, M1, M2, M3, M4, M5, LIM, false> {
   ARR(1) ARR(2) IV2
 };
-template <u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
+template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
 struct NTTArrayB_<3, M1, M2, M3, M4, M5, LIM, false> {
   ARR(1) ARR(2) ARR(3) IV2 IV3
 };
-template <u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
+template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
 struct NTTArrayB_<4, M1, M2, M3, M4, M5, LIM, false> {
   ARR(1) ARR(2) ARR(3) ARR(4) IV2 IV3 IV4
 };
-template <u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
+template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
 struct NTTArrayB_<5, M1, M2, M3, M4, M5, LIM, false> {
   ARR(1) ARR(2) ARR(3) ARR(4) ARR(5) IV2 IV3 IV4 IV5
 };
@@ -251,14 +251,14 @@ struct NTTArrayB_<5, M1, M2, M3, M4, M5, LIM, false> {
   using ntt##num = NumberTheoreticTransform<mint##num>; \
   vector<mint##num> buf##num;                           \
   mint##num *dat##num;
-template <u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
+template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
 struct NTTArrayB_<1, M1, M2, M3, M4, M5, LIM, true> {
   NTTArrayB_() : dat1(buf1.data()) {}
   void resize(int n) { buf1.resize(n), dat1 = buf1.data(); }
   size_t size() const { return buf1.size(); }
   VEC(1)
 };
-template <u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
+template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
 struct NTTArrayB_<2, M1, M2, M3, M4, M5, LIM, true> {
   NTTArrayB_() : dat1(buf1.data()), dat2(buf2.data()) {}
   void resize(int n) {
@@ -267,7 +267,7 @@ struct NTTArrayB_<2, M1, M2, M3, M4, M5, LIM, true> {
   size_t size() const { return buf1.size(); }
   VEC(1) VEC(2) IV2
 };
-template <u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
+template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
 struct NTTArrayB_<3, M1, M2, M3, M4, M5, LIM, true> {
   NTTArrayB_() : dat1(buf1.data()), dat2(buf2.data()), dat3(buf3.data()) {}
   void resize(int n) {
@@ -277,7 +277,7 @@ struct NTTArrayB_<3, M1, M2, M3, M4, M5, LIM, true> {
   size_t size() const { return buf1.size(); }
   VEC(1) VEC(2) VEC(3) IV2 IV3
 };
-template <u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
+template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
 struct NTTArrayB_<4, M1, M2, M3, M4, M5, LIM, true> {
   NTTArrayB_()
       : dat1(buf1.data()),
@@ -291,7 +291,7 @@ struct NTTArrayB_<4, M1, M2, M3, M4, M5, LIM, true> {
   size_t size() const { return buf1.size(); }
   VEC(1) VEC(2) VEC(3) VEC(4) IV2 IV3 IV4
 };
-template <u32 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
+template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM>
 struct NTTArrayB_<5, M1, M2, M3, M4, M5, LIM, true> {
   NTTArrayB_()
       : dat1(buf1.data()),
@@ -351,8 +351,12 @@ constexpr std::uint32_t MOD32_1 = 0x7e000001, MOD32_2 = 0x78000001,
                         MOD32_3 = 0x6c000001, MOD32_4 = 0x66000001,
                         MOD32_5 = 0x42000001;
 template <class T, size_t LIM>
-constexpr uint8_t nttarray_type =
+constexpr u8 nttarray_type =
     nttarray_type_<T, LIM, MOD32_1, MOD32_2, MOD32_3, MOD32_4>();
+template <class T, size_t LIM>
+constexpr u8 nttarr_cat = is_nttfriend<T, LIM>() && (max_value<T>() > INT_MAX)
+                              ? 0
+                              : nttarray_type<T, LIM>;
 template <class T, size_t LIM, bool vec>
 using NTTArrayB =
     conditional_t<is_nttfriend<T, LIM>(),
@@ -363,7 +367,8 @@ template <class T, size_t LIM, bool vec>
 using NTTArray = NTTArrayImpl<T, nttarray_type<T, LIM>, NTTArrayB<T, LIM, vec>>;
 }  // namespace math_internal
 using math_internal::is_nttfriend, math_internal::nttarray_type,
-    math_internal::NumberTheoreticTransform, math_internal::NTTArray;
+    math_internal::nttarr_cat, math_internal::NumberTheoreticTransform,
+    math_internal::NTTArray;
 template <class T, std::size_t LIM, int id = 0>
 struct GlobalNTTArray {
   static inline NTTArray<T, LIM, false> bf;

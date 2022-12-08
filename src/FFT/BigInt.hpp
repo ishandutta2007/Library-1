@@ -98,13 +98,16 @@ class BigInt {
     static mod_t f[1 << 20], g[1 << 20];
     static long long h[1 << 20];
     if (int i = n, j; std::min(n, m) >= 74) {
+      const int l = get_len(std::max(n, m));
+      const int len = sz - l <= std::pow(l, 0.535) * 8.288 ? l : get_len(sz);
       for (i = n; i--;) f[i] = dat[i];
-      for (i = m; i--;) g[i] = r.dat[i];
-      const int l = get_len(std::max(n, m)), bl = __builtin_ctz(l) + 6;
-      const int len = sz - l < bl * bl * 7 - 74 ? l : get_len(sz);
       std::fill_n(f + n, len - n, 0), NTT::dft(len, f);
-      std::fill_n(g + m, len - m, 0), NTT::dft(len, g);
-      for (i = len; i--;) f[i] *= g[i];
+      if (this != &r) {
+        for (i = m; i--;) g[i] = r.dat[i];
+        std::fill_n(g + m, len - m, 0), NTT::dft(len, g);
+        for (i = len; i--;) f[i] *= g[i];
+      } else
+        for (i = len; i--;) f[i] *= f[i];
       for (NTT::idft(len, f), i = len; i < sz; f[i - len] -= h[i], i++)
         for (h[i] = 0, j = i - m + 1; j < n; j++)
           h[i] += (long long)dat[j] * r.dat[i - j];

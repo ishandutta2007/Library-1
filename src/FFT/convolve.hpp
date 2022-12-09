@@ -31,11 +31,12 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &p,
     for (int i = n; i--;)
       for (int j = m; j--;) GAr::bf[i + j] += GAp::bf[i] * GAq::bf[j];
   } else {
-    using GNA1 = GlobalNTTArray<mod_t, LIM, 1>;
-    using GNA2 = GlobalNTTArray<mod_t, LIM, 2>;
     const int rl = get_len(sz), l = get_len(std::max(n, m)), fl = f(l);
-    if (l + fl < sz && sz <= (rl >> 3) * 5) {
-      static constexpr std::size_t LIM2 = LIM / 15;
+    static constexpr std::size_t LIM2 = LIM >> 4;
+    static constexpr bool b = nttarr_cat<mod_t, LIM2> < t;
+    if (b || (l + fl < sz && sz <= (rl >> 3) * 5)) {
+      using GNA1 = GlobalNTTArray<mod_t, LIM2, 1>;
+      using GNA2 = GlobalNTTArray<mod_t, LIM2, 2>;
       using GNA2D1 = GlobalNTTArray2D<mod_t, LIM2, 16, 1>;
       using GNA2D2 = GlobalNTTArray2D<mod_t, LIM2, 16, 2>;
       const int l = rl >> 4, l2 = l << 1;
@@ -64,6 +65,8 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &p,
         GNA2::bf.get(GAr::bf + k, 0, std::min(l, sz - k));
       }
     } else {
+      using GNA1 = GlobalNTTArray<mod_t, LIM, 1>;
+      using GNA2 = GlobalNTTArray<mod_t, LIM, 2>;
       const int len = sz <= l + fl ? l : rl;
       GNA1::bf.set(p.data(), 0, n), GNA1::bf.zeros(n, len);
       if (GNA1::bf.dft(0, len); &p != &q) {

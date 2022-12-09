@@ -95,23 +95,51 @@ class BigInt {
   BigInt operator*(const BigInt &r) const {
     if (is_zero() || r.is_zero()) return 0;
     const int n = dat.size(), m = r.dat.size(), sz = n + m - 1;
-    static mod_t f[1 << 20], g[1 << 20];
+    static mod_t f[1 << 20], g[1 << 20], f2[1 << 16][16], g2[1 << 16][16];
     static long long h[1 << 20];
     if (int i = n, j; std::min(n, m) >= 74) {
-      const int l = get_len(std::max(n, m));
-      const int len = sz - l <= std::pow(l, 0.535) * 8.288 ? l : get_len(sz);
-      for (i = n; i--;) f[i] = dat[i];
-      std::fill_n(f + n, len - n, 0), NTT::dft(len, f);
-      if (this != &r) {
-        for (i = m; i--;) g[i] = r.dat[i];
-        std::fill_n(g + m, len - m, 0), NTT::dft(len, g);
-        for (i = len; i--;) f[i] *= g[i];
-      } else
-        for (i = len; i--;) f[i] *= f[i];
-      for (NTT::idft(len, f), i = len; i < sz; f[i - len] -= h[i], i++)
-        for (h[i] = 0, j = i - m + 1; j < n; j++)
-          h[i] += (long long)dat[j] * r.dat[i - j];
-      for (i = std::min(sz, len); i--;) h[i] = f[i].val();
+      const int rl = get_len(sz), l = get_len(std::max(n, m));
+      const int fl = std::pow(l, 0.535) * 8.288;
+      if (l + fl < sz && sz <= (rl >> 3) * 5) {
+        const int l = rl >> 4, l2 = l << 1;
+        const int nn = (n + l - 1) / l, mm = (m + l - 1) / l;
+        for (int k = i = 0, s; k < n; i++, k += l) {
+          for (j = s = std::min(l, n - k); j--;) f2[i][j] = dat[k + j];
+          std::fill_n(f2[i] + s, l2 - s, mod_t()), NTT::dft(l2, f2[i]);
+        }
+        if (this != &r)
+          for (int k = i = 0, s; k < m; i++, k += l) {
+            for (j = s = std::min(l, m - k); j--;) g2[i][j] = dat[k + j];
+            std::fill_n(g2[i] + s, l2 - s, mod_t()), NTT::dft(l2, g2[i]);
+          }
+        else
+          for (i = nn; i--;) std::copy_n(f2[i], l2, g2[i]);
+        for (std::fill_n(g2[mm], l2, mod_t()), i = mm; i--;) {
+          for (j = 0; j < l; j++) g2[i + 1][j] += g2[i][j];
+          for (; j < l2; j++) g2[i + 1][j] -= g2[i][j];
+        }
+        for (int k = i = 0, ed, ii; k < sz; i++, k += l) {
+          j = std::max(0, i - nn + 1), ed = std::min(mm, i);
+          for (std::fill_n(f, l2, mod_t()); j <= ed; j++)
+            for (ii = l2; ii--;) f[ii] += f2[i - j][ii] * g2[j][ii];
+          for (NTT::idft(l2, f), ii = std::min(l, sz - k); ii--;)
+            h[ii + k] = f[ii].val();
+        }
+      } else {
+        const int len = sz <= l + fl ? l : get_len(sz);
+        for (i = n; i--;) f[i] = dat[i];
+        std::fill_n(f + n, len - n, mod_t()), NTT::dft(len, f);
+        if (this != &r) {
+          for (i = m; i--;) g[i] = r.dat[i];
+          std::fill_n(g + m, len - m, mod_t()), NTT::dft(len, g);
+          for (i = len; i--;) f[i] *= g[i];
+        } else
+          for (i = len; i--;) f[i] *= f[i];
+        for (NTT::idft(len, f), i = len; i < sz; f[i - len] -= h[i], i++)
+          for (h[i] = 0, j = i - m + 1; j < n; j++)
+            h[i] += (long long)dat[j] * r.dat[i - j];
+        for (i = std::min(sz, len); i--;) h[i] = f[i].val();
+      }
     } else
       for (std::fill_n(h, sz, 0); i--;)
         for (j = m; j--;) h[i + j] += (long long)dat[i] * r.dat[j];

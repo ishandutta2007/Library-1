@@ -41,7 +41,7 @@ struct ModInt : public B {
   template <class T,
             enable_if_t<is_convertible_v<T, __int128_t>, nullptr_t> = nullptr>
   constexpr ModInt(T n)
-      : x(B::md.set((n %= B::md.mod) < 0 ? n + B::md.mod : n)) {}
+      : x(B::md.set((n < 0 ? B::md.mod - (-n) % B::md.mod : n % B::md.mod))) {}
   constexpr ModInt operator-() const { return ModInt() - *this; }
 #define FUNC(name, op)          \
   constexpr ModInt name const { \

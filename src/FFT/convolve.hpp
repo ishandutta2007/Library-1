@@ -16,6 +16,7 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &p,
   using GAp = GlobalArray<mod_t, LIM, 1>;
   using GAq = GlobalArray<mod_t, LIM, 2>;
   static constexpr int t = nttarr_cat<mod_t, LIM>;
+  static constexpr int TH = (int[]){70, 30, 70, 100, 135, 150}[t];
   auto f = [](int l) -> int {
     static constexpr double B[] = {
         (double[]){8.288, 5.418, 7.070, 9.676, 11.713, 13.374}[t],
@@ -24,7 +25,7 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &p,
   };
   const int n = p.size(), m = q.size(), sz = n + m - 1;
   if (!n || !m) return std::vector<mod_t>();
-  if (std::min(n, m) < (int[]){70, 30, 70, 100, 135, 150}[t]) {
+  if (std::min(n, m) < TH) {
     std::fill_n(GAr::bf, sz, mod_t(0));
     std::copy(p.begin(), p.end(), GAp::bf);
     std::copy(q.begin(), q.end(), GAq::bf);

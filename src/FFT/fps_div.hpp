@@ -23,12 +23,8 @@ std::vector<mod_t> div(const std::vector<mod_t> &p,
   using GNA2D2 = GlobalNTTArray2D<mod_t, _Nm2, 16, 2>;
   static constexpr int TH = 128 << (!is_nttfriend<mod_t, _Nm2>());
   static constexpr int TH2 = 1024 << (!is_nttfriend<mod_t, _Nm2>());
-  static constexpr int A = is_nttfriend<mod_t, _Nm2>()      ? 7
-                           : is_nttarraydouble<mod_t, _Nm2> ? 17
-                                                            : 18;
-  static constexpr int B = is_nttfriend<mod_t, _Nm2>()      ? 29
-                           : is_nttarraydouble<mod_t, _Nm2> ? 85
-                                                            : 129;
+  static constexpr int A = 7;
+  static constexpr int B = 29;
   const int n = p.size(), len = get_len(n), R = len < TH2 ? 8 : 16;
   const int l = q.size(), lnR = __builtin_ctz(R);
   std::copy(p.begin(), p.end(), GAp::bf);

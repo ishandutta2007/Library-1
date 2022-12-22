@@ -36,12 +36,8 @@ class Polynomial : public std::vector<mod_t> {
   using GAq = GlobalArray<mod_t, _Nm, 2>;
   using GA3 = GlobalArray<mod_t, _Nm, 3>;
   static inline const mod_t Z = 0;
-  static constexpr int A = is_nttfriend<mod_t, _Nm>()      ? 8
-                           : is_nttarraydouble<mod_t, _Nm> ? 17
-                                                           : 20;
-  static constexpr int B = is_nttfriend<mod_t, _Nm>()      ? 42
-                           : is_nttarraydouble<mod_t, _Nm> ? 110
-                                                           : 138;
+  static constexpr int A = 8;
+  static constexpr int B = 42;
   std::pair<Poly, Poly> quorem_na(const Poly &q) const {
     int n = deg(), m = q.deg(), qsz = n - m + 1, i = qsz, j;
     std::copy_n(this->begin(), n + 1, GAp::bf);

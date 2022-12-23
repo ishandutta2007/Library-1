@@ -97,12 +97,12 @@ class BigInt {
     const int n = dat.size(), m = r.dat.size(), sz = n + m - 1;
     static mod_t f[1 << 20], g[1 << 20], f2[1 << 16][16], g2[1 << 16][16];
     static long long h[1 << 20];
-    if (int i = n, j; std::min(n, m) >= 74) {
+    if (int i, j; std::min(n, m) >= 74) {
       const int rl = get_len(sz), l = get_len(std::max(n, m));
       const int fl = std::pow(l, 0.535) * 8.288;
       if (l + fl < sz && sz <= (rl >> 3) * 5) {
-        const int l = rl >> 4, l2 = l << 1;
-        const int nn = (n + l - 1) / l, mm = (m + l - 1) / l;
+        const int l = rl >> 4, l2 = l << 1, nn = (n + l - 1) / l,
+                  mm = (m + l - 1) / l, ss = nn + mm - 1;
         for (int k = i = 0, s; k < n; i++, k += l) {
           for (j = s = std::min(l, n - k); j--;) f2[i][j] = dat[k + j];
           std::fill_n(f2[i] + s, l2 - s, mod_t()), NTT::dft(l2, f2[i]);
@@ -114,16 +114,16 @@ class BigInt {
           }
         else
           for (i = nn; i--;) std::copy_n(f2[i], l2, g2[i]);
-        for (std::fill_n(g2[mm], l2, mod_t()), i = mm; i--;) {
-          for (j = 0; j < l; j++) g2[i + 1][j] += g2[i][j];
-          for (; j < l2; j++) g2[i + 1][j] -= g2[i][j];
-        }
-        for (int k = i = 0, ed, ii; k < sz; i++, k += l) {
-          j = std::max(0, i - nn + 1), ed = std::min(mm, i);
-          for (std::fill_n(f, l2, mod_t()); j <= ed; j++)
-            for (ii = l2; ii--;) f[ii] += f2[i - j][ii] * g2[j][ii];
-          for (NTT::idft(l2, f), ii = std::min(l, sz - k); ii--;)
-            h[ii + k] = f[ii].val();
+        for (i = l2; i--;) f[i] = f2[0][i] * g2[0][i];
+        for (NTT::idft(l2, f), i = l2; i--;) h[i] = f[i].val();
+        for (int k = l, ed, ii = 1; ii < ss; ++ii, k += l) {
+          j = std::max(0, ii - nn + 1), ed = std::min(mm - 1, ii);
+          for (i = l2; i--;) f[i] = f2[ii - ed][i] * g2[ed][i];
+          for (; j < ed; ++j)
+            for (i = l2; i--;) f[i] += f2[ii - j][i] * g2[j][i];
+          for (NTT::idft(l2, f), i = std::min(l, sz - k); i--;)
+            h[i + k] += f[i].val();
+          for (i = std::min(l2, sz - k); i-- > l;) h[i + k] = f[i].val();
         }
       } else {
         const int len = sz <= l + fl ? l : get_len(sz);

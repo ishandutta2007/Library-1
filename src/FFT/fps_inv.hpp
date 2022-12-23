@@ -10,10 +10,11 @@
 // BEGIN CUT HERE
 namespace ntt_internal {
 template <std::size_t LIM, class mod_t>
-inline void inv_base(const mod_t p[], int n, mod_t r[], int i = 1) {
+inline void inv_base(const mod_t p[], int n, mod_t r[], int i = 1, int l = -1) {
   static constexpr int t = nttarr_cat<mod_t, LIM>;
   static constexpr int TH = (int[]){64, 32, 64, 128, 128, 256}[t];
   if (n <= i) return;
+  if (l < 0) l = n;
   assert(((n & -n) == n)), assert(i && ((i & -i) == i));
   const int m = std::min(n, TH);
   const mod_t miv = -r[0];
@@ -35,17 +36,16 @@ inline void inv_base(const mod_t p[], int n, mod_t r[], int i = 1) {
     mod_t *rr = r;
     const mod_t *pp = p;
     const int s = i, e = s << 1;
-    for (int k = 0, l; i < n && k < ed; ++k, i += s, pp += s) {
-      gt2[k].set(pp, 0, e), gt2[k].dft(0, e), gt1[k].set(rr, 0, s);
-      gt1[k].zeros(s, e), gt1[k].dft(0, e), GNA2::bf.mul(gt1[k], gt2[0], 0, e);
-      for (l = k; l--;)
-        GNA1::bf.mul(gt1[l], gt2[k - l], 0, e), GNA2::bf.add(GNA1::bf, 0, e);
+    for (int k = 0, j; i < n && k < ed; ++k, i += s, pp += s) {
+      if (k * s < l) gt2[k].set(pp, 0, e), gt2[k].dft(0, e);
+      gt1[k].set(rr, 0, s), gt1[k].zeros(s, e), gt1[k].dft(0, e);
+      for (GNA2::bf.mul(gt1[k], gt2[0], 0, e), j = std::min(k, l / s) + 1; --j;)
+        GNA1::bf.mul(gt1[k - j], gt2[j], 0, e), GNA2::bf.add(GNA1::bf, 0, e);
       GNA2::bf.idft(0, e), GNA2::bf.zeros(0, s);
-      if constexpr (!is_nttfriend<mod_t, (LIM >> 1)>())
+      if constexpr (!is_nttfriend<mod_t, LIM2>())
         GNA2::bf.get(rr, s, e), GNA2::bf.set(rr, s, e);
-      GNA2::bf.dft(0, e), GNA2::bf.mul(gt1[0], 0, e);
-      GNA2::bf.idft(0, e), GNA2::bf.get(rr, s, e);
-      for (rr += s, l = s; l--;) rr[l] = -rr[l];
+      GNA2::bf.dft(0, e), GNA2::bf.mul(gt1[0], 0, e), GNA2::bf.idft(0, e);
+      for (GNA2::bf.get(rr, s, e), rr += s, j = s; j--;) rr[j] = -rr[j];
     }
   }
 }
@@ -57,14 +57,13 @@ void inv_(const mod_t p[], int n, mod_t r[]) {
   using GNA2 = GlobalNTTArray<mod_t, LIM2, 2>;
   auto gt1 = GlobalNTTArray2D<mod_t, LIM2, R, 1>::bf;
   auto gt2 = GlobalNTTArray2D<mod_t, LIM2, R, 2>::bf;
-  assert(n > 0), assert(p[0] != mod_t(0));
+  assert(n > 0), assert(p[0] != mod_t());
   const int m = get_len(n) >> lnR, m2 = m << 1, ed = (n - 1) / m;
   inv_base<LIM2>(p, m, r);
   for (int k = 0, l; k < ed; p += m) {
     gt2[k].set(p, 0, l = std::min(m2, n - m * k)), gt2[k].zeros(l, m2);
     gt2[k].dft(0, m2), gt1[k].set(r, 0, m), gt1[k].zeros(m, m2);
-    gt1[k].dft(0, m2), GNA2::bf.mul(gt1[k], gt2[0], 0, m2);
-    for (l = k; l--;)
+    for (gt1[k].dft(0, m2), GNA2::bf.mul(gt1[k], gt2[0], 0, m2), l = k; l--;)
       GNA1::bf.mul(gt1[l], gt2[k - l], 0, m2), GNA2::bf.add(GNA1::bf, 0, m2);
     GNA2::bf.idft(0, m2), GNA2::bf.zeros(0, m);
     if constexpr (!is_nttfriend<mod_t, LIM2>())

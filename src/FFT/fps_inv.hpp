@@ -113,3 +113,4 @@ std::vector<mod_t> inv(const std::vector<mod_t> &p) {
   return std::vector<mod_t>(rr, rr + n);
 }
 }  // namespace ntt_internal
+using ntt_internal::inv_base, ntt_internal::inv;

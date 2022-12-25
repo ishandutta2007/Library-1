@@ -95,7 +95,7 @@ class BigInt {
   BigInt operator*(const BigInt &r) const {
     if (is_zero() || r.is_zero()) return 0;
     const int n = dat.size(), m = r.dat.size(), sz = n + m - 1;
-    static mod_t f[1 << 20], g[1 << 20], f2[1 << 16][16], g2[1 << 16][16];
+    static mod_t f[1 << 20], g[1 << 20], f2[1 << 17][16], g2[1 << 17][16];
     static long long h[1 << 20];
     if (int i = n, j; std::min(n, m) >= 74) {
       const int rl = get_len(sz), l = get_len(std::max(n, m));

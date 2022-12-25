@@ -32,7 +32,7 @@ std::vector<mod_t> convolve(const std::vector<mod_t> &p,
       for (int j = m; j--;) rr[i + j] += pp[i] * qq[j];
   } else {
     const int rl = get_len(sz), l = get_len(std::max(n, m)), fl = f(l);
-    static constexpr std::size_t LIM2 = LIM >> 4;
+    static constexpr std::size_t LIM2 = LIM >> 3;
     static constexpr bool b = nttarr_cat<mod_t, LIM2> < t;
     if (b || (l + fl < sz && sz <= (rl >> 3) * 5)) {
       using GNA1 = GlobalNTTArray<mod_t, LIM2, 1>;

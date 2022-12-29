@@ -16,35 +16,44 @@ inline void inv_base(const mod_t p[], int n, mod_t r[], int i = 1, int l = -1) {
   if (n <= i) return;
   if (l < 0) l = n;
   assert(((n & -n) == n)), assert(i && ((i & -i) == i));
-  const int m = std::min(n, TH);
   const mod_t miv = -r[0];
-  for (int j; i < m; r[i++] *= miv)
-    for (r[i] = mod_t(), j = std::min(i + 1, l); --j;) r[i] += r[i - j] * p[j];
-  static constexpr int lnR = 2 + (t == 0), LIM2 = LIM >> (lnR - 1),
-                       R = (1 << lnR) - 1;
-  using GNA1 = GlobalNTTArray<mod_t, LIM2, 1>;
-  using GNA2 = GlobalNTTArray<mod_t, LIM2, 2>;
-  auto gt1 = GlobalNTTArray2D<mod_t, LIM2, R, 1>::bf;
-  auto gt2 = GlobalNTTArray2D<mod_t, LIM2, R, 2>::bf;
-  int ed =
-      (1 << (1 + (t ? __builtin_ctz(TH) & 1 : (__builtin_ctz(n) + 2) % 3))) - 1;
-  for (; i < n; ed = R) {
-    mod_t *rr = r;
-    const mod_t *pp = p;
-    const int s = i, e = s << 1, ss = (l - 1) / s;
-    for (int k = 0, j; i < n && k < ed; ++k, i += s, pp += s) {
-      if (j = std::min(e, l - k * s); j > 0)
-        gt2[k].set(pp, 0, j), gt2[k].zeros(j, e), gt2[k].dft(0, e);
-      gt1[k].set(rr, 0, s), gt1[k].zeros(s, e), gt1[k].dft(0, e);
-      for (GNA2::bf.mul(gt1[k], gt2[0], 0, e), j = std::min(k, ss) + 1; --j;)
-        GNA1::bf.mul(gt1[k - j], gt2[j], 0, e), GNA2::bf.add(GNA1::bf, 0, e);
-      GNA2::bf.idft(0, e), GNA2::bf.zeros(0, s);
-      if constexpr (!is_nttfriend<mod_t, LIM2>())
-        GNA2::bf.get(rr, s, e), GNA2::bf.set(rr, s, e);
-      GNA2::bf.dft(0, e), GNA2::bf.mul(gt1[0], 0, e), GNA2::bf.idft(0, e);
-      for (GNA2::bf.get(rr, s, e), rr += s, j = s; j--;) rr[j] = -rr[j];
+  if (; n > TH) {
+    static constexpr int lnR = 2 + (t == 0), LIM2 = LIM >> (lnR - 1),
+                         R = (1 << lnR) - 1;
+    const auto [mm, skip] = [&]() -> std::pair<int, int> {
+      if constexpr (t == 0) {
+        const int bn = __builtin_ctz(n) % 3;
+        return bn ? std::make_pair(6, bn) : std::make_pair(5, 1);
+      } else
+        return std::make_pair(TH, 1 + (__builtin_ctz(TH) & 1));
+    }();
+    const int m = std::min(n, mm);
+    for (std::fill_n(r + 1, m - 1, mod_t()); i < m; r[i++] *= miv)
+      for (int j = std::min(i + 1, l); --j;) r[i] += r[i - j] * p[j];
+    using GNA1 = GlobalNTTArray<mod_t, LIM2, 1>;
+    using GNA2 = GlobalNTTArray<mod_t, LIM2, 2>;
+    auto gt1 = GlobalNTTArray2D<mod_t, LIM2, R, 1>::bf;
+    auto gt2 = GlobalNTTArray2D<mod_t, LIM2, R, 2>::bf;
+    for (int ed = (1 << skip) - 1; i < n; ed = R) {
+      mod_t *rr = r;
+      const mod_t *pp = p;
+      const int s = i, e = s << 1, ss = (l - 1) / s;
+      for (int k = 0, j; i < n && k < ed; ++k, i += s, pp += s) {
+        if (j = std::min(e, l - k * s); j > 0)
+          gt2[k].set(pp, 0, j), gt2[k].zeros(j, e), gt2[k].dft(0, e);
+        gt1[k].set(rr, 0, s), gt1[k].zeros(s, e), gt1[k].dft(0, e);
+        for (GNA2::bf.mul(gt1[k], gt2[0], 0, e), j = std::min(k, ss) + 1; --j;)
+          GNA1::bf.mul(gt1[k - j], gt2[j], 0, e), GNA2::bf.add(GNA1::bf, 0, e);
+        GNA2::bf.idft(0, e), GNA2::bf.zeros(0, s);
+        if constexpr (!is_nttfriend<mod_t, LIM2>())
+          GNA2::bf.get(rr, s, e), GNA2::bf.set(rr, s, e);
+        GNA2::bf.dft(0, e), GNA2::bf.mul(gt1[0], 0, e), GNA2::bf.idft(0, e);
+        for (GNA2::bf.get(rr, s, e), rr += s, j = s; j--;) rr[j] = -rr[j];
+      }
     }
-  }
+  } else
+    for (std::fill_n(r + 1, n - 1, mod_t()); i < n; r[i++] *= miv)
+      for (int j = std::min(i + 1, l); --j;) r[i] += r[i - j] * p[j];
 }
 template <std::size_t lnR, class mod_t, std::size_t LIM = 1 << 22>
 void inv_(const mod_t p[], int n, mod_t r[]) {

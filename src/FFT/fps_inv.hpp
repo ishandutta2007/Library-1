@@ -20,14 +20,13 @@ inline void inv_base(const mod_t p[], int n, mod_t r[], int i = 1, int l = -1) {
   if (; n > TH) {
     static constexpr int lnR = 2 + (t == 0), LIM2 = LIM >> (lnR - 1),
                          R = (1 << lnR) - 1;
-    const auto [mm, skip] = [&]() -> std::pair<int, int> {
+    const auto [m, skip] = [&]() -> std::pair<int, int> {
       if constexpr (t == 0) {
         const int bn = __builtin_ctz(n) % 3;
-        return bn ? std::make_pair(6, bn) : std::make_pair(5, 1);
+        return bn ? std::make_pair(64, bn) : std::make_pair(32, 1);
       } else
         return std::make_pair(TH, 1 + (__builtin_ctz(TH) & 1));
     }();
-    const int m = std::min(n, mm);
     for (std::fill_n(r + 1, m - 1, mod_t()); i < m; r[i++] *= miv)
       for (int j = std::min(i + 1, l); --j;) r[i] += r[i - j] * p[j];
     using GNA1 = GlobalNTTArray<mod_t, LIM2, 1>;

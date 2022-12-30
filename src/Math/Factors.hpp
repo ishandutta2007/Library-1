@@ -17,8 +17,7 @@ template <class T, size_t _Nm> struct ConstexprArray {
   size_t sz= 0;
 };
 class Factors: public ConstexprArray<pair<u64, uint16_t>, 16> {
-  template <class Uint, class mod_pro_t>
-  static constexpr Uint rho(Uint n, Uint c) {
+  template <class Uint, class mod_pro_t> static constexpr Uint rho(Uint n, Uint c) {
     const mod_pro_t md(n);
     auto f= [&md, n, c](Uint x) { return md.plus(md.mul(x, x), c); };
     const Uint m= 1LL << (__lg(n) / 5);
@@ -36,11 +35,7 @@ class Factors: public ConstexprArray<pair<u64, uint16_t>, 16> {
   static constexpr u64 find_prime_factor(u64 n) {
     if (is_prime(n)) return n;
     for (u64 i= 100; i--;)
-      if (n= n < UINT_MAX    ? rho<u32, MIntPro_Na<u32>>(n, i + 1)
-             : n < LLONG_MAX ? rho<u64, MIntPro_Montg>(n, i + 1)
-                             : rho<u64, MIntPro_Na<u64>>(n, i + 1);
-          is_prime(n))
-        return n;
+      if (n= n < UINT_MAX ? rho<u32, MP_Na<u32>>(n, i + 1) : n < LLONG_MAX ? rho<u64, MP_Mo>(n, i + 1) : rho<u64, MP_Na<u64>>(n, i + 1); is_prime(n)) return n;
     return 0;
   }
   constexpr void init(u64 n) {
@@ -54,8 +49,7 @@ class Factors: public ConstexprArray<pair<u64, uint16_t>, 16> {
   constexpr Factors()= default;
   constexpr Factors(u64 n) { init(n), bubble_sort(dat, dat + sz); }
 };
-template <class Uint, class mod_pro_t>
-constexpr Uint inner_primitive_root(Uint p) {
+template <class Uint, class mod_pro_t> constexpr Uint inner_primitive_root(Uint p) {
   const mod_pro_t md(p);
   const auto f= Factors(p - 1);
   for (Uint ret= 2, one= md.set(1), ng= 0;; ret++) {
@@ -66,9 +60,9 @@ constexpr Uint inner_primitive_root(Uint p) {
 }
 constexpr u64 primitive_root(u64 p) {
   if (assert(is_prime(p)); p == 2) return 1;
-  if (p < UINT_MAX) return inner_primitive_root<u32, MIntPro_Na<u32>>(p);
-  if (p < LLONG_MAX) return inner_primitive_root<u64, MIntPro_Montg>(p);
-  return inner_primitive_root<u64, MIntPro_Na<u64>>(p);
+  if (p < UINT_MAX) return inner_primitive_root<u32, MP_Na<u32>>(p);
+  if (p < LLONG_MAX) return inner_primitive_root<u64, MP_Mo>(p);
+  return inner_primitive_root<u64, MP_Na<u64>>(p);
 }
 }  // namespace math_internal
 using math_internal::Factors, math_internal::primitive_root;

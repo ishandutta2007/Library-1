@@ -26,10 +26,9 @@ template <class mod_t> struct NumberTheoreticTransform {
       }
       if (__builtin_ctz(n) & 1) {
         mod_t rot= one, u;
-        for (int s= 0, m= 0;; rot*= r2[__builtin_ctz(++s)]) {
-          x[m + 1]= x[m] - (u= x[m + 1] * rot), x[m]+= u;
-          if ((m+= 2) == n) break;
-        }
+        for (int s= 0, m= 0;; rot*= r2[__builtin_ctz(++s)])
+          if (x[m + 1]= x[m] - (u= x[m + 1] * rot), x[m]+= u; (m+= 2) == n)
+            break;
       }
     } else
       for (int m= n, s= 0, i, ed= 1; m>>= 1; s= 0, ed<<= 1)
@@ -40,13 +39,13 @@ template <class mod_t> struct NumberTheoreticTransform {
           if (++s == ed) break;
         }
   }
-  static inline void idft(int n, mod_t x[]) {
+  static inline void idft(int n, mod_t x[], int i= 0) {
     if constexpr (mod < INT_MAX) {
       static constexpr auto ir3= ratios<3>(irt, rt);
       static constexpr u64 iimag= irt[2].val();
       for (int ed= n >> 2, p= 1; ed; p<<= 2, ed>>= 2) {
         mod_t irot= one, irot2= one, irot3= one, *x0= x, *x1, *x2, *x3;
-        for (int s= 0, i;; irot*= ir3[__builtin_ctz(s)], irot2= irot * irot,
+        for (int s= 0;; irot*= ir3[__builtin_ctz(s)], irot2= irot * irot,
                  irot3= irot2 * irot, x0= x3 + p) {
           u64 irot2_u= irot2.val();
           u128 irot_u= irot.val(), irot3_u= irot3.val();
@@ -61,10 +60,9 @@ template <class mod_t> struct NumberTheoreticTransform {
           if (++s == ed) break;
         }
       }
-      if (__builtin_ctz(n) & 1) {
-        mod_t u, *x1= x + (n >> 1);
-        for (int i= n >> 1; i--;) u= x[i] - x1[i], x[i]+= x1[i], x1[i]= u;
-      }
+      if (__builtin_ctz(n) & 1)
+        for (mod_t u, *x1= x + (i= n >> 1); i--;)
+          u= x[i] - x1[i], x[i]+= x1[i], x1[i]= u;
     } else
       for (int m= 1, s= 0, i, ed= n; ed>>= 1; m<<= 1, s= 0)
         for (mod_t irot= one, y, *x0= x, *x1;;
@@ -78,15 +76,13 @@ template <class mod_t> struct NumberTheoreticTransform {
   static inline void even_dft(int n, mod_t x[]) {
     for (int i= 0, j= 0; i < n; i+= 2, j++) x[j]= iv2 * (x[i] + x[i + 1]);
   }
-  static inline void odd_dft(int n, mod_t x[]) {
-    mod_t prod= iv2;
+  static inline void odd_dft(int n, mod_t x[], mod_t prod= iv2) {
     for (int i= 0, j= 0;; i+= 2, prod*= ir2[__builtin_ctz(++j)])
       if (x[j]= prod * (x[i] - x[i + 1]); i + 2 == n) break;
   }
-  static inline void dft_doubling(int n, mod_t x[]) {
-    copy_n(x, n, x + n), idft(n, x + n);
+  static inline void dft_doubling(int n, mod_t x[], int i= 0) {
     mod_t k(1), t(rt[__builtin_ctz(n << 1)]);
-    for (int i= 0; i < n; i++) x[n + i]*= k, k*= t;
+    for (copy_n(x, n, x + n), idft(n, x + n); i < n; i++) x[n + i]*= k, k*= t;
     dft(n, x + n);
   }
   static constexpr u64 lim() { return 1ULL << E; }
@@ -148,19 +144,19 @@ template <class T, uint8_t type, class B> struct NTTArrayImpl: public B {
 #define TMP(num) B::iv##num##1 * (this->dat##num[i] - r1)
   inline T get(int i) const {
     if constexpr (type >= 2) {
-      static const T mod1= B::mint1::modulo();
+      static constexpr T mod1= B::mint1::modulo();
       u64 r1= this->dat1[i].val(), r2= (TMP(2)).val();
       T ret= 0;
       if constexpr (type >= 3) {
-        static const T mod2= B::mint2::modulo();
+        static constexpr T mod2= B::mint2::modulo();
         u64 r3= (TMP(3) - B::iv32 * r2).val();
         if constexpr (type >= 4) {
-          static const T mod3= B::mint3::modulo();
+          static constexpr T mod3= B::mint3::modulo();
           u64 r4= (TMP(4) - B::iv42 * r2 - B::iv43 * r3).val();
           if constexpr (type >= 5) {
-            static const T mod4= B::mint4::modulo();
-            u64 r5= (TMP(5) - B::iv52 * r2 - B::iv53 * r3 - B::iv54 * r4).val();
-            ret= mod4 * r5;
+            static constexpr T mod4= B::mint4::modulo();
+            ret= mod4 *
+                 (TMP(5) - B::iv52 * r2 - B::iv53 * r3 - B::iv54 * r4).val();
           }
           ret= mod3 * (ret + r4);
         }
@@ -171,12 +167,12 @@ template <class T, uint8_t type, class B> struct NTTArrayImpl: public B {
   }
 #undef TMP
 #define ASGN(op, _) \
-  for (int i= b; i < e; i++) this->dat##_[i] op##= r.dat##_[i]
+  for (int i= b; i < e; ++i) this->dat##_[i] op##= r.dat##_[i]
 #define ASSIGN(fname, op) \
   template <class C>      \
   FUNC(op, fname, ASGN, const NTTArrayImpl<T, type, C> &r, int b, int e)
 #define BOP(op, _) \
-  for (int i= b; i < e; i++) this->dat##_[i]= l.dat##_[i] op r.dat##_[i]
+  for (int i= b; i < e; ++i) this->dat##_[i]= l.dat##_[i] op r.dat##_[i]
 #define OP(fname, op)                                     \
   template <class C, class D>                             \
   FUNC(op, fname, BOP, const NTTArrayImpl<T, type, C> &l, \

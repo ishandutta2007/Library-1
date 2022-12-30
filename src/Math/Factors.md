@@ -4,4 +4,4 @@ documentation_of: ./Factors.hpp
 ---
 
 ## 計算量
- $\Omicron \left(N^{1/4}\right) $
+ $\mathcal{O} \left(N^{1/4}\right) $

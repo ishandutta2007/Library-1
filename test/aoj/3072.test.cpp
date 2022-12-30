@@ -10,8 +10,8 @@ signed main() {
   int N, K, P;
   cin >> N >> K >> P;
   Mint p= Mint(P) / 100, q= Mint(1) - p;
-  vector<Mint> f(K, -p * p / N);
-  f[0]= p;
+  vector<Mint> f(N + 1, -p * p / N);
+  f[0]= p, f.resize(K);
   auto g= inv(f);
   Mint ans= 1;
   for (int i= 1; i < K; i++) ans-= g[i] * q;

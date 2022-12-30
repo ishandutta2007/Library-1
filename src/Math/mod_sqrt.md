@@ -4,4 +4,4 @@ documentation_of: ./mod_sqrt.hpp
 ---
 
 ## 計算量
- $\Omicron (\log p) $
+ $\mathcal{O} (\log p) $

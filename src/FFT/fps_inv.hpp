@@ -87,11 +87,7 @@ std::vector<mod_t> inv(const std::vector<mod_t> &p) {
   const int n = p.size();
   assert(n > 0), assert(p[0] != mod_t(0));
   std::copy(p.begin(), p.end(), pp);
-  const mod_t miv = -(rr[0] = mod_t(1) / pp[0]);
-  if (n <= TH) {
-    for (int j, i = 1; i < n; rr[i++] *= miv)
-      for (rr[j = i] = mod_t(); j--;) rr[i] += rr[j] * pp[i - j];
-  } else {
+  if (const mod_t miv = -(rr[0] = mod_t(1) / pp[0]); n > TH) {
     const int l = get_len(n), l1 = l >> 1, k = (n - l1 - 1) / (l1 >> 3),
               bl = __builtin_ctz(l1);
     if constexpr (t != 0) {
@@ -117,7 +113,9 @@ std::vector<mod_t> inv(const std::vector<mod_t> &p) {
       }
     } else
       (k & 1 ? inv_<3, mod_t, LIM> : inv_<4, mod_t, LIM>)(pp, n, rr);
-  }
+  } else
+    for (int j, i = 1; i < n; rr[i++] *= miv)
+      for (rr[j = i] = mod_t(); j--;) rr[i] += rr[j] * pp[i - j];
   return std::vector<mod_t>(rr, rr + n);
 }
 }  // namespace ntt_internal

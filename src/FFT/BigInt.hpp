@@ -5,7 +5,7 @@ class BigInt {
  static constexpr unsigned BASE= 10000000, D= 7;
  using mod_t= StaticModInt<0x3ffffffffa000001>;
  using Vec= std::vector<unsigned>;
- using NTT= NTT<mod_t>;
+ using ntt= NTT<mod_t>;
  bool neg;
  Vec dat;
  BigInt shift(int sz) const { return {neg, Vec(dat.begin() + sz, dat.end())}; }
@@ -89,36 +89,36 @@ public:
     const int l= rl >> 4, l2= l << 1, nn= (n + l - 1) / l, mm= (m + l - 1) / l, ss= nn + mm - 1;
     for (int k= i= 0, s; k < n; i++, k+= l) {
      for (j= s= std::min(l, n - k); j--;) f2[i][j]= dat[k + j];
-     std::fill_n(f2[i] + s, l2 - s, mod_t()), NTT::dft(l2, f2[i]);
+     std::fill_n(f2[i] + s, l2 - s, mod_t()), ntt::dft(l2, f2[i]);
     }
     if (this != &r)
      for (int k= i= 0, s; k < m; i++, k+= l) {
       for (j= s= std::min(l, m - k); j--;) g2[i][j]= dat[k + j];
-      std::fill_n(g2[i] + s, l2 - s, mod_t()), NTT::dft(l2, g2[i]);
+      std::fill_n(g2[i] + s, l2 - s, mod_t()), ntt::dft(l2, g2[i]);
      }
     else
      for (i= nn; i--;) std::copy_n(f2[i], l2, g2[i]);
     for (i= l2; i--;) f[i]= f2[0][i] * g2[0][i];
-    for (NTT::idft(l2, f), i= l2; i--;) h[i]= f[i].val();
+    for (ntt::idft(l2, f), i= l2; i--;) h[i]= f[i].val();
     for (int k= l, ed, ii= 1; ii < ss; ++ii, k+= l) {
      j= std::max(0, ii - nn + 1), ed= std::min(mm - 1, ii);
      for (i= l2; i--;) f[i]= f2[ii - ed][i] * g2[ed][i];
      for (; j < ed; ++j)
       for (i= l2; i--;) f[i]+= f2[ii - j][i] * g2[j][i];
-     for (NTT::idft(l2, f), i= std::min(l, sz - k); i--;) h[i + k]+= f[i].val();
+     for (ntt::idft(l2, f), i= std::min(l, sz - k); i--;) h[i + k]+= f[i].val();
      for (i= std::min(l2, sz - k); i-- > l;) h[i + k]= f[i].val();
     }
    } else {
     const int len= sz <= l + fl ? l : get_len(sz);
     for (i= n; i--;) f[i]= dat[i];
-    std::fill_n(f + n, len - n, mod_t()), NTT::dft(len, f);
+    std::fill_n(f + n, len - n, mod_t()), ntt::dft(len, f);
     if (this != &r) {
      for (i= m; i--;) g[i]= r.dat[i];
-     std::fill_n(g + m, len - m, mod_t()), NTT::dft(len, g);
+     std::fill_n(g + m, len - m, mod_t()), ntt::dft(len, g);
      for (i= len; i--;) f[i]*= g[i];
     } else
      for (i= len; i--;) f[i]*= f[i];
-    for (NTT::idft(len, f), i= len; i < sz; f[i - len]-= h[i], i++)
+    for (ntt::idft(len, f), i= len; i < sz; f[i - len]-= h[i], i++)
      for (h[i]= 0, j= i - m + 1; j < n; j++) h[i]+= (long long)dat[j] * r.dat[i - j];
     for (i= std::min(sz, len); i--;) h[i]= f[i].val();
    }

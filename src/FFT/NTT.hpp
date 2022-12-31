@@ -135,11 +135,11 @@ TP<class T, u8 t, class B> struct NI: public B {
     if CE (t > 3) {
      u64 r4= (TMP(4) - B::iv42 * r2 - B::iv43 * r3).val();
      if CE (t > 4) a= B::m4::mod() * (TMP(5) - B::iv52 * r2 - B::iv53 * r3 - B::iv54 * r4).val();
-     a= B::m3::mod() * (a + r4);
+     a= (a + r4) * B::m3::mod();
     }
-    a= B::m2::mod() * (a + r3);
+    a= (a + r3) * B::m2::mod();
    }
-   return B::m1::mod() * (a + r2) + r1;
+   return (a + r2) * B::m1::mod() + r1;
   } else return this->dt1[i];
  }
 #undef TMP

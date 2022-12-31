@@ -134,7 +134,7 @@ TP<class T, u8 t, class B> struct NI: public B {
     u64 r3= (TMP(3) - B::iv32 * r2).val();
     if CE (t > 3) {
      u64 r4= (TMP(4) - B::iv42 * r2 - B::iv43 * r3).val();
-     if CE (t > 4) a= B::m4::mod() * (TMP(5) - B::iv52 * r2 - B::iv53 * r3 - B::iv54 * r4).val();
+     if CE (t > 4) a= T(B::m4::mod()) * (TMP(5) - B::iv52 * r2 - B::iv53 * r3 - B::iv54 * r4).val();
      a= (a + r4) * B::m3::mod();
     }
     a= (a + r3) * B::m2::mod();

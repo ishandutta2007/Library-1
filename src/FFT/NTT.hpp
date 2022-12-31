@@ -3,234 +3,244 @@
 #include "src/Math/is_prime.hpp"
 #include "src/Math/ModInt.hpp"
 namespace math_internal {
-template <class mod_t> struct NumberTheoreticTransform {
-  static inline void dft(int n, mod_t x[]) {
-    if constexpr (mod < INT_MAX) {
-      static constexpr auto r3= ratios<3>(rt, irt);
-      static constexpr u128 img= rt[2].val(), mod3= u128(mod) << 93;
-      for (int p= n >> 2, ed= 1; p; p>>= 2, ed<<= 2) {
-        mod_t rot= I, rot2= I, rot3= I, *x0= x, *x1, *x2, *x3;
-        for (int s= 0, i;; rot*= r3[__builtin_ctz(s)], rot2= rot * rot, rot3= rot2 * rot, x0= x3 + p) {
-          u64 rot_u= rot.val(), rot2_u= rot2.val(), rot3_u= rot3.val();
-          for (x1= x0 + p, x2= x1 + p, x3= x2 + p, i= p; i--;) {
-            u64 a0= x0[i].val(), a1= rot_u * x1[i].val(), a2= rot2_u * x2[i].val(), a3= rot3_u * x3[i].val(), na3= mod2 - a3, a0n2= mod2 + a0 - a2;
-            u128 a1na3img= img * (a1 + na3);
-            x0[i]= a0 + a1 + a2 + a3, x1[i]= a0 + (mod2 - a1) + a2 + na3, x2[i]= a1na3img + a0n2, x3[i]= mod3 - a1na3img + a0n2;
-          }
-          if (++s == ed) break;
-        }
-      }
-      if (__builtin_ctz(n) & 1) {
-        mod_t rot= I, u;
-        for (int s= 0, m= 0;; rot*= r2[__builtin_ctz(++s)])
-          if (x[m + 1]= x[m] - (u= x[m + 1] * rot), x[m]+= u; (m+= 2) == n) break;
-      }
-    } else
-      for (int m= n, s= 0, i, ed= 1; m>>= 1; s= 0, ed<<= 1)
-        for (mod_t rot= I, *x0= x, *x1, u;; rot*= r2[__builtin_ctz(s)], x0= x1 + m) {
-          for (x1= x0 + (i= m); i--;) x1[i]= x0[i] - (u= rot * x1[i]), x0[i]+= u;
-          if (++s == ed) break;
-        }
-  }
-  static inline void idft(int n, mod_t x[], int i= 0) {
-    if constexpr (mod < INT_MAX) {
-      static constexpr auto ir3= ratios<3>(irt, rt);
-      static constexpr u64 iimg= irt[2].val();
-      for (int ed= n >> 2, p= 1; ed; p<<= 2, ed>>= 2) {
-        mod_t rot= I, rot2= I, rot3= I, *x0= x, *x1, *x2, *x3;
-        for (int s= 0;; rot*= ir3[__builtin_ctz(s)], rot2= rot * rot, rot3= rot2 * rot, x0= x3 + p) {
-          u64 rot2_u= rot2.val();
-          u128 rot_u= rot.val(), rot3_u= rot3.val();
-          for (x1= x0 + p, x2= x1 + p, x3= x2 + p, i= p; i--;) {
-            u64 a0= x0[i].val(), a1= x1[i].val(), a2= x2[i].val(), a3= x3[i].val(), na3= mod - a3, a0n1= a0 + mod - a1, a2na3iimg= iimg * (a2 + na3);
-            x0[i]= a0 + a1 + a2 + a3, x1[i]= rot_u * (a0n1 + a2na3iimg), x2[i]= rot2_u * (a0 + a1 + (mod - a2) + na3), x3[i]= rot3_u * (a0n1 + (mod2 << 1) - a2na3iimg);
-          }
-          if (++s == ed) break;
-        }
-      }
-      if (__builtin_ctz(n) & 1)
-        for (mod_t u, *x1= x + (i= n >> 1); i--;) u= x[i] - x1[i], x[i]+= x1[i], x1[i]= u;
-    } else
-      for (int m= 1, s= 0, i, ed= n; ed>>= 1; m<<= 1, s= 0)
-        for (mod_t rot= I, y, *x0= x, *x1;; rot*= ir2[__builtin_ctz(s)], x0= x1 + m) {
-          for (x1= x0 + (i= m); i--;) y= x0[i] - x1[i], x0[i]+= x1[i], x1[i]= rot * y;
-          if (++s == ed) break;
-        }
-    for (const mod_t iv= I / n; n--;) x[n]*= iv;
-  }
-  static inline void even_dft(int n, mod_t x[]) {
-    for (int i= 0, j= 0; i < n; i+= 2, j++) x[j]= iv2 * (x[i] + x[i + 1]);
-  }
-  static inline void odd_dft(int n, mod_t x[], mod_t prod= iv2) {
-    for (int i= 0, j= 0;; i+= 2, prod*= ir2[__builtin_ctz(++j)])
-      if (x[j]= prod * (x[i] - x[i + 1]); i + 2 == n) break;
-  }
-  static inline void dft_doubling(int n, mod_t x[], int i= 0) {
-    mod_t k(1), t(rt[__builtin_ctz(n << 1)]);
-    for (copy_n(x, n, x + n), idft(n, x + n); i < n; i++) x[n + i]*= k, k*= t;
-    dft(n, x + n);
-  }
-  static constexpr u64 lim() { return 1ULL << E; }
- protected:
-  static constexpr u64 mod= mod_t::modulo(), mod2= mod << 31;
-  static_assert(mod & 1);
-  static_assert(is_prime(mod));
-  static constexpr u8 E= __builtin_ctzll(mod - 1);
-  static constexpr mod_t w= [](u8 e) -> mod_t {
-    for (mod_t r= 2;; r+= 1)
-      if (auto s= r.pow((mod - 1) / 2); s != 1 && s * s == 1) return r.pow((mod - 1) >> e);
-    return 0;
-  }(E);
-  static_assert(w != mod_t(0));
-  static constexpr mod_t I= 1, iv2= (mod + 1) / 2, iw= w.pow(lim() - 1);
-  static constexpr auto roots(mod_t w) {
-    array<mod_t, E + 1> ret= {};
-    for (u8 e= E; e; w*= w) ret[e--]= w;
-    return ret[0]= w, ret;
-  }
-  template <size_t N> static constexpr auto ratios(const array<mod_t, E + 1> &rt, const array<mod_t, E + 1> &irt, int i= N) {
-    array<mod_t, E + 1 - N> ret= {};
-    for (mod_t prod= 1; i <= E; prod*= irt[i++]) ret[i - N]= rt[i] * prod;
-    return ret;
-  }
-  static constexpr auto rt= roots(w), irt= roots(iw);
-  static constexpr auto r2= ratios<2>(rt, irt), ir2= ratios<2>(irt, rt);
+#define CE constexpr
+#define ST static
+#define TP template
+#define BSF(_, n) __builtin_ctz##_(n)
+TP<class mod_t> struct NTT {
+#define FOR(a, b, c) \
+ for (a= n >> 2; a; a>>= 2, b<<= 2) \
+  for (y= u= r= I, x0= x, s= 0;; r*= c[BSF(, s)], u= r * r, y= u * r, x0= x3 + p)
+#define FOR2(a, b, c) \
+ for (a= n; a>>= 1; b<<= 1) \
+  for (s= 0, r= I, x0= x;; r*= c[BSF(, s)], x0= x1 + p)
+#define REP for (x1= x0 + p, x2= x1 + p, x3= x2 + (i= p); i--;)
+ ST inline void dft(int n, mod_t x[]) {
+  int p, e= 1, s, i;
+  mod_t r, u, y, *x0, *x1, *x2, *x3;
+  if CE (md < INT_MAX) {
+   ST CE auto r3= ras<3>(rt, irt);
+   ST CE u128 im= rt[2].val(), md3= u128(md) << 93;
+   FOR(p, e, r3) {
+    u64 ru= r.val(), ru2= u.val(), ru3= y.val();
+    REP {
+     u64 a= x0[i].val(), b= ru * x1[i].val(), c= ru2 * x2[i].val(), d= ru3 * x3[i].val(), f= md2 - d, g= md2 + a - c;
+     u128 h= im * (b + f);
+     x0[i]= a + b + c + d, x1[i]= a + (md2 - b) + c + f, x2[i]= h + g, x3[i]= md3 - h + g;
+    }
+    if (++s == e) break;
+   }
+   if (BSF(, n) & 1)
+    for (r= I, s= 0, p= 0;; r*= r2[BSF(, ++s)])
+     if (x[p + 1]= x[p] - (u= x[p + 1] * r), x[p]+= u; (p+= 2) == n) break;
+  } else FOR2(p, e, r2) {
+    for (x1= x0 + (i= p); i--;) x1[i]= x0[i] - (u= r * x1[i]), x0[i]+= u;
+    if (++s == e) break;
+   }
+ }
+ ST inline void idft(int n, mod_t x[]) {
+  int e, p= 1, s, i;
+  mod_t r, u, y, *x0, *x1, *x2, *x3;
+  if CE (md < INT_MAX) {
+   ST CE auto ir3= ras<3>(irt, rt);
+   ST CE u64 im= irt[2].val();
+   FOR(e, p, ir3) {
+    u64 ru2= u.val();
+    u128 ru= r.val(), ru3= y.val();
+    REP {
+     u64 a= x0[i].val(), b= x1[i].val(), c= x2[i].val(), d= x3[i].val(), f= md - d, g= a + md - b, h= im * (c + f);
+     x0[i]= a + b + c + d, x1[i]= ru * (g + h), x2[i]= ru2 * (a + b + (md - c) + f), x3[i]= ru3 * (g + (md2 << 1) - h);
+    }
+    if (++s == e) break;
+   }
+   if (BSF(, n) & 1)
+    for (x1= x + (i= n >> 1); i--;) u= x[i] - x1[i], x[i]+= x1[i], x1[i]= u;
+  } else FOR2(e, p, ir2) {
+    for (x1= x0 + (i= p); i--;) u= x0[i] - x1[i], x0[i]+= x1[i], x1[i]= r * u;
+    if (++s == e) break;
+   }
+  for (const mod_t iv= I / n; n--;) x[n]*= iv;
+ }
+#undef FOR
+#undef FOR2
+#undef REP
+ ST inline void even_dft(int n, mod_t x[]) {
+  for (int i= 0, j= 0; i < n; i+= 2) x[j++]= iv2 * (x[i] + x[i + 1]);
+ }
+ ST inline void odd_dft(int n, mod_t x[], mod_t r= iv2) {
+  for (int i= 0, j= 0;; r*= ir2[BSF(, ++j)])
+   if (x[j]= r * (x[i] - x[i + 1]); (i+= 2) == n) break;
+ }
+ ST inline void dft_doubling(int n, mod_t x[], int i= 0) {
+  mod_t k= I, t= rt[BSF(, n << 1)];
+  for (copy_n(x, n, x + n), idft(n, x + n); i < n; ++i) x[n + i]*= k, k*= t;
+  dft(n, x + n);
+ }
+protected:
+ ST CE u64 md= mod_t::mod(), md2= md << 31;
+ static_assert(md & 1);
+ static_assert(is_prime(md));
+ ST CE u8 E= BSF(ll, md - 1);
+ ST CE mod_t w= [](u8 e) {
+  for (mod_t r= 2;; r+= 1)
+   if (auto s= r.pow((md - 1) / 2); s != 1 && s * s == 1) return r.pow((md - 1) >> e);
+  return mod_t();
+ }(E);
+ static_assert(w != mod_t());
+ ST CE mod_t I= 1, iv2= (md + 1) / 2, iw= w.pow((1ULL << E) - 1);
+ ST CE auto roots(mod_t w) {
+  array<mod_t, E + 1> x= {};
+  for (u8 e= E; e; w*= w) x[e--]= w;
+  return x[0]= w, x;
+ }
+ TP<u32 N> ST CE auto ras(const array<mod_t, E + 1> &rt, const array<mod_t, E + 1> &irt, int i= N) {
+  array<mod_t, E + 1 - N> x= {};
+  for (mod_t ro= 1; i <= E; ro*= irt[i++]) x[i - N]= rt[i] * ro;
+  return x;
+ }
+ ST CE auto rt= roots(w), irt= roots(iw);
+ ST CE auto r2= ras<2>(rt, irt), ir2= ras<2>(irt, rt);
 };
-template <class T, u8 type, class B> struct NTTArrayImpl: public B {
-  using B::B;
-#define FUNC(op, name, HOGE, ...) \
-  inline void name(__VA_ARGS__) { \
-    HOGE(op, 1); \
-    if constexpr (type >= 2) HOGE(op, 2); \
-    if constexpr (type >= 3) HOGE(op, 3); \
-    if constexpr (type >= 4) HOGE(op, 4); \
-    if constexpr (type >= 5) HOGE(op, 5); \
-  }
-#define DFT(fft, _) B::ntt##_::fft(e - b, this->dat##_ + b)
-#define ZEROS(op, _) fill_n(this->dat##_ + b, e - b, typename B::mint##_())
-#define SET(op, _) copy(x + b, x + e, this->dat##_ + b)
-#define SET_SINGLE(op, _) this->dat##_[i]= x;
-#define SUBST(op, _) copy(r.dat##_ + b, r.dat##_ + e, this->dat##_ + b)
-#define ASGN(op, _) \
-  for (int i= b; i < e; ++i) this->dat##_[i] op##= r.dat##_[i]
-#define ASSIGN(fname, op) template <class C> FUNC(op, fname, ASGN, const NTTArrayImpl<T, type, C> &r, int b, int e)
-#define BOP(op, _) \
-  for (int i= b; i < e; ++i) this->dat##_[i]= l.dat##_[i] op r.dat##_[i]
-#define OP(fname, op) template <class C, class D> FUNC(op, fname, BOP, const NTTArrayImpl<T, type, C> &l, const NTTArrayImpl<T, type, D> &r, int b, int e)
-  OP(add, +) OP(dif, -) OP(mul, *) ASSIGN(add, +) ASSIGN(dif, -) ASSIGN(mul, *) FUNC(dft, dft, DFT, int b, int e) FUNC(idft, idft, DFT, int b, int e) FUNC(__, zeros, ZEROS, int b, int e) FUNC(__, set, SET, const T x[], int b, int e) FUNC(__, set, SET_SINGLE, int i, T x) template <class C> FUNC(__, subst, SUBST, const NTTArrayImpl<T, type, C> &r, int b, int e) inline void get(T x[], int b, int e) const {
-    if constexpr (type == 1) copy(this->dat1 + b, this->dat1 + e, x + b);
-    else
-      for (int i= b; i < e; i++) x[i]= get(i);
-  }
-#define TMP(_) B::iv##_##1 * (this->dat##_[i] - r1)
-  inline T get(int i) const {
-    if constexpr (type >= 2) {
-      u64 r1= this->dat1[i].val(), r2= (TMP(2)).val();
-      T ret= 0;
-      if constexpr (type >= 3) {
-        u64 r3= (TMP(3) - B::iv32 * r2).val();
-        if constexpr (type >= 4) {
-          u64 r4= (TMP(4) - B::iv42 * r2 - B::iv43 * r3).val();
-          if constexpr (type >= 5) ret= B::mint4::modulo() * (TMP(5) - B::iv52 * r2 - B::iv53 * r3 - B::iv54 * r4).val();
-          ret= B::mint3::modulo() * (ret + r4);
-        }
-        ret= B::mint2::modulo() * (ret + r3);
-      }
-      return B::mint1::modulo() * (ret + r2) + r1;
-    } else return this->dat1[i];
-  }
+TP<class T, u8 t, class B> struct NI: public B {
+ using B::B;
+#define FUNC(op, name, HG, ...) \
+ inline void name(__VA_ARGS__) { \
+  HG(op, 1); \
+  if CE (t > 1) HG(op, 2); \
+  if CE (t > 2) HG(op, 3); \
+  if CE (t > 3) HG(op, 4); \
+  if CE (t > 4) HG(op, 5); \
+ }
+#define REP for (int i= b; i < e; ++i)
+#define DFT(fft, _) B::ntt##_::fft(e - b, this->dt##_ + b)
+#define ZEROS(op, _) fill_n(this->dt##_ + b, e - b, typename B::m##_())
+#define SET(op, _) copy(x + b, x + e, this->dt##_ + b)
+#define SET_S(op, _) this->dt##_[i]= x;
+#define SUBST(op, _) copy(r.dt##_ + b, r.dt##_ + e, this->dt##_ + b)
+#define ASGN(op, _) REP this->dt##_[i] op##= r.dt##_[i]
+#define ASN(nm, op) TP<class C> FUNC(op, nm, ASGN, const NI<T, t, C> &r, int b, int e)
+#define BOP(op, _) REP this->dt##_[i]= l.dt##_[i] op r.dt##_[i]
+#define OP(nm, op) TP<class C, class D> FUNC(op, nm, BOP, const NI<T, t, C> &l, const NI<T, t, D> &r, int b, int e)
+ OP(add, +) OP(dif, -) OP(mul, *) ASN(add, +) ASN(dif, -) ASN(mul, *) FUNC(dft, dft, DFT, int b, int e) FUNC(idft, idft, DFT, int b, int e) FUNC(__, zeros, ZEROS, int b, int e) FUNC(__, set, SET, const T x[], int b, int e) FUNC(__, set, SET_S, int i, T x) TP<class C> FUNC(__, subst, SUBST, const NI<T, t, C> &r, int b, int e) inline void get(T x[], int b, int e) const {
+  if CE (t == 1) copy(this->dt1 + b, this->dt1 + e, x + b);
+  else REP x[i]= get(i);
+ }
+#define TMP(_) B::iv##_##1 * (this->dt##_[i] - r1)
+ inline T get(int i) const {
+  if CE (t > 1) {
+   u64 r1= this->dt1[i].val(), r2= (TMP(2)).val();
+   T a= 0;
+   if CE (t > 2) {
+    u64 r3= (TMP(3) - B::iv32 * r2).val();
+    if CE (t > 3) {
+     u64 r4= (TMP(4) - B::iv42 * r2 - B::iv43 * r3).val();
+     if CE (t > 4) a= B::m4::mod() * (TMP(5) - B::iv52 * r2 - B::iv53 * r3 - B::iv54 * r4).val();
+     a= B::m3::mod() * (a + r4);
+    }
+    a= B::m2::mod() * (a + r3);
+   }
+   return B::m1::mod() * (a + r2) + r1;
+  } else return this->dt1[i];
+ }
 #undef TMP
 #undef DFT
 #undef ZEROS
 #undef SET
-#undef SET_SINGLE
+#undef SET_S
 #undef SUBST
 #undef ASGN
-#undef ASSIGN
+#undef ASN
 #undef BOP
 #undef OP
 #undef FUNC
+#undef REP
 };
 #define ARR(_) \
-  using mint##_= StaticModInt<M##_>; \
-  using ntt##_= NumberTheoreticTransform<mint##_>; \
-  mint##_ dat##_[LIM]= {};
-#define IV2 static constexpr mint2 iv21= mint2(1) / mint1::modulo();
-#define IV3 static constexpr mint3 iv32= mint3(1) / mint2::modulo(), iv31= iv32 / mint1::modulo();
-#define IV4 static constexpr mint4 iv43= mint4(1) / mint3::modulo(), iv42= iv43 / mint2::modulo(), iv41= iv42 / mint1::modulo();
-#define IV5 static constexpr mint5 iv54= mint5(1) / mint4::modulo(), iv53= iv54 / mint3::modulo(), iv52= iv53 / mint2::modulo(), iv51= iv52 / mint1::modulo();
-template <u8 type, u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM, bool v> struct NB { ARR(1) };
-template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM> struct NB<2, M1, M2, M3, M4, M5, LIM, 0> { ARR(1) ARR(2) IV2 };
-template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM> struct NB<3, M1, M2, M3, M4, M5, LIM, 0> { ARR(1) ARR(2) ARR(3) IV2 IV3 };
-template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM> struct NB<4, M1, M2, M3, M4, M5, LIM, 0> { ARR(1) ARR(2) ARR(3) ARR(4) IV2 IV3 IV4 };
-template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM> struct NB<5, M1, M2, M3, M4, M5, LIM, 0> { ARR(1) ARR(2) ARR(3) ARR(4) ARR(5) IV2 IV3 IV4 IV5 };
+ using m##_= StaticModInt<M##_>; \
+ using ntt##_= NTT<m##_>; \
+ m##_ dt##_[LM]= {};
+#define IV2 ST CE m2 iv21= m2(1) / m1::mod();
+#define IV3 ST CE m3 iv32= m3(1) / m2::mod(), iv31= iv32 / m1::mod();
+#define IV4 ST CE m4 iv43= m4(1) / m3::mod(), iv42= iv43 / m2::mod(), iv41= iv42 / m1::mod();
+#define IV5 ST CE m5 iv54= m5(1) / m4::mod(), iv53= iv54 / m3::mod(), iv52= iv53 / m2::mod(), iv51= iv52 / m1::mod();
+TP<u8 t, u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM, bool v> struct NB { ARR(1) };
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<2, M1, M2, M3, M4, M5, LM, 0> { ARR(1) ARR(2) IV2 };
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<3, M1, M2, M3, M4, M5, LM, 0> { ARR(1) ARR(2) ARR(3) IV2 IV3 };
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<4, M1, M2, M3, M4, M5, LM, 0> { ARR(1) ARR(2) ARR(3) ARR(4) IV2 IV3 IV4 };
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<5, M1, M2, M3, M4, M5, LM, 0> { ARR(1) ARR(2) ARR(3) ARR(4) ARR(5) IV2 IV3 IV4 IV5 };
 #undef ARR
-#define VEC(_) \
-  using mint##_= StaticModInt<M##_>; \
-  using ntt##_= NumberTheoreticTransform<mint##_>; \
-  vector<mint##_> buf##_; \
-  mint##_ *dat##_;
-template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM> struct NB<1, M1, M2, M3, M4, M5, LIM, 1> {
-  NB(): dat1(buf1.data()) {}
-  void resize(int n) { buf1.resize(n), dat1= buf1.data(); }
-  size_t size() const { return buf1.size(); }
-  VEC(1)
+#define VC(_) \
+ using m##_= StaticModInt<M##_>; \
+ using ntt##_= NTT<m##_>; \
+ vector<m##_> bf##_; \
+ m##_ *dt##_;
+#define RS resize
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<1, M1, M2, M3, M4, M5, LM, 1> {
+ NB(): dt1(bf1.data()) {}
+ void RS(int n) { bf1.RS(n), dt1= bf1.data(); }
+ u32 size() const { return bf1.size(); }
+ VC(1)
 };
-template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM> struct NB<2, M1, M2, M3, M4, M5, LIM, 1> {
-  NB(): dat1(buf1.data()), dat2(buf2.data()) {}
-  void resize(int n) { buf1.resize(n), dat1= buf1.data(), buf2.resize(n), dat2= buf2.data(); }
-  size_t size() const { return buf1.size(); }
-  VEC(1) VEC(2) IV2
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<2, M1, M2, M3, M4, M5, LM, 1> {
+ NB(): dt1(bf1.data()), dt2(bf2.data()) {}
+ void RS(int n) { bf1.RS(n), dt1= bf1.data(), bf2.RS(n), dt2= bf2.data(); }
+ u32 size() const { return bf1.size(); }
+ VC(1) VC(2) IV2
 };
-template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM> struct NB<3, M1, M2, M3, M4, M5, LIM, 1> {
-  NB(): dat1(buf1.data()), dat2(buf2.data()), dat3(buf3.data()) {}
-  void resize(int n) { buf1.resize(n), dat1= buf1.data(), buf2.resize(n), dat2= buf2.data(), buf3.resize(n), dat3= buf3.data(); }
-  size_t size() const { return buf1.size(); }
-  VEC(1) VEC(2) VEC(3) IV2 IV3
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<3, M1, M2, M3, M4, M5, LM, 1> {
+ NB(): dt1(bf1.data()), dt2(bf2.data()), dt3(bf3.data()) {}
+ void RS(int n) { bf1.RS(n), dt1= bf1.data(), bf2.RS(n), dt2= bf2.data(), bf3.RS(n), dt3= bf3.data(); }
+ u32 size() const { return bf1.size(); }
+ VC(1) VC(2) VC(3) IV2 IV3
 };
-template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM> struct NB<4, M1, M2, M3, M4, M5, LIM, 1> {
-  NB(): dat1(buf1.data()), dat2(buf2.data()), dat3(buf3.data()), dat4(buf4.data()) {}
-  void resize(int n) { buf1.resize(n), dat1= buf1.data(), buf2.resize(n), dat2= buf2.data(), buf3.resize(n), dat3= buf3.data(), buf4.resize(n), dat4= buf4.data(); }
-  size_t size() const { return buf1.size(); }
-  VEC(1) VEC(2) VEC(3) VEC(4) IV2 IV3 IV4
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<4, M1, M2, M3, M4, M5, LM, 1> {
+ NB(): dt1(bf1.data()), dt2(bf2.data()), dt3(bf3.data()), dt4(bf4.data()) {}
+ void RS(int n) { bf1.RS(n), dt1= bf1.data(), bf2.RS(n), dt2= bf2.data(), bf3.RS(n), dt3= bf3.data(), bf4.RS(n), dt4= bf4.data(); }
+ u32 size() const { return bf1.size(); }
+ VC(1) VC(2) VC(3) VC(4) IV2 IV3 IV4
 };
-template <u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, size_t LIM> struct NB<5, M1, M2, M3, M4, M5, LIM, 1> {
-  NB(): dat1(buf1.data()), dat2(buf2.data()), dat3(buf3.data()), dat4(buf4.data()), dat5(buf5.data()) {}
-  void resize(int n) { buf1.resize(n), dat1= buf1.data(), buf2.resize(n), dat2= buf2.data(), buf3.resize(n), dat3= buf3.data(), buf4.resize(n), dat4= buf4.data(), buf5.resize(n), dat5= buf5.data(); }
-  size_t size() const { return buf1.size(); }
-  VEC(1) VEC(2) VEC(3) VEC(4) VEC(5) IV2 IV3 IV4 IV5
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<5, M1, M2, M3, M4, M5, LM, 1> {
+ NB(): dt1(bf1.data()), dt2(bf2.data()), dt3(bf3.data()), dt4(bf4.data()), dt5(bf5.data()) {}
+ void RS(int n) { bf1.RS(n), dt1= bf1.data(), bf2.RS(n), dt2= bf2.data(), bf3.RS(n), dt3= bf3.data(), bf4.RS(n), dt4= bf4.data(), bf5.RS(n), dt5= bf5.data(); }
+ u32 size() const { return bf1.size(); }
+ VC(1) VC(2) VC(3) VC(4) VC(5) IV2 IV3 IV4 IV5
 };
-#undef VEC
+#undef VC
 #undef IV2
 #undef IV3
 #undef IV4
 #undef IV5
-template <class T, size_t LIM> constexpr bool is_nttfriend() {
-  if constexpr (!is_staticmodint_v<T>) return 0;
-  else return (T::modulo() & is_prime(T::modulo())) && LIM <= (1ULL << __builtin_ctzll(T::modulo() - 1));
+TP<class T, u32 LM> CE bool is_nttfriend() {
+ if CE (!is_staticmodint_v<T>) return 0;
+ else return (T::mod() & is_prime(T::mod())) && LM <= (1ULL << BSF(ll, T::mod() - 1));
 }
-template <class T> constexpr u64 max_value() {
-  if constexpr (is_runtimemodint_v<T>) return numeric_limits<typename T::Uint>::max();
-  else if constexpr (is_staticmodint_v<T>) return T::modulo();
-  else return numeric_limits<T>::max();
+TP<class T> CE u64 mv() {
+ if CE (is_runtimemodint_v<T>) return numeric_limits<typename T::Uint>::max();
+ else if CE (is_staticmodint_v<T>) return T::mod();
+ else return numeric_limits<T>::max();
 }
-template <class T, size_t LIM, u32 M1, u32 M2, u32 M3, u32 M4> constexpr u8 nttarray_type_() {
-  if constexpr (!is_nttfriend<T, LIM>()) {
-    constexpr u128 mv= max_value<T>(), mvmv= mv * mv;
-    if constexpr (mvmv <= M1 / LIM) return 1;
-    else if constexpr (mvmv <= u64(M1) * M2 / LIM) return 2;
-    else if constexpr (mvmv <= u128(M1) * M2 * M3 / LIM) return 3;
-    else if constexpr (mvmv <= u128(M1) * M2 * M3 * M4 / LIM) return 4;
-    else return 5;
-  } else return 1;
+TP<class T, u32 LM, u32 M1, u32 M2, u32 M3, u32 M4> CE u8 nt() {
+ if CE (!is_nttfriend<T, LM>()) {
+  CE u128 m= mv<T>(), mv= m * m;
+  if CE (mv <= M1 / LM) return 1;
+  else if CE (mv <= u64(M1) * M2 / LM) return 2;
+  else if CE (mv <= u128(M1) * M2 * M3 / LM) return 3;
+  else if CE (mv <= u128(M1) * M2 * M3 * M4 / LM) return 4;
+  else return 5;
+ } else return 1;
 }
-constexpr u32 MOD32_1= 0x7e000001, MOD32_2= 0x78000001, MOD32_3= 0x6c000001, MOD32_4= 0x66000001, MOD32_5= 0x42000001;
-template <class T, size_t LIM> constexpr u8 nttarray_type= nttarray_type_<T, LIM, MOD32_1, MOD32_2, MOD32_3, MOD32_4>();
-template <class T, size_t LIM> constexpr u8 nttarr_cat= is_nttfriend<T, LIM>() && (max_value<T>() > INT_MAX) ? 0 : nttarray_type<T, LIM>;
-template <class T, size_t LIM, bool v> using NTTArray= NTTArrayImpl<T, nttarray_type<T, LIM>, conditional_t<is_nttfriend<T, LIM>(), NB<1, max_value<T>(), 0, 0, 0, 0, LIM, v>, NB<nttarray_type<T, LIM>, MOD32_1, MOD32_2, MOD32_3, MOD32_4, MOD32_5, LIM, v>>>;
+#undef BSF
+#undef RS
+CE u32 MOD1= 0x7e000001, MOD2= 0x78000001, MOD3= 0x6c000001, MOD4= 0x66000001, MOD5= 0x42000001;
+TP<class T, u32 LM> CE u8 nttarr_type= nt<T, LM, MOD1, MOD2, MOD3, MOD4>();
+TP<class T, u32 LM> CE u8 nttarr_cat= is_nttfriend<T, LM>() && (mv<T>() > INT_MAX) ? 0 : nttarr_type<T, LM>;
+TP<class T, u32 LM, bool v> using NTTArray= NI<T, nttarr_type<T, LM>, conditional_t<is_nttfriend<T, LM>(), NB<1, mv<T>(), 0, 0, 0, 0, LM, v>, NB<nttarr_type<T, LM>, MOD1, MOD2, MOD3, MOD4, MOD5, LM, v>>>;
+#undef CE
+#undef ST
+#undef TP
 }
-using math_internal::is_nttfriend, math_internal::nttarray_type, math_internal::nttarr_cat, math_internal::NumberTheoreticTransform, math_internal::NTTArray;
-template <class T, std::size_t LIM, int id= 0> struct GlobalNTTArray { static inline NTTArray<T, LIM, 0> bf; };
-template <class T, std::size_t LIM, std::size_t LIM2, int id= 0> struct GlobalNTTArray2D { static inline NTTArray<T, LIM, 0> bf[LIM2]; };
-template <class T, std::size_t LIM, int id= 0> struct GlobalArray { static inline T bf[LIM]; };
+using math_internal::is_nttfriend, math_internal::nttarr_type, math_internal::nttarr_cat, math_internal::NTT, math_internal::NTTArray;
+template <class T, size_t LM, int id= 0> struct GlobalNTTArray { static inline NTTArray<T, LM, 0> bf; };
+template <class T, size_t LM, size_t LM2, int id= 0> struct GlobalNTTArray2D { static inline NTTArray<T, LM, 0> bf[LM2]; };
+template <class T, size_t LM, int id= 0> struct GlobalArray { static inline T bf[LM]; };
 constexpr unsigned get_len(unsigned n) { return 1 << (std::__lg(n - 1) + 1); }

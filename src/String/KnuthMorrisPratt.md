@@ -1,5 +1,5 @@
 ---
-title: Rolling-Hash
+title: Knuth-Morris-Pratt
 documentation_of: ./KnuthMorrisPratt.hpp
 ---
 ## 計算量

@@ -54,10 +54,10 @@ template <u32 lnR, class mod_t, u32 LM= 1 << 22> void inv_(const mod_t p[], int 
 }
 template <class mod_t, u32 LM= 1 << 22> vector<mod_t> inv(const vector<mod_t>& p) {
  static constexpr int t= nttarr_cat<mod_t, LM>, TH= (int[]){94, 54, 123, 222, 243, 354}[t];
- mod_t *pp= GlobalArray<mod_t, LM, 1>::bf, *rr= GlobalArray<mod_t, LM, 2>::bf;
+ const mod_t* pp= p.data();
+ mod_t* rr= GlobalArray<mod_t, LM, 1>::bf;
  const int n= p.size();
  assert(n > 0), assert(p[0] != mod_t());
- copy(p.begin(), p.end(), pp);
  if (const mod_t miv= -(rr[0]= mod_t(1) / pp[0]); n > TH) {
   const int l= get_len(n), l1= l >> 1, k= (n - l1 - 1) / (l1 >> 3), bl= __builtin_ctz(l1);
   if constexpr (t != 0) {

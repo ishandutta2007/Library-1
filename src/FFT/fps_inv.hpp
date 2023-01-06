@@ -7,8 +7,7 @@ template <u32 LM, class mod_t> inline void inv_base(const mod_t p[], int n, mod_
  if (n <= i) return;
  if (l < 0) l= n;
  assert(((n & -n) == n)), assert(i && ((i & -i) == i));
- const mod_t miv= -r[0];
- if (; n > TH) {
+ if (const mod_t miv= -r[0]; n > TH) {
   static constexpr int lnR= 2 + (!t), LM2= LM >> (lnR - 1), R= (1 << lnR) - 1;
   const auto [m, skip]= [&]() {
    if constexpr (!t) {
@@ -53,27 +52,25 @@ template <u32 lnR, class mod_t, u32 LM= 1 << 22> void inv_(const mod_t p[], int 
  }
 }
 template <class mod_t, u32 LM= 1 << 22> vector<mod_t> inv(const vector<mod_t>& p) {
- static constexpr int t= nttarr_cat<mod_t, LM>, TH= (int[]){94, 54, 123, 222, 243, 354}[t];
- const mod_t* pp= p.data();
- mod_t* rr= GlobalArray<mod_t, LM, 1>::bf;
+ static constexpr int t= nttarr_cat<mod_t, LM>, TH= (int[]){102, 60, 178, 245, 370, 480}[t];
+ mod_t *pp= GlobalArray<mod_t, LM, 1>::bf, *r= GlobalArray<mod_t, LM, 2>::bf;
  const int n= p.size();
  assert(n > 0), assert(p[0] != mod_t());
- if (const mod_t miv= -(rr[0]= mod_t(1) / pp[0]); n > TH) {
+ if (const mod_t miv= -(r[0]= mod_t(1) / p[0]); n > TH) {
   const int l= get_len(n), l1= l >> 1, k= (n - l1 - 1) / (l1 >> 3), bl= __builtin_ctz(l1);
-  if constexpr (t != 0) {
-   if (bl & 1) {
-    static constexpr int BL= t == 5 ? 11 : 13;
-    (k >= 6 ? inv_<1, mod_t, LM> : !k && bl >= BL ? inv_<4, mod_t, LM> : t == 2 && bl == 7 && k == 1 ? inv_<2, mod_t, LM> : inv_<3, mod_t, LM>)(pp, n, rr);
-   } else {
-    if (bl >= 10) (k >= 6 || k == 3 ? inv_<2, mod_t, LM> : k == 5 ? inv_<3, mod_t, LM> : inv_<4, mod_t, LM>)(pp, n, rr);
-    else if (bl == 6 || t == 4) (!k ? inv_<4, mod_t, LM> : k == 1 ? inv_<3, mod_t, LM> : inv_<2, mod_t, LM>)(pp, n, rr);
-    else (k >= 6 || (2 <= k && k < 4) ? inv_<2, mod_t, LM> : k == 5 || (k == 1 && t != 1) ? inv_<3, mod_t, LM> : inv_<4, mod_t, LM>)(pp, n, rr);
-   }
-  } else (k & 1 ? inv_<3, mod_t, LM> : inv_<4, mod_t, LM>)(pp, n, rr);
- } else
-  for (int j, i= 1; i < n; rr[i++]*= miv)
-   for (rr[j= i]= mod_t(); j--;) rr[i]+= rr[j] * pp[i - j];
- return vector(rr, rr + n);
+  int a= 4;
+  if constexpr (!t) a= bl < 7 ? k > 5 ? 1 : k > 4 ? 3 : k > 3 ? 4 : 2 : k & 1 ? 3 : 4;
+  else if constexpr (t < 2) a= bl & 1 ? k > 5 ? 1 : bl < 8 ? 3 : bl < 12 ? k > 2 || k == 1 ? 3 : 4 : k & 1 ? 3 : 4 : k > 5 ? bl > 17 && k < 7 ? 4 : 2 : k > 4 ? 3 : k > 3 ? 4 : bl < 7 ? k > 1 ? 2 : k ? 3 : 4 : k > 2 ? 2 : 4;
+  else if constexpr (t < 3) a= bl & 1 ? k > 5 ? 1 : bl < 8 ? k > 3 || k < 2 ? 3 : 2 : k & 1 ? 3 : 4 : k > 5 ? bl > 13 && k < 7 ? 4 : 2 : k == 3 ? 2 : k & 1 ? 3 : 4;
+  else if constexpr (t < 5) a= bl & 1 ? k > 5 ? 1 : k == 1 ? 3 : k < 3 ? 4 : bl > 12 && k == 4 ? 4 : 3 : k > 5 ? bl > 13 && k < 7 ? 4 : 2 : k > 4 ? 3 : k > 3 ? 4 : bl < 9 ? k > 1 ? 2 : k ? 3 : 4 : k > 2 ? 2 : 4;
+  else a= bl & 1 ? k > 5 ? 1 : bl < 10 ? k > 3 || k < 2 ? 3 : 2 : k & 1 ? 3 : 4 : bl < 9 ? k > 3 ? 1 : 2 : k > 5 ? bl > 13 && k < 7 ? 4 : 2 : k == 3 ? 2 : k & 1 ? 3 : 4;
+  (a == 1 ? inv_<1, mod_t, LM> : a == 2 ? inv_<2, mod_t, LM> : a == 3 ? inv_<3, mod_t, LM> : inv_<4, mod_t, LM>)(p.data(), n, r);
+ } else {
+  copy(p.begin(), p.end(), pp);
+  for (int j, i= 1; i < n; r[i++]*= miv)
+   for (r[j= i]= mod_t(); j--;) r[i]+= r[j] * pp[i - j];
+ }
+ return vector(r, r + n);
 }
 }
 using math_internal::inv_base, math_internal::inv;

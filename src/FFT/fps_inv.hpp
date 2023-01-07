@@ -33,8 +33,8 @@ template <u32 LM, class mod_t> inline void inv_base(const mod_t p[], int n, mod_
    }
   }
  } else
-  for (fill_n(r + 1, n - 1, mod_t()); i < n; r[i++]*= miv)
-   for (int j= min(i + 1, l); --j;) r[i]+= r[i - j] * p[j];
+  for (int j; i < n; r[i++]*= miv)
+   for (r[i]= mod_t(), j= min(i + 1, l); --j;) r[i]+= r[i - j] * p[j];
 }
 template <u32 lnR, class mod_t, u32 LM= 1 << 22> void inv_(const mod_t p[], int n, mod_t r[]) {
  static constexpr u32 R= (1 << lnR) - 1, LM2= LM >> (lnR - 1);
@@ -55,7 +55,7 @@ template <class mod_t, u32 LM= 1 << 22> vector<mod_t> inv(const vector<mod_t>& p
  static constexpr int t= nttarr_cat<mod_t, LM>, TH= (int[]){102, 60, 178, 245, 370, 480}[t];
  mod_t *pp= GlobalArray<mod_t, LM, 1>::bf, *r= GlobalArray<mod_t, LM, 2>::bf;
  const int n= p.size();
- assert(n > 0), assert(p[0] != mod_t());
+ copy_n(p.begin(), n, pp), assert(n > 0), assert(p[0] != mod_t());
  if (const mod_t miv= -(r[0]= mod_t(1) / p[0]); n > TH) {
   const int l= get_len(n), l1= l >> 1, k= (n - l1 - 1) / (l1 >> 3), bl= __builtin_ctz(l1);
   int a= 4;
@@ -64,12 +64,10 @@ template <class mod_t, u32 LM= 1 << 22> vector<mod_t> inv(const vector<mod_t>& p
   else if constexpr (t < 3) a= bl & 1 ? k > 5 ? 1 : bl < 8 ? k > 3 || k < 2 ? 3 : 2 : k & 1 ? 3 : 4 : k > 5 ? bl > 13 && k < 7 ? 4 : 2 : k == 3 ? 2 : k & 1 ? 3 : 4;
   else if constexpr (t < 5) a= bl & 1 ? k > 5 ? 1 : k == 1 ? 3 : k < 3 ? 4 : bl > 12 && k == 4 ? 4 : 3 : k > 5 ? bl > 13 && k < 7 ? 4 : 2 : k > 4 ? 3 : k > 3 ? 4 : bl < 9 ? k > 1 ? 2 : k ? 3 : 4 : k > 2 ? 2 : 4;
   else a= bl & 1 ? k > 5 ? 1 : bl < 10 ? k > 3 || k < 2 ? 3 : 2 : k & 1 ? 3 : 4 : bl < 9 ? k > 3 ? 1 : 2 : k > 5 ? bl > 13 && k < 7 ? 4 : 2 : k == 3 ? 2 : k & 1 ? 3 : 4;
-  (a == 1 ? inv_<1, mod_t, LM> : a == 2 ? inv_<2, mod_t, LM> : a == 3 ? inv_<3, mod_t, LM> : inv_<4, mod_t, LM>)(p.data(), n, r);
- } else {
-  copy(p.begin(), p.end(), pp);
+  (a < 2 ? inv_<1, mod_t, LM> : a < 3 ? inv_<2, mod_t, LM> : a < 4 ? inv_<3, mod_t, LM> : inv_<4, mod_t, LM>)(pp, n, r);
+ } else
   for (int j, i= 1; i < n; r[i++]*= miv)
    for (r[j= i]= mod_t(); j--;) r[i]+= r[j] * pp[i - j];
- }
  return vector(r, r + n);
 }
 }

@@ -15,8 +15,8 @@ template <u32 LM, class mod_t> inline void inv_base(const mod_t p[], int n, mod_
     return bn ? make_pair(64, bn) : make_pair(32, 1);
    } else return make_pair(TH, 1 + (__builtin_ctz(TH) & 1));
   }();
-  for (fill_n(r + 1, m - 1, mod_t()); i < m; r[i++]*= miv)
-   for (int j= min(i + 1, l); --j;) r[i]+= r[i - j] * p[j];
+  for (int j; i < m; r[i++]*= miv)
+   for (r[i]= mod_t(), j= min(i + 1, l); --j;) r[i]+= r[i - j] * p[j];
   using GNA1= GlobalNTTArray<mod_t, LM2, 1>;
   using GNA2= GlobalNTTArray<mod_t, LM2, 2>;
   auto gt1= GlobalNTTArray2D<mod_t, LM2, R, 1>::bf, gt2= GlobalNTTArray2D<mod_t, LM2, R, 2>::bf;

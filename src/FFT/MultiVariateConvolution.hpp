@@ -14,10 +14,10 @@ public:
  }
  int size() const { return n; }
  int dim() const { return k; }
- template <typename mod_t, std::size_t LM= 1 << 20, std::size_t LM2= 20> std::vector<mod_t> convolve(const std::vector<mod_t> &f, const std::vector<mod_t> &g) const {
+ template <typename mod_t, std::size_t LM= 1 << 18, std::size_t LM2= 20> std::vector<mod_t> convolve(const std::vector<mod_t> &f, const std::vector<mod_t> &g) const {
   assert((int)f.size() == n), assert((int)g.size() == n);
   if (!k) return {f[0] * g[0]};
-  mod_t *r= GA= GlobalArray<mod_t, LM, 0>::bf;
+  mod_t *r= GlobalArray<mod_t, LM, 0>::bf;
   using GNA= GlobalNTTArray<mod_t, LM, 0>;
   auto gt0= GlobalNTTArray2D<mod_t, LM, LM2, 0>::bf, gt1= GlobalNTTArray2D<mod_t, LM, LM2, 1>::bf, gt2= GlobalNTTArray2D<mod_t, LM, LM2, 2>::bf;
   for (int i= k; i--;) gt0[i].zeros(0, m);

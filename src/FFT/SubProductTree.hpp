@@ -34,7 +34,7 @@ template <class mod_t, std::size_t LM= 1 << 20> struct SubProductTree {
   for (int i= n; i; --i) r[i - 1]= all[n - i] * i;
   auto q= multi_eval(poly(r, r + n));
   for (int i= n; i--;) r[i]= ys[i] / q[i];
-  if (n < nn) std::fill(r + n, r + nn, mod_t());
+  std::fill(r + n, r + nn, mod_t());
   for (int k= 1; k < nn; k<<= 1)
    for (int i= 0, o= nn / k, k2= k << 1; i < n; i+= k2, o+= 2) GNA1::bf.set(r + i, 0, k), GNA1::bf.zeros(k, k2), GNA2::bf.set(r + i + k, 0, k), GNA2::bf.zeros(k, k2), GNA1::bf.dft(0, k2), GNA2::bf.dft(0, k2), GNA1::bf.mul(p[o | 1], 0, k2), GNA2::bf.mul(p[o], 0, k2), GNA1::bf.add(GNA2::bf, 0, k2), GNA1::bf.idft(0, k2), GNA1::bf.get(r + i, 0, k2);
   return std::reverse(r, r + n), poly(r, r + n);

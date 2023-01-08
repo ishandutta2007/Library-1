@@ -2,7 +2,7 @@
 #include <bits/stdc++.h>
 #include "src/Math/is_prime.hpp"
 namespace math_internal {
-template <class Int, class mod_pro_t> constexpr Int inner_sqrt(Int a, Int p) {
+template <class Int, class mod_pro_t> constexpr int64_t inner_sqrt(Int a, Int p) {
  const mod_pro_t md(p);
  Int e= (p - 1) >> 1, one= md.set(1);
  if (a= md.set(a); md.norm(pow(a, e, md)) != one) return -1;
@@ -20,8 +20,8 @@ template <class Int, class mod_pro_t> constexpr Int inner_sqrt(Int a, Int p) {
 constexpr int64_t mod_sqrt(int64_t a, int64_t p) {
  assert(p > 0), assert(a >= 0), assert(is_prime(p)), a%= p;
  if (a <= 1 || p == 2) return a;
- if (p < INT_MAX) return inner_sqrt<int, MP_Na<u32>>(a, p);
- return inner_sqrt<int64_t, MP_Mo>(a, p);
+ if (p < INT_MAX) return inner_sqrt<u32, MP_Na<u32>>(a, p);
+ return inner_sqrt<u64, MP_Mo>(a, p);
 }
 }
 using math_internal::mod_sqrt;

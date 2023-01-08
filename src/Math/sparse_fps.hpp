@@ -83,7 +83,7 @@ template <class mod_t, std::size_t _Nm= 1 << 24> std::vector<mod_t> sparse_sqrt(
  for (int i= cnt + 1; i < ed; i++)
   if (f[i] != mod_t(0)) dat.emplace_back(i - cnt, f[i]);
  mod_t *bf= ret.data() + ofs, mk= mod_t(1) / 2, iv= mod_t(1) / f[cnt];
- bf[0]= mod_sqrt(f[cnt].val(), mod_t::modulo());
+ bf[0]= mod_sqrt(f[cnt].val(), mod_t::mod());
  if (bf[0] * bf[0] != f[cnt]) return {};  // no solution
  for (int i= 1; i < sz; bf[i]*= get_inv<mod_t, _Nm>(i) * iv, i++)
   for (auto &&[j, v]: dat) {

@@ -27,10 +27,10 @@ public:
   for (int i= n; i--;) gt2[chi[i]].set(i, g[i]);
   for (int i= k; i--;) gt1[i].dft(0, m);
   for (int i= k; i--;) gt2[i].dft(0, m);
-  for (int i= k, j, r; i--;)
-   for (j= k; j--;) GNA::bf.mul(gt1[i], gt2[j], 0, m), gt0[r-= k & -((r= i + j) >= k)].add(GNA::bf, 0, m);
+  for (int i= k, j, l; i--;)
+   for (j= k; j--;) GNA::bf.mul(gt1[i], gt2[j], 0, m), gt0[l-= k & -((l= i + j) >= k)].add(GNA::bf, 0, m);
   for (int i= k; i--;) gt0[i].idft(0, m);
   for (int i= n; i--;) r[i]= gt0[chi[i]].get(i);
-  return std::vector<mod_t>(r, r + n);
+  return std::vector(r, r + n);
  }
 };

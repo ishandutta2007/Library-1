@@ -15,7 +15,7 @@ template <class mod_t, size_t LM= 1 << 22> std::vector<mod_t> convolve(const std
   for (int i= n; i--;)
    for (int j= m; j--;) rr[i + j]+= pp[i] * qq[j];
  } else {
-  const int rl= get_len(sz), l= get_len(std::max(n, m)), fl= f(l);
+  const int rl= pw2(sz), l= pw2(std::max(n, m)), fl= f(l);
   static constexpr size_t LM2= LM >> 3;
   static constexpr bool b= nttarr_cat<mod_t, LM2> < t;
   if (b || (l + fl < sz && sz <= (rl >> 3) * 5)) {

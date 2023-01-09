@@ -22,7 +22,7 @@ template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sample_points
   std::partial_sum(ret, ret + e, q, std::multiplies<>());
   for (t= mod_t(1) / q[e - 1]; --i;) q[i]= t * q[i - 1], t*= ret[i];
   if (q[0]= t; k >= TH && n >= TH) {
-   const int len= get_len(e + (d > 0));
+   const int len= pw2(e + (d > 0));
    GNA1::bf.set(x, 0, k), GNA1::bf.zeros(k, len), GNA1::bf.dft(0, len), GNA2::bf.set(q, 0, e), GNA2::bf.zeros(e, len), GNA2::bf.dft(0, len), GNA1::bf.mul(GNA2::bf, 0, len), GNA1::bf.idft(0, len), GNA1::bf.get(ret - d, d, e);
   } else
    for (std::fill_n(ret, n, mod_t()), i= k; i--;)

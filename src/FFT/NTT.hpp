@@ -243,4 +243,4 @@ using math_internal::is_nttfriend, math_internal::nttarr_type, math_internal::nt
 template <class T, size_t LM, int id= 0> struct GlobalNTTArray { static inline NTTArray<T, LM, 0> bf; };
 template <class T, size_t LM, size_t LM2, int id= 0> struct GlobalNTTArray2D { static inline NTTArray<T, LM, 0> bf[LM2]; };
 template <class T, size_t LM, int id= 0> struct GlobalArray { static inline T bf[LM]; };
-constexpr unsigned get_len(unsigned n) { return 1 << (std::__lg(n - 1) + 1); }
+constexpr unsigned pw2(unsigned n) { return ++((((((--n)|= n >> 1)|= n >> 2)|= n >> 4)|= n >> 8)|= n >> 16); }

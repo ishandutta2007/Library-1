@@ -6,7 +6,7 @@ class MultiVariateConvolution {
  std::vector<int> chi;
 public:
  MultiVariateConvolution(): MultiVariateConvolution(std::vector<int>{}) {}
- MultiVariateConvolution(const std::vector<int> &dim): n(std::accumulate(dim.begin(), dim.end(), 1, std::multiplies<int>())), k(dim.size()), m(get_len(n) * 2), chi(n, 0) {
+ MultiVariateConvolution(const std::vector<int> &dim): n(std::accumulate(dim.begin(), dim.end(), 1, std::multiplies<int>())), k(dim.size()), m(pw2(n) * 2), chi(n, 0) {
   for (int i= n; i--;)
    for (int den= 1, j= 0; j < k; ++j) chi[i]+= i / (den*= dim[j]);
   if (k)

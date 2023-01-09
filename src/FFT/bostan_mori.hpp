@@ -33,7 +33,7 @@ template <std::size_t LM, class mod_t> void div_at_ntt(std::vector<mod_t> &p, st
  using GNA= GlobalNTTArray<mod_t, LM, 0>;
  using GNA1= GlobalNTTArray<mod_t, LM, 1>;
  using GNA2= GlobalNTTArray<mod_t, LM, 2>;
- const unsigned m= deg(q) + 1, offset= std::max<unsigned>(deg(p) + 1, m), len= get_len((offset + m) - 1);
+ const unsigned m= deg(q) + 1, offset= std::max<unsigned>(deg(p) + 1, m), len= pw2((offset + m) - 1);
  for (p.resize(len >> 1); k >= offset; k>>= 1) {
   GNA::bf.set(p.data(), 0, len >> 1), GNA::bf.zeros(len >> 1, len), GNA1::bf.set(q.data(), 0, m), GNA1::bf.zeros(m, len), GNA2::bf.zeros(m, len);
   for (int i= m; i--;) GNA2::bf.set(i, i & 1 ? -q[i] : q[i]);
@@ -45,7 +45,7 @@ template <std::size_t LM, class mod_t> void div_at_ntt(std::vector<mod_t> &p, st
 template <std::size_t LM, class mod_t> void div_at_ntt_fast(std::vector<mod_t> &p, std::vector<mod_t> &q, std::uint64_t &k) {
  static_assert(is_nttfriend<mod_t, LM>());
  using ntt= NTT<mod_t>;
- const unsigned m= deg(q) + 1, offset= std::max<unsigned>(deg(p) + 1, m), len= get_len((offset + m) - 1), len2= len >> 1;
+ const unsigned m= deg(q) + 1, offset= std::max<unsigned>(deg(p) + 1, m), len= pw2((offset + m) - 1), len2= len >> 1;
  p.resize(len), q.resize(len), ntt::dft(len, p.data()), ntt::dft(len, q.data());
  while (1) {
   for (int i= len; i--;) p[i]*= q[i ^ 1];

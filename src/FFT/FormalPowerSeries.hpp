@@ -25,7 +25,7 @@ public:
   using GNA1= GlobalNTTArray<T, LM, 1>;
   using GNA2= GlobalNTTArray<T, LM, 2>;
   static constexpr int BASE_CASE_SIZE= 32;
-  if (int l= get_len(n << 1 | 1); (int)c.size() < l) c.resize(l);
+  if (int l= pw2(n << 1 | 1); (int)c.size() < l) c.resize(l);
   if (n == 0) c[0]= ha() * hb();
   if (n == 1) c[1]= ha() * b[0] + a[0] * hb(), c[2]= a[1] * b[1];
   if (n == 2) c[2]+= ha() * b[0] + a[0] * hb(), c[3]= a[2] * b[1] + a[1] * b[2];
@@ -37,7 +37,7 @@ public:
     for (int i= t1 - 1; i--;) c[t1 + i]+= GNA1::bf.get(i);
    }
    c[n]+= ha() * b[0] + a[0] * hb(), c[n + 1]+= a[1] * b[n] + a[n] * b[1];
-   for (int t0= 2, sft= 0, ofs= get_len(n + 1) >> 1, t= n + 1 - ofs; !(t & 1) && t0 < ofs; t0<<= 1, sft++, t>>= 1)
+   for (int t0= 2, sft= 0, ofs= pw2(n + 1) >> 1, t= n + 1 - ofs; !(t & 1) && t0 < ofs; t0<<= 1, sft++, t>>= 1)
     if (int m= n + 1 - t0, t1= t0 << 1; t0 > BASE_CASE_SIZE) {
      GNA1::bf.set(a.data() + m, 0, t0), GNA1::bf.zeros(t0, t1), GNA2::bf.set(b.data() + m, 0, t0), GNA2::bf.zeros(t0, t1), GNA1::bf.dft(0, t1), GNA2::bf.dft(0, t1), GNA1::bf.mul(bc[sft], 0, t1), GNA2::bf.mul(ac[sft], 0, t1), GNA1::bf.add(GNA2::bf, 0, t1), GNA1::bf.idft(0, t1);
      for (int i= t1 - 1; i--;) c[n + 1 + i]+= GNA1::bf.get(i);

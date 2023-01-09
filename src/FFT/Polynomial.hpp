@@ -50,7 +50,7 @@ template <class mod_t, std::size_t LM= 1 << 22> class Polynomial: public std::ve
   std::copy(qu.begin(), qu.end(), GA::bf);
   std::copy_n(this->begin(), n + 1, GAp::bf);
   std::copy_n(q.begin(), m + 1, GAq::bf);
-  const int len= get_len(m), mask= len - 1;
+  const int len= pw2(m), mask= len - 1;
   if (len > qsz) std::fill_n(GA::bf + qsz, len - qsz, Z);
   if (len > m + 1) std::fill_n(GAq::bf + m + 1, len - m - 1, Z);
   for (int i= qsz; i-- > len;) GA::bf[i & mask]+= GA::bf[i];
@@ -92,13 +92,13 @@ public:
  Poly operator-(const Poly &r) const { return Poly(*this)-= r; }
  Poly operator*(const Poly &r) const { return convolve<mod_t, LM>(*this, r); }
  Poly operator/(const Poly &r) const {
-  const int m= r.deg(), qsz= deg() - m + 1, ln= __builtin_ctz(get_len(qsz));
+  const int m= r.deg(), qsz= deg() - m + 1, ln= __builtin_ctz(pw2(qsz));
   assert(m >= 0);
   if (qsz <= 0) return Poly{Z};
   return m + 3 < A * ln + B || qsz <= 64 ? quorem_na(r).first : quo(r);
  }
  std::pair<Poly, Poly> quorem(const Poly &r) const {
-  const int n= deg(), m= r.deg(), qsz= n - m + 1, ln= __builtin_ctz(get_len(qsz));
+  const int n= deg(), m= r.deg(), qsz= n - m + 1, ln= __builtin_ctz(pw2(qsz));
   assert(m >= 0);
   if (qsz <= 0) return {Poly{Z}, Poly(this->begin(), this->begin() + n + 1)};
   return m < A * ln + B || qsz <= 64 ? quorem_na(r) : quorem_ntt(r);

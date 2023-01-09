@@ -9,11 +9,11 @@ template <class mod_t, std::size_t LM= 1 << 20> struct SubProductTree {
  mod_t *r= GlobalArray<mod_t, LM, 1>::bf;
  using GNA1= GlobalNTTArray<mod_t, LM, 1>;
  using GNA2= GlobalNTTArray<mod_t, LM, 2>;
- SubProductTree(const std::vector<mod_t> &xs_): xs(xs_), n(xs_.size()), nn(get_len(n)), p(nn << 1) {
+ SubProductTree(const std::vector<mod_t> &xs_): xs(xs_), n(xs_.size()), nn(pw2(n)), p(nn << 1) {
   xs.resize(nn);
   for (int i= 0; i < nn; ++i) p[nn + i].resize(2), p[nn + i].set(0, 1), p[nn + i].set(1, -xs[i]);
   for (int i= nn; --i;) {
-   int ls= i << 1, rs= i << 1 | 1, len= get_len(p[ls].size());
+   int ls= i << 1, rs= i << 1 | 1, len= pw2(p[ls].size());
    p[ls].resize(len), p[rs].resize(len), p[ls].dft(0, len), p[rs].dft(0, len), p[i].resize(len), p[i].mul(p[ls], p[rs], 0, len), p[i].idft(0, len), p[i].resize(len + 1);
    if constexpr (!is_nttfriend<mod_t, LM>()) p[i].get(r, 1, len), p[i].set(r, 1, len);
    p[i].set(len, p[i].get(0) - 1), p[i].set(0, 1);

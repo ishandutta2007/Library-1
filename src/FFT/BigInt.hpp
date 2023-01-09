@@ -83,7 +83,7 @@ public:
   static mod_t f[1 << 20], g[1 << 20], f2[1 << 17][16], g2[1 << 17][16];
   static long long h[1 << 20];
   if (int i= n, j; std::min(n, m) >= 74) {
-   const int rl= get_len(sz), l= get_len(std::max(n, m));
+   const int rl= pw2(sz), l= pw2(std::max(n, m));
    const int fl= std::pow(l, 0.535) * 8.288;
    if (l + fl < sz && sz <= (rl >> 3) * 5) {
     const int l= rl >> 4, l2= l << 1, nn= (n + l - 1) / l, mm= (m + l - 1) / l, ss= nn + mm - 1;
@@ -109,7 +109,7 @@ public:
      for (i= std::min(l2, sz - k); i-- > l;) h[i + k]= f[i].val();
     }
    } else {
-    const int len= sz <= l + fl ? l : get_len(sz);
+    const int len= sz <= l + fl ? l : pw2(sz);
     for (i= n; i--;) f[i]= dat[i];
     std::fill_n(f + n, len - n, mod_t()), ntt::dft(len, f);
     if (this != &r) {

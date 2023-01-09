@@ -42,7 +42,7 @@ template <u32 lnR, class mod_t, u32 LM= 1 << 22> void inv_(const mod_t p[], int 
  using GNA2= GlobalNTTArray<mod_t, LM2, 2>;
  auto gt1= GlobalNTTArray2D<mod_t, LM2, R, 1>::bf, gt2= GlobalNTTArray2D<mod_t, LM2, R, 2>::bf;
  assert(n > 0), assert(p[0] != mod_t());
- const int m= get_len(n) >> lnR, m2= m << 1, ed= (n - 1) / m;
+ const int m= pw2(n) >> lnR, m2= m << 1, ed= (n - 1) / m;
  inv_base<LM2>(p, m, r);
  for (int k= 0, l; k < ed; p+= m) {
   for (gt2[k].set(p, 0, l= min(m2, n - m * k)), gt2[k].zeros(l, m2), gt2[k].dft(0, m2), gt1[k].set(r, 0, m), gt1[k].zeros(m, m2), gt1[k].dft(0, m2), GNA2::bf.mul(gt1[k], gt2[0], 0, m2), l= k; l--;) GNA1::bf.mul(gt1[l], gt2[k - l], 0, m2), GNA2::bf.add(GNA1::bf, 0, m2);
@@ -57,7 +57,7 @@ template <class mod_t, u32 LM= 1 << 22> vector<mod_t> inv(const vector<mod_t>& p
  const int n= p.size();
  copy_n(p.begin(), n, pp), assert(n > 0), assert(p[0] != mod_t());
  if (const mod_t miv= -(r[0]= mod_t(1) / p[0]); n > TH) {
-  const int l= get_len(n), l1= l >> 1, k= (n - l1 - 1) / (l1 >> 3), bl= __builtin_ctz(l1);
+  const int l= pw2(n), l1= l >> 1, k= (n - l1 - 1) / (l1 >> 3), bl= __builtin_ctz(l1);
   int a= 4;
   if constexpr (!t) a= bl < 7 ? k > 5 ? 1 : k > 4 ? 3 : k > 3 ? 4 : 2 : k & 1 ? 3 : 4;
   else if constexpr (t < 2) a= bl & 1 ? k > 5 ? 1 : bl < 8 ? 3 : bl < 12 ? k > 2 || k == 1 ? 3 : 4 : k & 1 ? 3 : 4 : k > 5 ? bl > 17 && k < 7 ? 4 : 2 : k > 4 ? 3 : k > 3 ? 4 : bl < 7 ? k > 1 ? 2 : k ? 3 : 4 : k > 2 ? 2 : 4;

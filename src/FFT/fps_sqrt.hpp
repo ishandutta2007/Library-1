@@ -28,7 +28,7 @@ template <class mod_t, std::size_t _Nm= 1 << 22> std::vector<mod_t> sqrt(const s
  mod_t *bf= GAr::bf + (cnt >> 1), *pbf= GAp::bf + cnt;
  std::fill_n(GAr::bf, n, Z), bf[0]= mod_sqrt(pbf[0].val(), mod_t::mod());
  if (bf[0] * bf[0] != pbf[0]) return {};  // no solution
- const int nn= n - cnt, len= get_len(nn), R= get_len(__builtin_ctz(len) + 1) >> 1;
+ const int nn= n - cnt, len= pw2(nn), R= pw2(__builtin_ctz(len) + 1) >> 1;
  int m= TH >= nn ? nn : len, lnR= __builtin_ctz(R), i= 2;
  while (m > TH) m>>= lnR;
  const mod_t miv= mod_t(mod_t::mod() - 1) / (bf[0] + bf[0]);

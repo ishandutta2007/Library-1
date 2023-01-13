@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 #include "src/Math/mod_inv.hpp"
-#include "src/Math/ModIntPrototype.hpp"
+#include "src/Internal/Remainder.hpp"
 namespace math_internal {
 #define CE constexpr
 struct m_b {};

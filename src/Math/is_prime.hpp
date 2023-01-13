@@ -1,6 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
-#include "src/Math/ModIntPrototype.hpp"
+#include "src/Internal/Remainder.hpp"
 namespace math_internal {
 template <class Uint, class MP, u64... args> constexpr bool miller_rabin(Uint n) {
  const MP md(n);

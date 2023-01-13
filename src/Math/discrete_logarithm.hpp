@@ -1,7 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 #include "src/Math/mod_inv.hpp"
-#include "src/Math/ModIntPrototype.hpp"
+#include "src/Internal/Remainder.hpp"
 int discrete_logarithm(int a, int b, int mod) {
  if (a == 0) return b == 0 ? (mod == 1 ? 0 : 1) : (b == 1 ? 0 : -1);
  using namespace math_internal;

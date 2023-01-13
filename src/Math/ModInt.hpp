@@ -53,3 +53,12 @@ template <u64 MOD> using ModInt= conditional_t < (MOD < (1 << 30)) & MOD, MInt<i
 #undef CE
 }
 using math_internal::ModInt, math_internal::is_modint_v, math_internal::is_staticmodint_v;
+template <class mod_t, size_t LM> mod_t get_inv(int n) {
+ static_assert(is_modint_v<mod_t>);
+ static const auto m= mod_t::mod();
+ static mod_t dat[LM];
+ static int l= 1;
+ if (l == 1) dat[l++]= 1;
+ while (l <= n) dat[l++]= dat[m % l] * (m - m / l);
+ return dat[n];
+}

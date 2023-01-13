@@ -1,5 +1,5 @@
 ---
-title: Berlekamp-Massey
+title: 二項係数 ($\mathbb{Z}/m\mathbb{Z}$)
 documentation_of: ./BinomialCoefficient.hpp
 ---
 

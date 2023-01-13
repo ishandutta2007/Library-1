@@ -3,7 +3,7 @@
 #include "src/FFT/NTT.hpp"
 class BigInt {
  static constexpr unsigned BASE= 10000000, D= 7;
- using mod_t= StaticModInt<0x3ffffffffa000001>;
+ using mod_t= ModInt<0x3ffffffffa000001>;
  using Vec= std::vector<unsigned>;
  using ntt= NTT<mod_t>;
  bool neg;

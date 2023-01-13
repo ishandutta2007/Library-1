@@ -1,5 +1,5 @@
 ---
-title: 二項係数 ($\mathbb{Z}/m\mathbb{Z}$)
+title: Berlekamp-Massey
 documentation_of: ./berlekamp_massey.hpp
 ---
 数列の最初のN項から、その数列を生成する$N/2$次以下の最小の線形漸化式を求める

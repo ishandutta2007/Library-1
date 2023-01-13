@@ -8,62 +8,19 @@ namespace math_internal {
 #define TP template
 #define BSF(_, n) __builtin_ctz##_(n)
 TP<class mod_t> struct NTT {
-#define FOR(a, b, c) \
- for (a= n >> 2; a; a>>= 2, b<<= 2) \
-  for (y= u= r= I, x0= x, s= 0;; r*= c[BSF(, s)], u= r * r, y= u * r, x0= x3 + p)
-#define FOR2(a, b, c) \
- for (a= n; a>>= 1; b<<= 1) \
-  for (s= 0, r= I, x0= x;; r*= c[BSF(, s)], x0= x1 + p)
-#define REP for (x1= x0 + p, x2= x1 + p, x3= x2 + (i= p); i--;)
- ST inline void dft(int n, mod_t x[]) {
-  int p, e= 1, s, i;
-  mod_t r, u, y, *x0, *x1, *x2, *x3;
-  if CE (md < INT_MAX) {
-   ST CE auto r3= ras<3>(rt, irt);
-   ST CE u128 im= rt[2].val(), md3= u128(md) << 93;
-   FOR(p, e, r3) {
-    u64 ru= r.val(), ru2= u.val(), ru3= y.val();
-    REP {
-     u64 a= x0[i].val(), b= ru * x1[i].val(), c= ru2 * x2[i].val(), d= ru3 * x3[i].val(), f= md2 - d, g= md2 + a - c;
-     u128 h= im * (b + f);
-     x0[i]= a + b + c + d, x1[i]= a + (md2 - b) + c + f, x2[i]= h + g, x3[i]= md3 - h + g;
-    }
-    if (++s == e) break;
-   }
-   if (BSF(, n) & 1)
-    for (r= I, s= 0, p= 0;; r*= r2[BSF(, ++s)])
-     if (x[p + 1]= x[p] - (u= x[p + 1] * r), x[p]+= u; (p+= 2) == n) break;
-  } else FOR2(p, e, r2) {
-    for (x1= x0 + (i= p); i--;) x1[i]= x0[i] - (u= r * x1[i]), x0[i]+= u;
-    if (++s == e) break;
-   }
- }
+#define _DFT(a, b, c, ...) \
+ mod_t r, u, *x0, *x1; \
+ for (int a= n, b= 1, s, i; a>>= 1; b<<= 1) \
+  for (s= 0, r= I, x0= x;; r*= c[BSF(, s)], x0= x1 + p) { \
+   for (x1= x0 + (i= p); i--;) __VA_ARGS__; \
+   if (++s == e) break; \
+  }
+ ST inline void dft(int n, mod_t x[]) { _DFT(p, e, r2, x1[i]= x0[i] - (u= r * x1[i]), x0[i]+= u); }
  ST inline void idft(int n, mod_t x[]) {
-  int e, p= 1, s, i;
-  mod_t r, u, y, *x0, *x1, *x2, *x3;
-  if CE (md < INT_MAX) {
-   ST CE auto ir3= ras<3>(irt, rt);
-   ST CE u64 im= irt[2].val();
-   FOR(e, p, ir3) {
-    u64 ru2= u.val();
-    u128 ru= r.val(), ru3= y.val();
-    REP {
-     u64 a= x0[i].val(), b= x1[i].val(), c= x2[i].val(), d= x3[i].val(), f= md - d, g= a + md - b, h= im * (c + f);
-     x0[i]= a + b + c + d, x1[i]= ru * (g + h), x2[i]= ru2 * (a + b + (md - c) + f), x3[i]= ru3 * (g + (md2 << 1) - h);
-    }
-    if (++s == e) break;
-   }
-   if (BSF(, n) & 1)
-    for (x1= x + (i= n >> 1); i--;) u= x[i] - x1[i], x[i]+= x1[i], x1[i]= u;
-  } else FOR2(e, p, ir2) {
-    for (x1= x0 + (i= p); i--;) u= x0[i] - x1[i], x0[i]+= x1[i], x1[i]= r * u;
-    if (++s == e) break;
-   }
+  _DFT(e, p, ir2, u= x0[i] - x1[i], x0[i]+= x1[i], x1[i]= r * u)
   for (const mod_t iv= I / n; n--;) x[n]*= iv;
  }
-#undef FOR
-#undef FOR2
-#undef REP
+#undef _DFT
  ST inline void even_dft(int n, mod_t x[]) {
   for (int i= 0, j= 0; i < n; i+= 2) x[j++]= iv2 * (x[i] + x[i + 1]);
  }
@@ -77,7 +34,7 @@ TP<class mod_t> struct NTT {
   dft(n, x + n);
  }
 protected:
- ST CE u64 md= mod_t::mod(), md2= md << 31;
+ ST CE u64 md= mod_t::mod();
  static_assert(md & 1);
  static_assert(is_prime(md));
  ST CE u8 E= BSF(ll, md - 1);
@@ -93,7 +50,7 @@ protected:
   for (u8 e= E; e; w*= w) x[e--]= w;
   return x[0]= w, x;
  }
- TP<u32 N> ST CE auto ras(const array<mod_t, E + 1> &rt, const array<mod_t, E + 1> &irt, int i= N) {
+ TP<u32 N> ST CE auto ras(const array<mod_t, E + 1>& rt, const array<mod_t, E + 1>& irt, int i= N) {
   array<mod_t, E + 1 - N> x= {};
   for (mod_t ro= 1; i <= E; ro*= irt[i++]) x[i - N]= rt[i] * ro;
   return x;
@@ -118,10 +75,10 @@ TP<class T, u8 t, class B> struct NI: public B {
 #define SET_S(op, _) this->dt##_[i]= x;
 #define SUBST(op, _) copy(r.dt##_ + b, r.dt##_ + e, this->dt##_ + b)
 #define ASGN(op, _) REP this->dt##_[i] op##= r.dt##_[i]
-#define ASN(nm, op) TP<class C> FUNC(op, nm, ASGN, const NI<T, t, C> &r, int b, int e)
+#define ASN(nm, op) TP<class C> FUNC(op, nm, ASGN, const NI<T, t, C>& r, int b, int e)
 #define BOP(op, _) REP this->dt##_[i]= l.dt##_[i] op r.dt##_[i]
-#define OP(nm, op) TP<class C, class D> FUNC(op, nm, BOP, const NI<T, t, C> &l, const NI<T, t, D> &r, int b, int e)
- OP(add, +) OP(dif, -) OP(mul, *) ASN(add, +) ASN(dif, -) ASN(mul, *) FUNC(dft, dft, DFT, int b, int e) FUNC(idft, idft, DFT, int b, int e) FUNC(__, zeros, ZEROS, int b, int e) FUNC(__, set, SET, const T x[], int b, int e) FUNC(__, set, SET_S, int i, T x) TP<class C> FUNC(__, subst, SUBST, const NI<T, t, C> &r, int b, int e) inline void get(T x[], int b, int e) const {
+#define OP(nm, op) TP<class C, class D> FUNC(op, nm, BOP, const NI<T, t, C>& l, const NI<T, t, D>& r, int b, int e)
+ OP(add, +) OP(dif, -) OP(mul, *) ASN(add, +) ASN(dif, -) ASN(mul, *) FUNC(dft, dft, DFT, int b, int e) FUNC(idft, idft, DFT, int b, int e) FUNC(__, zeros, ZEROS, int b, int e) FUNC(__, set, SET, const T x[], int b, int e) FUNC(__, set, SET_S, int i, T x) TP<class C> FUNC(__, subst, SUBST, const NI<T, t, C>& r, int b, int e) inline void get(T x[], int b, int e) const {
   if CE (t == 1) copy(this->dt1 + b, this->dt1 + e, x + b);
   else REP x[i]= get(i);
  }
@@ -156,7 +113,7 @@ TP<class T, u8 t, class B> struct NI: public B {
 #undef REP
 };
 #define ARR(_) \
- using m##_= StaticModInt<M##_>; \
+ using m##_= ModInt<M##_>; \
  using ntt##_= NTT<m##_>; \
  m##_ dt##_[LM]= {};
 #define IV2 ST CE m2 iv21= m2(1) / m1::mod();
@@ -170,10 +127,10 @@ TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<4, M1, M2, M3, M4, 
 TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<5, M1, M2, M3, M4, M5, LM, 0> { ARR(1) ARR(2) ARR(3) ARR(4) ARR(5) IV2 IV3 IV4 IV5 };
 #undef ARR
 #define VC(_) \
- using m##_= StaticModInt<M##_>; \
+ using m##_= ModInt<M##_>; \
  using ntt##_= NTT<m##_>; \
  vector<m##_> bf##_; \
- m##_ *dt##_;
+ m##_* dt##_;
 #define RS resize
 TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<1, M1, M2, M3, M4, M5, LM, 1> {
  NB(): dt1(bf1.data()) {}
@@ -214,26 +171,23 @@ TP<class T, u32 LM> CE bool is_nttfriend() {
  if CE (!is_staticmodint_v<T>) return 0;
  else return (T::mod() & is_prime(T::mod())) && LM <= (1ULL << BSF(ll, T::mod() - 1));
 }
-TP<class T> CE u64 mv() {
- if CE (is_runtimemodint_v<T>) return numeric_limits<typename T::Uint>::max();
- else if CE (is_staticmodint_v<T>) return T::mod();
- else return numeric_limits<T>::max();
-}
+TP<class T, enable_if_t<is_arithmetic_v<T>, nullptr_t> = nullptr> CE u64 mv() { return numeric_limits<T>::max(); }
+TP<class T, enable_if_t<is_staticmodint_v<T>, nullptr_t> = nullptr> CE u64 mv() { return T::mod(); }
 TP<class T, u32 LM, u32 M1, u32 M2, u32 M3, u32 M4> CE u8 nt() {
  if CE (!is_nttfriend<T, LM>()) {
-  CE u128 m= mv<T>(), mv= m * m;
-  if CE (mv <= M1 / LM) return 1;
-  else if CE (mv <= u64(M1) * M2 / LM) return 2;
-  else if CE (mv <= u128(M1) * M2 * M3 / LM) return 3;
-  else if CE (mv <= u128(M1) * M2 * M3 * M4 / LM) return 4;
+  CE u128 m= mv<T>(), mm= m * m;
+  if CE (mm <= M1 / LM) return 1;
+  else if CE (mm <= u64(M1) * M2 / LM) return 2;
+  else if CE (mm <= u128(M1) * M2 * M3 / LM) return 3;
+  else if CE (mm <= u128(M1) * M2 * M3 * M4 / LM) return 4;
   else return 5;
  } else return 1;
 }
 #undef BSF
 #undef RS
-CE u32 MOD1= 0x7e000001, MOD2= 0x78000001, MOD3= 0x6c000001, MOD4= 0x66000001, MOD5= 0x42000001;
+CE u32 MOD1= 998244353, MOD2= 897581057, MOD3= 880803841, MOD4= 754974721, MOD5= 645922817;
 TP<class T, u32 LM> CE u8 nttarr_type= nt<T, LM, MOD1, MOD2, MOD3, MOD4>();
-TP<class T, u32 LM> CE u8 nttarr_cat= is_nttfriend<T, LM>() && (mv<T>() > INT_MAX) ? 0 : nttarr_type<T, LM>;
+TP<class T, u32 LM> CE u8 nttarr_cat= is_nttfriend<T, LM>() && (mv<T>() > (1 << 30)) ? 0 : nttarr_type<T, LM>;
 TP<class T, u32 LM, bool v> using NTTArray= NI<T, nttarr_type<T, LM>, conditional_t<is_nttfriend<T, LM>(), NB<1, mv<T>(), 0, 0, 0, 0, LM, v>, NB<nttarr_type<T, LM>, MOD1, MOD2, MOD3, MOD4, MOD5, LM, v>>>;
 #undef CE
 #undef ST

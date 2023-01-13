@@ -6,18 +6,11 @@ namespace math_internal {
 #define CE constexpr
 struct m_b {};
 struct s_b: m_b {};
-struct r_b: m_b {};
 template <class mod_t> CE bool is_modint_v= is_base_of_v<m_b, mod_t>;
 template <class mod_t> CE bool is_staticmodint_v= is_base_of_v<s_b, mod_t>;
-template <class mod_t> CE bool is_runtimemodint_v= is_base_of_v<r_b, mod_t>;
-template <class mpt, u64 MOD> struct SB: s_b {
+template <class MP, u64 MOD> struct SB: s_b {
 protected:
- static CE mpt md= mpt(MOD);
-};
-template <class mpt, int id> struct RB: r_b {
- static inline void set_mod(u64 m) { md= mpt(m); }
-protected:
- static inline mpt md;
+ static CE MP md= MP(MOD);
 };
 template <class Int, class U, class B> struct MInt: public B {
  using Uint= U;
@@ -30,7 +23,8 @@ template <class Int, class U, class B> struct MInt: public B {
 #define FUNC(name, op) \
  CE MInt name const { \
   MInt ret; \
-  return ret.x= op, ret; \
+  ret.x= op; \
+  return ret; \
  }
  FUNC(operator+(const MInt& r), B::md.plus(x, r.x))
  FUNC(operator-(const MInt& r), B::md.diff(x, r.x))
@@ -55,18 +49,7 @@ template <class Int, class U, class B> struct MInt: public B {
 private:
  Uint x;
 };
-template <u64 MOD> using StaticModInt= conditional_t < MOD<INT_MAX, MInt<int, u32, SB<MP_Na<u32>, MOD>>, conditional_t<MOD&(MOD < LLONG_MAX), MInt<i64, u64, SB<MP_Mo, MOD>>, MInt<i64, u64, SB<MP_Na<u64>, MOD>>>>;
-class Montgomery {};
-template <class Int, int id= -1> using RuntimeModInt= conditional_t<is_same_v<Int, Montgomery>, MInt<i64, u64, RB<MP_Mo, id>>, conditional_t<disjunction_v<is_same<Int, i64>, is_same<Int, u64>>, MInt<i64, u64, RB<MP_Na<u64>, id>>, MInt<int, u32, RB<MP_Na<u32>, id>>>>;
+template <u64 MOD> using ModInt= conditional_t < (MOD < (1 << 30)) & MOD, MInt<int, u32, SB<MP_Mo<u32, u64, 32, 31>, MOD>>, conditional_t<(MOD < (1ull << 62)) & MOD, MInt<i64, u64, SB<MP_Mo<u64, u128, 64, 63>, MOD>>, conditional_t<MOD<INT_MAX, MInt<int, u32, SB<MP_Na, MOD>>, conditional_t<MOD <= UINT_MAX, MInt<i64, u32, SB<MP_Na, MOD>>, conditional_t<MOD <= (1ull << 41), MInt<i64, u64, SB<MP_Br2, MOD>>, MInt<i64, u64, SB<MP_D2B1, MOD>>>>>>>;
 #undef CE
 }
-using math_internal::RuntimeModInt, math_internal::StaticModInt, math_internal::Montgomery, math_internal::is_runtimemodint_v, math_internal::is_modint_v, math_internal::is_staticmodint_v;
-template <class mod_t, size_t LIM> mod_t get_inv(int n) {
- static_assert(is_modint_v<mod_t>);
- static const auto m= mod_t::mod();
- static mod_t dat[LIM];
- static int l= 1;
- if (l == 1) dat[l++]= 1;
- while (l <= n) dat[l++]= dat[m % l] * (m - m / l);
- return dat[n];
-}
+using math_internal::ModInt, math_internal::is_modint_v, math_internal::is_staticmodint_v;

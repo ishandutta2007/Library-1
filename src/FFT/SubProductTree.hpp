@@ -31,7 +31,6 @@ template <class mod_t, std::size_t LM= 1 << 20> struct SubProductTree {
   return std::vector<mod_t>(r, r + n);
  }
  poly interpolate(const std::vector<mod_t> &ys) {
-  if (n == 1) assert(nn == 1);
   for (int i= n; i; --i) r[i - 1]= all[n - i] * i;
   auto q= multi_eval(poly(r, r + n));
   for (int i= n; i--;) r[i]= ys[i] / q[i];

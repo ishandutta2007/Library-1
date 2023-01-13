@@ -3,7 +3,7 @@
 #include "src/Math/mod_inv.hpp"
 #include "src/Math/Factors.hpp"
 namespace math_internal {
-template <class Int, class mod_pro_t> inline Int peth_root(Int c, Int pi, int ei, const mod_pro_t &md) {
+template <class Int, class MP> inline i64 peth_root(Int c, Int pi, int ei, const MP &md) {
  const Int p= md.mod;
  int t= 0;
  Int s= p - 1, pe= 1;
@@ -35,20 +35,21 @@ template <class Int, class mod_pro_t> inline Int peth_root(Int c, Int pi, int ei
  }
  return z;
 }
-template <class Int, class mod_pro_t> Int inner_kth_root(Int a, u64 k, Int p) {
- if (k == 0) return a == 1 ? a : -1;
- if (a <= 1 || k <= 1) return a;
- const mod_pro_t md(p);
+template <class Int, class MP> i64 inner_kth_root(Int a, u64 k, Int p) {
+ const MP md(p);
  Int g= gcd(k, p - 1), pp= (p - 1) / g, kk= (k / g) % pp;
  if (a= md.set(a); md.norm(pow(a, pp, md)) != md.set(1)) return -1;
  a= pow(a, mod_inv(kk, pp), md);
  for (auto [pi, ei]: Factors(g)) a= peth_root<Int>(a, pi, ei, md);
  return md.get(a);
 }
-int64_t mod_kth_root(int64_t a, u64 k, int64_t p) {
+i64 mod_kth_root(i64 a, u64 k, i64 p) {
  assert(p > 0), assert(a >= 0), assert(is_prime(p)), a%= p;
- if (p < INT_MAX) return inner_kth_root<int, MP_Na<u32>>(a, k, p);
- return inner_kth_root<int64_t, MP_Mo>(a, k, p);
+ if (k == 0) return a == 1 ? a : -1;
+ if (a <= 1 || k <= 1) return a;
+ if (p < (1 << 30)) return inner_kth_root<int, MP_Mo<u32, u64, 32, 31>>(a, k, p);
+ if (p < (1ll << 62)) return inner_kth_root<i64, MP_Mo<u64, u128, 64, 63>>(a, k, p);
+ return inner_kth_root<i64, MP_D2B1>(a, k, p);
 }
 }  // namespace math_internal
 using math_internal::mod_kth_root;

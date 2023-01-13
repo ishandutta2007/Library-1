@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>ModIntExp
+#include <bits/stdc++.h>
 #include "src/Math/ModIntPrototype.hpp"
 namespace math_internal {
 template <class Uint, class MP, u64... args> constexpr bool miller_rabin(Uint n) {

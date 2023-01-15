@@ -41,7 +41,7 @@ template <class u_t, class du_t, u8 B, u8 A> struct MP_Mo {
  CE IL u_t norm(u_t n) const { NORM; }
 private:
  const u_t iv, r2;
- CE u_t inv(u_t n, int e= 6, u_t x= 1) { return e ? inv(n, e - 1, x * (2 - x * n)) : x; }
+ static CE u_t inv(u_t n, int e= 6, u_t x= 1) { return e ? inv(n, e - 1, x * (2 - x * n)) : x; }
  CE IL u_t reduce(const du_t &w) const { return u_t(w >> B) + mod - ((du_t(u_t(w) * iv) * mod) >> B); }
 };
 struct MP_Na {

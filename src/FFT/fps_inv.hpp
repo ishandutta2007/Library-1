@@ -27,13 +27,13 @@ template <u32 LM, class mod_t> inline void inv_base(const mod_t p[], int n, mod_
  }
 }
 template <u32 lnR, class mod_t, u32 LM= 1 << 22> void inv_(const mod_t p[], int n, mod_t r[]) {
- static constexpr u32 R= (1 << lnR) - 1;
- using GNA1= GlobalNTTArray<mod_t, LM, 1>;
- using GNA2= GlobalNTTArray<mod_t, LM, 2>;
- auto gt1= GlobalNTTArray2D<mod_t, LM, R, 1>::bf, gt2= GlobalNTTArray2D<mod_t, LM, R, 2>::bf;
+ static constexpr u32 R= (1 << lnR) - 1, LM2= LM >> (lnR - 1);
+ using GNA1= GlobalNTTArray<mod_t, LM2, 1>;
+ using GNA2= GlobalNTTArray<mod_t, LM2, 2>;
+ auto gt1= GlobalNTTArray2D<mod_t, LM2, R, 1>::bf, gt2= GlobalNTTArray2D<mod_t, LM2, R, 2>::bf;
  assert(n > 0), assert(p[0] != mod_t());
  const int m= pw2(n) >> lnR, m2= m << 1, ed= (n - 1) / m;
- inv_base<LM>(p, m, r);
+ inv_base<LM2>(p, m, r);
  for (int k= 0, l; k < ed; p+= m) {
   for (gt2[k].set(p, 0, l= min(m2, n - m * k)), gt2[k].zeros(l, m2), gt2[k].dft(0, m2), gt1[k].set(r, 0, m), gt1[k].zeros(m, m2), gt1[k].dft(0, m2), GNA2::bf.mul(gt1[k], gt2[0], 0, m2), l= k; l--;) GNA1::bf.mul(gt1[l], gt2[k - l], 0, m2), GNA2::bf.add(GNA1::bf, 0, m2);
   GNA2::bf.idft(0, m2), GNA2::bf.zeros(0, m);

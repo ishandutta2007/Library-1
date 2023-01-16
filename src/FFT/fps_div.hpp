@@ -2,18 +2,20 @@
 #include <bits/stdc++.h>
 #include "src/FFT/fps_inv.hpp"
 namespace math_internal {
-template <int TH, int lnR, int skip, size_t LM, class mod_t> void div_base_(const mod_t p[], int n, const mod_t q[], int l, mod_t r[], const mod_t iv[]) {
- static constexpr int LM2= LM >> (lnR - 1), R= (1 << lnR) - 1;
- using GNA1= GlobalNTTArray<mod_t, LM2, 1>;
- using GNA2= GlobalNTTArray<mod_t, LM2, 2>;
- using GNA3= GlobalNTTArray<mod_t, LM2, 3>;
- auto gt1= GlobalNTTArray2D<mod_t, LM2, R, 1>::bf, gt2= GlobalNTTArray2D<mod_t, LM2, R, 2>::bf;
+template <size_t LM, class mod_t> void div_base(const mod_t p[], int n, const mod_t q[], int l, mod_t r[], const mod_t iv[]) {
+ static constexpr int t= nttarr_cat<mod_t, LM>, TH= (int[]){64, 64, 256, 256, 256, 256}[t];
  assert(n > 0), assert(((n & -n) == n)), assert(l > 0);
  const mod_t iv0= iv[0];
+ const int m= min(TH, n);
  int i= 0;
- for (copy_n(p, TH, r); i < TH; r[i++]*= iv0)
+ for (copy_n(p, m, r); i < m; r[i++]*= iv0)
   for (int j= min(i + 1, l); --j;) r[i]-= r[i - j] * q[j];
- for (int ed= (1 << skip) - 1; i < n; ed= R) {
+ using GNA1= GlobalNTTArray<mod_t, LM, 1>;
+ using GNA2= GlobalNTTArray<mod_t, LM, 2>;
+ using GNA3= GlobalNTTArray<mod_t, LM, 3>;
+ auto gt1= GlobalNTTArray2D<mod_t, LM, 7, 1>::bf, gt2= GlobalNTTArray2D<mod_t, LM, 7, 2>::bf;
+ int skip= (__builtin_ctz(n / i) + 2) % 3 + 1;
+ for (int ed= (1 << skip) - 1; i < n; ed= 7) {
   mod_t* rr= r;
   const mod_t *qq= q, *pp= p;
   const int s= i, e= s << 1, ss= (l - 1) / s;
@@ -28,24 +30,6 @@ template <int TH, int lnR, int skip, size_t LM, class mod_t> void div_base_(cons
    for (rr+= s, j= s; j--;) rr[j]= -rr[j];
   }
  }
-}
-template <size_t LM, class mod_t> void div_base(const mod_t p[], int n, const mod_t q[], int l, mod_t r[], const mod_t iv[]) {
- static constexpr int t= nttarr_cat<mod_t, LM>, TH= (int[]){64, 32, 128, 128, 128, 256}[t];
- assert(n > 0), assert(((n & -n) == n)), assert(l > 0);
- const mod_t iv0= iv[0];
- if (int i= 0; n > TH) {
-  if constexpr (t == 0) {
-   const int bn= __builtin_ctz(n) % 3;
-   (bn == 0 ? div_base_<64, 3, 3, LM, mod_t> : bn == 1 ? div_base_<32, 3, 2, LM, mod_t> : div_base_<32, 3, 3, LM, mod_t>)(p, n, q, l, r, iv);
-  } else {
-   const int bn= __builtin_ctz(n) % 6;
-   if constexpr (t == 1) (bn & 1 ? div_base_<32, 2, 2, LM, mod_t> : bn == 0 ? div_base_<32, 3, 1, LM, mod_t> : bn == 2 ? div_base_<32, 3, 3, LM, mod_t> : div_base_<32, 3, 2, LM, mod_t>)(p, n, q, l, r, iv);
-   else if constexpr (t == 5) (bn & 1 ? div_base_<128, 2, 2, LM, mod_t> : bn == 0 ? div_base_<128, 3, 2, LM, mod_t> : bn == 2 ? div_base_<256, 3, 3, LM, mod_t> : div_base_<128, 3, 3, LM, mod_t>)(p, n, q, l, r, iv);
-   else (bn & 1 ? div_base_<128, 2, 2, LM, mod_t> : bn == 0 ? div_base_<128, 3, 2, LM, mod_t> : bn == 2 ? div_base_<128, 3, 1, LM, mod_t> : div_base_<128, 3, 3, LM, mod_t>)(p, n, q, l, r, iv);
-  }
- } else
-  for (copy_n(p, n, r); i < n; r[i++]*= iv0)
-   for (int j= min(i + 1, l); --j;) r[i]-= r[i - j] * q[j];
 }
 template <size_t lnR, class mod_t, size_t LM= 1 << 22> void div_(const mod_t p[], int n, const mod_t q[], int l, mod_t r[]) {
  static constexpr size_t R= (1 << lnR) - 1, LM2= LM >> (lnR - 1);
@@ -64,20 +48,12 @@ template <size_t lnR, class mod_t, size_t LM= 1 << 22> void div_(const mod_t p[]
  }
 }
 template <class mod_t, size_t LM= 1 << 22> vector<mod_t> div(const vector<mod_t>& p, const vector<mod_t>& q) {
- static constexpr int t= nttarr_cat<mod_t, LM>, TH= (int[]){107, 75, 205, 350, 450, 600}[t];
+ static constexpr int t= nttarr_cat<mod_t, LM>, TH= (int[]){120, 152, 361, 626, 359, 418}[t];
  mod_t *r= GlobalArray<mod_t, LM, 1>::bf, *qq= GlobalArray<mod_t, LM, 2>::bf;
  const int n= p.size(), l= q.size();
  assert(l > 0), assert(q[0] != mod_t(0));
  if (n > TH) {
-  const int m= pw2(n), l1= m >> 1, k= (n - l1 - 1) / (l1 >> 3), bl= __builtin_ctz(l1);
-  int a= 5;
-  if constexpr (!t) a= bl < 8 ? 4 - (k & 1 && k > 2) : bl < 9 ? 4 : 4 + (k < (bl == 9 ? 1 : bl < 12 ? 3 : bl < 16 ? 4 : bl < 17 ? 5 : 6));
-  else if constexpr (t < 2) a= bl & 1 ? bl < 8 ? k && k != 2 ? 3 : 4 : k > 6 ? 3 : k > 5 ? 4 : !k ? 5 : bl < 10 ? k & 1 ? 3 : 4 : bl < 12 ? k > 4 ? 3 : 4 : bl < 16 ? k > 4 ? 3 : k < (bl < 14 ? 2 : 3) ? 5 : 4 : k < 3 ? 5 : 4 : bl < 7 ? k & 1 && k > 2 ? 3 : 4 : bl < 17 ? 4 : k ? 4 : 5;
-  else if constexpr (t < 3) a= bl & 1 ? bl < 8 || k > 6 ? 3 : bl < 10 ? k == 5 ? 3 : 4 : bl < 12 ? k < 2 ? 5 : k & 1 ? 3 : 4 : bl < 14 ? k < 2 ? 5 : k == 5 ? 3 : 4 : k < 3 ? 5 : 4 : bl < 9 ? k & 1 && k > 4 ? 3 : 4 : bl < 15 ? 4 : k ? 4 : 5;
-  else if constexpr (t < 4) a= bl & 1 ? bl < 10 ? k & 1 || k > 4 ? 3 : 4 : k > 6 ? 3 : bl < 14 ? k < 2 ? 5 : k == 5 ? 3 : 4 : bl < 18 ? k < 3 ? 5 : 4 : k < 4 ? 5 : 4 : bl < 9 ? k & 1 && k > 2 ? 3 : 4 : bl < 15 ? 4 : k ? 4 : 5;
-  else if constexpr (t < 5) a= bl & 1 ? bl < 10 ? k && k != 2 ? 3 : 4 : k > 6 ? 3 : bl < 14 ? k < 2 ? 5 : k == 5 ? 3 : 4 : bl < 18 ? k < 3 ? 5 : 4 : k < 4 ? 5 : 4 : bl < 9 ? 2 : bl < 15 ? 4 : k ? 4 : 5;
-  else a= bl & 1 ? bl < 10 ? !k || k == 2 ? 4 : 3 : k > 6 ? 3 : bl < 12 ? k ? 4 : 5 : bl < 18 ? k < 3 ? 5 : 4 : k < 4 ? 5 : 4 : bl < 11 ? k > 6 ? 3 : 4 : bl < 15 || k ? 4 : 5;
-  (a == 2 ? div_<2, mod_t, LM> : a == 3 ? div_<3, mod_t, LM> : a == 4 ? div_<4, mod_t, LM> : div_<5, mod_t, LM>)(p.data(), n, q.data(), l, r);
+  div_<3, mod_t, LM>(p.data(), n, q.data(), l, r);
  } else {
   const mod_t iv0= mod_t(1) / q[0];
   copy(p.begin(), p.end(), r), copy(q.begin(), q.end(), qq);

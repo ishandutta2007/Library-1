@@ -30,7 +30,7 @@ template <class K> std::vector<K> sparse_div(std::vector<K> f, const std::vector
   }
  return f;
 }
-template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_log(const std::vector<mod_t> &f, int n) {
+template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_log(const std::vector<mod_t> &f, int n) {
  assert(f[0] == mod_t(1));
  std::vector<mod_t> df(n - 1);
  for (int i= 1, ed= std::min<int>(n, f.size()); i < ed; ++i) df[i - 1]+= f[i] * i;
@@ -39,7 +39,7 @@ template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_log(co
  for (int i= 1; i < n; ++i) ret[i]= df[i - 1] * get_inv<mod_t, LM>(i);
  return ret;
 }
-template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_exp(const std::vector<mod_t> &f, int n) {
+template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_exp(const std::vector<mod_t> &f, int n) {
  assert(f[0] == mod_t(0));
  std::vector<std::pair<int, mod_t>> dat;
  for (int i= 1, ed= std::min<int>(n, f.size()); i < ed; ++i)
@@ -53,7 +53,7 @@ template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_exp(co
   }
  return ret;
 }
-template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_pow(const std::vector<mod_t> &f, std::uint64_t k, int n) {
+template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_pow(const std::vector<mod_t> &f, std::uint64_t k, int n) {
  std::vector<mod_t> ret(n);
  if (k == 0) return ret[0]= 1, ret;
  int cnt= 0, ed= std::min<int>(n, f.size());
@@ -72,7 +72,7 @@ template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_pow(co
   }
  return ret;
 }
-template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_sqrt(const std::vector<mod_t> &f, int n) {
+template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_sqrt(const std::vector<mod_t> &f, int n) {
  std::vector<mod_t> ret(n);
  int cnt= 0, ed= std::min<int>(n, f.size());
  while (cnt < ed && f[cnt] == mod_t(0)) cnt++;
@@ -93,7 +93,7 @@ template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_sqrt(c
  return ret;
 }
 // F'/F = f(x)/g(x), F[0]=1
-template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_log_differentiation(const std::vector<mod_t> &f, const std::vector<mod_t> &g, int n) {
+template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_log_differentiation(const std::vector<mod_t> &f, const std::vector<mod_t> &g, int n) {
  assert(g[0] == mod_t(1));
  std::vector<std::pair<int, mod_t>> dat_f, dat_g;
  for (int i= 0, ed= std::min<int>(f.size(), n); i < ed; ++i)
@@ -115,7 +115,7 @@ template <class mod_t, std::size_t LM= 1 << 23> std::vector<mod_t> sparse_log_di
  }
  return ret;
 }
-template <class mod_t, std::size_t LM= 1 << 23>  // exp(f/g)
+template <class mod_t, std::size_t LM= 1 << 24>  // exp(f/g)
 std::vector<mod_t> sparse_exp_of_div(const std::vector<mod_t> &f, const std::vector<mod_t> &g, int n) {
  assert(f[0] == mod_t(0)), assert(g[0] == mod_t(1));
  std::vector<std::pair<int, mod_t>> dat_f, dat_g;
@@ -131,7 +131,7 @@ std::vector<mod_t> sparse_exp_of_div(const std::vector<mod_t> &f, const std::vec
   for (auto &&[j, y]: dat_g) b[i + j]+= x * y;  // a = f'g-fg', b = g^2
  return sparse_log_differentiation<mod_t, LM>(a, b, n);
 }
-template <class mod_t, std::size_t LM= 1 << 23>  // (f/g)^k
+template <class mod_t, std::size_t LM= 1 << 24>  // (f/g)^k
 std::vector<mod_t> sparse_pow_of_div(const std::vector<mod_t> &f, const std::vector<mod_t> &g, std::uint64_t k, int n) {
  assert(f[0] == mod_t(1)), assert(g[0] == mod_t(1));
  std::vector<std::pair<int, mod_t>> dat_f, dat_g;

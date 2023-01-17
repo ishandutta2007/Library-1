@@ -20,9 +20,9 @@ template <class Int, class MP> constexpr i64 inner_sqrt(Int a, Int p) {
 constexpr i64 mod_sqrt(i64 a, i64 p) {
  assert(p > 0), assert(a >= 0), assert(is_prime(p)), a%= p;
  if (a <= 1 || p == 2) return a;
- if (p < (1 << 30)) return inner_sqrt<int, MP_Mo<u32, u64, 32, 31>>(a, p);
- if (p < (1ull << 62)) return inner_sqrt<i64, MP_Mo<u64, u128, 64, 63>>(a, p);
- return inner_sqrt<i64, MP_D2B1>(a, p);
+ if (p < (1 << 30)) return inner_sqrt<u32, MP_Mo<u32, u64, 32, 31>>(a, p);
+ if (p < (1ll << 62)) return inner_sqrt<u64, MP_Mo<u64, u128, 64, 63>>(a, p);
+ return inner_sqrt<u64, MP_D2B1>(a, p);
 }
 }
 using math_internal::mod_sqrt;

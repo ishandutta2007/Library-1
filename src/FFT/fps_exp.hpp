@@ -20,7 +20,7 @@ template <class mod_t, size_t LM= 1 << 22> vector<mod_t> log(const vector<mod_t>
 template <class mod_t, size_t LM= 1 << 22> vector<mod_t> exp(const vector<mod_t> &p) {
  static constexpr int LM2= LM * 2 / 15;
  static constexpr int TH= 64 << ((!is_nttfriend<mod_t, LM>()) << 1);
- mod_t *dp= GlobalArray<mod_t, LM, 1>::bf, *r= GlobalArray<mod_t, LM, 2>::bf, *g= GlobalArray<mod_t, LM2, 0>::bf;
+ mod_t *dp= GlobalArray<mod_t, LM, 1>::bf, *rr= GlobalArray<mod_t, LM, 2>::bf, *g= GlobalArray<mod_t, LM2, 0>::bf;
  using GNA1= GlobalNTTArray<mod_t, LM2, 1>;
  using GNA2= GlobalNTTArray<mod_t, LM2, 2>;
  auto gt1= GlobalNTTArray2D<mod_t, LM2, 16, 1>::bf, gt2= GlobalNTTArray2D<mod_t, LM2, 16, 2>::bf;
@@ -28,7 +28,7 @@ template <class mod_t, size_t LM= 1 << 22> vector<mod_t> exp(const vector<mod_t>
  assert(n > 0), assert(p[0] == mod_t());
  copy(p.begin(), p.end(), dp);
  for (int i= n; --i;) dp[i]*= i;
- fill_n(r, n, mod_t()), r[0]= 1;
+ fill_n(rr, n, mod_t()), rr[0]= 1;
  for (int r= m, d= 0, R, k, i; r > TH; d+= k) {
   k= (r/= (R= pw2(__builtin_ctz(r) + 1) >> 1)) << 1;
   for (i= min(R - 1, (n - 1) / r); i--;) gt1[i].set(dp + i * r - d, d, d + k), gt1[i].dft(d, d + k);
@@ -37,7 +37,7 @@ template <class mod_t, size_t LM= 1 << 22> vector<mod_t> exp(const vector<mod_t>
   if (int i= l | (!l), ed= min(r, n), j; r - l > TH) {
    int R= pw2(__builtin_ctz(r - l) + 1) >> 1, len= (r - l) / R, k= len << 1;
    for (i= 0, ed= min(R, (n - l + len - 1) / len);; i++) {
-    if (mod_t *ret= r + l + i * len, *bf= g + d + len; i) {
+    if (mod_t *ret= rr + l + i * len, *bf= g + d + len; i) {
      for (GNA1::bf.zeros(d, d + k), j= i; j--;) GNA2::bf.mul(gt2[j], gt1[i - j - 1], d, d + k), GNA1::bf.add(GNA2::bf, d, d + k);
      GNA1::bf.idft(d, d + k), GNA1::bf.get(g, d + len, d + k);
      for (int t= len; t--;) ret[t]+= bf[t];
@@ -47,8 +47,8 @@ template <class mod_t, size_t LM= 1 << 22> vector<mod_t> exp(const vector<mod_t>
     gt2[i].zeros(d + len, d + k), gt2[i].dft(d, d + k);
    }
   } else
-   for (; i < ed; r[i]*= get_inv<mod_t, LM>(i), i++)
-    for (j= l; j < i; j++) r[i]+= r[j] * dp[i - j];
+   for (; i < ed; rr[i]*= get_inv<mod_t, LM>(i), ++i)
+    for (j= l; j < i; j++) rr[i]+= rr[j] * dp[i - j];
  };
  return rec(rec, 0, m, 0), vector(r, r + n);
 }

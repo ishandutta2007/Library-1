@@ -43,14 +43,14 @@ template <class mod_t, size_t LM= 1 << 22> vector<mod_t> exp(const vector<mod_t>
      for (int t= len; t--;) ret[t]+= bf[t];
     }
     if (f(f, l + i * len, l + (i + 1) * len, d + k); i == ed - 1) break;
-    gt2[i].set(r + l + i * len - d, d, d + len);
+    gt2[i].set(rr + l + i * len - d, d, d + len);
     gt2[i].zeros(d + len, d + k), gt2[i].dft(d, d + k);
    }
   } else
    for (; i < ed; rr[i]*= get_inv<mod_t, LM>(i), ++i)
     for (j= l; j < i; j++) rr[i]+= rr[j] * dp[i - j];
  };
- return rec(rec, 0, m, 0), vector(r, r + n);
+ return rec(rec, 0, m, 0), vector(rr, rr + n);
 }
 template <class mod_t, size_t LM= 1 << 22> vector<mod_t> pow(const vector<mod_t> &p, uint64_t k) {
  mod_t *g= GlobalArray<mod_t, LM, 4>::bf;

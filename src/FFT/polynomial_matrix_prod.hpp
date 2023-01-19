@@ -39,7 +39,7 @@ template <class mod_t, std::size_t LM= 1 << 20> std::vector<std::vector<mod_t>> 
  for (int i= n; i--;)
   for (int j= n; j--;) deg= std::max(deg, (int)m[i][j].size() - 1);
  std::vector<Mat> G(deg + 1, Mat(n, std::vector<mod_t>(n)));
- const int v= get_len((std::sqrt(std::max<std::uint64_t>(1, (k + deg - 1) / deg))));
+ const int v= pw2((std::sqrt(std::max<std::uint64_t>(1, (k + deg - 1) / deg))));
  mod_t tmp, iv= mod_t(1) / v;
  for (int d= deg + 1, i; d--;)
   for (tmp= mod_t(v) * d, i= n; i--;)

@@ -299,6 +299,7 @@
 "test/yukicoder/42.test.cpp": "2023-01-15 15:10:38 +0900",
 "test/yukicoder/421.test.cpp": "2022-10-25 15:42:12 +0900",
 "test/yukicoder/430.AhoCora.test.cpp": "2022-12-31 22:35:11 +0900",
+"test/yukicoder/502.test.cpp": "2023-01-19 17:58:38 +0900",
 "test/yukicoder/529.LCT.test.cpp": "2022-06-21 16:53:28 +0900",
 "test/yukicoder/644.test.cpp": "2023-01-15 15:10:38 +0900",
 "test/yukicoder/649.BIT.test.cpp": "2022-12-31 22:54:50 +0900",
@@ -319,5 +320,6 @@
 "test/yukicoder/919.WM.test.cpp": "2022-12-31 23:54:20 +0900",
 "test/yukicoder/925.SqrtDC.test.cpp": "2022-12-31 23:54:20 +0900",
 "test/yukicoder/963.FPS.test.cpp": "2023-01-15 15:10:38 +0900",
+"test/yukicoder/963.test.cpp": "2023-01-19 17:58:38 +0900",
 "test/yukicoder/980.test.cpp": "2023-01-15 15:10:38 +0900"
 }

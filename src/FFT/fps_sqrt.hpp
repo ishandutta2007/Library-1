@@ -43,7 +43,7 @@ template <size_t LM, class mod_t> void sqrt_base(const mod_t p[], int n, mod_t r
  }
 }
 template <class mod_t, size_t LM= 1 << 22> vector<mod_t> sqrt(const vector<mod_t>& p) {
- mod_t *pp= GlobalArray<mod_t, LM, 0>, *r= GlobalArray<mod_t, LM, 1>, *v= GlobalArray<mod_t, LM, 2>, *iv= GlobalArray<mod_t, LM, 3>;
+ mod_t *pp= GlobalArray<mod_t, LM, 0>::bf, *r= GlobalArray<mod_t, LM, 1>::bf, *v= GlobalArray<mod_t, LM, 2>::bf, *iv= GlobalArray<mod_t, LM, 3>::bf;
  static constexpr size_t LM2= LM >> 2;
  int n= p.size(), cnt= 0;
  while (cnt < n && p[cnt] == mod_t()) cnt++;

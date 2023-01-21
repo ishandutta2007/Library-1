@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
 template <typename M> struct SegmentTree_Beats {
  using T= typename M::T;
  using E= typename M::E;

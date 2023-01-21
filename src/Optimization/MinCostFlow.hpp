@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <numeric>
 #include <cmath>
+#include <cassert>
 template <typename flow_t, typename cost_t, std::int_least8_t obj= 1> class NetworkSimplex {
  struct Node {
   int par, pred;

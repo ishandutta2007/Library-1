@@ -1,10 +1,9 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <vector>
 #include "src/DataStructure/SegmentTree_Beats.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
-
 using Mint= ModInt<998244353>;
 // RsumQはモノイドでサイズを持っておく
 struct RaffineQ_RsumQ {

@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
 template <class T, std::size_t M= 8> class PersistentArray {
  struct Node {
   T val;

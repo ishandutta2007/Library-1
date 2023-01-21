@@ -1,10 +1,8 @@
 #define PROBLEM "https://atcoder.jp/contests/abc256/tasks/abc256_f"
-
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/DataStructure/SegmentTree_Dual.hpp"
 using namespace std;
-
 using Mint= ModInt<998244353>;
 struct Mono {
  struct T {

@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/abc174/tasks/abc174_f"
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/WaveletMatrix.hpp"
+#include "src/DataStructure/DQuery.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

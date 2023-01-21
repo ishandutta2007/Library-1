@@ -1,5 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/abc129/tasks/abc129_e"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Automaton/dfa_dp.hpp"
 #include "src/Automaton/DFA_Inequality.hpp"
 #include "src/Automaton/dfa_operations.hpp"

@@ -22,14 +22,14 @@ signed main() {
  int n, m;
  cin >> n >> m;
  UnionFind uf(n);
- int a[n], b[n];
- long long w[n];
+ int a[m], b[m];
+ long long w[m];
  for (int i= 0; i < m; i++) {
   cin >> a[i] >> b[i] >> w[i];
   --a[i], --b[i];
  }
- int ord[n];
- iota(ord, ord + n, 0), sort(ord, ord + n, [&](int l, int r) { return w[l] < w[r]; });
+ int ord[m];
+ iota(ord, ord + m, 0), sort(ord, ord + m, [&](int l, int r) { return w[l] < w[r]; });
  vector<int> mst_es;
  long long mst_cost= 0;
  for (int i: ord)

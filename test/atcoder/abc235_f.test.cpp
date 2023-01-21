@@ -1,5 +1,6 @@
 #define PROBLEM "https://atcoder.jp/contests/abc235/tasks/abc235_f"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/Automaton/dfa_dp.hpp"
 #include "src/Automaton/dfa_operations.hpp"

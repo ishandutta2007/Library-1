@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <set>
+#include <map>
+#include <tuple>
 #include "src/Automaton/dfa_dp.hpp"
 template <class DFAx, class S= typename DFAx::state_t> struct DFA_Compress {
  using symbol_t= typename DFAx::symbol_t;

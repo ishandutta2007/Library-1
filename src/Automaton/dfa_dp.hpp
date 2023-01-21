@@ -1,16 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
-#ifndef HAS_CHECK
-#define HAS_CHECK(member, Dummy) \
- template <class T> struct has_##member { \
-  template <class U, Dummy> static std::true_type check(U *); \
-  static std::false_type check(...); \
-  static T *mClass; \
-  static const bool value= decltype(check(mClass))::value; \
- };
-#define HAS_MEMBER(member) HAS_CHECK(member, int dummy= (&U::member, 0))
-#define HAS_TYPE(member) HAS_CHECK(member, class dummy= typename U::member)
-#endif
+#include <vector>
+#include "src/Internal/HAS_CHECK.hpp"
 HAS_TYPE(symbol_t);
 HAS_MEMBER(alphabet);
 HAS_MEMBER(initial_state);
@@ -19,9 +9,6 @@ HAS_MEMBER(is_accept);
 HAS_MEMBER(state_size);
 HAS_MEMBER(eps_transition);
 HAS_MEMBER(is_reject);
-#undef HAS_TYPE
-#undef HAS_MEMBER
-#undef HAS_CHECK
 template <class A> using is_automaton= std::conjunction<has_symbol_t<A>, has_alphabet<A>, has_initial_state<A>, has_transition<A>, has_is_accept<A>>;
 template <class A> using trans_t= std::invoke_result_t<decltype(&A::transition), A, int, typename A::symbol_t, int>;
 template <class DFA> constexpr bool is_dfa_v= std::conjunction_v<has_state_size<DFA>, is_automaton<DFA>, std::is_same<trans_t<DFA>, int>>;

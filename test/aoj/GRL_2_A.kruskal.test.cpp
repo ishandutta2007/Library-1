@@ -10,12 +10,12 @@ signed main() {
  int N, M;
  cin >> N >> M;
  UnionFind uf(N);
- int s[N], t[N];
- long long w[N];
+ int s[M], t[M];
+ long long w[M];
  for (int i= 0; i < M; i++) cin >> s[i] >> t[i] >> w[i];
  long long ans= 0;
- int ord[N];
- iota(ord, ord + N, 0), sort(ord, ord + N, [&](int l, int r) { return w[l] < w[r]; });
+ int ord[M];
+ iota(ord, ord + M, 0), sort(ord, ord + M, [&](int l, int r) { return w[l] < w[r]; });
  for (int i: ord)
   if (uf.unite(s[i], t[i])) ans+= w[i];
  cout << ans << '\n';

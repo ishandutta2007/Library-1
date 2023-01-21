@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sum_of_totient_function"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/prime_count.hpp"
 #include "src/Math/multiplicative_and_additive.hpp"

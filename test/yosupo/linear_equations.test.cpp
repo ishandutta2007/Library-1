@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/system_of_linear_equations"
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <vector>
 #include "src/LinearAlgebra/LUDecomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
@@ -22,7 +22,7 @@ signed main() {
   return 0;
  }
  auto ker= lu.kernel();
- std::cout << ker.size() << "\n";
+ cout << ker.size() << "\n";
  for (int j= 0; j < M; j++) {
   cout << (j ? " " : "") << res[j];
  }

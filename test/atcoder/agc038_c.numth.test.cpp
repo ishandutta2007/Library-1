@@ -1,6 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/agc038/tasks/agc038_c"
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/Sieve.hpp"
 using namespace std;
@@ -19,6 +20,6 @@ signed main() {
  auto tmp= Sieve<>::gcd_conv(c, c);
  Mint sum2= 0;
  for (int d= 1; d <= MAX_A; d++) sum2+= tmp[d] / d;
- cout << (sum2 - sum) / 2 << endl;
+ cout << (sum2 - sum) / 2 << '\n';
  return 0;
 }

@@ -1,5 +1,5 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1019"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/Sieve.hpp"
 #include "src/Math/multiplicative_and_additive.hpp"

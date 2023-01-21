@@ -1,7 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2530"
 // ライツアウト
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <vector>
 #include "src/LinearAlgebra/LUDecomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

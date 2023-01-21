@@ -1,5 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/886"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/Sieve.hpp"
 using namespace std;

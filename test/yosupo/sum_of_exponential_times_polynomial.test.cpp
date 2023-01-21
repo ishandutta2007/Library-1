@@ -1,7 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sum_of_exponential_times_polynomial"
 /** @see https://min-25.hatenablog.com/entry/2015/04/24/031413
  */
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/Combination.hpp"
 #include "src/Math/ModInt.hpp"
 #include "src/Math/Sieve.hpp"

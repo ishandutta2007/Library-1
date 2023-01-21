@@ -1,32 +1,32 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2345"
 #define ERROR "0.000000001"
-
 // double型, log
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <cmath>
 #include "src/Math/SetPowerSeries.hpp"
 #include "src/Graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
-
 signed main() {
-  cin.tie(0);
-  ios::sync_with_stdio(false);
-  cout << fixed << setprecision(12);
-  int N, M, P;
-  cin >> N >> M >> P;
-  UndirectedGraphSetPowerSeries g(N);
-  for (int i = 0; i < M; i++) {
-    int u, v;
-    cin >> u >> v, g.add_edge(--u, --v);
-  }
-  if (P == 0) {
-    cout << (g.connected_component_num().back() == 1) << '\n';
-  } else {
-    auto e = g.edge_space_rank();
-    vector<double> h(e.size());
-    for (int s = e.size(); s--;) h[s] = pow(100. / P, e[s]);
-    auto f = SetPowerSeries<>::log(h);
-    cout << f.back() * pow(double(P) / 100, e.back()) << '\n';
-  }
-  return 0;
+ cin.tie(0);
+ ios::sync_with_stdio(false);
+ cout << fixed << setprecision(12);
+ int N, M, P;
+ cin >> N >> M >> P;
+ UndirectedGraphSetPowerSeries g(N);
+ for (int i= 0; i < M; i++) {
+  int u, v;
+  cin >> u >> v, g.add_edge(--u, --v);
+ }
+ if (P == 0) {
+  cout << (g.connected_component_num().back() == 1) << '\n';
+ } else {
+  auto e= g.edge_space_rank();
+  vector<double> h(e.size());
+  for (int s= e.size(); s--;) h[s]= pow(100. / P, e[s]);
+  auto f= SetPowerSeries<>::log(h);
+  cout << f.back() * pow(double(P) / 100, e.back()) << '\n';
+ }
+ return 0;
 }

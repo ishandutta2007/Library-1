@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <vector>
 template <unsigned short MAX_N= 21> struct SetPowerSeries {
 #define SUBSET_REP(i, j, n) \
  for (int _= (n); _>>= 1;) \

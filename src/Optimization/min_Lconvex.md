@@ -1,5 +1,5 @@
 ---
-title: 最小費用流
+title: L凸関数最小化(スケーリング法)
 documentation_of: ./min_Lconvex.hpp
 ---
 ## 計算量

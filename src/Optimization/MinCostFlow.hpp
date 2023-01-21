@@ -1,5 +1,8 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include <cmath>
 template <typename flow_t, typename cost_t, std::int_least8_t obj= 1> class NetworkSimplex {
  struct Node {
   int par, pred;

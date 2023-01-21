@@ -1,5 +1,8 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <tuple>
+#include <cmath>
 template <class T= __int128_t> auto polynomial_prime_sum_table(std::uint64_t N, const std::vector<T> &poly) {
  const int sqrtN= std::sqrt(N), d= poly.size();
  std::vector<int> primes;

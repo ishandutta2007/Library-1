@@ -2,6 +2,7 @@
 #include <array>
 #include <numeric>
 #include <utility>
+#include <cassert>
 class Nimber {
  using u64= std::uint64_t;
  using u32= std::uint32_t;

@@ -1,8 +1,6 @@
 #define PROBLEM "https://atcoder.jp/contests/abc213/tasks/abc213_g"
-
 // 連結グラフ
-
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/SetPowerSeries.hpp"
 #include "src/Graph/UndirectedGraphSetPowerSeries.hpp"

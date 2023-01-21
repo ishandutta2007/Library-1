@@ -1,5 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1269"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 #include "src/Math/ModInt.hpp"
 #include "src/String/AhoCorasick.hpp"
 using namespace std;

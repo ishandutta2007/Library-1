@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <array>
 template <class T= std::int64_t> class WaveletMatrix {
  struct SuccinctIndexableDictionary {
   std::size_t len, blocks, zeros;

@@ -1,5 +1,9 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <limits>
+#include <algorithm>
+#include <array>
+#include <vector>
+#include <numeric>
 template <class T, std::size_t B= 700> class SortedPerBucket {
  static constexpr T INF= std::numeric_limits<T>::max() / 2;
  struct Dat {

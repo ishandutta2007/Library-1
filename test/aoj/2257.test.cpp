@@ -1,5 +1,9 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2257"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <map>
+#include <vector>
+#include <unordered_map>
+#include <string>
 #include "src/String/AhoCorasick.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

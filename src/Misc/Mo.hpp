@@ -8,7 +8,7 @@ struct Mo {
  explicit Mo(int n): n(n) {}
  void query(int l, int r) { L.push_back(l), R.push_back(r); } /* [l, r) */
  template <typename AL, typename AR, typename EL, typename ER, typename O> void run(const AL &add_left, const AR &add_right, const EL &erase_left, const ER &erase_right, const O &out) {
-  int q= lr.size(), bs= n / std::min<int>(n, std::sqrt(q));
+  int q= L.size(), bs= n / std::min<int>(n, std::sqrt(q));
   std::vector<int> ord(q);
   std::iota(ord.begin(), ord.end(), 0), std::sort(ord.begin(), ord.end(), [&](int a, int b) {
    int ablk= L[a] / bs, bblk= L[b] / bs;

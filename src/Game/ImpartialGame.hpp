@@ -1,11 +1,12 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <map>
+#include <algorithm>
+#include <vector>
 template <typename Game, typename F> struct ImpartialGame {
  std::map<Game, unsigned> mp;
  F f;  // : Game -> std::vector<Game>
  static unsigned mex(std::vector<unsigned> S) {
-  std::sort(S.begin(), S.end());
-  S.erase(std::unique(S.begin(), S.end()), S.end());
+  std::sort(S.begin(), S.end()), S.erase(std::unique(S.begin(), S.end()), S.end());
   for (unsigned i= 0; i < S.size(); i++)
    if (S[i] != i) return i;
   return S.size();

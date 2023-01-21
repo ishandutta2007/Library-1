@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <string>
 template <bool ge= false>  // le or ge
 struct DFA_Inequality {    // view from the top digit
  using symbol_t= int;

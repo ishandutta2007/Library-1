@@ -1,5 +1,6 @@
 #define PROBLEM "https://atcoder.jp/contests/abc138/tasks/abc138_f"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Automaton/dfa_dp.hpp"
 #include "src/Automaton/DFA_Inequality.hpp"
 #include "src/Automaton/dfa_operations.hpp"
@@ -9,7 +10,7 @@ using namespace std;
 using Pii= pair<int, int>;
 struct DFA_SameLen {
  using symbol_t= Pii;
- std::vector<symbol_t> alphabet() const { return {{0, 0}, {0, 1}, {1, 1}}; }
+ vector<symbol_t> alphabet() const { return {{0, 0}, {0, 1}, {1, 1}}; }
  inline int initial_state() const { return 0; }
  inline int transition(int s, const symbol_t &a, int) const {
   const auto &[u, v]= a;

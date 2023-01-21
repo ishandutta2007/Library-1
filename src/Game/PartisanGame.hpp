@@ -1,5 +1,9 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <limits>
+#include <map>
+#include <cassert>
+#include <cmath>
 class DyadicRational {
  static constexpr char FracLen= std::numeric_limits<std::uint64_t>::digits - 1;
  static constexpr std::uint64_t Denom= 1ULL << FracLen;

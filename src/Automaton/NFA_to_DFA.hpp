@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <set>
+#include <map>
+#include <tuple>
 #include "src/Automaton/dfa_dp.hpp"
 template <class NFA> constexpr bool is_nfa_v= std::conjunction_v<is_automaton<NFA>, has_eps_transition<NFA>, std::is_same<trans_t<NFA>, std::set<int>>>;
 template <class NFA> struct NFA_to_DFA {

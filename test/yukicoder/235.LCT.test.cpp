@@ -1,5 +1,5 @@
 #define PROBLEM "https://yukicoder.me/problems/no/235"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/DataStructure/LinkCutTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

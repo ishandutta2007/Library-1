@@ -1,5 +1,5 @@
 #define PROBLEM "https://yukicoder.me/problems/no/650"
-#include <bits/stdc++.h>
+#include <iostream>
 
 #include "src/Math/ModInt.hpp"
 #include "src/LinearAlgebra/Matrix.hpp"

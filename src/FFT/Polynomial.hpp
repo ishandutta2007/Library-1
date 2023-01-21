@@ -8,7 +8,7 @@ template <class mod_t, std::size_t LM= 1 << 22> class Polynomial: public std::ve
  struct XP_plus_C {  // x^p+c
   Inde x;
   mod_t c;
-  XP_plus_C(const Inde &x_): x(x_), c(Z) {}
+  XP_plus_C(const Inde &x_): x(x_) {}
   XP_plus_C(int p_, mod_t c_): x(p_), c(c_) {}
  };
  struct Inde {  // indeterminate
@@ -27,13 +27,11 @@ template <class mod_t, std::size_t LM= 1 << 22> class Polynomial: public std::ve
  using GAp= GlobalArray<mod_t, LM, 1>;
  using GAq= GlobalArray<mod_t, LM, 2>;
  using GA3= GlobalArray<mod_t, LM, 3>;
- static inline const mod_t Z= 0;
  static constexpr int A= 8;
  static constexpr int B= 42;
  std::pair<Poly, Poly> quorem_na(const Poly &q) const {
   int n= deg(), m= q.deg(), qsz= n - m + 1, i= qsz, j;
-  std::copy_n(this->begin(), n + 1, GAp::bf);
-  std::copy_n(q.begin(), m + 1, GAq::bf);
+  std::copy_n(this->begin(), n + 1, GAp::bf), std::copy_n(q.begin(), m + 1, GAq::bf);
   for (mod_t *bf= GAp::bf + n - m, iv= mod_t(1) / GAq::bf[m]; i--; bf--)
    for (GA::bf[i]= bf[j= m] * iv; j--;) bf[j]-= GAq::bf[j] * GA::bf[i];
   Poly rem(GAp::bf, GAp::bf + m);
@@ -47,18 +45,14 @@ template <class mod_t, std::size_t LM= 1 << 22> class Polynomial: public std::ve
  std::pair<Poly, Poly> quorem_ntt(const Poly &q) const {
   const int n= deg(), m= q.deg(), qsz= n - m + 1;
   auto qu= quo(q);
-  std::copy(qu.begin(), qu.end(), GA::bf);
-  std::copy_n(this->begin(), n + 1, GAp::bf);
-  std::copy_n(q.begin(), m + 1, GAq::bf);
+  std::copy(qu.begin(), qu.end(), GA::bf), std::copy_n(this->begin(), n + 1, GAp::bf), std::copy_n(q.begin(), m + 1, GAq::bf);
   const int len= pw2(m), mask= len - 1;
-  if (len > qsz) std::fill_n(GA::bf + qsz, len - qsz, Z);
-  if (len > m + 1) std::fill_n(GAq::bf + m + 1, len - m - 1, Z);
+  if (len > qsz) std::fill_n(GA::bf + qsz, len - qsz, mod_t());
+  if (len > m + 1) std::fill_n(GAq::bf + m + 1, len - m - 1, mod_t());
   for (int i= qsz; i-- > len;) GA::bf[i & mask]+= GA::bf[i];
   for (int i= n; i >= len; i--) GAp::bf[i & mask]+= GAp::bf[i];
   if (GNA1::bf.set(GA::bf, 0, len); m == len) GAq::bf[0]+= GAq::bf[m];
-  GNA2::bf.set(GAq::bf, 0, len), GNA1::bf.dft(0, len), GNA2::bf.dft(0, len);
-  GNA1::bf.mul(GNA2::bf, 0, len), GNA1::bf.idft(0, len);
-  GNA1::bf.get(GAq::bf, 0, m);
+  GNA2::bf.set(GAq::bf, 0, len), GNA1::bf.dft(0, len), GNA2::bf.dft(0, len), GNA1::bf.mul(GNA2::bf, 0, len), GNA1::bf.idft(0, len), GNA1::bf.get(GAq::bf, 0, m);
   for (int i= m; i--;) GAp::bf[i]-= GAq::bf[i];
   Poly rem(GAp::bf, GAp::bf + m);
   return std::make_pair(qu, rem.shrink());
@@ -71,7 +65,7 @@ public:
  static Inde x() { return Inde(); }
  inline int deg() const {
   for (int n= this->size() - 1;; n--)
-   if (n < 0 || (*this)[n] != Z) return n;
+   if (n < 0 || (*this)[n] != mod_t()) return n;
  }
  inline Poly &shrink() { return this->resize(std::max(deg() + 1, 1)), *this; }
 #define ASSIGN(op) \
@@ -94,13 +88,13 @@ public:
  Poly operator/(const Poly &r) const {
   const int m= r.deg(), qsz= deg() - m + 1, ln= __builtin_ctz(pw2(qsz));
   assert(m >= 0);
-  if (qsz <= 0) return Poly{Z};
+  if (qsz <= 0) return Poly{mod_t()};
   return m + 3 < A * ln + B || qsz <= 64 ? quorem_na(r).first : quo(r);
  }
  std::pair<Poly, Poly> quorem(const Poly &r) const {
   const int n= deg(), m= r.deg(), qsz= n - m + 1, ln= __builtin_ctz(pw2(qsz));
   assert(m >= 0);
-  if (qsz <= 0) return {Poly{Z}, Poly(this->begin(), this->begin() + n + 1)};
+  if (qsz <= 0) return {Poly{mod_t()}, Poly(this->begin(), this->begin() + n + 1)};
   return m < A * ln + B || qsz <= 64 ? quorem_na(r) : quorem_ntt(r);
  }
  Poly operator%(const Poly &r) const { return quorem(r).second; }
@@ -122,7 +116,7 @@ public:
  friend Poly operator-(const mod_t l, Poly r) { return -(r-= l); }
  friend Poly operator*(const mod_t l, Poly r) { return r*= l; }
  mod_t operator()(mod_t c) const {  // eval f(c)
-  if (c == Z) return (*this)[0];
+  if (c == mod_t()) return (*this)[0];
   mod_t ret= 0;
   for (int i= deg() + 1; i--;) ret*= c, ret+= (*this)[i];
   return ret;
@@ -139,9 +133,9 @@ public:
   pw2[0]= {1}, pw2[1]= pw1[k];
   for (int i= 2; i <= k; ++i)
    if (pw2[i]= pw2[i - 1] * pw2[1]; pw2[i].size() > n) pw2[i].resize(n);
-  Poly ret(n, Z), f;
+  Poly ret(n), f;
   for (int i= 0, j; i <= k; ++i) {
-   for (f.assign(n, Z), j= std::min(k, std::max(0, n - k * i)); j--;) {
+   for (f.assign(n, mod_t()), j= std::min(k, std::max(0, n - k * i)); j--;) {
     mod_t coef= (*this)[k * i + j];
     for (int d= pw1[j].size(); d--;) f[d]+= pw1[j][d] * coef;
    }
@@ -151,20 +145,20 @@ public:
  }
  Poly &operator*=(const XP_plus_C &xpc) {
   Poly q;
-  if (xpc.c != Z) q= *this * xpc.c;
-  return this->insert(this->begin(), xpc.x.pow(), Z), *this+= q;
+  if (xpc.c != mod_t()) q= *this * xpc.c;
+  return this->insert(this->begin(), xpc.x.pow(), mod_t()), *this+= q;
  }
  Poly operator*(const XP_plus_C &xpc) const { return Poly(*this)*= xpc; }
  friend Poly operator*(const XP_plus_C &xpc, const Poly &p) { return p * xpc; }
  Poly scale(int k) const {
   const int n= deg();
-  Poly ret(n * k + 1, Z);
+  Poly ret(n * k + 1);
   for (int i= 0; i <= n; i++) ret[i * k]+= (*this)[i];
   return ret;
  }
  Poly taylor_shift(mod_t c) const {
   int n= deg(), i= 0;
-  if (n < 1 || c == Z) return Poly(*this);
+  if (n < 1 || c == mod_t()) return Poly(*this);
   mod_t cpw= 1, fact= 1;
   for (; i <= n; fact*= ++i) GAp::bf[n - i]= (*this)[i] * fact;
   for (fact= mod_t(1) / fact; i--;) GA3::bf[i]= (fact*= i + 1);
@@ -176,7 +170,7 @@ public:
  friend std::ostream &operator<<(std::ostream &os, const Poly &p) {
   if (p.deg() == -1) return os << 0;
   for (int i= 0, e= p.deg(); i <= e; i++) {
-   if (p[i] == Z) continue;
+   if (p[i] == mod_t()) continue;
    if (i == 0 || p[i] != mod_t(1)) os << p[i];
    if (i >= 1) os << 'x';
    if (i > 9) os << "^(" << i << ')';

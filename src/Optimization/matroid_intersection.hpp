@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <limits>
 #include <array>
+#include <queue>
 #include <cassert>
 template <typename Matroid1, typename Matroid2> std::vector<int> matroid_intersection(int n, Matroid1 M1, Matroid2 M2) {
  std::vector<bool> b(n, false), useless(n);

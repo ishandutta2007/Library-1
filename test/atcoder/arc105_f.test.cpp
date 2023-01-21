@@ -1,8 +1,6 @@
 #define PROBLEM "https://atcoder.jp/contests/arc105/tasks/arc105_f"
-
 // 連結二部グラフ
-
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/SetPowerSeries.hpp"
 #include "src/Graph/UndirectedGraphSetPowerSeries.hpp"

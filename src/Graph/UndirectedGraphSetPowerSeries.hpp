@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/Math/SetPowerSeries.hpp"
 template <unsigned short MAX_V= 21> class UndirectedGraphSetPowerSeries {
  using SPS= SetPowerSeries<MAX_V>;

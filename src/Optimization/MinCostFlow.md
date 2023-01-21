@@ -1,5 +1,5 @@
 ---
-title: L凸関数最小化(スケーリング法)
+title: 最小費用流
 documentation_of: ./MinCostFlow.hpp
 ---
 ネットワーク単体法

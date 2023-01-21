@@ -1,5 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Final/0425"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <numeric>
+#include <algorithm>
 #include "src/Misc/Mo.hpp"
 using namespace std;
 signed main() {

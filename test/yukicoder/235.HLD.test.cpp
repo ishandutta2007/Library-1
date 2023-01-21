@@ -1,5 +1,5 @@
 #define PROBLEM "https://yukicoder.me/problems/no/235"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Graph/HeavyLightDecomposition.hpp"
 #include "src/DataStructure/SegmentTree_Beats.hpp"
 #include "src/Math/ModInt.hpp"
@@ -33,7 +33,7 @@ signed main() {
  }
  hld.build(0);
  SegmentTree_Beats<Mono> seg(N);
- for (int i= 0; i < N; i++) seg.unsafe_set(hld.in[i], {S[i], C[i]});
+ for (int i= 0; i < N; i++) seg.unsafe_set(hld[i], {S[i], C[i]});
  seg.rebuild();
  auto q= [&](int a, int b) { return seg.fold(a, b); };
  int Q;

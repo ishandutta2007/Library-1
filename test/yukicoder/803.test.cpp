@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/803"
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <vector>
 #include "src/LinearAlgebra/LUDecomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

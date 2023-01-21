@@ -1,9 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/lcm_convolution"
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/Sieve.hpp"
 #include "src/Math/ModInt.hpp"
-
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <map>
 template <int LIM= 1 << 24> class Sieve {
  static inline int ps[LIM >> 4], lpf[LIM >> 1], lpfpw[LIM >> 1], psz= 0;
  static inline std::int8_t lpfe[LIM >> 1];

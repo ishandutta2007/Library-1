@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <cassert>
 template <bool ge= false>  // le or ge
 struct DFA_Inequality {    // view from the top digit
  using symbol_t= int;

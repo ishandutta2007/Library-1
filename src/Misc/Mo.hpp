@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <cmath>
 struct Mo {
  int n;
  std::vector<int> L, R;

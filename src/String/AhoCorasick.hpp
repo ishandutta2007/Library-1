@@ -1,25 +1,24 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <numeric>
 template <typename S> struct AhoCorasick {
  using symbol_t= S;
  template <class Array> AhoCorasick(const std::vector<Array> &ps) {
   static_assert(std::is_convertible_v<decltype(ps[0][0]), symbol_t>);
   const size_t n= ps.size();
   std::vector<int> ord(n), rows;
-  std::iota(ord.begin(), ord.end(), 0);
-  std::sort(ord.begin(), ord.end(), [&](int l, int r) { return ps[l] < ps[r]; });
+  std::iota(ord.begin(), ord.end(), 0), std::sort(ord.begin(), ord.end(), [&](int l, int r) { return ps[l] < ps[r]; });
   std::vector<size_t> lcp(n, 0), prev(n, 0), cur(n);
   for (size_t i= 1, j, ed; i < n; lcp[i++]= j)
    for (j= 0, ed= std::min(ps[ord[i - 1]].size(), ps[ord[i]].size()); j < ed; j++)
     if (ps[ord[i - 1]][j] != ps[ord[i]][j]) break;
   size_t nodes= 1;
   for (size_t i= 0; i < n; i++) nodes+= ps[ord[i]].size() - lcp[i];
-  beg.reserve(nodes + 1), es.reserve(nodes), match.reserve(nodes);
-  rows.reserve(n + 1);
+  beg.reserve(nodes + 1), es.reserve(nodes), match.reserve(nodes), rows.reserve(n + 1);
   for (size_t row= 0; row < n; row++)
    if (!ps[ord[row]].empty()) rows.push_back(row);
-  rows.push_back(-1), beg.push_back(0);
-  match.push_back({});
+  rows.push_back(-1), beg.push_back(0), match.push_back({});
   for (int i= 0; i < n && ps[ord[i]].empty(); i++) match[0].push_back(ord[i]);
   for (size_t col= 0; rows[0] != -1; col++) {
    int size= 0;

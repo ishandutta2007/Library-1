@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include "src/Automaton/dfa_dp.hpp"
 template <class DFA, class S, class F> struct DFA_SymbolMap {
  using symbol_t= S;

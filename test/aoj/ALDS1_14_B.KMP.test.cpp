@@ -1,5 +1,6 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/lesson/1/ALDS1/14/ALDS1_14_B"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
 #include "src/String/KnuthMorrisPratt.hpp"
 using namespace std;
 signed main() {
@@ -12,6 +13,6 @@ signed main() {
  for (auto a: ans) {
   cout << a << "\n";
  }
- cout << flush;
+ cout << '\n';
  return 0;
 }

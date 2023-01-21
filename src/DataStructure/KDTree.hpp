@@ -2,6 +2,7 @@
 #include <array>
 #include <vector>
 #include <algorithm>
+#include <tuple>
 #include <cstddef>
 #include <cassert>
 #include "src/Internal/HAS_CHECK.hpp"

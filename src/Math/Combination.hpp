@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 template <class mint, std::size_t LIM= (1 << 24)> class Combination {
  static inline mint _fact[LIM], _finv[LIM];
  static inline int lim= 0;

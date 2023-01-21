@@ -22,7 +22,7 @@ signed main() {
  KDT kdt(v);
  long long ans= 0;
  for (int i= 0; i < N; i++)
-  if (L[i] > 0) ans+= kdt.fold({A[i] - L[i], A[i] - 1}, {A[i], 1 << 30});
+  if (L[i] > 0) ans+= kdt.fold({A[i] - L[i], A[i] - 1}, {A[i], 0x7fffffff});
  cout << ans << "\n";
  return 0;
 }

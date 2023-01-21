@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/characteristic_polynomial"
-
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/LinearAlgebra/characteristic_polynomial.hpp"
 #include "src/Math/ModInt.hpp"
 
@@ -11,11 +11,10 @@ signed main() {
  using Mint= ModInt<998244353>;
  int N;
  cin >> N;
- vector<vector<Mint>> a(N, vector<Mint>(N));
+ vector a(N, vector<Mint>(N));
  for (int i= 0; i < N; i++)
   for (int j= 0; j < N; j++) cin >> a[i][j];
  auto p= characteristic_polynomial(a);
- for (int i= 0; i <= N; i++) cout << (i ? " " : "") << p[i];
- cout << '\n';
+ for (int i= 0; i <= N; i++) cout << p[i] << " \n"[i == N];
  return 0;
 }

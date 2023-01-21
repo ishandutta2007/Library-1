@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <cstddef>
+#include <cassert>
 #include "src/Internal/HAS_CHECK.hpp"
 template <typename M= void> class LinkCutTree {
  HAS_MEMBER(op);

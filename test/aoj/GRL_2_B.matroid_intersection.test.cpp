@@ -1,6 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/2/GRL_2_B"
 // 最小全域有向木(グラフ+分割)
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Optimization/matroid_intersection.hpp"
 using namespace std;
 int main() {

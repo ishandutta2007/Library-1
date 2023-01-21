@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <array>
+#include <queue>
 class Matching {
  int n, ret;
  std::vector<std::vector<int>> adj;

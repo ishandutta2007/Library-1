@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/zalgorithm"
-#include <bits/stdc++.h>
-
+#include <iostream>
+#include <string>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/CartesianProduct.hpp"
 #include "src/String/RollingHash.hpp"

@@ -1,5 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2614"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <set>
+#include <string>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/CartesianProduct.hpp"
 #include "src/String/RollingHash.hpp"

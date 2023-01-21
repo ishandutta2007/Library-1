@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <cstddef>
+#include <cassert>
 #include "src/Internal/HAS_CHECK.hpp"
 template <std::uint8_t K, class pos_t, class M> class KDTree {
  HAS_MEMBER(op);

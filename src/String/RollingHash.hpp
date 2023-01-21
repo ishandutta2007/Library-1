@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <random>
+#include <string>
 template <class K> class RollingHash {
  static inline std::vector<K> pw;
  static inline K base;

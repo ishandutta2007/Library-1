@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <tuple>
+#include <array>
+#include <utility>
 template <class... Ks> struct CartesianProduct: std::tuple<Ks...> {
  static constexpr int N= sizeof...(Ks);
  using Self= CartesianProduct;

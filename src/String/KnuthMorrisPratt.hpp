@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <string>
 struct KnuthMorrisPratt {
  std::vector<int> KMP;
  const std::string s;

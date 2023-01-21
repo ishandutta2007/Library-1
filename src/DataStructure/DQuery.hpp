@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include "src/DataStructure/WaveletMatrix.hpp"
 class DQuery {
  std::vector<int> next;

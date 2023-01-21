@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <tuple>
+#include <type_traits>
 template <typename T> class LinearSystemIncidence {
  int m;
  std::vector<T> x;
@@ -19,7 +21,7 @@ template <typename T> class LinearSystemIncidence {
 public:
  LinearSystemIncidence(int n): m(0), adj(n) {}
  void add_edge(int src, int dst) { adj[src].emplace_back(m, dst, true), adj[dst].emplace_back(m++, src, false); }
- std::vector<T> solve(const std::vector<T> &b) {
+ std::vector<T> solve(const std::vector<T> &b) noexcept {
   x.assign(m, T(0)), used.assign(adj.size(), false);
   for (std::size_t u= 0; u < adj.size(); u++)
    if (!used[u] && dfs(b, u) != T(0)) return std::vector<T>();  // no sloution

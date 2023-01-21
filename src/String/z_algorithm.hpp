@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <string>
 std::vector<int> z_algorithm(const std::string &s) {
  std::vector<int> prefix(s.size());
  for (int i= 1, j= 0; i < s.size(); i++) {

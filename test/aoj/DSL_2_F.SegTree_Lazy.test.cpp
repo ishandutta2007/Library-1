@@ -5,7 +5,7 @@ using namespace std;
 struct RupdQ_RminQ {
  using T= int;
  using E= int;
- static T ti() { return 1 << 30; }
+ static T ti() { return 0x7fffffff; }
  static T op(const T& l, const T& r) { return min(l, r); }
  static bool mapping(T& v, const E& f) { return v= f, true; }
  static void composition(E& pre, const E& suf) { pre= suf; }

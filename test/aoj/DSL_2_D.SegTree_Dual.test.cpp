@@ -13,7 +13,7 @@ signed main() {
  ios::sync_with_stdio(0);
  int n, q;
  cin >> n >> q;
- SegmentTree_Dual<RupdQ> seg(n, 1 << 30);
+ SegmentTree_Dual<RupdQ> seg(n, 0x7fffffff);
  while (q--) {
   bool com;
   cin >> com;

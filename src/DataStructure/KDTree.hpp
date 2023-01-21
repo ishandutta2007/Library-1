@@ -1,16 +1,9 @@
 #pragma once
-#include <bits/stdc++.h>
-#ifndef HAS_CHECK
-#define HAS_CHECK(member, Dummy) \
- template <class T> struct has_##member { \
-  template <class U, Dummy> static std::true_type check(U *); \
-  static std::false_type check(...); \
-  static T *mClass; \
-  static const bool value= decltype(check(mClass))::value; \
- };
-#define HAS_MEMBER(member) HAS_CHECK(member, int dummy= (&U::member, 0))
-#define HAS_TYPE(member) HAS_CHECK(member, class dummy= typename U::member)
-#endif
+#include <array>
+#include <vector>
+#include <algorithm>
+#include <cstddef>
+#include "src/Internal/HAS_CHECK.hpp"
 template <std::uint8_t K, class pos_t, class M> class KDTree {
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
@@ -89,8 +82,7 @@ private:
   if (i == -1 || outall(ns[i].range)) return;
   if (inall(ns[i].range)) return propagate(i, x), void();
   if (eval(i); in(ns[i].pos)) M::mapping(ns[i].val, x);
-  apply(ns[i].ch[0], in, inall, outall, x);
-  apply(ns[i].ch[1], in, inall, outall, x);
+  apply(ns[i].ch[0], in, inall, outall, x), apply(ns[i].ch[1], in, inall, outall, x);
   if constexpr (monoid<M>::value) pushup(i);
  }
  inline std::pair<T, bool> get(int i, const std::array<pos_t, K> &pos) {

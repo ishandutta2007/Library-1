@@ -2,6 +2,8 @@
 title: kD-Tree
 documentation_of: ./KDTree.hpp
 ---
+## 計算量
+$\mathcal{O}(k\cdot N^{1-1/k})$
 ## 参考
 [https://trap.jp/post/1489/](https://trap.jp/post/1489/)
 ## 問題例

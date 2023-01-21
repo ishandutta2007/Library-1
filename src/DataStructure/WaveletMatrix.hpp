@@ -2,7 +2,8 @@
 #include <vector>
 #include <algorithm>
 #include <array>
-template <class T= std::int64_t> class WaveletMatrix {
+#include <cassert>
+template <class T= long long> class WaveletMatrix {
  struct SuccinctIndexableDictionary {
   std::size_t len, blocks, zeros;
   std::vector<unsigned> bit, sum;
@@ -61,16 +62,4 @@ public:
  }
  // count i s.t. (l <= i < r) && (lb <= v[i] < ub)
  std::size_t count(int l, int r, T lb, T ub) const { return count(l, r, ub) - count(l, r, lb); }
-};
-class DQuery {
- std::vector<int> next;
- WaveletMatrix<int> wm;
-public:
- template <class T> DQuery(const std::vector<T> &v): next(v.size(), -1) {
-  std::map<T, int> mp;
-  for (int i= v.size(); i--; mp[v[i]]= i)
-   if (mp.count(v[i])) next[mp[v[i]]]= i;
-  wm= WaveletMatrix(next);
- }
- std::size_t number_of_types(int l, int r) const { return wm.count(l, r, l); }
 };

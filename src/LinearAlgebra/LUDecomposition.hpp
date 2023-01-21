@@ -1,5 +1,9 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <type_traits>
+#include <algorithm>
+#include <numeric>
+#include <cassert>
 template <class K> class LUDecomposition {
  using Mat= std::vector<std::vector<K>>;
  Mat dat;

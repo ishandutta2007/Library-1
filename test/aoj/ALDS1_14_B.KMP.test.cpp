@@ -10,9 +10,6 @@ signed main() {
  cin >> T >> P;
  KnuthMorrisPratt KMP(P);
  auto ans= KMP.pattern_match(T);
- for (auto a: ans) {
-  cout << a << "\n";
- }
- cout << '\n';
+ for (auto a: ans) cout << a << "\n";
  return 0;
 }

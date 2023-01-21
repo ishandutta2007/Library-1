@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
 template <class K> std::vector<std::vector<K>> hessenberg(const std::vector<std::vector<K>> &a) {
  std::size_t n= a.size();
  auto ret= a;

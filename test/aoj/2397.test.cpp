@@ -1,6 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Spring/2397"
 //行列累乗のverify
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
 #include "src/LinearAlgebra/Matrix.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <limits>
+#include <type_traits>
+#include <cstddef>
 template <typename T, T (*o)(), T (*i)(), T (*add)(T, T), T (*mul)(T, T)> struct SemiRing {
  T x;
  SemiRing(): x(o()) {}

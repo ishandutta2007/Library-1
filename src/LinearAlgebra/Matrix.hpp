@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <array>
+#include <vector>
+#include <bitset>
 template <class R, int N, int M> struct Matrix: public std::array<std::array<R, M>, N> {
  static constexpr Matrix O() { return Matrix(); }
  Matrix &operator+=(const Matrix &r) {

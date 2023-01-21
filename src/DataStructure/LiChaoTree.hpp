@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <limits>
+#include <algorithm>
 template <typename T> class LiChaoTree {
  struct Line {
   T a, b;

@@ -17,7 +17,7 @@ signed main() {
  long long ans= 0;
  for (int i= 0; i < N; i++) {
   int left= lower_bound(A, A + N, A[i] - L[i]) - A;
-  ans+= wm.count(left, i, A[i], 1 << 30);
+  ans+= wm.count(left, i, A[i], 0x7fffffff);
  }
  cout << ans << "\n";
  return 0;

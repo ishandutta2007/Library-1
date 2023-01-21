@@ -1,9 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/DataStructure/LinkCutTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
-#undef call_from_test
 
 using Mint= ModInt<998244353>;
 struct RcompositeQ {
@@ -44,7 +43,7 @@ signed main() {
    Mint x;
    cin >> u >> v >> x;
    auto ans= lct.fold(u, v);
-   cout << ans.first * x + ans.second << endl;
+   cout << ans.first * x + ans.second << '\n';
   }
  }
  return 0;

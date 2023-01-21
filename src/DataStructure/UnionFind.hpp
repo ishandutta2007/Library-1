@@ -1,8 +1,10 @@
 #pragma once
-#include <bits/stdc++.h>
-struct UnionFind {
+#include <vector>
+#include <algorithm>
+class UnionFind {
  std::vector<int> par;
- UnionFind(int size): par(size, -1) {}
+public:
+ UnionFind(int n): par(n, -1) {}
  bool unite(int u, int v) {
   if ((u= root(u)) == (v= root(v))) return false;
   if (par[u] > par[v]) std::swap(u, v);

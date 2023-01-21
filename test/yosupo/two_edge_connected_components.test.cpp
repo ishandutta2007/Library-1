@@ -1,25 +1,32 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/two_edge_connected_components"
-#include <bits/stdc++.h>
-#include "src/Graph/TwoEdgeConnectedComponents.hpp"
+#include <iostream>
+#include <vector>
+#include "src/Graph/IncrementalBridgeConnectivity.hpp"
 using namespace std;
-
 signed main() {
-  cin.tie(0);
-  ios::sync_with_stdio(0);
-  int N, M;
-  cin >> N >> M;
-  TwoEdgeConnectedComponents graph(N);
-  for (int i = 0; i < M; i++) {
-    int a, b;
-    cin >> a >> b;
-    graph.add_edge(a, b);
+ cin.tie(0);
+ ios::sync_with_stdio(0);
+ int N, M;
+ cin >> N >> M;
+ IncrementalBridgeConnectivity ibc(N);
+ for (int i= 0; i < M; i++) {
+  int a, b;
+  cin >> a >> b;
+  ibc.add_edge(a, b);
+ }
+ int n= 0;
+ vector<int> ans[N];
+ for (int i= 0; i < N; ++i) {
+  int j= ibc.represent(i);
+  ans[j].push_back(i);
+  if (ans[j].size() == 1) ++n;
+ }
+ cout << n << '\n';
+ for (int i= 0; i < N; ++i)
+  if (!ans[i].empty()) {
+   cout << ans[i].size();
+   for (int &v: ans[i]) cout << " " << v;
+   cout << '\n';
   }
-  auto ans = graph.get_2ECC().first;
-  cout << ans.size() << endl;
-  for (auto &a : ans) {
-    cout << a.size();
-    for (int &v : a) cout << " " << v;
-    cout << endl;
-  }
-  return 0;
+ return 0;
 }

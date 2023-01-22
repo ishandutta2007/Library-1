@@ -4,7 +4,7 @@ template <typename M> struct SegmentTree_Beats {
  using T= typename M::T;
  using E= typename M::E;
  SegmentTree_Beats() {}
- SegmentTree_Beats(int n_): n(n_), height(ceil(log2(n))), dat(n * 2, M::ti()), laz(n * 2, {E(), false}) {}
+ SegmentTree_Beats(int n_): n(n_), height(std::__lg(n - 1) + 1), dat(n * 2, M::ti()), laz(n * 2, {E(), false}) {}
  SegmentTree_Beats(int n_, T v1): SegmentTree_Beats(n_) {
   for (int i= n; i--;) dat[i + n]= v1;
   for (int i= n; --i;) update(i);

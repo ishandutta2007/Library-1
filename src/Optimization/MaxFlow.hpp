@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <limits>
 #include <queue>
+#include <array>
 #include <cassert>
 template <typename FlowAlgo> struct MaxFlow: public FlowAlgo {
  using FlowAlgo::FlowAlgo;

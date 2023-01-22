@@ -1,8 +1,6 @@
 #define PROBLEM "https://atcoder.jp/contests/abc256/tasks/abc256_f"
-
 // 双対 の verify
-
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
 using namespace std;

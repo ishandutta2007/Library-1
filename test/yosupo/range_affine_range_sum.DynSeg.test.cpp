@@ -1,21 +1,17 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
-
 //遅延伝搬のverify
-
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
 #include "src/Math/ModInt.hpp"
-
 using namespace std;
-
 using Mint= ModInt<998244353>;
 struct RaffineQ_RsumQ {
  using T= Mint;
- using E= pair<Mint, Mint>;
+ using E= array<Mint, 2>;
  static T ti() { return 0; }
  static T op(const T &l, const T &r) { return l + r; }
- static void mapping(T &v, const E &f, int sz) { v= f.first * v + f.second * sz; }
- static void composition(E &pre, const E &suf) { pre= {suf.first * pre.first, suf.first * pre.second + suf.second}; }
+ static void mapping(T &v, const E &f, int sz) { v= f[0] * v + f[1] * sz; }
+ static void composition(E &pre, const E &suf) { pre= {pre[0] * suf[0], suf[1] * pre[1] + suf[1]}; }
 };
 signed main() {
  cin.tie(0);
@@ -34,7 +30,7 @@ signed main() {
   } else {
    Mint b, c;
    cin >> b >> c;
-   seg.apply(l, r, {Mint(b), Mint(c)});
+   seg.apply(l, r, {b, c});
   }
  }
  return 0;

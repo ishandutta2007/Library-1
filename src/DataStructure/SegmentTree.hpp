@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <cassert>
 template <typename M> struct SegmentTree {
  using T= typename M::T;
  SegmentTree() {}

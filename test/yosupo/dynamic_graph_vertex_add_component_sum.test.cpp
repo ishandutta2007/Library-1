@@ -12,7 +12,7 @@ int main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- OnlineDynamicConnectivity<Monoid> dicon(N);
+ OnlineDynamicConnectivity<Monoid, 6'000'000> dicon(N);
  for (int i= 0; i < N; i++) {
   int a;
   cin >> a;

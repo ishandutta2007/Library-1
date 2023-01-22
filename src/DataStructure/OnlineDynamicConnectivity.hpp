@@ -2,7 +2,7 @@
 #include <vector>
 #include <unordered_set>
 #include "src/DataStructure/EulerTourTree.hpp"
-template <typename M= void, std::size_t NODE_SIZE= 303030 * 4> class OnlineDynamicConnectivity {
+template <typename M= void, std::size_t NODE_SIZE= 4'000'000> class OnlineDynamicConnectivity {
  using T= typename EulerTourTree<M, NODE_SIZE>::T;
  using E= typename EulerTourTree<M, NODE_SIZE>::E;
  int N;

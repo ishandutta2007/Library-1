@@ -16,7 +16,7 @@ struct RaffineQ_RsumQ {
  static T ti() { return {Mint(), 0}; }
  static T op(const T &l, const T &r) { return {l.val + r.val, l.sz + r.sz}; }
  static bool mapping(T &v, const E &f) { return v.val= f[0] * v.val + f[1] * v.sz, true; }
- static void composition(E &pre, const E &suf) { pre= {pre[0] * suf[0], suf[1] * pre[1] + suf[1]}; }
+ static void composition(E &pre, const E &suf) { pre= {pre[0] * suf[0], suf[0] * pre[1] + suf[1]}; }
 };
 signed main() {
  cin.tie(0);

@@ -1,16 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
-
+#include <vector>
 #include "src/DataStructure/EulerTourTree.hpp"
-/**
- * @title Online-Dynamic-Connectivity
- * @category データ構造
- * @brief link,cut: O(log^2 N)
- * @brief connected: O(log N)
- */
-
-// BEGIN CUT HERE
-
 template <typename M= void, std::size_t NODE_SIZE= 303030 * 4> class OnlineDynamicConnectivity {
  using T= typename EulerTourTree<M, NODE_SIZE>::T;
  using E= typename EulerTourTree<M, NODE_SIZE>::E;
@@ -19,7 +9,7 @@ template <typename M= void, std::size_t NODE_SIZE= 303030 * 4> class OnlineDynam
  std::vector<std::vector<std::unordered_set<int>>> adj;
  void replace(int x, int y, int level) {
   for (int k= 0; k < level; k++) ett[k].cut(x, y);
-  for (int k= level, loop= true; k-- > 0 && loop;) {
+  for (int k= level, loop= true; k-- && loop;) {
    if (ett[k].tree_size(x) > ett[k].tree_size(y)) std::swap(x, y);
    ett[k].hilevel_edges(x, [&](int s, int d) { ett[k + 1].link(s, d, true); });
    ett[k].subedges(x, [&](int s) {
@@ -33,7 +23,7 @@ template <typename M= void, std::size_t NODE_SIZE= 303030 * 4> class OnlineDynam
       if (adj[k + 1][d].size() == 0) ett[k + 1].subedge_set(d, 1);
       adj[k + 1][s].insert(d), adj[k + 1][d].insert(s);
      } else {
-      for (int kk= k + 1; kk-- > 0;) ett[kk].link(s, d, kk == k);
+      for (int kk= k + 1; kk--;) ett[kk].link(s, d, kk == k);
       return loop= false, true;
      }
     }
@@ -58,13 +48,14 @@ public:
     if (adj[k][y].size() == 0) ett[k].subedge_set(y, 0);
     return;
    }
-  for (int k= ett.size(); k-- > 0;)
+  for (int k= ett.size(); k--;)
    if (ett[k].edge_exist(x, y)) {
     if (k + 1 == ett.size()) ett.emplace_back(N), adj.emplace_back(N);
     replace(x, y, k + 1);
    }
  }
- const T& operator[](int x) { return ett[0][x]; }
+ const T &operator[](int x) { return ett[0][x]; }
+ const T &get(int x) { return ett[0].get(x); }
  void set(int x, T val) { ett[0].set(x, val); }
  int size(int x) { return ett[0].tree_size(x); }
  T fold(int x) { return ett[0].fold_tree(x); }

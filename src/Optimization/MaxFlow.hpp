@@ -171,14 +171,14 @@ protected:
  };
  int n, gap, m;
  struct {
-  std::vector<int> ei, eh, oi, oh;
+  std::vector<std::array<int, 2>> ev, od;
   int se, so;
-  void init(int _n) { ei.resize(_n), eh.resize(_n), oi.resize(_n), oh.resize(_n), se= so= 0; };
+  void init(int _n) { ev.resize(_n), od.resize(_n), se= so= 0; };
   void clear() { se= so= 0; }
   inline bool empty() const { return se + so == 0; }
-  void push(int i, int h) { (h & 1 ? tie(oi[so], oh[so++]) : tie(ei[se], eh[se++]))= {i, h}; }
-  inline int highest() const { return max(se ? eh[se - 1] : -1, so ? oh[so - 1] : -1); }
-  inline int pop() { return !se || (so && oh[so - 1] > eh[se - 1]) ? oi[--so] : ei[--se]; }
+  void push(int i, int h) { (h & 1 ? od[so++] : ev[se++])= {i, h}; }
+  inline int highest() const { return std::max(se ? ev[se - 1][1] : -1, so ? od[so - 1][1] : -1); }
+  inline int pop() { return !se || (so && od[so - 1][1] > ev[se - 1][1]) ? od[--so][0] : ev[--se][0]; }
  } hque;
  std::vector<std::vector<Edge>> adj;
  std::vector<int> dist, dcnt;

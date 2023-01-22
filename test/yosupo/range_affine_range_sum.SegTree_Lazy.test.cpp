@@ -1,6 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
 #include <iostream>
 #include <vector>
+#include <array>
 #include "src/DataStructure/SegmentTree_Beats.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
@@ -11,11 +12,11 @@ struct RaffineQ_RsumQ {
   Mint val;
   int sz;
  };
- using E= pair<Mint, Mint>;
- static T ti() { return {0, 0}; }
+ using E= array<Mint, 2>;
+ static T ti() { return {Mint(), 0}; }
  static T op(const T &l, const T &r) { return {l.val + r.val, l.sz + r.sz}; }
- static bool mapping(T &v, const E &f) { return v.val= f.first * v.val + f.second * v.sz, true; }
- static void composition(E &pre, const E &suf) { pre= {pre.first * suf.first, suf.first * pre.second + suf.second}; }
+ static bool mapping(T &v, const E &f) { return v.val= f[0] * v.val + f[1] * v.sz, true; }
+ static void composition(E &pre, const E &suf) { pre= {pre[0] * suf[0], suf[1] * pre[1] + suf[1]}; }
 };
 signed main() {
  cin.tie(0);
@@ -38,7 +39,7 @@ signed main() {
   } else {
    Mint b, c;
    cin >> b >> c;
-   seg.apply(l, r, {Mint(b), Mint(c)});
+   seg.apply(l, r, {b, c});
   }
  }
  return 0;

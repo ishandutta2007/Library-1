@@ -3,6 +3,7 @@
 #include <vector>
 #include <queue>
 #include <tuple>
+#include <algorithm>
 template <class cost_t= long long> class MatchingWeighted {
  static constexpr cost_t INF= std::numeric_limits<cost_t>::max() / 2;
  struct E {
@@ -37,7 +38,7 @@ template <class cost_t= long long> class MatchingWeighted {
   if (mt[u]= G[u][v].v; u > n) {
    int x= blg[u][G[u][v].u], p= findeven(u, x);
    for (int i= 0; i < p; i++) match(fwr[u][i], fwr[u][i ^ 1]);
-   match(x, v), rotate(fwr[u].begin(), fwr[u].begin() + p, fwr[u].end());
+   match(x, v), std::rotate(fwr[u].begin(), fwr[u].begin() + p, fwr[u].end());
   }
  }
  bool path(const E &e) {

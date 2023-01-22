@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include "src/Internal/HAS_CHECK.hpp"
-template <typename M= void, std::size_t NODE_SIZE= 303030 * 4> class EulerTourTree {
+template <typename M= void, std::size_t NODE_SIZE= 4'000'000> class EulerTourTree {
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
  HAS_MEMBER(mapping);

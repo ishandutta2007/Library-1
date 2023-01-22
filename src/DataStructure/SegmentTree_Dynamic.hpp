@@ -2,6 +2,8 @@
 #include <array>
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <tuple>
 #include "src/Internal/HAS_CHECK.hpp"
 template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class SegmentTree_Dynamic {
  HAS_MEMBER(op);

@@ -15,7 +15,7 @@ signed main() {
  cin >> N >> M;
  int u[M], v[M];
  long long w[M];
- OnlineDynamicConnectivity<Sum, 4'000'000> dicon(N);
+ OnlineDynamicConnectivity<Sum> dicon(N);
  for (int i= 0; i < M; ++i) {
   cin >> u[i] >> v[i] >> w[i];
   --u[i], --v[i];

@@ -106,7 +106,7 @@ public:
   assert(lower <= upper), src+= 2, dst+= 2, assert(0 <= src && src < this->n), assert(0 <= dst && dst < this->n), ++this->m;
   int e= this->adj[src].size(), re= src == dst ? e + 1 : this->adj[dst].size();
   if (lower * upper <= 0) this->adj[src].push_back(Edge{dst, re, upper}), this->adj[dst].push_back(Edge{src, e, -lower});
-  else if (lower > 0) in[src - 2]-= lower, in[dst - 2]+= lower this->adj[src].push_back(Edge{dst, re, upper - lower}), this->adj[dst].push_back(Edge{src, e, 0});
+  else if (lower > 0) in[src - 2]-= lower, in[dst - 2]+= lower, this->adj[src].push_back(Edge{dst, re, upper - lower}), this->adj[dst].push_back(Edge{src, e, 0});
   else in[src - 2]-= upper, in[dst - 2]+= upper, this->adj[src].push_back(Edge{dst, re, 0}), this->adj[dst].push_back(Edge{src, e, upper - lower});
   return EdgePtr(this, src, e, upper);
  }

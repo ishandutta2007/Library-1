@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sqrt_of_formal_power_series_sparse"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/sparse_fps.hpp"
 using namespace std;

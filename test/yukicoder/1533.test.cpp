@@ -1,5 +1,5 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1533"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/sparse_fps.hpp"
 using namespace std;

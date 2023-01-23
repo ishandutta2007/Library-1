@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
 #include "src/Math/Factors.hpp"
 #include "src/Math/mod_inv.hpp"
 class BinomialCoefficient {  // mod <= 1e6

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cassert>
+#include <numeric>
 template <class T> struct DirichletConvSumTable {
  std::uint64_t N;  // <= K * L
  std::vector<T> x /* (1 <= i <= K) */, X /* ∑^{N/i} (1 <= i <= L) */;

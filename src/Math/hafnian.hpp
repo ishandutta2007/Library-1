@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <array>
+#include <cassert>
 template <typename T, unsigned short MAX_N= 38> T hafnian(const std::vector<std::vector<T>> &mat) {
  using Poly= std::array<T, MAX_N / 2 + 1>;
  const int n= mat.size(), n2= n / 2;

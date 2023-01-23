@@ -1,6 +1,6 @@
 ---
 title: 疎行列行列の最小多項式
-tation_of: ./MinimalPolynomial.hpp
+documentation_of: ./MinimalPolynomial.hpp
 ---
 ## 計算量
 $\mathcal{O} (N^2+N \cdot T(N))$ \

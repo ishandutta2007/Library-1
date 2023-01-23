@@ -1,6 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/arc116/tasks/arc116_c"
-
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/DirichletConvSumTable.hpp"
 using namespace std;

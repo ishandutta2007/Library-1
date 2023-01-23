@@ -1,5 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1750"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/LinearAlgebra/SparseSquareMatrix.hpp"
 using namespace std;

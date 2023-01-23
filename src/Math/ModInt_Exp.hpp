@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/Math/Factors.hpp"
 template <std::uint64_t MOD> class ModInt_Exp {
  static_assert(MOD < 1uLL << 63, "MOD must be smaller than 2^63");

@@ -1,5 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/abc228/tasks/abc228_e"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt_Exp.hpp"
 using namespace std;
 signed main() {

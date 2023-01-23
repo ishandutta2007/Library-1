@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/find_linear_recurrence"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/berlekamp_massey.hpp"
 using namespace std;

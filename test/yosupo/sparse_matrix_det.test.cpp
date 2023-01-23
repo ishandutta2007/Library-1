@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sparse_matrix_det"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/LinearAlgebra/SparseSquareMatrix.hpp"
 using namespace std;

@@ -1,6 +1,8 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Spring/2397"
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <utility>
 #include "src/LinearAlgebra/SparseSquareMatrix.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

@@ -162,8 +162,8 @@ public:
  }
  std::size_t size() { return root ? root->size : 0; }
  void clear() { root= nullptr; }
- template <class L= M, std::enable_if_t<monoid<L>::value, std::nullptr_t> = nullptr> const T &operator[](std::size_t k) { return get(k); }
- template <class L= M, std::enable_if_t<monoid<L>::value, std::nullptr_t> = nullptr> T &operator[](std::size_t k) { return at(k); }
+ template <class L= M, std::enable_if_t<semigroup<L>::value, std::nullptr_t> = nullptr> const T &operator[](std::size_t k) { return get(k); }
+ template <class L= M, std::enable_if_t<!semigroup<L>::value, std::nullptr_t> = nullptr> T &operator[](std::size_t k) { return at(k); }
  const T &get(std::size_t k) { return splay(root, k), root->val; }
  T &at(std::size_t k) {
   static_assert(!semigroup<M>::value, "\"at\" is not available");

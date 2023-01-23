@@ -21,7 +21,7 @@ template <typename M> struct SegmentTree_Dual {
   for (int i= height; i; i--) eval((k + n) >> i);
   val[k]= x, laz[k + n].flg= false;
  }
- T operator[](const int k) {
+ T &operator[](const int k) {
   for (int i= height; i; i--) eval((k + n) >> i);
   if (laz[k + n].flg) M::mapping(val[k], laz[k + n].val), laz[k + n].flg= false;
   return val[k];

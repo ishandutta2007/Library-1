@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <cmath>
 #include "src/FFT/NTT.hpp"
 template <class mod_t, size_t LM= 1 << 22> std::vector<mod_t> convolve(const std::vector<mod_t>& p, const std::vector<mod_t>& q) {
  mod_t *pp= GlobalArray<mod_t, LM, 0>::bf, *qq= GlobalArray<mod_t, LM, 1>::bf, *rr= GlobalArray<mod_t, LM, 2>::bf;

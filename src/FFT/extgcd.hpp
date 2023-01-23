@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <array>
 #include "src/FFT/Polynomial.hpp"
 // ax + by = gcd(a, b)
 template <class mod_t, std::size_t _Nm> Polynomial<mod_t, _Nm> extgcd(const Polynomial<mod_t, _Nm> &a, const Polynomial<mod_t, _Nm> &b, Polynomial<mod_t, _Nm> &x, Polynomial<mod_t, _Nm> &y) {

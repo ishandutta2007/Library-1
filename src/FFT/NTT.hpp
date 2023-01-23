@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <limits>
 #include "src/Math/is_prime.hpp"
 #include "src/Math/ModInt.hpp"
 namespace math_internal {

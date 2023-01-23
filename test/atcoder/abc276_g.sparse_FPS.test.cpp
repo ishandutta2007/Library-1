@@ -1,5 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/abc276/tasks/abc276_g"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/sparse_fps.hpp"
 using namespace std;

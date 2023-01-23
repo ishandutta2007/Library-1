@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <numeric>
+#include <cassert>
 #include "src/Math/is_prime.hpp"
 namespace math_internal {
 template <class T> constexpr void bubble_sort(T *bg, T *ed) {

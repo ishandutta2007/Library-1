@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <numeric>
+#include <cmath>
+#include <vector>
 #include "src/Math/mod_inv.hpp"
 #include "src/Internal/Remainder.hpp"
 int discrete_logarithm(int a, int b, int mod) {

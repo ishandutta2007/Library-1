@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/Math/Factors.hpp"
 namespace math_internal {
 constexpr u64 rec(u64 a, u64 b, u64 m) {

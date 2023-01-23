@@ -1,5 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1080"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/sparse_fps.hpp"
 #include "src/Math/mod_sqrt.hpp"

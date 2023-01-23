@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <string>
 #include "src/FFT/NTT.hpp"
 class BigInt {
  static constexpr unsigned BASE= 10000000, D= 7;

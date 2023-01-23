@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <cassert>
+#include <numeric>
 #include "src/FFT/NTT.hpp"
 class MultiVariateConvolution {
  const int n, k, m;

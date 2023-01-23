@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/composition_of_formal_power_series"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/Polynomial.hpp"
 using namespace std;

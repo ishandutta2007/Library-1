@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/FFT/fps_inv.hpp"
 namespace math_internal {
 template <size_t LM, class mod_t> void div_base(const mod_t p[], int n, const mod_t q[], int l, mod_t r[], const mod_t iv[]) {

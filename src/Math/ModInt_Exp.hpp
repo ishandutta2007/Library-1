@@ -2,7 +2,7 @@
 #include "src/Math/Factors.hpp"
 template <std::uint64_t MOD> class ModInt_Exp {
  static_assert(MOD < 1uLL << 63, "MOD must be smaller than 2^63");
- using Uint= std::conditional_t < MOD<UINT_MAX, std::uint32_t, std::uint64_t>;
+ using Uint= std::conditional_t < MOD<(1ull << 32), std::uint32_t, std::uint64_t>;
  using DUint= std::conditional_t<std::is_same_v<Uint, std::uint64_t>, __uint128_t, std::uint64_t>;
  using mod_t= ModInt_Exp;
  static constexpr inline Uint mod(DUint x) { return x < MOD * 2 ? Uint(x) : Uint(x % MOD) + MOD; }

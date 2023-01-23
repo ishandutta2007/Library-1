@@ -4,8 +4,8 @@ template <typename M> struct SegmentTree_Dual {
  using T= typename M::T;
  using E= typename M::E;
  SegmentTree_Dual() {}
- SegmentTree_Dual(int n_, T v1= T()): n(n_), height(std::__lg(n - 1) + 1), val(n, v1), laz(n * 2, {E(), false}) {}
- SegmentTree_Dual(const std::vector<T> &v): n(v.size()), height(std::__lg(n - 1) + 1), val(v), laz(n * 2, {E(), false}) {}
+ SegmentTree_Dual(int n_, T v1= T()): n(n_), height(n == 1 ? 0 : std::__lg(n - 1) + 1), val(n, v1), laz(n * 2, {E(), false}) {}
+ SegmentTree_Dual(const std::vector<T> &v): n(v.size()), height(n == 1 ? 1 : std::__lg(n - 1) + 1), val(v), laz(n * 2, {E(), false}) {}
  void apply(int a, int b, E x) {
   a+= n, b+= n;
   for (int i= height; i >= 1; i--)

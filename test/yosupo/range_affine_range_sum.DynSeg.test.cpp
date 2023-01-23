@@ -11,7 +11,7 @@ struct RaffineQ_RsumQ {
  static T ti() { return 0; }
  static T op(const T &l, const T &r) { return l + r; }
  static void mapping(T &v, const E &f, int sz) { v= f[0] * v + f[1] * sz; }
- static void composition(E &pre, const E &suf) { pre= {pre[0] * suf[0], suf[0] * pre[1] + suf[1]}; }
+ static void composition(E &pre, const E &suf) { pre[0]*= suf[0], pre[1]= suf[0] * pre[1] + suf[1]; }
 };
 signed main() {
  cin.tie(0);

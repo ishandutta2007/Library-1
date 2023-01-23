@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <functional>
 #include "src/FFT/NTT.hpp"
 template <class T, std::size_t LM= 1 << 22> class RelaxedConvolution {
  std::vector<T> a, b, c;

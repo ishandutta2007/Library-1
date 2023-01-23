@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <cassert>
 #include "src/FFT/NTT.hpp"
 template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sample_points_shift(const std::vector<mod_t>& y, mod_t c, int m= 1) {
  assert(m <= mod_t::mod()), assert(y.size() <= mod_t::mod());

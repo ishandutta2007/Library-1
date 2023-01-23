@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/FFT/fps_inv.hpp"
 #include "src/Math/mod_sqrt.hpp"
 namespace math_internal {

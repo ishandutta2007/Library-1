@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/FFT/fps_div.hpp"
 template <class mod_t, std::size_t LM= 1 << 20> struct SubProductTree {
  using poly= std::vector<mod_t>;

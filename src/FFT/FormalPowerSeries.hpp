@@ -2,6 +2,7 @@
 #include <vector>
 #include <functional>
 #include <memory>
+#include <optional>
 #include "src/FFT/NTT.hpp"
 template <class T, std::size_t LM= 1 << 22> class RelaxedConvolution {
  std::vector<T> a, b, c;

@@ -1,4 +1,4 @@
 ---
 title: LU分解
-tation_of: ./LUDecomposition.hpp
+documentation_of: ./LUDecomposition.hpp
 ---

@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
 // a[n] = c[0] * a[n-1] + c[1] * a[n-2] + ... + c[d-1] * a[n-d]
 // return c
 template <class K> std::vector<K> berlekamp_massey(const std::vector<K> &a) {

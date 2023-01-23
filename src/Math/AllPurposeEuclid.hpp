@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
 template <typename M> class AllPurposeEuclid {
  using Node= typename M::Node;
  using u64= unsigned long long;

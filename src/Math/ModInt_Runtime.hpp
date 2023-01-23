@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
 namespace math_internal {
 struct r_b: m_b {};

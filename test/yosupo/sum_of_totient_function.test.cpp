@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sum_of_totient_function"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/DirichletConvSumTable.hpp"
 using namespace std;

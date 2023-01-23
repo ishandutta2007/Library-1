@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <cmath>
 template <class T> struct DirichletConvSumTable {
  std::uint64_t N;  // <= K * L
  std::vector<T> x /* (1 <= i <= K) */, X /* ∑^{N/i} (1 <= i <= L) */;

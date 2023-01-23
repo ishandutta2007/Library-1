@@ -1,5 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1145"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <deque>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/convolve.hpp"
 #include "src/FFT/fps_exp.hpp"

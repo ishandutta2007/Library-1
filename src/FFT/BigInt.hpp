@@ -3,6 +3,8 @@
 #include <iomanip>
 #include <vector>
 #include <string>
+#include <cmath>
+#include <algorithm>
 #include "src/FFT/NTT.hpp"
 class BigInt {
  static constexpr unsigned BASE= 10000000, D= 7;

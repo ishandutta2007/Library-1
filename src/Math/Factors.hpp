@@ -54,7 +54,7 @@ template <class Uint, class MP> constexpr Uint inner_primitive_root(Uint p) {
  const MP md(p);
  const auto f= Factors(p - 1);
  for (Uint ret= 2, one= md.set(1), ng= 0;; ret++) {
-  for (const auto [q, e]: f)
+  for (auto [q, e]: f)
    if (ng= (md.norm(pow(md.set(ret), (p - 1) / q, md)) == one)) break;
   if (!ng) return ret;
  }

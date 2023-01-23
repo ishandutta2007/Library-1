@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <cmath>
 #include "src/Math/mod_inv.hpp"
 #include "src/Math/Factors.hpp"
 namespace math_internal {

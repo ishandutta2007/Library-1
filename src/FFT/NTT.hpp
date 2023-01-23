@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <array>
 #include "src/Math/is_prime.hpp"
 #include "src/Math/ModInt.hpp"
 namespace math_internal {

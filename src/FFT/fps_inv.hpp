@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <cassert>
 #include "src/FFT/NTT.hpp"
 namespace math_internal {
 template <u32 LM, class mod_t> inline void inv_base(const mod_t p[], int n, mod_t r[], int i= 1, int l= -1) {

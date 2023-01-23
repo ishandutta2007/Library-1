@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/multivariate_convolution"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/MultiVariateConvolution.hpp"
 using namespace std;

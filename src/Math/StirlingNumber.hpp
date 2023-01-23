@@ -1,5 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <vector>
+#include <algorithm>
+#include <cassert>
 #include "src/Math/is_prime.hpp"
 class StirlingNumber {
  const std::uint16_t p;

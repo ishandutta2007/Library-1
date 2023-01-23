@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/FFT/fps_div.hpp"
 #include "src/FFT/convolve.hpp"
 template <class mod_t, std::size_t LM= 1 << 22> class Polynomial: public std::vector<mod_t> {

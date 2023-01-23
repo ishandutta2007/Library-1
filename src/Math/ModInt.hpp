@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/Math/mod_inv.hpp"
 #include "src/Internal/Remainder.hpp"
 namespace math_internal {

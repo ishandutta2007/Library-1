@@ -1,5 +1,6 @@
 #pragma once
-#include <bits/stdc++.h>
+#include <type_traits>
+#include <cassert>
 template <class Int> constexpr inline Int mod_inv(Int a, Int mod) {
  static_assert(std::is_signed_v<Int>);
  Int x= 1, y= 0, b= mod;

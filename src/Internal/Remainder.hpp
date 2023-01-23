@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 namespace math_internal {
 using namespace std;
 using u8= uint8_t;

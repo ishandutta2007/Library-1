@@ -1,5 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/980"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/convolve.hpp"
 using namespace std;

@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/exp_of_formal_power_series"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/FormalPowerSeries.hpp"
 using namespace std;

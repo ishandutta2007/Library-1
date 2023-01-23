@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/multipoint_evaluation"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/SubProductTree.hpp"
 using namespace std;

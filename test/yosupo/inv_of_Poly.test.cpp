@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/inv_of_polynomials"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/Polynomial.hpp"
 #include "src/FFT/extgcd.hpp"

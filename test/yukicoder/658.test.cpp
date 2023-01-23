@@ -1,5 +1,5 @@
 #define PROBLEM "https://yukicoder.me/problems/no/658"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/bostan_mori.hpp"
 using namespace std;

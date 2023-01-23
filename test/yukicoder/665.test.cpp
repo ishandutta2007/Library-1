@@ -1,5 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/665"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/sample_points_shift.hpp"
 using namespace std;

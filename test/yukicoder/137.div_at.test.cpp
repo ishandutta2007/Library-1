@@ -1,5 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/137"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/convolve.hpp"
 #include "src/FFT/bostan_mori.hpp"

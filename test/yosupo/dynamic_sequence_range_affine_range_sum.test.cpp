@@ -3,7 +3,7 @@
 // set_balance しないと スタックオーバーフロー
 // （テストケース wrong_avl_killer_01）
 
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/DataStructure/SplayTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

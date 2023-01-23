@@ -1,5 +1,6 @@
 #define PROBLEM "https://atcoder.jp/contests/abc256/tasks/abc256_f"
 #include <iostream>
+#include <array>
 #include "src/Math/ModInt.hpp"
 #include "src/DataStructure/SegmentTree_Dual.hpp"
 using namespace std;

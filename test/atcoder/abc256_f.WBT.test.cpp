@@ -3,6 +3,7 @@
 // 双対 の verify
 
 #include <iostream>
+#include <array>
 #include "src/Math/ModInt.hpp"
 #include "src/DataStructure/WeightBalancedTree.hpp"
 using namespace std;

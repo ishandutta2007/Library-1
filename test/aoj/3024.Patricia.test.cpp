@@ -8,7 +8,7 @@ using namespace std;
 struct RMQ {
  using T= int;
  static T op(T l, T r) { return min(l, r); }
- static T ti() { return INT_MAX; }
+ static T ti() { return 1 << 30; }
 };
 signed main() {
  cin.tie(0);

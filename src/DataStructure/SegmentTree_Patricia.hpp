@@ -145,8 +145,8 @@ public:
   static_assert(!monoid<M>::value, "\"at\" is not available\n");
   return at_val(root, k);
  }
- template <class L= M, typename std::enable_if_t<monoid<L>::value> *= nullptr> T operator[](id_t k) { return get(k); }
- template <class L= M, typename std::enable_if_t<!monoid<L>::value> *= nullptr> T &operator[](id_t k) { return at(k); }
+ template <class L= M, std::enable_if_t<monoid<L>::value, std::nullptr_t> = nullptr> T operator[](id_t k) { return get(k); }
+ template <class L= M, std::enable_if_t<monoid<L>::value, std::nullptr_t> = nullptr> T &operator[](id_t k) { return at(k); }
  T fold(id_t a, id_t b, id_t bias= 0) {
   static_assert(monoid<M>::value, "\"fold\" is not available\n");
   return fold(root, a, b, bias);

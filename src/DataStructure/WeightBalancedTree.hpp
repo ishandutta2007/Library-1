@@ -176,8 +176,8 @@ public:
   static_assert(!semigroup<M>::value, "\"at\" is not available\n");
   return at_val(root, k);
  }
- template <class L= M, typename std::enable_if_t<semigroup<L>::value> *= nullptr> T operator[](std::size_t k) { return get(k); }
- template <class L= M, typename std::enable_if_t<!semigroup<L>::value> *= nullptr> T &operator[](std::size_t k) { return at(k); }
+ template <class L= M, std::enable_if_t<monoid<L>::value, std::nullptr_t> = nullptr> T operator[](std::size_t k) { return get(k); }
+ template <class L= M, std::enable_if_t<monoid<L>::value, std::nullptr_t> = nullptr> T &operator[](std::size_t k) { return at(k); }
  T fold(std::size_t a, std::size_t b) {
   static_assert(semigroup<M>::value, "\"fold\" is not available\n");
   return fold(root, a, b, 0, size());

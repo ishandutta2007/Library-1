@@ -1,5 +1,5 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/library/7/DPL/5/DPL_5_D"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/Combination.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

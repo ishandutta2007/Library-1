@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <algorithm>
 #include <cassert>
 #include "src/FFT/NTT.hpp"
 namespace math_internal {

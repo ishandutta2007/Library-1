@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/polynomial_taylor_shift"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/Polynomial.hpp"
 using namespace std;

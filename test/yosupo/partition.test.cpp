@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/partition_function"
 
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/sequences.hpp"
 using namespace std;

@@ -2,7 +2,7 @@
 
 // 双対 の verify
 
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/DataStructure/WeightBalancedTree.hpp"
 using namespace std;

@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/stirling_number_of_the_first_kind"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/sequences.hpp"
 using namespace std;

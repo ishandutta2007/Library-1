@@ -1,5 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sharp_p_subset_sum"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/fps_exp.hpp"
 using namespace std;

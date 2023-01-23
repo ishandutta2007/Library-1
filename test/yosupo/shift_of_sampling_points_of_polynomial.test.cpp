@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/shift_of_sampling_points_of_polynomial"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/sample_points_shift.hpp"
 using namespace std;

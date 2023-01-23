@@ -7,7 +7,7 @@
 using namespace std;
 struct RminQ {
  using T= int;
- static T ti() { return 1 << 30; }
+ static T ti() { return 0x7fffffff; }
  static T op(T l, T r) { return min(l, r); }
 };
 signed main() {

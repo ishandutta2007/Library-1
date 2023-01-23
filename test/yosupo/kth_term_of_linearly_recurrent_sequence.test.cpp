@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/kth_term_of_linearly_recurrent_sequence"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/bostan_mori.hpp"
 using namespace std;

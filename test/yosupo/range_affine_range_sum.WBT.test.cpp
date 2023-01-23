@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
 //遅延伝搬のverify
-#include <bits/stdc++.h>
+#include <iostream>
 
 #include "src/DataStructure/WeightBalancedTree.hpp"
 #include "src/Math/ModInt.hpp"

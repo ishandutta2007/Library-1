@@ -1,6 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/abc230/tasks/abc230_h"
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/FormalPowerSeries.hpp"
 using namespace std;

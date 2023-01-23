@@ -1,5 +1,5 @@
 #define PROBLEM "https://yukicoder.me/problems/no/502"
-#include <bits/stdc++.h>
+#include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/polynomial_matrix_prod.hpp"
 using namespace std;

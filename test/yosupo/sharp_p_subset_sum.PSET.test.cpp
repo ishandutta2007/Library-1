@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sharp_p_subset_sum"
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/FormalPowerSeries.hpp"
 using namespace std;

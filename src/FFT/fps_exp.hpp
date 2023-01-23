@@ -1,5 +1,4 @@
 #pragma once
-#include <bits/stdc++.h>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/fps_div.hpp"
 namespace math_internal {

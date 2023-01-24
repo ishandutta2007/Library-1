@@ -101,15 +101,11 @@ public:
  }
  void evert(std::size_t k) { expose(&ns[k]), toggle(&ns[k]), eval(&ns[k]); }
  void link(std::size_t c, std::size_t p) {
-  evert(c), expose(&ns[p]);
-  assert(!ns[c].par);
-  ns[p].ch[1]= &ns[c], ns[c].par= &ns[p];
+  evert(c), expose(&ns[p]), assert(!ns[c].par), ns[p].ch[1]= &ns[c], ns[c].par= &ns[p];
   if constexpr (semigroup<M>::value) pushup(&ns[p]);
  }
  void cut(std::size_t c, std::size_t p) {
-  evert(p), expose(&ns[c]);
-  assert(ns[c].ch[0] == &ns[p]);
-  ns[c].ch[0]= ns[c].ch[0]->par= nullptr;
+  evert(p), expose(&ns[c]), assert(ns[c].ch[0] == &ns[p]), ns[c].ch[0]= ns[c].ch[0]->par= nullptr;
   if constexpr (semigroup<M>::value) pushup(&ns[c]);
  }
  int par(std::size_t x) {
@@ -137,11 +133,12 @@ public:
  }
  T fold(std::size_t a, std::size_t b) {  // [a,b] closed section
   static_assert(semigroup<M>::value, "\"fold\" is not available\n");
-  return evert(a), expose(&ns[b]), ns[b].sum;
+  if (a == b) return get(a);
+  return evert(a), expose(&ns[b]), assert(ns[a].par), ns[b].sum;
  }
  void apply(std::size_t a, std::size_t b, E v) {  // [a,b] closed section
   static_assert(dual<M>::value, "\"apply\" is not available\n");
-  evert(a), expose(&ns[b]), propagate(&ns[b], v), eval(&ns[b]);
+  evert(a), expose(&ns[b]), assert(a == b || ns[a].par), propagate(&ns[b], v), eval(&ns[b]);
  }
  static std::string which_available() {
   std::string ret= "";

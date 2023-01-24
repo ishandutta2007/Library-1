@@ -7,29 +7,37 @@ public:
  BiConnectedComponents(int n): adj(n) {}
  void add_edge(int u, int v) { adj[u].push_back(v), adj[v].push_back(u); }
  std::vector<std::vector<int>> block_cut_tree() {
-  int n= adj.size(), m= n, k= 0;
-  std::vector<int> low(n), ord(n), st;
-  std::vector<bool> used(n);
-  std::vector<std::vector<int>> bct;
-  st.reserve(n);
-  auto dfs= [&](auto &self, int v, int p) -> void {
-   int ch= 0, s, x;
-   st.push_back(v), used[v]= true, low[v]= ord[v]= k++;
-   for (int u: adj[v])
-    if (u != p) {
-     if (used[u]) low[v]= std::min(low[v], ord[u]);
-     else if (s= st.size(), ++ch, self(self, u, v), low[v]= std::min(low[v], low[u]); (p == -1 && ch > 1) || (p != -1 && low[u] >= ord[v])) {
-      for (bct.resize(m + 1), bct[m].push_back(v), bct[v].push_back(m); st.size() > s; st.pop_back()) bct[x= st.back()].push_back(m), bct[m].push_back(x);
-      ++m;
+  const int n= adj.size();
+  std::vector<int> ord(n), par(n, -2), dat(n, 0), low;
+  std::vector<std::vector<int>> ret(n);
+  auto add= [&](int u, int v) { ret[u].push_back(v), ret[v].push_back(u); };
+  int k= 0;
+  for (int s= 0; s < n; ++s)
+   if (par[s] == -2) {
+    par[s]= -1;
+    for (int p= s, nx; p >= 0;) {
+     if (dat[p] == 0) ord[k++]= p;
+     if (dat[p] == (int)adj[p].size()) {
+      p= par[p];
+      continue;
      }
+     if (par[nx= adj[p][dat[p]++]] != -2) continue;
+     par[nx]= p, p= nx;
     }
-  };
-  for (int v= n; v--;)
-   if (!used[v]) {
-    dfs(dfs, v, -1), bct.resize(m + 1);
-    for (int x: st) bct[x].push_back(m), bct[m].push_back(x);
-    ++m, st.clear();
    }
-  return bct;
+  for (int i= 0; i < n; ++i) dat[ord[i]]= i;
+  low= dat;
+  for (int v= 0; v < n; ++v)
+   for (int u: adj[v]) low[v]= std::min(low[v], dat[u]);
+  for (int i= n; i--;)
+   if (int p= ord[i], pp= par[p]; pp >= 0) low[pp]= std::min(low[pp], low[p]);
+  for (int p: ord)
+   if (par[p] >= 0) {
+    if (int pp= par[p]; low[p] < dat[pp]) low[p]= low[pp], add(low[p], p);
+    else ret.resize(k + 1), add(k, pp), add(k, p), low[p]= k++;
+   }
+  for (int s= 0; s < n; ++s)
+   if (!adj[s].size()) ret.resize(k + 1), add(k++, s);
+  return ret;
  }
 };

@@ -7,18 +7,18 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, M;
  cin >> N >> M;
- StronglyConnectedComponents graph(N);
- for (int i= 0; i < M; i++) {
+ StronglyConnectedComponents scc(N);
+ for (int i= 0; i < M; ++i) {
   int a, b;
   cin >> a >> b;
-  graph.add_edge(a, b);
+  scc.add_edge(a, b);
  }
- auto ans= graph.get_SCC().first;
- cout << ans.size() << endl;
- for (auto &a: ans) {
-  cout << a.size();
-  for (int &v: a) cout << " " << v;
-  cout << endl;
+ auto ans= scc.get_block();
+ cout << ans.size() << '\n';
+ for (const auto &blk: ans) {
+  cout << blk.size();
+  for (int v: blk) cout << " " << v;
+  cout << '\n';
  }
  return 0;
 }

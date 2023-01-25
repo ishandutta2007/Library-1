@@ -6,7 +6,7 @@ class BiConnectedComponents {
 public:
  BiConnectedComponents(int n): adj(n) {}
  void add_edge(int u, int v) { adj[u].push_back(v), adj[v].push_back(u); }
- std::vector<std::vector<int>> block_cut_tree() {
+ std::vector<std::vector<int>> block_cut_tree() const {
   const int n= adj.size();
   std::vector<int> ord(n), par(n, -2), dat(n, 0), low;
   std::vector<std::vector<int>> ret(n);
@@ -15,14 +15,13 @@ public:
   for (int s= 0; s < n; ++s)
    if (par[s] == -2) {
     par[s]= -1;
-    for (int p= s, nx; p >= 0;) {
+    for (int p= s; p >= 0;) {
      if (dat[p] == 0) ord[k++]= p;
      if (dat[p] == (int)adj[p].size()) {
       p= par[p];
       continue;
      }
-     if (par[nx= adj[p][dat[p]++]] != -2) continue;
-     par[nx]= p, p= nx;
+     if (int q= adj[p][dat[p]++]; par[q] == -2) par[q]= p, p= q;
     }
    }
   for (int i= 0; i < n; ++i) dat[ord[i]]= i;

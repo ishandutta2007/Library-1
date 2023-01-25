@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include "src/Math/is_prime.hpp"
 namespace math_internal {
 template <class Int, class MP> constexpr i64 inner_sqrt(Int a, Int p) {

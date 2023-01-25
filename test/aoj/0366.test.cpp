@@ -12,7 +12,7 @@ signed main() {
  for (int i= 0; i < M; ++i) {
   int A, B;
   cin >> A >> B;
-  scc.add_edge(--A, --B);
+  scc.add_edge(A, B);
  }
  auto blk= scc.get_block();
  int C= blk.size();

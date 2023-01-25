@@ -1,5 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1019"
 #include <iostream>
+#include <cmath>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/Sieve.hpp"
 #include "src/Math/multiplicative_and_additive.hpp"
@@ -20,6 +21,6 @@ signed main() {
  auto mu= Sieve<>::multiplicative_table<Mint>(sqrtN, Moebius<Mint>::f);
  Mint ans= 0;
  for (int d= 1; d <= sqrtN; d++) ans+= F(N / d / d) * d * mu[d];
- cout << ans * 24 - 16 << endl;
+ cout << ans * 24 - 16 << '\n';
  return 0;
 }

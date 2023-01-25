@@ -15,7 +15,7 @@ template <typename M> struct SegmentTree_Beats {
  }
  void unsafe_set(int k, T x) { dat[k + n]= x; }
  void rebuild() {
-  for (int i= n + n; i--;) laz[i].flg= false;
+  for (int i= n; i--;) laz[i].flg= false;
   for (int i= n; --i;) update(i);
  }
  void apply(int a, int b, E x) {
@@ -36,7 +36,7 @@ template <typename M> struct SegmentTree_Beats {
  void set(int k, T x) {
   int i= height;
   for (k+= n; i; i--) eval(k >> i);
-  for (dat[k]= x, laz[k].flg= false, i= 1; k >> i; i++) update(k >> i);
+  for (dat[k]= x, i= 1; k >> i; i++) update(k >> i);
  }
  T fold(int a, int b) {  //[a,b)
   a+= n, b+= n;

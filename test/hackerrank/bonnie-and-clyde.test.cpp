@@ -27,11 +27,12 @@ signed main() {
   int u, v, w;
   cin >> u >> v >> w;
   --u, --v, --w;
-  if (lct.lca(u, w) == -1 || lct.lca(w, v) == -1) cout << "NO" << '\n';
+  if (lct.lca(u, w) == -1 || lct.lca(w, v) == -1) cout << "NO";
   else {
    int tmp= lct.fold(u, w) + lct.fold(w, v) - lct.fold(u, v);
-   cout << (tmp == 1 || tmp == 3 ? "YES" : "NO") << '\n';
+   cout << (tmp == 1 || tmp == 3 ? "YES" : "NO");
   }
+  if (q) cout << '\n';
  }
  return 0;
 }

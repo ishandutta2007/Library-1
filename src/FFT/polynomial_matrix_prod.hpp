@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 #include "src/FFT/sample_points_shift.hpp"
 // M(0)*M(1)*...*M(k)
 template <class mod_t, std::size_t LM= 1 << 20> std::vector<std::vector<mod_t>> polynomial_matrix_prod(const std::vector<std::vector<std::vector<mod_t>>> &m, std::uint64_t k) {

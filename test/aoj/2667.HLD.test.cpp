@@ -1,7 +1,7 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2667"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2667"
 // パス総和、部分木加算
 #include <iostream>
-#include "src/Graph/HeavyLightDecomposition.hpp"
+#include "src/Graph/Tree.hpp"
 #include "src/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
 using namespace std;
 signed main() {
@@ -9,24 +9,24 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- HeavyLightDecomposition hld(N);
- for (int i= 0; i < N - 1; i++) {
+ Tree tree(N);
+ for (int i= 0; i < N - 1; ++i) {
   int a, b;
   cin >> a >> b;
-  hld.add_edge(a, b);
+  tree.add_edge(a, b);
  }
- hld.build();
- BinaryIndexedTree_RangeAdd<long long> bit(N);
- auto q= [&](int l, int r) { return bit.sum(l, r); };
- auto f= [&](long long vl, long long vr) { return vl + vr; };
+ tree.build(0);
+ BinaryIndexedTree_RangeAdd<int> bit(N);
  while (Q--) {
-  int op, x, y;
-  cin >> op >> x >> y;
+  int op, a, b;
+  cin >> op >> a >> b;
   if (op) {
-   auto upd= [&](int l, int r) { bit.add_range(l, r, y); };
-   hld.apply_subtree(x, upd, true);
+   auto [l, r]= tree.subtree(a);
+   bit.add_range(l + 1, r, b);
   } else {
-   cout << hld.fold_path(x, y, q, f, 0ll, true) << "\n";
+   int ans= 0;
+   for (auto [x, y]: tree.path<true>(a, b)) ans+= x <= y ? bit.sum(x, y + 1) : bit.sum(y, x + 1);
+   cout << ans << '\n';
   }
  }
  return 0;

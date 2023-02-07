@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "src/Misc/compress.hpp"
 #include "src/DataStructure/UnionFind.hpp"
-#include "src/Graph/Range2RangeGraph.hpp"
+#include "src/Graph/RangeToRangeGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -36,7 +36,7 @@ signed main() {
   ly[r]= min(ly[r], y[i]);
   ry[r]= max(ry[r], y[i]);
  }
- Range2RangeGraph<int> r2r(N + X + Y);
+ RangeToRangeGraph<int> r2r(N + X + Y);
  for (int i= 0; i < N; ++i) {
   if (rx[i] == -1) continue;
   r2r.add_from_range(N + lx[i], N + rx[i] + 1, i, 0);

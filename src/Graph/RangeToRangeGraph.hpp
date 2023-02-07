@@ -1,14 +1,14 @@
 #pragma once
 #include <vector>
 #include <tuple>
-template <typename T= int> class Range2RangeGraph {
+template <typename T= int> class RangeToRangeGraph {
  const int n;
  int nn;
  std::vector<std::tuple<int, int, T>> es;
  inline int to_upper_idx(int i) const { return i >= n ? i - n : n + i; }
  inline int to_lower_idx(int i) const { return i >= n ? i - n : n + n + i; }
 public:
- Range2RangeGraph(int n): n(n), nn(n * 3) {
+ RangeToRangeGraph(int n): n(n), nn(n * 3) {
   for (int i= 2; i < n + n; ++i) add(to_upper_idx(i / 2), to_upper_idx(i));
   for (int i= 2; i < n + n; ++i) add(to_lower_idx(i), to_lower_idx(i / 2));
  }

@@ -1,28 +1,28 @@
 #define PROBLEM "https://yukicoder.me/problems/no/768"
 #include <iostream>
 #include <vector>
-#include "src/Graph/ReRooting.hpp"
+#include "src/Graph/rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- auto f= [](short vdp, short chdp) { return short(vdp & chdp); };
- auto g= [](short dp, int dat) { return short(!dp); };
- ReRooting<short> graph(N, f, 1, g);
- for (int i= 0; i < N - 1; i++) {
-  int a, b;
-  cin >> a >> b;
-  a--, b--;
-  graph.add_edge(a, b);
-  graph.add_edge(b, a);
+ Tree tree(N);
+ for (int i= 0; i < N - 1; ++i) {
+  int u, v;
+  cin >> u >> v;
+  tree.add_edge(--u, --v);
  }
- auto ret= graph.run();
+ tree.build();
+ auto f_ee= [&](bool l, bool r) { return l | r; };
+ auto f_ve= [&](bool d, int, auto) { return d; };
+ auto f_ev= [&](bool d, int) { return !d; };
+ auto dp= rerooting<bool>(tree, f_ee, f_ve, f_ev, false);
  vector<int> ans;
- for (int i= 0; i < N; i++)
-  if (ret[i]) ans.push_back(i + 1);
- cout << ans.size() << endl;
- for (int &a: ans) cout << a << "\n";
+ for (int i= 0; i < N; ++i)
+  if (dp[i]) ans.push_back(i + 1);
+ cout << ans.size() << '\n';
+ for (int x: ans) cout << x << '\n';
  return 0;
 }

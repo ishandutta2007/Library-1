@@ -1,54 +1,55 @@
 #define PROBLEM "https://yukicoder.me/problems/no/235"
 #include <iostream>
-#include "src/Graph/HeavyLightDecomposition.hpp"
+#include "src/Graph/Tree.hpp"
 #include "src/DataStructure/SegmentTree_Beats.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
-
 using Mint= ModInt<int(1e9 + 7)>;
 struct Mono {
  struct T {
-  Mint val, coef;
+  Mint S, C;
  };
  using E= Mint;
- static T ti() { return {0, 0}; }
- static T op(const T &vl, const T &vr) { return {vl.val + vr.val, vl.coef + vr.coef}; }
- static bool mapping(T &v, const E &f) { return v.val+= v.coef * f, true; }
- static void composition(E &pre, const E &suf) { pre+= suf; }
+ static T ti() { return {Mint(), Mint()}; }
+ static T op(const T &l, const T &r) { return {l.S + r.S, l.C + r.C}; }
+ static bool mapping(T &v, E x) {
+  v.S+= x * v.C;
+  return true;
+ }
+ static void composition(E &p, E s) { p+= s; }
 };
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- HeavyLightDecomposition hld(N);
  Mint S[N], C[N];
- for (int i= 0; i < N; i++) cin >> S[i];
- for (int i= 0; i < N; i++) cin >> C[i];
- for (int i= 0; i < N - 1; i++) {
+ for (int i= 0; i < N; ++i) cin >> S[i];
+ for (int i= 0; i < N; ++i) cin >> C[i];
+ Tree tree(N);
+ for (int i= 0; i < N - 1; ++i) {
   int A, B;
   cin >> A >> B;
-  A--, B--;
-  hld.add_edge(A, B);
+  tree.add_edge(--A, --B);
  }
- hld.build(0);
- SegmentTree_Beats<Mono> seg(N);
- for (int i= 0; i < N; i++) seg.unsafe_set(hld[i], {S[i], C[i]});
- seg.rebuild();
- auto q= [&](int a, int b) { return seg.fold(a, b); };
+ tree.build(0);
+ vector<typename Mono::T> vec(N);
+ for (int v= 0; v < N; ++v) vec[tree.to_seq(v)]= {S[v], C[v]};
+ SegmentTree_Beats<Mono> seg(vec);
  int Q;
  cin >> Q;
  while (Q--) {
   int op, X, Y;
   cin >> op >> X >> Y;
-  X--, Y--;
+  --X, --Y;
   if (op) {
-   cout << hld.fold_path(X, Y, q, Mono::op, Mono::ti()).val << endl;
+   Mint ans= 0;
+   for (auto [x, y]: tree.path(X, Y)) ans+= x < y ? seg.fold(x, y + 1).S : seg.fold(y, x + 1).S;
+   cout << ans << '\n';
   } else {
    Mint Z;
    cin >> Z;
-   auto upd= [&](int a, int b) { seg.apply(a, b, Z); };
-   hld.apply_path(X, Y, upd);
+   for (auto [x, y]: tree.path(X, Y)) x < y ? seg.apply(x, y + 1, Z) : seg.apply(y, x + 1, Z);
   }
  }
  return 0;

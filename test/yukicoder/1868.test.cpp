@@ -3,14 +3,14 @@
 #include <vector>
 #include <algorithm>
 #include <deque>
-#include "src/Graph/Range2RangeGraph.hpp"
+#include "src/Graph/RangeToRangeGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- Range2RangeGraph<int> r2r(N);
+ RangeToRangeGraph<int> r2r(N);
  for (int i= 1; i < N; ++i) {
   int R;
   cin >> R;

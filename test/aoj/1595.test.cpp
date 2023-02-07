@@ -1,23 +1,23 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1595"
 #include <iostream>
-#include "src/Graph/ReRooting.hpp"
+#include "src/Graph/rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- auto op= [](int l, int r) { return max(l, r); };
- auto lift= [](int l, int dat) { return l + dat; };
- ReRooting<int> tree(N, op, 0, lift);
- for (int i= 0; i < N - 1; i++) {
+ Tree tree(N);
+ for (int i= 0; i < N - 1; ++i) {
   int u, v;
   cin >> u >> v;
-  u--, v--;
-  tree.add_edge(u, v, 1);
-  tree.add_edge(v, u, 1);
+  tree.add_edge(--u, --v);
  }
- auto ret= tree.run();
- for (int i= 0; i < N; i++) cout << (N - 1) * 2 - ret[i] << '\n';
+ tree.build();
+ auto f_ee= [&](int l, int r) { return max(l, r); };
+ auto f_ve= [&](int d, int, auto) { return d + 1; };
+ auto f_ev= [&](int d, int) { return d; };
+ auto dp= rerooting<int>(tree, f_ee, f_ve, f_ev, 0);
+ for (auto x: dp) cout << 2 * (N - 1) - x << '\n';
  return 0;
 }

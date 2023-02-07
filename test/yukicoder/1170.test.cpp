@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1170"
 #include <iostream>
 #include <algorithm>
-#include "src/Graph/Range2RangeGraph.hpp"
+#include "src/Graph/RangeToRangeGraph.hpp"
 #include "src/Graph/StronglyConnectedComponents.hpp"
 using namespace std;
 signed main() {
@@ -11,7 +11,7 @@ signed main() {
  cin >> N >> A >> B;
  int x[N];
  for (int i= 0; i < N; ++i) cin >> x[i];
- Range2RangeGraph r2r(N);
+ RangeToRangeGraph r2r(N);
  for (int i= 0; i < N; ++i) {
   int l= lower_bound(x, x + N, x[i] + A) - x;
   int r= upper_bound(x, x + N, x[i] + B) - x;

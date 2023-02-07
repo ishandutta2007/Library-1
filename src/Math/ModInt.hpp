@@ -17,7 +17,7 @@ template <class Int, class U, class B> struct MInt: public B {
  CE MInt(): x(0) {}
  CE MInt(const MInt& r): x(r.x) {}
  template <class T, enable_if_t<is_modint_v<T>, nullptr_t> = nullptr> CE MInt(T v): x(B::md.set(v.val() % B::md.mod)) {}
- template <class T, enable_if_t<is_convertible_v<T, __int128_t>, nullptr_t> = nullptr> CE MInt(T n): x(B::md.set((n < 0 ? B::md.mod - (-n) % B::md.mod : n % B::md.mod))) {}
+ template <class T, enable_if_t<is_convertible_v<T, __int128_t>, nullptr_t> = nullptr> CE MInt(T n): x(B::md.set((n < 0 ? ((n= (-n) % B::md.mod) ? B::md.mod - n : n) : n % B::md.mod))) {}
  CE MInt operator-() const { return MInt() - *this; }
 #define FUNC(name, op) \
  CE MInt name const { \

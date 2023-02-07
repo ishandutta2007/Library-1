@@ -12,10 +12,9 @@ public:
   std::vector<std::vector<int>> ret(n);
   auto add= [&](int u, int v) { ret[u].push_back(v), ret[v].push_back(u); };
   int k= 0;
-  for (int s= 0; s < n; ++s)
-   if (par[s] == -2) {
-    par[s]= -1;
-    for (int p= s; p >= 0;) {
+  for (int s= 0, p; s < n; ++s)
+   if (par[s] == -2)
+    for (par[p= s]= -1; p >= 0;) {
      if (dat[p] == 0) ord[k++]= p;
      if (dat[p] == (int)adj[p].size()) {
       p= par[p];
@@ -23,7 +22,6 @@ public:
      }
      if (int q= adj[p][dat[p]++]; par[q] == -2) par[q]= p, p= q;
     }
-   }
   for (int i= 0; i < n; ++i) dat[ord[i]]= i;
   low= dat;
   for (int v= 0; v < n; ++v)

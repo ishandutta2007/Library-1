@@ -3,27 +3,35 @@
 #include <tuple>
 #include <type_traits>
 template <typename T> class LinearSystemIncidence {
- int m;
- std::vector<std::vector<std::tuple<int, int, bool>>> adj;
+ std::vector<std::array<int, 2>> es;
+ std::vector<std::vector<int>> adj;
 public:
- LinearSystemIncidence(int n): m(0), adj(n) {}
- void add_edge(int src, int dst) { adj[src].emplace_back(m, dst, true), adj[dst].emplace_back(m++, src, false); }
- std::vector<T> solve(const std::vector<T> &b) const {
-  std::vector<T> x(m);
-  std::vector<bool> used(adj.size());
-  auto dfs= [&](auto self, int u) -> T {
-   used[u]= true;
-   T ret= b[u];
-   for (auto [id, to, fwd]: adj[u])
-    if (!used[to]) {
-     T tmp= self(self, to);
-     if constexpr (std::is_same_v<T, bool>) x[id]= tmp, ret^= tmp;
-     else x[id]= fwd ? tmp : -tmp, ret+= tmp;
+ LinearSystemIncidence(int n): adj(n) {}
+ void add_edge(int src, int dst) {
+  int m= es.size();
+  adj[src].push_back(m), adj[dst].push_back(m), es.push_back({src, dst});
+ }
+ std::vector<T> solve(std::vector<T> b) const {
+  const int n= adj.size();
+  std::vector<T> x(es.size());
+  std::vector<int> pre(n, -2), dat(n, 0);
+  for (int s= 0, p, e, q, f; s < n; ++s)
+   if (pre[s] == -2)
+    for (pre[p= s]= -1;;) {
+     if (dat[p] == (int)adj[p].size()) {
+      if (e= pre[p]; e < 0) {
+       if (b[p] != T()) return {};  // no solution
+       break;
+      }
+      f= (es[e][0] == p), q= es[e][f];
+      T tmp= b[p];
+      if constexpr (std::is_same_v<T, bool>) x[e]= tmp, b[q]= tmp ^ b[q];
+      else x[e]= f ? -tmp : tmp, b[q]+= tmp;
+      p= q;
+      continue;
+     }
+     if (e= adj[p][dat[p]++], q= es[e][es[e][0] == p]; pre[q] == -2) pre[q]= e, p= q;
     }
-   return ret;
-  };
-  for (std::size_t u= adj.size(); u--;)
-   if (!used[u] && dfs(dfs, u) != T(0)) return std::vector<T>();  // no sloutions
   return x;
  }
 };

@@ -12,17 +12,15 @@ public:
   std::vector<std::vector<int>> blk;
   std::vector<int> ord(n), par(n, -2), dat(n, 0);
   int k= n;
-  for (int s= 0; s < n; ++s)
-   if (par[s] == -2) {
-    par[s]= -1;
-    for (int p= s; p >= 0;) {
+  for (int s= 0, p; s < n; ++s)
+   if (par[s] == -2)
+    for (par[p= s]= -1; p >= 0;) {
      if (dat[p] == (int)adj[p].size()) {
       ord[--k]= p, p= par[p];
       continue;
      }
      if (int q= adj[p][dat[p]++]; par[q] == -2) par[q]= p, p= q;
     }
-   }
   dat.assign(n, 1);
   for (int s: ord)
    if (dat[s]) {

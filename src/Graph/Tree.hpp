@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <numeric>
+#include <cassert>
 template <class Cost= void> class Tree {
  template <class D, class T> struct Edge_B {
   int to;

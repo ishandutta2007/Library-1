@@ -1,7 +1,6 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/UTPC/2270"
-
 // 永続化 + find * 4 の verify
-
+// lct の par verify
 #include <iostream>
 #include <algorithm>
 #include "src/DataStructure/SegmentTree_Patricia.hpp"
@@ -41,7 +40,7 @@ signed main() {
   int v, w, l;
   cin >> v >> w >> l;
   auto check= [&](int x, int y, int a, int ap) { return x + y - a - ap >= l; };
-  int lca= lct.lca(v, w), lcap= lct.par(lca);
+  int lca= lct.lca(v, w), lcap= lct.parent(lca);
   cout << Seg::find_first<4>(0, check, {segs[v], segs[w], segs[lca], segs[lcap]}) << '\n';
  }
  return 0;

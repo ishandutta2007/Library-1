@@ -15,7 +15,7 @@ signed main() {
   tree.add_edge(--u, --v);
  }
  tree.build();
- using Data= array<int, 2>;
+ using Data= array<long long, 2>;
  auto f_ee= [&](const Data& l, const Data& r) { return Data{l[0] + r[0], l[1] + r[1]}; };
  auto f_ve= [&](const Data& d, int, auto) { return Data{d[0], d[0] + d[1]}; };
  auto f_ev= [&](const Data& d, int) { return Data{d[0] + 1, d[1]}; };

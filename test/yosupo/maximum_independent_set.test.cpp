@@ -1,4 +1,4 @@
-#define PROBLEM "https://old.yosupo.jp/problem/maximum_independent_set"
+#define PROBLEM "https://judge.yosupo.jp/problem/maximum_independent_set"
 #include <iostream>
 #include "src/Graph/MaxClique.hpp"
 using namespace std;

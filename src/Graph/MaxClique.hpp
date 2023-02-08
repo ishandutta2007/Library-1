@@ -1,57 +1,92 @@
 #pragma once
 #include <vector>
-#include <bitset>
 #include <algorithm>
 class MaxClique {
+ const int n, m;
+ using u128= __uint128_t;
+ using u64= std::uint64_t;
+ using u16= std::uint16_t;
  struct id_num {
-  std::size_t id, num;
+  u16 id, num;
  };
- std::vector<std::bitset<128>> adj, buf;
- std::bitset<128> clique, cur;
- std::vector<int> deg;
- void dfs(std::vector<id_num>& rem) {
-  if (clique.count() < cur.count()) clique= cur;
+ std::vector<u128> adj, buf;
+ std::vector<u16> deg, clique, cur;
+ void dfs(std::vector<id_num> &rem) {
+  if (clique.size() < cur.size()) clique= cur;
   std::sort(rem.begin(), rem.end(), [&](id_num l, id_num r) { return deg[l.id] > deg[r.id]; });
-  std::size_t max_num= 1;
-  for (auto& v: rem) {
-   v.num= 0;
-   while ((adj[v.id] & buf[v.num]).any()) v.num++;
-   buf[v.num].set(v.id), max_num= std::max(max_num, v.num + 1);
+  buf.assign((n + 1) * m, 0);
+  for (auto &v: rem) {
+   int b= v.id * m, bb= 0;
+   for (v.num= 0;; ++v.num, bb+= m) {
+    bool any= 1;
+    for (int i= 0; i < m; ++i) any&= !(adj[b + i] & buf[bb + i]);
+    if (any) break;
+   }
+   buf[bb + (v.id >> 7)]|= u128(1) << (v.id & 127);
   }
-  for (int i= max_num - 1; i >= 0; i--) buf[i].reset();
   std::sort(rem.begin(), rem.end(), [&](id_num l, id_num r) { return l.num < r.num; });
   std::vector<id_num> nrem;
-  while (!rem.empty() && rem.back().num + cur.count() >= clique.count()) {
+  for (nrem.reserve(rem.size()); !rem.empty();) {
+   auto p= rem.back();
+   int a= p.id * m;
+   if (p.num + cur.size() < clique.size()) break;
+   nrem.clear();
    for (auto u: rem)
-    if (adj[rem.back().id][u.id]) nrem.emplace_back(u), buf[0].set(u.id);
-   for (auto u: nrem) deg[u.id]= (buf[0] & adj[u.id]).count();
-   buf[0].reset(), cur.set(rem.back().id);
-   dfs(nrem);
-   nrem.clear(), cur.reset(rem.back().id), rem.pop_back();
+    if ((adj[a + (u.id >> 7)] >> (u.id & 127)) & 1) nrem.emplace_back(u);
+   std::fill_n(buf.begin(), m, 0);
+   for (auto u: nrem) buf[u.id >> 7]|= u128(1) << (u.id & 127);
+   for (auto u: nrem) {
+    int b= u.id * m, cnt= 0;
+    for (int i= 0; i < m; ++i) {
+     u128 tmp= buf[i] & adj[b + i];
+     cnt+= __builtin_popcountll(tmp >> 64) + __builtin_popcountll(u64(tmp));
+    }
+    deg[u.id]= cnt;
+   }
+   cur.push_back(p.id), dfs(nrem), cur.pop_back(), rem.pop_back();
   }
  }
 public:
- MaxClique(int n_): adj(n_), buf(n_ + 1), deg(n_) {}
- void add_edge(int u, int v) { adj[u][v]= adj[v][u]= true; }
- std::vector<int> get_max_clique() {
+ MaxClique(int n): n(n), m((n + 127) >> 7), adj(n * m), deg(n) {}
+ void add_edge(int u, int v) { adj[u * m + (v >> 7)]|= u128(1) << (v & 127), adj[v * m + (u >> 7)]|= u128(1) << (u & 127); }
+ std::vector<u16> get_max_clique() {
   std::vector<id_num> nrem;
-  for (int i= adj.size() - 1; i >= 0; i--) nrem.emplace_back(id_num{(std::size_t)i, 0}), deg[i]= adj[i].count();
+  for (std::uint16_t u= n; u--;) {
+   nrem.push_back(id_num{u, 0});
+   int cnt= 0, b= u * m;
+   for (int i= 0; i < m; ++i) {
+    u128 tmp= adj[b + i];
+    cnt+= __builtin_popcountll(tmp >> 64) + __builtin_popcountll(u64(tmp));
+   }
+   deg[u]= cnt;
+  }
   dfs(nrem);
-  std::vector<int> ret;
-  for (int i= 0, n= adj.size(); i < n; i++)
-   if (clique[i]) ret.push_back(i);
-  return ret;
+  return clique;
  }
- std::vector<int> get_max_independent_set() {
-  for (int i= adj.size() - 1; i >= 0; i--)
-   for (int j= i - 1; j >= 0; j--) adj[i][j]= adj[j][i]= ~adj[j][i];
+ std::vector<u16> get_max_independent_set() {
+  for (int u= n; u--;)
+   for (int v= u; v--;) adj[u * m + (v >> 7)]^= u128(1) << (v & 127), adj[v * m + (u >> 7)]^= u128(1) << (u & 127);
   return get_max_clique();
  }
- std::vector<int> get_min_vertex_cover() {
-  get_max_independent_set();
-  std::vector<int> ret;
-  for (int i= 0, n= adj.size(); i < n; i++)
-   if (!clique[i]) ret.push_back(i);
+ std::vector<u16> get_min_vertex_cover() {
+  for (int u= n; u--;)
+   for (int v= u; v--;) adj[u * m + (v >> 7)]^= u128(1) << (v & 127), adj[v * m + (u >> 7)]^= u128(1) << (u & 127);
+  std::vector<id_num> nrem;
+  for (std::uint16_t u= n; u--;) {
+   nrem.push_back(id_num{u, 0});
+   int cnt= 0, b= u * m;
+   for (int i= 0; i < m; ++i) {
+    u128 tmp= adj[b + i];
+    cnt+= __builtin_popcountll(tmp >> 64) + __builtin_popcountll(u64(tmp));
+   }
+   deg[u]= cnt;
+  }
+  dfs(nrem);
+  std::fill_n(buf.begin(), m, 0);
+  for (int u: clique) buf[u >> 7]|= u128(1) << (u & 127);
+  std::vector<u16> ret;
+  for (int i= 0; i < n; ++i)
+   if (!((buf[i >> 7] >> (i & 127)) & 1)) ret.push_back(i);
   return ret;
  }
 };

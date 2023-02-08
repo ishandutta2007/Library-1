@@ -111,12 +111,12 @@ public:
   while (t->ch[0]) t= t->ch[0];
   return t - &ns[0];
  }
- int par(std::size_t x) {
+ int parent(std::size_t x) {
   expose(&ns[x]);
   Node *t= ns[x].ch[0];
   if (!t) return -1;
-  while (t->ch[1]) t= t->ch[1];
-  return t - &ns[0];
+  while (t->ch[1]) eval(t), t= t->ch[1];
+  return splay(t), t - &ns[0];
  }
  int lca(std::size_t x, std::size_t y) {
   if (x == y) return x;

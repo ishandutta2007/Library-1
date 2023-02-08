@@ -16,7 +16,7 @@ signed main() {
   tree.add_edge(a, b);
  }
  tree.build(0);
- BinaryIndexedTree_RangeAdd<int> bit(N);
+ BinaryIndexedTree_RangeAdd<long long> bit(N);
  while (Q--) {
   int op, a, b;
   cin >> op >> a >> b;
@@ -24,7 +24,7 @@ signed main() {
    auto [l, r]= tree.subtree(a);
    bit.add_range(l + 1, r, b);
   } else {
-   int ans= 0;
+   long long ans= 0;
    for (auto [x, y]: tree.path<true>(a, b)) ans+= x <= y ? bit.sum(x, y + 1) : bit.sum(y, x + 1);
    cout << ans << '\n';
   }

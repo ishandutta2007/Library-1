@@ -11,7 +11,7 @@ signed main() {
  cin >> N >> K >> Q;
  int a[K], b[K];
  for (int k= 0; k < K; k++) cin >> a[k] >> b[k], a[k]--, b[k]--;
- Mo mo(K);
+ Mo mo;
  int op[Q], x[Q];
  for (int q= 0; q < Q; q++) {
   int s, t;

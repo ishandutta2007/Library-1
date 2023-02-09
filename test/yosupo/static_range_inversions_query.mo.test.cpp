@@ -16,7 +16,7 @@ signed main() {
  vector<int> v(A, A + N);
  auto id= compress(v);
  for (int i= 0; i < N; i++) A[i]= id(A[i]);
- Mo mo(N);
+ Mo mo;
  for (int q= 0; q < Q; q++) {
   int l, r;
   cin >> l >> r;

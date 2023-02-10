@@ -68,7 +68,7 @@ template <class M, bool reversible= false> class SplayTree {
  template <bool b> static inline void helper(Node *&t) {
   if (!t->ch[b]) return;
   t->size+= t->ch[b]->size;
-  if constexpr (semigroup_v<M>)
+  if constexpr (semigroup_v<M>) {
    if constexpr (b) {
     t->sum= M::op(t->sum, t->ch[1]->sum);
     if constexpr (reversible) t->rsum= M::op(t->ch[1]->rsum, t->rsum);
@@ -76,6 +76,7 @@ template <class M, bool reversible= false> class SplayTree {
     t->sum= M::op(t->ch[0]->sum, t->sum);
     if constexpr (reversible) t->rsum= M::op(t->rsum, t->ch[0]->rsum);
    }
+  }
  }
  static inline Node *pushup(Node *t) {
   if (!t) return t;

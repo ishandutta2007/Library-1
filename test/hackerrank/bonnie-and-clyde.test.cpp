@@ -19,7 +19,7 @@ signed main() {
   int u, v, w;
   cin >> u >> v >> w;
   --u, --v, --w;
-  if (bct.lca(u, w) == -1 || bct.lca(w, v) == -1) cout << "NO";
+  if (!bct.connected(u, w) || !bct.connected(w, v)) cout << "NO";
   else {
    int tmp= bct.dist(u, w) + bct.dist(w, v) - bct.dist(u, v);
    cout << (tmp == 0 || tmp == 2 ? "YES" : "NO");

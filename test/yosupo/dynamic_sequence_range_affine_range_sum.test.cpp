@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum"
 #include <iostream>
+#include <array>
 #include "src/DataStructure/SplayTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;

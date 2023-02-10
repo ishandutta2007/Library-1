@@ -11,40 +11,40 @@ template <class M, bool reversible= false> class SplayTree {
  HAS_MEMBER(composition);
  HAS_TYPE(T);
  HAS_TYPE(E);
- template <class L> using semigroup= std::conjunction<has_T<L>, has_op<L>>;
- template <class L> using dual= std::conjunction<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
+ template <class L> static constexpr bool semigroup_v= std::conjunction_v<has_T<L>, has_op<L>>;
+ template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
  template <class T, class tDerived, class F= std::nullptr_t> struct Node_B {
   using E= F;
   T val;
   tDerived *ch[2];
   std::size_t size;
  };
- template <bool sg_, bool du_, bool rev_, typename tEnable= void> struct Node_D: Node_B<M, Node_D<sg_, du_, rev_, tEnable>> {};
- template <bool sg_, bool du_, bool rev_> struct Node_D<sg_, du_, rev_, typename std::enable_if_t<sg_ && !du_ && !rev_>>: Node_B<typename M::T, Node_D<sg_, du_, rev_>> { typename M::T sum; };
- template <bool sg_, bool du_, bool rev_> struct Node_D<sg_, du_, rev_, typename std::enable_if_t<!sg_ && du_ && !rev_>>: Node_B<typename M::T, Node_D<sg_, du_, rev_>, typename M::E> {
+ template <class D, bool sg, bool du, bool rev> struct Node_D: Node_B<M, Node_D<D, sg, du, rev>> {};
+ template <class D> struct Node_D<D, 1, 0, 0>: Node_B<typename M::T, Node_D<D, 1, 0, 0>> { typename M::T sum; };
+ template <class D> struct Node_D<D, 0, 1, 0>: Node_B<typename M::T, Node_D<D, 0, 1, 0>, typename M::E> {
   typename M::E lazy;
   bool lazy_flg= false;
  };
- template <bool sg_, bool du_, bool rev_> struct Node_D<sg_, du_, rev_, typename std::enable_if_t<sg_ && du_ && !rev_>>: Node_B<typename M::T, Node_D<sg_, du_, rev_>, typename M::E> {
+ template <class D> struct Node_D<D, 1, 1, 0>: Node_B<typename M::T, Node_D<D, 1, 1, 0>, typename M::E> {
   typename M::T sum;
   typename M::E lazy;
   bool lazy_flg= false;
  };
- template <bool sg_, bool du_, bool rev_> struct Node_D<sg_, du_, rev_, typename std::enable_if_t<!sg_ && !du_ && rev_>>: Node_B<M, Node_D<sg_, du_, rev_>> { bool rev_flg= false; };
- template <bool sg_, bool du_, bool rev_> struct Node_D<sg_, du_, rev_, typename std::enable_if_t<sg_ && !du_ && rev_>>: Node_B<typename M::T, Node_D<sg_, du_, rev_>> {
+ template <class D> struct Node_D<D, 0, 0, 1>: Node_B<M, Node_D<D, 0, 0, 1>> { bool revflg= false; };
+ template <class D> struct Node_D<D, 1, 0, 1>: Node_B<typename M::T, Node_D<D, 1, 0, 1>> {
   typename M::T sum, rsum;
-  bool rev_flg= false;
+  bool revflg= false;
  };
- template <bool sg_, bool du_, bool rev_> struct Node_D<sg_, du_, rev_, typename std::enable_if_t<!sg_ && du_ && rev_>>: Node_B<typename M::T, Node_D<sg_, du_, rev_>, typename M::E> {
+ template <class D> struct Node_D<D, 0, 1, 1>: Node_B<typename M::T, Node_D<D, 0, 1, 1>, typename M::E> {
   typename M::E lazy;
-  bool lazy_flg= false, rev_flg= false;
+  bool lazy_flg= false, revflg= false;
  };
- template <bool sg_, bool du_, bool rev_> struct Node_D<sg_, du_, rev_, typename std::enable_if_t<sg_ && du_ && rev_>>: Node_B<typename M::T, Node_D<sg_, du_, rev_>, typename M::E> {
+ template <class D> struct Node_D<D, 1, 1, 1>: Node_B<typename M::T, Node_D<D, 1, 1, 1>, typename M::E> {
   typename M::T sum, rsum;
   typename M::E lazy;
-  bool lazy_flg= false, rev_flg= false;
+  bool lazy_flg= false, revflg= false;
  };
- using Node= Node_D<semigroup<M>::value, dual<M>::value, reversible>;
+ using Node= Node_D<void, semigroup_v<M>, dual_v<M>, reversible>;
  using T= decltype(Node::val);
  using E= typename Node::E;
  Node *root;
@@ -60,7 +60,7 @@ template <class M, bool reversible= false> class SplayTree {
  }
  static inline void dump(typename std::vector<T>::iterator itr, Node *t) {
   if (!t) return;
-  if constexpr (dual<M>::value) eval_propagate(t);
+  if constexpr (dual_v<M>) eval_propagate(t);
   if constexpr (reversible) eval_toggle(t);
   std::size_t sz= t->ch[0] ? t->ch[0]->size : 0;
   *(itr + sz)= t->val, dump(itr, t->ch[0]), dump(itr + sz + 1, t->ch[1]);
@@ -68,7 +68,7 @@ template <class M, bool reversible= false> class SplayTree {
  template <bool b> static inline void helper(Node *&t) {
   if (!t->ch[b]) return;
   t->size+= t->ch[b]->size;
-  if constexpr (semigroup<M>::value)
+  if constexpr (semigroup_v<M>)
    if constexpr (b) {
     t->sum= M::op(t->sum, t->ch[1]->sum);
     if constexpr (reversible) t->rsum= M::op(t->ch[1]->rsum, t->rsum);
@@ -80,7 +80,7 @@ template <class M, bool reversible= false> class SplayTree {
  static inline Node *pushup(Node *t) {
   if (!t) return t;
   t->size= 1;
-  if constexpr (semigroup<M>::value) {
+  if constexpr (semigroup_v<M>) {
    t->sum= t->val;
    if constexpr (reversible) t->rsum= t->sum;
   }
@@ -89,7 +89,7 @@ template <class M, bool reversible= false> class SplayTree {
  static inline void propagate(Node *t, const E &x) {
   if (!t) return;
   t->lazy_flg ? (M::composition(t->lazy, x), x) : t->lazy= x;
-  if constexpr (semigroup<M>::value) {
+  if constexpr (semigroup_v<M>) {
    M::mapping(t->sum, x, t->size);
    if constexpr (reversible) M::mapping(t->rsum, x, t->size);
   }
@@ -97,14 +97,14 @@ template <class M, bool reversible= false> class SplayTree {
  }
  static inline void toggle(Node *t) {
   if (!t) return;
-  if constexpr (semigroup<M>::value) std::swap(t->sum, t->rsum);
-  std::swap(t->ch[0], t->ch[1]), t->rev_flg= !t->rev_flg;
+  if constexpr (semigroup_v<M>) std::swap(t->sum, t->rsum);
+  std::swap(t->ch[0], t->ch[1]), t->revflg= !t->revflg;
  }
  static inline void eval_propagate(Node *t) {
   if (t->lazy_flg) propagate(t->ch[0], t->lazy), propagate(t->ch[1], t->lazy), t->lazy_flg= false;
  }
  static inline void eval_toggle(Node *t) {
-  if (t->rev_flg) toggle(t->ch[0]), toggle(t->ch[1]), t->rev_flg= false;
+  if (t->revflg) toggle(t->ch[0]), toggle(t->ch[1]), t->revflg= false;
  }
  static inline void rot(Node *&t, bool d) {
   Node *s= t->ch[d];
@@ -112,13 +112,13 @@ template <class M, bool reversible= false> class SplayTree {
  }
  static inline void splay(Node *&t, std::size_t k) {
   if (!t) return;
-  if constexpr (dual<M>::value) eval_propagate(t);
+  if constexpr (dual_v<M>) eval_propagate(t);
   if constexpr (reversible) eval_toggle(t);
   std::size_t sz= t->ch[0] ? t->ch[0]->size : 0;
   if (sz == k) return;
   bool d= sz < k;
   if (d) k-= sz + 1;
-  if constexpr (dual<M>::value) eval_propagate(t->ch[d]);
+  if constexpr (dual_v<M>) eval_propagate(t->ch[d]);
   if constexpr (reversible) eval_toggle(t->ch[d]);
   sz= t->ch[d]->ch[0] ? t->ch[d]->ch[0]->size : 0;
   if (sz != k) {
@@ -130,18 +130,8 @@ template <class M, bool reversible= false> class SplayTree {
   rot(t, d);
  }
  template <class F> void query(std::size_t a, std::size_t b, const F &f) {
-  if (size() == b) {
-   a-- ? (splay(root, a), f(root->ch[1]), pushup(root)) : (f(root), root);
-  } else {
-   splay(root, b);
-   a-- ? (splay(root->ch[0], a), f(root->ch[0]->ch[1]), pushup(root->ch[0])) : (f(root->ch[0]), root->ch[0]);
-   pushup(root);
-  }
- }
- static inline unsigned xor128() {
-  static unsigned x= 123456789, y= 362436069, z= 521288629, w= 88675123;
-  unsigned t= (x ^ (x << 11));
-  return x= y, y= z, z= w, (w= (w ^ (w >> 19)) ^ (t ^ (t >> 8)));
+  if (size() == b) a-- ? (splay(root, a), f(root->ch[1]), pushup(root)) : (f(root), root);
+  else splay(root, b), a-- ? (splay(root->ch[0], a), f(root->ch[0]->ch[1]), pushup(root->ch[0]), pushup(root)) : (f(root->ch[0]), pushup(root));
  }
 public:
  SplayTree(Node *t= nullptr): root(t) {}
@@ -154,36 +144,29 @@ public:
  }
  static std::string which_available() {
   std::string ret= "";
-  if constexpr (semigroup<M>::value) ret+= "\"fold\" ";
+  if constexpr (semigroup_v<M>) ret+= "\"fold\" ";
   else ret+= "\"at\" ";
-  if constexpr (dual<M>::value) ret+= "\"apply\" ";
+  if constexpr (dual_v<M>) ret+= "\"apply\" ";
   if constexpr (reversible) ret+= "\"reverse\" ";
   return ret;
  }
  std::size_t size() { return root ? root->size : 0; }
  void clear() { root= nullptr; }
- template <class L= M, std::enable_if_t<semigroup<L>::value, std::nullptr_t> = nullptr> const T &operator[](std::size_t k) { return get(k); }
- template <class L= M, std::enable_if_t<!semigroup<L>::value, std::nullptr_t> = nullptr> T &operator[](std::size_t k) { return at(k); }
+ template <class L= M> const std::enable_if_t<semigroup_v<L>, T> &operator[](std::size_t k) { return get(k); }
+ template <class L= M> std::enable_if_t<!semigroup_v<L>, T> &operator[](std::size_t k) { return at(k); }
  const T &get(std::size_t k) { return splay(root, k), root->val; }
  T &at(std::size_t k) {
-  static_assert(!semigroup<M>::value, "\"at\" is not available");
+  static_assert(!semigroup_v<M>, "\"at\" is not available");
   return splay(root, k), root->val;
  }
  void set(std::size_t k, T val) { splay(root, k), root->val= val, pushup(root); }
- void set_balance() {
-  if (root) splay(root, xor128() % size()), splay(root, xor128() % size());
- }
  T fold(std::size_t a, std::size_t b) {
-  static_assert(semigroup<M>::value, "\"fold\" is not available");
-  if (size() == b) {
-   return a-- ? splay(root, a), root->ch[1]->sum : root->sum;
-  } else {
-   splay(root, b);
-   return a-- ? (splay(root->ch[0], a), root->ch[0]->ch[1]->sum) : root->ch[0]->sum;
-  }
+  static_assert(semigroup_v<M>, "\"fold\" is not available");
+  if (size() == b) return a-- ? (splay(root, a), root->ch[1]->sum) : root->sum;
+  else return splay(root, b), a-- ? (splay(root->ch[0], a), root->ch[0]->ch[1]->sum) : root->ch[0]->sum;
  }
  void apply(std::size_t a, std::size_t b, E x) {
-  static_assert(dual<M>::value, "\"apply\" is not available");
+  static_assert(dual_v<M>, "\"apply\" is not available");
   query(a, b, [&](Node *t) { propagate(t, x); });
  }
  void reverse(std::size_t a, std::size_t b) {
@@ -212,12 +195,9 @@ public:
  void push_front(T val) { insert(0, val); }
  void insert(std::size_t k, T val) {
   assert(!k || (root && k <= root->size));
-  if (size() == k) {
-   root= pushup(new Node{val, {root, nullptr}});
-  } else {
-   splay(root, k), root= new Node{val, {root->ch[0], root}};
-   root->ch[1]->ch[0]= nullptr, pushup(root->ch[1]), pushup(root);
-  }
+  if (size() == k) root= pushup(new Node{val, {root, nullptr}});
+  else splay(root, k), root= new Node{val, {root->ch[0], root}}, root->ch[1]->ch[0]= nullptr, pushup(root->ch[1]), pushup(root);
+  splay(root, k / 2);
  }
  T pop_back() { return erase(root->size - 1); }
  T pop_front() { return erase(0); }
@@ -225,8 +205,7 @@ public:
   assert(root && k < root->size);
   splay(root, k);
   T ret= root->val;
-  splay(root->ch[1], 0);
-  if (root->ch[1]) root->ch[1]->ch[0]= root->ch[0], root= pushup(root->ch[1]);
+  if (root->ch[1]) splay(root->ch[1], 0), root->ch[1]->ch[0]= root->ch[0], root= pushup(root->ch[1]);
   else root= root->ch[0];
   return ret;
  }

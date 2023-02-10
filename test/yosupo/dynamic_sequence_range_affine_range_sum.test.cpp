@@ -1,8 +1,4 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum"
-
-// set_balance しないと スタックオーバーフロー
-// （テストケース wrong_avl_killer_01）
-
 #include <iostream>
 #include "src/DataStructure/SplayTree.hpp"
 #include "src/Math/ModInt.hpp"
@@ -11,10 +7,10 @@ using namespace std;
 using Mint= ModInt<998244353>;
 struct RaffineRsumQ {
  using T= Mint;
- using E= pair<T, T>;
- static T op(const T &vl, const T &vr) { return vl + vr; }
- static void mapping(T &val, const E &f, int sz) { val= f.first * val + f.second * sz; }
- static void composition(E &pre, const E &suf) { pre= {pre.first * suf.first, suf.first * pre.second + suf.second}; }
+ using E= array<Mint, 2>;
+ static T op(T vl, T vr) { return vl + vr; }
+ static void mapping(T &val, const E &f, int sz) { val= f[0] * val + f[1] * sz; }
+ static void composition(E &pre, const E &suf) { pre[0]*= suf[0], pre[1]= suf[0] * pre[1] + suf[1]; }
 };
 signed main() {
  cin.tie(0);
@@ -48,7 +44,6 @@ signed main() {
    cin >> l >> r;
    cout << splay.fold(l, r) << '\n';
   }
-  if (q % 100000 == 0) splay.set_balance();
  }
  return 0;
 }

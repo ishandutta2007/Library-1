@@ -16,23 +16,17 @@ signed main() {
   cin >> u >> v;
   bcc.add_edge(--u, --v);
  }
+
  auto bct= bcc.block_cut_tree();
+ bct.build(0);
  int K= bct.size();
  w.resize(K);
- vector<int> par(K);
- auto dfs= [&](auto self, int v, int p) -> void {
-  par[v]= p;
-  for (int u: bct[v])
-   if (u != p) {
-    self(self, u, v);
-    w[v]+= w[u];
-   }
- };
- dfs(dfs, 0, -1);
+ for (int v= K; v--;)
+  if (int u= bct.parent(v); u != -1) w[u]+= w[v];
  for (int i= 0; i < N; ++i) {
   long long ans= w[0] - w[i];
   for (int u: bct[i])
-   if (u != par[i]) ans= max(ans, w[u]);
+   if (u != bct.parent(i)) ans= max(ans, w[u]);
   cout << ans << '\n';
  }
  return 0;

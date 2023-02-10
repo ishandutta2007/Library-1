@@ -6,6 +6,7 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int N, M;
+
  cin >> N >> M;
  BiConnectedComponents bcc(N);
  for (int i= 0; i < M; ++i) {

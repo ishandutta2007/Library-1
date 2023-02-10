@@ -1,16 +1,14 @@
 #pragma once
-#include <vector>
-#include <algorithm>
+#include "src/Graph/Tree.hpp"
 class BiConnectedComponents {
  std::vector<std::vector<int>> adj;
 public:
  BiConnectedComponents(int n): adj(n) {}
  void add_edge(int u, int v) { adj[u].push_back(v), adj[v].push_back(u); }
- std::vector<std::vector<int>> block_cut_tree() const {
+ Tree<void> block_cut_tree() const {
   const int n= adj.size();
   std::vector<int> ord(n), par(n, -2), dat(n, 0), low;
-  std::vector<std::vector<int>> ret(n);
-  auto add= [&](int u, int v) { ret[u].push_back(v), ret[v].push_back(u); };
+  std::vector<std::array<int, 2>> es;
   int k= 0;
   for (int s= 0, p; s < n; ++s)
    if (par[s] == -2)
@@ -30,11 +28,13 @@ public:
    if (int p= ord[i], pp= par[p]; pp >= 0) low[pp]= std::min(low[pp], low[p]);
   for (int p: ord)
    if (par[p] >= 0) {
-    if (int pp= par[p]; low[p] < dat[pp]) low[p]= low[pp], add(low[p], p);
-    else ret.resize(k + 1), add(k, pp), add(k, p), low[p]= k++;
+    if (int pp= par[p]; low[p] < dat[pp]) low[p]= low[pp], es.push_back({low[p], p});
+    else es.push_back({k, pp}), es.push_back({k, p}), low[p]= k++;
    }
   for (int s= 0; s < n; ++s)
-   if (!adj[s].size()) ret.resize(k + 1), add(k++, s);
+   if (!adj[s].size()) es.push_back({k++, s});
+  Tree ret(k);
+  for (auto [u, v]: es) ret.add_edge(u, v);
   return ret;
  }
 };

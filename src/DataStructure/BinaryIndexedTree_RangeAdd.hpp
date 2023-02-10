@@ -13,8 +13,9 @@ public:
  }
  T sum(int x) const {  // sum [0,x)
   T s= 0;
+  for (int k= x; k; k&= k - 1) s+= dat2[k];
+  s*= x;
   for (int k= x; k; k&= k - 1) s+= dat1[k];
-  for (int k= x; k; k&= k - 1) s+= dat2[k] * x;
   return s;
  }
  T sum(int l, int r) const { return sum(r) - sum(l); }  // sum [l,r)

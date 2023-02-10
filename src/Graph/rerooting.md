@@ -15,6 +15,7 @@ documentation_of: ./rerooting.hpp
 `unit` : モノイド `U` の単位元
 
 ## 問題例
+[AtCoder Regular Contest 097 F - Monochrome Cat](https://atcoder.jp/contests/arc097/tasks/arc097_d) \
 [AtCoder Regular Contest 022 C - ロミオとジュリエット](https://atcoder.jp/contests/arc022/tasks/arc022_3) \
 [AtCoder Regular Contest 028 C - 高橋王国の分割統治](https://atcoder.jp/contests/arc028/tasks/arc028_3) \
 [Educational DP Contest V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v) \

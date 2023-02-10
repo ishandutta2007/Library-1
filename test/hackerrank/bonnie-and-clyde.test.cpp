@@ -1,12 +1,7 @@
 #define PROBLEM "https://www.hackerrank.com/contests/w33/challenges/bonnie-and-clyde"
 #include <iostream>
 #include "src/Graph/BiConnectedComponents.hpp"
-#include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;
-struct RSQ {
- using T= int;
- static T op(T l, T r) { return l + r; }
-};
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
@@ -19,18 +14,15 @@ signed main() {
   bcc.add_edge(--u, --v);
  }
  auto bct= bcc.block_cut_tree();
- int N= bct.size();
- LinkCutTree<RSQ> lct(N, 1);
- for (int v= 0; v < n; ++v)
-  for (int u: bct[v]) lct.link(u, v);
+ bct.build();
  while (q--) {
   int u, v, w;
   cin >> u >> v >> w;
   --u, --v, --w;
-  if (lct.lca(u, w) == -1 || lct.lca(w, v) == -1) cout << "NO";
+  if (bct.lca(u, w) == -1 || bct.lca(w, v) == -1) cout << "NO";
   else {
-   int tmp= lct.fold(u, w) + lct.fold(w, v) - lct.fold(u, v);
-   cout << (tmp == 1 || tmp == 3 ? "YES" : "NO");
+   int tmp= bct.dist(u, w) + bct.dist(w, v) - bct.dist(u, v);
+   cout << (tmp == 0 || tmp == 2 ? "YES" : "NO");
   }
   if (q) cout << '\n';
  }

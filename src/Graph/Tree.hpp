@@ -10,8 +10,12 @@ template <class Cost= void> class Tree {
  template <class D, class T> struct Edge_B {
   int to;
   T cost;
+  operator int() const { return to; }
  };
- template <class D> struct Edge_B<D, void> { int to; };
+ template <class D> struct Edge_B<D, void> {
+  int to;
+  operator int() const { return to; }
+ };
  using Edge= Edge_B<void, Cost>;
  std::vector<std::vector<Edge>> adj;
  std::vector<int> P, PP, D, I, L, R;

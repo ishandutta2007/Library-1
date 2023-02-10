@@ -21,12 +21,12 @@ signed main() {
  bct.build(0);
  int K= bct.size();
  w.resize(K);
- for (int v= K; v--;)
-  if (int u= bct.parent(v); u != -1) w[u]+= w[v];
- for (int i= 0; i < N; ++i) {
-  long long ans= w[0] - w[i];
-  for (int u: bct[i])
-   if (u != bct.parent(i)) ans= max(ans, w[u]);
+ for (int i= K; --i;)
+  if (int u= bct.to_node(i), v= bct.parent(u); u != -1) w[v]+= w[u];
+ for (int v= 0; v < N; ++v) {
+  long long ans= w[0] - w[v];
+  for (int u: bct[v])
+   if (u != bct.parent(v)) ans= max(ans, w[u]);
   cout << ans << '\n';
  }
  return 0;

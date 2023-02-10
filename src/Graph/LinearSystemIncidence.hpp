@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <tuple>
+#include <array>
 #include <type_traits>
 template <typename T> class LinearSystemIncidence {
  std::vector<std::array<int, 2>> es;
@@ -9,7 +10,7 @@ public:
  LinearSystemIncidence(int n): adj(n) {}
  void add_edge(int src, int dst) {
   int m= es.size();
-  adj[src].push_back(m), adj[dst].push_back(m), es.push_back(std::array{src, dst});
+  adj[src].push_back(m), adj[dst].push_back(m), es.push_back({src, dst});
  }
  std::vector<T> solve(std::vector<T> b) const {
   const int n= adj.size();

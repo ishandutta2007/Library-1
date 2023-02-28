@@ -18,30 +18,32 @@ signed main() {
   cin >> a >> b;
   tree.add_edge(--a, --b);
  }
- tree.build();
+ tree.build(0);
  using Data= vector<Mint>;
- using DD= array<Data, 2>;
- auto f_ee= [&](const DD &l, const DD &r) {
-  DD ret{Data(K), Data(K)};
-  for (int i= 0; i < K; ++i) ret[0][i]= l[0][i] * r[0][i];
-  for (int i= 0; i < K; ++i) ret[1][i]= l[1][i] * r[1][i];
-  return ret;
+ auto f_ee= [&](Data l, const Data &r) {
+  for (int i= 0; i < K; ++i) l[i]*= r[i];
+  return l;
  };
- auto f_ve= [&](DD d, int p, auto e) {
-  if (p > e.to) {
-   for (int i= K; --i;) d[1][i]= d[0][i - 1];
-   d[1][0]= 0;
-  }
+ auto f_ve= [&](const Data &d, int, auto) { return d; };
+ auto f_ev= [&](Data d, int) {
+  for (int i= 1; i < K; ++i) d[i]+= d[i - 1];
   return d;
  };
- auto f_ev= [&](DD d, int) {
-  for (int i= 1; i < K; ++i) d[0][i]+= d[0][i - 1];
-  for (int i= 1; i < K; ++i) d[1][i]+= d[1][i - 1];
-  return d;
- };
- auto dp= rerooting<DD>(tree, f_ee, f_ve, f_ev, DD{Data(K, 1), Data(K, 1)});
+ auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data(K, 1));
  Mint ans= 0;
- for (const auto &x: dp) ans+= x[1][K - 1];
+ for (int i= 0; i < N; ++i) {
+  Data a(K, 1);
+  for (int j: tree[i]) {
+   Data b= dp.get(i, j);
+   if (j == tree.parent(i)) {
+    for (int k= 1; k < K; ++k) a[k]*= b[k - 1];
+    a[0]= 0;
+   } else
+    for (int k= 0; k < K; ++k) a[k]*= b[k];
+  }
+  for (int k= 1; k < K; ++k) a[k]+= a[k - 1];
+  ans+= a[K - 1];
+ }
  cout << ans << '\n';
  return 0;
 }

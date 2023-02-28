@@ -1,5 +1,4 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1075"
-// 森
 #include <iostream>
 #include <array>
 #include <vector>

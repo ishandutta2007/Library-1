@@ -26,13 +26,13 @@ signed main() {
   if (tree.connected(a, b)) ans+= tree.dist(a, b);
   else ++cnt[a], ++cnt[b];
  }
- using Data= array<int, 2>;
+ using Data= array<long long, 2>;
  auto f_ee= [&](const Data &l, const Data &r) { return Data{l[0] + r[0], l[1] + r[1]}; };
  auto f_ve= [&](const Data &d, int, auto) { return Data{d[0], d[1] + d[0]}; };
  auto f_ev= [&](const Data &d, int v) { return Data{d[0] + cnt[v], d[1]}; };
  auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data{0, 0});
- constexpr int INF= 1 << 30;
- vector<int> mi(N, INF);
+ constexpr long long INF= 1ll << 60;
+ vector<long long> mi(N, INF);
  for (int i= 0; i < N; ++i) {
   int u= tree.root(i);
   mi[u]= min(mi[u], dp[i][1]);

@@ -1,7 +1,8 @@
 .clang-format
 .vscode
 .DS_Store
-test/atcoder/arc085_c*.test.cpp
+test/atcoder/arc070_*.test.cpp
+test/atcoder/arc085_*.test.cpp
 test/atcoder/arc066_*.test.cpp
 test/atcoder/arc097_*.test.cpp
 test/atcoder/abc*_ex.*.cpp

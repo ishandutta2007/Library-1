@@ -15,7 +15,7 @@ signed main() {
   tree.add_edge(--A, --B);
  }
  tree.build();
- using Data= array<int, 2>;
+ using Data= array<long long, 2>;
  auto f_ee= [&](const Data &l, const Data &r) { return Data{l[0] + r[0], l[1] + r[1]}; };
  auto f_ve= [&](const Data &d, int, auto) { return d; };
  auto f_ev= [&](Data d, int) {
@@ -23,7 +23,7 @@ signed main() {
   return d;
  };
  auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data{0, 0});
- int ans= 0;
+ long long ans= 0;
  for (const auto &x: dp) ans+= x[1];
  cout << ans << '\n';
  return 0;

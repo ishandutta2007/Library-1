@@ -4,6 +4,7 @@
 #include "src/Misc/compress.hpp"
 #include "src/Math/ModInt.hpp"
 #include "src/Graph/rerooting.hpp"
+#include "src/Math/CartesianProduct.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,20 +19,23 @@ signed main() {
  }
  tree.build(0);
  using Mint= ModInt<(1ll << 61) - 1>;
- using Data= pair<int, Mint>;
- vector<Mint> hash(N);
- random_device rng;
- for (auto& x: hash) x= uniform_int_distribution<long long>(1, Mint::mod() - 1)(rng);
+ using K= CartesianProduct<Mint, Mint>;
+ using Data= pair<int, K>;
+ vector<K> hash(N);
+ auto randint= [&]() {
+  static random_device rng;
+  return uniform_int_distribution<long long>(1, Mint::mod() - 1)(rng);
+ };
+ for (auto& x: hash) x= {randint(), randint()};
  auto f_ee= [&](const Data& l, const Data& r) { return Data{max(l.first, r.first), l.second * r.second}; };
  auto f_ve= [&](const Data& d, int, auto) { return Data{d.first, d.second + hash[d.first]}; };
  auto f_ev= [&](const Data& d, int) { return Data{d.first + 1, d.second}; };
- auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data{0, Mint(1)});
- vector<int> ans(N);
- for (int i= 0; i < N; ++i) ans[i]= dp.get(0, i).second.val();
+ auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data{0, K{1, 1}});
+ vector<K> ans(N);
+ for (int i= 0; i < N; ++i) ans[i]= dp.get(0, i).second;
  auto vec= ans;
  auto id= compress(vec);
- for (auto& x: ans) x= id(x);
- cout << *max_element(ans.begin(), ans.end()) + 1 << '\n';
- for (int i= 0; i < N; ++i) cout << ans[i] << " \n"[i == N - 1];
+ cout << vec.size() << '\n';
+ for (int i= 0; i < N; ++i) cout << id(ans[i]) << " \n"[i == N - 1];
  return 0;
 }

@@ -18,7 +18,7 @@ signed main() {
  }
  tree.build();
  vector<int> cnt(N);
- int ans= 0;
+ long long ans= 0;
  while (Q--) {
   int a, b;
   cin >> a >> b;

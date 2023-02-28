@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <cassert>
 template <std::size_t NODE_SIZE= 1 << 22> class PiecewiseLinearConvexfunction {
  using i64= long long;
  using i128= __int128_t;

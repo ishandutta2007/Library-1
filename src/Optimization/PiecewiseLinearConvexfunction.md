@@ -6,28 +6,28 @@ splay木でがんばった. 一般の min-plus 畳み込みは実装していな
 メモリプールしている. static 関数 `clear` でノードリセット. 
 
 ## メンバ関数
-| 関数名                                   | 内容                                                                                                           |
-| :--------------------------------------- | :------------------------------------------------------------------------------------------------------------- |
-| `PiecewiseLinearConvexfunction()`        | コンストラクタ $$f(x) := 0$$                                                                                   |
-| `add_const(c)`                           | $$ f(x)\leftarrow f(x)+c $$                                                                                    |
-| `add_linear(a,c)`                        | $$f(x)\leftarrow f(x) + ax+c$$                                                                                 |
-| `shift(a)`                               | $$f(x)\leftarrow f(x-a)$$                                                                                      |
-| `add_relu(a,c)`                          | $$f(x)\leftarrow f(x) + \begin{cases}  0 & x < c \\ a(x-c) & x \ge c \end{cases}$$                             |
-| `add_ax_bx_c(a,b,c)`                     | $$f(x)\leftarrow f(x) + \begin{cases}  a(x-c) & x < c \\ b(x-c) & x \ge c \end{cases}$$                        |
-| `add_abs(a,c)`                           | $$f(x)\leftarrow f(x) + a\lvert  x-c \rvert  $$                                                                |
-| `chinfty_right(a)`                       | $$f(x)\leftarrow  \begin{cases} f(x) & x \le a \\ \infty & x > a \end{cases} $$                                |
-| `chinfty_left(a)`                        | $$f(x)\leftarrow  \begin{cases} \infty & x < a \\ f(x) & x \ge a \end{cases} $$                                |
-| `cumulative_chmin()`                     | $$f(x)\leftarrow\min_{y\le x}f(y)$$                                                                            |
-| `cumulative_chmin_with_condition(a)`     | $$f(x)\leftarrow\min_{y\le x \land y\le a}f(y)$$                                                               |
-| `cumulative_chmin_rev()`                 | $$f(x)\leftarrow\min_{y\ge x}f(y)$$                                                                            |
-| `cumulative_chmin_rev_with_condition(a)` | $$f(x)\leftarrow\min_{y\ge x \land y\ge a}f(y)$$                                                               |
-| `chmin_sliding_window(a,b)`              | $$f(x)\leftarrow\min_{x-b\le y\le x-a}f(y)$$                                                                   |
-| `convex_convolution_with_ax_bx_c(a,b,c)` | $$f(x)\leftarrow \min_y \left\{f(x-y)+ \begin{cases}  a(y-c) & y < c \\ b(y-c) & y \ge c \end{cases}\right\}$$ |
-| `convex_convolution_with_abs(a,c)`       | $f(x)\leftarrow \min_y\left\{f(x-y)+a\lvert y-c\rvert\right\}$                                                 |
-| `operator+(f,g)`                         | $f(x)+g(x)$ を返す. 破壊的なので注意                                                                           |
-| `eval(a)`, `operator()(a)`               | $f(a)$ を返す.                                                                                                 |
-| `argmin()`                               | 閉区間 $[l, r] = \{y:f(y) = \min_x f(x)\}$ を返す.                                                             |
-| `min()`                                  | $\min_x f(x)$ を返す.                                                                                          |
+| 関数名                                   | 内容                                                                                                                                         |
+| :--------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PiecewiseLinearConvexfunction()`        | コンストラクタ $$f(x) := 0$$                                                                                                                 |
+| `add_const(c)`                           | $$f(x)\leftarrow f(x)+c $$                                                                                                                   |
+| `add_linear(a,c)`                        | $$f(x)\leftarrow f(x) + ax+c$$                                                                                                               |
+| `shift(a)`                               | $$f(x)\leftarrow f(x-a)$$                                                                                                                    |
+| `add_relu(a,c)`                          | $$f(x)\leftarrow f(x) + \begin{cases} 0 & x < c \newline a(x-c) & x \ge c \end{cases}$$                                                      |
+| `add_ax_bx_c(a,b,c)`                     | $$f(x)\leftarrow f(x) + \begin{cases} a(x-c) & x < c \newline b(x-c) & x \ge c \end{cases}$$                                                 |
+| `add_abs(a,c)`                           | $$f(x)\leftarrow f(x) + a\lvert  x-c \rvert  $$                                                                                              |
+| `chinfty_right(a)`                       | $$f(x)\leftarrow \begin{cases} f(x) & x \le a \newline \infty & x > a \end{cases} $$                                                         |
+| `chinfty_left(a)`                        | $$f(x)\leftarrow \begin{cases} \infty & x < a \newline f(x) & x \ge a \end{cases} $$                                                         |
+| `cumulative_chmin()`                     | $$f(x)\leftarrow\min_{y\le x}f(y)$$                                                                                                          |
+| `cumulative_chmin_with_condition(a)`     | $$f(x)\leftarrow\min_{y\le x \land y\le a}f(y)$$                                                                                             |
+| `cumulative_chmin_rev()`                 | $$f(x)\leftarrow\min_{y\ge x}f(y)$$                                                                                                          |
+| `cumulative_chmin_rev_with_condition(a)` | $$f(x)\leftarrow\min_{y\ge x \land y\ge a}f(y)$$                                                                                             |
+| `chmin_sliding_window(a,b)`              | $$f(x)\leftarrow\min_{x-b\le y\le x-a}f(y)$$                                                                                                 |
+| `convex_convolution_with_ax_bx_c(a,b,c)` | $$f(x)\leftarrow \min_y \left\lbrace f(x-y)+ \left(\begin{cases}  a(y-c) & y < c \newline b(y-c) & y \ge c \end{cases}\right)\right\rbrace$$ |
+| `convex_convolution_with_abs(a,c)`       | $$f(x)\leftarrow \min_y\left\lbrace f(x-y)+a\lvert y-c\rvert\right\rbrace$$                                                                  |
+| `operator+(f,g)`                         | $f(x)+g(x)$ を返す. 破壊的なので注意                                                                                                         |
+| `eval(a)`, `operator()(a)`               | $f(a)$ を返す.                                                                                                                               |
+| `argmin()`                               | 閉区間 $[l, r] = \lbrace y:f(y) = \min_x f(x)\rbrace$ を返す.                                                                                |
+| `min()`                                  | $\min_x f(x)$ を返す.                                                                                                                        |
 
 ## 問題例
 [Kyoto University Programming Contest 2016 H - 壁壁壁壁壁壁壁](https://atcoder.jp/contests/kupc2016/tasks/kupc2016_h) \

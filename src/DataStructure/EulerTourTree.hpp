@@ -10,8 +10,8 @@ template <typename M= void, std::size_t NODE_SIZE= 4'000'000> class EulerTourTre
  HAS_MEMBER(composition);
  HAS_TYPE(T);
  HAS_TYPE(E);
- template <class L> using monoid= std::conjunction<has_T<L>, has_op<L>, has_ti<L>>;
- template <class L> using dual= std::conjunction<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
+ template <class L> static constexpr bool monoid_v= std::conjunction_v<has_T<L>, has_op<L>, has_ti<L>>;
+ template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
  using node_id= std::int_least32_t;
  using vertex_id= std::int_least32_t;
  template <class U= std::nullptr_t, class F= std::nullptr_t> struct Node_B {
@@ -20,21 +20,21 @@ template <typename M= void, std::size_t NODE_SIZE= 4'000'000> class EulerTourTre
   node_id ch[2], par;
   std::uint64_t flag;
  };
- template <bool mo_, bool du_, typename tEnable= void> struct Node_D: Node_B<> {};
- template <bool mo_, bool du_> struct Node_D<mo_, du_, typename std::enable_if_t<mo_ && !du_>>: Node_B<typename M::T> {
+ template <class D, bool mo, bool du> struct Node_D: Node_B<> {};
+ template <class D> struct Node_D<D, 1, 0>: Node_B<typename M::T> {
   typename M::T val= M::ti(), sum= M::ti();
  };
- template <bool mo_, bool du_> struct Node_D<mo_, du_, typename std::enable_if_t<!mo_ && du_>>: Node_B<typename M::T, typename M::E> {
+ template <class D> struct Node_D<D, 0, 1>: Node_B<typename M::T, typename M::E> {
   typename M::T val;
   typename M::E lazy;
   bool lazy_flg;
  };
- template <bool mo_, bool du_> struct Node_D<mo_, du_, typename std::enable_if_t<mo_ && du_>>: Node_B<typename M::T, typename M::E> {
+ template <class D> struct Node_D<D, 1, 1>: Node_B<typename M::T, typename M::E> {
   typename M::T val= M::ti(), sum= M::ti();
   typename M::E lazy;
   bool lazy_flg;
  };
- using Node= Node_D<monoid<M>::value, dual<M>::value>;
+ using Node= Node_D<void, monoid_v<M>, dual_v<M>>;
 public:
  using T= typename Node::T;
  using E= typename Node::E;
@@ -51,20 +51,20 @@ private:
   n[i].flag&= 0xffffffffff00000f;
   n[i].flag|= ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) << 4;
   n[i].flag&= -11ll, n[i].flag|= (n[i].flag << 1) & 0b1111;
-  if constexpr (monoid<M>::value) n[i].sum= n[i].val;
+  if constexpr (monoid_v<M>) n[i].sum= n[i].val;
   if (n[i].ch[0]) {
    n[i].flag+= (n[n[i].ch[0]].flag & 0xfffff0), n[i].flag|= n[n[i].ch[0]].flag & 0b1010;
-   if constexpr (monoid<M>::value) n[i].sum= M::op(n[n[i].ch[0]].sum, n[i].sum);
+   if constexpr (monoid_v<M>) n[i].sum= M::op(n[n[i].ch[0]].sum, n[i].sum);
   }
   if (n[i].ch[1]) {
    n[i].flag+= (n[n[i].ch[1]].flag & 0xfffff0), n[i].flag|= n[n[i].ch[1]].flag & 0b1010;
-   if constexpr (monoid<M>::value) n[i].sum= M::op(n[i].sum, n[n[i].ch[1]].sum);
+   if constexpr (monoid_v<M>) n[i].sum= M::op(n[i].sum, n[n[i].ch[1]].sum);
   }
  }
  inline void propagate(node_id i, const E &v) {
   n[i].lazy_flg ? (M::composition(n[i].lazy, v), v) : n[i].lazy= v;
   if ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) M::mapping(n[i].val, v, 1);
-  if constexpr (monoid<M>::value) M::mapping(n[i].sum, v, ((n[i].flag >> 4) & 0xfffff));
+  if constexpr (monoid_v<M>) M::mapping(n[i].sum, v, ((n[i].flag >> 4) & 0xfffff));
   n[i].lazy_flg= true;
  }
  inline void eval(node_id i) {
@@ -80,18 +80,17 @@ private:
   if ((n[p].ch[d]= n[i].ch[!d])) n[n[p].ch[d]].par= p;
   n[i].ch[!d]= p;
   if ((n[i].par= n[p].par)) n[n[p].par].ch[dir(p)]= i;
-  n[p].par= i;
+  n[p].par= i, pushup(p);
  }
  static inline void splay(node_id i) {
-  if constexpr (dual<M>::value) eval(i);
-  for (node_id p= n[i].par; p; p= n[i].par) {
+  if constexpr (dual_v<M>) eval(i);
+  for (node_id p= n[i].par; p; rot(i), p= n[i].par) {
    node_id pp= n[p].par;
-   if constexpr (dual<M>::value) {
+   if constexpr (dual_v<M>) {
     if (pp) eval(pp);
     eval(p), eval(i);
    }
-   if (pp) rot(dir(i) == dir(p) ? p : i), rot(i), pushup(pp), pushup(p);
-   else rot(i), pushup(p);
+   if (pp) rot(dir(i) == dir(p) ? p : i);
   }
   pushup(i);
  }
@@ -127,11 +126,11 @@ public:
  }
  const T &operator[](vertex_id x) { return get(x); }
  const T &get(vertex_id x) {
-  static_assert(monoid<M>::value || dual<M>::value, "\"get\" is not available\n");
+  static_assert(monoid_v<M> || dual_v<M>, "\"get\" is not available\n");
   return n[x + n_st].val;
  }
  void set(vertex_id x, T val) {
-  static_assert(monoid<M>::value || dual<M>::value, "\"set\" is not available\n");
+  static_assert(monoid_v<M> || dual_v<M>, "\"set\" is not available\n");
   splay(x+= n_st), n[x].val= val, pushup(x);
  }
  bool edge_exist(vertex_id x, vertex_id y) {
@@ -171,7 +170,7 @@ public:
  }
  std::size_t tree_size(vertex_id x) { return splay(x+= n_st), ((n[x].flag >> 4) & 0xfffff); }
  T fold_tree(vertex_id x) {
-  static_assert(monoid<M>::value, "\"fold\" is not available\n");
+  static_assert(monoid_v<M>, "\"fold\" is not available\n");
   return splay(x+= n_st), n[x].sum;
  }
  T fold_subtree(vertex_id x, vertex_id par= -1) {
@@ -182,14 +181,14 @@ public:
   return ret;
  }
  void apply_tree(vertex_id x, E v) {
-  static_assert(dual<M>::value, "\"apply\" is not available\n");
+  static_assert(dual_v<M>, "\"apply\" is not available\n");
   splay(x+= n_st), propagate(x, v), eval(x);
  }
  void apply_subtree(vertex_id x, vertex_id par, E v) { cut(x, par), apply_tree(x, v), link(x, par); }
  static std::string which_available() {
   std::string ret= "";
-  if constexpr (monoid<M>::value) ret+= "\"fold\" ";
-  if constexpr (dual<M>::value) ret+= "\"apply\" ";
+  if constexpr (monoid_v<M>) ret+= "\"fold\" ";
+  if constexpr (dual_v<M>) ret+= "\"apply\" ";
   return ret;
  }
  template <class Func> void hilevel_edges(vertex_id v, Func f) {

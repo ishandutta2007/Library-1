@@ -112,7 +112,7 @@ public:
    if (eval(x); ns[x].ch[0] == -1) return splay(x), x;
  }
  int parent(int x) {
-  if (expose(x), x= ns.ch[0]; x == -1) return -1;
+  if (expose(x), x= ns[x].ch[0]; x == -1) return -1;
   for (;; x= ns[x].ch[1])
    if (eval(x); ns[x].ch[1] == -1) return splay(x), x;
  }

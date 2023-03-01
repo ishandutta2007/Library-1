@@ -50,13 +50,11 @@ template <std::size_t NODE_SIZE= 1 << 22> class PiecewiseLinearConvexfunction {
   if ((ns[p].ch[d]= ns[i].ch[!d])) ns[ns[p].ch[d]].par= p;
   ns[i].ch[!d]= p;
   if ((ns[i].par= ns[p].par)) ns[ns[p].par].ch[dir(p)]= i;
-  ns[p].par= i;
+  ns[p].par= i, pushup(p);
  }
  static inline void splay(node_id i) {
-  for (node_id p= ns[i].par; p; p= ns[i].par) {
-   if (node_id pp= ns[p].par; pp) rot(dir(i) == dir(p) ? p : i), rot(i), pushup(pp), pushup(p);
-   else rot(i), pushup(p);
-  }
+  for (node_id p= ns[i].par; p; rot(i), p= ns[i].par)
+   if (node_id pp= ns[p].par; pp) rot(dir(i) == dir(p) ? p : i);
   pushup(i);
  }
  static inline void slope_search(node_id &i, i64 k) {

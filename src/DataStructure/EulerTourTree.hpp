@@ -61,13 +61,13 @@ private:
    if constexpr (monoid_v<M>) n[i].sum= M::op(n[i].sum, n[n[i].ch[1]].sum);
   }
  }
- inline void propagate(node_id i, const E &v) {
+ static inline void propagate(node_id i, const E &v) {
   n[i].lazy_flg ? (M::composition(n[i].lazy, v), v) : n[i].lazy= v;
   if ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) M::mapping(n[i].val, v, 1);
   if constexpr (monoid_v<M>) M::mapping(n[i].sum, v, ((n[i].flag >> 4) & 0xfffff));
   n[i].lazy_flg= true;
  }
- inline void eval(node_id i) {
+ static inline void eval(node_id i) {
   if (!n[i].lazy_flg) return;
   if (n[i].ch[0]) propagate(n[i].ch[0], n[i].lazy);
   if (n[i].ch[1]) propagate(n[i].ch[1], n[i].lazy);
@@ -94,22 +94,22 @@ private:
   }
   pushup(i);
  }
- inline node_id merge_back(node_id l, node_id r) {
+ static inline node_id merge_back(node_id l, node_id r) {
   if (!l) return r;
   if (!r) return l;
   while (n[l].ch[1]) l= n[l].ch[1];
   return splay(l), n[n[r].par= l].ch[1]= r, pushup(l), l;
  }
- inline std::pair<node_id, node_id> split(node_id i) {
+ static inline std::pair<node_id, node_id> split(node_id i) {
   splay(i);
   node_id l= n[i].ch[0];
   return n[i].ch[0]= n[l].par= 0, pushup(i), std::make_pair(l, i);
  }
- inline void reroot(node_id v) {
+ static inline void reroot(node_id v) {
   auto p= split(v);
   merge_back(p.second, p.first), splay(v);
  }
- inline bool same_root(node_id i, node_id j) {
+ static inline bool same_root(node_id i, node_id j) {
   if (i) splay(i);
   if (j) splay(j);
   while (n[i].par) i= n[i].par;

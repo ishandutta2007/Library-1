@@ -13,20 +13,23 @@ template <typename M= void> class LinkCutTree {
  HAS_TYPE(E);
  template <class L> static constexpr bool semigroup_v= std::conjunction_v<has_T<L>, has_op<L>>;
  template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
- template <class tDerived, class U= std::nullptr_t, class F= std::nullptr_t> struct Node_B {
+ using node_id= std::int_least32_t;
+ template <class U= std::nullptr_t, class F= std::nullptr_t> struct Node_B {
   using T= U;
   using E= F;
-  tDerived *ch[2], *par;
+  node_id ch[2]= {-1, -1}, par= -1;
   bool rev_flg;
  };
- template <class D, bool sg, bool du> struct Node_D: Node_B<Node_D<D, sg, du>> {};
- template <class D> struct Node_D<D, 1, 0>: Node_B<Node_D<D, 1, 0>, typename M::T> { typename M::T val, sum, rsum; };
- template <class D> struct Node_D<D, 0, 1>: Node_B<Node_D<D, 0, 1>, typename M::T, typename M::E> {
+ template <class D, bool sg, bool du> struct Node_D: Node_B<> {};
+ template <class D> struct Node_D<D, 1, 0>: Node_B<typename M::T> {
+  typename M::T val, sum, rsum;
+ };
+ template <class D> struct Node_D<D, 0, 1>: Node_B<typename M::T, typename M::E> {
   typename M::T val;
   typename M::E lazy;
   bool lazy_flg;
  };
- template <class D> struct Node_D<D, 1, 1>: Node_B<Node_D<D, 1, 1>, typename M::T, typename M::E> {
+ template <class D> struct Node_D<D, 1, 1>: Node_B<typename M::T, typename M::E> {
   typename M::T val, sum, rsum;
   typename M::E lazy;
   bool lazy_flg;
@@ -34,114 +37,103 @@ template <typename M= void> class LinkCutTree {
  using Node= Node_D<void, semigroup_v<M>, dual_v<M>>;
  using T= typename Node::T;
  using E= typename Node::E;
- static inline int dir(Node *&t) {
-  if (t->par) {
-   if (t->par->ch[0] == t) return 0;
-   if (t->par->ch[1] == t) return 1;
+ inline int dir(node_id i) {
+  if (ns[i].par != -1) {
+   if (ns[ns[i].par].ch[0] == i) return 0;
+   if (ns[ns[i].par].ch[1] == i) return 1;
   }
   return 2;
  }
- static inline void rot(Node *t) {
-  Node *p= t->par;
-  int d= dir(t);
-  if ((p->ch[d]= t->ch[!d])) p->ch[d]->par= p;
-  t->ch[!d]= p;
-  if constexpr (semigroup_v<M>) pushup(p), pushup(t);
-  if (t->par= p->par; (d= dir(p)) < 2) {
-   p->par->ch[d]= t;
-   if constexpr (semigroup_v<M>) pushup(t->par);
+ inline void rot(node_id i) {
+  node_id p= ns[i].par;
+  int d= dir(i);
+  if ((ns[p].ch[d]= ns[i].ch[!d]) != -1) ns[ns[p].ch[d]].par= p;
+  ns[i].ch[!d]= p, ns[i].par= ns[p].par;
+  if ((d= dir(p)) < 2) ns[ns[p].par].ch[d]= i;
+  ns[p].par= i;
+  if constexpr (semigroup_v<M>) pushup(p);
+ }
+ inline void splay(node_id i) {
+  eval(i);
+  node_id p= ns[i].par, pp;
+  for (int d= dir(i), c; d < 2; rot(i), d= dir(i), p= ns[i].par) {
+   if (c= dir(p), pp= ns[p].par; c < 2) eval(pp), eval(p), eval(i), rot(d == c ? p : i);
+   else eval(p), eval(i);
   }
-  p->par= t;
+  if constexpr (semigroup_v<M>) pushup(i);
  }
- static inline void splay(Node *t) {
-  eval(t);
-  for (int t_d= dir(t), p_d; t_d < 2; rot(t), t_d= dir(t)) {
-   if ((p_d= dir(t->par)) < 2) eval(t->par->par);
-   if (eval(t->par), eval(t); p_d < 2) rot(t_d == p_d ? t->par : t);
-  }
+ inline void pushup(node_id i) {
+  ns[i].rsum= ns[i].sum= ns[i].val;
+  if (ns[i].ch[0] != -1) ns[i].sum= M::op(ns[ns[i].ch[0]].sum, ns[i].sum), ns[i].rsum= M::op(ns[i].rsum, ns[ns[i].ch[0]].rsum);
+  if (ns[i].ch[1] != -1) ns[i].sum= M::op(ns[i].sum, ns[ns[i].ch[1]].sum), ns[i].rsum= M::op(ns[ns[i].ch[1]].rsum, ns[i].rsum);
  }
- static inline void pushup(Node *t) {
-  t->rsum= t->sum= t->val;
-  if (t->ch[0]) t->sum= M::op(t->ch[0]->sum, t->sum), t->rsum= M::op(t->rsum, t->ch[0]->rsum);
-  if (t->ch[1]) t->sum= M::op(t->sum, t->ch[1]->sum), t->rsum= M::op(t->ch[1]->rsum, t->rsum);
+ inline void propagate(node_id i, const E &x) {
+  if (i == -1) return;
+  M::mapping(ns[i].val, x), ns[i].lazy_flg ? (M::composition(ns[i].lazy, x), x) : ns[i].lazy= x;
+  if constexpr (semigroup_v<M>) M::mapping(ns[i].sum, x), M::mapping(ns[i].rsum, x);
+  ns[i].lazy_flg= true;
  }
- static inline void propagate(Node *t, const E &x) {
-  if (!t) return;
-  M::mapping(t->val, x), t->lazy_flg ? (M::composition(t->lazy, x), x) : t->lazy= x;
-  if constexpr (semigroup_v<M>) M::mapping(t->sum, x), M::mapping(t->rsum, x);
-  t->lazy_flg= true;
+ inline void toggle(node_id i) {
+  if (i == -1) return;
+  std::swap(ns[i].ch[0], ns[i].ch[1]);
+  if constexpr (semigroup_v<M>) std::swap(ns[i].sum, ns[i].rsum);
+  ns[i].rev_flg= !ns[i].rev_flg;
  }
- static inline void toggle(Node *t) {
-  if (!t) return;
-  std::swap(t->ch[0], t->ch[1]);
-  if constexpr (semigroup_v<M>) std::swap(t->sum, t->rsum);
-  t->rev_flg= !t->rev_flg;
- }
- static inline void eval(Node *t) {
-  if (t->rev_flg) toggle(t->ch[0]), toggle(t->ch[1]), t->rev_flg= false;
+ inline void eval(node_id i) {
+  if (ns[i].rev_flg) toggle(ns[i].ch[0]), toggle(ns[i].ch[1]), ns[i].rev_flg= false;
   if constexpr (dual_v<M>)
-   if (t->lazy_flg) propagate(t->ch[0], t->lazy), propagate(t->ch[1], t->lazy), t->lazy_flg= false;
+   if (ns[i].lazy_flg) propagate(ns[i].ch[0], ns[i].lazy), propagate(ns[i].ch[1], ns[i].lazy), ns[i].lazy_flg= false;
  }
- static inline Node *expose(Node *t) {
-  Node *r= nullptr;
-  for (Node *p= t; p; r= p, p= p->par) {
-   splay(p), p->ch[1]= r;
+ inline node_id expose(node_id i) {
+  node_id r= -1;
+  for (node_id p= i; p != -1; r= p, p= ns[p].par) {
+   splay(p), ns[p].ch[1]= r;
    if constexpr (semigroup_v<M>) pushup(p);
   }
-  return splay(t), r;
+  return splay(i), r;
  }
  std::vector<Node> ns;
 public:
  LinkCutTree(std::size_t n): ns(n) {}
  LinkCutTree(std::size_t n, T val): ns(n) {
-  for (std::size_t i= n; i--;) ns[i].val= val;
+  for (int i= n; i--;) ns[i].val= val;
  }
- void evert(std::size_t k) { expose(&ns[k]), toggle(&ns[k]), eval(&ns[k]); }
- void link(std::size_t c, std::size_t p) {
-  evert(c), expose(&ns[p]), assert(!ns[c].par), ns[p].ch[1]= &ns[c], ns[c].par= &ns[p];
-  if constexpr (semigroup_v<M>) pushup(&ns[p]);
+ void evert(int k) { expose(k), toggle(k), eval(k); }
+ void link(int c, int p) {
+  evert(c), expose(p), assert(ns[c].par == -1), ns[p].ch[1]= c, ns[c].par= p;
+  if constexpr (semigroup_v<M>) pushup(p);
  }
- void cut(std::size_t c, std::size_t p) {
-  evert(p), expose(&ns[c]), assert(ns[c].ch[0] == &ns[p]), ns[c].ch[0]= ns[c].ch[0]->par= nullptr;
-  if constexpr (semigroup_v<M>) pushup(&ns[c]);
+ void cut(int c, int p) {
+  evert(p), expose(c), assert(ns[c].ch[0] == p), ns[c].ch[0]= ns[p].par= -1;
+  if constexpr (semigroup_v<M>) pushup(c);
  }
- int root(std::size_t x) {
-  expose(&ns[x]);
-  Node *t= &ns[x];
-  while (t->ch[0]) t= t->ch[0];
-  return t - &ns[0];
+ int root(int x) {
+  for (expose(x);; x= ns[x].ch[0])
+   if (eval(x); ns[x].ch[0] == -1) return splay(x), x;
  }
- int parent(std::size_t x) {
-  expose(&ns[x]);
-  Node *t= ns[x].ch[0];
-  if (!t) return -1;
-  while (t->ch[1]) eval(t), t= t->ch[1];
-  return splay(t), t - &ns[0];
+ int parent(int x) {
+  if (expose(x), x= ns.ch[0]; x == -1) return -1;
+  for (;; x= ns[x].ch[1])
+   if (eval(x); ns[x].ch[1] == -1) return splay(x), x;
  }
- int lca(std::size_t x, std::size_t y) {
-  if (x == y) return x;
-  expose(&ns[x]);
-  Node *u= expose(&ns[y]);
-  return ns[x].par ? u - &ns[0] : -1;
- }
- const T &operator[](std::size_t k) { return get(k); }
- const T &get(std::size_t k) {
+ int lca(int x, int y) { return x == y ? x : (expose(x), y= expose(y), ns[x].par == -1) ? -1 : y; }
+ const T &operator[](int k) { return get(k); }
+ const T &get(int k) {
   static_assert(semigroup_v<M> || dual_v<M>, "\"get\" is not available\n");
-  return expose(&ns[k]), ns[k].val;
+  return expose(k), ns[k].val;
  }
- void set(std::size_t k, T v) {
+ void set(int k, T v) {
   static_assert(semigroup_v<M> || dual_v<M>, "\"set\" is not available\n");
-  expose(&ns[k]), ns[k].val= v;
-  if constexpr (semigroup_v<M>) pushup(&ns[k]);
+  expose(k), ns[k].val= v;
+  if constexpr (semigroup_v<M>) pushup(k);
  }
- T fold(std::size_t a, std::size_t b) {  // [a,b] closed section
+ T fold(int a, int b) {  // [a,b] closed section
   static_assert(semigroup_v<M>, "\"fold\" is not available\n");
-  if (a == b) return get(a);
-  return evert(a), expose(&ns[b]), assert(ns[a].par), ns[b].sum;
+  return a == b ? get(a) : (evert(a), expose(b), assert(ns[a].par != -1), ns[b].sum);
  }
- void apply(std::size_t a, std::size_t b, E v) {  // [a,b] closed section
+ void apply(int a, int b, E v) {  // [a,b] closed section
   static_assert(dual_v<M>, "\"apply\" is not available\n");
-  evert(a), expose(&ns[b]), assert(a == b || ns[a].par), propagate(&ns[b], v), eval(&ns[b]);
+  evert(a), expose(b), assert(a == b || ns[a].par != -1), propagate(b, v), eval(b);
  }
  static std::string which_available() {
   std::string ret= "";

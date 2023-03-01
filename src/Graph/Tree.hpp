@@ -78,7 +78,8 @@ public:
    if (L[v] - k >= L[u= PP[v]]) return I[L[v] - k];
  }
  int jump(int u, int v, int k) const {
-  if (assert(builded()); u == v) return -1;
+  if (assert(builded()); !k) return u;
+  if (u == v) return -1;
   if (k == 1) return in_subtree(v, u) ? la(v, D[v] - D[u] - 1) : P[u];
   int w= lca(u, v), d_uw= D[u] - D[w], d_vw= D[v] - D[w];
   return k > d_uw + d_vw ? -1 : k <= d_uw ? la(u, k) : la(v, d_uw + d_vw - k);

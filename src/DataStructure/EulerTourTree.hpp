@@ -21,7 +21,9 @@ template <typename M= void, std::size_t NODE_SIZE= 4'000'000> class EulerTourTre
   std::uint64_t flag;
  };
  template <bool mo_, bool du_, typename tEnable= void> struct Node_D: Node_B<> {};
- template <bool mo_, bool du_> struct Node_D<mo_, du_, typename std::enable_if_t<mo_ && !du_>>: Node_B<typename M::T> { typename M::T val= M::ti(), sum= M::ti(); };
+ template <bool mo_, bool du_> struct Node_D<mo_, du_, typename std::enable_if_t<mo_ && !du_>>: Node_B<typename M::T> {
+  typename M::T val= M::ti(), sum= M::ti();
+ };
  template <bool mo_, bool du_> struct Node_D<mo_, du_, typename std::enable_if_t<!mo_ && du_>>: Node_B<typename M::T, typename M::E> {
   typename M::T val;
   typename M::E lazy;
@@ -71,31 +73,27 @@ private:
   if (n[i].ch[1]) propagate(n[i].ch[1], n[i].lazy);
   n[i].lazy_flg= false;
  }
- inline int dir(node_id i) {
-  if (n[i].par) {
-   if (n[n[i].par].ch[0] == i) return 0;
-   if (n[n[i].par].ch[1] == i) return 1;
-  }
-  return 2;
+ static inline int dir(node_id i) { return n[n[i].par].ch[1] == i; }
+ static inline void rot(node_id i) {
+  node_id p= n[i].par;
+  int d= dir(i);
+  if ((n[p].ch[d]= n[i].ch[!d])) n[n[p].ch[d]].par= p;
+  n[i].ch[!d]= p;
+  if ((n[i].par= n[p].par)) n[n[p].par].ch[dir(p)]= i;
+  n[p].par= i;
  }
- inline void rot(node_id x) {
-  node_id p= n[x].par;
-  int d= dir(x);
-  if ((n[p].ch[d]= n[x].ch[!d])) n[n[p].ch[d]].par= p;
-  n[x].ch[!d]= p, pushup(p), pushup(x), n[x].par= n[p].par;
-  if ((d= dir(p)) < 2) n[n[p].par].ch[d]= x, pushup(n[p].par);
-  n[p].par= x;
- }
- inline void splay(node_id i) {
+ static inline void splay(node_id i) {
   if constexpr (dual<M>::value) eval(i);
-  for (int i_dir= dir(i), p_dir; i_dir < 2; rot(i), i_dir= dir(i)) {
-   p_dir= dir(n[i].par);
+  for (node_id p= n[i].par; p; p= n[i].par) {
+   node_id pp= n[p].par;
    if constexpr (dual<M>::value) {
-    if (p_dir < 2) eval(n[n[i].par].par);
-    eval(n[i].par), eval(i);
+    if (pp) eval(pp);
+    eval(p), eval(i);
    }
-   if (p_dir < 2) rot(i_dir == p_dir ? n[i].par : i);
+   if (pp) rot(dir(i) == dir(p) ? p : i), rot(i), pushup(pp), pushup(p);
+   else rot(i), pushup(p);
   }
+  pushup(i);
  }
  inline node_id merge_back(node_id l, node_id r) {
   if (!l) return r;

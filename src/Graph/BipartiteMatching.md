@@ -8,7 +8,7 @@ documentation_of: ./BipartiteMatching.hpp
 
 | 関数名                   | 内容                                                           | 計算量                              |
 | ------------------------ | -------------------------------------------------------------- | ----------------------------------- |
-| `BipartiteMatching(L,R)` | コンストラクタ 二部グラフの左右のサイズ L, Rを渡す             |                                     |
+| `BipartiteMatching(L,R)` | コンストラクタ. 二部グラフの左右のサイズ L, Rを渡す            |                                     |
 | `add_edge(l,r)`          | 辺 (l,r) を追加                                                | $\mathcal{O}(1)$                    |
 | `erase_edge(l,r)`        | 辺 (l,r) を削除                                                | $\mathcal{O}(E)$                    |
 | `build()`                | 二部グラフのマッチングを実行                                   | $\mathcal{O}\left(E\sqrt{V}\right)$ |

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "src/Graph/MatchingBipartite.hpp"
+#include "src/Graph/BipartiteMatching.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,19 +18,20 @@ signed main() {
    wsize+= S[i][j] == 'w';
   }
  }
- MatchingBipartite g(N * M, N * M);
+ BipartiteMatching bm(N * M, N * M);
  for (int i= 0; i < N; i++) {
   for (int j= 0; j < M; j++)
    if ((i + j) & 1 && S[i][j] == 'b') {
-    if (i > 0 && S[i - 1][j] == 'w') g.add_edge(i * M + j, (i - 1) * M + j);
-    if (i + 1 < N && S[i + 1][j] == 'w') g.add_edge(i * M + j, (i + 1) * M + j);
-    if (j > 0 && S[i][j - 1] == 'w') g.add_edge(i * M + j, i * M + j - 1);
-    if (j + 1 < M && S[i][j + 1] == 'w') g.add_edge(i * M + j, i * M + j + 1);
+    if (i > 0 && S[i - 1][j] == 'w') bm.add_edge(i * M + j, (i - 1) * M + j);
+    if (i + 1 < N && S[i + 1][j] == 'w') bm.add_edge(i * M + j, (i + 1) * M + j);
+    if (j > 0 && S[i][j - 1] == 'w') bm.add_edge(i * M + j, i * M + j - 1);
+    if (j + 1 < M && S[i][j + 1] == 'w') bm.add_edge(i * M + j, i * M + j + 1);
    }
  }
- int x= g.get_matching().first;
  if (bsize > wsize) swap(bsize, wsize);
+ bm.build();
+ int x= bm.max_matching().size();
  int ans= 100 * x + 10 * (bsize - x) + wsize - bsize;
- cout << ans << endl;
+ cout << ans << '\n';
  return 0;
 }

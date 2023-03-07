@@ -22,17 +22,16 @@ signed main() {
   scc.add_edge(c, d), scc.add_edge(d, c);
  }
  for (int i= 0; i < N; ++i) scc.add_edge(i, i + N);
- auto blk= scc.get_block();
- int C= blk.size();
- auto index= scc.get_index(blk);
- auto dag= scc.get_dag(index, C);
+ scc.build();
+ int C= scc.components_num();
+ auto dag= scc.dag();
  long long dp[C];
  fill_n(dp, C, 0);
- for (int i= 0; i < N; ++i) ++dp[index[i]];
+ for (int i= 0; i < N; ++i) ++dp[scc.belong(i)];
  for (int i= 0; i < C; ++i)
   for (int j: dag[i]) dp[j]+= dp[i];
  long long ans= 0;
- for (int i= 0; i < N; ++i) ans+= dp[index[i + N]] - 1;
+ for (int i= 0; i < N; ++i) ans+= dp[scc.belong(i + N)] - 1;
  cout << ans << '\n';
  return 0;
 }

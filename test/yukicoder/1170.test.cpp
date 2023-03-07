@@ -21,12 +21,11 @@ signed main() {
  // 単純な連結だと思うと全部くっついちゃうので 例えばUFとかは使えない
  StronglyConnectedComponents scc(n);
  for (auto [u, v, _]: r2r.get_edges()) scc.add_edge(u, v);
- auto blks= scc.get_block();
- auto index= scc.get_index(blks);
- int C= blks.size();
+ scc.build();
+ int C= scc.components_num();
  int cnt[C];
  fill_n(cnt, C, 0);
- for (int i= 0; i < N; ++i) ++cnt[index[i]];
- for (int i= 0; i < N; ++i) cout << cnt[index[i]] << '\n';
+ for (int i= 0; i < N; ++i) ++cnt[scc.belong(i)];
+ for (int i= 0; i < N; ++i) cout << cnt[scc.belong(i)] << '\n';
  return 0;
 }

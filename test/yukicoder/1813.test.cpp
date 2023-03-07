@@ -14,12 +14,12 @@ signed main() {
   cin >> A >> B;
   scc.add_edge(--A, --B);
  }
- auto blk= scc.get_block();
- int C= blk.size();
+ scc.build();
+ int C= scc.components_num();
  if (C == 1) {
   cout << 0 << '\n';
  } else {
-  auto dag= scc.get_dag(scc.get_index(blk), C);
+  auto dag= scc.dag();
   int cnt[2]= {0, 0};
   bool st[C];
   fill_n(st, C, true);

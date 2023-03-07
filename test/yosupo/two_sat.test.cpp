@@ -1,7 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/two_sat"
 #include <iostream>
 #include <string>
-#include "src/Graph/StronglyConnectedComponents.hpp"
 #include "src/Math/TwoSatisfiability.hpp"
 using namespace std;
 signed main() {
@@ -22,14 +21,11 @@ signed main() {
  auto ans= sat.solve();
  cout << "s ";
  if (ans.size()) {
-  cout << "SATISFIABLE" << endl;
+  cout << "SATISFIABLE" << '\n';
   cout << "v ";
-  for (int i= 1; i <= N; i++) {
-   cout << (ans[i] ? i : -i) << " ";
-  }
-  cout << 0 << endl;
- } else {
-  cout << "UNSATISFIABLE" << endl;
- }
+  for (int i= 1; i <= N; i++) cout << (ans[i] ? i : -i) << " ";
+  cout << 0 << '\n';
+ } else cout << "UNSATISFIABLE" << '\n';
+
  return 0;
 }

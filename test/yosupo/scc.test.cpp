@@ -13,9 +13,11 @@ signed main() {
   cin >> a >> b;
   scc.add_edge(a, b);
  }
- auto ans= scc.get_block();
- cout << ans.size() << '\n';
- for (const auto &blk: ans) {
+ scc.build();
+ int C= scc.components_num();
+ cout << C << '\n';
+ for (int i= 0; i < C; ++i) {
+  auto blk= scc.block(i);
   cout << blk.size();
   for (int v: blk) cout << " " << v;
   cout << '\n';

@@ -2,6 +2,7 @@
 #include <vector>
 #include <tuple>
 #include <array>
+#include <cassert>
 #include <type_traits>
 template <typename T> class LinearSystemIncidence {
  const int n;

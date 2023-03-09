@@ -16,9 +16,9 @@ public:
   for (auto [l, r]: es) ++pos[0][l], ++pos[1][r];
   for (int b= 2; b--;) std::partial_sum(pos[b].begin(), pos[b].end(), pos[b].begin());
   for (auto [l, r]: es) g[0][--pos[0][l]]= r, g[1][--pos[1][r]]= l;
-  int t, k= 0;
-  for (bool upd= true; upd;) {
-   upd= false, rt.assign(n[0], -1), pre.assign(n[0], -1), t= 0;
+  int t= 0, k= 0;
+  for (bool upd= true; upd; t= 0) {
+   upd= false, rt.assign(n[0], -1), pre.assign(n[0], -1);
    for (int l= n[0]; l--;)
     if (mate[0][l] == -1) que[t++]= rt[l]= pre[l]= l;
    for (int i= 0; i < t; ++i)
@@ -31,16 +31,15 @@ public:
       if (pre[nl] == -1) rt[que[t++]= nl]= rt[pre[nl]= l];
      }
   }
-  for (int b= 2, c= 0; b--; --c)
-   for (int s= n[b]; s--;)
-    if (mate[b][s] == -1) blg[b][s]= c;
-  for (int b= 2, c= 0; b--; --c)
-   for (int s= n[b], i= t= 0; s--;)
-    if (mate[b][s] == -1)
-     for (que[t++]= s; i < t; ++i)
-      for (int v= que[i], j= pos[b][v], u, w; j < pos[b][v + 1]; ++j)
-       if (blg[!b][u= g[b][j]] == -3)
-        if (w= mate[!b][u], blg[!b][u]= c; w != -1 && blg[b][w] == -3) blg[b][que[t++]= w]= c;
+  for (int s= n[0], v; s--;)
+   if (rt[s] != -1)
+    if (blg[0][s]= -1, v= mate[0][s]; v != -1) blg[1][v]= -1;
+  for (int s= n[1]; s--;)
+   if (mate[1][s] == -1) blg[1][que[t++]= s]= 0;
+  for (int i= 0; i < t; ++i)
+   for (int v= que[i], j= pos[1][v], u, w; j < pos[1][v + 1]; ++j)
+    if (blg[0][u= g[1][j]] == -3)
+     if (w= mate[0][u], blg[0][u]= 0; w != -1 && blg[1][w] == -3) blg[1][que[t++]= w]= 0;
   pre.assign(pos[0].begin(), pos[0].begin() + n[0]), t= 0;
   for (int s= n[0], v; s--;)
    if (blg[0][s] == -3)

@@ -55,7 +55,7 @@ public:
  inline size_t right_size() const { return rmate.size(); }
  inline int l_to_r(int l) const { return lmate[l]; }
  inline int r_to_l(int r) const { return rmate[r]; }
- std::vector<std::array<int, 2>> edges() const { return es; }
+ const std::vector<std::array<int, 2>> &edges() const { return es; }
  std::vector<std::array<int, 2>> max_matching() const {
   std::vector<std::array<int, 2>> ret;
   for (int l= 0, n= lmate.size(); l < n; ++l)

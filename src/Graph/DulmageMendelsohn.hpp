@@ -54,7 +54,7 @@ public:
       if (int u= g[1][j], w= mate[0][u]; blg[1][w] == -3) que[e++]= w, blg[0][u]= blg[1][w]= k;
   ++k;
   for (int b= 2, s; b--;) {
-   for (pos[b].assign(k + 1, 0), s= n[b]; s--; ++pos[b][blg[b][s]])
+   for (pos[b].assign(k + 2, 0), s= n[b]; s--; ++pos[b][blg[b][s]])
     if (blg[b][s] == -1) blg[b][s]= k;
    for (std::partial_sum(pos[b].begin(), pos[b].end(), pos[b].begin()), s= n[b]; s--;) mate[b][--pos[b][blg[b][s]]]= s;
   }

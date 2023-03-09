@@ -18,7 +18,7 @@ signed main() {
  int k= dm.component_num();
  for (int i= 0; i < L; ++i) {
   int l= dm.left_belong(S[i]), r= dm.right_belong(T[i]);
-  cout << (l != r || l == 0 || r == k || dm.left_block(l).size() >= 2 ? "Yes" : "No") << '\n';
+  cout << (l != r || l == 0 || r == k - 1 || dm.left_block(l).size() >= 2 ? "Yes" : "No") << '\n';
  }
  return 0;
 }

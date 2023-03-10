@@ -18,3 +18,7 @@ documentation_of: ./BipartiteMatching.hpp
 | `r_to_l(r)`                     | 右側の頂点 r のマッチング相手(左側の頂点)を返す. いないなら -1        |
 | `used_as_vertex_cover_left(l)`  | (最小頂点被覆を一つ構成して) 左側の頂点 l を点被覆に使用するかの bool |                                     |
 | `used_as_vertex_cover_right(r)` | (最小頂点被覆を一つ構成して) 右側の頂点 r を点被覆に使用するかの bool |                                     |
+
+
+## 問題例
+[HackerRank Drawing Rectangles](https://www.hackerrank.com/contests/university-codesprint-4/challenges/drawing-rectangles) (最小頂点被覆)

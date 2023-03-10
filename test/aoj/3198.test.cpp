@@ -1,4 +1,5 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3198"
+// eraseのverify
 #include <iostream>
 #include <set>
 #include <array>

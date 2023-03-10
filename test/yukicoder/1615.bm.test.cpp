@@ -18,7 +18,7 @@ signed main() {
   bm.build();
   long long d= a - a / 2;
   ans+= d * bm.max_matching().size();
-  for (int i= L; i--;) Z[i]-= d * bm.used_as_vertex_cover_left(X[i]) + bm.used_as_vertex_cover_right(Y[i]);
+  for (int i= L; i--;) Z[i]-= d * (bm.used_as_vertex_cover_left(X[i]) + bm.used_as_vertex_cover_right(Y[i]));
  }
  cout << ans << '\n';
  return 0;

@@ -5,7 +5,7 @@
 #include <cassert>
 class BipartiteMatching {
  std::vector<std::array<int, 2>> es;
- std::vector<int> lmate, rmate;
+ std::vector<int> lmate, rmate, rt;
 public:
  BipartiteMatching() {}
  BipartiteMatching(int L, int R): lmate(L, -1), rmate(R, -1) {}
@@ -16,7 +16,7 @@ public:
  }
  template <bool lex= false> void build() {
   const int n= lmate.size();
-  std::vector<int> g(es.size()), pos(n + 1), rt, pre, que(n);
+  std::vector<int> g(es.size()), pos(n + 1), pre, que(n);
   if constexpr (lex) std::sort(es.rbegin(), es.rend());
   for (auto [l, r]: es) ++pos[l];
   for (int i= 0; i < n; ++i) pos[i + 1]+= pos[i];
@@ -37,7 +37,7 @@ public:
      }
   }
   if constexpr (lex) {
-   rt.assign(n, 1);
+   std::vector<char> alive(n, 1);
    for (int v= 0, l, r; v < n; ++v)
     if (int u= lmate[v]; u != -1) {
      for (pre.assign(n, lmate[v]= rmate[u]= -1), pre[l= v]= -2, que.assign(pos.begin(), pos.begin() + n);;) {
@@ -45,9 +45,9 @@ public:
       else if (r= g[que[l]++], u= rmate[r]; u == -1) {
        for (; r != -1; l= pre[l]) rmate[r]= l, std::swap(lmate[l], r);
        break;
-      } else if (rt[u] && pre[u] == -1) pre[u]= l, l= u;
+      } else if (alive[u] && pre[u] == -1) pre[u]= l, l= u;
      }
-     rt[v]= 0;
+     alive[v]= 0;
     }
   }
  }
@@ -55,11 +55,13 @@ public:
  inline size_t right_size() const { return rmate.size(); }
  inline int l_to_r(int l) const { return lmate[l]; }
  inline int r_to_l(int r) const { return rmate[r]; }
- const std::vector<std::array<int, 2>> &edges() const { return es; }
+ std::vector<std::array<int, 2>> edges() const { return es; }
  std::vector<std::array<int, 2>> max_matching() const {
   std::vector<std::array<int, 2>> ret;
   for (int l= 0, n= lmate.size(); l < n; ++l)
    if (int r= lmate[l]; r != -1) ret.push_back({l, r});
   return ret;
  }
+ bool used_as_vertex_cover_left(int l) const { return rt[l] == -1; }
+ bool used_as_vertex_cover_right(int r) const { return r= rmate[r], r != -1 && rt[r] != -1; }
 };

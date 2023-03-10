@@ -25,4 +25,5 @@ bool にキャストできて、valid (具体的には $l\le r$) ならtrueを�
 
 ## 問題例
 [HHKB プログラミングコンテスト 2020 C - Neq Min](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_c) \
-[AtCoder Regular Contest 039 C - 幼稚園児高橋君](https://atcoder.jp/contests/arc039/tasks/arc039_c)
+[AtCoder Regular Contest 039 C - 幼稚園児高橋君](https://atcoder.jp/contests/arc039/tasks/arc039_c) \
+[HackerRank Drawing Rectangles](https://www.hackerrank.com/contests/university-codesprint-4/challenges/drawing-rectangles)

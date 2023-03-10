@@ -2,6 +2,7 @@
 #include <iostream>
 #include <set>
 #include <iterator>
+#include <limits>
 #include <cassert>
 template <class Int, bool merge= true> class RangeSet {
  struct ClosedSection {

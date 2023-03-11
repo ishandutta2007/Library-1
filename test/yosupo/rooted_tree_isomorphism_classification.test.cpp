@@ -1,9 +1,9 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/rooted_tree_isomorphism_classification"
 #include <iostream>
-#include <random>
 #include "src/Misc/compress.hpp"
 #include "src/Math/ModInt.hpp"
 #include "src/Graph/rerooting.hpp"
+#include "src/Misc/rng.hpp"
 #include "src/Math/CartesianProduct.hpp"
 using namespace std;
 signed main() {
@@ -22,11 +22,7 @@ signed main() {
  using K= CartesianProduct<Mint, Mint>;
  using Data= pair<int, K>;
  vector<K> hash(N);
- auto randint= [&]() {
-  static random_device rng;
-  return uniform_int_distribution<long long>(1, Mint::mod() - 1)(rng);
- };
- for (auto& x: hash) x= {randint(), randint()};
+ for (auto& x: hash) x= {rng(2, Mint::mod() - 1), rng(2, Mint::mod() - 1)};
  auto f_ee= [&](const Data& l, const Data& r) { return Data{max(l.first, r.first), l.second * r.second}; };
  auto f_ve= [&](const Data& d, int, auto) { return Data{d.first, d.second + hash[d.first]}; };
  auto f_ev= [&](const Data& d, int) { return Data{d.first + 1, d.second}; };

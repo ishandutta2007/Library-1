@@ -1,5 +1,5 @@
 ---
-title: 疎行列行列の最小多項式
+title: 行列の最小多項式
 documentation_of: ./MinimalPolynomial.hpp
 ---
 ## 計算量

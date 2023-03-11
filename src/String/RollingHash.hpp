@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <random>
 #include <string>
 template <class K> class RollingHash {
  static inline std::vector<K> pw;
@@ -38,7 +37,3 @@ public:
  }
  SubString sub(int l, int r) const { return SubString{this, l, r}; }
 };
-std::uint64_t get_rand(std::uint64_t l, std::uint64_t r) {
- static std::mt19937_64 gen(std::random_device{}());
- return std::uniform_int_distribution<std::uint64_t>(l, r)(gen);
-}

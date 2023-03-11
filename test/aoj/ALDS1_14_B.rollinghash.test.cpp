@@ -3,6 +3,7 @@
 #include <string>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/CartesianProduct.hpp"
+#include "src/Misc/rng.hpp"
 #include "src/String/RollingHash.hpp"
 using namespace std;
 signed main() {
@@ -11,7 +12,7 @@ signed main() {
  using Mint= ModInt<(1ll << 61) - 1>;
  using K= CartesianProduct<Mint, Mint>;
  using RH= RollingHash<K>;
- K base= {get_rand(2, (1ll << 61) - 2), get_rand(2, (1ll << 61) - 2)};
+ K base= {rng(2, (1ll << 61) - 2), rng(2, (1ll << 61) - 2)};
  RH::set_base(base);
  string T, P;
  cin >> T >> P;

@@ -34,7 +34,7 @@ int main() {
   if (t == 'x') {
    int i;
    cin >> i;
-   Mat X;
+   Mat X(2, 2);
    cin >> X[0][0] >> X[0][1] >> X[1][0] >> X[1][1];
    lct.set(i + n, X);
   } else {

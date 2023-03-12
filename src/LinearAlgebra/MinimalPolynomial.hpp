@@ -3,6 +3,7 @@
 #include "src/Math/berlekamp_massey.hpp"
 #include "src/LinearAlgebra/Vector.hpp"
 #include "src/Math/ModInt.hpp"
+#include "src/Misc/rng.hpp"
 // c s.t. (c[d] * M^d + c[d-1] * M^(d-1)  + ... + c[1] * M + c[0]) * b = 0
 template <class mod_t, template <class> class Mat> class MinimalPolynomial {
  std::vector<mod_t> poly, rev;

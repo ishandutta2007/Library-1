@@ -10,7 +10,7 @@ signed main() {
  using R= MinMaxRig<int>;
  int N, T, L;
  cin >> N >> T >> L;
- SquareMatrix<R, 100> A;
+ Matrix<R> A(N, N);
  for (int t= 1; t <= T; t++) {
   int u, v;
   cin >> u >> v, u--, v--;

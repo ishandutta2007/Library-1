@@ -7,10 +7,9 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  using Rig= BitwiseOrAndRig<bool>;
- using Mat= SquareMatrix<Rig, 100>;
- Mat A= Mat::O();
  long long N, M, T;
  cin >> N >> M >> T;
+ Matrix<Rig> A(N, N);
  while (M--) {
   int a, b;
   cin >> a >> b;

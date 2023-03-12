@@ -1,7 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/inverse_matrix"
 #include <iostream>
-#include <vector>
-#include "src/LinearAlgebra/LUDecomposition.hpp"
+#include "src/LinearAlgebra/LU_Decomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 signed main() {
@@ -10,18 +9,14 @@ signed main() {
  using Mint= ModInt<998244353>;
  int N;
  cin >> N;
- vector A(N, vector<Mint>(N));
+ Matrix<Mint> A(N, N);
  for (int i= 0; i < N; i++)
   for (int j= 0; j < N; j++) cin >> A[i][j];
- LUDecomposition lu(A);
+ LU_Decomposition lu(A);
  auto ans= lu.inverse_matrix();
- if (ans.empty()) {
-  cout << "-1" << '\n';
-  return 0;
- }
- for (int i= 0; i < N; i++) {
-  for (int j= 0; j < N; j++) cout << (j ? " " : "") << ans[i][j];
-  cout << '\n';
- }
+ if (!ans) cout << -1 << '\n';
+ else
+  for (int i= 0; i < N; i++)
+   for (int j= 0; j < N; j++) cout << ans[i][j] << " \n"[j == N - 1];
  return 0;
 }

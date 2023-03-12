@@ -1,7 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/system_of_linear_equations"
 #include <iostream>
-#include <vector>
-#include "src/LinearAlgebra/LUDecomposition.hpp"
+#include "src/LinearAlgebra/LU_Decomposition.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 signed main() {
@@ -10,28 +9,20 @@ signed main() {
  using Mint= ModInt<998244353>;
  int N, M;
  cin >> N >> M;
- vector<vector<Mint>> A(N, vector<Mint>(M));
- vector<Mint> b(N);
+ Matrix<Mint> A(N, M);
+ Vector<Mint> b(N);
  for (int i= 0; i < N; i++)
   for (int j= 0; j < M; j++) cin >> A[i][j];
  for (int i= 0; i < N; i++) cin >> b[i];
- LUDecomposition lu(A);
+ LU_Decomposition lu(A);
  auto res= lu.linear_equations(b);
- if (res.empty()) {
-  cout << "-1" << '\n';
-  return 0;
- }
- auto ker= lu.kernel();
- cout << ker.size() << "\n";
- for (int j= 0; j < M; j++) {
-  cout << (j ? " " : "") << res[j];
- }
- cout << '\n';
- for (int i= 0; i < ker.size(); i++) {
-  for (int j= 0; j < M; j++) {
-   cout << (j ? " " : "") << ker[i][j];
-  }
-  cout << '\n';
+ if (!res.size()) cout << -1 << '\n';
+ else {
+  auto ker= lu.kernel();
+  cout << ker.size() << '\n';
+  for (int j= 0; j < M; ++j) cout << res[j] << " \n"[j == M - 1];
+  for (const auto &v: ker)
+   for (int j= 0; j < M; ++j) cout << v[j] << " \n"[j == M - 1];
  }
  return 0;
 }

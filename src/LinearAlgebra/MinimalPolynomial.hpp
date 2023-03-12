@@ -1,20 +1,20 @@
 #pragma once
 #include <bits/stdc++.h>
 #include "src/Math/berlekamp_massey.hpp"
+#include "src/LinearAlgebra/Vector.hpp"
+#include "src/Math/ModInt.hpp"
 // c s.t. (c[d] * M^d + c[d-1] * M^(d-1)  + ... + c[1] * M + c[0]) * b = 0
-template <class Mat, class Vec> class MinimalPolynomial {
- using mod_t= std::remove_reference_t<decltype((Vec{1})[0])>;
- static const inline mod_t ZERO= 0;
+template <class mod_t, template <class> class Mat> class MinimalPolynomial {
  std::vector<mod_t> poly, rev;
- std::vector<Vec> bs;
- std::size_t dg, n;
+ size_t dg, n;
+ std::vector<Vector<mod_t>> bs;
  static inline int deg(const std::vector<mod_t> &p) {
   for (int d= p.size() - 1;; d--)
-   if (d < 0 || p[d] != ZERO) return d;
+   if (d < 0 || p[d] != mod_t()) return d;
  }
- static inline std::vector<mod_t> bostan_mori_msb(const std::vector<mod_t> &q, std::uint64_t k) {
+ static inline std::vector<mod_t> bostan_mori_msb(const std::vector<mod_t> &q, uint64_t k) {
   int d= deg(q);
-  assert(d >= 0), assert(q[0] != ZERO);
+  assert(d >= 0), assert(q[0] != mod_t());
   std::vector<mod_t> ret(std::max(d, 1));
   if (k == 0) return ret.back()= mod_t(1), ret;
   std::vector<mod_t> v(d + 1);
@@ -29,7 +29,7 @@ template <class Mat, class Vec> class MinimalPolynomial {
    for (int j= 1; j <= d; j+= 2) ret[i - d]-= q[j] * w[(i - j) >> 1];
   return ret;
  }
- std::vector<mod_t> x_pow_mod(std::uint64_t k) const {
+ std::vector<mod_t> x_pow_mod(uint64_t k) const {
   assert(k >= n);
   std::vector<mod_t> ret(n), u= bostan_mori_msb(rev, k - n + dg);
   for (int i= dg; i--;)
@@ -37,38 +37,40 @@ template <class Mat, class Vec> class MinimalPolynomial {
   return ret;
  }
 public:
- MinimalPolynomial(const Mat &M, Vec b): n(M.size()) {
-  std::size_t i, j;
-  assert(n == b.size());
-  std::vector<mod_t> a(n), v;
-  for (auto &x: a) x= get_rand(1, mod_t::mod() - 1);
-  mod_t tmp;
-  for (i= (n + 1) << 1; i--; v.push_back(tmp)) {
-   if (i > n) bs.emplace_back(b);
-   for (tmp= 0, j= n; j--;) tmp+= a[j] * b[j];
-   if (i) b= M * b;
+ MinimalPolynomial(const Mat<mod_t> &M, Vector<mod_t> b): n(M.width()), bs(n) {
+  static_assert(is_modint_v<mod_t>);
+  assert(n == b.size()), assert(n == M.height());
+  Vector<mod_t> a(n);
+  for (auto &x: a) x= rng(1, mod_t::mod() - 1);
+  std::vector<mod_t> v((n + 1) << 1);
+  for (size_t i= v.size(), j= 0;; b= M * b) {
+   if (j < n) bs[j]= b;
+   if (v[j++]= (a * b).sum(); !(--i)) break;
   }
   rev= berlekamp_massey(v);
   for (auto &x: rev) x= -x;
-  rev.insert(rev.begin(), 1), poly= rev;
-  rev.erase(rev.begin() + (dg= deg(rev)) + 1, rev.end());
-  std::reverse(poly.begin(), poly.end());
+  rev.insert(rev.begin(), 1), poly.assign(rev.rbegin(), rev.rend()), rev.erase(rev.begin() + (dg= deg(rev)) + 1, rev.end());
  }
- static std::uint64_t get_rand(std::uint64_t l, std::uint64_t r) {
-  static std::mt19937_64 gen(std::random_device{}());
-  return std::uniform_int_distribution<std::uint64_t>(l, r)(gen);
- }
- Vec pow(std::uint64_t k) const {  // M^k * b
+ Vector<mod_t> pow(uint64_t k) const {  // M^k * b
   if (k < n) return bs[k];
   auto r= x_pow_mod(k);
-  Vec ret= bs[0];
-  for (auto &x: ret) x*= r[0];
-  for (int i= 1, e= r.size(), j; i < e; i++)
-   for (j= n; j--;) ret[j]+= r[i] * bs[i][j];
+  Vector<mod_t> ret= r[0] * bs[0];
+  for (int i= r.size(); --i;) ret+= r[i] * bs[i];
   return ret;
  }
- const mod_t operator[](std::size_t k) const { return poly[k]; }
+ const mod_t &operator[](size_t k) const { return poly[k]; }
  const auto begin() const { return poly.begin(); }
  const auto end() const { return poly.end(); }
- const std::size_t size() const { return dg + 1; }
+ size_t degree() const { return dg; }
 };
+template <class mod_t, template <class> class Mat> mod_t det(const Mat<mod_t> &M) {
+ size_t n= M.height();
+ assert(n == M.width());
+ Vector<mod_t> b(n);
+ for (auto &x: b) x= rng(1, mod_t::mod() - 1);
+ DiagonalMatrix<mod_t> D(n);
+ for (auto &x: D) x= rng(1, mod_t::mod() - 1);
+ mod_t ret= MinimalPolynomial(M * D, b)[0];
+ if (n & 1) ret= -ret;
+ return ret / D.det();
+}

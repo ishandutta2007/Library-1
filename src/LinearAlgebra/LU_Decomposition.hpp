@@ -1,6 +1,7 @@
 #pragma once
 #include <type_traits>
 #include <numeric>
+#include <vector>
 #include "src/LinearAlgebra/Matrix.hpp"
 namespace la_internal {
 template <class K> class LU_Decomposition {

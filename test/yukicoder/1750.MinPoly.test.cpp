@@ -1,8 +1,8 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1750"
-// 疎行列の行列累乗
+// 最小多項式を用いた行列累乗
 #include <iostream>
 #include "src/Math/ModInt.hpp"
-#include "src/LinearAlgebra/SparseMatrix.hpp"
+#include "src/LinearAlgebra/Matrix.hpp"
 #include "src/LinearAlgebra/MinimalPolynomial.hpp"
 using namespace std;
 signed main() {
@@ -11,12 +11,11 @@ signed main() {
  using Mint= ModInt<998244353>;
  long long N, M, T;
  cin >> N >> M >> T;
- SparseMatrix<Mint> mat(N, N);
+ Matrix<Mint> mat(N, N);
  while (M--) {
   int s, t;
   cin >> s >> t;
-  mat.add_component(s, t, 1);
-  mat.add_component(t, s, 1);
+  mat[s][t]= mat[t][s]= 1;
  }
  Vector<Mint> vec(N);
  vec[0]= 1;

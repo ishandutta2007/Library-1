@@ -1,8 +1,9 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Spring/2397"
-// 行列累乗
+// 最小多項式を用いた行列累乗
 #include <iostream>
 #include <algorithm>
 #include "src/LinearAlgebra/Matrix.hpp"
+#include "src/LinearAlgebra/MinimalPolynomial.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 signed main() {
@@ -24,13 +25,13 @@ signed main() {
   b[0]= 1;
   long long y= 0;
   for (int i= 0; i < N; i++) {
-   b= A.pow(obst[i].first - y) * b;
+   b= MinimalPolynomial(A, b).pow(obst[i].first - y);
    int j= i;
    while (j < N && obst[i].first == obst[j].first) b[obst[j++].second]= 0;
    i= j - 1;
    y= obst[i].first;
   }
-  b= A.pow(H - 1 - y) * b;
+  b= MinimalPolynomial(A, b).pow(H - 1 - y);
   cout << "Case " << ++cnt << ": " << b[W - 1] << '\n';
  }
  return 0;

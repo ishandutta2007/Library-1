@@ -7,8 +7,8 @@
 using namespace std;
 
 using Mint= ModInt<int(1e9) + 7>;
-using Mat= SquareMatrix<Mint, 2>;
-constexpr Mat I= Mat::I();
+using Mat= Matrix<Mint>;
+const Mat I= Mat::identity_matrix(2);
 struct Monoid {
  using T= Mat;
  static T ti() { return I; }

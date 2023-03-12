@@ -3,14 +3,14 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/LinearAlgebra/LUDecomposition.hpp"
+#include "src/LinearAlgebra/LU_Decomposition.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int d;
  while (cin >> d && d) {
-  vector<vector<double>> m(d + 3, vector<double>(d + 1));
+  vector m(d + 3, vector<double>(d + 1));
   vector<double> v(d + 3);
   for (int i= 0; i < d + 3; i++) cin >> v[i];
   for (int i= 0; i < d + 3; i++)
@@ -18,16 +18,16 @@ signed main() {
   int ans= d + 2;
   for (int k= 0; k + 1 < d + 3; k++) {
    for (int l= k + 1; l < d + 3; l++) {
-    vector<vector<double>> A(d + 1, vector<double>(d + 1));
-    vector<double> b(d + 1);
+    Matrix<double> A(d + 1, d + 1);
+    Vector<double> b(d + 1);
     int ii= 0;
     for (int i= 0; i < d + 3; i++)
      if (i != k && i != l) {
       b[ii]= v[i];
-      A[ii]= m[i];
+      for (int j= i + 1; j--;) A[ii][j]= m[i][j];
       ii++;
      }
-    auto c= LUDecomposition(A).linear_equations(b);
+    auto c= LU_Decomposition(A).linear_equations(b);
     double u1= 0, u2= 0;
     for (int i= d; i >= 0; i--) {
      u1+= c[i] * m[k][i];

@@ -1,9 +1,9 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Spring/2397"
-
+// 疎行列の行列累乗
 #include <iostream>
-#include <vector>
-#include <utility>
-#include "src/LinearAlgebra/SparseSquareMatrix.hpp"
+#include <algorithm>
+#include "src/LinearAlgebra/SparseMatrix.hpp"
+#include "src/LinearAlgebra/MinimalPolynomial.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 signed main() {
@@ -15,13 +15,13 @@ signed main() {
   pair<long long, int> obst[N];
   for (long long i= 0, x, y; i < N; i++) cin >> x >> y, obst[i]= make_pair(y - 1, x - 1);
   sort(obst, obst + N);
-  SparseSquareMatrix<Mint> A(W);
+  SparseMatrix<Mint> A(W, W);
   for (int i= 0; i < W; i++) {
    A.add_component(i, i, 1);
    if (i) A.add_component(i, i - 1, 1);
    if (i + 1 < W) A.add_component(i, i + 1, 1);
   }
-  vector<Mint> b(W);
+  Vector<Mint> b(W);
   b[0]= 1;
   long long y= 0;
   for (int i= 0; i < N; i++) {

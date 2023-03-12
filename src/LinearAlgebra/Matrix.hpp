@@ -1,79 +1,141 @@
 #pragma once
-#include <array>
-#include <vector>
-#include <bitset>
-template <class R, int N, int M> struct Matrix: public std::array<std::array<R, M>, N> {
- static constexpr Matrix O() { return Matrix(); }
- Matrix &operator+=(const Matrix &r) {
-  for (int i= N; i--;)
-   for (int j= M; j--;) (*this)[i][j]+= r[i][j];
-  return *this;
+#include <cassert>
+#include "src/LinearAlgebra/Vector.hpp"
+namespace la_internal {
+template <class R> class Matrix {
+public:
+ size_t W;
+ std::valarray<R> dat;
+public:
+ static Matrix identity_matrix(int n) {
+  Matrix ret(n, n);
+  return ret.dat[std::slice(0, n, n + 1)]= R(true), ret;
  }
+ Matrix(): W(0) {}
+ Matrix(size_t h, size_t w, R v= R()): W(w), dat(v, h * w) {}
+ size_t width() const { return W; }
+ size_t height() const { return dat.size() / W; }
+ operator bool() const { return W; }
+ auto operator[](int i) { return std::next(std::begin(dat), i * W); }
+ auto operator[](int i) const { return std::next(std::cbegin(dat), i * W); }
+ Matrix &operator+=(const Matrix &r) { return assert(dat.size() == r.dat.size()), assert(W == r.W), dat+= r.dat, *this; }
  Matrix operator+(const Matrix &r) const { return Matrix(*this)+= r; }
- template <int L> Matrix<R, N, L> operator*(const Matrix<R, M, L> &r) const {
-  Matrix<R, N, L> ret;
-  for (int i= N; i--;)
-   for (int k= M; k--;)
-    for (int j= L; j--;) ret[i][j]+= (*this)[i][k] * r[k][j];
+ Matrix operator*(const Matrix &r) const {
+  const size_t h= height(), w= r.W, l= W;
+  assert(l == r.height());
+  Matrix ret(h, w);
+  auto a= std::cbegin(dat);
+  auto c= std::begin(ret.dat);
+  for (int i= h; i--; std::advance(c, w)) {
+   auto b= std::cbegin(r.dat);
+   for (int k= l; k--; ++a) {
+    auto d= c;
+    auto v= *a;
+    for (int j= w; j--; ++b, ++d) *d+= v * *b;
+   }
+  }
   return ret;
  }
- std::array<R, N> operator*(const std::array<R, M> &r) const {
-  std::array<R, N> ret;
-  for (int i= N; i--;)
-   for (int j= M; j--;) ret[i]+= (*this)[i][j] * r[j];
-  return ret;
- }
- std::vector<std::vector<R>> to_vec(int n, int m) const {
-  std::vector<std::vector<R>> ret(n, std::vector<R>(m));
-  for (int i= n; i--;)
-   for (int j= m; j--;) ret[i][j]= (*this)[i][j];
-  return ret;
- }
-};
-template <int N, int M> struct Matrix<bool, N, M>: public std::array<std::bitset<M>, N> {
- static constexpr Matrix O() { return Matrix(); }
- Matrix &operator+=(const Matrix &r) {
-  for (int i= N; i--;) (*this)[i]^= r[i];
+ Matrix &operator*=(const Matrix &r) { return *this= *this * r; }
+ Matrix &operator*=(const DiagonalMatrix<R> &r) {
+  assert(W == r.size());
+  const size_t h= height();
+  auto a= std::begin(dat);
+  for (int i= 0; i < h; ++i)
+   for (int j= 0; j < W; ++j, ++a) *a*= r[j];
   return *this;
  }
+ Matrix operator*(const DiagonalMatrix<R> &r) const { return Matrix(*this)*= r; }
+ friend Matrix operator*(const DiagonalMatrix<R> &l, Matrix r) {
+  const size_t h= r.height();
+  assert(h == l.size());
+  auto a= std::begin(r.dat);
+  for (int i= 0; i < h; ++i) {
+   auto v= l[i];
+   for (int j= 0; j < r.W; ++j, ++a) *a*= v;
+  }
+  return r;
+ }
+ Vector<R> operator*(const Vector<R> &r) const {
+  assert(W == r.size());
+  const size_t h= height();
+  Vector<R> ret(h);
+  auto a= std::cbegin(dat);
+  for (int i= 0; i < h; ++i)
+   for (int k= 0; k < W; ++k, ++a) ret[i]+= *a * r[k];
+  return ret;
+ }
+ Matrix pow(uint64_t k) const {
+  assert(W * W == dat.size());
+  for (auto ret= identity_matrix(W), b= *this;; b*= b)
+   if (k & 1 ? ret*= b, !(k>>= 1) : !(k>>= 1)) return ret;
+ }
+};
+template <> class Matrix<bool> {
+ size_t H, W, m;
+ std::valarray<u128> dat;
+ class Array {
+  u128 *bg;
+ public:
+  Array(u128 *it): bg(it) {}
+  u128 *data() const { return bg; }
+  Ref operator[](int i) {
+   u128 *ref= bg + (i >> 7);
+   u8 j= i & 127;
+   bool val= (*ref >> j) & 1;
+   return Ref{ref, j, val};
+  }
+  bool operator[](int i) const { return (bg[i >> 7] >> (i & 127)) & 1; }
+ };
+ class ConstArray {
+  const u128 *bg;
+ public:
+  ConstArray(const u128 *it): bg(it) {}
+  const u128 *data() const { return bg; }
+  bool operator[](int i) const { return (bg[i >> 7] >> (i & 127)) & 1; }
+ };
+public:
+ static Matrix identity_matrix(int n) {
+  Matrix ret(n, n);
+  for (; n--;) ret[n][n]= 1;
+  return ret;
+ }
+ Matrix(): H(0), W(0), m(0) {}
+ Matrix(size_t h, size_t w, bool b= 0): H(h), W(w), m((w + 127) >> 7), dat(-u128(b), h * m) {}
+ size_t width() const { return W; }
+ size_t height() const { return H; }
+ operator bool() const { return W; }
+ Array operator[](int i) { return {std::next(std::begin(dat), i * m)}; }
+ ConstArray operator[](int i) const { return {std::next(std::cbegin(dat), i * m)}; }
+ Matrix &operator+=(const Matrix &r) { return assert(H == r.H), assert(W == r.W), dat^= r.dat, *this; }
  Matrix operator+(const Matrix &r) const { return Matrix(*this)+= r; }
- template <int L> Matrix<bool, N, L> operator*(const Matrix<bool, M, L> &r) const {
-  Matrix<bool, L, M> t;
-  Matrix<bool, N, L> ret;
-  for (int i= M; i--;)
-   for (int j= L; j--;) t[j][i]= r[i][j];
-  for (int i= N; i--;)
-   for (int j= L; j--;) ret[i][j]= ((*this)[i] & t[j]).count() & 1;
+ Matrix operator*(const Matrix &r) const {
+  assert(W == r.H);
+  Matrix ret(H, r.W);
+  u128 *c= std::begin(ret.dat);
+  for (size_t i= 0; i < H; ++i, std::advance(c, m)) {
+   ConstArray a= this->operator[](i);
+   const u128 *b= std::cbegin(r.dat);
+   for (size_t k= 0; k < W; ++k, std::advance(b, r.m))
+    if (a[k])
+     for (size_t j= 0; j < r.m; ++j) c[j]^= b[j];
+  }
   return ret;
  }
- std::bitset<N> operator*(const std::bitset<N> &r) const {
-  std::bitset<N> ret;
-  for (int i= N; i--;) ret[i]= ((*this)[i] & r).count() & 1;
+ Matrix &operator*=(const Matrix &r) { return *this= *this * r; }
+ Vector<bool> operator*(const Vector<bool> &r) const {
+  assert(W == r.size());
+  Vector<bool> ret(H);
+  auto a= std::cbegin(dat);
+  for (size_t i= 0; i < H; ++i)
+   for (size_t j= 0; j < m; ++j, ++a) ret[i]^= *a & r[j];
   return ret;
  }
- std::vector<std::vector<bool>> to_vec(int n, int m) const {
-  std::vector<std::vector<bool>> ret(n, std::vector<bool>(m));
-  for (int i= n; i--;)
-   for (int j= m; j--;) ret[i][j]= (*this)[i][j];
-  return ret;
+ Matrix pow(uint64_t k) const {
+  assert(W == H);
+  for (auto ret= identity_matrix(W), b= *this;; b*= b)
+   if (k & 1 ? ret*= b, !(k>>= 1) : !(k>>= 1)) return ret;
  }
 };
-template <class R, int N> struct SquareMatrix: public Matrix<R, N, N> {
- using Matrix<R, N, N>::Matrix;
- SquareMatrix(Matrix<R, N, N> m) { *this= m; }
- static constexpr SquareMatrix I() {
-  SquareMatrix ret;
-  for (int i= N; i--;) ret[i][i]= R(true);
-  return ret;
- }
- SquareMatrix &operator=(const Matrix<R, N, N> &r) {
-  for (int i= N; i--;)
-   for (int j= N; j--;) (*this)[i][j]= r[i][j];
-  return *this;
- }
- SquareMatrix &operator*=(const SquareMatrix &r) { return *this= (*this) * r; }
- SquareMatrix pow(std::uint64_t e) const {
-  for (SquareMatrix ret= I(), b= *this;; b*= b)
-   if (e & 1 ? ret*= b, !(e>>= 1) : !(e>>= 1)) return ret;
- }
-};
+}
+using la_internal::Matrix;

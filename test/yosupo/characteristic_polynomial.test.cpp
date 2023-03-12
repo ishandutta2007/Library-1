@@ -1,9 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/characteristic_polynomial"
 #include <iostream>
-#include <vector>
 #include "src/LinearAlgebra/characteristic_polynomial.hpp"
 #include "src/Math/ModInt.hpp"
-
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,7 +9,7 @@ signed main() {
  using Mint= ModInt<998244353>;
  int N;
  cin >> N;
- vector a(N, vector<Mint>(N));
+ Matrix<Mint> a(N, N);
  for (int i= 0; i < N; i++)
   for (int j= 0; j < N; j++) cin >> a[i][j];
  auto p= characteristic_polynomial(a);

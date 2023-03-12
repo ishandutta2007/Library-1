@@ -14,7 +14,7 @@ public:
  Matrix(): W(0) {}
  Matrix(size_t h, size_t w, R v= R()): W(w), dat(v, h * w) {}
  size_t width() const { return W; }
- size_t height() const { return dat.size() / W; }
+ size_t height() const { return W ? dat.size() / W : 0; }
  operator bool() const { return W; }
  auto operator[](int i) { return std::next(std::begin(dat), i * W); }
  auto operator[](int i) const { return std::next(std::cbegin(dat), i * W); }
@@ -107,6 +107,7 @@ public:
  operator bool() const { return W; }
  Array operator[](int i) { return {std::next(std::begin(dat), i * m)}; }
  ConstArray operator[](int i) const { return {std::next(std::cbegin(dat), i * m)}; }
+ ConstArray get(int i) const { return {std::next(std::cbegin(dat), i * m)}; }
  Matrix &operator+=(const Matrix &r) { return assert(H == r.H), assert(W == r.W), dat^= r.dat, *this; }
  Matrix operator+(const Matrix &r) const { return Matrix(*this)+= r; }
  Matrix operator*(const Matrix &r) const {

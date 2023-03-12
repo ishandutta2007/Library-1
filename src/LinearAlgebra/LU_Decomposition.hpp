@@ -90,25 +90,27 @@ public:
   return ret;
  }
 };
-void add_upper(u128 *a, const u128 *b, size_t bg, size_t ed) {
+void add_upper(u128 *a, const u128 *b, size_t bg, size_t ed) {  //[bg,ed)
+ if (bg >= ed) return;
  size_t s= bg >> 7;
- a[s]^= b[s] & -(u128(1) << (bg & 127)), ed= (ed + 127) >> 7;
- for (size_t i= s + 1; i < ed; ++i) a[i]^= b[i];
+ a[s]^= b[s] & -(u128(1) << (bg & 127));
+ for (size_t i= (ed + 127) >> 7; --i > s;) a[i]^= b[i];
 }
-void add_lower(u128 *a, const u128 *b, size_t ed) {
+void add_lower(u128 *a, const u128 *b, size_t ed) {  //[0,ed)
  size_t s= ed >> 7;
  a[s]^= b[s] & ((u128(1) << (ed & 127)) - 1);
  for (size_t i= s; i--;) a[i]^= b[i];
 }
-void subst_lower(u128 *a, const u128 *b, size_t ed) {
+void subst_lower(u128 *a, const u128 *b, size_t ed) {  //[0,ed)
  size_t s= ed >> 7;
  a[s]= b[s] & ((u128(1) << (ed & 127)) - 1);
  for (size_t i= s; i--;) a[i]= b[i];
 }
-bool any1_upper(const u128 *a, size_t bg, size_t ed) {
+bool any1_upper(const u128 *a, size_t bg, size_t ed) {  //[bg,ed)
+ if (bg >= ed) return false;
  size_t s= bg >> 7;
  if (a[s] & -(u128(1) << (bg & 127))) return true;
- for (size_t i= (ed + 127) >> 7; i-- > s;)
+ for (size_t i= (ed + 127) >> 7; --i > s;)
   if (a[i]) return true;
  return false;
 }
@@ -122,25 +124,24 @@ public:
   std::iota(perm.begin(), perm.end(), 0), piv.resize(std::min(w, h));
   for (size_t c= 0, pos; c < w && psz < h; ++c) {
    for (pos= psz; pos < h; ++pos)
-    if (A[perm[pos]][c]) break;
+    if (A.get(perm[pos])[c]) break;
    if (pos == h) continue;
    if (pos != psz) std::swap(perm[pos], perm[psz]);
-   const auto b= A[perm[psz]];
+   auto b= A.get(perm[psz]);
    for (size_t r= psz + 1; r < h; ++r) {
     auto a= A[perm[r]];
-    bool m= a[c];
-    if (a[c]= 0, a[psz]= m; m) add_upper(a.data(), b.data(), c, w);
+    if (bool m= a[c]; m) add_upper(a.data(), b.data(), c, w), a[psz]= 1;
    }
    piv[psz++]= c;
   }
   for (size_t j= w; j--;)
-   for (size_t i= h; i--;) dat[j][i]= A[perm[i]][j];
+   for (size_t i= h; i--;) dat[j][i]= A.get(perm[i])[j];
  }
  size_t rank() const { return psz; }
  bool is_regular() const { return rank() == dat.height() && rank() == dat.width(); }
  bool det() const { return is_regular(); }
  std::vector<Vector<bool>> kernel() const {
-  const size_t w= dat.width(), n= rank();
+  const size_t w= dat.height(), n= rank();
   std::vector ker(w - rank(), Vector<bool>(w));
   for (size_t c= 0, i= 0; c < w; ++c) {
    if (i < n && piv[i] == c) ++i;
@@ -156,11 +157,11 @@ public:
   return ker;
  }
  Vector<bool> linear_equations(const Vector<bool> &b) const {
-  const size_t h= dat.height(), w= dat.width(), n= rank();
+  const size_t h= dat.width(), w= dat.height(), n= rank();
   assert(h == b.size());
   Vector<bool> y(h), x(w);
   for (size_t c= 0; c < h; ++c)
-   if (y[c]^= b[perm[c]]; c < w && y[c]) add_upper(y.data(), dat[c].data(), c, h);
+   if (y[c]^= b[perm[c]]; c < w && y[c]) add_upper(y.data(), dat[c].data(), c + 1, h);
   if (any1_upper(y.data(), n, h)) return Vector<bool>();  // no solution
   for (size_t i= n; i--;)
    if ((x[piv[i]]= y[i])) add_lower(y.data(), dat[piv[i]].data(), i);

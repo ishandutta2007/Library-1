@@ -50,7 +50,7 @@ public:
   for (size_t c= 0, i= 0; c < w; ++c) {
    if (i < n && piv[i] == c) ++i;
    else {
-    auto a= ker[c - i];
+    auto &a= ker[c - i];
     a[c]= 1;
     for (size_t r= i; r--;) a[r]= -dat[perm[r]][c];
     for (size_t j= i, k, r; j--;) {
@@ -147,7 +147,7 @@ public:
   for (size_t c= 0, i= 0; c < w; ++c) {
    if (i < n && piv[i] == c) ++i;
    else {
-    auto a= ker[c - i];
+    auto &a= ker[c - i];
     subst_lower(a.data(), dat[c].data(), i), a[c]= 1;
     for (size_t j= i, k; j--;) {
      bool x= a[j];

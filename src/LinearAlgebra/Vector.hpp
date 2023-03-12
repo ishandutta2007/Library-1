@@ -15,6 +15,7 @@ public:
  ~Ref() {
   if (val ^ ((*ref >> i) & 1)) *ref^= u128(1) << i;
  }
+ Ref &operator=(const Ref &r) { return val= r.val, *this; }
  Ref &operator=(bool b) { return val= b, *this; }
  Ref &operator|=(bool b) { return val|= b, *this; }
  Ref &operator&=(bool b) { return val&= b, *this; }

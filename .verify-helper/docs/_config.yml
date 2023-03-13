@@ -1,6 +1,2 @@
 title: Hashiryo's Library
 google_analytics: G-FZZ5Q2JYD7
-plugins:
-  - jekyll-remote-theme
-remote_theme: vaibhavvikas/jekyll-theme-minimalistic
-color-scheme: dark

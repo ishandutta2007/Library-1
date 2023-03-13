@@ -13,10 +13,7 @@ signed main() {
  int bsize= 0, wsize= 0;
  for (int i= 0; i < N; i++) {
   cin >> S[i];
-  for (int j= 0; j < M; j++) {
-   bsize+= S[i][j] == 'b';
-   wsize+= S[i][j] == 'w';
-  }
+  for (int j= 0; j < M; j++) bsize+= S[i][j] == 'b', wsize+= S[i][j] == 'w';
  }
  BipartiteMatching bm(N * M, N * M);
  for (int i= 0; i < N; i++) {

@@ -6,28 +6,27 @@
 #include <queue>
 #include <cassert>
 template <typename Matroid1, typename Matroid2> std::vector<int> matroid_intersection(int n, Matroid1 M1, Matroid2 M2) {
- std::vector<bool> b(n, false), useless(n);
- std::vector<int> I[2];
+ std::vector<int> b(n, false), pre(n), I[2];
  for (int e= 0; e < n; e++) I[0].push_back(e);
  M1.build(I[1]), M2.build(I[1]);
  for (bool converged= false; !converged;) {
-  useless.assign(n, false);
+  pre.assign(n, false);
   std::vector L(1, std::vector<int>());
   for (int u: I[0])
-   if (M1.oracle(u)) useless[u]= true, L[0].push_back(u);
+   if (M1.oracle(u)) pre[u]= true, L[0].push_back(u);
   int m= 0;
   for (; L.back().size(); m+= 2) {
    L.push_back({});
    for (int e: L[m]) {
     if (converged= M2.oracle(e)) break;
     for (int f: I[1])
-     if (!useless[f] && M2.oracle(f, e)) L[m + 1].push_back(f), useless[f]= true;
+     if (!pre[f] && M2.oracle(f, e)) L[m + 1].push_back(f), pre[f]= true;
    }
    if (converged) break;
    L.push_back({});
    for (int e: L[m + 1])
     for (int f: I[0])
-     if (!useless[f] && M1.oracle(e, f)) L[m + 2].push_back(f), useless[f]= true;
+     if (!pre[f] && M1.oracle(e, f)) L[m + 2].push_back(f), pre[f]= true;
   }
   if (!converged) break;
   std::vector<std::vector<int>> L2(m + 1);
@@ -47,23 +46,27 @@ template <typename Matroid1, typename Matroid2> std::vector<int> matroid_interse
       break;
      }
   }
-  auto dfs= [&](auto self, int e, int i) -> bool {
-   if (useless[e]= true; i == m) return M2.oracle(e) ? (b[e]= !b[e], true) : false;
-   for (int f: L2[i + 1])
-    if (!useless[f] && M2.oracle(f, e)) {
-     useless[f]= true;
-     for (int g: L2[i + 2])
-      if (!useless[g] && M1.oracle(f, g))
-       if (self(self, g, i + 2)) return b[e]= !b[e], b[f]= !b[f], true;
-    }
-   return false;
-  };
-  useless.assign(n, false);
+  pre.assign(n, -1);
   for (int e: L2[0])
-   if (M1.oracle(e) && dfs(dfs, e, 0)) {
-    converged= false, I[0].clear(), I[1].clear();
-    for (int u= 0; u < n; u++) I[b[u]].push_back(u);
-    M1.build(I[1]), M2.build(I[1]);
+   if (M1.oracle(e)) {
+    bool isok= false;
+    if (m) {
+     std::vector<size_t> ei(m);
+     for (int i= 0; e != -1;) {
+      if (ei[i] == L2[i + 1].size()) e= pre[e], ei[i--]= 0;
+      else if (int f= L2[i + 1][ei[i]++]; pre[f] == -1 && (i & 1 ? M1.oracle(e, f) : M2.oracle(f, e)))
+       if (pre[f]= e, e= f; ++i == m) {
+        if (M2.oracle(e))
+         for (isok= true; e != -1; e= pre[e]) b[e]= !b[e];
+        else e= pre[e], --i;
+       }
+     }
+    } else if (M2.oracle(e)) isok= true, b[e]= 1;
+    if (isok) {
+     converged= false, I[0].clear(), I[1].clear();
+     for (int u= 0; u < n; u++) I[b[u]].push_back(u);
+     M1.build(I[1]), M2.build(I[1]);
+    }
    }
  }
  return I[1];
@@ -114,35 +117,36 @@ template <std::int_least8_t sgn, class Matroid1, class Matroid2, class cost_t> s
  return ret;
 }
 class GraphicMatroid {
- int n, t;
- std::vector<std::array<int, 2>> edges;
- std::vector<std::vector<int>> g;
- std::vector<int> comp, in, out;
- void dfs(int u) {
-  in[u]= t++;
-  for (auto v: g[u])
-   if (in[v] == -1) comp[v]= comp[u], dfs(v);
-  out[u]= t;
- }
+ int n;
+ std::vector<std::array<int, 2>> es;
+ std::vector<int> g, pos, comp, in, out;
  inline bool is_ancestor(int u, int v) const { return in[u] <= in[v] && in[v] < out[u]; }
 public:
- GraphicMatroid(int n_): n(n_), g(n), comp(n), in(n), out(n) {}
- void add_edge(int u, int v) { edges.emplace_back(std::array{u, v}); }
+ GraphicMatroid(int n_): n(n_), comp(n), in(n), out(n) {}
+ void add_edge(int u, int v) { es.push_back({u, v}); }
  void build(const std::vector<int> &I) {
-  t= 0;
-  for (int u= 0; u < n; u++) g[u].clear(), in[u]= -1;
+  in.assign(n, -1), g.resize(I.size() * 2), pos.assign(n + 1, 0);
   for (int e: I) {
-   int u= edges[e][0], v= edges[e][1];
-   g[u].push_back(v), g[v].push_back(u);
+   auto [u, v]= es[e];
+   ++pos[u], ++pos[v];
   }
-  for (int u= 0; u < n; u++)
-   if (in[u] == -1) comp[u]= u, dfs(u);
+  for (int i= 0; i < n; ++i) pos[i + 1]+= pos[i];
+  for (int e: I) {
+   auto [u, v]= es[e];
+   g[--pos[u]]= v, g[--pos[v]]= u;
+  }
+  std::vector<int> ei(pos.begin(), pos.begin() + n), pre(n, -1);
+  for (int u= 0, t= 0, p; u < n; u++)
+   if (in[u] == -1)
+    for (in [comp[u]= p= u]= t++; p >= 0;) {
+     if (ei[p] == pos[p + 1]) out[p]= t, p= pre[p];
+     else if (int v= g[ei[p]++]; in[v] == -1) comp[v]= comp[u], pre[v]= p, in[p= v]= t++;
+    }
  }
- inline bool oracle(int e) const { return comp[edges[e][0]] != comp[edges[e][1]]; }
+ inline bool oracle(int e) const { return comp[es[e][0]] != comp[es[e][1]]; }
  inline bool oracle(int e, int f) const {
   if (oracle(f)) return true;
-  int u= edges[e][in[edges[e][0]] < in[edges[e][1]]];
-  return is_ancestor(u, edges[f][0]) != is_ancestor(u, edges[f][1]);
+  return e= es[e][in[es[e][0]] < in[es[e][1]]], is_ancestor(e, es[f][0]) != is_ancestor(e, es[f][1]);
  }
 };
 struct PartitionMatroid {

@@ -1,7 +1,7 @@
 #define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3032"
 #include <iostream>
 #include <algorithm>
-#include "src/Optimization/Matching.hpp"
+#include "src/Graph/Matching.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,6 +18,7 @@ signed main() {
    if (tmp <= A || (B <= tmp && tmp <= 2 * A)) graph.add_edge(i, j);
   }
  }
- cout << graph.get_matching().first << '\n';
+ graph.build();
+ cout << graph.max_matching().size() << '\n';
  return 0;
 }

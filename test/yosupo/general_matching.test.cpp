@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/general_matching"
 #include <iostream>
-#include "src/Optimization/Matching.hpp"
+#include "src/Graph/Matching.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,9 +13,9 @@ signed main() {
   cin >> u >> v;
   graph.add_edge(u, v);
  }
- auto ans= graph.get_matching();
- cout << ans.first << endl;
+ graph.build();
+ cout << graph.max_matching().size() << endl;
  for (int i= 0; i < N; i++)
-  if (i < ans.second[i]) cout << i << " " << ans.second[i] << endl;
+  if (int j= i; i < j) cout << i << " " << j << '\n';
  return 0;
 }

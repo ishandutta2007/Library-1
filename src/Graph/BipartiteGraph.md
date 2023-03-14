@@ -2,7 +2,7 @@
 title: (暗黙的な)二部グラフ
 documentation_of: ./BipartiteGraph.hpp
 ---
-明示的に二部グラフを表現しない \
+明示的に二部グラフを与えない \
 内部で頂点の色分けを自動で行う \
 色0が左、色1が右を意味する
 
@@ -24,4 +24,5 @@ documentation_of: ./BipartiteGraph.hpp
 
 
 ## 問題例
+[Chokudai SpeedRun 002 K - 種類数 β](https://atcoder.jp/contests/chokudai_S002/tasks/chokudai_S002_k) (頂点:2e5+4e5, 辺:4e5) \
 [東京大学プログラミングコンテスト2013 K - 辞書順最小頂点被覆](https://atcoder.jp/contests/utpc2013/tasks/utpc2013_11) (辞書順最小頂点被覆のverify)

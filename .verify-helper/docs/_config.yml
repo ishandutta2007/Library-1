@@ -1,6 +1,2 @@
 title: Hashiryo's Library
 google_analytics: G-FZZ5Q2JYD7
-plugins:
-  - jemoji
-  - remote_theme
-remote_theme: "mmistakes/minimal-mistakes"

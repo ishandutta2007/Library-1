@@ -1,5 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/421"
 // 2部マッチング(分割+分割) (2500+2500 頂点)
+// |台集合|<=5000
+// |共通独立集合|<=2500
 #include <iostream>
 #include <vector>
 #include <string>

@@ -1,6 +1,7 @@
 .clang-format
 .vscode
 .DS_Store
+test/aoj/2429*.test.cpp
 test/atcoder/arc066_*.test.cpp
 test/atcoder/arc070_*.test.cpp
 test/atcoder/arc080_*.test.cpp

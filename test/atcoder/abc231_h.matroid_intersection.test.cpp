@@ -1,4 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/abc231/tasks/abc231_h"
+// 重み付き
 // (分割 + 分割)
 #include <iostream>
 #include <vector>

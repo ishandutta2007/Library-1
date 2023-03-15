@@ -14,8 +14,8 @@ signed main() {
   graph.add_edge(u, v);
  }
  graph.build();
- cout << graph.max_matching().size() << endl;
+ cout << graph.max_matching().size() << '\n';
  for (int i= 0; i < N; i++)
-  if (int j= i; i < j) cout << i << " " << j << '\n';
+  if (int j= graph.match(i); i < j) cout << i << " " << j << '\n';
  return 0;
 }

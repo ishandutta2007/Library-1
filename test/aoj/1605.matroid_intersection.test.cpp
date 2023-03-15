@@ -1,4 +1,5 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1605"
+// 重み付き
 // (グラフ+分割)
 #include <iostream>
 #include <vector>

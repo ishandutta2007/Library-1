@@ -4,7 +4,7 @@
 #include <numeric>
 #include <cmath>
 #include <cassert>
-template <typename flow_t, typename cost_t, std::int_least8_t obj= 1> class NetworkSimplex {
+template <typename flow_t, typename cost_t, int_least8_t obj= 1> class NetworkSimplex {
  struct Node {
   int par, pred;
   flow_t sup;
@@ -14,7 +14,7 @@ template <typename flow_t, typename cost_t, std::int_least8_t obj= 1> class Netw
   int u, v;
   flow_t low, up, flow;
   cost_t cost;
-  std::int_least8_t state= 1;
+  int_least8_t state= 1;
  };
  int n, m= 0;
  std::vector<Node> ns;
@@ -136,5 +136,5 @@ public:
  }
 };
 
-template <template <class, class, std::int_least8_t> class FlowAlgo, typename flow_t, typename cost_t> using MinCostFlow= FlowAlgo<flow_t, cost_t, 1>;
-template <template <class, class, std::int_least8_t> class FlowAlgo, typename flow_t, typename cost_t> using MaxGainFlow= FlowAlgo<flow_t, cost_t, -1>;
+template <template <class, class, int_least8_t> class FlowAlgo, typename flow_t, typename cost_t> using MinCostFlow= FlowAlgo<flow_t, cost_t, 1>;
+template <template <class, class, int_least8_t> class FlowAlgo, typename flow_t, typename cost_t> using MaxGainFlow= FlowAlgo<flow_t, cost_t, -1>;

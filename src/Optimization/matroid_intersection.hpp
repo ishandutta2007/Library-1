@@ -123,7 +123,7 @@ class GraphicMatroid {
  inline bool is_ancestor(int u, int v) const { return in[u] <= in[v] && in[v] < out[u]; }
 public:
  GraphicMatroid(int n_): n(n_), comp(n), in(n), out(n) {}
- void add_edge(int u, int v) { es.push_back({u, v}); }
+ int add_edge(int u, int v) { return es.push_back({u, v}), es.size() - 1; }
  void build(const std::vector<int> &I) {
   in.assign(n, -1), g.resize(I.size() * 2), pos.assign(n + 1, 0);
   for (int e: I) {

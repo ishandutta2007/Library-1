@@ -11,7 +11,7 @@ signed main() {
  cin >> N >> M >> K;
  Matrix<Mint> A(N, M), B(M, K);
  for (int i= 0; i < N; ++i)
-  for (int j= 0; j < M; +j) cin >> A[i][j];
+  for (int j= 0; j < M; ++j) cin >> A[i][j];
  for (int i= 0; i < M; ++i)
   for (int j= 0; j < K; ++j) cin >> B[i][j];
  auto C= A * B;

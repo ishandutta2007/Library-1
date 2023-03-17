@@ -8,7 +8,6 @@
 #include <string>
 #include "src/Optimization/matroid_intersection.hpp"
 using namespace std;
-namespace yukicoder421 {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
@@ -38,5 +37,4 @@ signed main() {
  int ans= 100 * x + 10 * (bsize - x) + wsize - bsize;
  cout << ans << '\n';
  return 0;
-}
 }

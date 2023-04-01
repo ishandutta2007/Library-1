@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/discrete_logarithm_mod"
+#define PROBLEM "https://yukicoder.me/problems/no/1339"
 #include <iostream>
 #include "src/Math/ModInt_Runtime.hpp"
 #include "src/Math/DiscreteLogarithm.hpp"
@@ -13,10 +13,12 @@ signed main() {
  int T;
  cin >> T;
  while (T--) {
-  int X, Y, M;
-  cin >> X >> Y >> M;
-  Mint::set_mod(M);
-  cout << log(X, 1, Y) << '\n';
+  int N;
+  cin >> N;
+  while (N % 2 == 0) N/= 2;
+  while (N % 5 == 0) N/= 5;
+  Mint::set_mod(N);
+  cout << log(10, 10, 1) + 1 << '\n';
  }
  return 0;
 }

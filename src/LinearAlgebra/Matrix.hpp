@@ -18,6 +18,8 @@ public:
  operator bool() const { return W; }
  auto operator[](int i) { return std::next(std::begin(dat), i * W); }
  auto operator[](int i) const { return std::next(std::cbegin(dat), i * W); }
+ bool operator==(const Matrix &r) const { return W == r.W && dat.size() == r.dat.size() && (dat == r.dat).min(); }
+ bool operator!=(const Matrix &r) const { return W != r.W || dat.size() != r.dat.size() || (dat != r.dat).max(); }
  Matrix &operator+=(const Matrix &r) { return assert(dat.size() == r.dat.size()), assert(W == r.W), dat+= r.dat, *this; }
  Matrix operator+(const Matrix &r) const { return Matrix(*this)+= r; }
  Matrix operator*(const Matrix &r) const {
@@ -101,13 +103,15 @@ public:
   return ret;
  }
  Matrix(): H(0), W(0), m(0) {}
- Matrix(size_t h, size_t w, bool b= 0): H(h), W(w), m((w + 127) >> 7), dat(-u128(b), h * m) {}
+ Matrix(size_t h, size_t w): H(h), W(w), m((w + 127) >> 7), dat(u128(0), h * m) {}
  size_t width() const { return W; }
  size_t height() const { return H; }
  operator bool() const { return W; }
  Array operator[](int i) { return {std::next(std::begin(dat), i * m)}; }
  ConstArray operator[](int i) const { return {std::next(std::cbegin(dat), i * m)}; }
  ConstArray get(int i) const { return {std::next(std::cbegin(dat), i * m)}; }
+ bool operator==(const Matrix &r) const { return W == r.W && H == r.H && (dat == r.dat).min(); }
+ bool operator!=(const Matrix &r) const { return W != r.W || H != r.H || (dat != r.dat).max(); }
  Matrix &operator+=(const Matrix &r) { return assert(H == r.H), assert(W == r.W), dat^= r.dat, *this; }
  Matrix operator+(const Matrix &r) const { return Matrix(*this)+= r; }
  Matrix operator*(const Matrix &r) const {

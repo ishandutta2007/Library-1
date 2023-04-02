@@ -17,18 +17,25 @@ signed main() {
   for (int j= 0; j < 2; ++j) cin >> A[i][j];
  for (int i= 0; i < 2; ++i)
   for (int j= 0; j < 2; ++j) cin >> B[i][j];
+ auto g= [](Mat a, Mat b) { return a * b; };
+ DiscreteLogarithm log1(
+     g, g, [](Mat x) { return x[0][0].val(); }, 2ll * p + 1);
+ Mint detA= A[0][0] * A[1][1] - A[0][1] * A[1][0];
+ if (detA == Mint()) {
+  int ans= log1(A, A, B) + 1;
+  cout << (ans ? ans : -1) << '\n';
+  return 0;
+ }
+ Mint detB= B[0][0] * B[1][1] - B[0][1] * B[1][0];
  auto f= [](Mint a, Mint b) { return a * b; };
- DiscreteLogarithm log(
+ DiscreteLogarithm log2(
      f, f, [](Mint x) { return x.val(); }, p);
- Mint detA= A[0][0] * A[1][1] - A[0][1] * A[1][0], detB= B[0][0] * B[1][1] - B[0][1] * B[1][0];
- int m= log(detA, detA, 1) + 1, r= log(detA, 1, detB);
+ int m= log2(detA, detA, 1) + 1, r= log2(detA, 1, detB);
  if (m == 0 || r == -1) {
   cout << -1 << '\n';
   return 0;
  }
- auto g= [](Mat a, Mat b) { return a * b; };
- int q= DiscreteLogarithm(
-     g, g, [](Mat x) { return x[0][0].val(); }, 2ll * p + 1)(A.pow(m), A.pow(r), B);
+ int q= log1(A.pow(m), A.pow(r), B);
  cout << (q < 0 ? -1 : int64_t(m) * q + r) << '\n';
  return 0;
 }

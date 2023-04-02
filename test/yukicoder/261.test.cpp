@@ -16,7 +16,7 @@ signed main() {
   return ret;
  };
  DiscreteLogarithm log(
-     f, f, [](const vector<int> &x) { return x[0]; }, N);
+     f, f, [](const vector<int> &x) { return x[0]; }, 1e9);
  vector<int> p(N);
  iota(p.begin(), p.end(), 0);
  int K;

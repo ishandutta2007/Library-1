@@ -35,7 +35,7 @@ class Nimber {
   int a= ln[A], b= ln[B], x= 1;
   if (a == 0) return b == 0 ? 1 : -1;
   for (int q, z, u, y= 0, t= 65535; t;) z= x, u= a, x= y, y= z - y * (q= a / t), a= t, t= u - t * q;
-  return b % a ? -1 : (b / a) * (x < 0 ? 65535 - (-x) % 65535 : x % 65535) % 65535;
+  return b % a ? -1 : u32(b / a) * (x < 0 ? 65535 + x : x) % 65535;
  }
  template <int period, int size> static inline int bsgs(u64 x, u64 y) {
   static constexpr int mask= size - 1;

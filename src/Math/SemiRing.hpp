@@ -23,32 +23,32 @@ template <class Arith> struct MinPlus {
  static void add(T &vl, T vr) { vl= std::min(vl, vr); }
  static void mul(T &vl, T vr) { vl+= vr; }
 };
-template <class T> using MinPlusRig= Rig<MinPlus<T>>;
+template <class T> using MinPlusRig= SemiRing<MinPlus<T>>;
 template <class Arith> struct MaxPlus {
  using T= Arith;
  static inline T o= std::numeric_limits<T>::min(), i= T();
  static void add(T &vl, T vr) { vl= std::max(vl, vr); }
  static void mul(T &vl, T vr) { vl+= vr; }
 };
-template <class T> using MaxPlusRig= Rig<MaxPlus<T>>;
+template <class T> using MaxPlusRig= SemiRing<MaxPlus<T>>;
 template <class Arith> struct MinMax {
  using T= Arith;
  static inline T o= std::numeric_limits<T>::max(), i= std::numeric_limits<T>::min();
  static void add(T &vl, T vr) { vl= std::min(vl, vr); }
  static void mul(T &vl, T vr) { vl= std::max(vl, vr); }
 };
-template <class T> using MinMaxRig= Rig<MinMax<T>>;
+template <class T> using MinMaxRig= SemiRing<MinMax<T>>;
 template <class Uint> struct BitwiseOrAnd {
  using T= Uint;
  static constexpr T o= 0, i= T(-1);
  static void add(T &vl, T vr) { vl|= vr; }
  static void mul(T &vl, T vr) { vl&= vr; }
 };
-template <class T= unsigned long long> using BitwiseOrAndRig= Rig<BitwiseOrAnd<T>>;
+template <class T= unsigned long long> using BitwiseOrAndRig= SemiRing<BitwiseOrAnd<T>>;
 template <class Uint> struct BitwiseXorAnd {
  using T= Uint;
  static constexpr T o= 0, i= T(-1);
  static void add(T &vl, T vr) { vl^= vr; }
  static void mul(T &vl, T vr) { vl&= vr; }
 };
-template <class T= unsigned long long> using BitwiseXorAndRig= Rig<BitwiseXorAnd<T>>;
+template <class T= unsigned long long> using BitwiseXorAndRig= SemiRing<BitwiseXorAnd<T>>;

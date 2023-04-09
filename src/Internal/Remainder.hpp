@@ -53,7 +53,7 @@ struct MP_Na {
 struct MP_Br {  // mod < 2^31
  u32 mod;
  CE MP_Br(): mod(0), s(0), x(0) {}
- CE MP_Br(u32 m): mod(m), s(__lg(m - 1) + 64), x(((u128(1) << s) + m - 1) / m) {}
+ CE MP_Br(u32 m): mod(m), s(95 - __builtin_clz(m - 1)), x(((u128(1) << s) + m - 1) / m) {}
  CE IL u32 mul(u32 l, u32 r) const { return rem(u64(l) * r); }
  PLUS(u32, mod) DIFF(u32, 31, mod) SGN(u32) private: u8 s;
  u64 x;

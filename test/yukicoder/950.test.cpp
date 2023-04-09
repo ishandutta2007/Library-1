@@ -30,8 +30,8 @@ signed main() {
  auto f= [](Mint a, Mint b) { return a * b; };
  DiscreteLogarithm log2(
      f, f, [](Mint x) { return x.val(); }, p);
- int m= log2(detA, detA, 1) + 1, r= log2(detA, 1, detB);
- if (m == 0 || r == -1) {
+ int m= log2(detA, detA, 1) + 1, r= log2(detA, detA, detB) + 1;
+ if (m == 0 || r == 0) {
   cout << -1 << '\n';
   return 0;
  }

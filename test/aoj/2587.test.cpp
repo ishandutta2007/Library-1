@@ -2,62 +2,56 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#include "src/Automaton/dfa_dp.hpp"
-#include "src/Automaton/NFA_to_DFA.hpp"
+#include <array>
+#include "src/Misc/Automaton.hpp"
 using namespace std;
-struct Elevator {
- using symbol_t= int;
- Elevator(int N_, const vector<int> &l, const vector<int> &h): N(N_), low(l), high(h) {}
- vector<symbol_t> alphabet() const { return {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; }
- int initial_state() const { return 0; }
- set<int> transition(int s, const symbol_t &c, int) const {
-  int i= s / 5, j= s % 5;
-  if (i >= N) return {};
-  if (j == 1) {
-   if ((low[i] % 10) <= c) return {5 * (i + 1)};
-  } else if (j == 2) {
-   return {5 * (i + 1)};
-  } else if (j == 3) {
-   if (c <= (high[i] % 10)) return {5 * (i + 1)};
-  } else if (j == 4) {
-   if ((low[i] % 10) <= c && c <= (high[i] % 10)) return {5 * (i + 1)};
-  } else {
-   if (c == 0) return {};
-   int l= low[i] / 10, h= high[i] / 10;
-   if (l == h) {
-    if (c == l) return {5 * i + 4};
-   } else {
-    if (c == l) return {5 * i + 1};
-    if (l < c && c < h) return {5 * i + 2};
-    if (c == h) return {5 * i + 3};
-   }
-  }
-  return {};
- }
- set<int> eps_transition(int s) const {
-  int i= s / 5, j= s % 5;
-  if (j == 0 && low[i] / 10 == 0) {
-   if (high[i] / 10 == 0) return {5 * i + 4};
-   return {5 * i + 1};
-  }
-  return {};
- }
- bool is_accept(int s) const { return s == 5 * N; }
-private:
- const int N;
- vector<int> low, high;
-};
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  int N;
  vector<int> low, high;
+ vector alp= {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
  while (cin >> N && N != 0) {
   low.resize(N), high.resize(N);
-  for (int i= 0; i < N; i++) cin >> low[i] >> high[i];
-  auto dfa= NFA_to_DFA(Elevator(N, low, high));
-  long long ans= 0;
-  for (int i= N; i <= 2 * N; i++) ans+= dfa_dp<long long>(dfa, i);
+  for (int i= 0; i < N; ++i) cin >> low[i] >> high[i];
+  using state_t= array<int, 2>;
+  auto tr= [&](state_t s, int c) -> set<state_t> {
+   auto [i, j]= s;
+   if (i >= N) return {};
+   auto [l1, l0]= div(low[i], 10);
+   auto [h1, h0]= div(high[i], 10);
+   if (j == 1) {
+    if (l0 <= c) return {{i + 1, 0}};
+   } else if (j == 2) return {{i + 1, 0}};
+   else if (j == 3) {
+    if (c <= h0) return {{i + 1, 0}};
+   } else if (j == 4) {
+    if (l0 <= c && c <= h0) return {{i + 1, 0}};
+   } else {
+    if (c == 0) return {};
+    if (l1 == h1) {
+     if (c == l1) return {{i, 4}};
+    } else {
+     if (c == l1) return {{i, 1}};
+     if (l1 < c && c < h1) return {{i, 2}};
+     if (c == h1) return {{i, 3}};
+    }
+   }
+   return {};
+  };
+  auto eps= [&](state_t s) -> set<state_t> {
+   auto [i, j]= s;
+   if (i >= N) return {};
+   if (j == 0 && (low[i] / 10) == 0) {
+    if ((high[i] / 10) == 0) return {{i, 4}};
+    else return {{i, 1}};
+   }
+   return {};
+  };
+  auto ac= [&](state_t s) { return s[0] == N && s[1] == 0; };
+  Automaton nfa(alp, state_t{0, 0}, tr, ac, eps);
+  int64_t ans= 0;
+  for (int i= N; i <= 2 * N; ++i) ans+= nfa.num<int64_t>(i);
   cout << ans << '\n';
  }
  return 0;

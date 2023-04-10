@@ -2,10 +2,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <tuple>
-#include "src/Automaton/dfa_dp.hpp"
-#include "src/Automaton/DFA_Inequality.hpp"
-#include "src/Automaton/dfa_operations.hpp"
+#include <array>
+#include "src/Misc/Automaton.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 signed main() {
@@ -14,8 +12,18 @@ signed main() {
  using Mint= ModInt<int(1e9 + 7)>;
  string L;
  cin >> L;
- vector<tuple<int, int, int>> alphabet{{0, 0, 0}, {0, 1, 1}, {1, 0, 1}};
- auto dfa_le= DFA_SymbolMap(DFA_Inequality(L, 2), alphabet, [](const tuple<int, int, int> &a) { return get<2>(a); });
- cout << dfa_dp<Mint>(dfa_le, L.length()) << '\n';
+ int n= L.length();
+ using symbol_t= array<bool, 2>;
+ vector<symbol_t> alp= {{0, 0}, {0, 1}, {1, 0}};
+ auto tr= [&](int s, symbol_t c) {
+  if (s >= n) return s;
+  bool d= L[s] - '0', e= c[0] ^ c[1];
+  if (e > d) return n + 1;
+  if (e < d) return n;
+  return s + 1;
+ };
+ auto ac= [&](int s) { return true; };
+ Automaton dfa(alp, 0, tr, ac, n + 1);
+ cout << dfa.num<Mint>(n) << '\n';
  return 0;
 }

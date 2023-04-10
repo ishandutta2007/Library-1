@@ -1,33 +1,25 @@
 #define PROBLEM "https://atcoder.jp/contests/arc127/tasks/arc127_a"
 #include <iostream>
 #include <vector>
-#include "src/Automaton/dfa_dp.hpp"
-#include "src/Automaton/dfa_operations.hpp"
-#include "src/Automaton/DFA_Inequality.hpp"
+#include <array>
+#include "src/Misc/Automaton.hpp"
 using namespace std;
-class DFA_Leading1s {
- const int n;
-public:
- using symbol_t= int;
- DFA_Leading1s(int n_): n(n_) {}
- inline std::vector<symbol_t> alphabet() const { return {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}; }
- inline int initial_state() const { return 0; }
- inline int transition(int s, const symbol_t &a, int) const {
-  if (s == n) return n;
-  if (s == 0 && a == 0) return 0;
-  return a == 1 ? s + 1 : -1;
- }
- inline bool is_accept(int s) const { return s == n; }
- inline int state_size() const { return n + 1; }
-};
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- long long N;
+ int64_t N;
  cin >> N;
- auto dfa_le= DFA_Inequality(N, 10, 16);
- long long ans= 0;
- for (int i= 1; i <= 16; i++) ans+= dfa_dp<long long>(dfa_le & DFA_Leading1s(i), 16);
- cout << ans << '\n';
+ vector alp= {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+ auto tr= [](int64_t s, int c) { return (s - c + 10) / 10 - 1; };
+ auto ac= [](int64_t) { return true; };
+ Automaton dfa(alp, N, tr, ac, int64_t(-1));
+ using T= array<int64_t, 2>;
+ auto op= [](const T& l, const T& r) { return T{l[0] + r[0], l[1] + r[1]}; };
+ auto f= [](T x, int c, int) {
+  if (c > 1) x[1]= 0;
+  if (c == 1) x[1]+= x[0];
+  return x;
+ };
+ cout << dfa.dp_run(60, op, T{0, 0}, f, T{1, 0})[1] << '\n';
  return 0;
 }

@@ -1,36 +1,30 @@
 #define PROBLEM "https://atcoder.jp/contests/abc138/tasks/abc138_f"
 #include <iostream>
 #include <vector>
-#include "src/Automaton/dfa_dp.hpp"
-#include "src/Automaton/DFA_Inequality.hpp"
-#include "src/Automaton/dfa_operations.hpp"
+#include <array>
+#include "src/Misc/Automaton.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
-
-using Pii= pair<int, int>;
-struct DFA_SameLen {
- using symbol_t= Pii;
- vector<symbol_t> alphabet() const { return {{0, 0}, {0, 1}, {1, 1}}; }
- inline int initial_state() const { return 0; }
- inline int transition(int s, const symbol_t &a, int) const {
-  const auto &[u, v]= a;
-  if (s == 1) return 1;
-  if (u != v) return -1;
-  return u == 1;
- }
- inline bool is_accept(int s) const { return s >= 0; }
- inline int state_size() const { return 2; }
-};
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  using Mint= ModInt<int(1e9 + 7)>;
- long long L, R;
+ int64_t L, R;
  cin >> L >> R;
- auto dfa_samelen= DFA_SameLen();
- auto alp= dfa_samelen.alphabet();
- auto dfa_y_le= DFA_SymbolMap(DFA_Inequality(R, 2, 61), alp, [](const Pii &a) { return a.second; });
- auto dfa_x_ge= DFA_SymbolMap(DFA_Inequality<true>(L, 2, 61), alp, [](const Pii &a) { return a.first; });
- cout << dfa_dp<Mint>(dfa_x_ge & dfa_y_le & dfa_samelen, 61) << '\n';
+ using symbol_t= array<bool, 2>;
+ vector<symbol_t> alp= {{0, 0}, {0, 1}, {1, 1}};
+ auto tr_le= [](int64_t s, symbol_t c) { return (s - c[1] + 2) / 2 - 1; };
+ auto tr_ge= [](int64_t s, symbol_t c) { return (s - c[0] + 1) / 2; };
+ auto ac= [](int64_t s) { return s == 0; };
+ Automaton dfa_le(alp, R, tr_le, ac, int64_t(-1)), dfa_ge(alp, L, tr_ge, ac, int64_t(-1));
+ auto tr_len= [](bool s, symbol_t c) {
+  if (c[0] == 1 && c[1] == 1) s= 1;
+  if (c[0] != c[1]) s= 0;
+  return s;
+ };
+ auto ac_len= [](bool s) { return s; };
+ Automaton dfa_len(alp, true, tr_len, ac_len);
+ auto dfa= dfa_le & dfa_ge & dfa_len;
+ cout << dfa.num<Mint>(60) << '\n';
  return 0;
 }

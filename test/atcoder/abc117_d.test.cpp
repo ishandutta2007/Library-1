@@ -1,23 +1,24 @@
 #define PROBLEM "https://atcoder.jp/contests/abc117/tasks/abc117_d"
 #include <iostream>
-#include "src/Automaton/dfa_dp.hpp"
-#include "src/Automaton/DFA_Inequality.hpp"
+#include <vector>
+#include "src/Misc/Automaton.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- long long N, K;
+ int64_t N, K;
  cin >> N >> K;
- long long A[N];
+ int64_t A[N];
  for (int i= 0; i < N; i++) cin >> A[i];
- auto add= [](long long &l, const long long &r) {
-  if (l < r) l= r;
- };
- auto f= [&](long long x, int b, int k) {
-  int h= 40 - k;
-  for (int i= N; i--;) x+= (((A[i] >> h) & 1) ^ b) << h;
+ vector alp= {0, 1};
+ auto tr= [&](int64_t s, int c) { return (s - c + 2) / 2 - 1; };
+ auto ac= [&](int64_t) { return true; };
+ Automaton dfa(alp, K, tr, ac, int64_t(-1));
+ auto op= [](int64_t l, int64_t r) { return max(l, r); };
+ auto f= [&](int64_t x, int c, int k) {
+  for (int i= N; i--;) x+= (((A[i] >> k) & 1) ^ c) << k;
   return x;
  };
- cout << dfa_dp<long long>(DFA_Inequality(K, 2, 41), 41, add, f, 0, 0) << '\n';
+ cout << dfa.dp_run<int64_t>(60, op, int64_t(0), f, int64_t(0)) << '\n';
  return 0;
 }

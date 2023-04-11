@@ -20,7 +20,7 @@ signed main() {
   return s + 1;
  };
  auto ac_le= [&](int s) { return true; };
- Automaton dfa_le(alp, 0, tr_le, ac_le);
+ Automaton dfa_le(alp, 0, tr_le, ac_le, n + 1);
  auto tr_k= [&](int s, int q) -> int {
   auto p= (int64_t)s * q;
   if (p > K) return K + 1;

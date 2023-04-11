@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <queue>
 #include <cstdlib>
+#include <cassert>
 template <class symbol_t> class Automaton {
  std::vector<int> table;
  std::vector<int8_t> info;

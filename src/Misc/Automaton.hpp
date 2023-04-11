@@ -36,14 +36,14 @@ public:
  template <class state_t, class F, class G, std::enable_if_t<std::is_same_v<state_t, std::invoke_result_t<F, state_t, symbol_t>>, std::nullptr_t> = nullptr> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept): alph(alphabet), m(alph.size()) {
   std::sort(alph.begin(), alph.end());
   auto tr= [&](const state_t &s, int i) { return transition(s, alph[i]); };
-  if constexpr (std::is_integral_v<state_t>) build<std::unordered_map>(initial_state, tr, is_accept, [](const state_t &) { return false; });
-  else build<std::map>(initial_state, tr, is_accept, [](const state_t &) { return false; });
+  if constexpr (std::is_integral_v<state_t>) build<std::unordered_map, state_t, decltype(tr), G>(initial_state, tr, is_accept, [](const state_t &) { return false; });
+  else build<std::map, state_t, decltype(tr), G>(initial_state, tr, is_accept, [](const state_t &) { return false; });
  }
  template <class state_t, class F, class G, std::enable_if_t<std::is_same_v<state_t, std::invoke_result_t<F, state_t, symbol_t>>, std::nullptr_t> = nullptr> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept, const state_t &abs_rej_state): alph(alphabet), m(alph.size()) {
   std::sort(alph.begin(), alph.end());
   auto tr= [&](const state_t &s, int i) { return transition(s, alph[i]); };
-  if constexpr (std::is_integral_v<state_t>) build<std::unordered_map>(initial_state, tr, is_accept, [abs_rej_state](const state_t &s) { return s == abs_rej_state; });
-  else build<std::map>(initial_state, tr, is_accept, [abs_rej_state](const state_t &s) { return s == abs_rej_state; });
+  if constexpr (std::is_integral_v<state_t>) build<std::unordered_map, state_t, decltype(tr), G>(initial_state, tr, is_accept, [abs_rej_state](const state_t &s) { return s == abs_rej_state; });
+  else build<std::map, state_t, decltype(tr), G>(initial_state, tr, is_accept, [abs_rej_state](const state_t &s) { return s == abs_rej_state; });
  }
  template <class state_t, class F, class G, std::enable_if_t<std::is_same_v<std::set<state_t>, std::invoke_result_t<F, state_t, symbol_t>>, std::nullptr_t> = nullptr> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept): alph(alphabet), m(alph.size()) {
   static_assert(std::is_same_v<bool, std::invoke_result_t<G, state_t>>);
@@ -57,7 +57,7 @@ public:
    return ret;
   };
   auto ac= [&](const std::set<state_t> &s) { return std::any_of(s.begin(), s.end(), is_accept); };
-  build<std::map>(std::set<state_t>({initial_state}), tr, ac, [](const std::set<state_t> &s) { return s == std::set<state_t>(); });
+  build<std::map, std::set<state_t>, decltype(tr), decltype(ac)>(std::set<state_t>({initial_state}), tr, ac, [](const std::set<state_t> &s) { return s == std::set<state_t>(); });
  }
  template <class state_t, class F, class G, class H, std::enable_if_t<std::is_same_v<std::set<state_t>, std::invoke_result_t<F, state_t, symbol_t>>, std::nullptr_t> = nullptr> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept, const H &eps_trans): alph(alphabet), m(alph.size()) {
   static_assert(std::is_same_v<bool, std::invoke_result_t<G, state_t>>);
@@ -82,7 +82,7 @@ public:
    return eps_closure(ret);
   };
   auto ac= [&](const std::set<state_t> &s) { return std::any_of(s.begin(), s.end(), is_accept); };
-  build<std::map>(eps_closure({initial_state}), tr, ac, [](const std::set<state_t> &s) { return s == std::set<state_t>(); });
+  build<std::map, std::set<state_t>, decltype(tr), decltype(ac)>(eps_closure({initial_state}), tr, ac, [](const std::set<state_t> &s) { return s == std::set<state_t>(); });
  }
  size_t alphabet_size() const { return m; }
  Automaton operator&(const Automaton &r) const {
@@ -98,7 +98,7 @@ public:
    return info[s0] == 1 && r.info[s1] == 1;
   };
   Automaton ret(alph);
-  return ret.build<std::unordered_map>(0, tr, ac, [](int s) { return s == -1; }), ret;
+  return ret.build<std::unordered_map, int, decltype(tr), decltype(ac)>(0, tr, ac, [](int s) { return s == -1; }), ret;
  }
  template <class T, class A, class F> T dp_run(int n, const A &op, const T &ti, const F &f, const T &init) const {
   static_assert(std::is_same_v<T, std::invoke_result_t<A, T, T>>);

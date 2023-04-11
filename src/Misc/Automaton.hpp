@@ -89,7 +89,6 @@ public:
   auto rej= [](const std::set<state_t> &s) { return s == std::set<state_t>(); };
   build<std::map<std::set<state_t>, int>, std::set<state_t>>(eps_closure({initial_state}), tr, ac, rej);
  }
- size_t alphabet_size() const { return m; }
  Automaton operator&(const Automaton &r) const {
   assert(alph == r.alph);
   const int S= info.size();

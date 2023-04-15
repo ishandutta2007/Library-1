@@ -7,11 +7,12 @@ documentation_of: ./rerooting.hpp
 `get(int root, int v)` :  頂点 root が根である場合の 頂点 v を根とする部分木のDP値
 
 ## `rerooting` の引数
-`rerooting<T,U,C,F1,F2,F3>(Tree<C> tree, F1 f_ee, F2 f_ve, F3 f_ev, U unit)` について \
-`tree` : コスト `C` の木クラス \
+`rerooting<T,U,C,F1,F2,F3>(Tree<C> tree, F1 f_ee, F2 f_ve, F3 f_ev, U unit)` について
+
+`tree` : 木 \
 `f_ee(U l, U r) -> U` : モノイド `U` の二項演算 \
-`f_ve(T d, int v, Edge e) -> U` : 頂点 e.to のDPの値(型 : `T` ) から 辺 e の情報を用いて モノイドの値 (型 : `U` )に変換 \
-`f_ev(U u, int v) -> T` : モノイドの値 (型 : `U` )から頂点 v のDPの値(型 : `T` ) に変換 \
+`f_ve(T d, int v, Edge e) -> U` : 頂点 e.to から 頂点 v への 遷移を考えていて、e.to の DPの値 (型 : `T` ) からモノイドの値 (型 : `U` )に変換 \
+`f_ev(U u, int v) -> T` : 頂点 v で fold 結果のモノイドの値 (型 : `U` )からDPの値(型 : `T` ) に変換 \
 `unit` : モノイド `U` の単位元
 
 ## 問題例

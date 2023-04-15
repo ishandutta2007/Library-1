@@ -38,7 +38,7 @@ public:
    while (k > pos[i]) id[csr[--k]]= i;
  }
  int components_num() const { return pos.size() - 1; }
- const ListRange<int> block(int k) const { return {csr.begin() + pos[k], csr.begin() + pos[k + 1]}; }
+ const ListRange<int> block(int k) const { return {csr.cbegin() + pos[k], csr.cbegin() + pos[k + 1]}; }
  int belong(int i) const { return id[i]; }
  const CsrArray<int> dag() const {
   std::vector<std::array<int, 2>> es_;

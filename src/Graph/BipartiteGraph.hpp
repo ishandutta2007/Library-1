@@ -78,12 +78,12 @@ public:
  }
  const std::vector<std::array<int, 2>> &edges() const { return es; }
  bool color(int v) const { return col[v]; }
- const ListRange<int> left_vertices() const { return {ord.begin(), ord.begin() + l}; }
- const ListRange<int> right_vertices() const { return {ord.begin() + l, ord.end()}; }
+ const ListRange<int> left_vertices() const { return {ord.cbegin(), ord.cbegin() + l}; }
+ const ListRange<int> right_vertices() const { return {ord.cbegin() + l, ord.cend()}; }
  int match(int v) const { return mate[v]; }
  int component_num() const { return pos.size() - 1; }
  int belong(int v) const { return blg[v]; }
- const ListRange<int> block(int k) const { return {pre.begin() + pos[k], pre.begin() + pos[k + 1]}; }
+ const ListRange<int> block(int k) const { return {pre.cbegin() + pos[k], pre.cbegin() + pos[k + 1]}; }
  template <bool rev> const CsrArray<int> &dag() { return dag_[rev]; }
  std::vector<std::array<int, 2>> max_matching() const {
   std::vector<std::array<int, 2>> ret;

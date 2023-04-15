@@ -62,6 +62,6 @@ public:
  int component_num() const { return pos[0].size() - 1; }
  int left_belong(int l) const { return blg[0][l]; }
  int right_belong(int r) const { return blg[1][r]; }
- const ListRange<int> left_block(int k) const { return {mate[0].begin() + pos[0][k], mate[0].begin() + pos[0][k + 1]}; }
- const ListRange<int> right_block(int k) const { return {mate[1].begin() + pos[1][k], mate[1].begin() + pos[1][k + 1]}; }
+ const ListRange<int> left_block(int k) const { return {mate[0].cbegin() + pos[0][k], mate[0].cbegin() + pos[0][k + 1]}; }
+ const ListRange<int> right_block(int k) const { return {mate[1].cbegin() + pos[1][k], mate[1].cbegin() + pos[1][k + 1]}; }
 };

@@ -14,7 +14,6 @@ signed main() {
   bcc.add_edge(--u, --v);
  }
  auto bct= bcc.block_cut_tree();
- bct.build();
  while (q--) {
   int u, v, w;
   cin >> u >> v >> w;

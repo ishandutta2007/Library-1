@@ -16,10 +16,12 @@ signed main() {
  using T= array<int64_t, 2>;
  auto op= [](const T& l, const T& r) { return T{l[0] + r[0], l[1] + r[1]}; };
  auto f= [](T x, int c, int) {
-  if (c > 1) x[1]= 0;
   if (c == 1) x[1]+= x[0];
+  else x[1]= 0;
   return x;
  };
- cout << dfa.dp_run(60, op, T{0, 0}, f, T{1, 0})[1] << '\n';
+ int64_t ans= 0;
+ for (int i= 1; i <= 60; ++i) ans+= dfa.dp_run(i, op, T{0, 0}, f, T{1, 0})[1];
+ cout << ans << '\n';
  return 0;
 }

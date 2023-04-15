@@ -1,40 +1,44 @@
 #pragma once
 #include "src/Graph/Tree.hpp"
 class BiConnectedComponents {
- std::vector<std::vector<int>> adj;
+ const size_t n;
+ std::vector<std::pair<int, int>> E;
 public:
- BiConnectedComponents(int n): adj(n) {}
- void add_edge(int u, int v) { adj[u].push_back(v), adj[v].push_back(u); }
+ BiConnectedComponents(int n): n(n) {}
+ void add_edge(int u, int v) { E.emplace_back(u, v); }
  Tree<void> block_cut_tree() const {
-  const int n= adj.size();
-  std::vector<int> ord(n), par(n, -2), dat(n, 0), low;
-  std::vector<std::array<int, 2>> es;
+  std::vector<int> pos(n + 1), g(E.size() * 2);
+  for (auto [u, v]: E) ++pos[u], ++pos[v];
+  std::partial_sum(pos.begin(), pos.end(), pos.begin());
+  for (auto [u, v]: E) g[--pos[u]]= v, g[--pos[v]]= u;
+  std::vector<int> ord(n), par(n, -2), dat(pos.begin(), pos.begin() + n);
   int k= 0;
   for (int s= 0, p; s < n; ++s)
    if (par[s] == -2)
     for (par[p= s]= -1; p >= 0;) {
-     if (dat[p] == 0) ord[k++]= p;
-     if (dat[p] == (int)adj[p].size()) {
+     if (dat[p] == pos[p]) ord[k++]= p;
+     if (dat[p] == pos[p + 1]) {
       p= par[p];
       continue;
      }
-     if (int q= adj[p][dat[p]++]; par[q] == -2) par[q]= p, p= q;
+     if (int q= g[dat[p]++]; par[q] == -2) par[q]= p, p= q;
     }
-  for (int i= 0; i < n; ++i) dat[ord[i]]= i;
-  low= dat;
-  for (int v= 0; v < n; ++v)
-   for (int u: adj[v]) low[v]= std::min(low[v], dat[u]);
+  for (int i= n; i--;) dat[ord[i]]= i;
+  auto low= dat;
+  for (int v= n; v--;)
+   for (int j= pos[v]; j < pos[v + 1]; ++j) low[v]= std::min(low[v], dat[g[j]]);
   for (int i= n; i--;)
    if (int p= ord[i], pp= par[p]; pp >= 0) low[pp]= std::min(low[pp], low[p]);
+  std::vector<std::pair<int, int>> es;
   for (int p: ord)
    if (par[p] >= 0) {
-    if (int pp= par[p]; low[p] < dat[pp]) low[p]= low[pp], es.push_back({low[p], p});
-    else es.push_back({k, pp}), es.push_back({k, p}), low[p]= k++;
+    if (int pp= par[p]; low[p] < dat[pp]) low[p]= low[pp], es.emplace_back(low[p], p);
+    else es.emplace_back(k, pp), es.emplace_back(k, p), low[p]= k++;
    }
-  for (int s= 0; s < n; ++s)
-   if (!adj[s].size()) es.push_back({k++, s});
+  for (int s= n; s--;)
+   if (pos[s] == pos[s + 1]) es.emplace_back(k++, s);
   Tree ret(k);
   for (auto [u, v]: es) ret.add_edge(u, v);
-  return ret;
+  return ret.build(), ret;
  }
 };

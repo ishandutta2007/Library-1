@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <algorithm>
 #include <array>
+#include <tuple>
 #include <numeric>
 #include <cassert>
 #include "src/DataStructure/CsrArray.hpp"

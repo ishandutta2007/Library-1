@@ -16,15 +16,13 @@ signed main() {
   cin >> u >> v;
   bcc.add_edge(--u, --v);
  }
-
  auto bct= bcc.block_cut_tree();
- bct.build(0);
- int K= bct.size();
+ int K= bct.size(), r= bct.root(0);
  w.resize(K);
  for (int i= K; --i;)
   if (int u= bct.to_node(i), v= bct.parent(u); u != -1) w[v]+= w[u];
  for (int v= 0; v < N; ++v) {
-  long long ans= w[0] - w[v];
+  long long ans= w[r] - w[v];
   for (int u: bct[v])
    if (u != bct.parent(v)) ans= max(ans, w[u]);
   cout << ans << '\n';

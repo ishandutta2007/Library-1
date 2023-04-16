@@ -92,10 +92,13 @@ public:
   return k > d_uw + d_vw ? -1 : k <= d_uw ? la(u, k) : la(v, d_uw + d_vw - k);
  }
  int dist(int u, int v) const { return depth(u) + depth(v) - depth(lca(u, v)) * 2; }
- bool in_subtree(int u, int v) /* u is in v */ const { return L[v] <= L[u] && L[u] < R[v]; }
+ // u is in v
+ bool in_subtree(int u, int v) const { return L[v] <= L[u] && L[u] < R[v]; }
  int subtree_size(int v) const { return R[v] - L[v]; }
- std::array<int, 2> subtree(int v) /* half-open interval */ const { return std::array{L[v], R[v]}; }
- template <bool edge= 0> std::vector<std::array<int, 2>> path(int u, int v) /* sequence of closed intervals */ const {
+ // half-open interval
+ std::array<int, 2> subtree(int v) const { return std::array{L[v], R[v]}; }
+ // sequence of closed intervals
+ template <bool edge= 0> std::vector<std::array<int, 2>> path(int u, int v) const {
   std::vector<std::array<int, 2>> up, down;
   while (PP[u] != PP[v]) {
    if (L[u] < L[v]) down.emplace_back(std::array{L[PP[v]], L[v]}), v= P[PP[v]];

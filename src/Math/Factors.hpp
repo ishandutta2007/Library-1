@@ -69,7 +69,7 @@ constexpr u64 primitive_root(u64 p) {
 using math_internal::Factors, math_internal::primitive_root;
 constexpr std::uint64_t totient(const Factors &f) {
  std::uint64_t ret= 1, i= 0;
- for (const auto [p, e]: f)
+ for (auto [p, e]: f)
   for (ret*= p - 1, i= e; --i;) ret*= p;
  return ret;
 }

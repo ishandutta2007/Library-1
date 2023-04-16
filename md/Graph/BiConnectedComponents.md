@@ -3,7 +3,7 @@ title: 二点連結成分分解
 documentation_of: ../../src/Graph/BiConnectedComponents.hpp
 ---
 
-![bct.png](../../img/bct.png)
+![bct.png](https://github.com/hashiryo/Library/blob/master/img/bct.png?raw=true)
 
 [0, n)：もとの頂点 \
 [n, n + n_block)：block\

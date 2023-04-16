@@ -205,7 +205,7 @@ public:
   sps<T> g(sz, 0);
   for (int s= sz; --s;)
    if (k[s] == __builtin_popcount(s)) g[s]= (k[s] + 1) & 1 ? -1 : 1;
-  return SPS::template online_convolve<T>(g, 1);
+  return SPS::template semi_relaxed_convolve<T>(g, 1);
  }
  template <class T>  // O(V^2 2^V)
  inline std::vector<T> colorings_using_exactly_k_colors_num() const {

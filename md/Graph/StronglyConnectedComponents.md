@@ -1,6 +1,6 @@
 ---
 title: 強連結成分分解
-documentation_of: ./StronglyConnectedComponents.hpp
+documentation_of: ../../src/Graph/StronglyConnectedComponents.hpp
 ---
 強連結成分はトポロジカルソートされている
 

@@ -1,6 +1,6 @@
 ---
 title: Dulmage-Mendelsohn 分解
-documentation_of: ./DulmageMendelsohn.hpp
+documentation_of: ../../src/Graph/DulmageMendelsohn.hpp
 ---
 明示的に二部グラフを表現する \
 頂点の添字は左右それぞれ [0,L), [0,R) で表現 \

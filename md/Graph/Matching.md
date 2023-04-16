@@ -1,6 +1,6 @@
 ---
 title: 最大マッチング
-documentation_of: ./Matching.hpp
+documentation_of: ../../src/Graph/Matching.hpp
 ---
 GabowのEdmonds' Algorithm
 ## メンバ関数

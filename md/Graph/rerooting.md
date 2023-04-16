@@ -1,6 +1,6 @@
 ---
 title: 全方位木DP
-documentation_of: ./rerooting.hpp
+documentation_of: ../../src/Graph/rerooting.hpp
 ---
 ## `rerooting` の戻り値 ( RerootingData クラス )
 全方位木DPの値(型 : `T` )が入っている配列だと思って使う. (`operator[](int v)`, `begin()`, `end()` がある. )\

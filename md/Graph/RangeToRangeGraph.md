@@ -1,6 +1,6 @@
 ---
 title: 区間に辺を張るテク
-documentation_of: ./RangeToRangeGraph.hpp
+documentation_of: ../../src/Graph/RangeToRangeGraph.hpp
 ---
 ## 問題例
 [第二回全国統一プログラミング王決定戦予選 D - Shortest Path on a Line](https://atcoder.jp/contests/nikkei2019-2-qual/tasks/nikkei2019_2_qual_d) \

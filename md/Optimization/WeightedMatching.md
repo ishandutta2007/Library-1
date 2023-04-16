@@ -1,0 +1,22 @@
+---
+title: 重み付きマッチング
+documentation_of: ../../src/Optimization/WeightedMatching.hpp
+---
+
+templateの第2引数が false なら **最大重みマッチング**, true なら **最小重み完全マッチング**. \
+空間計算量が $\mathcal{O}(V^2)$
+
+## メンバ関数
+
+| 名前                 | 概要                                                                                                         | 計算量             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------ | ------------------ |
+| `WeighteMatching(N)` | コンストラクタ. グラフの頂点数 N を渡す                                                                      |                    |
+| `add_edge(u,v,w)`    | 重みが w の辺 (u,v) を追加                                                                                   |                    |
+| `build()`            | マッチングを実行                                                                                             | $\mathcal{O}(V^3)$ |
+| `match(v)`           | 頂点 v のマッチング相手を返す. 存在しないなら -1                                                             |                    |
+| `weighed_matching()` | マッチングに使う辺を返す <br> (最小重み完全マッチングの場合に)完全マッチングが存在しないのならば空集合を返す |                    |
+
+
+## 問題例
+[AtCoder Regular Contest 080 F - Prime Flip](https://atcoder.jp/contests/arc080/tasks/arc080_d) \
+[幾何コンテスト2013 B - 玉座の間](https://atcoder.jp/contests/geocon2013/tasks/geocon2013_b) (二部グラフ, コスト実数)

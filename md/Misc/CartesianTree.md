@@ -3,7 +3,7 @@ title: Cartesian-Tree
 documentation_of: ../../src/Misc/CartesianTree.hpp
 ---
 
-![cartesian_tree](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Cartesian_tree.svg/864px-Cartesian_tree.svg.png)
+![cartesian_tree](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Cartesian_tree.svg/250px-Cartesian_tree.svg.png)
 [Wikipediaから引用](https://en.wikipedia.org/wiki/File:Cartesian_tree.svg)
 
 ## メンバ関数

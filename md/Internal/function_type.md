@@ -1,6 +1,6 @@
 ---
 title: 関数型や関数オブジェクトを扱うテンプレート
-documentation_of: ./function_type.hpp
+documentation_of: ../../src/Internal/function_type.hpp
 ---
 
 | 名前                    | 概要                                                                                                           |

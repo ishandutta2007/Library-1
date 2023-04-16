@@ -1,6 +1,6 @@
 ---
 title: 最大クリーク
-documentation_of: ./MaxClique.hpp
+documentation_of: ../../src/Graph/MaxClique.hpp
 ---
 最大独立集合は補グラフの最大クリーク \
 最小頂点被覆は最大独立集合の補集合 \

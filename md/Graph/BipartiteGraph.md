@@ -1,6 +1,6 @@
 ---
 title: (暗黙的な)二部グラフ
-documentation_of: ./BipartiteGraph.hpp
+documentation_of: ../../src/Graph/BipartiteGraph.hpp
 ---
 明示的に二部グラフを与えない \
 内部で頂点の色分けを自動で行う \

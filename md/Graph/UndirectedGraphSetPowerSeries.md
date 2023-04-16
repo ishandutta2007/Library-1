@@ -1,6 +1,6 @@
 ---
 title: 無向グラフ数え上げ(集合冪級数)
-documentation_of: ./UndirectedGraphSetPowerSeries.hpp
+documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 ---
 ## 計算量
 $\mathcal{O}(V 2^V)$ space

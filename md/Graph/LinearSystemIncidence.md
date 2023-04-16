@@ -1,6 +1,6 @@
 ---
 title: 接続行列の連立方程式
-documentation_of: ./LinearSystemIncidence.hpp
+documentation_of: ../../src/Graph/LinearSystemIncidence.hpp
 ---
 ## 計算量
 $\mathcal{O}(V+E)$

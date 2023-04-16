@@ -1,6 +1,6 @@
 ---
 title: Mo's Algorithm
-documentation_of: ./Mo.hpp
+documentation_of: ../../src/Misc/Mo.hpp
 ---
 ## 計算量
 $\mathcal{O}((N+Q)\sqrt{N})$

@@ -1,6 +1,6 @@
 ---
 title: 有限オートマトン
-documentation_of: ./Automaton.hpp
+documentation_of: ../../src/Misc/Automaton.hpp
 ---
 
 桁DPを解く. DPの最終的な答えのみを求める仕様なので、DPテーブルの途中の値は手に入らない.

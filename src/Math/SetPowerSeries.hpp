@@ -70,7 +70,7 @@ public:
  }
  // f(S) = φ_S ( Σ_{T⊊S} f(T)g(S/T) )
  template <class T, class F= void (*)(int, T &)>  // O(n^2 2^n)
- static inline std::vector<T> online_convolve(
+ static inline std::vector<T> semi_relaxed_convolve(
      const std::vector<T> &g, T init, const F &phi= [](int, T &) {}) {
   const int sz= g.size(), n= __builtin_ctz(sz);
   std::vector<T> ret(sz);
@@ -81,15 +81,15 @@ public:
  }
  // f(S) = φ_S ( Σ_{∅≠T⊊S & (T<(S/T) as binary numbers) } f(T)f(S/T) )
  template <class T, class F>  // O(n^2 2^n)
- static inline std::vector<T> online_convolve2(int sz, const F &phi) {
-  assert(__builtin_popcount(sz) == 1);
-  int I= 1, ed= std::min(1 << 13, sz);
-  std::vector<T> ret(sz, 0);
+ static inline std::vector<T> self_relaxed_convolve(int n, const F &phi) {
+  assert(__builtin_popcount(n) == 1);
+  int I= 1, ed= std::min(1 << 13, n);
+  std::vector<T> ret(n, 0);
   for (int s, t, u= 1; I < ed; I<<= 1)
    for (t= s= 0; s < I; phi(u, ret[u]), t= ++s, u++)
     for (ret[u]= 0; t; --t&= s) ret[u]+= ret[u ^ t] * ret[t];
   T *h= ret.data();
-  for (; I < sz; I<<= 1)
+  for (; I < n; I<<= 1)
    phi(I, ret[I]), onconv_tr(
                        h, h + I, [&](int s, T &x) { phi(s | I, x); }, I);
   return ret;

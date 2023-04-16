@@ -9,13 +9,11 @@ public:
  template <class T> CartesianTree(const std::vector<T>& a, bool is_min= 1): rg(a.size()), ch(a.size(), std::array{-1, -1}), par(a.size(), -1) {
   const int n= a.size();
   auto comp= [&](int l, int r) { return (is_min ? a[l] < a[r] : a[l] > a[r]) || (a[l] == a[r] && l < r); };
-  std::vector<int> st;
-  st.reserve(n);
-  for (int i= 0; i < n; rg[i][0]= (st.empty() ? 0 : st.back() + 1), st.push_back(i++))
-   for (; !st.empty() && comp(i, st.back()); st.pop_back()) ch[i][0]= st.back();
-  st.clear();
-  for (int i= n; i--; rg[i][1]= (st.empty() ? n : st.back()), st.push_back(i))
-   for (; !st.empty() && comp(i, st.back()); st.pop_back()) ch[i][1]= st.back();
+  int st[n], t= 0;
+  for (int i= n; i--; rg[i][1]= (t ? st[t - 1] : n), st[t++]= i)
+   while (t && comp(i, st[t - 1])) ch[i][1]= st[--t];
+  for (int i= t= 0; i < n; rg[i][0]= (t ? st[t - 1] + 1 : 0), st[t++]= i++)
+   while (t && comp(i, st[t - 1])) ch[i][0]= st[--t];
   for (int i= 0; i < n; ++i)
    for (int b= 2; b--;)
     if (ch[i][b] != -1) par[ch[i][b]]= i;

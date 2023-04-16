@@ -32,7 +32,7 @@ public:
   std::vector<std::pair<int, int>> es;
   for (int p: ord)
    if (par[p] >= 0) {
-    if (int pp= par[p]; low[p] < dat[pp]) low[p]= low[pp], es.emplace_back(low[p], p);
+    if (int pp= par[p]; low[p] < dat[pp]) es.emplace_back(low[p]= low[pp], p);
     else es.emplace_back(k, pp), es.emplace_back(k, p), low[p]= k++;
    }
   for (int s= n; s--;)

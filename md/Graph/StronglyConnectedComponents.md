@@ -14,4 +14,4 @@ documentation_of: ../../src/Graph/StronglyConnectedComponents.hpp
 | `components_num()`               | 強連結成分の個数を返す                      |
 | `block(k)`                       | k 番目の強連結成分の頂点集合を返す          |
 | `belong(i)`                      | 頂点 i が属する強連結成分が何番目かを返す   |
-| `dag()`                          | 縮約したDAGをを返す                         |
+| `dag()`                          | 縮約したDAGを返す                           |

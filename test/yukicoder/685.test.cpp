@@ -1,6 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/685"
 #include <iostream>
 #include <vector>
+#include <array>
 #include "src/Math/ModInt.hpp"
 #include "src/Misc/Automaton.hpp"
 using namespace std;
@@ -9,9 +10,7 @@ signed main() {
  ios::sync_with_stdio(0);
  using Mint= ModInt<int(1e9 + 7)>;
  using symbol_t= array<int, 2>;
- vector<symbol_t> alp;
- for (int i= 0; i < 2; ++i)
-  for (int j= 0; j < 2; ++j) alp.push_back(symbol_t{i, j});
+ vector<symbol_t> alp= {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
  int64_t N;
  cin >> N;
  auto tr_le= [&](int64_t s, symbol_t c) { return (s - c[1] + 2) / 2 - 1; };

@@ -1,6 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/737"
 #include <iostream>
 #include <vector>
+#include <array>
 #include "src/Math/ModInt.hpp"
 #include "src/Misc/Automaton.hpp"
 using namespace std;

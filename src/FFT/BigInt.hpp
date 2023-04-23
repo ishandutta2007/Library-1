@@ -167,4 +167,5 @@ public:
   return is >> s, v= BigInt(s), is;
  }
  friend std::ostream &operator<<(std::ostream &os, const BigInt &v) { return os << v.to_str(), os; }
+ explicit operator int() { return is_zero() ? 0 : neg ? -dat[0] : dat[0]; }
 };

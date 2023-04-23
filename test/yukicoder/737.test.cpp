@@ -21,7 +21,11 @@ signed main() {
  Automaton dfa(
      alp, 59, tr, [&](int s) { return s == -1; }, -2);
  using T= array<Mint, 4>;
- auto op= [&](const T &l, const T &r) { return T{l[0] + r[0], l[1] + r[1], l[2] + r[2], l[3] + r[3]}; };
+ auto op= [&](const T &l, const T &r) {
+  T ret;
+  for (int i= 4; i--;) ret[i]= l[i] + r[i];
+  return ret;
+ };
  auto f= [&](T x, int c, int) {
   x[3]+= x[3], x[1]+= x[1];
   if (c) x[3]+= x[1] + x[2] + x[0], x[1]+= x[0], x[2]+= x[0];

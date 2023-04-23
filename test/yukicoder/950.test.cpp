@@ -35,7 +35,7 @@ signed main() {
   cout << -1 << '\n';
   return 0;
  }
- int q= log1(A.pow(m), A.pow(r), B);
+ long long q= log1(A.pow(m), A.pow(r), B);
  cout << (q < 0 ? -1 : int64_t(m) * q + r) << '\n';
  return 0;
 }

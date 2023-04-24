@@ -17,19 +17,24 @@ public:
  size_t height() const { return W ? dat.size() / W : 0; }
  explicit operator bool() const { return W; }
  auto operator[](int i) { return std::next(std::begin(dat), i * W); }
- auto operator[](int i) const { return std::next(std::cbegin(dat), i * W); }
- bool operator==(const Matrix &r) const { return W == r.W && dat.size() == r.dat.size() && (dat == r.dat).min(); }
- bool operator!=(const Matrix &r) const { return W != r.W || dat.size() != r.dat.size() || (dat != r.dat).max(); }
+ auto operator[](int i) const { return std::next(std::begin(dat), i * W); }
+ bool operator==(const Matrix &r) const {
+  if (W != r.W || dat.size() != r.dat.size()) return false;
+  for (int i= dat.size(); i--;)
+   if (dat[i] != r.dat[i]) return false;
+  return true;
+ }
+ bool operator!=(const Matrix &r) const { return !(*this == r); }
  Matrix &operator+=(const Matrix &r) { return assert(dat.size() == r.dat.size()), assert(W == r.W), dat+= r.dat, *this; }
  Matrix operator+(const Matrix &r) const { return Matrix(*this)+= r; }
  Matrix operator*(const Matrix &r) const {
   const size_t h= height(), w= r.W, l= W;
   assert(l == r.height());
   Matrix ret(h, w);
-  auto a= std::cbegin(dat);
+  auto a= std::begin(dat);
   auto c= std::begin(ret.dat);
   for (int i= h; i--; std::advance(c, w)) {
-   auto b= std::cbegin(r.dat);
+   auto b= std::begin(r.dat);
    for (int k= l; k--; ++a) {
     auto d= c;
     auto v= *a;
@@ -62,7 +67,7 @@ public:
   assert(W == r.size());
   const size_t h= height();
   Vector<R> ret(h);
-  auto a= std::cbegin(dat);
+  auto a= std::begin(dat);
   for (int i= 0; i < h; ++i)
    for (int k= 0; k < W; ++k, ++a) ret[i]+= *a * r[k];
   return ret;
@@ -108,8 +113,8 @@ public:
  size_t height() const { return H; }
  explicit operator bool() const { return W; }
  Array operator[](int i) { return {std::next(std::begin(dat), i * m)}; }
- ConstArray operator[](int i) const { return {std::next(std::cbegin(dat), i * m)}; }
- ConstArray get(int i) const { return {std::next(std::cbegin(dat), i * m)}; }
+ ConstArray operator[](int i) const { return {std::next(std::begin(dat), i * m)}; }
+ ConstArray get(int i) const { return {std::next(std::begin(dat), i * m)}; }
  bool operator==(const Matrix &r) const { return W == r.W && H == r.H && (dat == r.dat).min(); }
  bool operator!=(const Matrix &r) const { return W != r.W || H != r.H || (dat != r.dat).max(); }
  Matrix &operator+=(const Matrix &r) { return assert(H == r.H), assert(W == r.W), dat^= r.dat, *this; }
@@ -120,7 +125,7 @@ public:
   u128 *c= std::begin(ret.dat);
   for (size_t i= 0; i < H; ++i, std::advance(c, m)) {
    ConstArray a= this->operator[](i);
-   const u128 *b= std::cbegin(r.dat);
+   const u128 *b= std::begin(r.dat);
    for (size_t k= 0; k < W; ++k, std::advance(b, r.m))
     if (a[k])
      for (size_t j= 0; j < r.m; ++j) c[j]^= b[j];
@@ -131,7 +136,7 @@ public:
  Vector<bool> operator*(const Vector<bool> &r) const {
   assert(W == r.size());
   Vector<bool> ret(H);
-  auto a= std::cbegin(dat);
+  auto a= std::begin(dat);
   for (size_t i= 0; i < H; ++i)
    for (size_t j= 0; j < m; ++j, ++a) ret[i]^= *a & r[j];
   return ret;

@@ -152,6 +152,18 @@ public:
   for (; i >= 0; i--, pw*= f[0]) F[i]*= pw;
   return f[0]= 0, composite(f, F);
  }
+ // g(f), g is polynomial
+ template <class T> static inline std::vector<T> polynomial_composite(std::vector<T> f, std::vector<T> g) {
+  const int sz= f.size(), n= __builtin_ctz(sz);
+  assert(sz == 1 << n);
+  T F[MAX_N + 1]= {};
+  for (int j= 0, e= g.size();; ++j, --e) {
+   for (int i= e; i--;) (F[j]*= f[0])+= g[i];
+   if (j == n || e == 1) break;
+   for (int i= 1; i < e; ++i) g[i - 1]= g[i] * i;
+  }
+  return f[0]= 0, composite(f, F);
+ }
  // {[X^{[n]}](f^k)/(k!)} for k=0,1,...,n
  template <class T>  // O(n^2 2^n)
  static inline std::vector<T> egf(std::vector<T> f) {

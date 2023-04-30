@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "src/FFT/NTT.hpp"
 class BigInt {
- static constexpr unsigned BASE= 10000000, D= 7;
+ static constexpr unsigned BASE= 1000000, D= 6;
  using mod_t= ModInt<0x3ffffffffa000001>;
  using Vec= std::vector<unsigned>;
  using ntt= NTT<mod_t>;
@@ -85,48 +85,21 @@ public:
  BigInt operator*(const BigInt &r) const {
   if (is_zero() || r.is_zero()) return 0;
   const int n= dat.size(), m= r.dat.size(), sz= n + m - 1;
-  static mod_t f[1 << 20], g[1 << 20], f2[1 << 17][16], g2[1 << 17][16];
+  static mod_t f[1 << 20], g[1 << 20];
   static long long h[1 << 20];
   if (int i= n, j; std::min(n, m) >= 74) {
-   const int rl= pw2(sz), l= pw2(std::max(n, m));
-   const int fl= std::pow(l, 0.535) * 8.288;
-   if (l + fl < sz && sz <= (rl >> 3) * 5) {
-    const int l= rl >> 4, l2= l << 1, nn= (n + l - 1) / l, mm= (m + l - 1) / l, ss= nn + mm - 1;
-    for (int k= i= 0, s; k < n; i++, k+= l) {
-     for (j= s= std::min(l, n - k); j--;) f2[i][j]= dat[k + j];
-     std::fill_n(f2[i] + s, l2 - s, mod_t()), ntt::dft(l2, f2[i]);
-    }
-    if (this != &r)
-     for (int k= i= 0, s; k < m; i++, k+= l) {
-      for (j= s= std::min(l, m - k); j--;) g2[i][j]= dat[k + j];
-      std::fill_n(g2[i] + s, l2 - s, mod_t()), ntt::dft(l2, g2[i]);
-     }
-    else
-     for (i= nn; i--;) std::copy_n(f2[i], l2, g2[i]);
-    for (i= l2; i--;) f[i]= f2[0][i] * g2[0][i];
-    for (ntt::idft(l2, f), i= l2; i--;) h[i]= f[i].val();
-    for (int k= l, ed, ii= 1; ii < ss; ++ii, k+= l) {
-     j= std::max(0, ii - nn + 1), ed= std::min(mm - 1, ii);
-     for (i= l2; i--;) f[i]= f2[ii - ed][i] * g2[ed][i];
-     for (; j < ed; ++j)
-      for (i= l2; i--;) f[i]+= f2[ii - j][i] * g2[j][i];
-     for (ntt::idft(l2, f), i= std::min(l, sz - k); i--;) h[i + k]+= f[i].val();
-     for (i= std::min(l2, sz - k); i-- > l;) h[i + k]= f[i].val();
-    }
-   } else {
-    const int len= sz <= l + fl ? l : pw2(sz);
-    for (i= n; i--;) f[i]= dat[i];
-    std::fill_n(f + n, len - n, mod_t()), ntt::dft(len, f);
-    if (this != &r) {
-     for (i= m; i--;) g[i]= r.dat[i];
-     std::fill_n(g + m, len - m, mod_t()), ntt::dft(len, g);
-     for (i= len; i--;) f[i]*= g[i];
-    } else
-     for (i= len; i--;) f[i]*= f[i];
-    for (ntt::idft(len, f), i= len; i < sz; f[i - len]-= h[i], i++)
-     for (h[i]= 0, j= i - m + 1; j < n; j++) h[i]+= (long long)dat[j] * r.dat[i - j];
-    for (i= std::min(sz, len); i--;) h[i]= f[i].val();
-   }
+   const int rl= pw2(sz), l= pw2(std::max(n, m)), fl= std::pow(l, 0.535) * 8.288, len= sz <= l + fl ? l : pw2(sz);
+   for (i= n; i--;) f[i]= dat[i];
+   std::fill_n(f + n, len - n, mod_t()), ntt::dft(len, f);
+   if (this != &r) {
+    for (i= m; i--;) g[i]= r.dat[i];
+    std::fill_n(g + m, len - m, mod_t()), ntt::dft(len, g);
+    for (i= len; i--;) f[i]*= g[i];
+   } else
+    for (i= len; i--;) f[i]*= f[i];
+   for (ntt::idft(len, f), i= len; i < sz; f[i - len]-= h[i], i++)
+    for (h[i]= 0, j= i - m + 1; j < n; j++) h[i]+= (long long)dat[j] * r.dat[i - j];
+   for (i= std::min(sz, len); i--;) h[i]= f[i].val();
   } else
    for (std::fill_n(h, sz, 0); i--;)
     for (j= m; j--;) h[i + j]+= (long long)dat[i] * r.dat[j];
@@ -138,23 +111,36 @@ public:
  }
  BigInt operator/(const BigInt &r) const {
   assert(!r.is_zero());
-  if (r.dat.size() == 1 && r.dat.back() == 1) return r.neg ? -*this : *this;
   BigInt a= this->abs(), b= r.abs();
   if (a < b) return 0;
-  const int pb= dat.size(), qb= r.dat.size(), prec= std::max(pb - qb, 1);
-  int l= std::min(prec, 3), ql= std::min(qb, 6), nl, nql;
-  BigInt x(0, Vec(l + 1)), p, rr= b.shift(qb - ql), c(0, Vec(l + ql + 1));
-  x.dat.back()= 1, c.dat.back()= 2;
-  while (x != p) p.dat.swap(x.dat), x= (p * (c - rr * p)).shift(l + ql);
-  if (l != prec)
-   for (p.neg= true; x != p; l= nl, ql= nql) {
-    nl= std::min(l * 2 + 1, prec), nql= std::min(ql * 2 + 1, qb);
-    p.dat.swap(x.dat), x= (p * (c - rr * p)).shift(2 * l - nl + ql);
-    if (p.neg= false; nql != ql) rr= b.shift(qb - nql);
-    c.dat.back()= 0, c.dat.resize(nql + nl + 1), c.dat.back()= 2;
+  const int norm= BASE / (b.dat.back() + 1), s= (a*= norm).dat.size(), t= (b*= norm).dat.size(), deg= s - t + 2, yb= b.dat.back();
+  int k= deg;
+  while (k > 64) k= (k + 1) / 2;
+  BigInt z(0, Vec(k + 2)), rem(0, Vec(t));
+  rem.dat.back()= 1;
+  for (int i= z.dat.size(); i--;) {
+   if (rem.dat.size() == t) {
+    if (b <= rem) z.dat[i]= 1, rem-= b;
+   } else if (rem.dat.size() > t) {
+    int q= ((long long)rem.dat[rem.dat.size() - 1] * BASE + rem.dat[rem.dat.size() - 2]) / yb;
+    BigInt yq= b * q;
+    while (rem < yq) --q, yq-= b;
+    for (rem-= yq; b <= rem;) ++q, rem-= b;
+    z.dat[i]= q;
    }
-  if (x= (x * a).shift(pb + (pb == qb)); a >= (x + 1) * b) x+= 1;
-  return x.neg= neg ^ r.neg, x;
+   if (i) rem.dat.insert(rem.dat.begin(), 0);
+  }
+  for (z.shrink(); k < deg; k<<= 1) {
+   int d= std::min(t, 2 * k + 1);
+   BigInt x= z * z, w2= z + z;
+   Vec w_(k + 1);
+   x.dat.insert(x.dat.begin(), 0), x*= BigInt(0, Vec(b.dat.end() - d, b.dat.end())), x.dat.erase(x.dat.begin(), x.dat.begin() + d), std::copy(w2.dat.begin(), w2.dat.end(), std::back_inserter(w_)), z= BigInt(0, w_) - x, z.dat.erase(z.dat.begin());
+  }
+  z.dat.erase(z.dat.begin(), z.dat.begin() + k - deg);
+  BigInt q= a * z;
+  for (q.dat.erase(q.dat.begin(), q.dat.begin() + t + deg), z= b * q; a < z;) q-= 1, z-= b;
+  for (rem= a - z; b <= rem;) q+= 1, rem-= b;
+  return q.shrink(), q.neg= neg ^ r.neg, q;
  }
  BigInt operator%(const BigInt &r) const { return *this - (*this / r) * r; }
  BigInt &operator+=(const BigInt &r) { return *this= *this + r; }

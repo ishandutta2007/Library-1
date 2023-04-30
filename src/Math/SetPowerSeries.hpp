@@ -149,7 +149,7 @@ public:
   for (; i <= ed; i++) F[i]= F[i - 1] * (k - i + 1);
   for (auto e= k - --i; e; e>>= 1, bs*= bs)
    if (e & 1) pw*= bs;
-  for (; i >= 0; i--, pw*= f[0]) F[i]*= pw;
+  for (; i >= 0; --i, pw*= f[0]) F[i]*= pw;
   return f[0]= 0, composite(f, F);
  }
  // g(f), g is polynomial
@@ -157,7 +157,9 @@ public:
   const int sz= f.size(), n= __builtin_ctz(sz);
   assert(sz == 1 << n);
   T F[MAX_N + 1]= {};
-  for (int j= 0, e= g.size();; ++j, --e) {
+  int e= g.size();
+  if (!e) return std::vector<T>(sz);
+  for (int j= 0;; ++j, --e) {
    for (int i= e; i--;) (F[j]*= f[0])+= g[i];
    if (j == n || e == 1) break;
    for (int i= 1; i < e; ++i) g[i - 1]= g[i] * i;

@@ -13,7 +13,6 @@ class BigInt {
  using ntt= NTT<mod_t>;
  bool neg;
  Vec dat;
- BigInt shift(int sz) const { return {neg, Vec(dat.begin() + sz, dat.end())}; }
  BigInt(bool n, const Vec &d): neg(n), dat(d) {}
 public:
  BigInt(): neg(false), dat() {}
@@ -110,7 +109,12 @@ public:
   return ret;
  }
  BigInt operator/(const BigInt &r) const {
-  assert(!r.is_zero());
+  if (assert(!r.is_zero()); r.dat.size() == 1) {
+   BigInt qu(neg ^ r.neg, Vec(dat.size()));
+   long long d= 0;
+   for (int i= dat.size(), r0= r.dat[0], q; i--;) (d*= D)+= dat[i], q= d / r0, d= d % r0, qu.dat[i]= q;
+   return qu.shrink(), qu;
+  }
   BigInt a= this->abs(), b= r.abs();
   if (a < b) return 0;
   const int norm= BASE / (b.dat.back() + 1), s= (a*= norm).dat.size(), t= (b*= norm).dat.size(), deg= s - t + 2, yb= b.dat.back();

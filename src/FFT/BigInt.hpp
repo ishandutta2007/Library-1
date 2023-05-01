@@ -112,7 +112,7 @@ public:
   if (assert(!r.is_zero()); r.dat.size() == 1) {
    BigInt qu(neg ^ r.neg, Vec(dat.size()));
    long long d= 0;
-   for (int i= dat.size(), r0= r.dat[0], q; i--;) (d*= D)+= dat[i], q= d / r0, d= d % r0, qu.dat[i]= q;
+   for (int i= dat.size(), r0= r.dat[0], q; i--;) (d*= BASE)+= dat[i], q= d / r0, d= d % r0, qu.dat[i]= q;
    return qu.shrink(), qu;
   }
   BigInt a= this->abs(), b= r.abs();

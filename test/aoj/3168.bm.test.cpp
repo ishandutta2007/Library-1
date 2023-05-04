@@ -24,7 +24,7 @@ signed main() {
    for (int j= 0; j < N; ++j) dist[i][j]= min(dist[i][j], dist[i][k] + dist[k][j]);
  BipartiteGraph graph(N);
  for (int i= 0; i < N; ++i)
-  for (int j= 0; j < N; ++j)
+  for (int j= 0; j < i; ++j)
    if (int x= (c[i] - c[j] + 26) % 26; (x == 1 || x == 25) && dist[i][j] <= K) graph.add_edge(i, j);
  graph.build();
  cout << graph.min_vertex_cover().size() << '\n';

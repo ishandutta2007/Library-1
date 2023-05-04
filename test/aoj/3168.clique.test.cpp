@@ -2,7 +2,7 @@
 // 300 頂点
 #include <iostream>
 #include <algorithm>
-#include "src/Graph/MaxClique.hpp"
+#include "src/Graph/CliqueProblem.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -23,9 +23,9 @@ signed main() {
  for (int k= 0; k < N; ++k)
   for (int i= 0; i < N; ++i)
    for (int j= 0; j < N; ++j) dist[i][j]= min(dist[i][j], dist[i][k] + dist[k][j]);
- MaxClique graph(N);
+ CliqueProblem graph(N);
  for (int i= 0; i < N; ++i)
-  for (int j= 0; j < N; ++j)
+  for (int j= 0; j < i; ++j)
    if (int x= (c[i] - c[j] + 26) % 26; (x == 1 || x == 25) && dist[i][j] <= K) graph.add_edge(i, j);
  cout << graph.get_min_vertex_cover().size() << '\n';
  return 0;

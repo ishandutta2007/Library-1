@@ -1,13 +1,13 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/maximum_independent_set"
 #include <iostream>
-#include "src/Graph/MaxClique.hpp"
+#include "src/Graph/CliqueProblem.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int N, M;
  cin >> N >> M;
- MaxClique graph(N);
+ CliqueProblem graph(N);
  while (M--) {
   int u, v;
   cin >> u >> v;

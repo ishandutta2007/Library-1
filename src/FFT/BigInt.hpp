@@ -171,7 +171,9 @@ public:
   }
   z.dat.erase(z.dat.begin(), z.dat.begin() + k - deg);
   BigInt q= a * z;
-  return q.dat.erase(q.dat.begin(), q.dat.begin() + t + deg), q.shrink(), q.neg= neg ^ r.neg, q;
+  for (q.dat.erase(q.dat.begin(), q.dat.begin() + t + deg), z= b * q; a < z;) q-= 1, z-= b;
+  for (rem= a - z; b <= rem;) q+= 1, rem-= b;
+  return q.shrink(), q.neg= neg ^ r.neg, q;
  }
  BigInt operator%(const BigInt &r) const { return *this - (*this / r) * r; }
  BigInt &operator+=(const BigInt &r) { return *this= *this + r; }

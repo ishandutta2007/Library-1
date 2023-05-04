@@ -14,7 +14,7 @@ signed main() {
  vector<Mint> a(1 << N), b(1 << N);
  for (auto &ai: a) cin >> ai;
  for (auto &bi: b) cin >> bi;
- auto c= mvc.convolve(a, b);
+ auto c= mvc.convolve<Mint, 1 << 21, 20>(a, b);
  for (int i= 0; i < (1 << N); i++) cout << c[i] << " \n"[i + 1 == 1 << N];
  return 0;
 }

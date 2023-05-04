@@ -20,11 +20,10 @@ public:
   for (v= v < 0 ? -v : v; v; v/= BASE) dat.push_back(v % BASE);
  }
  BigInt(const string &s): neg(false) {
-  int p= 0;
-  u64 x= 0;
-  for (; p < (int)s.size() && (s[p] == '-' || s[p] == '+'); ++p)
+  int p= 0, i= s.size(), j;
+  for (; p < i && (s[p] == '-' || s[p] == '+'); ++p)
    if (s[p] == '-') neg= !neg;
-  for (int i= s.size(), j; i > p; i-= D, dat.push_back(x), x= 0)
+  for (u64 x= 0; i > p; i-= D, dat.push_back(x), x= 0)
    for (j= max(p, i - D); j < i;) x= x * 10 + s[j++] - '0';
   shrink();
  }
@@ -133,17 +132,23 @@ public:
   BigInt ret(neg ^ r.neg, Vec(sz));
   u128 car= 0;
   for (int i= 0; i < sz; ++i, car/= BASE) ret.dat[i]= (car+= h[i]) % BASE;
-  for (; car; car/= BASE) ret.dat.emplace_back(car % BASE);
+  for (; car; car/= BASE) ret.dat.push_back(car % BASE);
   return ret;
  }
  BigInt operator/(const BigInt &r) const {
-  assert(!r.is_zero());
+  if (assert(!r.is_zero()); r.dat.size() == 1) {
+   BigInt qu(neg ^ r.neg, Vec(dat.size()));
+   u128 d= 0, q;
+   u64 r0= r.dat[0];
+   for (int i= dat.size(); i--;) (d*= BASE)+= dat[i], q= d / r0, d= d % r0, qu.dat[i]= q;
+   return qu.shrink(), qu;
+  }
   BigInt a= this->abs(), b= r.abs();
   if (a < b) return 0;
   const u64 norm= BASE / (b.dat.back() + 1);
-  const int s= (a*= norm).dat.size(), t= (b*= norm).dat.size(), deg= s - t + 2;
+  const u32 s= (a*= norm).dat.size(), t= (b*= norm).dat.size(), deg= s - t + 2;
   const u64 yb= b.dat.back();
-  int k= deg;
+  u32 k= deg;
   while (k > 64) k= (k + 1) / 2;
   BigInt z(0, Vec(k + 2)), rem(0, Vec(t));
   rem.dat.back()= 1;

@@ -16,7 +16,7 @@ public:
  }
  int size() const { return n; }
  int dim() const { return k; }
- template <typename mod_t, std::size_t LM= 1 << 19, std::size_t LM2= 18> std::vector<mod_t> convolve(const std::vector<mod_t> &f, const std::vector<mod_t> &g) const {
+ template <class mod_t, std::size_t LM= 1 << 19, std::size_t LM2= 18> std::vector<mod_t> convolve(const std::vector<mod_t> &f, const std::vector<mod_t> &g) const {
   assert((int)f.size() == n), assert((int)g.size() == n);
   if (!k) return {f[0] * g[0]};
   mod_t *r= GlobalArray<mod_t, LM, 0>::bf;

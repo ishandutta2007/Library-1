@@ -4,12 +4,12 @@
 class MaxClique {
  const int n, m;
  using u128= __uint128_t;
- using u64= std::uint64_t;
- using u16= std::uint16_t;
+ using u64= uint64_t;
+ using u16= uint16_t;
  struct id_num {
   u16 id, num;
  };
- std::vector<u128> adj, buf;
+ std::vector<u128> adj, buf, adj_;
  std::vector<u16> deg, clique, cur;
  void dfs(std::vector<id_num> &rem) {
   if (clique.size() < cur.size()) clique= cur;
@@ -36,53 +36,32 @@ class MaxClique {
    std::fill_n(buf.begin(), m, 0);
    for (auto u: nrem) buf[u.id >> 7]|= u128(1) << (u.id & 127);
    for (auto u: nrem) {
-    int b= u.id * m, cnt= 0;
-    for (int i= 0; i < m; ++i) {
-     u128 tmp= buf[i] & adj[b + i];
-     cnt+= __builtin_popcountll(tmp >> 64) + __builtin_popcountll(u64(tmp));
-    }
-    deg[u.id]= cnt;
+    int b= u.id * m, i= 0;
+    for (u128 tmp; i < m; ++i) tmp= buf[i] & adj[b + i], deg[u.id]+= __builtin_popcountll(tmp >> 64) + __builtin_popcountll(u64(tmp));
    }
    cur.push_back(p.id), dfs(nrem), cur.pop_back(), rem.pop_back();
   }
  }
+ void calc(bool complement) {
+  adj.assign(adj_.begin(), adj_.end());
+  if (complement)
+   for (int u= n; u--;)
+    for (int v= u; v--;) adj[u * m + (v >> 7)]^= u128(1) << (v & 127), adj[v * m + (u >> 7)]^= u128(1) << (u & 127);
+  std::vector<id_num> nrem;
+  for (u16 u= n; u--;) {
+   nrem.push_back(id_num{u, 0});
+   int b= u * m, i= 0;
+   for (u128 tmp; i < m; ++i) tmp= adj[b + i], deg[u]+= __builtin_popcountll(tmp >> 64) + __builtin_popcountll(u64(tmp));
+  }
+  dfs(nrem);
+ }
 public:
- MaxClique(int n): n(n), m((n + 127) >> 7), adj(n * m), deg(n) {}
- void add_edge(int u, int v) { adj[u * m + (v >> 7)]|= u128(1) << (v & 127), adj[v * m + (u >> 7)]|= u128(1) << (u & 127); }
- std::vector<u16> get_max_clique() {
-  std::vector<id_num> nrem;
-  for (std::uint16_t u= n; u--;) {
-   nrem.push_back(id_num{u, 0});
-   int cnt= 0, b= u * m;
-   for (int i= 0; i < m; ++i) {
-    u128 tmp= adj[b + i];
-    cnt+= __builtin_popcountll(tmp >> 64) + __builtin_popcountll(u64(tmp));
-   }
-   deg[u]= cnt;
-  }
-  dfs(nrem);
-  return clique;
- }
- std::vector<u16> get_max_independent_set() {
-  for (int u= n; u--;)
-   for (int v= u; v--;) adj[u * m + (v >> 7)]^= u128(1) << (v & 127), adj[v * m + (u >> 7)]^= u128(1) << (u & 127);
-  return get_max_clique();
- }
+ MaxClique(int n): n(n), m((n + 127) >> 7), deg(n), adj_(n * m) {}
+ void add_edge(int u, int v) { adj_[u * m + (v >> 7)]|= u128(1) << (v & 127), adj_[v * m + (u >> 7)]|= u128(1) << (u & 127); }
+ std::vector<u16> get_max_clique() { return calc(false), clique; }
+ std::vector<u16> get_max_independent_set() { return calc(true), clique; }
  std::vector<u16> get_min_vertex_cover() {
-  for (int u= n; u--;)
-   for (int v= u; v--;) adj[u * m + (v >> 7)]^= u128(1) << (v & 127), adj[v * m + (u >> 7)]^= u128(1) << (u & 127);
-  std::vector<id_num> nrem;
-  for (std::uint16_t u= n; u--;) {
-   nrem.push_back(id_num{u, 0});
-   int cnt= 0, b= u * m;
-   for (int i= 0; i < m; ++i) {
-    u128 tmp= adj[b + i];
-    cnt+= __builtin_popcountll(tmp >> 64) + __builtin_popcountll(u64(tmp));
-   }
-   deg[u]= cnt;
-  }
-  dfs(nrem);
-  std::fill_n(buf.begin(), m, 0);
+  calc(true), std::fill_n(buf.begin(), m, 0);
   for (int u: clique) buf[u >> 7]|= u128(1) << (u & 127);
   std::vector<u16> ret;
   for (int i= 0; i < n; ++i)

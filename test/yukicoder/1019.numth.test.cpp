@@ -10,14 +10,14 @@ signed main() {
  ios::sync_with_stdio(false);
  using Mint= ModInt<998244353>;
  using namespace multiplicative_functions;
- auto F= [](long long N) {
+ auto F= [](uint64_t n) {
   Mint S= 0;
-  for (long long x= sqrt(N); x; x--) S+= x * (1 + 2 * (long long)sqrt(N - x * x));
+  for (uint64_t x= sqrt(n); x; --x) S+= x * (1 + 2 * (uint64_t)sqrt(n - x * x));
   return S;
  };
- long long N;
+ uint64_t N;
  cin >> N;
- long long sqrtN= sqrtl(N);
+ uint64_t sqrtN= sqrt(N);
  auto mu= Sieve<>::multiplicative_table<Mint>(sqrtN, Moebius<Mint>::f);
  Mint ans= 0;
  for (int d= 1; d <= sqrtN; d++) ans+= F(N / d / d) * d * mu[d];

@@ -16,6 +16,11 @@ template <class T, size_t _Nm> struct ConstexprArray {
 protected:
  T dat[_Nm]= {};
  size_t sz= 0;
+ friend ostream &operator<<(ostream &os, const ConstexprArray &r) {
+  os << "[";
+  for (size_t i= 0; i < r.sz; ++i) os << r[i] << ",]"[i == r.sz - 1];
+  return os;
+ }
 };
 class Factors: public ConstexprArray<pair<u64, uint16_t>, 16> {
  template <class Uint, class MP> static constexpr Uint rho(Uint n, Uint c) {
@@ -42,9 +47,9 @@ class Factors: public ConstexprArray<pair<u64, uint16_t>, 16> {
  constexpr void init(u64 n) {
   for (u64 p= 2; p < 100 && p * p <= n; p++)
    if (n % p == 0)
-    for (dat[sz++].first= p; n % p == 0;) n/= p, dat[sz - 1].second++;
+    for (dat[sz++].first= p; n % p == 0;) n/= p, ++dat[sz - 1].second;
   for (u64 p= 0; n > 1; dat[sz++].first= p)
-   for (p= find_prime_factor(n); n % p == 0;) n/= p, dat[sz].second++;
+   for (p= find_prime_factor(n); n % p == 0;) n/= p, ++dat[sz].second;
  }
 public:
  constexpr Factors()= default;
@@ -65,8 +70,23 @@ constexpr u64 primitive_root(u64 p) {
  if (p < (1ull << 62)) return inner_primitive_root<u64, MP_Mo<u64, u128, 64, 63>>(p);
  return inner_primitive_root<u64, MP_D2B1>(p);
 }
+class Divisors: public ConstexprArray<u64, 110600> {
+ constexpr void init(const Factors &f) {
+  dat[sz++]= 1;
+  for (auto [p, e]: f) {
+   u64 pw= p;
+   size_t psz= sz;
+   for (uint16_t i= 1; i <= e; ++i, pw*= p)
+    for (size_t j= 0; j < psz; ++j) dat[sz++]= dat[j] * pw;
+  }
+ }
+public:
+ constexpr Divisors()= default;
+ constexpr Divisors(const Factors &f) { init(f), bubble_sort(dat, dat + sz); };
+ constexpr Divisors(u64 n): Divisors(Factors(n)) {}
+};
 }  // namespace math_internal
-using math_internal::Factors, math_internal::primitive_root;
+using math_internal::Factors, math_internal::Divisors, math_internal::primitive_root;
 constexpr std::uint64_t totient(const Factors &f) {
  std::uint64_t ret= 1, i= 0;
  for (auto [p, e]: f)

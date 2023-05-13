@@ -13,6 +13,6 @@ signed main() {
  };
  long long N;
  cin >> N;
- cout << (long long)multiplicative_sum<>(N, f, {0, 2}) << '\n';
+ cout << multiplicative_sum<long long>(N, f, {0, 2}) << '\n';
  return 0;
 }

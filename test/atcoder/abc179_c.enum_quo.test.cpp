@@ -1,14 +1,15 @@
 #define PROBLEM "https://atcoder.jp/contests/abc179/tasks/abc179_c"
 // O(√N)
 #include <iostream>
-#include "src/Math/DirichletConvSumTable.hpp"
+#include "src/Math/enumerate_quotients.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- long long N;
+ int N;
  cin >> N;
- auto f= get_1<long long>(N - 1, (int)sqrt(N - 1));
- cout << dirichlet_mul_sum<long long>(f, f) << '\n';
+ long long ans= 0;
+ for (auto [q, l, r]: enumerate_quotients(N - 1)) ans+= (r - l) * q;
+ cout << ans << '\n';
  return 0;
 }

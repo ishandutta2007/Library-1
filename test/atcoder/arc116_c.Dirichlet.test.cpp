@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/arc116/tasks/arc116_c"
 #include <iostream>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/DirichletConvSumTable.hpp"
+#include "src/Math/DirichletSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -9,7 +9,6 @@ signed main() {
  using Mint= ModInt<998244353>;
  long long N, M;
  cin >> N >> M;
- auto zeta= get_1<Mint>(M, pow(M, 2. / 3));
- cout << zeta.pow2(N).sum() << '\n';
+ cout << get_1<Mint>(M).pow(N).sum() << '\n';
  return 0;
 }

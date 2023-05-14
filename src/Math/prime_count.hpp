@@ -8,6 +8,7 @@ template <class T> class QuotientSum {
  size_t K;
 public:
  std::vector<T> s, l;
+ QuotientSum() {}
  QuotientSum(uint64_t N, size_t K, const std::vector<T> &s, const std::vector<T> &l): N(N), K(K), s(s), l(l) {}
  inline T sum() const { return l[1]; }
  inline T sum(uint64_t n) const { return n <= K ? s[n] : l[N / n]; }

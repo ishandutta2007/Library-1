@@ -3,10 +3,18 @@
 #include <algorithm>
 #include <tuple>
 #include <cmath>
+template <class T> class QuotientSum {
+ uint64_t N;
+ size_t K;
+public:
+ std::vector<T> s, l;
+ QuotientSum(uint64_t N, size_t K, const std::vector<T> &s, const std::vector<T> &l): N(N), K(K), s(s), l(l) {}
+ inline T sum() const { return l[1]; }
+ inline T sum(uint64_t n) const { return n <= K ? s[n] : l[N / n]; }
+};
 template <class T= __int128_t> auto polynomial_prime_sum_table(uint64_t N, const std::vector<T> &poly) {
  const int sqrtN= std::sqrt(N), d= poly.size();
  std::vector<int> primes;
- std::vector<T> small(sqrtN + 1, 0), large(sqrtN + 1, 0);
  std::vector<std::vector<T>> s(d, std::vector<T>(sqrtN + 1)), l(d, std::vector<T>(sqrtN + 1));
  for (int n= 1, k= 0; n <= sqrtN; ++n, k= 0)
   for (T prd= n; k < d; prd*= (n + ++k)) s[k][n]= prd / (k + 1);
@@ -36,18 +44,17 @@ template <class T= __int128_t> auto polynomial_prime_sum_table(uint64_t N, const
      for (uint64_t i= sqrtN; i >= q; --i) s[k][i]-= (s[k][double(i) / p] - tk) * pw;
     }
   }
+ std::vector<T> Xs(sqrtN + 1, 0), Xl(sqrtN + 1, 0);
  for (int n= 1; n <= sqrtN; ++n)
-  for (int k= 0; k < d; ++k) small[n]+= s[k][n] * poly[k], large[n]+= l[k][n] * poly[k];
- return std::make_tuple(primes, small, large);
+  for (int k= 0; k < d; ++k) Xs[n]+= s[k][n] * poly[k], Xl[n]+= l[k][n] * poly[k];
+ return std::make_pair(primes, QuotientSum(N, sqrtN, Xs, Xl));
 }
 auto prime_count_table(uint64_t N) { return polynomial_prime_sum_table<uint64_t>(N, {1}); }
-uint64_t prime_count(uint64_t N) { return std::get<2>(prime_count_table(N))[1]; }
-template <class T> T polynomial_prime_sum(uint64_t N, const std::vector<T> &poly) { return std::get<2>(polynomial_prime_sum_table<T>(N, poly))[1]; }
-template <class T, class F> T additive_sum(uint64_t N, F f, std::vector<T> poly) {
+template <class T, class F> T additive_sum(uint64_t N, const F &f, std::vector<T> poly) {
  const uint64_t sqrtN= std::sqrt(N);
- auto [primes, s, l]= polynomial_prime_sum_table<T>(N, poly);
- T ret= l[1];
- for (uint64_t d= 2, nN= double(N) / d, nd; nN; nN= double(N) / (d= nd)) ret+= (nN > sqrtN ? l[d] : s[nN]) * ((nd= N / nN + 1) - d);
+ auto [primes, X]= polynomial_prime_sum_table<T>(N, poly);
+ T ret= X.sum();
+ for (uint64_t d= 2, nN, nd; nN; d= nd) ret+= X.sum(nN= double(N) / d) * ((nd= N / nN + 1) - d);
  for (uint64_t p: primes)
   for (uint64_t pw= p * p, e= 2; pw <= N; ++e, pw*= p) ret+= (f(p, e) - f(p, e - 1)) * uint64_t(double(N) / pw);
  return ret;
@@ -55,21 +62,22 @@ template <class T, class F> T additive_sum(uint64_t N, F f, std::vector<T> poly)
 template <class T= __int128_t, class F> T multiplicative_sum(uint64_t N, const F &f, const std::vector<T> &poly) {
  const uint64_t sqrtN= std::sqrt(N);
  std::vector<int> primes;
- std::vector<T> s, l;
- tie(primes, s, l)= polynomial_prime_sum_table<T>(N, poly);
+ QuotientSum<T> X;
+ tie(primes, X)= polynomial_prime_sum_table<T>(N, poly);
  size_t psz= primes.size();
  for (auto it= primes.rbegin(); it != primes.rend(); ++it) {
   uint64_t p= *it, M= N / p, q= p * p;
   int t= sqrtN / p, u= std::min(sqrtN, N / q);
-  T tk= s[p - 1];
-  for (auto i= q; i <= sqrtN; ++i) s[i]+= (s[double(i) / p] - tk) * f(p, 1);
-  for (int i= u; i > t; --i) l[i]+= (s[double(M) / i] - tk) * f(p, 1);
-  for (int i= t; i >= 1; --i) l[i]+= (l[i * p] - tk) * f(p, 1);
+  T tk= X.s[p - 1];
+  for (auto i= q; i <= sqrtN; ++i) X.s[i]+= (X.s[double(i) / p] - tk) * f(p, 1);
+  for (int i= u; i > t; --i) X.l[i]+= (X.s[double(M) / i] - tk) * f(p, 1);
+  for (int i= t; i; --i) X.l[i]+= (X.l[i * p] - tk) * f(p, 1);
  }
- for (auto n= sqrtN; n; --n) s[n]+= 1, l[n]+= 1;
+ for (auto n= sqrtN; n; --n) X.s[n]+= 1;
+ for (auto n= sqrtN; n; --n) X.l[n]+= 1;
  auto dfs= [&](auto rc, uint64_t n, size_t bg, T cf) -> T {
   if (cf == T(0)) return T(0);
-  T ret= cf * (n > sqrtN ? l[double(N) / n] : s[n]);
+  T ret= cf * X.sum(n);
   for (auto i= bg; i < psz; ++i) {
    uint64_t p= primes[i], q= p * p, nn= double(n) / q;
    if (!nn) break;

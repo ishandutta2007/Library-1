@@ -7,6 +7,7 @@ signed main() {
  ios::sync_with_stdio(false);
  long long N;
  cin >> N;
- cout << prime_count(N) << '\n';
+ auto [_, pi]= prime_count_table(N);
+ cout << pi.sum() << '\n';
  return 0;
 }

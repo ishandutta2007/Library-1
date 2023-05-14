@@ -10,4 +10,5 @@ $d$ := degre of polynomial
 ## 問題例
 [Xmas Contest 2019 D - Sum of (-1)^f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d) \
 [Xmas Contest 2019 E - Sum of f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_e) (加法的関数) \
-[LibreOJ #6686. Stupid GCD](https://loj.ac/p/6686) (2次多項式)
+[LibreOJ #6686. Stupid GCD](https://loj.ac/p/6686) (2次多項式) \
+[LibreOJ #572. 「LibreOJ Round #11」Misaka Network 与求和](https://loj.ac/p/572) 

@@ -9,6 +9,8 @@ signed main() {
  long long N;
  cin >> N;
  auto ans= enumerate_quotients(N);
- for (int i= 0, e= ans.size(); i < e; ++i) cout << get<0>(ans[i]) << " \n"[i == e - 1];
+ int k= ans.size();
+ cout << k << '\n';
+ for (int i= 0; i < k; ++i) cout << get<0>(ans[i]) << " \n"[i == k - 1];
  return 0;
 }

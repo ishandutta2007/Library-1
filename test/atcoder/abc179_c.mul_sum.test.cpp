@@ -10,6 +10,6 @@ signed main() {
  using namespace multiplicative_functions;
  long long N;
  cin >> N;
- cout << multiplicative_sum<long long>(N, Divisor<long long, 0>::f, Divisor<long long, 0>::poly()) << '\n';
+ cout << multiplicative_sum<long long>(N - 1, Divisor<long long, 0>::f, Divisor<long long, 0>::poly()) << '\n';
  return 0;
 }

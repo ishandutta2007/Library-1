@@ -116,10 +116,11 @@ template <class T> struct DirichletSeries {
   for (e= M - n + 1;; b*= b)
    if (e & 1 ? pw[0]*= b : T(); !(e>>= 1)) break;
   for (m= 1; m < n; ++m) pw[m]= pw[m - 1] * x[1];
-  std::vector<T> XX(Xl), z(K + 1, 0), Z(L + 1, 0);
-  for (i= L; i; --i) XX[i]-= x[1];
-  auto A= [&](uint64_t n) { return n <= K ? Xs[n] : XX[(double)N / n]; };
-  std::vector<T> y(x), Y(XX), Bs(Xs), c(y), Cs(K + 1), C(Y);
+  std::vector<T> Al(Xl), z(K + 1, 0), Z(L + 1, 0), As(Xs);
+  for (i= K; i; --i) As[i]-= x[1];
+  for (i= L; i; --i) Al[i]-= x[1];
+  auto A= [&](uint64_t n) { return n <= K ? As[n] : Al[(double)N / n]; };
+  std::vector<T> y(x), Y(Al), Bs(As), c(y), Cs(K + 1), C(Y);
   auto B= [&](uint64_t n) { return n <= K ? Bs[n] : Y[(double)N / n]; };
   for (tmp= pw[n - 2] * M, l= L; l; l--) C[l]*= tmp;
   for (i= 2; i <= K; ++i) c[i]*= tmp;

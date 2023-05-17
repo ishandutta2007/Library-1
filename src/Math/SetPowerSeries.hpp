@@ -152,36 +152,57 @@ public:
   for (; i >= 0; --i, pw*= f[0]) F[i]*= pw;
   return f[0]= 0, composite(f, F);
  }
- // g(f), g is polynomial
- template <class T> static inline std::vector<T> polynomial_composite(std::vector<T> f, std::vector<T> g) {
+ // P(f), P is polynomial
+ template <class T> static inline std::vector<T> polynomial_composite(std::vector<T> f, std::vector<T> P) {
   const int sz= f.size(), n= __builtin_ctz(sz);
   assert(sz == 1 << n);
   T F[MAX_N + 1]= {};
-  int e= g.size();
+  int e= P.size();
   if (!e) return std::vector<T>(sz);
   for (int j= 0;; ++j, --e) {
-   for (int i= e; i--;) (F[j]*= f[0])+= g[i];
+   for (int i= e; i--;) (F[j]*= f[0])+= P[i];
    if (j == n || e == 1) break;
-   for (int i= 1; i < e; ++i) g[i - 1]= g[i] * i;
+   for (int i= 1; i < e; ++i) P[i - 1]= P[i] * i;
   }
   return f[0]= 0, composite(f, F);
  }
- // {[X^{[n]}](f^k)/(k!)} for k=0,1,...,n
+ // {[X^{[n]}]f^k/k!} for k=0,1,...,n
  template <class T>  // O(n^2 2^n)
  static inline std::vector<T> egf(std::vector<T> f) {
-  const int sz= f.size(), n= __builtin_ctz(sz), md= 1 << 11, sz4= sz >> 2;
+  static constexpr int M= 1 << 11;
+  const int sz= f.size(), n= __builtin_ctz(sz), sz4= sz >> 2;
   assert(sz == 1 << n);
   if (n == 1) return {0, f[1]};
   int l= sz4, m;
   T *in= f.data() + l, *dp= in + l, tmp[sz4], *dp2;
-  for (int s; l > md; conv_tr(dp, in, dp, l), in-= (l>>= 1))
-   for (s= l, m= sz4; dp2= dp + (m - l), m > l; m>>= 1, s= l)
-    for (conv_tr(dp2 + m - l, in, tmp, l); s--;) dp2[s]+= tmp[s];
+  for (int s; l > M; conv_tr(dp, in, dp, l), in-= (l>>= 1))
+   for (m= sz4; dp2= dp + (m - l), m > l; m>>= 1)
+    for (s= l, conv_tr(dp2 + m - l, in, tmp, l); s--;) dp2[s]+= tmp[s];
   for (int s; l; conv_na(dp, in, dp, l), in-= (l>>= 1))
-   for (s= l, m= sz4; dp2= dp + (m - l), m > l; m>>= 1, s= l)
-    for (conv_na(dp2 + m - l, in, tmp, l); s--;) dp2[s]+= tmp[s];
+   for (m= sz4; dp2= dp + (m - l), m > l; m>>= 1)
+    for (s= l, conv_na(dp2 + m - l, in, tmp, l); s--;) dp2[s]+= tmp[s];
   std::vector<T> ret(n + 1, 0);
   for (int i= n + 1; --i;) ret[i]= dp[(1 << (n - i)) - 1];
+  return ret;
+ }
+ // {[X^{[n]}]g*f^k/k!} for k=0,1,...,n
+ template <class T>  // O(n^2 2^n)
+ static inline std::vector<T> egf(const std::vector<T> &f, std::vector<T> g) {
+  static constexpr int M= 1 << 11;
+  const int sz= f.size(), n= __builtin_ctz(sz), sz2= sz >> 1, sz4= sz >> 2;
+  assert(sz == 1 << n), assert(sz == (int)g.size());
+  if (n == 1) return {g[1], f[1] * g[0] + f[0] * g[1]};
+  int l= sz2, m;
+  const T *in= f.data() + sz2;
+  T *dp= g.data(), tmp[sz2], *dp2;
+  for (int s; l > M; conv_tr(dp, in, dp, l), in-= (l>>= 1))
+   for (m= sz2; dp2= dp + (m - l), m > l; m>>= 1)
+    for (s= l, conv_tr(dp2 + m - l, in, tmp, l); s--;) dp2[s]+= tmp[s];
+  for (int s; l; conv_na(dp, in, dp, l), in-= (l>>= 1))
+   for (m= sz2; dp2= dp + (m - l), m > l; m>>= 1)
+    for (s= l, conv_na(dp2 + m - l, in, tmp, l); s--;) dp2[s]+= tmp[s];
+  std::vector<T> ret(n + 1);
+  for (int i= n + 1; i--;) ret[i]= dp[(1 << (n - i)) - 1];
   return ret;
  }
 #undef SUBSET_REP

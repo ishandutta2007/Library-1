@@ -6,7 +6,7 @@ template <unsigned short MAX_N= 21> struct SetPowerSeries {
 #define SUBSET_REP(i, j, n) \
  for (int _= (n); _>>= 1;) \
   for (int __= 0, _2= _ << 1; __ < (n); __+= _2) \
-   for (int j= __, i= j | _, ___= i; j < ___; j++, i++)
+   for (int j= __, i= j | _, ___= i; j < ___; ++j, ++i)
  template <typename T> static inline void ranked_zeta_tr(const T f[], T ret[][MAX_N + 1], const int sz) {
   for (int S= sz, c; S--;) ret[S][c= __builtin_popcount(S)]= f[S], std::fill_n(ret[S], c, 0);
   SUBSET_REP(S, U, sz)
@@ -24,7 +24,7 @@ template <unsigned short MAX_N= 21> struct SetPowerSeries {
   for (int S= sz, c, d, e, bg; S--;) {
    c= __builtin_popcount(S), bg= std::min(2 * c, n);
    for (d= bg; d >= c; d--)
-    for (tmp[d]= 0, e= d - c; e <= c; e++) tmp[d]+= F[S][e] * G[S][d - e];
+    for (tmp[d]= 0, e= d - c; e <= c; ++e) tmp[d]+= F[S][e] * G[S][d - e];
    for (d= bg; d >= c; d--) F[S][d]= tmp[d];
   }
   SUBSET_REP(S, U, sz)
@@ -32,7 +32,7 @@ template <unsigned short MAX_N= 21> struct SetPowerSeries {
   for (int S= sz; S--;) ret[S]= F[S][__builtin_popcount(S)];
  }
  template <typename T, class F> static inline void onconv_na(const T g[], T ret[], const F &phi, const int sz) {
-  for (int s= 1, t; s < sz; phi(s, ret[s]), s++)
+  for (int s= 1, t; s < sz; phi(s, ret[s]), ++s)
    for (ret[t= s]= 0; t; --t&= s) ret[s]+= ret[s ^ t] * g[t];
  }
  template <typename T, class F> static inline void onconv_tr(const T g[], T ret[], const F &phi, const int sz) {
@@ -41,7 +41,7 @@ template <unsigned short MAX_N= 21> struct SetPowerSeries {
   ranked_zeta_tr(g, G, sz), std::fill_n(mat[0], sz, ret[0]);
   for (int d= n; d; d--) std::fill_n(mat[d], sz, 0);
   for (int I= sz; I>>= 1;) phi(I, mat[1][I]= ret[0] * g[I]);
-  for (int d= 2; d <= n; d++) {
+  for (int d= 2; d <= n; ++d) {
    SUBSET_REP(S, U, sz) mat[d - 1][S]+= mat[d - 1][U];
    for (int S= sz; S--;)
     if (int c= __builtin_popcount(S); c <= d && d <= 2 * c)
@@ -86,7 +86,7 @@ public:
   int I= 1, ed= std::min(1 << 13, n);
   std::vector<T> ret(n, 0);
   for (int s, t, u= 1; I < ed; I<<= 1)
-   for (t= s= 0; s < I; phi(u, ret[u]), t= ++s, u++)
+   for (t= s= 0; s < I; phi(u, ret[u]), t= ++s, ++u)
     for (ret[u]= 0; t; --t&= s) ret[u]+= ret[u ^ t] * ret[t];
   T *h= ret.data();
   for (; I < n; I<<= 1)
@@ -103,7 +103,7 @@ public:
   std::vector<T> ret(sz);
   T *h= ret.data() + sz;
   const T *g= f.data();
-  for (int i= 0; i <= m; i++) ret[sz - (1 << i)]= F[m - i];
+  for (int i= 0; i <= m; ++i) ret[sz - (1 << i)]= F[m - i];
   int l= 1, ed= std::min(sz, 1 << 11), j;
   for (; l < ed; l<<= 1)
    for (j= sz2; j >= l; j>>= 1) conv_na(h - j, g + l, h - j - j + l, l);
@@ -130,10 +130,10 @@ public:
   assert(!(sz & (sz - 1))), assert(f.at(0) == T(1));
   int I= 2, ed= std::min(sz, 1 << 13);
   T h[sz];
-  for (std::copy_n(f.begin(), ed, h); I < ed; I<<= 1)
-   for (int s= 1, u= s | I; s < I; s++, u++)
-    for (int t= s; t; --t&= s) h[u]-= h[u ^ t] * f[t];
   const T *g= f.data();
+  for (std::copy_n(g, ed, h); I < ed; I<<= 1)
+   for (int s= 1, u= s | I; s < I; ++s, ++u)
+    for (int t= s; t; --t&= s) h[u]-= h[u ^ t] * f[t];
   for (; I < sz; I<<= 1)
    h[I]= g[I], onconv_tr(
                    g, h + I, [&](int s, T &x) { x= g[I | s] - x; }, I);
@@ -146,7 +146,7 @@ public:
   assert(sz == 1 << n);
   T F[MAX_N + 1]= {1}, pw= 1, bs= f[0];
   int i= 1, ed= std::min<std::uint64_t>(n, k);
-  for (; i <= ed; i++) F[i]= F[i - 1] * (k - i + 1);
+  for (; i <= ed; ++i) F[i]= F[i - 1] * (k - i + 1);
   for (auto e= k - --i; e; e>>= 1, bs*= bs)
    if (e & 1) pw*= bs;
   for (; i >= 0; --i, pw*= f[0]) F[i]*= pw;
@@ -174,7 +174,7 @@ public:
   assert(sz == 1 << n);
   if (n == 1) return {0, f[1]};
   int l= sz4, m;
-  T *in= f.data() + l, *dp= in + l, tmp[sz4], *dp2;
+  T *in= f.data() + l, *dp= in + l, tmp[sz4 / 2], *dp2;
   for (int s; l > M; conv_tr(dp, in, dp, l), in-= (l>>= 1))
    for (m= sz4; dp2= dp + (m - l), m > l; m>>= 1)
     for (s= l, conv_tr(dp2 + m - l, in, tmp, l); s--;) dp2[s]+= tmp[s];
@@ -194,7 +194,7 @@ public:
   if (n == 1) return {g[1], f[1] * g[0] + f[0] * g[1]};
   int l= sz2, m;
   const T *in= f.data() + sz2;
-  T *dp= g.data(), tmp[sz2], *dp2;
+  T *dp= g.data(), tmp[sz2 / 2], *dp2;
   for (int s; l > M; conv_tr(dp, in, dp, l), in-= (l>>= 1))
    for (m= sz2; dp2= dp + (m - l), m > l; m>>= 1)
     for (s= l, conv_tr(dp2 + m - l, in, tmp, l); s--;) dp2[s]+= tmp[s];

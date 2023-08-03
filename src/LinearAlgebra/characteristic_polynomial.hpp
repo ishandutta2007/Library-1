@@ -6,18 +6,18 @@ template <class K> Matrix<K> hessenberg(const Matrix<K> &A) {
  size_t n= A.width();
  assert(n == A.height());
  auto ret= A;
- for (size_t j= 0, i; j + 2 < n; ++j) {
-  for (i= j + 1; i < n; ++i)
-   if (ret[i][j] != K()) {
-    for (size_t r= n; r--;) std::swap(ret[j + 1][r], ret[i][r]);
-    for (size_t r= n; r--;) std::swap(ret[r][j + 1], ret[r][i]);
-    break;
-   }
+ for (size_t j= 0, i, r; j + 2 < n; ++j) {
+  if (ret[j + 1][j] == K())
+   for (i= j + 2; i < n; ++i)
+    if (ret[i][j] != K()) {
+     for (r= 0; r < n; ++r) std::swap(ret[j + 1][r], ret[i][r]);
+     for (; r--;) std::swap(ret[r][j + 1], ret[r][i]);
+     break;
+    }
   if (K iv; ret[j + 1][j] != K())
    for (iv= K(1) / ret[j + 1][j], i= j + 2; i < n; ++i) {
-    K m= ret[i][j] * iv;
-    for (size_t c= j; c < n; ++c) ret[i][c]-= m * ret[j + 1][c];
-    for (size_t r= n; r--;) ret[r][j + 1]+= m * ret[r][i];
+    for (K m= ret[i][r= j] * iv; r < n; ++r) ret[i][r]-= m * ret[j + 1][r];
+    for (; r--;) ret[r][j + 1]+= m * ret[r][i];
    }
  }
  return ret;

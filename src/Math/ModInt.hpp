@@ -1,12 +1,9 @@
 #pragma once
 #include "src/Math/mod_inv.hpp"
 #include "src/Internal/Remainder.hpp"
+#include "src/Internal/modint_traits.hpp"
 namespace math_internal {
 #define CE constexpr
-struct m_b {};
-struct s_b: m_b {};
-template <class mod_t> CE bool is_modint_v= is_base_of_v<m_b, mod_t>;
-template <class mod_t> CE bool is_staticmodint_v= is_base_of_v<s_b, mod_t>;
 template <class MP, u64 MOD> struct SB: s_b {
 protected:
  static CE MP md= MP(MOD);
@@ -51,7 +48,7 @@ private:
 template <u64 MOD> using ModInt= conditional_t < (MOD < (1 << 30)) & MOD, MInt<int, u32, SB<MP_Mo<u32, u64, 32, 31>, MOD>>, conditional_t < (MOD < (1ull << 62)) & MOD, MInt<i64, u64, SB<MP_Mo<u64, u128, 64, 63>, MOD>>, conditional_t<MOD<(1u << 31), MInt<int, u32, SB<MP_Na, MOD>>, conditional_t<MOD<(1ull << 32), MInt<i64, u32, SB<MP_Na, MOD>>, conditional_t<MOD <= (1ull << 41), MInt<i64, u64, SB<MP_Br2, MOD>>, MInt<i64, u64, SB<MP_D2B1, MOD>>>>>>>;
 #undef CE
 }
-using math_internal::ModInt, math_internal::is_modint_v, math_internal::is_staticmodint_v;
+using math_internal::ModInt;
 template <class mod_t, size_t LM> mod_t get_inv(int n) {
  static_assert(is_modint_v<mod_t>);
  static const auto m= mod_t::mod();

@@ -44,6 +44,8 @@ public:
   return ret;
  }
  Matrix &operator*=(const Matrix &r) { return *this= *this * r; }
+ Matrix &operator*=(R r) { return dat*= r, *this; }
+ Matrix operator*(R r) const { return Matrix(*this)*= r; }
  Matrix &operator*=(const DiagonalMatrix<R> &r) {
   assert(W == r.size());
   const size_t h= height();

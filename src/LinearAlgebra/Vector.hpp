@@ -1,8 +1,9 @@
 #pragma once
 #include <valarray>
 namespace la_internal {
-template <class R> struct Vector: public std::valarray<R> {
- using std::valarray<R>::valarray;
+using namespace std;
+template <class R> struct Vector: public valarray<R> {
+ using valarray<R>::valarray;
 };
 using u128= __uint128_t;
 using u8= uint8_t;
@@ -24,13 +25,13 @@ public:
 };
 template <> class Vector<bool> {
  size_t n;
- std::valarray<u128> dat;
+ valarray<u128> dat;
 public:
  Vector(): n(0) {}
  Vector(size_t n): n(n), dat((n + 127) >> 7) {}
  Vector(bool b, size_t n): n(n), dat(-u128(b), (n + 127) >> 7) {}
  Ref operator[](int i) {
-  u128 *ref= std::begin(dat) + (i >> 7);
+  u128 *ref= begin(dat) + (i >> 7);
   u8 j= i & 127;
   bool val= (*ref >> j) & 1;
   return Ref{ref, j, val};
@@ -46,7 +47,7 @@ public:
  Vector operator-(const Vector &r) const { return Vector(*this)-= r; }
  Vector operator*(bool b) const { return Vector(*this)*= b; }
  size_t size() const { return n; }
- u128 *data() { return std::begin(dat); }
+ u128 *data() { return begin(dat); }
  friend Vector operator*(bool b, const Vector &r) { return r * b; }
 };
 template <class R> struct DiagonalMatrix: public Vector<R> {

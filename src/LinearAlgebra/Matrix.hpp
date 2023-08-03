@@ -5,19 +5,19 @@ namespace la_internal {
 template <class R> class Matrix {
 public:
  size_t W;
- std::valarray<R> dat;
+ valarray<R> dat;
 public:
  static Matrix identity_matrix(int n) {
   Matrix ret(n, n);
-  return ret.dat[std::slice(0, n, n + 1)]= R(true), ret;
+  return ret.dat[slice(0, n, n + 1)]= R(true), ret;
  }
  Matrix(): W(0) {}
  Matrix(size_t h, size_t w, R v= R()): W(w), dat(v, h * w) {}
  size_t width() const { return W; }
  size_t height() const { return W ? dat.size() / W : 0; }
  explicit operator bool() const { return W; }
- auto operator[](int i) { return std::next(std::begin(dat), i * W); }
- auto operator[](int i) const { return std::next(std::begin(dat), i * W); }
+ auto operator[](int i) { return next(begin(dat), i * W); }
+ auto operator[](int i) const { return next(begin(dat), i * W); }
  bool operator==(const Matrix &r) const {
   if (W != r.W || dat.size() != r.dat.size()) return false;
   for (int i= dat.size(); i--;)
@@ -31,10 +31,10 @@ public:
   const size_t h= height(), w= r.W, l= W;
   assert(l == r.height());
   Matrix ret(h, w);
-  auto a= std::begin(dat);
-  auto c= std::begin(ret.dat);
-  for (int i= h; i--; std::advance(c, w)) {
-   auto b= std::begin(r.dat);
+  auto a= begin(dat);
+  auto c= begin(ret.dat);
+  for (int i= h; i--; advance(c, w)) {
+   auto b= begin(r.dat);
    for (int k= l; k--; ++a) {
     auto d= c;
     auto v= *a;
@@ -49,7 +49,7 @@ public:
  Matrix &operator*=(const DiagonalMatrix<R> &r) {
   assert(W == r.size());
   const size_t h= height();
-  auto a= std::begin(dat);
+  auto a= begin(dat);
   for (int i= 0; i < h; ++i)
    for (int j= 0; j < W; ++j, ++a) *a*= r[j];
   return *this;
@@ -58,7 +58,7 @@ public:
  friend Matrix operator*(const DiagonalMatrix<R> &l, Matrix r) {
   const size_t h= r.height();
   assert(h == l.size());
-  auto a= std::begin(r.dat);
+  auto a= begin(r.dat);
   for (int i= 0; i < h; ++i) {
    auto v= l[i];
    for (int j= 0; j < r.W; ++j, ++a) *a*= v;
@@ -69,7 +69,7 @@ public:
   assert(W == r.size());
   const size_t h= height();
   Vector<R> ret(h);
-  auto a= std::begin(dat);
+  auto a= begin(dat);
   for (int i= 0; i < h; ++i)
    for (int k= 0; k < W; ++k, ++a) ret[i]+= *a * r[k];
   return ret;
@@ -82,7 +82,7 @@ public:
 };
 template <> class Matrix<bool> {
  size_t H, W, m;
- std::valarray<u128> dat;
+ valarray<u128> dat;
  class Array {
   u128 *bg;
  public:
@@ -114,9 +114,9 @@ public:
  size_t width() const { return W; }
  size_t height() const { return H; }
  explicit operator bool() const { return W; }
- Array operator[](int i) { return {std::next(std::begin(dat), i * m)}; }
- ConstArray operator[](int i) const { return {std::next(std::begin(dat), i * m)}; }
- ConstArray get(int i) const { return {std::next(std::begin(dat), i * m)}; }
+ Array operator[](int i) { return {next(begin(dat), i * m)}; }
+ ConstArray operator[](int i) const { return {next(begin(dat), i * m)}; }
+ ConstArray get(int i) const { return {next(begin(dat), i * m)}; }
  bool operator==(const Matrix &r) const { return W == r.W && H == r.H && (dat == r.dat).min(); }
  bool operator!=(const Matrix &r) const { return W != r.W || H != r.H || (dat != r.dat).max(); }
  Matrix &operator+=(const Matrix &r) { return assert(H == r.H), assert(W == r.W), dat^= r.dat, *this; }
@@ -124,11 +124,11 @@ public:
  Matrix operator*(const Matrix &r) const {
   assert(W == r.H);
   Matrix ret(H, r.W);
-  u128 *c= std::begin(ret.dat);
-  for (size_t i= 0; i < H; ++i, std::advance(c, m)) {
+  u128 *c= begin(ret.dat);
+  for (size_t i= 0; i < H; ++i, advance(c, m)) {
    ConstArray a= this->operator[](i);
-   const u128 *b= std::begin(r.dat);
-   for (size_t k= 0; k < W; ++k, std::advance(b, r.m))
+   const u128 *b= begin(r.dat);
+   for (size_t k= 0; k < W; ++k, advance(b, r.m))
     if (a[k])
      for (size_t j= 0; j < r.m; ++j) c[j]^= b[j];
   }
@@ -138,7 +138,7 @@ public:
  Vector<bool> operator*(const Vector<bool> &r) const {
   assert(W == r.size());
   Vector<bool> ret(H);
-  auto a= std::begin(dat);
+  auto a= begin(dat);
   for (size_t i= 0; i < H; ++i)
    for (size_t j= 0; j < m; ++j, ++a) ret[i]^= *a & r[j];
   return ret;
@@ -149,5 +149,9 @@ public:
    if (k & 1 ? ret*= b, !(k>>= 1) : !(k>>= 1)) return ret;
  }
 };
+template <class K> static bool is_zero(K x) {
+ if constexpr (is_floating_point_v<K>) return abs(x) < 1e-8;
+ else return x == K();
+}
 }
 using la_internal::Matrix;

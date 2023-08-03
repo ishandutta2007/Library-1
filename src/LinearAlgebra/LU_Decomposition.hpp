@@ -6,27 +6,23 @@
 namespace la_internal {
 template <class K> class LU_Decomposition {
  Matrix<K> dat;
- std::vector<size_t> perm, piv;
+ vector<size_t> perm, piv;
  bool sgn;
  size_t psz;
- static bool is_zero(K x) {
-  if constexpr (std::is_floating_point_v<K>) return std::abs(x) < 1e-8;
-  else return x == K();
- }
 public:
  LU_Decomposition(const Matrix<K> &A): dat(A), perm(A.height()), sgn(false), psz(0) {
   const size_t h= A.height(), w= A.width();
-  std::iota(perm.begin(), perm.end(), 0), piv.resize(std::min(w, h));
+  iota(perm.begin(), perm.end(), 0), piv.resize(min(w, h));
   for (size_t c= 0, pos; c < w && psz < h; ++c) {
    pos= psz;
-   if constexpr (std::is_floating_point_v<K>) {
+   if constexpr (is_floating_point_v<K>) {
     for (size_t r= psz + 1; r < h; ++r)
-     if (std::abs(dat[perm[pos]][c]) < std::abs(dat[perm[r]][c])) pos= r;
+     if (abs(dat[perm[pos]][c]) < abs(dat[perm[r]][c])) pos= r;
    } else if (is_zero(dat[perm[pos]][c]))
     for (size_t r= psz + 1; r < h; ++r)
      if (!is_zero(dat[perm[r]][c])) pos= r, r= h;
    if (is_zero(dat[perm[pos]][c])) continue;
-   if (pos != psz) sgn= !sgn, std::swap(perm[pos], perm[psz]);
+   if (pos != psz) sgn= !sgn, swap(perm[pos], perm[psz]);
    const auto b= dat[perm[psz]];
    for (size_t r= psz + 1, i; r < h; ++r) {
     auto a= dat[perm[r]];
@@ -44,9 +40,9 @@ public:
   for (size_t i= dat.width(); i--;) ret*= dat[perm[i]][i];
   return ret;
  }
- std::vector<Vector<K>> kernel() const {
+ vector<Vector<K>> kernel() const {
   const size_t w= dat.width(), n= rank();
-  std::vector ker(w - n, Vector<K>(w));
+  vector ker(w - n, Vector<K>(w));
   for (size_t c= 0, i= 0; c < w; ++c) {
    if (i < n && piv[i] == c) ++i;
    else {
@@ -117,17 +113,17 @@ bool any1_upper(const u128 *a, size_t bg, size_t ed) {  //[bg,ed)
 }
 template <> class LU_Decomposition<bool> {
  Matrix<bool> dat;
- std::vector<size_t> perm, piv;
+ vector<size_t> perm, piv;
  size_t psz;
 public:
  LU_Decomposition(Matrix<bool> A): dat(A.width(), A.height()), perm(A.height()), psz(0) {
   const size_t h= A.height(), w= A.width();
-  std::iota(perm.begin(), perm.end(), 0), piv.resize(std::min(w, h));
+  iota(perm.begin(), perm.end(), 0), piv.resize(min(w, h));
   for (size_t c= 0, pos; c < w && psz < h; ++c) {
    for (pos= psz; pos < h; ++pos)
     if (A.get(perm[pos])[c]) break;
    if (pos == h) continue;
-   if (pos != psz) std::swap(perm[pos], perm[psz]);
+   if (pos != psz) swap(perm[pos], perm[psz]);
    auto b= A.get(perm[psz]);
    for (size_t r= psz + 1; r < h; ++r) {
     auto a= A[perm[r]];
@@ -141,9 +137,9 @@ public:
  size_t rank() const { return psz; }
  bool is_regular() const { return rank() == dat.height() && rank() == dat.width(); }
  bool det() const { return is_regular(); }
- std::vector<Vector<bool>> kernel() const {
+ vector<Vector<bool>> kernel() const {
   const size_t w= dat.height(), n= rank();
-  std::vector ker(w - rank(), Vector<bool>(w));
+  vector ker(w - rank(), Vector<bool>(w));
   for (size_t c= 0, i= 0; c < w; ++c) {
    if (i < n && piv[i] == c) ++i;
    else {

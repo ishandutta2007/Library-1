@@ -13,6 +13,6 @@ signed main() {
  Matrix<Mint> a(N, N);
  for (int i= 0; i < N; ++i)
   for (int j= 0; j < N; ++j) cin >> a[i][j];
- cout << characteristic_polynomial(a * Mint(-1), true)[0] << '\n';
+ cout << characteristic_polynomial(a * -1, true)[0] << '\n';
  return 0;
 }

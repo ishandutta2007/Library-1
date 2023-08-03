@@ -1,6 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/primarity_test"
 #include <iostream>
-#include <vector>
 #include "src/Math/is_prime.hpp"
 using namespace std;
 signed main() {

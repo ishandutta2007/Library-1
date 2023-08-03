@@ -18,6 +18,12 @@ public:
  explicit operator bool() const { return W; }
  auto operator[](int i) { return next(begin(dat), i * W); }
  auto operator[](int i) const { return next(begin(dat), i * W); }
+ Matrix submatrix(const vector<int> &rows, const vector<int> &cols) const {
+  Matrix ret(rows.size(), cols.size());
+  for (int i= rows.size(); i--;)
+   for (int j= cols.size(); j--;) ret[i][j]= (*this)[rows[i]][cols[j]];
+  return ret;
+ }
  bool operator==(const Matrix &r) const {
   if (W != r.W || dat.size() != r.dat.size()) return false;
   for (int i= dat.size(); i--;)
@@ -117,6 +123,12 @@ public:
  Array operator[](int i) { return {next(begin(dat), i * m)}; }
  ConstArray operator[](int i) const { return {next(begin(dat), i * m)}; }
  ConstArray get(int i) const { return {next(begin(dat), i * m)}; }
+ Matrix submatrix(const vector<int> &rows, const vector<int> &cols) const {
+  Matrix ret(rows.size(), cols.size());
+  for (int i= rows.size(); i--;)
+   for (int j= cols.size(); j--;) ret[i][j]= (*this)[rows[i]][cols[j]];
+  return ret;
+ }
  bool operator==(const Matrix &r) const { return W == r.W && H == r.H && (dat == r.dat).min(); }
  bool operator!=(const Matrix &r) const { return W != r.W || H != r.H || (dat != r.dat).max(); }
  Matrix &operator+=(const Matrix &r) { return assert(H == r.H), assert(W == r.W), dat^= r.dat, *this; }

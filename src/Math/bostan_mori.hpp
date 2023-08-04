@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <cassert>
 template <class K, bool skip_iv= false> K div_at(std::vector<K> p, std::vector<K> q, uint64_t k) {
  unsigned n= p.size() - 1, m= q.size() - 1, nn, j;
  for (;; --n)

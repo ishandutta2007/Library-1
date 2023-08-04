@@ -1,5 +1,6 @@
 #pragma once
 #include <cassert>
+#include <vector>
 #include "src/LinearAlgebra/Vector.hpp"
 namespace la_internal {
 template <class R> class Matrix {
@@ -105,7 +106,7 @@ public:
  Array operator[](int i) { return {next(begin(dat), i * m)}; }
  ConstArray operator[](int i) const { return {next(begin(dat), i * m)}; }
  ConstArray get(int i) const { return {next(begin(dat), i * m)}; }
- Matrix submatrix(const vector<int> &rows, const vector<int> &cols) const {
+ Matrix submatrix(const std::vector<int> &rows, const std::vector<int> &cols) const {
   Matrix ret(rows.size(), cols.size());
   for (int i= rows.size(); i--;)
    for (int j= cols.size(); j--;) ret[i][j]= (*this)[rows[i]][cols[j]];

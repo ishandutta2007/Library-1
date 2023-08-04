@@ -50,13 +50,5 @@ public:
  u128 *data() { return begin(dat); }
  friend Vector operator*(bool b, const Vector &r) { return r * b; }
 };
-template <class R> struct DiagonalMatrix: public Vector<R> {
- using Vector<R>::Vector;
- R det() const {
-  R ret(true);
-  for (auto x: *this) ret*= x;
-  return ret;
- }
-};
 }
-using la_internal::Vector, la_internal::DiagonalMatrix;
+using la_internal::Vector;

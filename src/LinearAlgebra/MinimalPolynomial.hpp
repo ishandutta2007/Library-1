@@ -5,7 +5,7 @@
 #include "src/LinearAlgebra/Vector.hpp"
 #include "src/Misc/rng.hpp"
 // c s.t. (c[d] * M^d + c[d-1] * M^(d-1)  + ... + c[1] * M + c[0]) * b = 0
-template <class mod_t, template <class> class Mat> class MinimalPolynomial {
+template <class mod_t, class LinMap> class MinimalPolynomial {
  std::vector<mod_t> poly, rev;
  size_t dg, n;
  std::vector<Vector<mod_t>> bs;
@@ -38,13 +38,12 @@ template <class mod_t, template <class> class Mat> class MinimalPolynomial {
   return ret;
  }
 public:
- MinimalPolynomial(const Mat<mod_t> &M, Vector<mod_t> b): n(M.width()), bs(n) {
+ MinimalPolynomial(const LinMap &M, Vector<mod_t> b): n(b.size()), bs(n) {
   static_assert(is_modint_v<mod_t>);
-  assert(n == b.size()), assert(n == M.height());
   Vector<mod_t> a(n);
   for (auto &x: a) x= rng(1, mod_t::mod() - 1);
   std::vector<mod_t> v((n + 1) << 1);
-  for (size_t i= v.size(), j= 0;; b= M * b) {
+  for (size_t i= v.size(), j= 0;; b= M(b)) {
    if (j < n) bs[j]= b;
    if (v[j++]= (a * b).sum(); !(--i)) break;
   }
@@ -64,14 +63,17 @@ public:
  const auto end() const { return poly.end(); }
  size_t degree() const { return dg; }
 };
-template <class mod_t, template <class> class Mat> mod_t det(const Mat<mod_t> &M) {
- size_t n= M.height();
- assert(n == M.width());
+template <class mod_t, class LinMap> mod_t linear_map_det(const LinMap &M, int n) {
  Vector<mod_t> b(n);
  for (auto &x: b) x= rng(1, mod_t::mod() - 1);
- DiagonalMatrix<mod_t> D(n);
+ std::vector<mod_t> D(n);
  for (auto &x: D) x= rng(1, mod_t::mod() - 1);
- mod_t ret= MinimalPolynomial(M * D, b)[0];
+ auto f= [&](Vector<mod_t> a) {
+  for (int i= n; i--;) a[i]*= D[i];
+  return M(a);
+ };
+ mod_t ret= MinimalPolynomial(f, b)[0], den= 1;
  if (n & 1) ret= -ret;
- return ret / D.det();
+ for (const auto &x: D) den*= x;
+ return ret / den;
 }

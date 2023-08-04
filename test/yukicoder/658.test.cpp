@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/658"
 #include <iostream>
 #include "src/Math/ModInt.hpp"
-#include "src/FFT/bostan_mori.hpp"
+#include "src/Math/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

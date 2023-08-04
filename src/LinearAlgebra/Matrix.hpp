@@ -52,25 +52,6 @@ public:
  Matrix &operator*=(const Matrix &r) { return *this= *this * r; }
  Matrix &operator*=(R r) { return dat*= r, *this; }
  Matrix operator*(R r) const { return Matrix(*this)*= r; }
- Matrix &operator*=(const DiagonalMatrix<R> &r) {
-  assert(W == r.size());
-  const size_t h= height();
-  auto a= begin(dat);
-  for (int i= 0; i < h; ++i)
-   for (int j= 0; j < W; ++j, ++a) *a*= r[j];
-  return *this;
- }
- Matrix operator*(const DiagonalMatrix<R> &r) const { return Matrix(*this)*= r; }
- friend Matrix operator*(const DiagonalMatrix<R> &l, Matrix r) {
-  const size_t h= r.height();
-  assert(h == l.size());
-  auto a= begin(r.dat);
-  for (int i= 0; i < h; ++i) {
-   auto v= l[i];
-   for (int j= 0; j < r.W; ++j, ++a) *a*= v;
-  }
-  return r;
- }
  Vector<R> operator*(const Vector<R> &r) const {
   assert(W == r.size());
   const size_t h= height();
@@ -80,6 +61,7 @@ public:
    for (int k= 0; k < W; ++k, ++a) ret[i]+= *a * r[k];
   return ret;
  }
+ Vector<R> operator()(const Vector<R> &r) const { return *this * r; }
  Matrix pow(uint64_t k) const {
   assert(W * W == dat.size());
   for (auto ret= identity_matrix(W), b= *this;; b*= b)
@@ -155,6 +137,7 @@ public:
    for (size_t j= 0; j < m; ++j, ++a) ret[i]^= *a & r[j];
   return ret;
  }
+ Vector<bool> operator()(const Vector<bool> &r) const { return *this * r; }
  Matrix pow(uint64_t k) const {
   assert(W == H);
   for (auto ret= identity_matrix(W), b= *this;; b*= b)

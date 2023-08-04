@@ -1,21 +1,22 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/sparse_matrix_det"
 #include <iostream>
 #include "src/Math/ModInt.hpp"
-#include "src/LinearAlgebra/SparseMatrix.hpp"
 #include "src/LinearAlgebra/MinimalPolynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  using Mint= ModInt<998244353>;
+ using Vec= Vector<Mint>;
  int N, K;
  cin >> N >> K;
- SparseMatrix<Mint> M(N, N);
- for (int i= 0; i < K; i++) {
-  int a, b, c;
-  cin >> a >> b >> c;
-  M.add_component(a, b, c);
- }
- cout << det(M) << '\n';
+ int a[K], b[K], c[K];
+ for (int i= 0; i < K; i++) cin >> a[i] >> b[i] >> c[i];
+ auto f= [&](const Vec& v) {
+  Vec ret(N);
+  for (int i= 0; i < K; i++) ret[a[i]]+= v[b[i]] * c[i];
+  return ret;
+ };
+ cout << linear_map_det<Mint>(f, N) << '\n';
  return 0;
 }

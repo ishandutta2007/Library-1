@@ -1,6 +1,6 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Final/0168"
 #include <iostream>
-#include "src/FFT/bostan_mori.hpp"
+#include "src/Math/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

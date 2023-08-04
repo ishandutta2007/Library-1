@@ -3,7 +3,7 @@
 #include "src/Math/Factors.hpp"
 #include "src/Math/mod_inv.hpp"
 class BinomialCoefficient {  // mod <= 1e6
- using i64= std::int64_t;
+ using i64= int64_t;
  struct ModPe {
   ModPe()= default;
   ModPe(int p, int e, std::size_t pre_size= 1 << 14): p(p), e(e), ppows(e + 1, 1) {

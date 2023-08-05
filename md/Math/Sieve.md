@@ -1,5 +1,5 @@
 ---
-title: 篩など
+title: 篩 他
 documentation_of: ../../src/Math/Sieve.hpp
 ---
 線形篩による素数列挙の前処理 \

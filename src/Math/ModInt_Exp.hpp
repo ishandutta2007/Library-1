@@ -1,6 +1,6 @@
 #pragma once
 #include "src/Math/Factors.hpp"
-template <std::uint64_t MOD> class ModInt_Exp {
+template <uint64_t MOD> class ModInt_Exp {
  static_assert(MOD < 1uLL << 63, "MOD must be smaller than 2^63");
  using Uint= std::conditional_t < MOD<(1ull << 32), std::uint32_t, std::uint64_t>;
  using DUint= std::conditional_t<std::is_same_v<Uint, std::uint64_t>, __uint128_t, std::uint64_t>;
@@ -36,16 +36,16 @@ template <> struct ModInt_Exp<1> {
  using mod_t= ModInt_Exp;
  bool a;
  constexpr ModInt_Exp(): a(0) {}
- constexpr ModInt_Exp(std::uint64_t x): a(x) {}
- constexpr std::uint32_t val() { return 0; }
+ constexpr ModInt_Exp(uint64_t x): a(x) {}
+ constexpr uint32_t val() { return 0; }
  constexpr mod_t &operator*=(const mod_t &r) { return a&= r.a, *this; }
  constexpr mod_t &operator+=(const mod_t &r) { return a|= r.a, *this; }
  constexpr mod_t operator*(const mod_t &r) const { return mod_t(*this)*= r; }
  constexpr mod_t operator+(const mod_t &r) const { return mod_t(*this)+= r; }
  constexpr mod_t pow(const mod_t &r) const { return {a || !r.a}; };
 };
-template <std::uint64_t MOD> std::ostream &operator<<(std::ostream &os, const ModInt_Exp<MOD> &r) { return os << r.val(); }
-template <std::uint64_t MOD> std::istream &operator>>(std::istream &is, ModInt_Exp<MOD> &r) {
+template <uint64_t MOD> std::ostream &operator<<(std::ostream &os, const ModInt_Exp<MOD> &r) { return os << r.val(); }
+template <uint64_t MOD> std::istream &operator>>(std::istream &is, ModInt_Exp<MOD> &r) {
  std::uint64_t v;
  return is >> v, r= ModInt_Exp<MOD>(v), is;
 }

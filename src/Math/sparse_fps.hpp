@@ -53,7 +53,7 @@ template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_exp(co
   }
  return ret;
 }
-template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_pow(const std::vector<mod_t> &f, std::uint64_t k, int n) {
+template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_pow(const std::vector<mod_t> &f, uint64_t k, int n) {
  std::vector<mod_t> ret(n);
  if (k == 0) return ret[0]= 1, ret;
  int cnt= 0, ed= std::min<int>(n, f.size());
@@ -132,7 +132,7 @@ std::vector<mod_t> sparse_exp_of_div(const std::vector<mod_t> &f, const std::vec
  return sparse_log_differentiation<mod_t, LM>(a, b, n);
 }
 template <class mod_t, std::size_t LM= 1 << 24>  // (f/g)^k
-std::vector<mod_t> sparse_pow_of_div(const std::vector<mod_t> &f, const std::vector<mod_t> &g, std::uint64_t k, int n) {
+std::vector<mod_t> sparse_pow_of_div(const std::vector<mod_t> &f, const std::vector<mod_t> &g, uint64_t k, int n) {
  assert(f[0] == mod_t(1)), assert(g[0] == mod_t(1));
  std::vector<std::pair<int, mod_t>> dat_f, dat_g;
  for (int i= 0, ed= std::min<int>(f.size(), n); i < ed; ++i)

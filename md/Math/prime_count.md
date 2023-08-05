@@ -1,5 +1,5 @@
 ---
-title: 素数カウントなど
+title: 素数カウント 他
 documentation_of: ../../src/Math/prime_count.hpp
 ---
 乗法的関数や加法的関数の累積和も添えて

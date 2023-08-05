@@ -1,7 +1,10 @@
 #pragma once
 #include <numeric>
 #include <cassert>
+#include <iostream>
+#include <algorithm>
 #include "src/Math/is_prime.hpp"
+#include "src/Math/binary_gcd.hpp"
 namespace math_internal {
 template <class T> constexpr void bubble_sort(T *bg, T *ed) {
  for (int sz= ed - bg, i= 0; i < sz; i++)
@@ -30,11 +33,11 @@ class Factors: public ConstexprArray<pair<u64, uint16_t>, 16> {
   Uint x= 1, y= md.set(2), z= 1, q= md.set(1), g= 1;
   for (Uint r= 1, i= 0; g == 1; r<<= 1) {
    for (x= y, i= r; i--;) y= f(y);
-   for (Uint k= 0; k < r && g == 1; g= gcd(md.get(q), n), k+= m)
+   for (Uint k= 0; k < r && g == 1; g= binary_gcd(md.get(q), n), k+= m)
     for (z= y, i= min(m, r - k); i--;) y= f(y), q= md.mul(q, md.diff(y, x));
   }
   if (g == n) do {
-    z= f(z), g= gcd(md.get(md.diff(z, x)), n);
+    z= f(z), g= binary_gcd(md.get(md.diff(z, x)), n);
    } while (g == 1);
   return g;
  }

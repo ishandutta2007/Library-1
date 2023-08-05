@@ -17,10 +17,10 @@ template <class T> struct Liouville {
  static constexpr T f(std::uint64_t, short e) { return e & 1 ? -1 : 1; }
  static std::vector<T> poly() { return {-1}; }
 };
-template <class T, std::uint64_t k> struct Divisor {
+template <class T, uint64_t k> struct Divisor {
  static constexpr T f(std::uint64_t p, short e) {
   T ret= 0, pk= 1, pkpw= 1, b= p;
-  for (std::uint64_t kk= k; kk; kk>>= 1, b*= b)
+  for (uint64_t kk= k; kk; kk>>= 1, b*= b)
    if (kk & 1) pk*= b;
   for (short i= 0; i <= e; i++, pkpw*= pk) ret+= pkpw;
   return ret;

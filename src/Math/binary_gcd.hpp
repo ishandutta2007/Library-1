@@ -2,10 +2,10 @@
 #include <type_traits>
 #include <algorithm>
 template <class Int> int bsf(Int a) {
- if constexpr (std::disjunction_v<std::is_same<Int, __uint128_t>, std::is_same<Int, __int128_t>>) {
+ if constexpr (sizeof(Int) == 16) {
   uint64_t lo= a & uint64_t(-1);
   return lo ? __builtin_ctzll(lo) : 64 + __builtin_ctzll(a >> 64);
- } else if constexpr (std::disjunction_v<std::is_same<Int, uint64_t>, std::is_same<Int, int64_t>>) return __builtin_ctzll(a);
+ } else if constexpr (sizeof(Int) == 8) return __builtin_ctzll(a);
  else return __builtin_ctz(a);
 }
 template <class Int> Int binary_gcd(Int a, Int b) {

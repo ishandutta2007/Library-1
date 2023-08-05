@@ -48,7 +48,7 @@ class Factors: public ConstexprArray<pair<u64, uint16_t>, 16> {
   return 0;
  }
  constexpr void init(u64 n) {
-  for (u64 p= 2; p < 100 && p * p <= n; p++)
+  for (u64 p= 2; p < 100 && p * p <= n; ++p)
    if (n % p == 0)
     for (dat[sz++].first= p; n % p == 0;) n/= p, ++dat[sz - 1].second;
   for (u64 p= 0; n > 1; dat[sz++].first= p)

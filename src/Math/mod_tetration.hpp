@@ -7,7 +7,7 @@ constexpr u64 rec(u64 a, u64 b, u64 m) {
  u64 ret= 1, k= 1, tmp= 1, i= 0;
  for (const auto [p, e]: Factors(m)) {
   for (tmp= p - 1, i= e - (p == 2 && e > 3); --i;) tmp*= p;
-  k= k / binary_gcd(k, tmp) * tmp;
+  k= tmp / binary_gcd(k, tmp) * k;
  }
  auto mod= [m](u128 x) { return x < m ? x : x % m + m; };
  for (k= rec(a, b - 1, k), a= mod(a);; a= mod(u128(a) * a))

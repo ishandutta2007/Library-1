@@ -7,27 +7,7 @@ template <class K> int deg(const std::vector<K> &p) {
  for (int n= p.size() - 1;; n--)
   if (n < 0 || p[n] != ZERO) return n;
 }
-template <class mod_t> void div_at_na(std::vector<mod_t> &p, std::vector<mod_t> &q, std::uint64_t &k) {
- unsigned n= deg(p), nn, j;
- const unsigned m= deg(q), l= std::max(n, m) + 1;
- std::vector<mod_t> tmp(l);
- for (p.resize(l), q.resize(l); k > m; q.swap(p), p.swap(tmp)) {
-  std::fill_n(tmp.begin(), (nn= (n + m - ((n ^ m ^ k) & 1)) >> 1) + 1, mod_t());
-  for (j= 0; j <= m; j+= 2)
-   for (int i= k & 1; i <= n; i+= 2) tmp[(i + j) >> 1]+= p[i] * q[j];
-  for (j= 1; j <= m; j+= 2)
-   for (int i= (~k) & 1; i <= n; i+= 2) tmp[(i + j) >> 1]-= p[i] * q[j];
-  for (std::fill_n(p.begin(), m + 1, mod_t()), j= 2; j <= m; j+= 2)
-   for (int i= j; (i-= 2) >= 0;) p[(i + j) >> 1]+= q[i] * q[j];
-  for (k>>= 1, n= nn, j= 3; j <= m; j+= 2)
-   for (int i= j; (i-= 2) >= 0;) p[(i + j) >> 1]-= q[i] * q[j];
-  for (int i= m; i >= 0; i--) p[i]+= p[i];
-  for (int i= 0; i <= m; i+= 2) p[i]+= q[i] * q[i];
-  for (int i= 1; i <= m; i+= 2) p[i]-= q[i] * q[i];
- }
- p.resize(n + 1), q.resize(m + 1);
-}
-template <std::size_t LM, class mod_t> void div_at_ntt(std::vector<mod_t> &p, std::vector<mod_t> &q, std::uint64_t &k) {
+template <std::size_t LM, class mod_t> void div_at_ntt(std::vector<mod_t> &p, std::vector<mod_t> &q, uint64_t &k) {
  static_assert(!is_nttfriend<mod_t, LM>());
  using GNA= GlobalNTTArray<mod_t, LM, 0>;
  using GNA1= GlobalNTTArray<mod_t, LM, 1>;
@@ -41,7 +21,7 @@ template <std::size_t LM, class mod_t> void div_at_ntt(std::vector<mod_t> &p, st
   for (int i= m; i--;) q[i]= GNA1::bf.get(i << 1);
  }
 }
-template <std::size_t LM, class mod_t> void div_at_ntt_fast(std::vector<mod_t> &p, std::vector<mod_t> &q, std::uint64_t &k) {
+template <std::size_t LM, class mod_t> void div_at_ntt_fast(std::vector<mod_t> &p, std::vector<mod_t> &q, uint64_t &k) {
  static_assert(is_nttfriend<mod_t, LM>());
  using ntt= NTT<mod_t>;
  const unsigned m= deg(q) + 1, offset= std::max<unsigned>(deg(p) + 1, m), len= pw2((offset + m) - 1), len2= len >> 1;
@@ -58,16 +38,16 @@ template <std::size_t LM, class mod_t> void div_at_ntt_fast(std::vector<mod_t> &
 }
 }  // namespace div_at_internal
 #define __FPS_DIVAT(Vec) \
- template <class mod_t, std::size_t LM= 1 << 22> mod_t div_at(Vec p, Vec q, std::uint64_t k) { \
+ template <class mod_t, std::size_t LM= 1 << 22> mod_t div_at(Vec p, Vec q, uint64_t k) { \
   using namespace div_at_internal; \
   const int n= deg(p) + 1, m= deg(q) + 1; \
   assert(m != 0); \
   mod_t ret= 0; \
   if (n == 0) return ret; \
-  if (m == 1) return k <= (std::uint64_t)n ? p[k] / q[0] : ret; \
+  if (m == 1) return k <= (uint64_t)n ? p[k] / q[0] : ret; \
   if (k >= m) { \
-   if constexpr (is_nttfriend<mod_t, LM>()) m <= 44 ? div_at_na(p, q, k) : div_at_ntt_fast<LM>(p, q, k); \
-   else m <= 340 ? div_at_na(p, q, k) : div_at_ntt<LM>(p, q, k); \
+   if constexpr (is_nttfriend<mod_t, LM>()) div_at_ntt_fast<LM>(p, q, k); \
+   else div_at_ntt<LM>(p, q, k); \
   } \
   p.resize(k + 1, ret), q.resize(k + 1, ret), q= inv<mod_t, LM>(q); \
   for (int i= k; i >= 0; i--) ret+= q[i] * p[k - i]; \
@@ -80,7 +60,7 @@ __FPS_DIVAT(__POLYNOMIAL)
 #endif
 // a[n] = c[0] * a[n-1] + c[1] * a[n-2] + ... + c[d-1] * a[n-d]
 // return a[k]
-template <class mod_t, std::size_t LM= 1 << 22> mod_t linear_recurrence(std::vector<mod_t> c, std::vector<mod_t> a, std::uint64_t k) {
+template <class mod_t, std::size_t LM= 1 << 22> mod_t linear_recurrence(std::vector<mod_t> c, std::vector<mod_t> a, uint64_t k) {
  const std::size_t d= c.size();
  assert(d <= a.size());
  for (auto &x: c) x= -x;

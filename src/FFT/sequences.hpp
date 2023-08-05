@@ -31,7 +31,7 @@ template <typename mod_t, std::size_t LM= 1 << 22> std::vector<mod_t> alternatin
  return f;
 }
 // enumeration for k = 0,...,K in ∑_{n=0}^{N-1} n^k
-template <typename mod_t, std::size_t LM= 1 << 22> std::vector<mod_t> sum_kth_pows(int K, std::uint64_t N) {  // O(K log K)
+template <typename mod_t, std::size_t LM= 1 << 22> std::vector<mod_t> sum_kth_pows(int K, uint64_t N) {  // O(K log K)
  std::vector<mod_t> a(K + 1), b(K + 1);
  int i= 1;
  for (a[0]= 1; i <= K; i++) a[i]= a[i - 1] * get_inv<mod_t, LM>(i + 1);
@@ -42,7 +42,7 @@ template <typename mod_t, std::size_t LM= 1 << 22> std::vector<mod_t> sum_kth_po
  return a;
 }
 // enumeration for k = 0,...,K in s(N, N-k)
-template <typename mod_t, std::size_t LM= 1 << 22> std::vector<mod_t> stirling_first(int K, std::uint64_t N= 0) {  // O(K log K)
+template <typename mod_t, std::size_t LM= 1 << 22> std::vector<mod_t> stirling_first(int K, uint64_t N= 0) {  // O(K log K)
  if (N < K) N= K;
  auto a= sum_kth_pows<mod_t, LM>(K, N);
  for (int i= 1; i <= K; i++) a[i]*= -get_inv<mod_t, LM>(i);

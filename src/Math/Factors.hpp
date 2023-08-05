@@ -87,10 +87,10 @@ public:
 };
 }  // namespace math_internal
 using math_internal::Factors, math_internal::Divisors, math_internal::primitive_root;
-constexpr std::uint64_t totient(const Factors &f) {
- std::uint64_t ret= 1, i= 0;
+constexpr uint64_t totient(const Factors &f) {
+ uint64_t ret= 1, i= 0;
  for (auto [p, e]: f)
   for (ret*= p - 1, i= e; --i;) ret*= p;
  return ret;
 }
-constexpr auto totient(std::uint64_t n) { return totient(Factors(n)); }
+constexpr auto totient(uint64_t n) { return totient(Factors(n)); }

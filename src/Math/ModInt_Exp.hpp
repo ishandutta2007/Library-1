@@ -15,7 +15,7 @@ template <uint64_t MOD> class ModInt_Exp {
   uint64_t ret= 1, i= 0, tmp= 1;
   for (const auto &[p, e]: Factors(x)) {
    for (tmp= p - 1, i= e - (p == 2 && e > 3); --i;) tmp*= p;
-   ret= tmp / binary_gcd(ret, tmp) * ret;
+   ret*= tmp / binary_gcd(ret, tmp);
   }
   return ret;
  }

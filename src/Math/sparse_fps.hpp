@@ -36,7 +36,7 @@ template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_log(co
  for (int i= 1, ed= std::min<int>(n, f.size()); i < ed; ++i) df[i - 1]+= f[i] * i;
  df= sparse_div(df, f, n - 1);
  std::vector<mod_t> ret(n);
- for (int i= 1; i < n; ++i) ret[i]= df[i - 1] * get_inv<mod_t, LM>(i);
+ for (int i= n; --i;) ret[i]= df[i - 1] * get_inv<mod_t, LM>(i);
  return ret;
 }
 template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sparse_exp(const std::vector<mod_t> &f, int n) {

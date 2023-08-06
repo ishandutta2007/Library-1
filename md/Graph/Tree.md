@@ -1,5 +1,5 @@
 ---
-title: 木クラス
+title: 木
 documentation_of: ../../src/Graph/Tree.hpp
 ---
 HL分解＋オイラーツアーで頂点集合を数列に \

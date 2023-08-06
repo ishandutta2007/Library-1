@@ -1,7 +1,7 @@
 #pragma once
 #include <limits>
 #include <algorithm>
-template <typename T> class LiChaoTree {
+template <typename T, bool maximum= false> class LiChaoTree {
  struct Line {
   T a, b;
   inline T get(T x) const { return a * x + b; }
@@ -9,13 +9,14 @@ template <typename T> class LiChaoTree {
  struct Node {
   Line f;
   Node *ch[2]= {nullptr, nullptr};
- } * root;
- static constexpr T L= -2e9, U= 2e9;
- static constexpr T INF= std::numeric_limits<T>::max() / 2;
+ } *root;
+ const T L, U, INF;
  static inline int node_count;
  int sgn(const T &x) const {
-  static constexpr T EPS= 1e-10;
-  return x < -EPS ? -1 : x > +EPS ? 1 : 0;
+  if constexpr (std::is_floating_point_v<T>) {
+   static constexpr T EPS= 1e-10;
+   return x < -EPS ? -1 : x > +EPS ? 1 : 0;
+  } else return x < 0 ? -1 : x > 0 ? 1 : 0;
  }
  void addl(Node *&t, Line f, const T &x_l, const T &x_r) {
   if (!t) return t= new Node{f}, void();
@@ -37,18 +38,27 @@ template <typename T> class LiChaoTree {
   T x_m= (x_l + x_r) / 2;
   adds(t->ch[0], f, l, r, x_l, x_m), adds(t->ch[1], f, l, r, x_m, x_r);
  }
- T query(const Node *t, const T &x_l, const T &x_r, const T &x) const {
+ inline T query(const Node *t, const T &x_l, const T &x_r, const T &x) const {
   if (!t) return INF;
   if (sgn(x_l - x_r) == 0) return t->f.get(x);
   T x_m= (x_l + x_r) / 2;
   return std::min(t->f.get(x), (sgn(x - x_m) < 0 ? query(t->ch[0], x_l, x_m, x) : query(t->ch[1], x_m, x_r, x)));
  }
 public:
- LiChaoTree(): root{nullptr} {}
+ LiChaoTree(T l= -2e9, T u= 2e9, T inf= std::numeric_limits<T>::max() / 2): root{nullptr}, L(l), U(u), INF(inf) {}
  T get_inf() { return INF; }
  // ax+b
- void insert_line(T a, T b) { addl(root, Line{a, b}, L, U); }
+ void insert_line(T a, T b) {
+  if constexpr (maximum) addl(root, Line{-a, -b}, L, U);
+  else addl(root, Line{a, b}, L, U);
+ }
  // ax+b for x in [l,r)
- void insert_segment(T l, T r, T a, T b) { adds(root, Line{a, b}, l, r, L, U); }
- T query(T x) const { return query(root, L, U, x); }
+ void insert_segment(T l, T r, T a, T b) {
+  if constexpr (maximum) adds(root, Line{-a, -b}, l, r, L, U);
+  else adds(root, Line{a, b}, l, r, L, U);
+ }
+ T query(T x) const {
+  if constexpr (maximum) return -query(root, L, U, x);
+  else return query(root, L, U, x);
+ }
 };

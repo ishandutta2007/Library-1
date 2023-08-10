@@ -22,7 +22,7 @@ int main() {
  vector<int> R(N, 1);
  R[r]= 0;
  PartitionMatroid M2(M, parts, R);
- auto S= weighted_matroid_intersection<-1>(M, M1, M2, w);
+ auto S= weighted_matroid_intersection<MINIMIZE>(M, M1, M2, w);
  int ans= 0;
  for (int e: S[N - 1]) ans+= w[e];
  cout << ans << '\n';

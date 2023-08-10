@@ -1,11 +1,12 @@
 ---
 title: Li-Chao-Tree
-documentation_of: ../../src/DataStructure/LiChaoTree.hpp
+documentation_of: ../../src/Optimization/LiChaoTree.hpp
 ---
 浮動小数点も行けるはず \
-templateの第二引数が true なら最大値取得, false なら最小値取得. デフォルトは false.
+templateの第二引数で最大最小を指定. デフォルトは最小値取得.
 
 ## メンバ関数
+
 |名前|概要|計算量|
 |---|---|---|
 |`LiChaoTree(l,u,inf)`| コンストラクタ. <br>考える $x$ の範囲 $\lbrack l,r\rbrack$ と $y$ 方向の ($\infty$ とみなせるほどの) 十分大きい値を与える. <br> デフォルトは `l=-2e^9, r=2e^9, inf=numeric_limits<T>::max()/2` .||

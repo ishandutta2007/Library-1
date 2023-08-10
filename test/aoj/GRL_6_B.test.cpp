@@ -1,13 +1,13 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/6/GRL_6_B"
 #include <iostream>
-#include "src/Optimization/MinCostFlow.hpp"
+#include "src/Optimization/NetworkSimplex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int V, E, F;
  cin >> V >> E >> F;
- MinCostFlow<NetworkSimplex, int, int> graph(V);
+ NetworkSimplex<int, int> graph(V);
  while (E--) {
   int u, v, c, d;
   cin >> u >> v >> c >> d;

@@ -1,12 +1,12 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/assignment"
 #include <iostream>
 #include <vector>
-#include "src/Optimization/MinCostFlow.hpp"
+#include "src/Optimization/NetworkSimplex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using MCF= MinCostFlow<NetworkSimplex, long long, long long>;
+ using MCF= NetworkSimplex<long long, long long>;
  int N;
  cin >> N;
  MCF graph;

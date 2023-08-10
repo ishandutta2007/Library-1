@@ -2,14 +2,14 @@
 // 重み付き二部マッチング(非想定解)
 // 制約が厳しい
 #include <iostream>
-#include "src/Optimization/MinCostFlow.hpp"
+#include "src/Optimization/NetworkSimplex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  int N, M, K, L;
  cin >> N >> M >> K >> L;
- MaxGainFlow<NetworkSimplex, int, long long> graph;
+ NetworkSimplex<int, long long, MAXIMIZE> graph;
  int gs= graph.add_vertex(), gt= graph.add_vertex();
  auto buyer= graph.add_vertices(N);
  auto product= graph.add_vertices(M);

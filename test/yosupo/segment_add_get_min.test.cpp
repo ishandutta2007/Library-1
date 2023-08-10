@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/segment_add_get_min"
 #include <iostream>
-#include "src/DataStructure/LiChaoTree.hpp"
+#include "src/Optimization/LiChaoTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

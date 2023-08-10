@@ -4,7 +4,8 @@
 #include <numeric>
 #include <cmath>
 #include <cassert>
-template <typename flow_t, typename cost_t, int_least8_t obj= 1> class NetworkSimplex {
+#include "src/Optimization/MinMaxEnum.hpp"
+template <typename flow_t, typename cost_t, MinMaxEnum obj= MINIMIZE> class NetworkSimplex {
  struct Node {
   int par, pred;
   flow_t sup;
@@ -135,6 +136,3 @@ public:
   return es.resize(m), true;
  }
 };
-
-template <template <class, class, int_least8_t> class FlowAlgo, typename flow_t, typename cost_t> using MinCostFlow= FlowAlgo<flow_t, cost_t, 1>;
-template <template <class, class, int_least8_t> class FlowAlgo, typename flow_t, typename cost_t> using MaxGainFlow= FlowAlgo<flow_t, cost_t, -1>;

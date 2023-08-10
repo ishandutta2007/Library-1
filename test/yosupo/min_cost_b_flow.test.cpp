@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/min_cost_b_flow"
 #include <iostream>
 #include <vector>
-#include "src/Optimization/MinCostFlow.hpp"
+#include "src/Optimization/NetworkSimplex.hpp"
 using namespace std;
 ostream &operator<<(ostream &stream, const __int128_t &v) {
  if (v == 0) stream << "0";
@@ -15,7 +15,7 @@ ostream &operator<<(ostream &stream, const __int128_t &v) {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using MCF= MinCostFlow<NetworkSimplex, long long, long long>;
+ using MCF= NetworkSimplex<long long, long long>;
  int N, M;
  cin >> N >> M;
  MCF graph(N);

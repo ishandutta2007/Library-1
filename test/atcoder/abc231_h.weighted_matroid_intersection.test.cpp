@@ -22,7 +22,7 @@ int main() {
   sz1[A]++, sz2[B]++;
  }
  PartitionMatroid M1(N, parts1, sz1), M2(N, parts2, sz2);
- auto S= weighted_matroid_intersection<+1>(N, M1, M2, C);
+ auto S= weighted_matroid_intersection<MAXIMIZE>(N, M1, M2, C);
  long long s= 0;
  for (int i= 1, ed= S.size(); i < ed; i++) {
   long long sum= 0;

@@ -33,7 +33,7 @@ signed main() {
  }
  if (bsize > wsize) swap(bsize, wsize);
  PartitionMatroid M1(e, partl, vector(N * M, 1)), M2(e, partr, vector(N * M, 1));
- int x= weighted_matroid_intersection<0>(e, M1, M2, vector(e, 1)).size() - 1;
+ int x= weighted_matroid_intersection<MAXIMIZE>(e, M1, M2, vector(e, 1)).size() - 1;
  int ans= 100 * x + 10 * (bsize - x) + wsize - bsize;
  cout << ans << '\n';
  return 0;

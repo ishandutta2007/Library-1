@@ -5,6 +5,7 @@
 #include <array>
 #include <queue>
 #include <cassert>
+#include "src/Optimization/MinMaxEnum.hpp"
 template <typename Matroid1, typename Matroid2> std::vector<int> matroid_intersection(int n, Matroid1 M1, Matroid2 M2) {
  std::vector<int> b(n, false), pre(n), I[2];
  for (int e= 0; e < n; e++) I[0].push_back(e);
@@ -71,22 +72,21 @@ template <typename Matroid1, typename Matroid2> std::vector<int> matroid_interse
  }
  return I[1];
 }
-// sgn: + -> max, - -> min, 0 -> unweighted
-template <std::int_least8_t sgn, class Matroid1, class Matroid2, class cost_t> std::vector<std::vector<int>> weighted_matroid_intersection(int n, Matroid1 M1, Matroid2 M2, std::vector<cost_t> c) {
+template <MinMaxEnum sgn, class Matroid1, class Matroid2, class cost_t> std::vector<std::vector<int>> weighted_matroid_intersection(int n, Matroid1 M1, Matroid2 M2, std::vector<cost_t> c) {
  assert(n == (int)c.size());
  bool b[n];
  std::fill_n(b, n, false);
  std::vector<int> I[2], p;
  std::vector<std::vector<int>> ret(1);
  for (int u= 0; u < n; u++) I[0].push_back(u);
- if constexpr (sgn > 0) {
+ if constexpr (sgn == MAXIMIZE) {
   auto cmx= *std::max_element(c.begin(), c.end());
   for (auto &x: c) x-= cmx;
  } else {
   auto cmi= *std::min_element(c.begin(), c.end());
   for (auto &x: c) x-= cmi;
  }
- for (auto &x: c) x*= sgn * (n + 1);
+ for (auto &x: c) x*= -sgn * (n + 1);
  for (bool converged= false; !converged;) {
   converged= true, M1.build(I[1]), M2.build(I[1]);
   std::priority_queue<std::pair<cost_t, int>> pq;

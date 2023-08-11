@@ -2,7 +2,7 @@
 #include <limits>
 #include <algorithm>
 #include "src/Optimization/MinMaxEnum.hpp"
-template <typename T, MinMaxEnum d= MINIMIZE> class LiChaoTree {
+template <typename T, MinMaxEnum obj= MINIMIZE> class LiChaoTree {
  struct Line {
   T a, b;
   inline T get(T x) const { return a * x + b; }
@@ -49,8 +49,8 @@ public:
  LiChaoTree(T l= -2e9, T u= 2e9, T inf= std::numeric_limits<T>::max() / 2): root{nullptr}, L(l), U(u), INF(inf) {}
  T get_inf() { return INF; }
  // ax+b
- void insert_line(T a, T b) { addl(root, Line{a * d, b * d}, L, U); }
+ void insert_line(T a, T b) { addl(root, Line{a * obj, b * obj}, L, U); }
  // ax+b for x in [l,r)
- void insert_segment(T l, T r, T a, T b) { adds(root, Line{a * d, b * d}, l, r, L, U); }
- T query(T x) const { else return query(root, L, U, x) * d; }
+ void insert_segment(T l, T r, T a, T b) { adds(root, Line{a * obj, b * obj}, l, r, L, U); }
+ T query(T x) const { else return query(root, L, U, x) * obj; }
 };

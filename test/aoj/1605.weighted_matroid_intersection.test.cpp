@@ -20,7 +20,7 @@ int main() {
    parts[l == 'B'].push_back(i);
   }
   PartitionMatroid M2(m, parts, {k, n - 1 - k});
-  auto S= weighted_matroid_intersection<-1>(m, M1, M2, w);
+  auto S= weighted_matroid_intersection<MINIMIZE>(m, M1, M2, w);
   if (S.size() < n) cout << -1 << '\n';
   else {
    int ans= 0;

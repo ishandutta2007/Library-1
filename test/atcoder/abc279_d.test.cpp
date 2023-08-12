@@ -1,0 +1,17 @@
+#define PROBLEM "https://atcoder.jp/contests/abc279/tasks/abc279_d"
+#define ERROR "0.00000001"
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include "src/Optimization/fibonacci_search.hpp"
+using namespace std;
+signed main() {
+ cin.tie(0);
+ ios::sync_with_stdio(0);
+ long long A, B;
+ cin >> A >> B;
+ auto f= [&](long long n) { return (long double)B * n + A / sqrt(n + 1); };
+ auto [x, fx]= fibonacci_search<MINIMIZE>(f, 0, 1e18);
+ cout << fixed << setprecision(15) << fx << '\n';
+ return 0;
+}

@@ -23,7 +23,7 @@ signed main() {
   }
   return ret;
  };
- auto [x, fx]= fibonacci_search<long long, MAXIMIZE>(f, 0, p.size());
+ auto [x, fx]= fibonacci_search<MAXIMIZE>(f, 0, p.size());
  cout << fx << '\n';
  return 0;
 }

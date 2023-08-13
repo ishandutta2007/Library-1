@@ -15,7 +15,7 @@ signed main() {
   x[p]= i;
  }
  auto f= [&](int n) {
-  int ret= 0;
+  long long ret= 0;
   for (int i= 0; i < N; ++i) {
    int tmp= (x[i] + n - i + N) % N;
    ret+= min(tmp, N - tmp);

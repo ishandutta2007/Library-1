@@ -3,7 +3,6 @@
 #include <algorithm>
 #include "src/Optimization/fibonacci_search.hpp"
 using namespace std;
-namespace arc147c {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
@@ -23,5 +22,4 @@ signed main() {
  auto [x, fx]= fibonacci_search<MINIMIZE>(f, mn, mx);
  cout << fx << '\n';
  return 0;
-}
 }

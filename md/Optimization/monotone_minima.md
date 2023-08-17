@@ -7,7 +7,7 @@ documentation_of: ../../src/Optimization/monotone_minima.hpp
 
 | 名前         | 概要                                                 | 計算量                         |
 | ------------ | ---------------------------------------------------- | ------------------------------ |
-| `monotone_minima(H,W,select)` | monotone な $H\times W$ 行列に対して実行. <br> 行列は陽には与えず`select`関数を渡す. <br> `select(i,j,k)` は $(i,j)$ -成分より $(i,k)$ -成分の方が望ましいなら true を返すという関数.                    |           $\mathcal{O}((H+W)\log H)$             |
+| `monotone_minima(H,W,select)` | monotone な $H\times W$ 行列に対して実行. <br> 行列は陽には与えず`select`関数を渡す. <br> `select(i,j,k)` は $(i,j)$ -成分より $(i,k)$ -成分の方が望ましいなら true を返すという関数. <br> 返り値は各行 $i$ に対して最適解を達成する列方向 $j$ を返す.                |           $\mathcal{O}((H+W)\log H)$             |
 ## 参考
 [https://topcoder-g-hatena-ne-jp.jag-icpc.org/spaghetti_source/20120923/1348327542.html](https://topcoder-g-hatena-ne-jp.jag-icpc.org/spaghetti_source/20120923/1348327542.html)
 ## 問題例

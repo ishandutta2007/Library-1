@@ -52,5 +52,5 @@ public:
  void insert_line(T a, T b) { addl(root, Line{a * obj, b * obj}, L, U); }
  // ax+b for x in [l,r)
  void insert_segment(T l, T r, T a, T b) { adds(root, Line{a * obj, b * obj}, l, r, L, U); }
- T query(T x) const { else return query(root, L, U, x) * obj; }
+ T query(T x) const { return query(root, L, U, x) * obj; }
 };

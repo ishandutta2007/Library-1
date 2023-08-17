@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+// select(i,j,k) -> true if (i,k) is better than (i,j)
 template <typename F> std::vector<int> monotone_minima(int H, int W, const F &select) {
  std::vector<int> ret(H);
  auto rec= [&](auto &rec, int h1, int h2, int w1, int w2) -> void {

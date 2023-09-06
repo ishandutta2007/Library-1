@@ -1,7 +1,9 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2603"
+// Alien DP
 #include <iostream>
 #include <algorithm>
-#include "src/Optimization/monotone_minima.hpp"
+#include "src/Optimization/simplified_larsch_dp.hpp"
+#include "src/Optimization/fibonacci_search.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -20,22 +22,14 @@ signed main() {
  sort(a, a + n);
  int sum[n + 1]= {0};
  for (int i= 0; i < n; ++i) sum[i + 1]= sum[i] + a[i];
- auto f= [&](int i, int j) { return (i - j) * a[i - 1] - (sum[i] - sum[j]); };
- int dp[n + 1];
- fill_n(dp, n + 1, 1e9);
- dp[0]= 0;
- for (int _= m; _--;) {
-  auto select= [&](int i, int j, int k) {
-   if (i < k) return false;
-   if (i < j) return true;
-   return dp[j] + f(i, j) > dp[k] + f(i, k);
-  };
-  auto id= monotone_minima(n + 1, n + 1, select);
-  for (int i= n; i > 0; --i) {
-   int j= id[i];
-   dp[i]= dp[j] + f(i, j);
-  }
- }
- cout << dp[n] << '\n';
+ auto w= [&](int i, int j) { return (i - j) * a[i - 1] - (sum[i] - sum[j]); };
+
+ auto f= [&](int p) {
+  auto ww= [&](int i, int j) { return w(i, j) + p; };
+  auto dp= simplified_larsch_dp(n, ww);
+  return dp[n] - p * m;
+ };
+ auto [_, ans]= fibonacci_search<MAXIMIZE>(f, -3e5, 3e5);
+ cout << ans << '\n';
  return 0;
 }

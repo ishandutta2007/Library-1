@@ -1,5 +1,5 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2725"
-// monge じゃなさそう
+// monge じゃなさそう?
 #include <iostream>
 #include <numeric>
 #include "src/Optimization/LiChaoTree.hpp"

@@ -27,7 +27,7 @@ signed main() {
    dp[i]= dp[j] + w(i - 1, j);
   }
   dp[0]= INF;
-  if (l < N) ans[l]= dp[N + 1];
+  ans[l]= dp[N + 1];
  }
  for (int i= 0; i < N; ++i) cout << ans[i] << '\n';
  return 0;

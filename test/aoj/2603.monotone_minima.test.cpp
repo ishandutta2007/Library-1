@@ -18,7 +18,8 @@ signed main() {
  }
  if (n <= m) return cout << 0 << '\n', 0;
  sort(a, a + n);
- int sum[n + 1]= {0};
+ int sum[n + 1];
+ sum[0]= 0;
  for (int i= 0; i < n; ++i) sum[i + 1]= sum[i] + a[i];
  auto w= [&](int i, int j) { return (i - j) * a[i - 1] - (sum[i] - sum[j]); };
 

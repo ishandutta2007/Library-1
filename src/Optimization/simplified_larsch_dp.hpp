@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <numeric>
 #include "src/Internal/function_type.hpp"
 // dp[i] = min_{j<i} (dp[j] + w(i,j))
 // w(i,j) -> monge cost

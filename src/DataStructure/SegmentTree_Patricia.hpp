@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <tuple>
 #include "src/Internal/HAS_CHECK.hpp"
-template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class SegmentTree_Patricia {
+template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentTree_Patricia {
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
  HAS_TYPE(T);
@@ -13,7 +13,7 @@ template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class Seg
  using id_t= long long;
  template <class T, class tDerived> struct Node_B {
   id_t bits;
-  std::uint8_t len;
+  uint8_t len;
   T val;
   tDerived *ch[2]= {nullptr, nullptr};
  };
@@ -34,13 +34,13 @@ template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class Seg
    if constexpr (std::is_same_v<S, T>) t= new Node{b[0], HEIGHT + 1, bg};
    else t= new Node{b[0], HEIGHT + 1, *(bg + b[0])};
   } else {
-   std::uint8_t h= __builtin_ctzll(b[1] - b[0]);
-   t= new Node{m >> h, std::uint8_t(HEIGHT + 1 - h), def_val()};
+   uint8_t h= __builtin_ctzll(b[1] - b[0]);
+   t= new Node{m >> h, uint8_t(HEIGHT + 1 - h), def_val()};
    build(t->ch[0], n, {b[0], m}, bg), build(t->ch[1], n, {m, b[1]}, bg);
    if constexpr (monoid<M>::value) t->val= M::op(t->ch[0]->val, t->ch[1]->val);
   }
  }
- void dump(Node *t, const id_t &l, const id_t &r, std::array<id_t, 2> b, typename std::vector<T>::iterator itr, std::uint8_t h) {
+ void dump(Node *t, const id_t &l, const id_t &r, std::array<id_t, 2> b, typename std::vector<T>::iterator itr, uint8_t h) {
   if (r <= b[0] || b[1] <= l) return;
   if (l <= b[0] && b[1] <= r && !t) {
    for (id_t i= b[0]; i < b[1]; i++) *(itr + i)= def_val();
@@ -53,7 +53,7 @@ template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class Seg
  T fold(Node *&t, const id_t &l, const id_t &r, const id_t &bias) {
   static id_t bits, b[2];
   if (!t) return def_val();
-  std::uint8_t h= (HEIGHT + 1) - t->len;
+  uint8_t h= (HEIGHT + 1) - t->len;
   bits= (bias >> h) ^ t->bits, b[0]= bits << h, b[1]= (bits + 1) << h;
   if (r <= b[0] || b[1] <= l) return def_val();
   if (l <= b[0] && b[1] <= r) return t->val;
@@ -65,7 +65,7 @@ template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class Seg
   if constexpr (persistent) t= new Node{*t};
   id_t bits= (k >> ((HEIGHT + 1) - t->len));
   if (bits != t->bits) {
-   std::uint8_t i= 64 - __builtin_clzll(bits ^ t->bits);
+   uint8_t i= 64 - __builtin_clzll(bits ^ t->bits);
    bool flg= (t->bits >> (i - 1)) & 1;
    t->ch[flg]= new Node{*t}, t->ch[!flg]= new Node{k, HEIGHT + 1, val};
    t->len-= i, t->bits>>= i;
@@ -79,7 +79,7 @@ template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class Seg
   if constexpr (persistent) t= new Node{*t};
   id_t bits= (k >> ((HEIGHT + 1) - t->len));
   if (bits != t->bits) {
-   std::uint8_t i= 64 - __builtin_clzll(bits ^ t->bits);
+   uint8_t i= 64 - __builtin_clzll(bits ^ t->bits);
    bool flg= (t->bits >> (i - 1)) & 1;
    t->ch[flg]= new Node{*t}, t->ch[!flg]= new Node{k, HEIGHT + 1, def_val()};
    t->len-= i, t->bits>>= i;
@@ -105,13 +105,13 @@ template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class Seg
   if constexpr (last) return k <= m;
   else return m <= k;
  }
- static inline Node *next(Node *&t, const std::uint8_t &h, const bool &f) {
+ static inline Node *next(Node *&t, const uint8_t &h, const bool &f) {
   if (!t) return nullptr;
-  std::uint8_t len= h + t->len - (HEIGHT + 1);
+  uint8_t len= h + t->len - (HEIGHT + 1);
   if (!len) return t->ch[f];
   return (f == ((t->bits >> (len - 1)) & 1)) ? t : nullptr;
  }
- template <bool last, class C, std::size_t N> static id_t find(const id_t &k, std::array<id_t, 2> b, const id_t &bias, std::uint8_t h, const C &check, std::array<Node *, N> &ts, std::array<T, N> &sums) {
+ template <bool last, class C, std::size_t N> static id_t find(const id_t &k, std::array<id_t, 2> b, const id_t &bias, uint8_t h, const C &check, std::array<Node *, N> &ts, std::array<T, N> &sums) {
   static_assert(monoid<M>::value, "\"find\" is not available\n");
   static std::array<T, N> sums2;
   if (std::all_of(ts.begin(), ts.end(), [](Node *t) { return !t; })) return -1;

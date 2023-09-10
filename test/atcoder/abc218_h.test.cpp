@@ -12,7 +12,8 @@ signed main() {
  if (R > N - R) R= N - R;
  long long A[N - 1];
  for (int i= 0; i < N - 1; ++i) cin >> A[i];
- long long B[N]= {};
+ long long B[N];
+ B[0]= 0;
  for (int i= 0; i < N - 1; ++i) B[i]+= A[i], B[i + 1]+= A[i];
  auto f= [&](long long p) {
   long long dp[N + 1][2];

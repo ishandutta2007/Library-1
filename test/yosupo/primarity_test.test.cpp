@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/primarity_test"
+#define PROBLEM "https://judge.yosupo.jp/problem/primality_test"
 #include <iostream>
 #include "src/Math/is_prime.hpp"
 using namespace std;

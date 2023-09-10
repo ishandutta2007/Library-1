@@ -24,7 +24,7 @@ template <class K> Matrix<K> hessenberg(Matrix<K> A, bool mint= false) {
      K m00= K(1), m01= K(), m10= K(), m11= K(1);
      for (uint64_t a= A[j + 1][j].val(), b= A[i][j].val(), t, l; b;) l= b, b= a - (t= a / b) * b, a= l, s= m10, m10= m00 - m10 * t, m00= s, s= m11, m11= m01 - m11 * t, m01= s;
      for (r= 0; r < n; ++r) s= m00 * A[j + 1][r] + m01 * A[i][r], A[i][r]= m10 * A[j + 1][r] + m11 * A[i][r], A[j + 1][r]= s;
-     for (; r--;) s= m11 * A[r][j + 1] - m10 * A[r][i], A[r][j + 1]= m00 * A[r][i] - m01 * A[r][j + 1], A[r][i]= s;
+     for (; r--;) s= m11 * A[r][j + 1] - m10 * A[r][i], A[r][i]= m00 * A[r][i] - m01 * A[r][j + 1], A[r][j + 1]= s;
     }
   } else {
    for (iv= K(1) / A[j + 1][j], i= j + 2; i < n; ++i)

@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <tuple>
 #include "src/Internal/HAS_CHECK.hpp"
-template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class SegmentTree_Dynamic {
+template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentTree_Dynamic {
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
  HAS_MEMBER(mapping);
@@ -97,24 +97,24 @@ template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class Seg
   apply(t->ch[0], l, r, {b[0], m}, x), apply(t->ch[1], l, r, {m, b[1]}, x);
   if constexpr (monoid<M>::value) pushup(t);
  }
- void set_val(Node *&t, const id_t &k, const T &val, std::uint8_t h) {
+ void set_val(Node *&t, const id_t &k, const T &val, uint8_t h) {
   if (cp_node(t); !h) return reflect(t)= val, void();
   if constexpr (dual<M>::value) eval(t, 1LL << h);
   set_val(t->ch[(k >> (h - 1)) & 1], k, val, h - 1);
   if constexpr (monoid<M>::value) pushup(t);
  }
- T &at_val(Node *&t, const id_t &k, std::uint8_t h) {
+ T &at_val(Node *&t, const id_t &k, uint8_t h) {
   if (cp_node(t); !h) return reflect(t);
   if constexpr (dual<M>::value) eval(t, 1LL << h);
   return at_val(t->ch[(k >> (h - 1)) & 1], k, h - 1);
  }
- bool is_null(Node *&t, const id_t &k, std::uint8_t h) {
+ bool is_null(Node *&t, const id_t &k, uint8_t h) {
   if (!t) return true;
   if (!h) return false;
   if constexpr (dual<M>::value) eval(t, 1LL << h);
   return is_null(t->ch[(k >> (h - 1)) & 1], k, h - 1);
  }
- T get_val(Node *&t, const id_t &k, std::uint8_t h) {
+ T get_val(Node *&t, const id_t &k, uint8_t h) {
   if (!t) return def_val();
   if (!h) return reflect(t);
   if constexpr (dual<M>::value) eval(t, 1LL << h);
@@ -128,7 +128,7 @@ template <typename M, bool persistent= false, std::uint8_t HEIGHT= 30> class Seg
   if constexpr (last) return k <= m;
   else return m <= k;
  }
- template <bool last, class C, std::size_t N> static id_t find(const id_t &k, std::array<id_t, 2> b, const id_t &bias, std::uint8_t h, const C &check, std::array<Node *, N> &ts, std::array<T, N> &sums) {
+ template <bool last, class C, std::size_t N> static id_t find(const id_t &k, std::array<id_t, 2> b, const id_t &bias, uint8_t h, const C &check, std::array<Node *, N> &ts, std::array<T, N> &sums) {
   static_assert(monoid<M>::value, "\"find\" is not available\n");
   static std::array<T, N> sums2;
   if (std::all_of(ts.begin(), ts.end(), [](Node *t) { return !t; })) return -1;

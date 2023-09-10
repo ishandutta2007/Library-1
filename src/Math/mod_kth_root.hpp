@@ -39,7 +39,7 @@ template <class Int, class MP> inline i64 peth_root(Int c, Int pi, int ei, const
 }
 template <class Int, class MP> i64 inner_kth_root(Int a, u64 k, Int p) {
  const MP md(p);
- Int g= binary_gcd(k, p - 1), pp= (p - 1) / g, kk= (k / g) % pp;
+ Int g= binary_gcd(k, (u64)p - 1), pp= (p - 1) / g, kk= (k / g) % pp;
  if (a= md.set(a); md.norm(pow(a, pp, md)) != md.set(1)) return -1;
  a= pow(a, mod_inv(kk, pp), md);
  for (auto [pi, ei]: Factors(g)) a= peth_root<Int>(a, pi, ei, md);

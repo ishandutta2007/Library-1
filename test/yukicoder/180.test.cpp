@@ -20,6 +20,6 @@ signed main() {
   return (mx - mi) * 2 + n;
  };
  auto [x, fx]= fibonacci_search<MINIMIZE>(f, 1, 1e9);
- cout << x << '\n';
+ cout << x;
  return 0;
 }

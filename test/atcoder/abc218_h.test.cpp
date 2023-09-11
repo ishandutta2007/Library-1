@@ -13,7 +13,7 @@ signed main() {
  long long A[N - 1];
  for (int i= 0; i < N - 1; ++i) cin >> A[i];
  long long B[N];
- B[0]= 0;
+ fill_n(B, N, 0);
  for (int i= 0; i < N - 1; ++i) B[i]+= A[i], B[i + 1]+= A[i];
  auto f= [&](long long p) {
   long long dp[N + 1][2];

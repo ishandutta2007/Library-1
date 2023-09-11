@@ -15,7 +15,7 @@ signed main() {
  for (int i= 0; i < M; ++i) cin >> s[i] >> t[i];
  auto f= [&](const Vec& v) {
   Vec ret(N);
-  for (int i= 0; i < M; ++i) ret[s[i]]+= v[t[i]], ret[t[i]]+= v[t[i]];
+  for (int i= 0; i < M; ++i) ret[s[i]]+= v[t[i]], ret[t[i]]+= v[s[i]];
   return ret;
  };
  Vector<Mint> vec(N);

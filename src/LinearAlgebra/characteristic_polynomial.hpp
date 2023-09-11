@@ -52,7 +52,7 @@ template <class K> std::vector<K> characteristic_polynomial(const Matrix<K> &A, 
 template <class K> std::vector<K> det_of_first_degree_poly_mat(Matrix<K> M0, Matrix<K> M1) {
  const size_t n= M0.height();
  assert(n == M1.height()), assert(n == M0.width()), assert(n == M1.width());
- int cnt= 0;
+ size_t cnt= 0;
  K det= 1, v, iv;
  for (size_t p= 0, piv, r, i; p < n;) {
   if constexpr (std::is_floating_point_v<K>) {
@@ -61,7 +61,7 @@ template <class K> std::vector<K> det_of_first_degree_poly_mat(Matrix<K> M0, Mat
   } else
    for (piv= p; piv < n; ++piv)
     if (M1[piv][p] != K()) break;
-  if (la_internal::is_zero(M1[piv][p])) {
+  if (piv == n || la_internal::is_zero(M1[piv][p])) {
    if (++cnt > n) return std::vector<K>(n + 1);
    for (r= p; r--;)
     for (v= M1[r][p], M1[r][p]= K(), i= n; i--;) M0[i][p]-= v * M0[i][r];

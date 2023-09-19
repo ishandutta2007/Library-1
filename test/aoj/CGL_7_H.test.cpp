@@ -2,19 +2,17 @@
 #define ERROR "0.00000001"
 #include <iostream>
 #include <iomanip>
-#include "src/Geometry/!geometry_temp.hpp"
-#include "src/Geometry/circle_functions.hpp"
+#include "src/Geometry/intersection_area.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
- Circle c;
+ using namespace geo;
+ Circle<long double> c;
  int n;
  cin >> n >> c.r;
- c.o= {0, 0};
- Polygon g(n);
- for (int i= 0; i < n; i++) cin >> g[i];
- cout << fixed << setprecision(12) << intersection_area(c, g) << endl;
+ vector<Point<long double>> ps(n);
+ for (int i= 0; i < n; ++i) cin >> ps[i];
+ cout << fixed << setprecision(12) << intersection_area(c, Polygon(ps)) << '\n';
  return 0;
 }

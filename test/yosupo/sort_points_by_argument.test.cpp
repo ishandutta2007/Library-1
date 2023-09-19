@@ -1,0 +1,18 @@
+#define PROBLEM "https://judge.yosupo.jp/problem/sort_points_by_argument"
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "src/Geometry/Polar.hpp"
+using namespace std;
+signed main() {
+ cin.tie(0);
+ ios::sync_with_stdio(0);
+ using namespace geo;
+ int N;
+ cin >> N;
+ vector<Point<int>> ps(N);
+ for (int i= 0; i < N; ++i) cin >> ps[i];
+ sort(ps.begin(), ps.end(), Polar<int>());
+ for (auto &p: ps) cout << p.x << " " << p.y << "\n";
+ return 0;
+}

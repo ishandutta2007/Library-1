@@ -1,46 +1,44 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1190"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1190"
 #define ERROR "0.000001"
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <cmath>
-#include "src/Geometry/!geometry_temp.hpp"
+#include "src/Geometry/Circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
  cout << fixed << setprecision(12);
+ using R= long double;
  for (int N; cin >> N && N;) {
-  vector<Circle> cs(N);
+  vector<Circle<R>> cs(N);
   for (int i= 0; i < N; i++) cin >> cs[i].o >> cs[i].r;
-  auto height= [&](Point p) {
-   Real res= 1e10;
-   for (Circle c: cs) res= min(res, max(Real(0), c.r * c.r - norm2(c.o - p)));
-   return sqrt(res);
-  };
-  Real ans= 0;
-  for (int i= 0; i < N; i++) {
-   Point p= cs[i].o;
-   ans= max(ans, height(p));
-   for (int j= i + 1; j < N; j++) {
+  vector<Point<R>> ps;
+  for (int i= N; i--;) {
+   ps.push_back(cs[i].o);
+   for (int j= i; j--;) {
     auto cp= cross_points(cs[i], cs[j]);
     if (cp.size() <= 1) continue;
-    Line l= {cp[0], cp[1]};
-    p= (cp[0] + cp[1]) / 2;
-    ans= max(ans, height(p));
-    for (int k= j + 1; k < N; k++) {
+    ps.push_back((cp[0] + cp[1]) / 2);
+    Segment s= {cp[0], cp[1]};
+    for (int k= j; k--;) {
      cp= cross_points(cs[i], cs[k]);
      if (cp.size() <= 1) continue;
-     Line m= {cp[0], cp[1]};
-     cp= cross_points(l, m);
+     cp= cross_points(s, Segment(cp[0], cp[1]));
      if (!cp.size()) continue;
-     p= cp[0];
-     ans= max(ans, height(p));
+     ps.push_back(cp[0]);
     }
    }
   }
-  cout << ans << endl;
+  R ans= 0;
+  for (const auto &p: ps) {
+   R a= 1e10;
+   for (const auto &c: cs) a= min(a, c.r * c.r - dist2(c.o, p));
+   ans= max(ans, a);
+  }
+  cout << sqrt(ans) << '\n';
  }
  return 0;
 }

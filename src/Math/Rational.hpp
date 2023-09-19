@@ -5,19 +5,41 @@
 #include "src/Math/binary_gcd.hpp"
 template <class Int, bool reduction= true> struct Rational {
  Int num, den;
- constexpr Rational(Int num= 0, Int den= 1): num(num), den(den) {
+ constexpr Rational(): num(0), den(1) {}
+ constexpr Rational(Int n, Int d= 1): num(n), den(d) {
   if (den < 0) num= -num, den= -den;
-  if constexpr (reduction) reduce();
+  if constexpr (reduction) reduce(num, den);
  }
- constexpr void reduce() {
-  const Int g= binary_gcd(num < 0 ? -num : num, den);
-  num/= g, den/= g;
+ constexpr Rational(const std::string &str) {
+  auto it= str.find("/");
+  if (it == std::string::npos) num= std::stoi(str), den= 1;
+  else num= std::stoi(str.substr(0, it)), den= std::stoi(str.substr(it + 1));
+  if constexpr (reduction) reduce(num, den);
  }
- constexpr Rational operator-() const { return Rational(-num, den); }
+ static constexpr void reduce(Int &a, Int &b) {
+  const Int g= binary_gcd(a < 0 ? -a : a, b);
+  a/= g, b/= g;
+ }
+ static constexpr Rational raw(Int n, Int d) {
+  Rational ret;
+  return ret.num= n, ret.den= d, ret;
+ }
+ constexpr Rational operator-() const { return raw(-num, den); }
  constexpr Rational operator+(const Rational &r) const { return Rational(num * r.den + den * r.num, den * r.den); }
  constexpr Rational operator-(const Rational &r) const { return Rational(num * r.den - den * r.num, den * r.den); }
- constexpr Rational operator*(const Rational &r) const { return Rational(num * r.num, den * r.den); }
- constexpr Rational operator/(const Rational &r) const { return Rational(num * r.den, den * r.num); }
+ constexpr Rational operator*(const Rational &r) const {
+  if constexpr (reduction) {
+   Int ln= num, ld= den, rn= r.num, rd= r.den;
+   return reduce(ln, rd), reduce(rn, ld), raw(ln * rn, ld * rd);
+  } else return Rational(num * r.num, den * r.den);
+ }
+ constexpr Rational operator/(const Rational &r) const {
+  if constexpr (reduction) {
+   Int ln= num, ld= den, rn= r.num, rd= r.den;
+   if (rn < 0) rd= -rd, rn= -rn;
+   return reduce(ln, rn), reduce(rd, ld), raw(ln * rd, ld * rn);
+  } else return Rational(num * r.den, den * r.num);
+ }
  Rational &operator+=(const Rational &r) { return *this= *this + r; }
  Rational &operator-=(const Rational &r) { return *this= *this - r; }
  Rational &operator*=(const Rational &r) { return *this= *this * r; }
@@ -38,27 +60,30 @@ template <class Int, bool reduction= true> struct Rational {
  constexpr bool operator>=(const Rational &r) const { return !(*this < r); }
  constexpr explicit operator bool() const { return num != 0; }
  constexpr long double to_fp() const { return (long double)num / den; }
- constexpr Int floor() const {
-  if constexpr (reduction) return num < 0 ? -((-num + den - 1) / den) : num / den;
-  else {
-   const Int n= num < 0 ? -num : num, d= den < 0 ? -den : den;
-   return num * den < 0 ? -((n + d - 1) / d) : n / d;
-  }
- }
- std::string to_string() const {
-  if (!num) return "0";
+ constexpr explicit operator long double() const { return to_fp(); }
+ constexpr explicit operator double() const { return to_fp(); }
+ constexpr explicit operator float() const { return to_fp(); }
+ constexpr Int floor() const { return num < 0 ? -((-num + den - 1) / den) : num / den; }
+ constexpr Int ceil() const { return num < 0 ? -(-num / den) : (num + den - 1) / den; }
+ constexpr Rational abs() const { return raw(num < 0 ? -num : num, den); }
+ constexpr friend Int floor(const Rational &r) { return r.floor(); }
+ constexpr friend Int ceil(const Rational &r) { return r.ceil(); }
+ constexpr friend Rational abs(const Rational &r) { return r.abs(); }
+ std::string to_string(bool frac_force= false) const {
+  if (!num) return frac_force ? "0/1" : "0";
   std::stringstream ss;
+  if (!frac_force && den == 1) return ss << num, ss.str();
   return ss << num << "/" << den, ss.str();
+ }
+ friend std::istream &operator>>(std::istream &is, Rational &r) {
+  std::string s;
+  if (is >> s; s != "") r= Rational(s);
+  return is;
  }
  friend std::ostream &operator<<(std::ostream &os, const Rational &r) { return os << r.to_string(); }
 };
-template <class Int> struct std::numeric_limits<Rational<Int, false>> {
- static constexpr Rational<Int, false> max() noexcept { return Rational<Int, false>(1, 0); }
- static constexpr Rational<Int, false> min() noexcept { return Rational<Int, false>(1, std::numeric_limits<Int>::max()); }
- static constexpr Rational<Int, false> lowest() noexcept { return Rational<Int, false>(-1, 0); }
-};
-template <class Int> struct std::numeric_limits<Rational<Int, true>> {
- static constexpr Rational<Int, true> max() noexcept { return Rational<Int, true>(1, 0); }
- static constexpr Rational<Int, true> min() noexcept { return Rational<Int, true>(1, std::numeric_limits<Int>::max()); }
- static constexpr Rational<Int, true> lowest() noexcept { return Rational<Int, true>(-1, 0); }
+template <class Int, bool reduction> struct std::numeric_limits<Rational<Int, reduction>> {
+ static constexpr Rational<Int, reduction> max() noexcept { return Rational<Int, reduction>(1, 0); }
+ static constexpr Rational<Int, reduction> min() noexcept { return Rational<Int, reduction>(1, std::numeric_limits<Int>::max()); }
+ static constexpr Rational<Int, reduction> lowest() noexcept { return Rational<Int, reduction>(-1, 0); }
 };

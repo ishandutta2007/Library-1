@@ -1,28 +1,29 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1157"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1157"
 #define ERROR "0.0001"
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
-#include "src/Geometry/!geometry_temp.hpp"
+#include "src/Geometry/Polygon.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
+ using R= long double;
  cout << fixed << setprecision(12);
  for (int N; cin >> N && N;) {
-  Segment s;
-  cin >> s.p1 >> s.p2;
-  Real ans= 1e10;
+  Segment<R> s;
+  cin >> s.p >> s.q;
+  R ans= 1e10;
   for (int i= 0; i < N; i++) {
-   Real l, d, r, u, h;
+   R l, d, r, u, h;
    cin >> l >> d >> r >> u >> h;
-   Polygon g= {{l, d}, {r, d}, {r, u}, {l, u}};
-   Real dis= dist(g, s);
+   Polygon<R> g({{l, d}, {r, d}, {r, u}, {l, u}});
+   R dis= dist(g, s);
    if (dis <= h) ans= min(ans, dis);
    else ans= min(ans, (dis * dis + h * h) / (2 * h));
   }
-  cout << ans << endl;
+  cout << ans << '\n';
  }
  return 0;
 }

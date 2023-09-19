@@ -2,16 +2,17 @@
 #define ERROR "0.00000001"
 #include <iostream>
 #include <iomanip>
-#include "src/Geometry/!geometry_temp.hpp"
+#include "src/Geometry/Polygon.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
  int n;
  cin >> n;
- Polygon g(n);
- for (int i= 0; i < n; i++) cin >> g[i];
- cout << fixed << setprecision(12) << g.area() << endl;
+ vector<Point<long double>> ps(n);
+ for (int i= 0; i < n; ++i) cin >> ps[i];
+ Polygon g(ps);
+ cout << fixed << setprecision(12) << g.area() << '\n';
  return 0;
 }

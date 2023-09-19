@@ -1,18 +1,27 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1132"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1132"
 #include <iostream>
 #include <vector>
-#include "src/Geometry/!geometry_temp.hpp"
-#include "src/Geometry/circle_functions.hpp"
+#include "src/Geometry/Circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- using namespace geometry;
+ using namespace geo;
+ using R= long double;
  int N;
  while (cin >> N && N) {
-  vector<Point> ps(N);
-  for (int i= 0; i < N; i++) cin >> ps[i];
-  cout << max_circle_cover(ps, 1).first << endl;
+  vector<Point<R>> ps(N);
+  for (int i= 0; i < N; ++i) cin >> ps[i];
+  int ans= 1;
+  for (int i= N; i--;)
+   for (int j= i; j--;)
+    for (const auto &o: cross_points(Circle<R>(ps[i], 1), Circle<R>(ps[j], 1))) {
+     Circle<R> c(o, 1);
+     int cnt= 0;
+     for (const auto &p: ps) cnt+= c.where(p) != -1;
+     ans= max(ans, cnt);
+    }
+  cout << ans << '\n';
  }
  return 0;
 }

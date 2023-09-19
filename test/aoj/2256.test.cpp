@@ -1,64 +1,64 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2256"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2256"
+// Rational だと WA か TLE
 #define ERROR "0.000000001"
 #include <iostream>
 #include <iomanip>
 #include <vector>
 #include <algorithm>
-#include "src/Geometry/!geometry_temp.hpp"
+#include "src/Misc/compress.hpp"
+#include "src/Geometry/Segment.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
+ using R= long double;
  cout << fixed << setprecision(12);
  for (int W, H, N; cin >> W >> H >> N && N;) {
-  vector<Point> ps= {{0, 0}, {0, Real(H)}, {Real(W), 0}, {Real(W), Real(H)}};
-  ps.resize(2 * N + 4);
-  for (int i= 0; i < 2 * N; i++) cin >> ps[i + 4];
-  N+= 2;
-  Segment left= {ps[0], ps[1]}, right= {ps[2], ps[3]};
-  auto check= [&](Line l) {
-   int on_cnt= 0, sum= 0;
-   for (int k= 4; k < 2 * N; k++) {
-    sum+= l.where(ps[k]);
-    if (l.where(ps[k]) == 0) on_cnt++;
+  Segment<R> left({0, 0}, {0, R(H)}), right({R(W), 0}, {R(W), R(H)});
+  vector<Point<R>> ps(2 * N);
+  for (int i= 0; i < 2 * N; ++i) cin >> ps[i];
+  auto check= [&](const Line<R> &l) {
+   int on= 0, dif= 0;
+   for (auto &p: ps) {
+    int w= l.where(p);
+    on+= (w == 0), dif+= w;
    }
-   sum= abs(sum);
-   while (on_cnt && sum) on_cnt--, sum--;
-   return sum == 0;
+   return abs(dif) <= on;
   };
-  vector<Real> event;
-  for (int i= 0; i < 2 * N; i++)
-   for (int j= i + 1; j < 2 * N; j++) {
-    Line l= {ps[i], ps[j]};
-    if (check(l)) {
-     auto cp= cross_points(left, l);
-     if (!cp.size()) continue;
-     if (!cross_points(right, l).size()) continue;
-     event.emplace_back(cp[0].y);
-    }
+  vector<R> xs;
+  auto qs= ps;
+  qs.emplace_back(right.p), qs.emplace_back(right.q);
+  compress(qs);
+  for (int i= qs.size(); i--;)
+   for (int j= i; j--;) {
+    Line l= line_through(qs[i], qs[j]);
+    if (!check(l)) continue;
+    if (!cross_points(right, l).size()) continue;
+    auto cp= cross_points(left, l);
+    if (!cp.size()) continue;
+    xs.emplace_back(cp[0].y);
    }
-  sort(event.begin(), event.end());
-  event.erase(unique(event.begin(), event.end()), event.end());
-  auto f= [&](Real x) {
-   Real mi= H + 10, ma= -1;
-   for (int i= 0; i < 2 * N; i++) {
-    if (sgn(ps[i].x) == 0) continue;
-    Line l= {{0, x}, ps[i]};
-    if (check(l)) {
-     auto cp= cross_points(right, l);
-     if (!cp.size()) continue;
-     mi= min(mi, cp[0].y);
-     ma= max(ma, cp[0].y);
-    }
+  xs.emplace_back(0), xs.emplace_back(H);
+  compress(xs);
+  auto f= [&](R x) {
+   R mn= H + 1, mx= -1;
+   Point<R> p0= {0, x};
+   for (auto &p: qs) {
+    if (sgn(p.x) == 0) continue;
+    Line l= line_through(p0, p);
+    if (!check(l)) continue;
+    auto cp= cross_points(right, l);
+    if (!cp.size()) continue;
+    mn= min(mn, cp[0].y), mx= max(mx, cp[0].y);
    }
-   if (ma < 0) return Real(0);
-   return ma - mi;
+   if (mx < 0) return R(0);
+   return mx - mn;
   };
-  Real ans= 0;
-  for (int i= 0; i + 1 < (int)event.size(); i++) ans+= (event[i + 1] - event[i]) * f((event[i] + event[i + 1]) / 2);
+  R ans= 0;
+  for (int i= xs.size(); --i;) ans+= (xs[i] - xs[i - 1]) * f((xs[i] + xs[i - 1]) / 2);
   ans/= H * H;
-  cout << ans << endl;
+  cout << ans << '\n';
  }
  return 0;
 }

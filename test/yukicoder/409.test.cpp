@@ -12,7 +12,7 @@ signed main() {
  for (int i= 0; i < N; ++i) cin >> D[i];
  auto w= [&](int i, int j) { return D[i - 1] + B * (i - j) * (i - j - 1) / 2 - A * (i - j - 1); };
  auto dp= simplified_larsch_dp(N, w);
- long long ans= 1e9;
+ long long ans= 1e18;
  for (int i= 0; i <= N; ++i) ans= min(ans, dp[i] + B * (N - i) * (N - i + 1) / 2 - A * (N - i));
  cout << ans + W << '\n';
  return 0;

@@ -3,49 +3,33 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include <numeric>
 #include <algorithm>
-#include "src/Geometry/!geometry_temp.hpp"
 #include "src/DataStructure/UnionFind.hpp"
-
+#include "src/Geometry/Convex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
+ using Real= long double;
+ using P= Point<Real>;
  int V, R;
  cin >> V >> R;
- vector<Point> ps(V);
- map<pair<int, int>, int> id;
- for (int i= 0; i < V; i++) {
-  int x, y;
-  cin >> x >> y;
-  id[{x, y}]= i;
-  ps[i]= {Real(x), Real(y)};
- }
- UnionFind uf(V), uf2(V);
- Convex ch= convex_hull(ps);
+ vector<P> ps(V);
+ map<P, int> id;
+ for (int i= 0; i < V; ++i) cin >> ps[i], id[ps[i]]= i;
+ UnionFind uf(V);
  Real ans= 0;
- for (int i= 0; i < (int)ch.size(); i++) {
-  Point p= ch[i], q= ch[ch.next(i)];
-  uf.unite(id[{round(p.x), round(p.y)}], id[{round(q.x), round(q.y)}]);
-  ans+= dist(p, q);
- }
-
- vector<int> a, b;
- vector<Real> w;
+ for (const auto &e: Convex(ps).edges()) uf.unite(id[e.p], id[e.q]), ans+= e.length();
+ vector<Segment<Real>> ss;
  for (int i= 0; i < R; ++i) {
   int s, t;
   cin >> s >> t;
-  if (uf.same(--s, --t)) continue;
-  a.push_back(uf.root(s)), b.push_back(uf.root(t)), w.push_back(dist(ps[s], ps[t]));
+  if (!uf.same(--s, --t)) ss.emplace_back(ps[s], ps[t]);
  }
- int n= a.size();
- int ord[n];
- iota(ord, ord + n, 0), sort(ord, ord + n, [&](int l, int r) { return w[l] < w[r]; });
- for (int i: ord)
-  if (uf2.unite(a[i], b[i])) ans+= w[i];
-
- cout << fixed << setprecision(12) << ans << endl;
+ sort(ss.begin(), ss.end(), [](const auto &a, const auto &b) { return a.length() < b.length(); });
+ for (const auto &e: ss)
+  if (uf.unite(id[e.p], id[e.q])) ans+= e.length();
+ cout << fixed << setprecision(12) << ans << '\n';
  return 0;
 }

@@ -1,34 +1,25 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2635"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2635"
 #include <iostream>
 #include <vector>
-#include "src/Geometry/!geometry_temp.hpp"
+#include "src/Geometry/IncrementalConvexHull.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
  int n;
  cin >> n;
- vector<Point> ps(n);
- for (int i= 0; i < n; i++) cin >> ps[i];
+ vector<Point<long long>> ps(n);
+ for (int i= 0; i < n; ++i) cin >> ps[i];
  bool isok= true;
- vector<Point> pps;
- Real pre= 0;
- auto check= [&](Point p) {
-  pps.push_back(p);
-  if (pps.size() >= 3) {
-   Convex ch= convex_hull(pps);
-   Real cur= ch.area();
-   bool res= sgn(cur - pre) > 0;
-   pre= cur;
-   return res;
-  }
-  return true;
- };
- for (int i= 0; i < n; i++) isok&= check(ps[i]);
- pps.clear();
- pre= 0;
- for (int i= n - 1; i >= 0; i--) isok&= check(ps[i]);
- cout << (isok ? "Possible" : "Impossible") << endl;
+ {
+  IncrementalConvexHull<long long> ch;
+  for (int i= 0; i < n; ++i) isok&= ch.where(ps[i]) == -1, ch.insert(ps[i]);
+ }
+ {
+  IncrementalConvexHull<long long> ch;
+  for (int i= n; i--;) isok&= ch.where(ps[i]) == -1, ch.insert(ps[i]);
+ }
+ cout << (isok ? "Possible" : "Impossible") << '\n';
  return 0;
 }

@@ -2,21 +2,24 @@
 #define ERROR "0.00000001"
 #include <iostream>
 #include <iomanip>
-#include "src/Geometry/!geometry_temp.hpp"
+#include "src/Geometry/Line.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
  cout << fixed << setprecision(12);
- Line l;
- cin >> l.p1 >> l.p2;
+ using P= Point<long double>;
+ P p1, p2;
+ cin >> p1 >> p2;
+ Line l= line_through(p1, p2);
  int q;
  cin >> q;
  while (q--) {
-  Point p;
+  P p;
   cin >> p;
-  cout << l.project(p) << endl;
+  auto ans= l.project(p);
+  cout << ans.x << " " << ans.y << '\n';
  }
  return 0;
 }

@@ -1,31 +1,32 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3056"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3056"
 #define ERROR "0.000001"
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
-#include "src/Geometry/!geometry_temp.hpp"
+#include <vector>
+#include "src/Geometry/Point.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
- const Real sq3= sqrt(Real(3));
+ using namespace geo;
+ using R= long double;
+ const R sq3= sqrt(3.0);
  int N;
  cin >> N;
- Convex ch(N);
- for (int i= 0; i < N; i++) cin >> ch[i];
- Real ans= 1e12;
- for (int i= 0; i < N; i++) {
-  Real theta= arg(ch[ch.next(i)] - ch[i]);
-  auto nch= rotate(translate(ch, -ch[i]), -theta);
-  Real mi= 0, ma= 0;
-  for (Point p: nch) {
-   Real tmp= p.y / sq3;
-   mi= min(mi, p.x - tmp);
-   ma= max(ma, p.x + tmp);
+ vector<Point<R>> ps(N);
+ for (int i= 0; i < N; i++) cin >> ps[i];
+ R ans= 1e12;
+ for (int i= N; i--;) {
+  auto p= ps[i], q= ps[(i + 1) % N], v= q - p;
+  R mx= 0, mn= 0;
+  for (const auto &r: ps) {
+   auto w= r - p;
+   R y= cross(v, w), x= dot(v, w), yy= y / sq3;
+   mx= max(mx, x + yy), mn= min(mn, x - yy);
   }
-  ans= min(ans, ma - mi);
+  ans= min(ans, (mx - mn) / abs(v));
  }
- cout << fixed << setprecision(12) << ans << endl;
+ cout << fixed << setprecision(12) << ans << '\n';
  return 0;
 }

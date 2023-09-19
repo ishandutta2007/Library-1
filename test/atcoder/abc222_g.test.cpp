@@ -9,7 +9,7 @@ signed main() {
  ios::sync_with_stdio(0);
  using Mint= ModInt_Runtime<int>;
  using Aff= array<Mint, 2>;
- auto mp= [](Mint x, Aff f) { return f[0] * x + f[1]; };
+ auto mp= [](Aff f, Mint x) { return f[0] * x + f[1]; };
  auto op= [](Aff l, Aff r) { return Aff{l[0] * r[0], l[0] * r[1] + l[1]}; };
  DiscreteLogarithm log(
      mp, op, [](Mint x) { return x.val(); }, 1e8);

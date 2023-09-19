@@ -4,21 +4,20 @@
 #include <iomanip>
 #include <algorithm>
 #include <vector>
-#include "src/Geometry/!geometry_temp.hpp"
-#include "src/Geometry/circle_functions.hpp"
+#include "src/Geometry/Circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
  cout << fixed << setprecision(12);
- Circle c, d;
+ using R= long double;
+ Circle<R> c, d;
  cin >> c.o >> c.r;
  cin >> d.o >> d.r;
- auto ls= common_tangent(c, d);
- vector<Point> ps;
- for (Line l: ls) ps.push_back(l.p1);
+ vector<Point<R>> ps;
+ for (auto &l: common_tangent(c, d)) ps.push_back(cross_points(c, l)[0]);
  sort(ps.begin(), ps.end());
- for (Point p: ps) cout << p << endl;
+ for (auto &p: ps) cout << p.x << " " << p.y << '\n';
  return 0;
 }

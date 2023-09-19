@@ -2,23 +2,25 @@
 #define ERROR "0.00000001"
 #include <iostream>
 #include <iomanip>
-#include "src/Geometry/!geometry_temp.hpp"
+#include "src/Geometry/Convex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
  cout << fixed << setprecision(12);
+ using P= Point<long double>;
  int n;
  cin >> n;
- Convex g(n);
- for (int i= 0; i < n; i++) cin >> g[i];
+ vector<P> ps(n);
+ for (int i= 0; i < n; ++i) cin >> ps[i];
+ Convex g(ps);
  int q;
  cin >> q;
  while (q--) {
-  Line l;
-  cin >> l.p1 >> l.p2;
-  cout << g.cut(l).area() << endl;
+  P lp, lq;
+  cin >> lp >> lq;
+  cout << g.half_plane(line_through(lp, lq)).area() << '\n';
  }
  return 0;
 }

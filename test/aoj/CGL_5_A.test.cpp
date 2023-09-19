@@ -3,18 +3,17 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "src/Geometry/!geometry_temp.hpp"
 #include "src/Geometry/closest_pair.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
  int n;
  cin >> n;
- vector<Point> ps(n);
+ vector<Point<long double>> ps(n);
  for (int i= 0; i < n; i++) cin >> ps[i];
- auto pp= closest_pair(ps);
- cout << fixed << setprecision(12) << dist(pp.first, pp.second) << endl;
+ auto [p, q]= closest_pair(ps);
+ cout << fixed << setprecision(12) << dist(p, q) << '\n';
  return 0;
 }

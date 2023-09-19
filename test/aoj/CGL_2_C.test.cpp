@@ -2,19 +2,20 @@
 #define ERROR "0.00000001"
 #include <iostream>
 #include <iomanip>
-#include "src/Geometry/!geometry_temp.hpp"
+#include "src/Geometry/Segment.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
  cout << fixed << setprecision(12);
  int q;
  cin >> q;
  while (q--) {
-  Segment s, t;
-  cin >> s.p1 >> s.p2 >> t.p1 >> t.p2;
-  cout << cross_points(s, t)[0] << endl;
+  Segment<Point<long double>> s, t;
+  cin >> s.p >> s.q >> t.p >> t.q;
+  auto ans= cross_points(s, t)[0];
+  cout << ans.x << " " << ans.y << '\n';
  }
  return 0;
 }

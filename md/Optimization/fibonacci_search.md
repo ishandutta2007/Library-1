@@ -2,6 +2,10 @@
 title: フィボナッチ探索
 documentation_of: ../../src/Optimization/fibonacci_search.hpp
 ---
+
+引数の型が整数な単峰関数を対象. \
+引数の型が `long double` の単峰関数を対象にする場合は[黄金分割探索](golden_search.md) を使う.
+
 ## 関数
 
 | 名前         | 概要                                                 | 計算量                         |

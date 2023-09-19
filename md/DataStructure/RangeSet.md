@@ -6,7 +6,7 @@ documentation_of: ../../src/DataStructure/RangeSet.hpp
 ## `ClosedSection` クラス
 `pair<Int,Int>` みたいなもん. 閉区間  $\lbrack l, r\rbrack$ を表すクラス. \
 メンバ変数 `l`, `r` を持っていてそれぞれ区間の左端，右端を表す. \
-bool にキャストできて、valid (具体的には $l\le r$) ならtrueを返す. \
+bool にキャストできて、valid (具体的には $l\gt r$) ならtrueを返す. \
 メンバ関数 `length()` で 閉区間の長さを返す.
 
 ## メンバ関数

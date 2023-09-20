@@ -58,8 +58,8 @@ template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Segme
  if (!t && sgn(b) <= 0 && sgn(1 + b) >= 0) return {s.p - b * u};
  d= sqrt(d), a= -b - d, b= -b + d;
  vector<Point<R>> ps;
- if (sgn(a) >= 0 && sgn(1 - a) <= 0) ps.emplace_back(s.p + a * u);
- if (sgn(b) >= 0 && sgn(1 - b) <= 0) ps.emplace_back(s.p + b * u);
+ if (0 <= sgn(a) && sgn(a - 1) <= 0) ps.emplace_back(s.p + a * u);
+ if (0 <= sgn(b) && sgn(b - 1) <= 0) ps.emplace_back(s.p + b * u);
  return ps;
 }
 template <class R> vector<Point<R>> cross_points(const Segment<R> &s, const Circle<R> &c) { return cross_points(c, s); }

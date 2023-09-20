@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include "src/Geometry/Line.hpp"
 namespace geo {
 template <class K> struct Segment {

@@ -1,5 +1,5 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1342"
-#define ERROR "0.000001"
+#define ERROR "0.00001"
 #include <iostream>
 #include <iomanip>
 #include <vector>
@@ -43,7 +43,7 @@ signed main() {
    if (R mid= (low + high) / 2; check(mid)) low= mid;
    else high= mid;
   }
-  cout << low << endl;
+  cout << low << '\n';
  }
  return 0;
 }

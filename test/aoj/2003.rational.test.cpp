@@ -30,7 +30,7 @@ signed main() {
    sort(cps.begin(), cps.end());
    bool cur= cps[0].second;
    int ans= 0;
-   for (int i= 1; i < cps.size(); ++i)
+   for (int i= 1, e= cps.size(); i < e; ++i)
     if (cur ^ cps[i].second) ++ans, cur= !cur;
    cout << ans << '\n';
   }

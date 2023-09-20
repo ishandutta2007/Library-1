@@ -12,7 +12,7 @@ signed main() {
  int q;
  cin >> q;
  while (q--) {
-  Segment<Point<long double>> s, t;
+  Segment<long double> s, t;
   cin >> s.p >> s.q >> t.p >> t.q;
   cout << dist(s, t) << '\n';
  }

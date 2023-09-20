@@ -31,7 +31,8 @@ template <class K> K err_ceil(const K &x) {
 long double radian_to_degree(long double r) { return r * 180.0 / M_PI; }
 long double degree_to_radian(long double d) { return d * M_PI / 180.0; }
 template <class K> struct Point {
- K x= 0, y= 0;
+ K x, y;
+ Point(K x= K(), K y= K()): x(x), y(y) {}
  Point &operator+=(const Point &p) { return x+= p.x, y+= p.y, *this; }
  Point &operator-=(const Point &p) { return x-= p.x, y-= p.y, *this; }
  Point &operator*=(K a) { return x*= a, y*= a, *this; }

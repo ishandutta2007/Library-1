@@ -30,8 +30,6 @@ template <class K> K err_ceil(const K &x) {
 }
 long double radian_to_degree(long double r) { return r * 180.0 / M_PI; }
 long double degree_to_radian(long double d) { return d * M_PI / 180.0; }
-enum CCW { COUNTER_CLOCKWISE, CLOCKWISE, ONLINE_BACK, ONLINE_FRONT, ON_SEGMENT };
-ostream &operator<<(ostream &os, CCW c) { return os << (c == COUNTER_CLOCKWISE ? "COUNTER_CLOCKWISE" : c == CLOCKWISE ? "CLOCKWISE" : c == ONLINE_BACK ? "ONLINE_BACK" : c == ONLINE_FRONT ? "ONLINE_FRONT" : "ON_SEGMENT"); }
 template <class K> struct Point {
  K x= 0, y= 0;
  Point &operator+=(const Point &p) { return x+= p.x, y+= p.y, *this; }
@@ -67,6 +65,8 @@ template <class K> K dist2(const Point<K> &p, const Point<K> &q) { return norm(p
 template <class T, class U> long double dist(const T &a, const U &b) { return sqrt(dist2(a, b)); }
 template <class K> long double angle(const Point<K> &p) { return atan2(p.y, p.x); }
 template <class K> long double angle(const Point<K> &p, const Point<K> &q) { return atan2(cross(p, q), dot(p, q)); }
+enum CCW { COUNTER_CLOCKWISE, CLOCKWISE, ONLINE_BACK, ONLINE_FRONT, ON_SEGMENT };
+ostream &operator<<(ostream &os, CCW c) { return os << (c == COUNTER_CLOCKWISE ? "COUNTER_CLOCKWISE" : c == CLOCKWISE ? "CLOCKWISE" : c == ONLINE_BACK ? "ONLINE_BACK" : c == ONLINE_FRONT ? "ONLINE_FRONT" : "ON_SEGMENT"); }
 template <class K> CCW ccw(const Point<K> &p0, const Point<K> &p1, const Point<K> &p2) {
  Point a= p1 - p0, b= p2 - p0;
  if (int s= sgn(cross(a, b)); s) return s > 0 ? COUNTER_CLOCKWISE : CLOCKWISE;

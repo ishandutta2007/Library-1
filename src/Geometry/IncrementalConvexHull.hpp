@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <algorithm>
 #include <set>
 #include "src/Geometry/Point.hpp"
 namespace geo {
@@ -52,8 +53,7 @@ public:
  // +1: in, 0: on, -1: out
  int where(const P &p) const {
   int l= L.where(p), u= U.where(-p);
-  if (!l || !u) return 0;
-  return min(l, u);
+  return !l || !u ? 0 : min(l, u);
  }
  void insert(const P &p) {
   auto ad= [&](const P &q, const P &r) { a+= cross(q, r), ++m; };

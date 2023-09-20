@@ -5,7 +5,7 @@
 #include "src/Optimization/MinMaxEnum.hpp"
 // [l,r]
 template <MinMaxEnum obj, class F> std::pair<long double, result_type_t<F>> golden_search(const F &f, long double l, long double r, int iter= 100) {
- static constexpr long double c= 2 / (3 + std::sqrt(5.0l));
+ static constexpr long double c= 0.38196601125;
  assert(l <= r);
  long double x= l + (r - l) * c, y= r - (r - l) * c;
  result_type_t<F> fx= f(x), fy= f(y);

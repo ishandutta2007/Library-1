@@ -22,7 +22,7 @@ public:
   std::vector<T> val(m), vs(m);
   std::vector<int> os(m + 1), so(m);
   T s1= t;
-  for (int i= 0; i < m; ++i) ++os[so[i]= hash(val[i]= s1= mp(s1, x)) & mask];
+  for (int i= 0; i < m; ++i) ++os[so[i]= hash(val[i]= s1= mp(x, s1)) & mask];
   for (int i= 0; i < m; ++i) os[i + 1]+= os[i];
   for (int i= 0; i < m; ++i) vs[--os[so[i]]]= val[i];
   E y= x;

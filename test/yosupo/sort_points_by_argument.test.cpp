@@ -10,9 +10,9 @@ signed main() {
  using namespace geo;
  int N;
  cin >> N;
- vector<Point<int>> ps(N);
+ vector<Point<long long>> ps(N);
  for (int i= 0; i < N; ++i) cin >> ps[i];
- sort(ps.begin(), ps.end(), Polar<int>());
+ sort(ps.begin(), ps.end(), Polar<long long>());
  for (auto &p: ps) cout << p.x << " " << p.y << "\n";
  return 0;
 }

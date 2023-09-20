@@ -18,14 +18,15 @@ template <class K> struct Convex: Polygon<K> {
   auto &ch= this->dat;
   int n= ch.size(), i= 0, j= 0;
   for (int k= n; k--;) {
-   if (ch[i] < ch[k]) i= k;
-   if (ch[j] > ch[k]) j= k;
+   if (ch[i] > ch[k]) i= k;
+   if (ch[j] < ch[k]) j= k;
   }
   pair<P, P> ret{ch[i], ch[j]};
   K mx= dist2(ch[i], ch[j]);
   for (int si= i, sj= j; i != sj || j != si;) {
-   if (int ni= this->next(i), nj= this->next(j); sgn(cross(ch[ni] - ch[i], ch[nj] - ch[j])) < 0) j= nj;
-   else i= ni;
+   debug(i, j, si, sj);
+   if (int ni= this->next(i), nj= this->next(j); sgn(cross(ch[ni] - ch[i], ch[nj] - ch[j])) < 0) i= ni;
+   else j= nj;
    if (K len= dist2(ch[i], ch[j]); mx < len) mx= len, ret= {ch[i], ch[j]};
   }
   return ret;

@@ -24,7 +24,6 @@ template <class K> struct Convex: Polygon<K> {
   pair<P, P> ret{ch[i], ch[j]};
   K mx= dist2(ch[i], ch[j]);
   for (int si= i, sj= j; i != sj || j != si;) {
-   debug(i, j, si, sj);
    if (int ni= this->next(i), nj= this->next(j); sgn(cross(ch[ni] - ch[i], ch[nj] - ch[j])) < 0) i= ni;
    else j= nj;
    if (K len= dist2(ch[i], ch[j]); mx < len) mx= len, ret= {ch[i], ch[j]};

@@ -4,14 +4,14 @@ namespace geo {
 template <class K> struct Convex: Polygon<K> {
  using P= Point<K>;
  Convex() {}
- Convex(vector<P> ps) {
+ Convex(vector<P> ps, bool strict= true) {
   int n= ps.size(), k= 0;
   auto &ch= this->dat;
   ch.resize(2 * n), sort(ps.begin(), ps.end());
   for (int i= 0; i < n; ch[k++]= ps[i++])
-   while (k > 1 && sgn(cross(ch[k - 1] - ch[k - 2], ps[i] - ch[k - 2])) <= 0) --k;
+   while (k > 1 && sgn(cross(ch[k - 1] - ch[k - 2], ps[i] - ch[k - 2])) < strict) --k;
   for (int i= n - 1, t= k; i--; ch[k++]= ps[i])
-   while (k > t && sgn(cross(ch[k - 1] - ch[k - 2], ps[i] - ch[k - 2])) <= 0) --k;
+   while (k > t && sgn(cross(ch[k - 1] - ch[k - 2], ps[i] - ch[k - 2])) < strict) --k;
   ch.resize(k - 1), this->build();
  }
  pair<P, P> farthest_pair() const {
@@ -23,12 +23,11 @@ template <class K> struct Convex: Polygon<K> {
   }
   pair<P, P> ret{ch[i], ch[j]};
   K mx= dist2(ch[i], ch[j]);
-  int si= i, sj= j;
-  do {
+  for (int si= i, sj= j; i != sj || j != si;) {
    if (int ni= this->next(i), nj= this->next(j); sgn(cross(ch[ni] - ch[i], ch[nj] - ch[j])) < 0) j= nj;
    else i= ni;
    if (K len= dist2(ch[i], ch[j]); mx < len) mx= len, ret= {ch[i], ch[j]};
-  } while (i != si || j != sj);
+  }
   return ret;
  }
  long double diameter() const {

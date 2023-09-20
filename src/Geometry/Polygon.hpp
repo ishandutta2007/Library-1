@@ -1,5 +1,4 @@
 #pragma once
-#include <algorithm>
 #include "src/Geometry/Segment.hpp"
 namespace geo {
 // build counterclockwise

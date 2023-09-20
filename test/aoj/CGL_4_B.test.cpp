@@ -13,6 +13,6 @@ signed main() {
  vector<Point<long double>> ps(n);
  for (int i= 0; i < n; ++i) cin >> ps[i];
  Convex g(ps);
- cout << fixed << setprecision(12) << g.diameter() << endl;
+ cout << fixed << setprecision(12) << g.diameter() << '\n';
  return 0;
 }

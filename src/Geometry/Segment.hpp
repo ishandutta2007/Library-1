@@ -55,6 +55,12 @@ template <class K> vector<Point<K>> cross_points(const Segment<K> &s, const Segm
  if (sgn(dot(s.p - t.q, s.q - t.q)) <= 0) insert_if_possible(t.q);
  return ps;
 }
+enum INTERSECTION { CROSSING, TOUCHING, DISJOINT, OVERLAP };
+ostream &operator<<(ostream &os, INTERSECTION i) { return os << (i == CROSSING ? "CROSSING" : i == TOUCHING ? "TOUCHING" : i == DISJOINT ? "DISJOINT" : "OVERLAP"); }
+template <class K> INTERSECTION intersection(const Segment<K> &s, const Segment<K> &t) {
+ auto cp= cross_points(s, t);
+ return cp.size() == 0 ? DISJOINT : cp.size() == 2 ? OVERLAP : cp[0] == s.p || cp[0] == s.q || cp[0] == t.p || cp[0] == t.q ? TOUCHING : CROSSING;
+}
 template <class K> K dist2(const Segment<K> &s, const Point<K> &p) { return dist2(p, s.closest_point(p)); }
 template <class K> K dist2(const Point<K> &p, const Segment<K> &s) { return dist2(s, p); }
 template <class K> K dist2(const Segment<K> &s, const Line<K> &l) { return cross_points(s, l).size() ? 0 : min(dist2(s.p, l), dist2(s.q, l)); }

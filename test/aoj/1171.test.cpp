@@ -1,71 +1,63 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=1171"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1171"
 #define ERROR "0.00001"
 #include <iostream>
 #include <vector>
-#include "src/Geometry/!geometry_temp.hpp"
+#include "src/Geometry/Segment.hpp"
 using namespace std;
-using namespace geometry;
-
-const Real INF= 1e10;
-int N;
-vector<Segment> ss;
-Point T, L;
-Real score(vector<int> seq) {
- vector<Segment> ts= ss;
- Point target= T;
- for (int i: seq) {
-  Line l= {ts[i].p1, ts[i].p2};
-  for (Segment &t: ts) t= l.reflect(t);
-  target= l.reflect(target);
- }
- Segment beam= {L, target};
- ts= ss;
- vector<Point> ps= {L};
- for (int i: seq) {
-  auto cp= cross_points(beam, ts[i]);
-  if (!cp.size()) return INF;
-  if (ps.size() >= 2) {
-   auto c= ccw(ps[ps.size() - 2], ps.back(), cp[0]);
-   if (c == ONLINE_BACK || c == ON_SEGMENT) return INF;
-  }
-  ps.push_back(cp[0]);
-  Line l= {ts[i].p1, ts[i].p2};
-  for (Segment &t: ts) t= l.reflect(t);
- }
- ps.push_back(target);
- ts= ss;
- for (int k= 0; k + 1 < ps.size(); k++) {
-  Segment s= {ps[k], ps[k + 1]};
-  for (Segment t: ts)
-   if (intersect(s, t) == CROSSING) return INF;
-  if (k < seq.size()) {
-   Line l= {ts[seq[k]].p1, ts[seq[k]].p2};
-   for (Segment &t: ts) t= l.reflect(t);
-  }
- }
- return dist(L, target);
-}
-Real rec(vector<int> seq) {
- Real res= score(seq);
- if (seq.size() < 5) {
-  for (int i= 0; i < N; i++)
-   if (seq.empty() || i != seq.back()) {
-    seq.push_back(i);
-    res= min(res, rec(seq));
-    seq.pop_back();
-   }
- }
- return res;
-}
 signed main() {
  cin.tie(0);
- ios::sync_with_stdio(false);
+ ios::sync_with_stdio(0);
+ using namespace geo;
  cout << fixed << setprecision(12);
- for (; cin >> N && N;) {
-  ss.resize(N);
-  for (int i= 0; i < N; i++) cin >> ss[i].p1 >> ss[i].p2;
+ using R= long double;
+ static constexpr R INF= 1e10;
+ for (int n; cin >> n && n;) {
+  vector<Segment<R>> ss(n);
+  for (int i= 0; i < n; ++i) cin >> ss[i].p >> ss[i].q;
+  Point<R> T, L;
   cin >> T >> L;
-  cout << rec({}) << endl;
+  auto score= [&](const vector<int> &sq) -> R {
+   auto tar= T;
+   auto ts= ss;
+   for (int i: sq) {
+    auto ref= reflect(line_through(ts[i].p, ts[i].q));
+    for (auto &t: ts) t= ref(t);
+    tar= ref(tar);
+   }
+   Segment beam(L, tar);
+   ts= ss;
+   auto isok= [&](const Segment<R> &range) {
+    if (dot(beam.q - beam.p, range.q - range.p) < 0) return false;
+    for (int j= n; j--;)
+     if (intersection(range, ts[j]) == CROSSING) return false;
+    return true;
+   };
+   Point prev= L;
+   for (int i: sq) {
+    auto cp= cross_points(beam, ts[i]);
+    if (!cp.size()) return INF;
+    if (!isok(Segment(prev, cp[0]))) return INF;
+    prev= cp[0];
+    auto ref= reflect(line_through(ts[i].p, ts[i].q));
+    for (auto &t: ts) t= ref(t);
+   }
+   if (!isok(Segment(prev, tar))) return INF;
+   return beam.length();
+  };
+  R ans= INF;
+  for (int m= 0; m < 6; ++m) {
+   int s= 1;
+   for (int i= m; i--;) s*= n;
+   for (; s--;) {
+    vector<int> sq;
+    for (int i= m, t= s; i--;) sq.push_back(t % n), t/= n;
+    bool isok= true;
+    for (int i= 0; i + 1 < m; ++i) isok&= sq[i] != sq[i + 1];
+    if (!isok) continue;
+    ans= min(ans, score(sq));
+   }
+  }
+  cout << ans << '\n';
  }
  return 0;
 }

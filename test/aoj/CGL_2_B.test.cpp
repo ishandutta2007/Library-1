@@ -11,7 +11,7 @@ signed main() {
  while (q--) {
   Segment<Point<long double>> s, t;
   cin >> s.p >> s.q >> t.p >> t.q;
-  cout << (cross_points(s, t).size() > 0) << '\n';
+  cout << (intersection(s, t) != DISJOINT) << '\n';
  }
  return 0;
 }

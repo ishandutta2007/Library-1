@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <algorithm>
 #include "src/Geometry/Point.hpp"
 namespace geo {
 template <class K> pair<Point<K>, Point<K>> closest_pair(vector<Point<K>> ps) {

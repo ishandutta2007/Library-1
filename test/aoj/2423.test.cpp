@@ -2,25 +2,26 @@
 // 辞書順マッチングのverify
 #include <iostream>
 #include <vector>
-#include "src/Geometry/!geometry_temp.hpp"
-#include "src/Geometry/circle_functions.hpp"
 #include "src/Graph/BipartiteMatching.hpp"
+#include "src/Geometry/Circle.hpp"
+#include "src/Geometry/min_enclosing_circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using namespace geometry;
+ using namespace geo;
+ using R= long double;
  int n, m;
  cin >> n >> m;
  BipartiteMatching bm(m, n);
- Real rs[n];
+ R rs[n];
  for (int i= 0; i < n; i++) cin >> rs[i];
  for (int j= 0; j < m; j++) {
   int p;
   cin >> p;
-  vector<Point> ps(p);
+  vector<Point<R>> ps(p);
   for (int k= 0; k < p; k++) cin >> ps[k];
-  Real r= min_enclosing_circle(ps).r;
+  R r= min_enclosing_circle(ps).r;
   for (int i= 0; i < n; i++)
    if (sgn(rs[i] - r) >= 0) bm.add_edge(j, i);
  }

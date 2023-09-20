@@ -18,7 +18,7 @@ signed main() {
   Point p= ps[0] + ps[N / 2];
   bool isok= true;
   for (int i= N / 2; i--;) isok&= p == ps[i] + ps[N / 2 + i];
-  if (isok) cout << p.x * 0.5 << " " << p.y * 0.5 << '\n';
+  if (isok) cout << 0.5 * p.x << " " << 0.5 * p.y << '\n';
   else cout << "NA" << '\n';
  }
  return 0;

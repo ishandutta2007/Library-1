@@ -25,7 +25,7 @@ signed main() {
    R y= cross(v, w), x= dot(v, w), yy= y / sq3;
    mx= max(mx, x + yy), mn= min(mn, x - yy);
   }
-  ans= min(ans, (mx - mn) / abs(v));
+  ans= min(ans, (mx - mn) / norm(v));
  }
  cout << fixed << setprecision(12) << ans << '\n';
  return 0;

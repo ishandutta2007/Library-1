@@ -10,7 +10,8 @@ signed main() {
  cin >> N;
  int A[N];
  for (int i= 0; i < N; ++i) cin >> A[i];
- long long S[N + 1]= {0}, dp[N + 2], ans[N];
+ long long S[N + 1], dp[N + 2], ans[N];
+ S[0]= 0;
  for (int i= 0; i < N; ++i) S[i + 1]= S[i] + A[i];
  static constexpr long long INF= 1e18;
  fill_n(dp, N + 2, INF), dp[0]= 0;

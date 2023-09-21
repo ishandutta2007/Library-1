@@ -60,9 +60,9 @@ template <class K> struct Point {
 template <class K> K dot(const Point<K> &p, const Point<K> &q) { return p.x * q.x + p.y * q.y; }
 // left turn: > 0, right turn: < 0
 template <class K> K cross(const Point<K> &p, const Point<K> &q) { return p.x * q.y - p.y * q.x; }
-template <class K> K norm(const Point<K> &p) { return dot(p, p); }
-template <class K> long double abs(const Point<K> &p) { return sqrt(norm(p)); }
-template <class K> K dist2(const Point<K> &p, const Point<K> &q) { return norm(p - q); }
+template <class K> K norm2(const Point<K> &p) { return dot(p, p); }
+template <class K> long double norm(const Point<K> &p) { return sqrt(norm2(p)); }
+template <class K> K dist2(const Point<K> &p, const Point<K> &q) { return norm2(p - q); }
 template <class T, class U> long double dist(const T &a, const U &b) { return sqrt(dist2(a, b)); }
 template <class K> long double angle(const Point<K> &p) { return atan2(p.y, p.x); }
 template <class K> long double angle(const Point<K> &p, const Point<K> &q) { return atan2(cross(p, q), dot(p, q)); }
@@ -72,7 +72,7 @@ template <class K> CCW ccw(const Point<K> &p0, const Point<K> &p1, const Point<K
  Point a= p1 - p0, b= p2 - p0;
  if (int s= sgn(cross(a, b)); s) return s > 0 ? COUNTER_CLOCKWISE : CLOCKWISE;
  if (K d= dot(a, b); sgn(d) < 0) return ONLINE_BACK;
- else return sgn(d - norm(a)) > 0 ? ONLINE_FRONT : ON_SEGMENT;
+ else return sgn(d - norm2(a)) > 0 ? ONLINE_FRONT : ON_SEGMENT;
 }
 template <class K> struct Line;
 template <class K> struct Segment;

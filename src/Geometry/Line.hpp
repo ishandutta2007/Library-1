@@ -7,7 +7,7 @@ template <class K> struct Line {
  P p, d;  // p+td
  Line() {}
  // p + td
- Line(const P &p, const P &d): p(p), d(d) { assert(sgn(norm(d))); }
+ Line(const P &p, const P &d): p(p), d(d) { assert(sgn(norm2(d))); }
  // ax+by+c=0 ................. ax+by+c>0: left, ax+by+c=0: on, ax+by+c<0: right
  Line(K a, K b, K c) {
   int sa= sgn(a), sb= sgn(b);
@@ -19,7 +19,7 @@ template <class K> struct Line {
  bool operator!=(const Line &l) const { return sgn(cross(d, l.d)) || where(l.p); }
  // +1: left, 0: on, -1: right
  int where(const P &q) const { return sgn(cross(d, q - p)); }
- P project(const P &q) const { return p + dot(q - p, d) / norm(d) * d; }
+ P project(const P &q) const { return p + dot(q - p, d) / norm2(d) * d; }
  // return  a,b,c of ax+by+c=0
  tuple<K, K, K> coef() const { return make_tuple(-d.y, d.x, cross(p, d)); }
  friend ostream &operator<<(ostream &os, const Line &l) { return os << l.p << " + t" << l.d; }
@@ -45,12 +45,12 @@ template <class K> Line<K> bisector(const Point<K> &p, const Point<K> &q) { retu
 template <class K> vector<Line<K>> bisector(const Line<K> &l, const Line<K> &m) {
  auto cp= cross_points(l, m);
  if (cp.size() != 1) return {Line((l.p + m.p) / 2, l.d)};
- auto d= l.d / abs(l.d) + m.d / abs(m.d);
+ auto d= l.d / norm(l.d) + m.d / norm(m.d);
  return {Line(cp[0], d), Line(cp[0], !d)};
 }
 template <class K> K dist2(const Line<K> &l, const Point<K> &p) {
  K a= cross(l.d, p - l.p);
- return a * a / norm(l.d);
+ return a * a / norm2(l.d);
 }
 template <class K> K dist2(const Point<K> &p, const Line<K> &l) { return dist2(l, p); }
 template <class K> K dist2(const Line<K> &l, const Line<K> &m) { return is_parallel(l, m) ? dist2(l, m.p) : 0; }

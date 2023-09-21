@@ -17,7 +17,7 @@ template <class K> struct Segment {
  P closest_point(const P &r) const {
   P d= q - p;
   K a= dot(r - p, d), b;
-  return sgn(a) > 0 ? sgn(a - (b= norm(d))) < 0 ? p + a / b * d : q : p;
+  return sgn(a) > 0 ? sgn(a - (b= norm2(d))) < 0 ? p + a / b * d : q : p;
  }
  friend ostream &operator<<(ostream &os, const Segment &s) { return os << s.p << "---" << s.q; }
  friend Visualizer &operator<<(Visualizer &vis, const Segment &s) { return vis.ofs << "Segment " << s.p1 << " " << s.p2 << '\n', vis; }

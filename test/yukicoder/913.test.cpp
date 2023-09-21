@@ -8,7 +8,8 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- long long A[N], sum[N + 1]= {0};
+ long long A[N], sum[N + 1];
+ sum[0]= 0;
  for (int i= 0; i < N; ++i) cin >> A[i], sum[i + 1]= sum[i] + A[i];
  auto f= [&](int i, int j) { return (long long)(j - i) * (j - i) + sum[j] - sum[i]; };
  static constexpr long long INF= 1e18;

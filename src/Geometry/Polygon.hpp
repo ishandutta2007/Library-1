@@ -3,22 +3,36 @@
 namespace geo {
 // build counterclockwise
 template <class K> class Polygon {
+ using P= Point<K>;
  K a2= 0;
 protected:
- vector<Point<K>> dat;
+ vector<P> dat;
  void build() {
   if (dat.empty()) return;
   a2= cross(dat.back(), dat[0]);
   for (int i= this->size(); --i;) a2+= cross(dat[i - 1], dat[i]);
   if (a2 < 0) reverse(dat.begin(), dat.end()), a2= -a2;
  }
+ template <int opp> inline bool contain(const Segment<K> &s) const {
+  assert(dat.size());
+  if (where(s.p) == opp || where(s.q) == opp) return false;
+  vector<P> ps, qs;
+  for (const auto &e: edges())
+   if (auto cp= cross_points(s, e); cp.size()) ps.insert(ps.end(), cp.begin(), cp.end());
+  if (ps.empty()) return true;
+  sort(ps.begin(), ps.end()), ps.erase(unique(ps.begin(), ps.end()), ps.end());
+  for (int i= ps.size(); --i;) qs.emplace_back((ps[i] + ps[i - 1]) / 2);
+  for (const auto &q: qs)
+   if (where(q) == opp) return false;
+  return true;
+ }
 public:
  Polygon() {}
- Polygon(const vector<Point<K>> &ps): dat(ps) { build(); }
+ Polygon(const vector<P> &ps): dat(ps) { build(); }
  inline int prev(int i) const { return i ? i - 1 : (int)this->size() - 1; }
  inline int next(int i) const { return i + 1 >= (int)this->size() ? 0 : i + 1; }
- Point<K> &operator[](int i) { return dat[i]; }
- const Point<K> &operator[](int i) const { return dat[i]; }
+ P &operator[](int i) { return dat[i]; }
+ const P &operator[](int i) const { return dat[i]; }
  auto begin() { return dat.begin(); }
  auto end() { return dat.end(); }
  auto begin() const { return dat.begin(); }
@@ -31,15 +45,17 @@ public:
  }
  // assuming no self-intersections
  bool is_convex() const {
+  assert(dat.size());
   for (int i= dat.size(); i--;)
-   if (Point<K> a= dat[i], b= a - dat[prev(i)], c= dat[next(i)] - a; sgn(cross(b, c)) < 0) return false;
+   if (P a= dat[i], b= a - dat[prev(i)], c= dat[next(i)] - a; sgn(cross(b, c)) < 0) return false;
   return true;
  }
  K area() const { return a2 / 2; }
  // for integer
  K area2() const { return a2; }
  // 1: in, 0: on, -1: out
- int where(const Point<K> &p) const {
+ int where(const P &p) const {
+  assert(dat.size());
   bool in= false;
   for (int i= dat.size(); i--;) {
    Point a= dat[i] - p, b= dat[next(i)] - p;
@@ -50,18 +66,8 @@ public:
   }
   return in ? 1 : -1;
  }
- bool contain(const Segment<K> &s) const {
-  if (where(s.p) == -1 || where(s.q) == -1) return false;
-  vector<Point<K>> ps, qs;
-  for (const auto &e: edges())
-   if (auto cp= cross_points(s, e); cp.size()) ps.insert(ps.end(), cp.begin(), cp.end());
-  if (ps.empty()) return true;
-  sort(ps.begin(), ps.end()), ps.erase(unique(ps.begin(), ps.end()), ps.end());
-  for (int i= ps.size(); --i;) qs.emplace_back((ps[i] + ps[i - 1]) / 2);
-  for (const auto &q: qs)
-   if (where(q) == -1) return false;
-  return true;
- }
+ bool in(const Segment<K> &s) const { return contain<-1>(s); }
+ bool out(const Segment<K> &s) const { return contain<+1>(s); }
  friend ostream &operator<<(ostream &os, const Polygon &g) {
   for (int i= 0, e= g.size(); i < e; ++i) os << "--" << g[i] << "-";
   return os;

@@ -14,7 +14,7 @@ template <class R> R intersection_area(const Circle<R> &c, const Polygon<R> &g) 
  using P= Point<R>;
  auto sub= [&](const P &p, const P &q) {
   P u= q - p;
-  R a= norm(u), b= dot(u, p) / a, e= c.r * c.r, d= b * b - (norm(p) - e) / a;
+  R a= norm2(u), b= dot(u, p) / a, e= c.r * c.r, d= b * b - (norm2(p) - e) / a;
   if (sgn(d) <= 0) return e * angle(p, q);
   d= sqrt(d);
   P x= p + clamp(-b - d, R(0), R(1)) * u, y= p + clamp(-b + d, R(0), R(1)) * u;

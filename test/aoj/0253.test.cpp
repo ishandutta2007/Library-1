@@ -16,7 +16,7 @@ signed main() {
   Convex ch(ps);
   R ans= 0;
   for (const auto &e: ch.edges()) {
-   Point<R> v= e.q - e.p, u= !v / abs(v);
+   Point<R> v= e.q - e.p, u= !v / norm(v);
    R l= 0, h= 3000;
    for (int cnt= 100; cnt--;) {
     R m= (l + h) / 2;

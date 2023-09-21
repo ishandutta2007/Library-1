@@ -14,7 +14,7 @@ template <class R> struct Circle {
  int where(const Line<R> &l) const { return sgn(r * r - dist2(l, o)); }
  vector<Line<R>> tangent(const P &p) const {
   P d= p - o, e= !d;
-  R b= norm(d), a= b - r * r;
+  R b= norm2(d), a= b - r * r;
   if (int s= sgn(a); s < 0) return {};
   else if (s == 0) return {{p, e}};
   d*= r, e*= sqrt(a);
@@ -26,7 +26,7 @@ template <class R> struct Circle {
 // 2: properly intersect, 1: contact, 0: disjoint, 3: same
 template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Circle<R> &d) {
  Point v= d.o - c.o;
- R g= norm(v), a= c.r - d.r, b= c.r + d.r;
+ R g= norm2(v), a= c.r - d.r, b= c.r + d.r;
  if (!sgn(g)) {
   if (sgn(a)) return {};
   return {{c.o.x + c.r, c.o.y}, {c.o.x - c.r, c.o.y}, {c.o.x, c.o.y + c.r}};
@@ -42,7 +42,7 @@ template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Circl
 // 2: properly intersect, 1: contact, 0: disjoint
 template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Line<R> &l) {
  Point<R> v= l.p - c.o;
- R a= norm(l.d), b= dot(l.d, v) / a, d= b * b - (norm(v) - c.r * c.r) / a;
+ R a= norm2(l.d), b= dot(l.d, v) / a, d= b * b - (norm2(v) - c.r * c.r) / a;
  int s= sgn(d);
  if (s < 0) return {};
  if (!s) return {l.p - b * l.d};
@@ -52,7 +52,7 @@ template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Line<
 template <class R> vector<Point<R>> cross_points(const Line<R> &l, const Circle<R> &c) { return cross_points(c, l); }
 template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Segment<R> &s) {
  Point<R> u= s.q - s.p, v= s.p - c.o;
- R a= norm(u), b= dot(u, v) / a, d= b * b - (norm(v) - c.r * c.r) / a;
+ R a= norm2(u), b= dot(u, v) / a, d= b * b - (norm2(v) - c.r * c.r) / a;
  int t= sgn(d);
  if (t < 0) return {};
  if (!t && sgn(b) <= 0 && sgn(1 + b) >= 0) return {s.p - b * u};
@@ -73,7 +73,7 @@ template <class R> Circle<R> inscribed_circle(const Point<R> &A, const Point<R> 
 }
 template <class R> vector<Line<R>> common_tangent(const Circle<R> &c, const Circle<R> &d) {
  Point u= d.o - c.o, v= !u;
- R g= norm(u), b;
+ R g= norm2(u), b;
  if (!sgn(g)) return {};  // same origin
  vector<Line<R>> ls;
  for (R a: {c.r - d.r, c.r + d.r}) {

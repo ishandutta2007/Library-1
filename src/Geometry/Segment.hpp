@@ -10,7 +10,7 @@ template <class K> struct Segment {
  // do not consider the direction
  bool operator==(const Segment &s) const { return (p == s.p && q == s.q) || (p == s.q && q == s.p); }
  bool operator!=(const Segment &s) const { return !(*this == s); }
- bool is_on(const P &r) const { return ccw(p, q, r) == ON_SEGMENT; }
+ bool on(const P &r) const { return ccw(p, q, r) == ON_SEGMENT; }
  P &operator[](int i) { return i ? q : p; }
  const P &operator[](int i) const { return i ? q : p; }
  long double length() const { return dist(p, q); }

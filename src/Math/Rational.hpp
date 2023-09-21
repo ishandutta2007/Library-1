@@ -69,10 +69,10 @@ template <class Int, bool reduction= true> struct Rational {
  constexpr friend Int floor(const Rational &r) { return r.floor(); }
  constexpr friend Int ceil(const Rational &r) { return r.ceil(); }
  constexpr friend Rational abs(const Rational &r) { return r.abs(); }
- std::string to_string(bool frac_force= false) const {
-  if (!num) return frac_force ? "0/1" : "0";
+ std::string to_string() const {
+  if (!num) return "0";
   std::stringstream ss;
-  if (!frac_force && den == 1) return ss << num, ss.str();
+  if (den == 1) return ss << num, ss.str();
   return ss << num << "/" << den, ss.str();
  }
  friend std::istream &operator>>(std::istream &is, Rational &r) {

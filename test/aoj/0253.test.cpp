@@ -20,7 +20,7 @@ signed main() {
    R l= 0, h= 3000;
    for (int cnt= 100; cnt--;) {
     R m= (l + h) / 2;
-    R a= ch.half_plane(Line(e.p + m * u, v), -1).area();
+    R a= ch.cut(Line(e.p + m * u, v), -1).area();
     if (a * d < V) l= m;
     else h= m;
    }

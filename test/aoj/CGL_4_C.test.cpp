@@ -20,7 +20,7 @@ signed main() {
  while (q--) {
   P lp, lq;
   cin >> lp >> lq;
-  cout << g.half_plane(line_through(lp, lq)).area() << '\n';
+  cout << g.cut(line_through(lp, lq)).area() << '\n';
  }
  return 0;
 }

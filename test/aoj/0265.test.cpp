@@ -27,7 +27,7 @@ signed main() {
   u128 flg[n], all= (u128(1) << m) - 1;
   fill_n(flg, n, 0);
   for (int i= n; i--;)
-   for (int j= m; j--;) flg[i]|= u128(g.contain({ss[j].p, g[i]}) & g.contain({ss[j].q, g[i]})) << j;
+   for (int j= m; j--;) flg[i]|= u128(g.in({ss[j].p, g[i]}) & g.in({ss[j].q, g[i]})) << j;
   int ans= n;
   for (int s= 1 << n; --s;) {
    int c= __builtin_popcount(s);

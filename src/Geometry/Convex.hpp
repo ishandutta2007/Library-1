@@ -35,7 +35,7 @@ template <class K> struct Convex: Polygon<K> {
   return dist(p, q);
  }
  // side>0 => left, side<0 => right
- Convex half_plane(const Line<K> &l, int side= 1) const {
+ Convex cut(const Line<K> &l, int side= 1) const {
   Convex ret;
   for (const auto &e: this->edges()) {
    auto d= e.q - e.p;
@@ -48,7 +48,7 @@ template <class K> struct Convex: Polygon<K> {
   return ret.build(), ret;
  }
  // { (x,y): (x,y) in polygon and (ax+by+c) * side >= 0 }
- Convex half_plane(K a, K b, K c, int side= 1) const {
+ Convex cut(K a, K b, K c, int side= 1) const {
   int sa= sgn(a), sb= sgn(b), sc= sgn(c);
   if (!sa && !sb) return sc * side < 0 ? Convex() : *this;
   return half_plane(Line<K>(a, b, c), side);

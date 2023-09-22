@@ -12,6 +12,11 @@ template <class R> struct Circle {
  int where(const P &p) const { return sgn(r * r - dist2(p, o)); }
  // +1: intersect, 0: contact, -1: disjoint
  int where(const Line<R> &l) const { return sgn(r * r - dist2(l, o)); }
+ // true: c in *this
+ bool in(const Circle &c) const {
+  R a= c.r - r;
+  return sgn(a) <= 0 && sgn(dist2(o, c.o) - a * a) <= 0;
+ }
  vector<Line<R>> tangent(const P &p) const {
   P d= p - o, e= !d;
   R b= norm2(d), a= b - r * r;
@@ -24,6 +29,7 @@ template <class R> struct Circle {
  friend Visualizer &operator<<(Visualizer &vis, const Circle &c) { return vis.ofs << "Circle " << c.o << " " << c.r << '\n', vis; }
 };
 // 2: properly intersect, 1: contact, 0: disjoint, 3: same
+// counter-clockwise of c and clockwise of d
 template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Circle<R> &d) {
  Point v= d.o - c.o;
  R g= norm2(v), a= c.r - d.r, b= c.r + d.r;
@@ -37,7 +43,7 @@ template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Circl
  if (!out) return {(c.r * d.o + d.r * c.o) / b};
  R e= (a * b + g) / (g * 2);
  Point q= c.o + e * v, n= !v * sqrt(c.r * c.r / g - e * e);
- return {q + n, q - n};
+ return {q - n, q + n};
 }
 // 2: properly intersect, 1: contact, 0: disjoint
 template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Line<R> &l) {

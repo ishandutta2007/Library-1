@@ -35,13 +35,13 @@ signed main() {
    if (M[i][j] != '.') {  // (mA*A+mB*B+mX*X)/(mA+mB+mX) in [j,j+1] x [i,i+1]
     auto ch= ch_all;
     // (mA+mB+mX)*j < mA*Ax+mB*Bx+mX*Xx
-    ch= ch.half_plane(Ax - j, Bx - j, (Xx - j) * mX, 1);  // ax+by+c>0
+    ch= ch.cut(Ax - j, Bx - j, (Xx - j) * mX, 1);  // ax+by+c>0
     // mA*Ax+mB*Bx+mX*Xx < (mA+mB+mX)*(j+1)
-    ch= ch.half_plane(Ax - j - 1, Bx - j - 1, (Xx - j - 1) * mX, -1);  // ax+by+c<0
+    ch= ch.cut(Ax - j - 1, Bx - j - 1, (Xx - j - 1) * mX, -1);  // ax+by+c<0
     // (mA+mB+mX)*i < mA*Ay+mB*By+mX*Xy
-    ch= ch.half_plane(Ay - i, By - i, (Xy - i) * mX, 1);  // ax+by+c>0
+    ch= ch.cut(Ay - i, By - i, (Xy - i) * mX, 1);  // ax+by+c>0
     // mA*Ay+mB*By+mX*Xy < (mA+mB+mX)*(i+1)
-    ch= ch.half_plane(Ay - i - 1, By - i - 1, (Xy - i - 1) * mX, -1);  // ax+by+c<0
+    ch= ch.cut(Ay - i - 1, By - i - 1, (Xy - i - 1) * mX, -1);  // ax+by+c<0
     ans+= ch.area();
    }
  ans/= ch_all.area();

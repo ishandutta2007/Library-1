@@ -1,4 +1,5 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Prelim/0323"
+#define ERROR "0.00001"
 #include <iostream>
 #include <iomanip>
 #include "src/Optimization/golden_search.hpp"

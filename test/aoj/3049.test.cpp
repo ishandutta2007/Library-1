@@ -23,7 +23,7 @@ signed main() {
  for (int i= 0; i < M; i++) {
   Convex dh= ch;
   for (int j= 0; j < M; j++)
-   if (j != i) dh= dh.half_plane(bisector(ps[i], ps[j]));
+   if (j != i) dh= dh.cut(bisector(ps[i], ps[j]));
   for (Point p: dh) ans= max(ans, dist(p, ps[i]));
  }
  cout << fixed << setprecision(12) << ans << '\n';

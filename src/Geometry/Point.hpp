@@ -30,6 +30,7 @@ template <class K> K err_ceil(const K &x) {
 }
 long double radian_to_degree(long double r) { return r * 180.0 / M_PI; }
 long double degree_to_radian(long double d) { return d * M_PI / 180.0; }
+long double normalize_radian(long double r) { return r= fmod(r + M_PI, 2 * M_PI), r < 0 ? r + M_PI : r - M_PI; }
 template <class K> struct Point {
  K x, y;
  Point(K x= K(), K y= K()): x(x), y(y) {}

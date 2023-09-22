@@ -20,6 +20,6 @@ signed main() {
  Q ans= stoi(a);
  if (n) ans+= Q(stoi(b), pw[n]);
  ans+= Q(stoi(c), pw[n] * (pw[c.length()] - 1));
- cout << ans.to_string(true) << '\n';
+ cout << ans.num << "/" << ans.den << '\n';
  return 0;
 }

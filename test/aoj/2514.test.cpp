@@ -51,7 +51,7 @@ signed main() {
   for (int i= M; i--;) fill_n(dis[i], M, INF), dis[i][i]= 0;
   for (int i= M; i--;)
    for (int j= i; j--;)
-    if (Segment t{ps[i], ps[j]}; gs[a].contain(t) && h.contain(t)) dis[i][j]= dis[j][i]= t.length();
+    if (Segment t{ps[i], ps[j]}; gs[a].in(t) && h.in(t)) dis[i][j]= dis[j][i]= t.length();
   for (int k= M; k--;)
    for (int i= M; i--;)
     for (int j= M; j--;) dis[i][j]= min(dis[i][j], dis[i][k] + dis[k][j]);

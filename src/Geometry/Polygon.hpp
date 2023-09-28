@@ -31,10 +31,7 @@ public:
  Polygon(const vector<P> &ps): dat(ps) { build(); }
  inline int prev(int i) const { return i ? i - 1 : (int)this->size() - 1; }
  inline int next(int i) const { return i + 1 >= (int)this->size() ? 0 : i + 1; }
- P &operator[](int i) { return dat[i]; }
  const P &operator[](int i) const { return dat[i]; }
- auto begin() { return dat.begin(); }
- auto end() { return dat.end(); }
  auto begin() const { return dat.begin(); }
  auto end() const { return dat.end(); }
  size_t size() const { return dat.size(); }

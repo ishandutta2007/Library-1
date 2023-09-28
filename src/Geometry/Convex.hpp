@@ -51,7 +51,7 @@ template <class K> struct Convex: Polygon<K> {
  Convex cut(K a, K b, K c, int side= 1) const {
   int sa= sgn(a), sb= sgn(b), sc= sgn(c);
   if (!sa && !sb) return sc * side < 0 ? Convex() : *this;
-  return half_plane(Line<K>(a, b, c), side);
+  return cut(Line<K>(a, b, c), side);
  }
  friend Affine<K>;
 };

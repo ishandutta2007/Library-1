@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Geometry/Polar.hpp"
+#include "src/Geometry/angle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  cin >> N;
  vector<Point<long long>> ps(N);
  for (int i= 0; i < N; ++i) cin >> ps[i];
- sort(ps.begin(), ps.end(), Polar<long long>());
+ sort(ps.begin(), ps.end(), AngleComp<long long>());
  for (auto &p: ps) cout << p.x << " " << p.y << "\n";
  return 0;
 }

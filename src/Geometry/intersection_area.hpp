@@ -1,4 +1,5 @@
 #pragma once
+#include "src/Geometry/angle.hpp"
 #include "src/Geometry/Polygon.hpp"
 #include "src/Geometry/Circle.hpp"
 namespace geo {

@@ -46,6 +46,7 @@ template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Circl
  return {q - n, q + n};
 }
 // 2: properly intersect, 1: contact, 0: disjoint
+// direction of l
 template <class R> vector<Point<R>> cross_points(const Circle<R> &c, const Line<R> &l) {
  Point<R> v= l.p - c.o;
  R a= norm2(l.d), b= dot(l.d, v) / a, d= b * b - (norm2(v) - c.r * c.r) / a;

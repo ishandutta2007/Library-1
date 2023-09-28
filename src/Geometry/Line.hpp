@@ -12,8 +12,7 @@ template <class K> struct Line {
  Line(K a, K b, K c) {
   int sa= sgn(a), sb= sgn(b);
   assert(sa || sb);
-  if (sb) p= {0, -c / b}, d= sb > 0 ? P{1, -a / b} : P{-1, a / b};
-  else p= {-c / a, 0}, d= {0, K(sa > 0 ? -1 : 1)};
+  d= P{b, -a}, p= sb ? P{0, -c / b} : P{-c / a, 0};
  }
  bool operator==(const Line &l) const { return !sgn(cross(d, l.d)) && !where(l.p); }
  bool operator!=(const Line &l) const { return sgn(cross(d, l.d)) || where(l.p); }
@@ -54,8 +53,6 @@ template <class K> K dist2(const Line<K> &l, const Point<K> &p) {
 }
 template <class K> K dist2(const Point<K> &p, const Line<K> &l) { return dist2(l, p); }
 template <class K> K dist2(const Line<K> &l, const Line<K> &m) { return is_parallel(l, m) ? dist2(l, m.p) : 0; }
-template <class K> long double angle(const Line<K> &l) { return angle(l.d); }
-template <class K> long double angle(const Line<K> &l, const Line<K> &m) { return angle(l.d, m.d); }
 template <class K> Affine<K> reflect(const Line<K> &l) {
  K a= l.d.x * l.d.x, b= l.d.x * l.d.y * 2, c= l.d.y * l.d.y, d= a + c;
  a/= d, b/= d, c/= d, d= a - c;

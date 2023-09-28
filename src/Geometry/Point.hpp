@@ -16,21 +16,18 @@ template <class K> int sgn(K x) {
   return x < -EPS ? -1 : x > EPS;
  } else return x < 0 ? -1 : x > 0;
 }
-template <class K> K err_floor(const K &x) {
+template <class K> K err_floor(K x) {
  K y= floor(x);
  if constexpr (is_floating_point_v<K>)
   if (K z= y + 1, w= x - z; 0 <= sgn(w) && sgn(w - 1) < 0) return z;
  return y;
 }
-template <class K> K err_ceil(const K &x) {
+template <class K> K err_ceil(K x) {
  K y= ceil(x);
  if constexpr (is_floating_point_v<K>)
   if (K z= y - 1, w= x - z; 0 < sgn(w + 1) && sgn(w) <= 0) return z;
  return y;
 }
-long double radian_to_degree(long double r) { return r * 180.0 / M_PI; }
-long double degree_to_radian(long double d) { return d * M_PI / 180.0; }
-long double normalize_radian(long double r) { return r= fmod(r + M_PI, 2 * M_PI), r < 0 ? r + M_PI : r - M_PI; }
 template <class K> struct Point {
  K x, y;
  Point(K x= K(), K y= K()): x(x), y(y) {}
@@ -65,8 +62,6 @@ template <class K> K norm2(const Point<K> &p) { return dot(p, p); }
 template <class K> long double norm(const Point<K> &p) { return sqrt(norm2(p)); }
 template <class K> K dist2(const Point<K> &p, const Point<K> &q) { return norm2(p - q); }
 template <class T, class U> long double dist(const T &a, const U &b) { return sqrt(dist2(a, b)); }
-template <class K> long double angle(const Point<K> &p) { return atan2(p.y, p.x); }
-template <class K> long double angle(const Point<K> &p, const Point<K> &q) { return atan2(cross(p, q), dot(p, q)); }
 enum CCW { COUNTER_CLOCKWISE, CLOCKWISE, ONLINE_BACK, ONLINE_FRONT, ON_SEGMENT };
 ostream &operator<<(ostream &os, CCW c) { return os << (c == COUNTER_CLOCKWISE ? "COUNTER_CLOCKWISE" : c == CLOCKWISE ? "CLOCKWISE" : c == ONLINE_BACK ? "ONLINE_BACK" : c == ONLINE_FRONT ? "ONLINE_FRONT" : "ON_SEGMENT"); }
 template <class K> CCW ccw(const Point<K> &p0, const Point<K> &p1, const Point<K> &p2) {
@@ -77,7 +72,6 @@ template <class K> CCW ccw(const Point<K> &p0, const Point<K> &p1, const Point<K
 }
 template <class K> struct Line;
 template <class K> struct Segment;
-template <class K> struct Circle;
 template <class K> struct Polygon;
 template <class K> struct Convex;
 template <class K> struct Affine {
@@ -86,20 +80,10 @@ template <class K> struct Affine {
  Point<K> operator()(const Point<K> &p) const { return {a00 * p.x + a01 * p.y + b.x, a10 * p.x + a11 * p.y + b.y}; }
  Line<K> operator()(const Line<K> &l);
  Segment<K> operator()(const Segment<K> &s);
- Circle<K> operator()(const Circle<K> &c);
  Polygon<K> operator()(const Polygon<K> &p);
  Convex<K> operator()(const Convex<K> &c);
  Affine operator*(const Affine &r) const { return {a00 * r.a00 + a01 * r.a10, a00 * r.a01 + a01 * r.a11, a10 * r.a00 + a11 * r.a10, a10 * r.a01 + a11 * r.a11, (*this)(r)}; }
  Affine &operator*=(const Affine &r) { return *this= *this * r; }
 };
 template <class K> Affine<K> translate(const Point<K> &p) { return {1, 0, 0, 1, p}; }
-template <class K> Affine<K> rotate(long double theta) {
- K c= cos(theta), s= sin(theta);
- return {c, -s, s, c, Point<K>{0, 0}};
-}
-template <class K> Affine<K> rotate(const Point<K> &p, long double theta) {
- K c= cos(theta), s= sin(theta);
- return {c, -s, s, c, Point<K>{p.x - c * p.x + s * p.y, p.y - s * p.x - c * p.y}};
-}
-template <class K> Affine<K> rotate90(const Point<K> &p) { return {0, -1, 1, 0, p - !p}; }
 }

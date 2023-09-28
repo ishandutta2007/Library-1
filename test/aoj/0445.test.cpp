@@ -1,5 +1,8 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Final/0445"
+#define ERROR "0.00000001"
 #include <iostream>
+#include <iomanip>
+#include <algorithm>
 #include "src/Geometry/Polygon.hpp"
 using namespace std;
 signed main() {

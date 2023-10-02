@@ -1,7 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Final/0269"
 #include <iostream>
 #include <vector>
-#include "src/Geometry/Point.hpp"
+#include "src/Geometry/angle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

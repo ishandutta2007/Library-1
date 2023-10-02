@@ -24,7 +24,7 @@ template <class K> struct Line {
  friend ostream &operator<<(ostream &os, const Line &l) { return os << l.p << " + t" << l.d; }
  friend Visualizer &operator<<(Visualizer &vis, const Line &l) {
   auto [a, b, c]= l.coef();
-  return vis.ofs << "Line " << a << " " << b << " " << c << '\n', vis;
+  return vis.ofs << "Line " << a << " " << b << " " << c << "\n", vis;
  }
 };
 // p + t(q-p)

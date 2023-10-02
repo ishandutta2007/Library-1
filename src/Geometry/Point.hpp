@@ -9,6 +9,7 @@ using namespace std;
 struct Visualizer {
  ofstream ofs;
  Visualizer(string s= "visualize.txt"): ofs(s) { ofs << fixed << setprecision(10); }
+ friend Visualizer &operator<<(Visualizer &vis, const string &s) { return vis.ofs << s, vis; }
 };
 template <class K> int sgn(K x) {
  if constexpr (is_floating_point_v<K>) {
@@ -66,7 +67,7 @@ enum CCW { COUNTER_CLOCKWISE, CLOCKWISE, ONLINE_BACK, ONLINE_FRONT, ON_SEGMENT }
 ostream &operator<<(ostream &os, CCW c) { return os << (c == COUNTER_CLOCKWISE ? "COUNTER_CLOCKWISE" : c == CLOCKWISE ? "CLOCKWISE" : c == ONLINE_BACK ? "ONLINE_BACK" : c == ONLINE_FRONT ? "ONLINE_FRONT" : "ON_SEGMENT"); }
 template <class K> CCW ccw(const Point<K> &p0, const Point<K> &p1, const Point<K> &p2) {
  Point a= p1 - p0, b= p2 - p0;
- if (int s= sgn(cross(a, b)); s) return s > 0 ? COUNTER_CLOCKWISE : CLOCKWISE;
+ if (int s= sgn(cross(a, b) / norm2(a)); s) return s > 0 ? COUNTER_CLOCKWISE : CLOCKWISE;
  if (K d= dot(a, b); sgn(d) < 0) return ONLINE_BACK;
  else return sgn(d - norm2(a)) > 0 ? ONLINE_FRONT : ON_SEGMENT;
 }

@@ -20,7 +20,7 @@ template <class K> struct Segment {
   return sgn(a) > 0 ? sgn(a - (b= norm2(d))) < 0 ? p + a / b * d : q : p;
  }
  friend ostream &operator<<(ostream &os, const Segment &s) { return os << s.p << "---" << s.q; }
- friend Visualizer &operator<<(Visualizer &vis, const Segment &s) { return vis.ofs << "Segment " << s.p1 << " " << s.p2 << '\n', vis; }
+ friend Visualizer &operator<<(Visualizer &vis, const Segment &s) { return vis.ofs << "Segment " << s.p.x << " " << s.p.y << " " << s.q.x << " " << s.q.y << "\n", vis; }
 };
 // 1: properly crossing, 0: no intersect, 2: same line
 template <class K> vector<Point<K>> cross_points(const Segment<K> &s, const Line<K> &l) {

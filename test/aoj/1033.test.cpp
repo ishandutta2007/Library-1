@@ -4,8 +4,7 @@
 #include <iomanip>
 #include <queue>
 #include <vector>
-#include "src/Misc/compress.hpp"
-#include "src/Geometry/Segment.hpp"
+#include "src/Geometry/SegmentArrangement.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,26 +16,11 @@ signed main() {
  for (int n; cin >> n && n;) {
   vector<Segment<R>> ss(n);
   for (int i= 0; i < n; ++i) cin >> ss[i].p >> ss[i].q;
+  SegmentArrangement sa(ss);
   Point<R> s, g;
   cin >> s >> g;
-  vector<Point<R>> ps{s, g};
-  for (int i= n; i--;)
-   for (int j= i; j--;)
-    if (auto cp= cross_points(ss[i], ss[j]); cp.size()) ps.insert(ps.end(), cp.begin(), cp.end());
-  compress(ps);
-  int m= ps.size();
-  vector<int> adj[m];
-  for (int i= m; i--;)
-   for (int j= i; j--;) {
-    bool isok= false;
-    for (const auto &t: ss) isok|= t.on(ps[i]) && t.on(ps[j]);
-    if (isok) adj[i].push_back(j), adj[j].push_back(i);
-   }
-  int si, gi;
-  for (int i= m; i--;) {
-   if (ps[i] == s) si= i;
-   if (ps[i] == g) gi= i;
-  }
+  int si= sa.vertex(s), gi= sa.vertex(g);
+  int m= sa.vertex_size();
   R dis[m][m + 1];
   for (int i= m; i--;) fill_n(dis[i], m + 1, INF);
   priority_queue<tuple<R, int, int>> pq;
@@ -52,9 +36,10 @@ signed main() {
     ans= d;
     break;
    }
-   for (int u: adj[v]) {
+   for (int e: sa.out_edges(v)) {
+    int u= sa.to_v(e);
     R nd= d;
-    if (p != m) nd+= abs(angle(ps[v] - ps[p], ps[u] - ps[v]));
+    if (p != m) nd+= abs(angle(sa.point(v) - sa.point(p), sa.point(u) - sa.point(v)));
     if (sgn(dis[u][v] - nd) > 0) dis[u][v]= nd, pq.emplace(-nd, u, v);
    }
   }

@@ -26,7 +26,7 @@ template <class R> struct Circle {
   return {Line(p, !(d + e)), Line(p, !(d - e))};
  }
  friend ostream &operator<<(ostream &os, const Circle &c) { return os << c.o << " " << c.r; }
- friend Visualizer &operator<<(Visualizer &vis, const Circle &c) { return vis.ofs << "Circle " << c.o << " " << c.r << '\n', vis; }
+ friend Visualizer &operator<<(Visualizer &vis, const Circle &c) { return vis.ofs << "Circle " << c.o.x << " " << c.o.y << " " << c.r << '\n', vis; }
 };
 // 2: properly intersect, 1: contact, 0: disjoint, 3: same
 // counter-clockwise of c and clockwise of d

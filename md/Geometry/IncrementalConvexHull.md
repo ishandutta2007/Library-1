@@ -15,3 +15,4 @@ documentation_of: ../../src/Geometry/IncrementalConvexHull.hpp
 |`insert(p)`| 点 $\boldsymbol{p}$ を含むように凸包を再構成する.|$\mathcal{O}(\log n)$|
 
 ## 参考
+[https://maspypy.github.io/library/geo/incremental_convexhull.hpp](https://maspypy.github.io/library/geo/incremental_convexhull.hpp)

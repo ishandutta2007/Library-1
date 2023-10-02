@@ -71,7 +71,7 @@ public:
  }
  friend Visualizer &operator<<(Visualizer &vis, const Polygon &g) {
   vis.ofs << "Polygon" << '\n';
-  for (const auto &p: g) vis.ofs << p << '\n';
+  for (const auto &p: g) vis << p;
   return vis.ofs << "..." << '\n', vis;
  }
 };

@@ -1,6 +1,6 @@
 ---
 title: Convex-Hull-Trick
-documentation_of: ../../src/Optimization/Convex-Hull-Trick.hpp
+documentation_of: ../../src/Optimization/ConvexHullTrick.hpp
 ---
 浮動小数点数も行けるはず
 

@@ -6,7 +6,7 @@
 #include <cstddef>
 #include <cassert>
 #include "src/Internal/HAS_CHECK.hpp"
-template <std::uint8_t K, class pos_t, class M> class KDTree {
+template <uint8_t K, class pos_t, class M> class KDTree {
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
  HAS_MEMBER(mapping);
@@ -22,7 +22,9 @@ template <std::uint8_t K, class pos_t, class M> class KDTree {
   pos_t range[K][2], pos[K];
  };
  template <bool sg_, bool du_, typename tEnable= void> struct Node_D: Node_B<M> {};
- template <bool sg_, bool du_> struct Node_D<sg_, du_, typename std::enable_if_t<sg_ && !du_>>: Node_B<typename M::T> { typename M::T sum; };
+ template <bool sg_, bool du_> struct Node_D<sg_, du_, typename std::enable_if_t<sg_ && !du_>>: Node_B<typename M::T> {
+  typename M::T sum;
+ };
  template <bool sg_, bool du_> struct Node_D<sg_, du_, typename std::enable_if_t<!sg_ && du_>>: Node_B<typename M::T, typename M::E> {
   typename M::E lazy;
   bool lazy_flg= false;
@@ -57,17 +59,17 @@ private:
   ns[i].lazy_flg= false;
   propagate(ns[i].ch[0], ns[i].lazy), propagate(ns[i].ch[1], ns[i].lazy);
  }
- inline void build(int &i, Iter bg, Iter ed, int &ts, std::uint8_t div= 0) {
+ inline void build(int &i, Iter bg, Iter ed, int &ts, uint8_t div= 0) {
   if (ed - bg < 1) return;
   const int n= ed - bg;
   auto md= bg + n / 2;
   std::nth_element(bg, md, ed, [div](const PosVal &l, const PosVal &r) { return l.first[div] < r.first[div]; });
   ns[i= ts++].val= md->second;
-  for (std::uint8_t j= K; j--; ns[i].pos[j]= md->first[j]) {
+  for (uint8_t j= K; j--; ns[i].pos[j]= md->first[j]) {
    auto [mn, mx]= std::minmax_element(bg, ed, [j](const PosVal &l, const PosVal &r) { return l.first[j] < r.first[j]; });
    ns[i].range[j][0]= mn->first[j], ns[i].range[j][1]= mx->first[j];
   }
-  if (std::uint8_t nex= (div + 1) % K; n > 1) build(ns[i].ch[0], bg, md, ts, nex), build(ns[i].ch[1], md + 1, ed, ts, nex);
+  if (uint8_t nex= (div + 1) % K; n > 1) build(ns[i].ch[0], bg, md, ts, nex), build(ns[i].ch[1], md + 1, ed, ts, nex);
   if constexpr (monoid<M>::value) pushup(i);
  }
  template <class F, class G, class H> inline T fold(int i, const F &in, const G &inall, const H &outall) {
@@ -90,7 +92,7 @@ private:
  inline std::pair<T, bool> get(int i, const std::array<pos_t, K> &pos) {
   if (i == -1) return {T(), false};
   bool myself= true;
-  for (std::uint8_t j= K; j--; myself&= pos[j] == ns[i].pos[j])
+  for (uint8_t j= K; j--; myself&= pos[j] == ns[i].pos[j])
    if (ns[i].range[j][1] < pos[j] || pos[j] < ns[i].range[j][0]) return {T(), false};
   if (myself) return {ns[i].val, true};
   if constexpr (dual<M>::value) eval(i);
@@ -100,7 +102,7 @@ private:
  inline bool set(int i, const std::array<pos_t, K> &pos, const T &x) {
   if (i == -1) return false;
   bool myself= true, ret= true;
-  for (std::uint8_t j= K; j--; myself&= pos[j] == ns[i].pos[j])
+  for (uint8_t j= K; j--; myself&= pos[j] == ns[i].pos[j])
    if (ns[i].range[j][1] < pos[j] || pos[j] < ns[i].range[j][0]) return false;
   if constexpr (dual<M>::value) eval(i);
   if (myself) ns[i].val= x;
@@ -112,7 +114,7 @@ private:
   static_assert(sizeof...(intervals) == K);
   static_assert(std::conjunction_v<std::is_same<Args, pos_t>...>);
   Range r;
-  std::uint8_t i= 0;
+  uint8_t i= 0;
   for (auto &&x: {intervals...}) {
    std::vector<pos_t> tmp(x);
    assert(tmp.size() == 2), assert(tmp[0] <= tmp[1]);
@@ -123,17 +125,17 @@ private:
  static inline auto funcs(const Range &r) {
   return std::make_tuple(
       [r](pos_t pos[K]) {
-       for (std::uint8_t i= K; i--;)
+       for (uint8_t i= K; i--;)
         if (pos[i] < r[i][0] || r[i][1] < pos[i]) return false;
        return true;
       },
       [r](pos_t range[K][2]) {
-       for (std::uint8_t i= K; i--;)
+       for (uint8_t i= K; i--;)
         if (range[i][0] < r[i][0] || r[i][1] < range[i][1]) return false;
        return true;
       },
       [r](pos_t range[K][2]) {
-       for (std::uint8_t i= K; i--;)
+       for (uint8_t i= K; i--;)
         if (range[i][1] < r[i][0] || r[i][1] < range[i][0]) return true;
        return false;
       });
@@ -163,20 +165,12 @@ public:
   auto [in, inall, outall]= funcs(r);
   return fold(0, in, inall, outall);
  }
- template <typename... Args> T fold(std::initializer_list<Args> &&...intervals) {
-  auto r= to_range(intervals...);
-  auto [in, inall, outall]= funcs(r);
-  return fold(0, in, inall, outall);
- }
+ template <typename... Args> T fold(std::initializer_list<Args> &&...intervals) { return fold(to_range(intervals...)); }
  template <class F, class G, class H> T fold(const F &in, const G &inall, const H &outall) { return fold(0, in, inall, outall); }
  void apply(E x, const Range &r) {
   auto [in, inall, outall]= funcs(r);
   apply(0, in, inall, outall, x);
  }
- template <typename... Args> void apply(E x, std::initializer_list<Args> &&...intervals) {
-  auto r= to_range(intervals...);
-  auto [in, inall, outall]= funcs(r);
-  apply(0, in, inall, outall, x);
- }
+ template <typename... Args> void apply(E x, std::initializer_list<Args> &&...intervals) { apply(x, to_range(intervals...)); }
  template <class F, class G, class H> void apply(E x, const F &in, const G &inall, const H &outall) { apply(0, in, inall, outall, x); }
 };

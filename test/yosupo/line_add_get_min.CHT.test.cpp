@@ -11,7 +11,7 @@ signed main() {
  for (int i= 0; i < N; ++i) {
   int a, b;
   cin >> a >> b;
-  cht.insert_line(a, b);
+  cht.insert(a, b);
  }
  while (Q--) {
   int t;
@@ -23,7 +23,7 @@ signed main() {
   } else {
    int a, b;
    cin >> a >> b;
-   cht.insert_line(a, b);
+   cht.insert(a, b);
   }
  }
  return 0;

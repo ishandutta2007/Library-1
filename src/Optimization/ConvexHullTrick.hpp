@@ -26,7 +26,7 @@ template <typename T, MinMaxEnum obj= MINIMIZE> class ConvexHullTrick {
   return x->p >= y->p;
  }
 public:
- void insert_line(T k, T m) {
+ void insert(T k, T m) {
   if constexpr (obj == MINIMIZE) k= -k, m= -m;
   auto z= ls.insert({k, m, 0}), y= z++, x= y;
   while (insect(y, z)) z= ls.erase(z);
@@ -50,7 +50,7 @@ template <typename T> class ConvexHullTrick_XY {
  ConvexHullTrick<long double, MAXIMIZE> cht_mx;
  T amx= std::numeric_limits<T>::lowest(), amn= std::numeric_limits<T>::max();
 public:
- void insert_line(T a, T b) { cht_mn.insert_line(a, b), cht_mx.insert_line(a, b), amn= std::min(amn, a), amx= std::max(amx, a); }
+ void insert(T a, T b) { cht_mn.insert(a, b), cht_mx.insert(a, b), amn= std::min(amn, a), amx= std::max(amx, a); }
  bool empty() const { return cht_mn.empty(); }
  T get_max(T x, T y) const {
   assert(!cht_mn.empty());

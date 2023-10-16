@@ -20,7 +20,7 @@ template <class T, size_t B= 700> class SortedPerBucket {
    for (auto &x: a) x= std::clamp(x, lb, ub) + add;
    return add= 0, lb= -INF, ub= INF, true;
   }
-  inline void build() { sorted= a, std::sort(sorted, sorted + n), std::partial_sum(sorted, sorted + n, acc + 1); }
+  inline void build() { std::copy_n(a, B, sorted), std::sort(sorted, sorted + n), std::partial_sum(sorted, sorted + n, acc + 1); }
   inline size_t idx(T x) const { return std::lower_bound(sorted, sorted + n, x) - sorted; }
   inline size_t count(T x) const { return x-= add, (x <= lb ? 0 : ub < x ? n : idx(x)); }
   inline T sum() const {

@@ -10,13 +10,13 @@ signed main() {
  ConvexHullTrick<long long, MINIMIZE> cht1, cht2;
  long long N, C;
  cin >> N >> C;
- cht2.insert_line(0, 0);
+ cht2.insert(0, 0);
  for (long long i= 0;;) {
   long long a, b, c= C * 2 * i;
   cin >> a >> b, a+= a, b+= b;
-  cht1.insert_line(a - c, cht2.query(-a - c) + c * (i + 1) + b);
+  cht1.insert(a - c, cht2.query(-a - c) + c * (i + 1) + b);
   if (++i == N) break;
-  cht2.insert_line(i, cht1.query(i) + c * i);
+  cht2.insert(i, cht1.query(i) + c * i);
  }
  cout << (cht1.query(N) + (N - 1) * N * C) / 2 << '\n';
  return 0;

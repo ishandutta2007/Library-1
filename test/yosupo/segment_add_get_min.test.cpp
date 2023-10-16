@@ -7,11 +7,12 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- LiChaoTree<long long> cht;
+ LiChaoTree lct([](long long x, int a, long long b) { return a * x + b; });
+ auto cht= lct.make_tree<MINIMIZE>();
  while (N--) {
   long long l, r, a, b;
   cin >> l >> r >> a >> b;
-  cht.insert_segment(l, r, a, b);
+  cht.insert(l, r, a, b);
  }
  while (Q--) {
   bool op;
@@ -19,16 +20,13 @@ signed main() {
   if (op) {
    long long p;
    cin >> p;
-   long long ans= cht.query(p);
-   if (ans == cht.get_inf()) {
-    cout << "INFINITY" << '\n';
-   } else {
-    cout << ans << '\n';
-   }
+   auto [ans, id]= cht.query(p);
+   if (id == -1) cout << "INFINITY" << '\n';
+   else cout << ans << '\n';
   } else {
    long long l, r, a, b;
    cin >> l >> r >> a >> b;
-   cht.insert_segment(l, r, a, b);
+   cht.insert(l, r, a, b);
   }
  }
  return 0;

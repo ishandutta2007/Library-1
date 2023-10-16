@@ -1,5 +1,6 @@
 #pragma once
 #include <type_traits>
+namespace function_template_internal {
 template <class C> struct is_function_object {
  template <class U, int dummy= (&U::operator(), 0)> static std::true_type check(U *);
  static std::false_type check(...);
@@ -29,3 +30,25 @@ template <class C, class R, class... Args> struct result_type_impl<R (C::*)(Args
  using type= R;
 };
 template <class F> using result_type_t= typename result_type_impl<function_type_t<F>>::type;
+template <class... Args> struct argument_type_impl {
+ using type= void;
+};
+template <class R, class... Args> struct argument_type_impl<R (*)(Args...)> {
+ using type= std::tuple<Args...>;
+};
+template <class C, class R, class... Args> struct argument_type_impl<R (C::*)(Args...)> {
+ using type= std::tuple<Args...>;
+};
+template <class C, class R, class... Args> struct argument_type_impl<R (C::*)(Args...) const> {
+ using type= std::tuple<Args...>;
+};
+template <class F> using argument_type_t= typename argument_type_impl<function_type_t<F>>::type;
+template <class T> struct other_than_first_argument_type_impl {
+ using type= void;
+};
+template <class T, class... Args> struct other_than_first_argument_type_impl<std::tuple<T, Args...>> {
+ using type= std::tuple<Args...>;
+};
+template <class T> using other_than_first_argument_type_t= typename other_than_first_argument_type_impl<T>::type;
+}
+using function_template_internal::result_type_t, function_template_internal::argument_type_t, function_template_internal::other_than_first_argument_type_t;

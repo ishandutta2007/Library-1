@@ -11,13 +11,13 @@ signed main() {
  cin >> N;
  ConvexHullTrick<long long, MAXIMIZE> cht;
  long long ans;
- cht.insert_line(0, 0);
+ cht.insert(0, 0);
  for (int i= 0;;) {
   long long Q;
   cin >> Q;
   ans= cht.query(Q);
   if (++i == N) break;
-  cht.insert_line(Q, ans);
+  cht.insert(Q, ans);
  }
  cout << ans << '\n';
  return 0;

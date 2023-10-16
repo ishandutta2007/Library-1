@@ -1,56 +1,76 @@
 #pragma once
 #include <limits>
 #include <algorithm>
+#include <vector>
+#include "src/Internal/function_type.hpp"
 #include "src/Optimization/MinMaxEnum.hpp"
-template <typename T, MinMaxEnum obj= MINIMIZE> class LiChaoTree {
- struct Line {
-  T a, b;
-  inline T get(T x) const { return a * x + b; }
+template <class F> class LiChaoTree {
+ using A= argument_type_t<F>;
+ static_assert(std::tuple_size_v<A> > 1);
+ using T= std::tuple_element_t<0, A>;
+ using P= other_than_first_argument_type_t<A>;
+ using R= result_type_t<F>;
+ F f;
+ const T LB, UB;
+ std::vector<P> ps;
+ template <MinMaxEnum sgn, bool persistent> class LiChaoTreeInterface {
+  LiChaoTree *ins;
+  struct Node {
+   int id= -1;
+   Node *ch[2]= {nullptr, nullptr};
+  } *root;
+  static constexpr R ID= (sgn == MINIMIZE ? std::numeric_limits<R>::max() : std::numeric_limits<R>::lowest()) / 2;
+  static inline bool cmp(R p, R n, int pi, int ni) {
+   if constexpr (sgn == MINIMIZE) return p > n || (p == n && pi > ni);
+   else return p < n || (p == n && pi > ni);
+  }
+  static inline bool same(T l, T r) {
+   if constexpr (std::is_floating_point_v<T>) return std::abs(l - r) < 1e-9;
+   else return l == r;
+  }
+  inline R eval(int id, T x) const { return id < 0 ? ID : std::apply(ins->f, std::tuple_cat(std::make_tuple(x), ins->ps[id])); }
+  inline void addl(Node *&t, int id, T xl, T xr) {
+   if (!t) return t= new Node{id}, void();
+   bool bl= cmp(eval(t->id, xl), eval(id, xl), t->id, id), br= cmp(eval(t->id, xr), eval(id, xr), t->id, id);
+   if (!bl && !br) return;
+   if constexpr (persistent) t= new Node(*t);
+   if (bl && br) return t->id= id, void();
+   T xm= (xl + xr) / 2;
+   if (cmp(eval(t->id, xm), eval(id, xm), t->id, id)) std::swap(t->id, id), bl= !bl;
+   if (!same(xl, xm)) bl ? addl(t->ch[0], id, xl, xm) : addl(t->ch[1], id, xm, xr);
+  }
+  inline void adds(Node *&t, int id, T l, T r, T xl, T xr) {
+   if (r <= xl || xr <= l) return;
+   if (l <= xl && xr <= r) return addl(t, id, xl, xr);
+   if (!t) t= new Node;
+   else if constexpr (persistent) t= new Node(*t);
+   T xm= (xl + xr) / 2;
+   adds(t->ch[0], id, l, r, xl, xm), adds(t->ch[1], id, l, r, xm, xr);
+  }
+  inline std::pair<R, int> query(const Node *t, T x, T xl, T xr) const {
+   if (!t) return {ID, -1};
+   R a= eval(t->id, x);
+   if (same(xl, xr)) return {a, t->id};
+   T xm= (xl + xr) / 2;
+   auto b= x < xm ? query(t->ch[0], x, xl, xm) : query(t->ch[1], x, xm, xr);
+   return cmp(a, b.first, t->id, b.second) ? b : std::make_pair(a, t->id);
+  }
+ public:
+  LiChaoTreeInterface()= default;
+  LiChaoTreeInterface(LiChaoTree *ins): ins(ins), root(nullptr) {}
+  template <class... Args> std::enable_if_t<sizeof...(Args) == std::tuple_size_v<P>, void> insert(Args &&...args) {
+   static_assert(std::is_convertible_v<std::tuple<Args...>, P>);
+   ins->ps.emplace_back(std::forward<Args>(args)...), addl(root, ins->ps.size() - 1, ins->LB, ins->UB);
+  }
+  // [l,r)
+  template <class... Args> std::enable_if_t<sizeof...(Args) == std::tuple_size_v<P>, void> insert(T l, T r, Args &&...args) {
+   static_assert(std::is_convertible_v<std::tuple<Args...>, P>);
+   ins->ps.emplace_back(std::forward<Args>(args)...), adds(root, ins->ps.size() - 1, l, r, ins->LB, ins->UB);
+  }
+  std::pair<R, int> query(T x) const { return query(root, x, ins->LB, ins->UB); }
+  const P &params(int id) const { return ins->ps[id]; }
  };
- struct Node {
-  Line f;
-  Node *ch[2]= {nullptr, nullptr};
- } *root;
- const T L, U, INF;
- static inline int node_count;
- int sgn(const T &x) const {
-  if constexpr (std::is_floating_point_v<T>) {
-   static constexpr T EPS= 1e-10;
-   return x < -EPS ? -1 : x > +EPS ? 1 : 0;
-  } else return x < 0 ? -1 : x > 0 ? 1 : 0;
- }
- void addl(Node *&t, Line f, const T &x_l, const T &x_r) {
-  if (!t) return t= new Node{f}, void();
-  int dif_l= sgn(t->f.get(x_l) - f.get(x_l)), dif_r= sgn(t->f.get(x_r) - f.get(x_r));
-  if (dif_l <= 0 && dif_r <= 0) return;
-  if (dif_l >= 0 && dif_r >= 0) return t->f= f, void();
-  T x_m= (x_l + x_r) / 2;
-  int dif_m= sgn(t->f.get(x_m) - f.get(x_m));
-  if (dif_m > 0) std::swap(t->f, f), dif_l= -dif_l;
-  if (sgn(x_l - x_m) == 0) return;
-  if (dif_l > 0) addl(t->ch[0], f, x_l, x_m);
-  if (dif_l < 0) addl(t->ch[1], f, x_m, x_r);
- }
- void adds(Node *&t, const Line &f, const T &l, const T &r, const T &x_l, const T &x_r) {
-  if (sgn(x_r - l) <= 0 || 0 <= sgn(x_l - r)) return;
-  if (0 <= sgn(x_l - l) && sgn(x_r - r) <= 0) return addl(t, f, x_l, x_r);
-  if (t && sgn(t->f.get(x_l) - f.get(x_l)) <= 0 && sgn(t->f.get(x_r) - f.get(x_r)) <= 0) return;
-  if (!t) t= new Node{Line{0, INF}};
-  T x_m= (x_l + x_r) / 2;
-  adds(t->ch[0], f, l, r, x_l, x_m), adds(t->ch[1], f, l, r, x_m, x_r);
- }
- inline T query(const Node *t, const T &x_l, const T &x_r, const T &x) const {
-  if (!t) return INF;
-  if (sgn(x_l - x_r) == 0) return t->f.get(x);
-  T x_m= (x_l + x_r) / 2;
-  return std::min(t->f.get(x), (sgn(x - x_m) < 0 ? query(t->ch[0], x_l, x_m, x) : query(t->ch[1], x_m, x_r, x)));
- }
 public:
- LiChaoTree(T l= -2e9, T u= 2e9, T inf= std::numeric_limits<T>::max() / 2): root{nullptr}, L(l), U(u), INF(inf) {}
- T get_inf() { return INF; }
- // ax+b
- void insert_line(T a, T b) { addl(root, Line{a * obj, b * obj}, L, U); }
- // ax+b for x in [l,r)
- void insert_segment(T l, T r, T a, T b) { adds(root, Line{a * obj, b * obj}, l, r, L, U); }
- T query(T x) const { return query(root, L, U, x) * obj; }
+ LiChaoTree(const F &f, T LB= -2e9, T UB= 2e9): f(f), LB(LB), UB(UB) {}
+ template <MinMaxEnum sgn= MINIMIZE, bool persistent= false> LiChaoTreeInterface<sgn, persistent> make_tree() { return this; }
 };

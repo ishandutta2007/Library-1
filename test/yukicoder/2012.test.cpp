@@ -11,7 +11,7 @@ signed main() {
  cin >> N;
  ConvexHullTrick_XY<long long> cht;
  int x[N], y[N];
- for (int i= 0; i < N; ++i) cin >> x[i] >> y[i], cht.insert_line(x[i], -y[i]);
+ for (int i= 0; i < N; ++i)  cin >> x[i] >> y[i], cht.insert(x[i], -y[i]);
  long long ans= 0;
  for (int i= N; i--;) ans= max(ans, cht.get_max(y[i], x[i]));
  cout << ans << '\n';

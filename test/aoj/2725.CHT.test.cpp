@@ -1,5 +1,4 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2725"
-// monge じゃなさそう?
 #include <iostream>
 #include <numeric>
 #include "src/Optimization/ConvexHullTrick.hpp"
@@ -18,9 +17,10 @@ signed main() {
  for (int i= 0; i < N; ++i) {
   int I= ord[i], ti= t[I];
   for (int x= T; x >= ti; --x) {
-   long long val= max((long long)p[I], cht[x - ti].query(f[I]) + p[I] - f[I] * f[I]);
+   long long val= p[I];
+   if (!cht[x - ti].empty()) val= max(val, cht[x - ti].query(f[I]) + p[I] - f[I] * f[I]);
    ans= max(ans, val);
-   cht[x].insert_line(2 * f[I], val - f[I] * f[I]);
+   cht[x].insert(2 * f[I], val - f[I] * f[I]);
   }
  }
  cout << ans << '\n';

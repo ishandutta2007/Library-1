@@ -30,8 +30,11 @@ signed main() {
   LiChaoTree lct([&](int i, int j) { return dp[j] + w(i, j); }, 1, n + 1);
   auto tree= lct.make_tree<MINIMIZE>();
   int ndp[n + 1];
-  for (int i= n; i--;) tree.insert(i + 1, n + 1, i);
-  for (int i= 1; i <= n; ++i) ndp[i]= tree.query(i).first;
+  tree.insert(0);
+  for (int i= 1; i <= n; ++i) {
+   ndp[i]= tree.query(i).first;
+   if (i < n) tree.insert(i);
+  }
   ndp[0]= 0, copy_n(ndp, n + 1, dp);
  }
  cout << dp[n] << '\n';

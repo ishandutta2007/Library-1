@@ -2,6 +2,7 @@
 #include <limits>
 #include <algorithm>
 #include <vector>
+#include <tuple>
 #include "src/Internal/function_type.hpp"
 #include "src/Optimization/MinMaxEnum.hpp"
 template <class F> class LiChaoTree {

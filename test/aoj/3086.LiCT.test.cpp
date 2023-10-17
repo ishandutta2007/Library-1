@@ -21,7 +21,7 @@ signed main() {
  auto w= [&](int i, int j, long long d) { return d + seg.fold(j, i); };
  LiChaoTree lct(w, 1, N + 1);
  auto tree= lct.make_tree<MAXIMIZE>();
- tree.insert(L, 0);
+ tree.insert(L, N + 1, 0, 0);
  for (int i= 1; i < N; ++i) {
   auto dp= tree.query(i).first;
   tree.insert(i + L, N + 1, i, dp);

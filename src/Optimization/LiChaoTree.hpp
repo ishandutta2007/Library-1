@@ -25,20 +25,25 @@ template <class F> class LiChaoTree {
    if constexpr (sgn == MINIMIZE) return p > n || (p == n && pi > ni);
    else return p < n || (p == n && pi > ni);
   }
-  static inline bool same(T l, T r) {
-   if constexpr (std::is_floating_point_v<T>) return std::abs(l - r) < 1e-9;
-   else return l == r;
+  static inline bool end(T l, T r) {
+   if constexpr (std::is_floating_point_v<T>) return r - l < 1e-9;
+   else return r - l == 1;
+  }
+  static inline T ub(T r) {
+   if constexpr (std::is_floating_point_v<T>) return r;
+   else return r - 1;
   }
   inline R eval(int id, T x) const { return id < 0 ? ID : std::apply(ins->f, std::tuple_cat(std::make_tuple(x), ins->ps[id])); }
   inline void addl(Node *&t, int id, T xl, T xr) {
    if (!t) return t= new Node{id}, void();
-   bool bl= cmp(eval(t->id, xl), eval(id, xl), t->id, id), br= cmp(eval(t->id, xr), eval(id, xr), t->id, id);
+   T xr_= ub(xr);
+   bool bl= cmp(eval(t->id, xl), eval(id, xl), t->id, id), br= cmp(eval(t->id, xr_), eval(id, xr_), t->id, id);
    if (!bl && !br) return;
    if constexpr (persistent) t= new Node(*t);
    if (bl && br) return t->id= id, void();
    T xm= (xl + xr) / 2;
    if (cmp(eval(t->id, xm), eval(id, xm), t->id, id)) std::swap(t->id, id), bl= !bl;
-   if (!same(xl, xm)) bl ? addl(t->ch[0], id, xl, xm) : addl(t->ch[1], id, xm, xr);
+   if (!end(xl, xr)) bl ? addl(t->ch[0], id, xl, xm) : addl(t->ch[1], id, xm, xr);
   }
   inline void adds(Node *&t, int id, T l, T r, T xl, T xr) {
    if (r <= xl || xr <= l) return;
@@ -51,7 +56,7 @@ template <class F> class LiChaoTree {
   inline std::pair<R, int> query(const Node *t, T x, T xl, T xr) const {
    if (!t) return {ID, -1};
    R a= eval(t->id, x);
-   if (same(xl, xr)) return {a, t->id};
+   if (end(xl, xr)) return {a, t->id};
    T xm= (xl + xr) / 2;
    auto b= x < xm ? query(t->ch[0], x, xl, xm) : query(t->ch[1], x, xm, xr);
    return cmp(a, b.first, t->id, b.second) ? b : std::make_pair(a, t->id);
@@ -66,6 +71,7 @@ template <class F> class LiChaoTree {
   // [l,r)
   template <class... Args> std::enable_if_t<sizeof...(Args) == std::tuple_size_v<P>, void> insert(T l, T r, Args &&...args) {
    static_assert(std::is_convertible_v<std::tuple<Args...>, P>);
+   if (l >= r) return;
    ins->ps.emplace_back(std::forward<Args>(args)...), adds(root, ins->ps.size() - 1, l, r, ins->LB, ins->UB);
   }
   std::pair<R, int> query(T x) const { return query(root, x, ins->LB, ins->UB); }

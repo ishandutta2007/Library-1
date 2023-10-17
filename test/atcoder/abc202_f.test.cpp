@@ -8,7 +8,7 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  using namespace geo;
- using Mint= ModInt<998244353>;
+ using Mint= ModInt<int(1e9) + 7>;
  int N;
  cin >> N;
  vector<Point<int>> ps(N);

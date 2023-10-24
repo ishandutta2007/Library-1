@@ -7,10 +7,14 @@ documentation_of: ../../src/Optimization/LiChaoTree.hpp
 2点以上で交わる可能性がある関数群を挿入した時の動作は未定義.
 
 ## 使用例
+宣言
 ```c++
 auto f = [](long long x, int a, int b){return a * x + b;}; // ax+b
 LiChaoTree lct(f);
 auto tree = lct.make_tree<MINIMIZE>();
+```
+クエリ
+```c++
 tree.insert(2, 3); // 2x+3
 tree.insert(0, 2, 1, 1); // x+1 (0<= x < 2)
 auto [val1, id1] = tree.query(1);

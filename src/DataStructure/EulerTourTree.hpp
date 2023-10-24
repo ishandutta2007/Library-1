@@ -3,7 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include "src/Internal/HAS_CHECK.hpp"
-template <typename M= void, std::size_t NODE_SIZE= 4'000'000> class EulerTourTree {
+template <typename M= void, size_t NODE_SIZE= 4'000'000> class EulerTourTree {
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
  HAS_MEMBER(mapping);
@@ -18,7 +18,7 @@ template <typename M= void, std::size_t NODE_SIZE= 4'000'000> class EulerTourTre
   using T= U;
   using E= F;
   node_id ch[2], par;
-  std::uint64_t flag;
+  uint64_t flag;
  };
  template <class D, bool mo, bool du> struct Node_D: Node_B<> {};
  template <class D> struct Node_D<D, 1, 0>: Node_B<typename M::T> {
@@ -43,8 +43,8 @@ private:
  static inline node_id ni= 1;
  node_id new_edge(int s, int d, bool hi) {
   int i= ni++, ri= ni++;
-  n[i].flag= (std::uint64_t(s) << 44) | (std::uint64_t(d) << 24) | hi;
-  n[ri].flag= (std::uint64_t(d) << 44) | (std::uint64_t(s) << 24);
+  n[i].flag= (uint64_t(s) << 44) | (uint64_t(d) << 24) | hi;
+  n[ri].flag= (uint64_t(d) << 44) | (uint64_t(s) << 24);
   return i;
  }
  static void pushup(node_id i) {
@@ -117,7 +117,7 @@ private:
   return i == j;
  }
  node_id n_st;
- std::unordered_map<std::uint64_t, node_id> emp;
+ std::unordered_map<uint64_t, node_id> emp;
 public:
  EulerTourTree() {}
  EulerTourTree(int N): n_st(ni) {
@@ -168,7 +168,7 @@ public:
   else n[x].flag&= -5ll;
   pushup(x);
  }
- std::size_t tree_size(vertex_id x) { return splay(x+= n_st), ((n[x].flag >> 4) & 0xfffff); }
+ size_t tree_size(vertex_id x) { return splay(x+= n_st), ((n[x].flag >> 4) & 0xfffff); }
  T fold_tree(vertex_id x) {
   static_assert(monoid_v<M>, "\"fold\" is not available\n");
   return splay(x+= n_st), n[x].sum;

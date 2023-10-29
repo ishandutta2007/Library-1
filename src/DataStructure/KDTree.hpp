@@ -190,16 +190,14 @@ public:
   app(ns[t].ch[0], in, inall, out, x), app(ns[t].ch[1], in, inall, out, x);
   if constexpr (monoid_v<M>) update(t);
  }
- inline bool set(int t, const pos_t pos[K], const T &x) {
+ inline bool set(int t, const Pos &pos, const T &x) {
   if (t == -1) return false;
   bool isok= true;
   for (uint8_t k= K; k--; isok&= pos[k] == ns[t].pos[k])
    if (ns[t].range[k][1] < pos[k] || pos[k] < ns[t].range[k][0]) return false;
+  if constexpr (dual_v<M>) push(t);
   if (isok) ns[t].val= x;
-  else {
-   if constexpr (dual_v<M>) push(t);
-   if (!(isok= set(ns[t].ch[0], pos, x))) isok= set(ns[t].ch[1], pos, x);
-  }
+  else if (!(isok= set(ns[t].ch[0], pos, x))) isok= set(ns[t].ch[1], pos, x);
   if constexpr (monoid_v<M>)
    if (isok) update(t);
   return isok;

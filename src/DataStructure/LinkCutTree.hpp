@@ -15,9 +15,8 @@ template <typename M= void> class LinkCutTree {
  NULLPTR_OR(E);
  template <class L> static constexpr bool semigroup_v= std::conjunction_v<has_T<L>, has_op<L>>;
  template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
- using node_id= std::int_least32_t;
  template struct Node_B {
-  node_id ch[2]= {-1, -1}, par= -1;
+  int ch[2]= {-1, -1}, par= -1;
   bool rev_flg;
  };
  template <class D, bool sg, bool du> struct Node_D: Node_B {};
@@ -37,15 +36,15 @@ template <typename M= void> class LinkCutTree {
  using Node= Node_D<void, semigroup_v<M>, dual_v<M>>;
  using T= nullptr_or_T_t<M>;
  using E= nullptr_or_E_t<M>;
- inline int dir(node_id i) {
+ inline int dir(int i) {
   if (ns[i].par != -1) {
    if (ns[ns[i].par].ch[0] == i) return 0;
    if (ns[ns[i].par].ch[1] == i) return 1;
   }
   return 2;
  }
- inline void rot(node_id i) {
-  node_id p= ns[i].par;
+ inline void rot(int i) {
+  int p= ns[i].par;
   int d= dir(i);
   if ((ns[p].ch[d]= ns[i].ch[!d]) != -1) ns[ns[p].ch[d]].par= p;
   ns[i].ch[!d]= p, ns[i].par= ns[p].par;
@@ -53,41 +52,41 @@ template <typename M= void> class LinkCutTree {
   ns[p].par= i;
   if constexpr (semigroup_v<M>) update(p);
  }
- inline void splay(node_id i) {
+ inline void splay(int i) {
   push(i);
-  node_id p= ns[i].par, pp;
+  int p= ns[i].par, pp;
   for (int d= dir(i), c; d < 2; rot(i), d= dir(i), p= ns[i].par) {
    if (c= dir(p), pp= ns[p].par; c < 2) push(pp), push(p), push(i), rot(d == c ? p : i);
    else push(p), push(i);
   }
   if constexpr (semigroup_v<M>) update(i);
  }
- inline void update(node_id i) {
+ inline void update(int i) {
   ns[i].rsum= ns[i].sum= ns[i].val;
   if (ns[i].ch[0] != -1) ns[i].sum= M::op(ns[ns[i].ch[0]].sum, ns[i].sum), ns[i].rsum= M::op(ns[i].rsum, ns[ns[i].ch[0]].rsum);
   if (ns[i].ch[1] != -1) ns[i].sum= M::op(ns[i].sum, ns[ns[i].ch[1]].sum), ns[i].rsum= M::op(ns[ns[i].ch[1]].rsum, ns[i].rsum);
  }
- inline void propagate(node_id i, const E &x) {
+ inline void propagate(int i, const E &x) {
   if (i == -1) return;
   if (ns[i].laz_flg) M::composition(ns[i].laz, x);
   else ns[i].laz= x;
   if constexpr (semigroup_v<M>) M::mapping(ns[i].sum, x), M::mapping(ns[i].rsum, x);
   M::mapping(ns[i].val, x), ns[i].laz_flg= true;
  }
- inline void toggle(node_id i) {
+ inline void toggle(int i) {
   if (i == -1) return;
   std::swap(ns[i].ch[0], ns[i].ch[1]);
   if constexpr (semigroup_v<M>) std::swap(ns[i].sum, ns[i].rsum);
   ns[i].rev_flg= !ns[i].rev_flg;
  }
- inline void push(node_id i) {
+ inline void push(int i) {
   if (ns[i].rev_flg) toggle(ns[i].ch[0]), toggle(ns[i].ch[1]), ns[i].rev_flg= false;
   if constexpr (dual_v<M>)
    if (ns[i].laz_flg) propagate(ns[i].ch[0], ns[i].laz), propagate(ns[i].ch[1], ns[i].laz), ns[i].laz_flg= false;
  }
- inline node_id expose(node_id i) {
-  node_id r= -1;
-  for (node_id p= i; p != -1; r= p, p= ns[p].par) {
+ inline int expose(int i) {
+  int r= -1;
+  for (int p= i; p != -1; r= p, p= ns[p].par) {
    splay(p), ns[p].ch[1]= r;
    if constexpr (semigroup_v<M>) update(p);
   }

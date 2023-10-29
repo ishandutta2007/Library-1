@@ -15,7 +15,7 @@ struct RmaxQ {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- using KDT= KDTree<2, long long, RmaxQ>;
+ using KDT= KDTree<long long, 2, RmaxQ>;
  int n, q;
  cin >> n >> q;
  map<array<long long, 2>, long long> mp;
@@ -41,12 +41,12 @@ signed main() {
    query.push_back({op, l, r});
   }
  }
- KDT kdt({mp.begin(), mp.end()});
+ KDT kdt(mp);
  for (auto [op, l, r, x]: query) {
   if (op == 1) {
-   kdt.set(kdt.get(l, r) + x, l, r);
+   kdt.set(l, r, kdt.get(l, r) + x);
   } else {
-   auto ans= kdt.fold({l, r}, {l, r});
+   auto ans= kdt.fold_cuboid(l, r, l, r);
    cout << (ans ? ans : -1) << '\n';
   }
  }

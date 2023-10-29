@@ -1,6 +1,6 @@
 #define PROBLEM "https://www.hackerrank.com/challenges/cube-summation"
 #include <iostream>
-#include <map>
+#include <set>
 #include <vector>
 #include <array>
 #include "src/DataStructure/KDTree.hpp"
@@ -14,13 +14,12 @@ struct RSQ {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- using KDT= KDTree<3, int, RSQ>;
  int T;
  cin >> T;
  while (T--) {
   int n, m;
   cin >> n >> m;
-  map<array<int, 3>, long long> mp;
+  set<array<int, 3>> xyz;
   vector<array<int, 7>> query;
   while (m--) {
    string op;
@@ -28,7 +27,7 @@ signed main() {
    if (op[0] == 'U') {
     int x, y, z, w;
     cin >> x >> y >> z >> w;
-    mp[{x, y, z}];
+    xyz.insert({x, y, z});
     query.push_back({0, x, y, z, w, 0, 0});
    } else {
     int x1, y1, z1, x2, y2, z2;
@@ -36,14 +35,14 @@ signed main() {
     query.push_back({1, x1, y1, z1, x2, y2, z2});
    }
   }
-  KDT kdt({mp.begin(), mp.end()});
+  KDTree<int, 3, RSQ> kdt(xyz);
   for (auto q: query) {
    if (q[0] == 0) {
     auto [_, x, y, z, w, __, ___]= q;
-    kdt.set(w, {x, y, z});
+    kdt.set(x, y, z, w);
    } else {
     auto [_, x1, y1, z1, x2, y2, z2]= q;
-    cout << kdt.fold({x1, x2}, {y1, y2}, {z1, z2}) << '\n';
+    cout << kdt.fold_cuboid(x1, x2, y1, y2, z1, z2) << '\n';
    }
   }
  }

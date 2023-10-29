@@ -1,6 +1,6 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/HUPC/2842"
 #include <iostream>
-#include <map>
+#include <set>
 #include <vector>
 #include <algorithm>
 #include <array>
@@ -16,30 +16,28 @@ signed main() {
  ios::sync_with_stdio(false);
  int H, W, T, Q;
  cin >> H >> W >> T >> Q;
- map<array<int, 2>, pair<int, int>> mp;
+ set<array<int, 2>> xy;
  vector<array<int, 6>> query;
  for (int i= 0; i < Q; i++) {
   int t, c, h1, w1, h2, w2;
   cin >> t >> c >> h1 >> w1;
   if (c == 2) cin >> h2 >> w2;
-  else if (c == 0) {
-   query.push_back({t + T, -1, h1, w1, h2, w2});
-  }
-  mp[{h1, w1}]= {0, 0};
+  else if (c == 0) query.push_back({t + T, -1, h1, w1, h2, w2});
+  if (c != 2) xy.insert({h1, w1});
   query.push_back({t, c, h1, w1, h2, w2});
  }
- KDTree<2, int, RSQ> kdt({mp.begin(), mp.end()});
+ KDTree<int, 2, RSQ> kdt(xy);
  sort(query.begin(), query.end());
  for (auto [t, c, h1, w1, h2, w2]: query) {
   if (c == 0) {
-   kdt.set({1, 0}, h1, w1);
+   kdt.set(h1, w1, {1, 0});
   } else if (c == 1) {
-   if (kdt.get(h1, w1).second) kdt.set({0, 0}, h1, w1);
+   if (kdt.get(h1, w1).second) kdt.set(h1, w1, {0, 0});
   } else if (c == 2) {
-   auto [x, y]= kdt.fold({h1, h2}, {w1, w2});
+   auto [x, y]= kdt.fold_cuboid(h1, h2, w1, w2);
    cout << y << " " << x << '\n';
   } else {
-   kdt.set({0, 1}, h1, w1);
+   kdt.set(h1, w1, {0, 1});
   }
  }
  return 0;

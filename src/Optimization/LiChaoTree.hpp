@@ -3,7 +3,8 @@
 #include <algorithm>
 #include <vector>
 #include <tuple>
-#include "src/Internal/function_type.hpp"
+#include "src/Internal/function_traits.hpp"
+#include "src/Internal/tuple_traits.hpp"
 #include "src/Optimization/MinMaxEnum.hpp"
 template <class F> class LiChaoTree {
  using A= argument_type_t<F>;

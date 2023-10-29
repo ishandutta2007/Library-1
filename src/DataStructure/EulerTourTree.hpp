@@ -10,34 +10,34 @@ template <typename M= void, size_t NODE_SIZE= 4'000'000> class EulerTourTree {
  HAS_MEMBER(composition);
  HAS_TYPE(T);
  HAS_TYPE(E);
+ NULLPTR_OR(T);
+ NULLPTR_OR(E);
  template <class L> static constexpr bool monoid_v= std::conjunction_v<has_T<L>, has_op<L>, has_ti<L>>;
  template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
  using node_id= std::int_least32_t;
  using vertex_id= std::int_least32_t;
- template <class U= std::nullptr_t, class F= std::nullptr_t> struct Node_B {
-  using T= U;
-  using E= F;
+ struct Node_B {
   node_id ch[2], par;
   uint64_t flag;
  };
- template <class D, bool mo, bool du> struct Node_D: Node_B<> {};
- template <class D> struct Node_D<D, 1, 0>: Node_B<typename M::T> {
+ template <class D, bool mo, bool du> struct Node_D: Node_B {};
+ template <class D> struct Node_D<D, 1, 0>: Node_B {
   typename M::T val= M::ti(), sum= M::ti();
  };
- template <class D> struct Node_D<D, 0, 1>: Node_B<typename M::T, typename M::E> {
+ template <class D> struct Node_D<D, 0, 1>: Node_B {
   typename M::T val;
-  typename M::E lazy;
-  bool lazy_flg;
+  typename M::E laz;
+  bool laz_flg;
  };
- template <class D> struct Node_D<D, 1, 1>: Node_B<typename M::T, typename M::E> {
+ template <class D> struct Node_D<D, 1, 1>: Node_B {
   typename M::T val= M::ti(), sum= M::ti();
-  typename M::E lazy;
-  bool lazy_flg;
+  typename M::E laz;
+  bool laz_flg;
  };
  using Node= Node_D<void, monoid_v<M>, dual_v<M>>;
 public:
- using T= typename Node::T;
- using E= typename Node::E;
+ using T= nullptr_or_T_t<M>;
+ using E= nullptr_or_E_t<M>;
 private:
  static inline Node n[NODE_SIZE];
  static inline node_id ni= 1;
@@ -47,7 +47,7 @@ private:
   n[ri].flag= (uint64_t(d) << 44) | (uint64_t(s) << 24);
   return i;
  }
- static void pushup(node_id i) {
+ static void update(node_id i) {
   n[i].flag&= 0xffffffffff00000f;
   n[i].flag|= ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) << 4;
   n[i].flag&= -11ll, n[i].flag|= (n[i].flag << 1) & 0b1111;
@@ -61,17 +61,17 @@ private:
    if constexpr (monoid_v<M>) n[i].sum= M::op(n[i].sum, n[n[i].ch[1]].sum);
   }
  }
- static inline void propagate(node_id i, const E &v) {
-  n[i].lazy_flg ? (M::composition(n[i].lazy, v), v) : n[i].lazy= v;
-  if ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) M::mapping(n[i].val, v, 1);
-  if constexpr (monoid_v<M>) M::mapping(n[i].sum, v, ((n[i].flag >> 4) & 0xfffff));
-  n[i].lazy_flg= true;
+ static inline void propagate(node_id i, const E &x) {
+  if (n[i].laz_flg) M::composition(n[i].laz, x);
+  else n[i].laz= x, n[i].laz_flg= true;
+  if ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) M::mapping(n[i].val, x, 1);
+  if constexpr (monoid_v<M>) M::mapping(n[i].sum, x, ((n[i].flag >> 4) & 0xfffff));
  }
- static inline void eval(node_id i) {
-  if (!n[i].lazy_flg) return;
-  if (n[i].ch[0]) propagate(n[i].ch[0], n[i].lazy);
-  if (n[i].ch[1]) propagate(n[i].ch[1], n[i].lazy);
-  n[i].lazy_flg= false;
+ static inline void push(node_id i) {
+  if (!n[i].laz_flg) return;
+  if (n[i].ch[0]) propagate(n[i].ch[0], n[i].laz);
+  if (n[i].ch[1]) propagate(n[i].ch[1], n[i].laz);
+  n[i].laz_flg= false;
  }
  static inline int dir(node_id i) { return n[n[i].par].ch[1] == i; }
  static inline void rot(node_id i) {
@@ -80,30 +80,30 @@ private:
   if ((n[p].ch[d]= n[i].ch[!d])) n[n[p].ch[d]].par= p;
   n[i].ch[!d]= p;
   if ((n[i].par= n[p].par)) n[n[p].par].ch[dir(p)]= i;
-  n[p].par= i, pushup(p);
+  n[p].par= i, update(p);
  }
  static inline void splay(node_id i) {
-  if constexpr (dual_v<M>) eval(i);
+  if constexpr (dual_v<M>) push(i);
   for (node_id p= n[i].par; p; rot(i), p= n[i].par) {
    node_id pp= n[p].par;
    if constexpr (dual_v<M>) {
-    if (pp) eval(pp);
-    eval(p), eval(i);
+    if (pp) push(pp);
+    push(p), push(i);
    }
    if (pp) rot(dir(i) == dir(p) ? p : i);
   }
-  pushup(i);
+  update(i);
  }
  static inline node_id merge_back(node_id l, node_id r) {
   if (!l) return r;
   if (!r) return l;
   while (n[l].ch[1]) l= n[l].ch[1];
-  return splay(l), n[n[r].par= l].ch[1]= r, pushup(l), l;
+  return splay(l), n[n[r].par= l].ch[1]= r, update(l), l;
  }
  static inline std::pair<node_id, node_id> split(node_id i) {
   splay(i);
   node_id l= n[i].ch[0];
-  return n[i].ch[0]= n[l].par= 0, pushup(i), std::make_pair(l, i);
+  return n[i].ch[0]= n[l].par= 0, update(i), std::make_pair(l, i);
  }
  static inline void reroot(node_id v) {
   auto p= split(v);
@@ -131,7 +131,7 @@ public:
  }
  void set(vertex_id x, T val) {
   static_assert(monoid_v<M> || dual_v<M>, "\"set\" is not available\n");
-  splay(x+= n_st), n[x].val= val, pushup(x);
+  splay(x+= n_st), n[x].val= val, update(x);
  }
  bool edge_exist(vertex_id x, vertex_id y) {
   if (x > y) std::swap(x, y);
@@ -143,7 +143,7 @@ public:
   emp.insert(std::make_pair(((long long)x << 32) | y, ei));
   x+= n_st, y+= n_st, reroot(x), reroot(y);
   n[n[x].par= ei].ch[0]= x, n[n[y].par= ei].ch[1]= y;
-  pushup(ei), merge_back(ei, ei + 1);
+  update(ei), merge_back(ei, ei + 1);
  }
  void cut(vertex_id x, vertex_id y) {
   if (x > y) std::swap(x, y);
@@ -166,7 +166,7 @@ public:
   splay(x+= n_st);
   if (val) n[x].flag|= 0b0100;
   else n[x].flag&= -5ll;
-  pushup(x);
+  update(x);
  }
  size_t tree_size(vertex_id x) { return splay(x+= n_st), ((n[x].flag >> 4) & 0xfffff); }
  T fold_tree(vertex_id x) {
@@ -182,7 +182,7 @@ public:
  }
  void apply_tree(vertex_id x, E v) {
   static_assert(dual_v<M>, "\"apply\" is not available\n");
-  splay(x+= n_st), propagate(x, v), eval(x);
+  splay(x+= n_st), propagate(x, v), push(x);
  }
  void apply_subtree(vertex_id x, vertex_id par, E v) { cut(x, par), apply_tree(x, v), link(x, par); }
  static std::string which_available() {
@@ -196,7 +196,7 @@ public:
   while (v && (n[v].flag & 0b0010))
    while (1) {
     if (n[v].flag & 0b0001) {
-     f((n[v].flag >> 44), ((n[v].flag >> 24) & 0xfffff)), splay(v), n[v].flag&= -2ll, pushup(v);
+     f((n[v].flag >> 44), ((n[v].flag >> 24) & 0xfffff)), splay(v), n[v].flag&= -2ll, update(v);
      break;
     } else v= n[v].ch[!(n[v].ch[0] && (n[n[v].ch[0]].flag & 0b0010))];
    }

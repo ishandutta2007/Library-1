@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <limits>
-#include "src/Internal/function_type.hpp"
+#include "src/Internal/function_traits.hpp"
 // dp[i] = min_{j<i} (dp[j] + w(i,j))
 // w(i,j) -> monge cost
 template <class F> std::vector<result_type_t<F>> simplified_larsch_dp(int n, const F &w) {

@@ -1,6 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1068"
 #include <iostream>
 #include <vector>
+#include <array>
 #include "src/DataStructure/KDTree.hpp"
 
 // 典型2Dセグ木 minクエリ
@@ -13,21 +14,19 @@ struct RminQ {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- using KDT= KDTree<2, int, RminQ>;
- int r, c, q;
- for (; cin >> r >> c >> q && r != 0;) {
-  vector<typename KDT::PosVal> v;
+ for (int r, c, q; cin >> r >> c >> q && r;) {
+  vector<array<int, 3>> xy;
   for (int i= 0; i < r; i++)
    for (int j= 0; j < c; j++) {
     int grid;
     cin >> grid;
-    v.emplace_back(array{i, j}, grid);
+    xy.push_back({i, j, grid});
    }
-  KDT kdt(v);
+  KDTree<int, 2, RminQ> kdt(xy);
   while (q--) {
    int r1, c1, r2, c2;
    cin >> r1 >> c1 >> r2 >> c2;
-   cout << kdt.fold({r1, r2}, {c1, c2}) << '\n' << flush;
+   cout << kdt.fold_cuboid(r1, r2, c1, c2) << '\n' << flush;
   }
  }
  return 0;

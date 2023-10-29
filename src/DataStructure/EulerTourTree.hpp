@@ -14,8 +14,8 @@ template <typename M= void, size_t NODE_SIZE= 4'000'000> class EulerTourTree {
  NULLPTR_OR(E);
  template <class L> static constexpr bool monoid_v= std::conjunction_v<has_T<L>, has_op<L>, has_ti<L>>;
  template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
- using node_id= std::int_least32_t;
- using vertex_id= std::int_least32_t;
+ using node_id= int;
+ using vertex_id= int;
  struct Node_B {
   node_id ch[2], par;
   uint64_t flag;

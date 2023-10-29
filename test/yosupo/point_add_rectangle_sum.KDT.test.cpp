@@ -36,11 +36,11 @@ signed main() {
    mp[{x, y}];
   }
  }
- KDTree<2, long long, RSQ> kdt({mp.begin(), mp.end()});
+ KDTree<long long, 2, RSQ> kdt(mp);
  for (int i= 0; i < Q; i++) {
   if (query[i][0]) {
    auto [_, l, d, r, u]= query[i];
-   cout << kdt.fold({l, r - 1}, {d, u - 1}) << '\n';
+   cout << kdt.fold_cuboid(l, r - 1, d, u - 1) << '\n';
   } else {
    auto [_, x, y, w, __]= query[i];
    kdt.set(kdt.get(x, y) + w, x, y);

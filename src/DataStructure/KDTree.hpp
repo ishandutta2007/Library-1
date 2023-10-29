@@ -6,171 +6,279 @@
 #include <cstddef>
 #include <cassert>
 #include "src/Internal/HAS_CHECK.hpp"
-template <uint8_t K, class pos_t, class M> class KDTree {
+#include "src/Internal/tuple_traits.hpp"
+#include "src/Internal/long_traits.hpp"
+namespace kdtree_internal {
+template <class pos_t, size_t K, class M, class A, class B> class KDTreeImpl {};
+template <class pos_t, size_t K, class M, class... PK, class... PK2> class KDTreeImpl<pos_t, K, M, std::tuple<PK...>, std::tuple<PK2...>> {
+public:
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
- HAS_MEMBER(mapping);
- HAS_MEMBER(composition);
+ HAS_MEMBER(mp);
+ HAS_MEMBER(cp);
  HAS_TYPE(T);
  HAS_TYPE(E);
- template <class L> using monoid= std::conjunction<has_T<L>, has_op<L>, has_ti<L>>;
- template <class L> using dual= std::conjunction<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
- template <class T, class F= std::nullptr_t> struct Node_B {
-  using E= F;
-  T val;
+ MYSELF_OR(T);
+ NULLPTR_OR(E);
+ using Sec= std::array<pos_t, 2>;
+ using Pos= std::array<pos_t, K>;
+ using Range= std::array<Sec, K>;
+ using long_pos_t= make_long_t<pos_t>;
+ template <class L> static constexpr bool monoid_v= std::conjunction_v<has_T<L>, has_op<L>, has_ti<L>>;
+ template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mp<L>, has_cp<L>>;
+ struct Node_BB {
   int ch[2]= {-1, -1};
-  pos_t range[K][2], pos[K];
+  Pos pos;
+  pos_t range[K][2];
  };
- template <bool sg_, bool du_, typename tEnable= void> struct Node_D: Node_B<M> {};
- template <bool sg_, bool du_> struct Node_D<sg_, du_, typename std::enable_if_t<sg_ && !du_>>: Node_B<typename M::T> {
+ template <class U> struct Node_B: Node_BB {
+  U val;
+ };
+ template <class D, bool sg, bool du> struct Node_D: Node_B<M> {};
+ template <bool sg, bool du> struct Node_D<void, sg, du>: Node_BB {};
+ template <class D> struct Node_D<D, 1, 0>: Node_B<typename M::T> {
   typename M::T sum;
  };
- template <bool sg_, bool du_> struct Node_D<sg_, du_, typename std::enable_if_t<!sg_ && du_>>: Node_B<typename M::T, typename M::E> {
-  typename M::E lazy;
-  bool lazy_flg= false;
+ template <class D> struct Node_D<D, 0, 1>: Node_B<typename M::T> {
+  typename M::E laz;
+  bool laz_flg= false;
  };
- template <bool sg_, bool du_> struct Node_D<sg_, du_, typename std::enable_if_t<sg_ && du_>>: Node_B<typename M::T, typename M::E> {
+ template <class D> struct Node_D<D, 1, 1>: Node_B<typename M::T> {
   typename M::T sum;
-  typename M::E lazy;
-  bool lazy_flg= false;
+  typename M::E laz;
+  bool laz_flg= false;
  };
- using Node= Node_D<monoid<M>::value, dual<M>::value>;
- using T= decltype(Node::val);
- using E= typename Node::E;
+ using Node= Node_D<M, monoid_v<M>, dual_v<M>>;
+ using Iter= typename std::vector<int>::iterator;
+ using T= std::conditional_t<std::is_void_v<M>, std::nullptr_t, myself_or_T_t<M>>;
+ using E= nullptr_or_E_t<M>;
+ template <class P> using canbe_Pos= std::is_convertible<to_tuple_t<P>, std::tuple<PK...>>;
+ template <class P> using canbe_PosV= std::is_convertible<to_tuple_t<P>, std::tuple<PK..., T>>;
+ template <class P, class U> static constexpr bool canbe_Pos_and_T_v= std::conjunction_v<canbe_Pos<P>, std::is_convertible<U, T>>;
  std::vector<Node> ns;
-public:
- using PosVal= std::pair<std::array<pos_t, K>, T>;
- using Iter= typename std::vector<PosVal>::iterator;
- using Range= std::array<std::array<pos_t, 2>, K>;
-private:
- inline void pushup(int i) {
-  ns[i].sum= ns[i].val;
-  if (ns[i].ch[0] != -1) ns[i].sum= M::op(ns[ns[i].ch[0]].sum, ns[i].sum);
-  if (ns[i].ch[1] != -1) ns[i].sum= M::op(ns[i].sum, ns[ns[i].ch[1]].sum);
+ static inline T def_val() {
+  if constexpr (monoid_v<M>) return M::ti();
+  else return T();
  }
- inline void propagate(int i, const E &x) {
-  if (i == -1) return;
-  ns[i].lazy_flg ? (M::composition(ns[i].lazy, x), x) : (ns[i].lazy= x);
-  M::mapping(ns[i].val, x), ns[i].lazy_flg= true;
-  if constexpr (monoid<M>::value) M::mapping(ns[i].sum, x);
+ template <bool z, size_t k, class P> static inline auto get_(const P &p) {
+  if constexpr (z == 0) return std::get<k>(p);
+  else return std::get<k>(p.first);
  }
- inline void eval(int i) {
-  if (!ns[i].lazy_flg) return;
-  ns[i].lazy_flg= false;
-  propagate(ns[i].ch[0], ns[i].lazy), propagate(ns[i].ch[1], ns[i].lazy);
+ template <class P, size_t... I> Range to_range(const P &p, std::index_sequence<I...>) { return {(assert(std::get<I + I>(p) <= std::get<I + I + 1>(p)), Sec{std::get<I + I>(p), std::get<I + I + 1>(p)})...}; }
+ inline void update(int t) {
+  ns[t].sum= ns[t].val;
+  if (ns[t].ch[0] != -1) ns[t].sum= M::op(ns[t].sum, ns[ns[t].ch[0]].sum);
+  if (ns[t].ch[1] != -1) ns[t].sum= M::op(ns[t].sum, ns[ns[t].ch[1]].sum);
  }
- inline void build(int &i, Iter bg, Iter ed, int &ts, uint8_t div= 0) {
-  if (ed - bg < 1) return;
-  const int n= ed - bg;
-  auto md= bg + n / 2;
-  std::nth_element(bg, md, ed, [div](const PosVal &l, const PosVal &r) { return l.first[div] < r.first[div]; });
-  ns[i= ts++].val= md->second;
-  for (uint8_t j= K; j--; ns[i].pos[j]= md->first[j]) {
-   auto [mn, mx]= std::minmax_element(bg, ed, [j](const PosVal &l, const PosVal &r) { return l.first[j] < r.first[j]; });
-   ns[i].range[j][0]= mn->first[j], ns[i].range[j][1]= mx->first[j];
+ inline void propagate(int t, const E &x) {
+  if (t == -1) return;
+  if (ns[t].laz_flg) M::cp(ns[t].laz, x);
+  else ns[t].laz= x, ns[t].laz_flg= true;
+  M::mp(ns[t].val, x);
+  if constexpr (monoid_v<M>) M::mp(ns[t].sum, x);
+ }
+ inline void push(int t) {
+  if (ns[t].laz_flg) ns[t].laz_flg= false, propagate(ns[t].ch[0], ns[t].laz), propagate(ns[t].ch[1], ns[t].laz);
+ }
+ template <bool z, class P, size_t k> inline void set_range(int t, int m, Iter bg, Iter ed, const P *p) {
+  auto [mn, mx]= std::minmax_element(bg, ed, [&](int a, int b) { return get_<z, k>(p[a]) < get_<z, k>(p[b]); });
+  ns[t].range[k][0]= get_<z, k>(p[*mn]), ns[t].range[k][1]= get_<z, k>(p[*mx]), ns[t].pos[k]= get_<z, k>(p[m]);
+ }
+ template <bool z, class P, size_t... I> inline void set_range_lp(int t, int m, Iter bg, Iter ed, const P *p, std::index_sequence<I...>) { (void)(int[]){(set_range<z, P, I>(t, m, bg, ed, p), 0)...}; }
+ template <bool z, uint8_t div, class P> inline int build(int &ts, Iter bg, Iter ed, const P *p, const T &v= def_val()) {
+  if (bg == ed) return -1;
+  auto md= bg + (ed - bg) / 2;
+  int t= ts++;
+  std::nth_element(bg, md, ed, [&](int a, int b) { return get_<z, div>(p[a]) < get_<z, div>(p[b]); }), set_range_lp<z>(t, *md, bg, ed, p, std::make_index_sequence<K>());
+  if constexpr (z == 0) {
+   if constexpr (!std::is_void_v<M>) {
+    if constexpr (std::tuple_size_v<P> == K + 1) ns[t].val= std::get<K>(p[*md]);
+    else ns[t].val= v;
+   }
+  } else ns[t].val= p[*md].second;
+  static constexpr uint8_t nx= div + 1 == K ? 0 : div + 1;
+  ns[t].ch[0]= build<z, nx>(ts, bg, md, p, v), ns[t].ch[1]= build<z, nx>(ts, md + 1, ed, p, v);
+  if constexpr (monoid_v<M>) update(t);
+  return t;
+ }
+ template <bool z, uint8_t div, class P> inline int build(Iter bg, Iter ed, const P *p, int &ts) {
+  if (bg == ed) return -1;
+  auto md= bg + (ed - bg) / 2;
+  int t= ts++;
+  std::nth_element(bg, md, ed, [&](int a, int b) { return get_<z, div>(p[a]) < get_<z, div>(p[b]); }), set_range_lp<z>(t, bg, ed, p, std::make_index_sequence<K>());
+  if constexpr (z == 0) {
+   if constexpr (!std::is_void_v<M>) {
+    if constexpr (std::tuple_size_v<P> == K + 1) ns[t].val= std::get<K>(p[t]);
+    else ns[t].val= def_val();
+   }
+  } else ns[t].val= p[t].second;
+  static constexpr uint8_t nx= div + 1 == K ? 0 : div + 1;
+  ns[t].ch[0]= build<z, nx>(bg, md, p, ts), ns[t].ch[1]= build<z, nx>(md + 1, ed, p, ts);
+  if constexpr (monoid_v<M>) update(t);
+  return t;
+ }
+ static inline auto in_cuboid(const Range &r) {
+  return [r](const Pos &pos) {
+   for (uint8_t k= K; k--;)
+    if (r[k][1] < pos[k] || pos[k] < r[k][0]) return false;
+   return true;
+  };
+ }
+ static inline auto out_cuboid(const Range &r) {
+  return [r](const pos_t rr[K][2]) {
+   for (uint8_t k= K; k--;)
+    if (rr[k][1] < r[k][0] || r[k][1] < rr[k][0]) return true;
+   return false;
+  };
+ }
+ static inline auto inall_cuboid(const Range &r) {
+  return [r](const pos_t rr[K][2]) {
+   for (uint8_t k= K; k--;)
+    if (rr[k][0] < r[k][0] || r[k][1] < rr[k][1]) return false;
+   return true;
+  };
+ }
+ static inline long_pos_t min_dist2(const pos_t r[K][2], const Pos &pos) {
+  long_pos_t d2= 0, dx;
+  for (uint8_t k= K; k--;) dx= std::clamp(pos[k], r[k][0], r[k][1]) - pos[k], d2+= dx * dx;
+  return d2;
+ }
+ static inline auto in_ball(const Pos &c, long_pos_t r2) {
+  return [c, r2](const Pos &pos) {
+   long_pos_t d2= 0, dx;
+   for (uint8_t k= K; k--;) dx= pos[k] - c[k], d2+= dx * dx;
+   return d2 <= r2;
+  };
+ }
+ static inline auto inall_ball(const Pos &c, long_pos_t r2) {
+  return [c, r2](const pos_t rr[K][2]) {
+   long_pos_t d2= 0, dx0, dx1;
+   for (uint8_t k= K; k--;) dx0= rr[k][0] - c[k], dx1= rr[k][1] - c[k], d2+= std::max(dx0 * dx0, dx1 * dx1);
+   return d2 <= r2;
+  };
+ }
+ static inline auto out_ball(const Pos &c, long_pos_t r2) {
+  return [c, r2](const pos_t r[K][2]) { return min_dist2(r, c) > r2; };
+ }
+ inline void nns(int t, const Pos &pos, std::pair<int, long_pos_t> &ret) const {
+  if (t == -1) return;
+  long_pos_t d2= min_dist2(ns[t].range, pos);
+  if (ret.first != -1 && d2 >= ret.second) return;
+  long_pos_t dx= d2= 0;
+  for (uint8_t k= K; k--;) dx= pos[k] - ns[t].pos[k], d2+= dx * dx;
+  if (ret.first == -1 || d2 < ret.second) ret= {t, d2};
+  bool f= 0;
+  if (auto [l, r]= ns[t].ch; l != -1 && r != -1) f= min_dist2(ns[l].range, pos) > min_dist2(ns[r].range, pos);
+  nns(ns[t].ch[f], pos, ret), nns(ns[t].ch[!f], pos, ret);
+ }
+ template <class In, class Out> inline void col(int t, const In &in, const Out &out, std::vector<T> &ret) const {
+  if (t == -1 || out(ns[t].range)) return;
+  if (in(ns[t].pos)) ret.push_back(ns[t].val);
+  col(ns[t].ch[0], in, out, ret), col(ns[t].ch[1], in, out, ret);
+ }
+ template <class In, class InAll, class Out> inline T fld(int t, const In &in, const InAll &inall, const Out &out) {
+  if (t == -1 || out(ns[t].range)) return def_val();
+  if (inall(ns[t].range)) return ns[t].sum;
+  if constexpr (dual_v<M>) push(t);
+  T ret= M::op(fld(ns[t].ch[0], in, inall, out), fld(ns[t].ch[1], in, inall, out));
+  return in(ns[t].pos) ? M::op(ret, ns[t].val) : ret;
+ }
+ template <class In, class InAll, class Out> inline void app(int t, const In &in, const InAll &inall, const Out &out, const E &x) {
+  if (t == -1 || out(ns[t].range)) return;
+  if (inall(ns[t].range)) return propagate(t, x);
+  if (push(t); in(ns[t].pos)) M::mp(ns[t].val, x);
+  app(ns[t].ch[0], in, inall, out, x), app(ns[t].ch[1], in, inall, out, x);
+  if constexpr (monoid_v<M>) update(t);
+ }
+ inline bool set(int t, const pos_t pos[K], const T &x) {
+  if (t == -1) return false;
+  bool isok= true;
+  for (uint8_t k= K; k--; isok&= pos[k] == ns[t].pos[k])
+   if (ns[t].range[k][1] < pos[k] || pos[k] < ns[t].range[k][0]) return false;
+  if (isok) ns[t].val= x;
+  else {
+   if constexpr (dual_v<M>) push(t);
+   if (!(isok= set(ns[t].ch[0], pos, x))) isok= set(ns[t].ch[1], pos, x);
   }
-  if (uint8_t nex= (div + 1) % K; n > 1) build(ns[i].ch[0], bg, md, ts, nex), build(ns[i].ch[1], md + 1, ed, ts, nex);
-  if constexpr (monoid<M>::value) pushup(i);
+  if constexpr (monoid_v<M>)
+   if (isok) update(t);
+  return isok;
  }
- template <class F, class G, class H> inline T fold(int i, const F &in, const G &inall, const H &outall) {
-  static_assert(monoid<M>::value, "\"fold\" is not available");
-  if (i == -1 || outall(ns[i].range)) return M::ti();
-  if (inall(ns[i].range)) return ns[i].sum;
-  if constexpr (dual<M>::value) eval(i);
-  T ret= M::op(fold(ns[i].ch[0], in, inall, outall), fold(ns[i].ch[1], in, inall, outall));
-  ret= in(ns[i].pos) ? M::op(ret, ns[i].val) : ret;
-  return ret;
- }
- template <class F, class G, class H> inline void apply(int i, const F &in, const G &inall, const H &outall, const E &x) {
-  static_assert(dual<M>::value, "\"apply\" is not available");
-  if (i == -1 || outall(ns[i].range)) return;
-  if (inall(ns[i].range)) return propagate(i, x), void();
-  if (eval(i); in(ns[i].pos)) M::mapping(ns[i].val, x);
-  apply(ns[i].ch[0], in, inall, outall, x), apply(ns[i].ch[1], in, inall, outall, x);
-  if constexpr (monoid<M>::value) pushup(i);
- }
- inline std::pair<T, bool> get(int i, const std::array<pos_t, K> &pos) {
-  if (i == -1) return {T(), false};
+ inline std::pair<T, bool> get(int t, const Pos &pos) {
+  if (t == -1) return {T(), false};
   bool myself= true;
-  for (uint8_t j= K; j--; myself&= pos[j] == ns[i].pos[j])
-   if (ns[i].range[j][1] < pos[j] || pos[j] < ns[i].range[j][0]) return {T(), false};
-  if (myself) return {ns[i].val, true};
-  if constexpr (dual<M>::value) eval(i);
-  auto ret= get(ns[i].ch[0], pos);
-  return !ret.second ? get(ns[i].ch[1], pos) : ret;
- }
- inline bool set(int i, const std::array<pos_t, K> &pos, const T &x) {
-  if (i == -1) return false;
-  bool myself= true, ret= true;
-  for (uint8_t j= K; j--; myself&= pos[j] == ns[i].pos[j])
-   if (ns[i].range[j][1] < pos[j] || pos[j] < ns[i].range[j][0]) return false;
-  if constexpr (dual<M>::value) eval(i);
-  if (myself) ns[i].val= x;
-  else if (!(ret= set(ns[i].ch[0], pos, x))) ret= set(ns[i].ch[1], pos, x);
-  if constexpr (monoid<M>::value) pushup(i);
-  return ret;
- }
- template <typename... Args> static inline Range to_range(std::initializer_list<Args>... intervals) {
-  static_assert(sizeof...(intervals) == K);
-  static_assert(std::conjunction_v<std::is_same<Args, pos_t>...>);
-  Range r;
-  uint8_t i= 0;
-  for (auto &&x: {intervals...}) {
-   std::vector<pos_t> tmp(x);
-   assert(tmp.size() == 2), assert(tmp[0] <= tmp[1]);
-   r[i][0]= tmp[0], r[i][1]= tmp[1], i++;
-  }
-  return r;
- }
- static inline auto funcs(const Range &r) {
-  return std::make_tuple(
-      [r](pos_t pos[K]) {
-       for (uint8_t i= K; i--;)
-        if (pos[i] < r[i][0] || r[i][1] < pos[i]) return false;
-       return true;
-      },
-      [r](pos_t range[K][2]) {
-       for (uint8_t i= K; i--;)
-        if (range[i][0] < r[i][0] || r[i][1] < range[i][1]) return false;
-       return true;
-      },
-      [r](pos_t range[K][2]) {
-       for (uint8_t i= K; i--;)
-        if (range[i][1] < r[i][0] || r[i][1] < range[i][0]) return true;
-       return false;
-      });
+  for (uint8_t k= K; k--; myself&= pos[k] == ns[t].pos[k])
+   if (ns[t].range[k][1] < pos[k] || pos[k] < ns[t].range[k][0]) return {T(), false};
+  if (myself) return {ns[t].val, true};
+  if constexpr (dual_v<M>) push(t);
+  auto ret= get(ns[t].ch[0], pos);
+  return !ret.second ? get(ns[t].ch[1], pos) : ret;
  }
 public:
- KDTree(std::vector<PosVal> v): ns(v.size()) {
-  int root, timestamp= 0;
-  build(root, v.begin(), v.end(), timestamp);
+ template <class P, typename= std::enable_if_t<std::disjunction_v<canbe_Pos<P>, canbe_PosV<P>>>> KDTreeImpl(const P *p, size_t n): ns(n) {
+  std::vector<int> ids(n);
+  int ts= 0;
+  std::iota(ids.begin(), ids.end(), 0), build<0, 0>(ts, ids.begin(), ids.end(), p);
  }
- T get(std::array<pos_t, K> pos) {
-  auto [ret, flg]= get(0, pos);
+ template <class P, typename= std::enable_if_t<std::disjunction_v<canbe_Pos<P>, canbe_PosV<P>>>> KDTreeImpl(const std::vector<P> &p): KDTreeImpl(p.data(), p.size()) {}
+ template <class P, typename= std::enable_if_t<canbe_Pos<P>::value>> KDTreeImpl(const std::set<P> &p): KDTreeImpl(std::vector(p.begin(), p.end())) {}
+ template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const P *p, size_t n, U v): ns(n) {
+  std::vector<int> ids(n);
+  int ts= 0;
+  std::iota(ids.begin(), ids.end(), 0), build<0, 0>(ts, ids.begin(), ids.end(), p, v);
+ }
+ template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::vector<P> &p, U v): KDTreeImpl(p.data(), p.size(), v) {}
+ template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::set<P> &p, U v): KDTreeImpl(std::vector(p.begin(), p.end()), v) {}
+ template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::pair<P, U> *p, size_t n): ns(n) {
+  std::vector<int> ids(n);
+  int ts= 0;
+  std::iota(ids.begin(), ids.end(), 0), build<1, 0>(ts, ids.begin(), ids.end(), p);
+ }
+ template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::vector<std::pair<P, U>> &p): KDTreeImpl(p.data(), p.size()) {}
+ template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::map<P, U> &p): KDTreeImpl(std::vector(p.begin(), p.end())) {}
+ std::vector<T> enum_cuboid(PK2... xs) {
+  static_assert(!std::is_void_v<M>, "\"enum_cuboid\" is not available");
+  std::vector<T> ret;
+  auto r= to_range(std::forward_as_tuple(xs...), std::make_index_sequence<K>());
+  return col(0, in_cuboid(r), out_cuboid(r), ret), ret;
+ }
+ std::vector<T> enum_ball(PK... xs, pos_t r) const {
+  static_assert(!std::is_void_v<M>, "\"enum_ball\" is not available");
+  std::vector<T> ret;
+  long_pos_t r2= long_pos_t(r) * r;
+  return col(0, in_ball({xs...}, r2), out_ball({xs...}, r2), ret), ret;
+ }
+ T fold_cuboid(PK2... xs) {
+  static_assert(monoid_v<M>, "\"fold_cuboid\" is not available");
+  auto r= to_range(std::forward_as_tuple(xs...), std::make_index_sequence<K>());
+  return fld(0, in_cuboid(r), inall_cuboid(r), out_cuboid(r));
+ }
+ T fold_ball(PK... xs, pos_t r) {
+  static_assert(monoid_v<M>, "\"fold_ball\" is not available");
+  long_pos_t r2= long_pos_t(r) * r;
+  return fld(0, in_ball({xs...}, r2), inall_ball({xs...}, r2), out_ball({xs...}, r2));
+ }
+ void apply_cuboid(PK2... xs, E x) {
+  static_assert(dual_v<M>, "\"apply_cuboid\" is not available");
+  auto r= to_range(std::forward_as_tuple(xs...), std::make_index_sequence<K>());
+  app(0, in_cuboid(r), inall_cuboid(r), out_cuboid(r), x);
+ }
+ void apply_ball(PK... xs, pos_t r, E x) {
+  static_assert(dual_v<M>, "\"apply_ball\" is not available");
+  long_pos_t r2= long_pos_t(r) * r;
+  app(0, in_ball({xs...}, r2), inall_ball({xs...}, r2), out({xs...}, r2), x);
+ }
+ void set(PK... p, T v) { assert(set(0, {p...}, v)); }
+ T get(PK... p) {
+  auto [ret, flg]= get(0, {p...});
   return assert(flg), ret;
  }
- template <typename... Args> T get(Args... ids) {
-  static_assert(sizeof...(ids) == K);
-  static_assert(std::conjunction_v<std::is_convertible<Args, pos_t>...>);
-  auto [ret, flg]= get(0, {ids...});
-  return assert(flg), ret;
+ Pos nearest_neighbor(PK... p) const {
+  assert(ns.size());
+  std::pair<int, long_pos_t> ret= {-1, -1};
+  return nns(0, {p...}, ret), ns[ret.first].pos;
  }
- void set(T x, std::array<pos_t, K> pos) { assert(set(0, pos, x)); }
- template <typename... Args> void set(T x, Args... ids) {
-  static_assert(sizeof...(ids) == K);
-  static_assert(std::conjunction_v<std::is_convertible<Args, pos_t>...>);
-  assert(set(0, {ids...}, x));
- }
- T fold(const Range &r) {
-  auto [in, inall, outall]= funcs(r);
-  return fold(0, in, inall, outall);
- }
- template <typename... Args> T fold(std::initializer_list<Args> &&...intervals) { return fold(to_range(intervals...)); }
- template <class F, class G, class H> T fold(const F &in, const G &inall, const H &outall) { return fold(0, in, inall, outall); }
- void apply(E x, const Range &r) {
-  auto [in, inall, outall]= funcs(r);
-  apply(0, in, inall, outall, x);
- }
- template <typename... Args> void apply(E x, std::initializer_list<Args> &&...intervals) { apply(x, to_range(intervals...)); }
- template <class F, class G, class H> void apply(E x, const F &in, const G &inall, const H &outall) { apply(0, in, inall, outall, x); }
 };
+template <class pos_t, size_t K, class M= void> using KDTree= KDTreeImpl<pos_t, K, M, to_tuple_t<std::array<pos_t, K>>, to_tuple_t<std::array<pos_t, K + K>>>;
+}
+using kdtree_internal::KDTree;

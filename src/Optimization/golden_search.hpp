@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 #include <cassert>
-#include "src/Internal/function_type.hpp"
+#include "src/Internal/function_traits.hpp"
 #include "src/Optimization/MinMaxEnum.hpp"
 // [l,r]
 template <MinMaxEnum obj, class F> std::pair<long double, result_type_t<F>> golden_search(const F &f, long double l, long double r, int iter= 100) {

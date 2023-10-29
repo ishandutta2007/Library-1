@@ -4,34 +4,20 @@
 #include <algorithm>
 #include "src/DataStructure/KDTree.hpp"
 using namespace std;
-struct IDs {
- using T= vector<int>;
- static T ti() { return {}; }
- static T op(T l, T r) {
-  if (l.size() < r.size()) l.swap(r);
-  for (int x: r) l.push_back(x);
-  return l;
- }
-};
 signed main() {
  cin.tie(0);
- ios::sync_with_stdio(false);
+ ios::sync_with_stdio(0);
  int n;
  cin >> n;
- using KDT= KDTree<2, int, IDs>;
- vector<typename KDT::PosVal> v(n);
- for (int i= 0; i < n; i++) {
-  int x, y;
-  cin >> x >> y;
-  v[i].first= {x, y}, v[i].second= {i};
- }
- KDT kdt(v);
+ vector<array<int, 3>> xy(n);
+ for (int i= 0; i < n; ++i) cin >> xy[i][0] >> xy[i][1], xy[i][2]= i;
+ KDTree<int, 2, int> kdt(xy);
  int q;
  cin >> q;
  while (q--) {
   int sx, tx, sy, ty;
   cin >> sx >> tx >> sy >> ty;
-  auto ans= kdt.fold({sx, tx}, {sy, ty});
+  auto ans= kdt.enum_cuboid(sx, tx, sy, ty);
   sort(ans.begin(), ans.end());
   for (auto x: ans) cout << x << '\n';
   cout << '\n';

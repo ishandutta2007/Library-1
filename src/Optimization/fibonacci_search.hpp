@@ -1,7 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <cassert>
-#include "src/Internal/function_type.hpp"
+#include "src/Internal/function_traits.hpp"
 #include "src/Optimization/MinMaxEnum.hpp"
 // [l,r]
 template <MinMaxEnum obj, class F> std::pair<int64_t, result_type_t<F>> fibonacci_search(const F &f, int64_t l, int64_t r) {

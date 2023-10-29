@@ -1,7 +1,7 @@
 #pragma once
 #include <cmath>
 #include <vector>
-#include "src/Internal/function_type.hpp"
+#include "src/Internal/function_traits.hpp"
 // mp : E × T -> T
 // op : E × E -> E
 // hash : T -> int

@@ -12,25 +12,25 @@ template <class M, size_t NODE_SIZE= 1 << 22> class WeightBalancedTree {
  HAS_MEMBER(composition);
  HAS_TYPE(T);
  HAS_TYPE(E);
+ NULLPTR_OR(E);
  template <class L> static constexpr bool semigroup_v= std::conjunction_v<has_T<L>, has_op<L>>;
  template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
- template <class F= std::nullptr_t> struct NodeB {
-  using E= F;
+ struct NodeB {
   size_t sz= 0;
  };
- template <class D, bool sg, bool du> struct NodeD: NodeB<> {
+ template <class D, bool sg, bool du> struct NodeD: NodeB {
   inline size_t size() const { return this->sz; }
  };
- template <class D> struct NodeD<D, 1, 0>: NodeB<> {
+ template <class D> struct NodeD<D, 1, 0>: NodeB {
   typename M::T val;
   inline size_t size() const { return this->sz; }
  };
- template <class D> struct NodeD<D, 0, 1>: NodeB<typename M::E> {
+ template <class D> struct NodeD<D, 0, 1>: NodeB {
   typename M::E laz;
   inline bool laz_flg() const { return this->sz >> 31; }
   inline size_t size() const { return this->sz & 0x7fffffff; }
  };
- template <class D> struct NodeD<D, 1, 1>: NodeB<typename M::E> {
+ template <class D> struct NodeD<D, 1, 1>: NodeB {
   typename M::T val;
   typename M::E laz;
   inline bool laz_flg() const { return this->sz >> 31; }
@@ -52,7 +52,7 @@ template <class M, size_t NODE_SIZE= 1 << 22> class WeightBalancedTree {
  };
  using NodeL= NodeLD<void, semigroup_v<M>, dual_v<M>>;
  using T= decltype(NodeL::val);
- using E= typename Node::E;
+ using E= nullptr_or_E_t<M>;
  using WBT= WeightBalancedTree;
  static inline int nmi= 0, nli= 0;
  static inline NodeM nm[NODE_SIZE];
@@ -64,7 +64,7 @@ template <class M, size_t NODE_SIZE= 1 << 22> class WeightBalancedTree {
  static inline np cp_nm(np &t) { return t= &(nm[nmi++]= NodeM(*((NodeM *)t))); }
  static inline np cp_nl(np &t) { return t= &(nl[nli++]= NodeL(*((NodeL *)t))); }
  static inline np cp_node(np &t) { return t->size() == 1 ? cp_nl(t) : cp_nm(t); }
- static inline void pushup(np t) {
+ static inline void update(np t) {
   if constexpr (dual_v<M>) t->sz= (ch(t, 0)->size() + ch(t, 1)->size()) | (t->sz & 0x80000000);
   else t->sz= ch(t, 0)->size() + ch(t, 1)->size();
   if constexpr (semigroup_v<M>) t->val= M::op(ch(t, 0)->val, ch(t, 1)->val);
@@ -80,29 +80,29 @@ template <class M, size_t NODE_SIZE= 1 << 22> class WeightBalancedTree {
   if constexpr (semigroup_v<M>) M::mapping(t->val, x, t->size());
   t->sz|= 0x80000000;
  }
- static inline void eval(np t) {
+ static inline void push(np t) {
   if (t->laz_flg()) propagate(cp_node(ch(t, 0)), t->laz), propagate(cp_node(ch(t, 1)), t->laz), t->sz&= 0x7fffffff;
  }
  template <bool b> static inline np helper(std::array<np, 2> &m) {
-  if constexpr (dual_v<M>) eval(m[b]);
+  if constexpr (dual_v<M>) push(m[b]);
   np c;
   if constexpr (b) c= submerge({m[0], ch(m[1], 0)});
   else c= submerge({ch(m[0], 1), m[1]});
-  if (ch(cp_nm(m[b]), b)->size() * 4 >= c->size()) return ch(m[b], !b)= c, pushup(m[b]), m[b];
-  return ch(m[b], !b)= ch(c, b), pushup(ch(c, b)= m[b]), pushup(c), c;
+  if (ch(cp_nm(m[b]), b)->size() * 4 >= c->size()) return ch(m[b], !b)= c, update(m[b]), m[b];
+  return ch(m[b], !b)= ch(c, b), update(ch(c, b)= m[b]), update(c), c;
  }
  static inline np submerge(std::array<np, 2> m) {
   if (m[0]->size() > m[1]->size() * 4) return helper<0>(m);
   if (m[1]->size() > m[0]->size() * 4) return helper<1>(m);
   auto t= new_nm(m[0], m[1]);
-  return pushup(t), t;
+  return update(t), t;
  }
  static inline np merge(np l, np r) { return !l ? r : !r ? l : submerge({l, r}); }
  static inline std::pair<np, np> split(np t, size_t k) {
   if (!t) return {nullptr, nullptr};
   if (k == 0) return {nullptr, t};
   if (k >= t->size()) return {t, nullptr};
-  if constexpr (dual_v<M>) eval(t);
+  if constexpr (dual_v<M>) push(t);
   auto l= ch(t, 0), r= ch(t, 1);
   if (size_t lsz= l->size(); k == lsz) return {l, r};
   else if (k < lsz) {
@@ -118,19 +118,20 @@ template <class M, size_t NODE_SIZE= 1 << 22> class WeightBalancedTree {
    if constexpr (std::is_same_v<S, T>) return new_nl(bg);
    else return new_nl(*(bg + l));
   }
-  auto t= new_nm(build(l, (l + r) >> 1, bg), build((l + r) >> 1, r, bg));
-  return pushup(t), t;
+  size_t m= (l + r) / 2;
+  auto t= new_nm(build(l, m, bg), build(m, r, bg));
+  return update(t), t;
  }
  void dump(np t, typename std::vector<T>::iterator it) {
   if (t->size() == 1) *it= reflect(t);
   else {
-   if constexpr (dual_v<M>) eval(t);
+   if constexpr (dual_v<M>) push(t);
    dump(ch(t, 0), it), dump(ch(t, 1), it + ch(t, 0)->size());
   }
  }
  T fold(np t, size_t l, size_t r) {
   if (l <= 0 && t->size() <= r) return t->val;
-  if constexpr (dual_v<M>) eval(t);
+  if constexpr (dual_v<M>) push(t);
   size_t lsz= ch(t, 0)->size();
   if (r <= lsz) return fold(ch(t, 0), l, r);
   if (lsz <= l) return fold(ch(t, 1), l - lsz, r - lsz);
@@ -138,29 +139,29 @@ template <class M, size_t NODE_SIZE= 1 << 22> class WeightBalancedTree {
  }
  void apply(np &t, size_t l, size_t r, const E &x) {
   if (cp_node(t); l <= 0 && t->size() <= r) return propagate(t, x), void();
-  eval(t);
+  push(t);
   size_t lsz= ch(t, 0)->size();
   if (r <= lsz) apply(ch(t, 0), l, r, x);
   else if (lsz <= l) apply(ch(t, 1), l - lsz, r - lsz, x);
   else apply(ch(t, 0), l, lsz, x), apply(ch(t, 1), 0, r - lsz, x);
-  if constexpr (semigroup_v<M>) pushup(t);
+  if constexpr (semigroup_v<M>) update(t);
  }
  void set_val(np &t, size_t k, const T &x) {
   if (t->size() == 1) return reflect(cp_nl(t))= x, void();
-  if constexpr (dual_v<M>) eval(t);
+  if constexpr (dual_v<M>) push(t);
   size_t lsz= ch(cp_nm(t), 0)->size();
   lsz > k ? set_val(ch(t, 0), k, x) : set_val(ch(t, 1), k - lsz, x);
-  if constexpr (semigroup_v<M>) pushup(t);
+  if constexpr (semigroup_v<M>) update(t);
  }
  T get_val(np t, size_t k) {
   if (t->size() == 1) return reflect(t);
-  if constexpr (dual_v<M>) eval(t);
+  if constexpr (dual_v<M>) push(t);
   size_t lsz= ch(t, 0)->size();
   return lsz > k ? get_val(ch(t, 0), k) : get_val(ch(t, 1), k - lsz);
  }
  T &at_val(np t, size_t k) {
   if (t->size() == 1) return reflect(cp_nl(t));
-  if constexpr (dual_v<M>) eval(t);
+  if constexpr (dual_v<M>) push(t);
   size_t lsz= ch(cp_nm(t), 0)->size();
   return lsz > k ? at_val(ch(t, 0), k) : at_val(ch(t, 1), k - lsz);
  }

@@ -1,10 +1,9 @@
 ---
-title: 関数型や関数オブジェクトを扱うテンプレート
-documentation_of: ../../src/Internal/function_type.hpp
+title: 関数型や関数オブジェクトに関するテンプレート
+documentation_of: ../../src/Internal/function_traits.hpp
 ---
 
 | 名前                 | 概要                                                                                             |
 | ------------------- | ------------------------------------------------------------------------------------------------ |
 | `result_type_t<F>`  | `F` のインスタンスの 関数としての 戻り値の型  ( `F` が関数型 でも 関数オブジェクトクラス でもないなら `void` ) |
 | `argument_type_t<F>`| `F` のインスタンスの 関数としての 引数の型 ( `tuple` でラッピング, `F` が関数型 でも 関数オブジェクトクラス でもないなら `void` ) |
-| `other_than_first_argument_type_t<T>`| `T=tuple<U,Args...>` から `tuple<Args...>` を作る |

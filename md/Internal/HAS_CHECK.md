@@ -1,5 +1,5 @@
 ---
-title: メンバの有無を判定するテンプレート
+title: メンバの有無を判定するテンプレート 他
 documentation_of: ../../src/Internal/HAS_CHECK.hpp
 ---
 ## 参考

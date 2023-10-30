@@ -19,33 +19,40 @@ $\mathcal{O}(k\cdot N^{1-1/k})$　で動くと思っておく.\
 |名前|概要|
 |---|---|
 |`KDTree(P* p, n)` <br> `KDTree(vector<P>& p)` <br> `KDTree(set<P>& p)` <br>(クラス`P` は `tuple<pos_t,...,pos_t>` like)|コンストラクタ. <br> n個の点の座標を与える. <br> 点に値を乗せる場合, この時の初期値はデフォルトかモノイドの単位元.|
+
 使用例
 ```c++
 vector<array<int,2>> xy(N);
 for(auto&[x,y]:xy) cin>>x>>y;
 KDTree<int,2> kdt(xy);
 ```
+
 |||
 |---|---|
 |`KDTree(P* p,int n, U v)` <br> `KDTree(vector<P>& p, U v)` <br> `KDTree(set<P>& p, U v)` <br>(クラス`P` は `tuple<pos_t,...,pos_t>` like)|コンストラクタ. <br> n個の点の座標と点に乗せる共通の初期値を与える.|
+
 使用例
 ```c++
 vector<array<int,2>> xy(N);
 for(auto&[x,y]:xy) cin>>x>>y;
 KDTree<int,2,int> kdt(xy,1);
 ```
+
 |||
 |---|---|
 |`KDTree(P* p,int n)` <br> `KDTree(vector<P>& p)` <br> (クラス`P` は `tuple<pos_t,...,pos_t, T>` like)|コンストラクタ. <br> n個の点の座標と各々の点に乗せる初期値を与える.|
+
 使用例
 ```c++
 vector<array<int,3>> xyv(N);
 for(auto&[x,y,v]:xyv) cin>>x>>y>>v;
 KDTree<int,2,int> kdt(xyv);
 ```
+
 |||
 |---|---|
 |`KDTree(pair<P,U>* p,int n)` <br> `KDTree(vector<pair<P,U>>& p)` <br> `KDTree(map<P,U>& p)` <br> (クラス`P` は `tuple<pos_t,...,pos_t>` like)|コンストラクタ. <br> n個の点の座標と各々の点に乗せる初期値を与える.|
+
 使用例
 ```c++
 map<array<int,2>,int> xyv;

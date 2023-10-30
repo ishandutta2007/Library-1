@@ -1,6 +1,7 @@
 #pragma once
 #include <type_traits>
 #include <algorithm>
+#include <cstdint>
 template <class Int> constexpr int bsf(Int a) {
  if constexpr (sizeof(Int) == 16) {
   uint64_t lo= a & uint64_t(-1);

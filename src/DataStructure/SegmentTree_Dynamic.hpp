@@ -156,8 +156,8 @@ template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentT
  }
 public:
  SegmentTree_Dynamic(np t= nullptr): root(t) {}
- SegmentTree_Dynamic(std::size_t n, T val) { root= build(n, 0, 1LL << HEIGHT, val); }
- SegmentTree_Dynamic(const T *bg, const T *ed) { root= build(ed - bg, 0, 1LL << HEIGHT, bg); }
+ SegmentTree_Dynamic(std::size_t n, T val): root(build(n, 0, 1LL << HEIGHT, val)) {}
+ SegmentTree_Dynamic(const T *bg, const T *ed): root(build(ed - bg, 0, 1LL << HEIGHT, bg)) {}
  SegmentTree_Dynamic(const std::vector<T> &ar): SegmentTree_Dynamic(ar.data(), ar.data() + ar.size()) {}
  void set(id_t k, T val) { set_val(root, k, val, HEIGHT); }
  T get(id_t k) { return get_val(root, k, HEIGHT); }

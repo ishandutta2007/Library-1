@@ -1,10 +1,11 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1023"
+
+// 円形クエリ
+
 #include <iostream>
 #include <vector>
 #include <array>
 #include "src/DataStructure/KDTree.hpp"
-
-// 円形クエリ
 using namespace std;
 struct RSQ {
  using T= int;

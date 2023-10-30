@@ -1,4 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/all/DSL_2_C"
+
+// 列挙のverify
+
 #include <iostream>
 #include <vector>
 #include <algorithm>

@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <string>
 #include <unordered_map>
+#include <cstddef>
+#include <cstdint>
 #include "src/Internal/HAS_CHECK.hpp"
 template <typename M= void, size_t NODE_SIZE= 4'000'000> class EulerTourTree {
  HAS_MEMBER(op);

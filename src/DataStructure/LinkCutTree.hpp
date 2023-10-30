@@ -15,7 +15,7 @@ template <typename M= void> class LinkCutTree {
  NULLPTR_OR(E);
  template <class L> static constexpr bool semigroup_v= std::conjunction_v<has_T<L>, has_op<L>>;
  template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
- template struct Node_B {
+ struct Node_B {
   int ch[2]= {-1, -1}, par= -1;
   bool rev_flg;
  };

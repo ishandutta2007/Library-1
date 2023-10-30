@@ -1,9 +1,9 @@
 #pragma once
-#include <array>
 #include <vector>
 #include <algorithm>
-#include <tuple>
-#include <cstddef>
+#include <numeric>
+#include <map>
+#include <set>
 #include <cassert>
 #include "src/Internal/HAS_CHECK.hpp"
 #include "src/Internal/tuple_traits.hpp"
@@ -11,7 +11,6 @@
 namespace kdtree_internal {
 template <class pos_t, size_t K, class M, class A, class B> class KDTreeImpl {};
 template <class pos_t, size_t K, class M, class... PK, class... PK2> class KDTreeImpl<pos_t, K, M, std::tuple<PK...>, std::tuple<PK2...>> {
-public:
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
  HAS_MEMBER(mp);

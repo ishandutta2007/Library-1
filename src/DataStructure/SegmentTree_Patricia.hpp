@@ -4,6 +4,8 @@
 #include <string>
 #include <algorithm>
 #include <tuple>
+#include <cstddef>
+#include <cstdint>
 #include "src/Internal/HAS_CHECK.hpp"
 template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentTree_Patricia {
  HAS_MEMBER(op);

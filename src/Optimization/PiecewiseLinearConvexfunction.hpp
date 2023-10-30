@@ -9,7 +9,7 @@
 template <std::size_t NODE_SIZE= 1 << 22> class PiecewiseLinearConvexfunction {
  using i64= long long;
  using i128= __int128_t;
- using node_id= std::int_least32_t;
+ using node_id= int;
  static constexpr i64 INF= 1ll << 41;
  template <class Int> static inline std::string str(Int x) {
   if (x >= INF) return "inf";
@@ -38,7 +38,7 @@ template <std::size_t NODE_SIZE= 1 << 22> class PiecewiseLinearConvexfunction {
  static inline void push(node_id i) {
   if (ns[i].laz) propagate(ns[i].ch[0], ns[i].laz), propagate(ns[i].ch[1], ns[i].laz), ns[i].laz= 0;
  }
- static inline void pushup(node_id i) {
+ static inline void update(node_id i) {
   ns[i].sz= 1, ns[i].x= ns[i].dx, ns[i].y= i128(ns[i].slope) * ns[i].dx;
   if (int j= ns[i].ch[0]; j) ns[i].sz+= ns[j].sz, ns[i].x+= ns[j].x, ns[i].y+= ns[j].y;
   if (int j= ns[i].ch[1]; j) ns[i].sz+= ns[j].sz, ns[i].x+= ns[j].x, ns[i].y+= ns[j].y;
@@ -50,12 +50,12 @@ template <std::size_t NODE_SIZE= 1 << 22> class PiecewiseLinearConvexfunction {
   if ((ns[p].ch[d]= ns[i].ch[!d])) ns[ns[p].ch[d]].par= p;
   ns[i].ch[!d]= p;
   if ((ns[i].par= ns[p].par)) ns[ns[p].par].ch[dir(p)]= i;
-  ns[p].par= i, pushup(p);
+  ns[p].par= i, update(p);
  }
  static inline void splay(node_id i) {
   for (node_id p= ns[i].par; p; rot(i), p= ns[i].par)
    if (node_id pp= ns[p].par; pp) rot(dir(i) == dir(p) ? p : i);
-  pushup(i);
+  update(i);
  }
  static inline void slope_search(node_id &i, i64 k) {
   for (node_id s;; i= s) {
@@ -102,9 +102,9 @@ template <std::size_t NODE_SIZE= 1 << 22> class PiecewiseLinearConvexfunction {
     node_id i= new_node(a, 0);
     bool c= ns[root].slope < 0;
     if ((ns[i].ch[c]= ns[root].ch[c])) ns[ns[i].ch[c]].par= i;
-    pushup(i), ns[root].ch[c]= i, ns[i].par= root;
+    update(i), ns[root].ch[c]= i, ns[i].par= root;
    } else ns[root].dx+= a;
-   pushup(root);
+   update(root);
   } else if (lslope >= 0) lx+= a;
   else root= new_node(a, 0);
  }
@@ -127,7 +127,7 @@ public:
   if (c < lx) {
    if (lslope < -INF) return add_linear(a, -i128(a) * c);
    node_id i= new_node(lx - c, lslope);
-   if (root) x_search(root, 0), ns[root].ch[0]= i, ns[i].par= root, pushup(root);
+   if (root) x_search(root, 0), ns[root].ch[0]= i, ns[i].par= root, update(root);
    else root= i;
    ly-= ns[i].y, lx= c, propagate(root, a);
    return;
@@ -143,7 +143,7 @@ public:
   } else {
    node_id i= new_node(r - c, ns[root].slope);
    if ((ns[i].ch[1]= ns[root].ch[1])) ns[ns[i].ch[1]].par= i;
-   pushup(i), propagate(i, a), ns[root].ch[1]= i, ns[i].par= root, ns[root].dx= c - l, pushup(root);
+   update(i), propagate(i, a), ns[root].ch[1]= i, ns[i].par= root, ns[root].dx= c - l, update(root);
   }
  }
  // f(x) + a * min{x-c,0} + b * max{x-c,0}
@@ -158,7 +158,7 @@ public:
    x_search(root, a);
    i64 l= ns[root].ch[0] ? ns[ns[root].ch[0]].x : 0;
    if (l == a) root= ns[root].ch[0], ns[root].par= 0;
-   else ns[root].dx= a - l, ns[root].ch[1]= 0, pushup(root);
+   else ns[root].dx= a - l, ns[root].ch[1]= 0, update(root);
   } else lx= a;
  }
  // ∞ if x<a else f(x)
@@ -167,7 +167,7 @@ public:
   if (a-= lx; a < 0) {
    if (lslope < -INF) return;
    node_id i= new_node(-a, lslope);
-   if (root) x_search(root, 0), ns[root].ch[0]= i, ns[i].par= root, pushup(root);
+   if (root) x_search(root, 0), ns[root].ch[0]= i, ns[i].par= root, update(root);
    else root= i;
    ly-= ns[i].y;
   } else if (a > 0) {
@@ -177,7 +177,7 @@ public:
    if (int i= ns[root].ch[0]; i) ly+= ns[i].y + i128(a - ns[i].x) * ns[root].slope, r+= ns[i].x;
    else ly+= i128(a) * ns[root].slope;
    if (r == a) root= ns[root].ch[1], ns[root].par= 0;
-   else ns[root].dx= r - a, ns[root].ch[0]= 0, pushup(root);
+   else ns[root].dx= r - a, ns[root].ch[0]= 0, update(root);
   }
   lx+= a, lslope= -INF * 2;
  }
@@ -191,7 +191,7 @@ public:
     node_id i= ns[root].ch[1];
     ns[i].sz= 1, ns[i].x= ns[i].dx= INF * 2, ns[i].slope= ns[i].ch[0]= ns[i].ch[1]= ns[i].laz= ns[i].y= 0, ns[i].par= root;
    } else ns[root].ch[1]= 0, ns[root].dx= INF * 2, ns[root].slope= 0;
-   pushup(root);
+   update(root);
   } else if (lslope) root= new_node(INF * 2, 0);
   else lx= INF * 2;
  }
@@ -204,7 +204,7 @@ public:
    i64 l= ns[root].ch[0] ? ns[ns[root].ch[0]].x : 0, r= l + ns[root].dx, x= ns[root].slope > 0 ? l : r;
    if (int i= ns[root].ch[0]; i) ly+= ns[i].y + i128(x - ns[i].x) * ns[root].slope;
    else ly+= i128(x) * ns[root].slope;
-   if (ns[root].slope > 0) ns[root].ch[0]= 0, pushup(root);
+   if (ns[root].slope > 0) ns[root].ch[0]= 0, update(root);
    else root= ns[root].ch[1], ns[root].par= 0;
    lx+= x;
   }

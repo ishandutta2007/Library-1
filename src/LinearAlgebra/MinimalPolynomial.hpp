@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include "src/Internal/modint_traits.hpp"
 #include "src/Math/berlekamp_massey.hpp"
 #include "src/LinearAlgebra/Vector.hpp"

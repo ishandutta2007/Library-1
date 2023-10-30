@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <cassert>
+#include <cstdint>
 template <unsigned short MAX_N= 21> struct SetPowerSeries {
 #define SUBSET_REP(i, j, n) \
  for (int _= (n); _>>= 1;) \
@@ -141,11 +142,11 @@ public:
  }
  // f^k
  template <class T>  // O(n^2 2^n)
- static inline std::vector<T> pow(std::vector<T> f, std::uint64_t k) {
+ static inline std::vector<T> pow(std::vector<T> f, uint64_t k) {
   const int sz= f.size(), n= __builtin_ctz(sz);
   assert(sz == 1 << n);
   T F[MAX_N + 1]= {1}, pw= 1, bs= f[0];
-  int i= 1, ed= std::min<std::uint64_t>(n, k);
+  int i= 1, ed= std::min<uint64_t>(n, k);
   for (; i <= ed; ++i) F[i]= F[i - 1] * (k - i + 1);
   for (auto e= k - --i; e; e>>= 1, bs*= bs)
    if (e & 1) pw*= bs;

@@ -9,10 +9,10 @@ using namespace std;
 struct RchminQ {
  using T= long long;
  using E= long long;
- static void mapping(T &v, const E &f) {
+ static void mp(T &v, const E &f) {
   if (v > f) v= f;
  }
- static void composition(E &pre, const E &suf) {
+ static void cp(E &pre, const E &suf) {
   if (pre > suf) pre= suf;
  }
 };

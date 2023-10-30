@@ -8,13 +8,13 @@
 #include "src/Internal/HAS_CHECK.hpp"
 template <class M, size_t NODE_SIZE= 1 << 22> class WeightBalancedTree {
  HAS_MEMBER(op);
- HAS_MEMBER(mapping);
- HAS_MEMBER(composition);
+ HAS_MEMBER(mp);
+ HAS_MEMBER(cp);
  HAS_TYPE(T);
  HAS_TYPE(E);
  NULLPTR_OR(E);
  template <class L> static constexpr bool semigroup_v= std::conjunction_v<has_T<L>, has_op<L>>;
- template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
+ template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mp<L>, has_cp<L>>;
  struct NodeB {
   size_t sz= 0;
  };
@@ -71,13 +71,13 @@ template <class M, size_t NODE_SIZE= 1 << 22> class WeightBalancedTree {
  }
  static inline T &reflect(np t) {
   if constexpr (dual_v<M> && !semigroup_v<M>)
-   if (t->laz_flg()) M::mapping(((NodeL *)t)->val, t->laz, 1), t->sz&= 0x7fffffff;
+   if (t->laz_flg()) M::mp(((NodeL *)t)->val, t->laz, 1), t->sz&= 0x7fffffff;
   return ((NodeL *)t)->val;
  }
  static inline void propagate(np t, const E &x) {
-  if (t->laz_flg()) M::composition(t->laz, x);
+  if (t->laz_flg()) M::cp(t->laz, x);
   else t->laz= x;
-  if constexpr (semigroup_v<M>) M::mapping(t->val, x, t->size());
+  if constexpr (semigroup_v<M>) M::mp(t->val, x, t->size());
   t->sz|= 0x80000000;
  }
  static inline void push(np t) {

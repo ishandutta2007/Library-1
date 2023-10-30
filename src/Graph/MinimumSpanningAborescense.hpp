@@ -1,29 +1,30 @@
 #pragma once
+#include <cstddef>
 #include "src/DataStructure/UnionFind.hpp"
 #include "src/DataStructure/SkewHeap.hpp"
 template <typename cost_t> class MinimumSpanningAborescense {
  struct Edge {
-  std::size_t src, dst, id;
+  size_t src, dst, id;
   cost_t cost;
   bool operator>(const Edge &r) const { return this->cost > r.cost; }
  };
  struct Op_Edge_add {
   using E= cost_t;
-  static void mapping(Edge &l, const E &r) { l.cost+= r; }
-  static void composition(E &l, const E &r) { l+= r; }
+  static void mp(Edge &l, const E &r) { l.cost+= r; }
+  static void cp(E &l, const E &r) { l+= r; }
  };
- std::size_t n;
+ size_t n;
  std::vector<Edge> edges;
 public:
- MinimumSpanningAborescense(std::size_t n): n(n) {}
- void add_edge(std::size_t src, std::size_t dst, cost_t cost) { edges.emplace_back(Edge{src, dst, edges.size(), cost}); }
+ MinimumSpanningAborescense(size_t n): n(n) {}
+ void add_edge(size_t src, size_t dst, cost_t cost) { edges.emplace_back(Edge{src, dst, edges.size(), cost}); }
  std::pair<cost_t, std::vector<Edge>> get_MSA(int root) {
   UnionFind uf(n);
   std::vector<SkewHeap<Edge, std::greater<Edge>, Op_Edge_add>> h(n);
   std::vector<Edge> es;
   for (auto &e: edges) h[e.dst].push(e);
   cost_t score= 0;
-  std::size_t m= edges.size(), s= 0, u= s, cyc= 0, v;
+  size_t m= edges.size(), s= 0, u= s, cyc= 0, v;
   std::vector<int> seen(n, -1), paredge(m), ei, leaf(n, -1), par(n), usede(m);
   for (seen[root]= root; s < n; u= ++s, cyc= 0)
    for (std::vector<int> p, ch; seen[u] < 0; u= uf.root(v)) {

@@ -7,8 +7,8 @@ struct RsumQRaddQ {
  using E= long long;
  static T ti() { return 0; }
  static T op(T l, T r) { return l + r; }
- static void mapping(T &t, E e, std::size_t sz) { t+= e * sz; }
- static void composition(E &pre, E suf) { pre+= suf; }
+ static void mp(T &t, E e, size_t sz) { t+= e * sz; }
+ static void cp(E &pre, E suf) { pre+= suf; }
 };
 signed main() {
  cin.tie(0);

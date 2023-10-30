@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
-//遅延伝搬のverify
+// 遅延伝搬のverify
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
 #include "src/Math/ModInt.hpp"
@@ -10,8 +10,8 @@ struct RaffineQ_RsumQ {
  using E= array<Mint, 2>;
  static T ti() { return 0; }
  static T op(const T &l, const T &r) { return l + r; }
- static void mapping(T &v, const E &f, int sz) { v= f[0] * v + f[1] * sz; }
- static void composition(E &pre, const E &suf) { pre[0]*= suf[0], pre[1]= suf[0] * pre[1] + suf[1]; }
+ static void mp(T &v, const E &f, int sz) { v= f[0] * v + f[1] * sz; }
+ static void cp(E &pre, const E &suf) { pre[0]*= suf[0], pre[1]= suf[0] * pre[1] + suf[1]; }
 };
 signed main() {
  cin.tie(0);

@@ -7,14 +7,14 @@
 #include "src/Internal/HAS_CHECK.hpp"
 template <typename M= void> class LinkCutTree {
  HAS_MEMBER(op);
- HAS_MEMBER(mapping);
- HAS_MEMBER(composition);
+ HAS_MEMBER(mp);
+ HAS_MEMBER(cp);
  HAS_TYPE(T);
  HAS_TYPE(E);
  NULLPTR_OR(T);
  NULLPTR_OR(E);
  template <class L> static constexpr bool semigroup_v= std::conjunction_v<has_T<L>, has_op<L>>;
- template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
+ template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mp<L>, has_cp<L>>;
  struct Node_B {
   int ch[2]= {-1, -1}, par= -1;
   bool rev_flg;
@@ -68,10 +68,10 @@ template <typename M= void> class LinkCutTree {
  }
  inline void propagate(int i, const E &x) {
   if (i == -1) return;
-  if (ns[i].laz_flg) M::composition(ns[i].laz, x);
+  if (ns[i].laz_flg) M::cp(ns[i].laz, x);
   else ns[i].laz= x;
-  if constexpr (semigroup_v<M>) M::mapping(ns[i].sum, x), M::mapping(ns[i].rsum, x);
-  M::mapping(ns[i].val, x), ns[i].laz_flg= true;
+  if constexpr (semigroup_v<M>) M::mp(ns[i].sum, x), M::mp(ns[i].rsum, x);
+  M::mp(ns[i].val, x), ns[i].laz_flg= true;
  }
  inline void toggle(int i) {
   if (i == -1) return;

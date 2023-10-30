@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <cstdint>
 #include "src/String/AhoCorasick.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
@@ -36,7 +37,6 @@ int main() {
   vector<string> seasonword(K);
   for (int i= 0; i < K; i++) cin >> seasonword[i];
   AhoCorasick<char> ac(seasonword);
-
   unordered_map<uint64_t, Mint> memo;
   auto dfs= [&](auto self, int v, int l, bool kigo, int s) -> Mint {
    if (l > M) return 0;
@@ -58,6 +58,5 @@ int main() {
   };
   cout << dfs(dfs, 0, 0, 0, ac.initial_state()) << '\n';
  }
-
  return 0;
 }

@@ -6,7 +6,7 @@ template <class R> struct Vector: public valarray<R> {
  using valarray<R>::valarray;
 };
 using u128= __uint128_t;
-using u8= uint8_t;
+using u8= unsigned char;
 class Ref {
  u128 *ref;
  u8 i;

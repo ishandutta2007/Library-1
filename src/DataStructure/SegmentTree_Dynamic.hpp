@@ -10,13 +10,13 @@
 template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentTree_Dynamic {
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
- HAS_MEMBER(mapping);
- HAS_MEMBER(composition);
+ HAS_MEMBER(mp);
+ HAS_MEMBER(cp);
  HAS_TYPE(T);
  HAS_TYPE(E);
  NULLPTR_OR(E);
  template <class L> static constexpr bool monoid_v= std::conjunction_v<has_T<L>, has_op<L>, has_ti<L>>;
- template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
+ template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mp<L>, has_cp<L>>;
  using id_t= long long;
  template <class T, class tDerived> struct Node_B {
   T val;
@@ -66,13 +66,13 @@ template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentT
  }
  static inline T &reflect(np &t) {
   if constexpr (dual_v<M> && !monoid_v<M>)
-   if (t->lazy_flg) M::mapping(t->val, t->lazy, 1), t->lazy_flg= false;
+   if (t->lazy_flg) M::mp(t->val, t->lazy, 1), t->lazy_flg= false;
   return t->val;
  }
  static inline void propagate(np &t, const E &x, const id_t &sz) {
-  t->lazy_flg ? (M::composition(t->lazy, x), x) : t->lazy= x;
+  t->lazy_flg ? (M::cp(t->lazy, x), x) : t->lazy= x;
   t->lazy_flg= true;
-  if constexpr (monoid_v<M>) M::mapping(t->val, x, sz);
+  if constexpr (monoid_v<M>) M::mp(t->val, x, sz);
  }
  static inline void cp_node(np &t) {
   if (!t) t= new Node{def_val()};

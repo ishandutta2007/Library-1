@@ -6,8 +6,8 @@ using namespace std;
 struct RaddQ {
  using T= long long;
  using E= long long;
- static void mapping(T &t, E e, int sz) { t+= e; }
- static void composition(E &pre, E suf) { pre+= suf; }
+ static void mp(T &t, E e, int sz) { t+= e; }
+ static void cp(E &pre, E suf) { pre+= suf; }
 };
 signed main() {
  cin.tie(0);

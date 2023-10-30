@@ -4,11 +4,11 @@
 #include <cstddef>
 #include "src/Internal/HAS_CHECK.hpp"
 template <typename T, typename Compare= std::less<T>, typename M= void> struct SkewHeap {
- HAS_MEMBER(mapping);
- HAS_MEMBER(composition);
+ HAS_MEMBER(mp);
+ HAS_MEMBER(cp);
  HAS_TYPE(E);
  NULLPTR_OR(E);
- template <class L> using dual= std::conjunction<has_E<L>, has_mapping<L>, has_composition<L>>;
+ template <class L> using dual= std::conjunction<has_E<L>, has_mp<L>, has_cp<L>>;
  template <class tDerived> struct Node_B {
   T key;
   tDerived *ch[2];
@@ -23,8 +23,8 @@ template <typename T, typename Compare= std::less<T>, typename M= void> struct S
  Node *root;
  static inline void propagate(Node *&t, const E &x) {
   if (!t) return;
-  t->lazy_flg ? (M::composition(t->lazy, x), x) : (t->lazy= x);
-  M::mapping(t->key, x), t->lazy_flg= true;
+  t->lazy_flg ? (M::cp(t->lazy, x), x) : (t->lazy= x);
+  M::mp(t->key, x), t->lazy_flg= true;
  }
  static inline void push(Node *t) {
   if (t->lazy_flg) propagate(t->ch[0], t->lazy), propagate(t->ch[1], t->lazy), t->lazy_flg= false;

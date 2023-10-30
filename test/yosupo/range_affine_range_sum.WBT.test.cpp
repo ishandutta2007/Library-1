@@ -1,5 +1,5 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
-//遅延伝搬のverify
+// 遅延伝搬のverify
 #include <iostream>
 
 #include "src/DataStructure/WeightBalancedTree.hpp"
@@ -11,8 +11,8 @@ struct RaffineQ_RsumQ {
  using T= Mint;
  using E= pair<Mint, Mint>;
  static T op(const T &l, const T &r) { return l + r; }
- static void mapping(T &v, const E &f, std::size_t sz) { v= f.first * v + f.second * sz; }
- static void composition(E &pre, const E &suf) { pre= {suf.first * pre.first, suf.first * pre.second + suf.second}; }
+ static void mp(T &v, const E &f, std::size_t sz) { v= f.first * v + f.second * sz; }
+ static void cp(E &pre, const E &suf) { pre= {suf.first * pre.first, suf.first * pre.second + suf.second}; }
 };
 signed main() {
  cin.tie(0);

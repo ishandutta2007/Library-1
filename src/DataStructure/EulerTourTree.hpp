@@ -8,14 +8,14 @@
 template <typename M= void, size_t NODE_SIZE= 4'000'000> class EulerTourTree {
  HAS_MEMBER(op);
  HAS_MEMBER(ti);
- HAS_MEMBER(mapping);
- HAS_MEMBER(composition);
+ HAS_MEMBER(mp);
+ HAS_MEMBER(cp);
  HAS_TYPE(T);
  HAS_TYPE(E);
  NULLPTR_OR(T);
  NULLPTR_OR(E);
  template <class L> static constexpr bool monoid_v= std::conjunction_v<has_T<L>, has_op<L>, has_ti<L>>;
- template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
+ template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mp<L>, has_cp<L>>;
  using node_id= int;
  using vertex_id= int;
  struct Node_B {
@@ -64,10 +64,10 @@ private:
   }
  }
  static inline void propagate(node_id i, const E &x) {
-  if (n[i].laz_flg) M::composition(n[i].laz, x);
+  if (n[i].laz_flg) M::cp(n[i].laz, x);
   else n[i].laz= x, n[i].laz_flg= true;
-  if ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) M::mapping(n[i].val, x, 1);
-  if constexpr (monoid_v<M>) M::mapping(n[i].sum, x, ((n[i].flag >> 4) & 0xfffff));
+  if ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) M::mp(n[i].val, x, 1);
+  if constexpr (monoid_v<M>) M::mp(n[i].sum, x, ((n[i].flag >> 4) & 0xfffff));
  }
  static inline void push(node_id i) {
   if (!n[i].laz_flg) return;

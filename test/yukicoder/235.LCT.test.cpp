@@ -11,8 +11,8 @@ struct Mono {
  };
  using E= Mint;
  static T op(const T &vl, const T &vr) { return {vl.val + vr.val, vl.coef + vr.coef}; }
- static void mapping(T &val, const E &op) { val.val+= val.coef * op; }
- static void composition(E &pre, const E &suf) { pre+= suf; }
+ static void mp(T &val, const E &op) { val.val+= val.coef * op; }
+ static void cp(E &pre, const E &suf) { pre+= suf; }
 };
 signed main() {
  cin.tie(0);

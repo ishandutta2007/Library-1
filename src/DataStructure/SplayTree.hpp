@@ -7,13 +7,13 @@
 #include "src/Internal/HAS_CHECK.hpp"
 template <class M, bool reversible= false> class SplayTree {
  HAS_MEMBER(op);
- HAS_MEMBER(mapping);
- HAS_MEMBER(composition);
+ HAS_MEMBER(mp);
+ HAS_MEMBER(cp);
  HAS_TYPE(T);
  HAS_TYPE(E);
  NULLPTR_OR(E);
  template <class L> static constexpr bool semigroup_v= std::conjunction_v<has_T<L>, has_op<L>>;
- template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mapping<L>, has_composition<L>>;
+ template <class L> static constexpr bool dual_v= std::conjunction_v<has_T<L>, has_E<L>, has_mp<L>, has_cp<L>>;
  template <class T, class tDerived> struct Node_B {
   T val;
   tDerived *ch[2], *par;
@@ -92,13 +92,13 @@ template <class M, bool reversible= false> class SplayTree {
  }
  static inline void propagate(np t, const E &x) {
   if (!t) return;
-  if (t->laz_flg) M::composition(t->laz, x);
+  if (t->laz_flg) M::cp(t->laz, x);
   else t->laz= x;
   if constexpr (semigroup_v<M>) {
-   M::mapping(t->sum, x, t->size);
-   if constexpr (reversible) M::mapping(t->rsum, x, t->size);
+   M::mp(t->sum, x, t->size);
+   if constexpr (reversible) M::mp(t->rsum, x, t->size);
   }
-  M::mapping(t->val, x, 1), t->laz_flg= true;
+  M::mp(t->val, x, 1), t->laz_flg= true;
  }
  static inline void toggle(np t) {
   if (!t) return;

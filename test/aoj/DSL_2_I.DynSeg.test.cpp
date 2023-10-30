@@ -8,8 +8,8 @@ struct RSQandRUQ {
  using E= int;
  static T op(T l, T r) { return l + r; }
  static T ti() { return 0; }
- static void mapping(T& v, E f, int sz) { v= f * sz; }
- static void composition(E& pre, E suf) { pre= suf; }
+ static void mp(T& v, E f, int sz) { v= f * sz; }
+ static void cp(E& pre, E suf) { pre= suf; }
 };
 signed main() {
  cin.tie(0);

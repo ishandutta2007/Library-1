@@ -19,11 +19,11 @@ struct RupdQ_RmaxsumQ {
   ret.size= a.size + b.size;
   return ret;
  }
- static void mapping(T &v, const E &f) {
+ static void mp(T &v, const E &f) {
   v.sum= f * v.size;
   v.max= v.lmax= v.rmax= max(v.sum, f);
  }
- static void composition(E &pre, const E &suf) { pre= suf; }
+ static void cp(E &pre, const E &suf) { pre= suf; }
 };
 signed main() {
  cin.tie(0);

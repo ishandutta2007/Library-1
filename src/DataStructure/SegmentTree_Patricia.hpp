@@ -30,7 +30,7 @@ template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentT
   else return T();
  }
  template <class S> np build(const id_t &n, id_t l, id_t r, const S &bg) {
-  if (n <= l) return;
+  if (n <= l) return nullptr;
   id_t m= (l + r) / 2;
   while (n <= m) r= m, m= (l + r) / 2;
   if (r - l == 1) {

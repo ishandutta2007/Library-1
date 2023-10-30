@@ -255,15 +255,15 @@ public:
   long_pos_t r2= long_pos_t(r) * r;
   return fld(-ns.empty(), in_ball({xs...}, r2), inall_ball({xs...}, r2), out_ball({xs...}, r2));
  }
- void apply_cuboid(PK2... xs, E x) {
+ void apply_cuboid(PK2... xs, E a) {
   static_assert(dual_v<M>, "\"apply_cuboid\" is not available");
   auto r= to_range(std::forward_as_tuple(xs...), std::make_index_sequence<K>());
-  app(-ns.empty(), in_cuboid(r), inall_cuboid(r), out_cuboid(r), x);
+  app(-ns.empty(), in_cuboid(r), inall_cuboid(r), out_cuboid(r), a);
  }
- void apply_ball(PK... xs, pos_t r, E x) {
+ void apply_ball(PK... xs, pos_t r, E a) {
   static_assert(dual_v<M>, "\"apply_ball\" is not available");
   long_pos_t r2= long_pos_t(r) * r;
-  app(-ns.empty(), in_ball({xs...}, r2), inall_ball({xs...}, r2), out({xs...}, r2), x);
+  app(-ns.empty(), in_ball({xs...}, r2), inall_ball({xs...}, r2), out({xs...}, r2), a);
  }
  void set(PK... p, T v) { assert(ns.size()), assert(set(0, {p...}, v)); }
  T get(PK... p) {

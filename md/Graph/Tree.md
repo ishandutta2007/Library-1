@@ -30,3 +30,22 @@ HL分解＋オイラーツアーで頂点集合を数列に \
 | `connected(u,v)`                                 | 頂点 u と 頂点 v が連結なら true, 非連結なら false                                                                |                               |
 | `in_subtree(u,v)`                                | 頂点 u が 頂点 v を根とする部分木に属するなら true, そうでないなら false.                                         |                               |
 | `subtree_size(v)`                                | 頂点 v を根とする部分木の頂点数を返す.                                                                            |                               |
+
+使用例
+```c++
+while(Q--){
+ int t;cin>>t;
+ if(t==1){
+  // path query
+  int u,v;cin>>u>>v;
+  int ans=0;
+  for(auto [a,b]: tree.path(u,v)) ans += a<b?seg1.fold(a,b+1), seg2.fold(b,a+1)
+  cout<<ans<<'\n';
+ }else if(t==2){
+  // subtree query
+  int v;cin>>v;
+  auto [l,r] = tree.subtree(v);
+  cout << seg3.fold(l,r)<<'\n';
+ }
+}
+```

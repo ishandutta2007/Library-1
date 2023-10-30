@@ -1,11 +1,13 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1625"
+
+// 区間を二次元の点に変換するテク maxクエリ
+
 #include <iostream>
 #include <map>
 #include <array>
 #include <vector>
 #include <algorithm>
 #include "src/DataStructure/KDTree.hpp"
-// 区間を二次元の点に変換するテク maxクエリ
 using namespace std;
 struct RmaxQ {
  using T= long long;

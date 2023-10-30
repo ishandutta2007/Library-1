@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include <valarray>
 namespace la_internal {
 using namespace std;
@@ -6,7 +7,7 @@ template <class R> struct Vector: public valarray<R> {
  using valarray<R>::valarray;
 };
 using u128= __uint128_t;
-using u8= unsigned char;
+using u8= uint8_t;
 class Ref {
  u128 *ref;
  u8 i;

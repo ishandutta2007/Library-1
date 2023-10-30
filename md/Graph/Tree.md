@@ -16,8 +16,8 @@ HL分解＋オイラーツアーで頂点集合を数列に \
 | `build(root=0)`                                  | 頂点 root を根としてHL分解を実行. 辺をセットし終えたらとにかく最初に実行.                                         |                               |
 | `size()`                                         | 頂点数を返す.                                                                                                     |                               |
 | `operator[](v)`                                  | 頂点 v から隣接する辺集合                                                                                         |                               |
-| `path<edge=0>(u,v)`                              | 頂点 u から頂点 v へのパスを表す"閉"区間列を返す. <br> `edge`フラグが true なら lca を含めないような区間列を返す. |                               |
-| `subtree(v)`                                     | 頂点 v を根とする部分木を表す"開"区間を返す.                                                                      |                               |
+| `path<edge=0>(u,v)`                              | 頂点 u から頂点 v へのパスを表す"**閉**"区間列を返す. <br> `edge`フラグが true なら lca を含めないような区間列を返す. |                               |
+| `subtree(v)`                                     | 頂点 v を根とする部分木を表す"**半開**"区間を返す.                                                                      |                               |
 | `depth(v)`                                       | 頂点 v の深さを返す                                                                                               |                               |
 | `to_seq(v)`                                      | 頂点 v がオイラーツアー列で何番目に対応するかを返す                                                               |                               |
 | `to_node(i)`                                     | オイラーツアー列で i 番目が指す頂点を返す                                                                         |                               |
@@ -39,7 +39,7 @@ while(Q--){
   // path query
   int u,v;cin>>u>>v;
   int ans=0;
-  for(auto [a,b]: tree.path(u,v)) ans += a<b?seg1.fold(a,b+1), seg2.fold(b,a+1)
+  for(auto [a,b]: tree.path(u,v)) ans += a<b? seg1.fold(a,b+1) : seg2.fold(b,a+1);
   cout<<ans<<'\n';
  }else if(t==2){
   // subtree query

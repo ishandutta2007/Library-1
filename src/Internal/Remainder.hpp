@@ -1,10 +1,10 @@
 #pragma once
 namespace math_internal {
 using namespace std;
-using u8= uint8_t;
-using u32= uint32_t;
-using u64= uint64_t;
-using i64= int64_t;
+using u8= unsigned char;
+using u32= unsigned;
+using i64= long long;
+using u64= unsigned i64;
 using u128= __uint128_t;
 #define CE constexpr
 #define IL inline

@@ -34,8 +34,8 @@ template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentT
   id_t m= (l + r) / 2;
   while (n <= m) r= m, m= (l + r) / 2;
   if (r - l == 1) {
-   if constexpr (std::is_same_v<S, T>) return new Node{b[0], HEIGHT + 1, bg};
-   else return new Node{b[0], HEIGHT + 1, *(bg + l)};
+   if constexpr (std::is_same_v<S, T>) return new Node{l, HEIGHT + 1, bg};
+   else return new Node{l, HEIGHT + 1, *(bg + l)};
   }
   uint8_t h= __builtin_ctzll(r - l);
   np t= new Node{m >> h, uint8_t(HEIGHT + 1 - h), def_val(), {build(n, l, m, bg), build(n, m, r, bg)}};

@@ -15,30 +15,30 @@ struct RmaxQ {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- using KDT= KDTree<long long, 2, RmaxQ>;
+ using KDT= KDTree<int, 2, RmaxQ>;
  int n, q;
  cin >> n >> q;
- map<array<long long, 2>, long long> mp;
+ map<array<int, 2>, long long> mp;
  for (int i= 0; i < n; i++) {
-  long long a, b, c, d, e, f;
+  int a, b, c, d, e, f;
   cin >> a >> b >> c >> d >> e >> f;
   auto [l, r]= minmax({a, c, e});
-  mp[{l, r}]= abs((c - a) * (f - b) - (d - b) * (e - a));
+  mp[{l, r}]= abs((long long)(c - a) * (f - b) - (long long)(d - b) * (e - a));
  }
- vector<array<long long, 4>> query;
+ vector<tuple<int, int, int, long long>> query;
  for (int i= 0; i < q; i++) {
-  long long op;
+  int op;
   cin >> op;
   if (op == 1) {
-   long long a, b, c, d, e, f;
+   int a, b, c, d, e, f;
    cin >> a >> b >> c >> d >> e >> f;
    auto [l, r]= minmax({a, c, e});
    mp[{l, r}];
-   query.push_back({op, l, r, abs((c - a) * (f - b) - (d - b) * (e - a))});
+   query.emplace_back(op, l, r, abs((long long)(c - a) * (f - b) - (long long)(d - b) * (e - a)));
   } else {
-   long long l, r;
+   int l, r;
    cin >> l >> r;
-   query.push_back({op, l, r});
+   query.emplace_back(op, l, r, 0);
   }
  }
  KDT kdt(mp);

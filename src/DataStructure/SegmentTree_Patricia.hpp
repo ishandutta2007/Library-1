@@ -137,8 +137,8 @@ template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentT
  }
 public:
  SegmentTree_Patricia(np t= nullptr): root(t) {}
- SegmentTree_Patricia(std::size_t n, T val): { root= build(n, 0, 1LL << HEIGHT, val); }
- SegmentTree_Patricia(T *bg, T *ed): { root= build(ed - bg, 0, 1LL << HEIGHT, bg); }
+ SegmentTree_Patricia(std::size_t n, T val): root(build(n, 0, 1LL << HEIGHT, val)) {}
+ SegmentTree_Patricia(T *bg, T *ed): root(build(ed - bg, 0, 1LL << HEIGHT, bg)) {}
  SegmentTree_Patricia(const std::vector<T> &ar): SegmentTree_Patricia(ar.data(), ar.data() + ar.size()) {}
  void set(id_t k, T val) { set_val(root, k, val); }
  T get(id_t k) { return get_val(root, k); }

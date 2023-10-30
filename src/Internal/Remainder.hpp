@@ -4,7 +4,7 @@ using namespace std;
 using u8= unsigned char;
 using u32= unsigned;
 using i64= long long;
-using u64= unsigned i64;
+using u64= unsigned long long;
 using u128= __uint128_t;
 #define CE constexpr
 #define IL inline

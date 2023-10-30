@@ -171,8 +171,8 @@ template <class M, size_t NODE_SIZE= 1 << 22> class WeightBalancedTree {
  }
 public:
  WeightBalancedTree(): root(nullptr) {}
- WeightBalancedTree(size_t n, T val= T()) { root= build(0, n, val); }
- WeightBalancedTree(const T *bg, const T *ed) { root= build(0, ed - bg, bg); }
+ WeightBalancedTree(size_t n, T val= T()): root(build(0, n, val)) {}
+ WeightBalancedTree(const T *bg, const T *ed): root(build(0, ed - bg, bg)) {}
  WeightBalancedTree(const std::vector<T> &ar): WeightBalancedTree(ar.data(), ar.data() + ar.size()){};
  WBT &operator+=(WBT rhs) { return root= merge(root, rhs.root), *this; }
  WBT operator+(WBT rhs) { return WBT(*this)+= rhs; }

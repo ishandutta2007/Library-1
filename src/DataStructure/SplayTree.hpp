@@ -147,8 +147,8 @@ template <class M, bool reversible= false> class SplayTree {
  }
 public:
  SplayTree(np t= nullptr): root(t) {}
- SplayTree(size_t n, T val= T()) { root= build(0, n, nullptr, val); }
- SplayTree(const T *bg, const T *ed) { root= build(0, ed - bg, nullptr, bg); }
+ SplayTree(size_t n, T val= T()): root(build(0, n, nullptr, val)) {}
+ SplayTree(const T *bg, const T *ed): root(build(0, ed - bg, nullptr, bg)) {}
  SplayTree(const std::vector<T> &ar): SplayTree(ar.data(), ar.data() + ar.size()) {}
  std::vector<T> dump() {
   std::vector<T> ret(size());

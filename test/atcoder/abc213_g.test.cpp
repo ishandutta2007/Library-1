@@ -17,8 +17,8 @@ signed main() {
   cin >> a >> b;
   g.add_edge(--a, --b);
  }
- auto tmp= g.edge_space_size<Mint>();
- auto tmp2= SetPowerSeries<17>::log(tmp);
+ auto tmp= g.graph<Mint>();
+ auto tmp2= g.connected_graph<Mint>();
  for (int k= 1; k < N; k++) {
   Mint ans= 0;
   for (int s= 1; s < (1 << N); s+= 2)

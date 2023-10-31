@@ -86,7 +86,7 @@ public:
   for (int i= V; i--;) ret[1 << i]= adj[i][i];
   return SPS::subset_sum(ret), ret;
  }
- template <class T> static inline sps<T> space_num(const sps<int> &rank) {
+ template <class T> static inline sps<T> space_size(const sps<int> &rank) {
   sps<T> ret(rank.size());
   for (int s= rank.size(); s--;) ret[s]= pow<T>(2, rank[s]);
   return ret;

@@ -27,7 +27,8 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 |`edge_num()`|辺空間の基底の数 (辺の本数) を表す集合冪級数を返す.|$\mathcal{O}(n2^n)$|
 |`connected_component_num()`|連結成分の個数を表す集合冪級数を返す.|$\mathcal{O}(n2^n)$|
 |`cycle_space_rank()`|[サイクル基底](https://en.wikipedia.org/wiki/Cycle_basis)の数を表す集合冪級数を返す.|$\mathcal{O}(n2^n)$|
-|`selfloop_num()`|自己ループの数を表す集合冪級数を返す.|$\mathcal{O}(n2^n)$|
+|`selfloop_num()`|自己ループの数を表す集合冪級数を返す.|$\mathcal{O}(2^n)$|
+|`odd_deg_num()`|奇数次数の頂点の数を表す集合冪級数を返す.|$\mathcal{O}(n^22^n)$|
 |`space_size<T>(rank)`|$\mathbb{F}_2$ベクトル空間の基底の数を表す集合冪級数 $f^{\rm rank}$ を渡して, その空間の元の個数を表す集合冪級数を返す.|$\mathcal{O}(2^n)$|
 |`graph<T>()`|辺空間の元の個数を表す集合冪級数 (任意のグラフを表す集合冪級) を返す.|$\mathcal{O}(n2^n)$|
 |`cycle_space_size<T>()`|サイクル空間の元の個数を表す集合冪級数 (全ての頂点の次数が偶数のグラフを表す集合冪級数) を返す. |$\mathcal{O}(n2^n)$|
@@ -59,4 +60,5 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 [LibreOJ #6719. 「300iq Contest 2」数仙人掌 加强版](https://loj.ac/p/6719) (カクタスグラフ) \
 [LibreOJ #6729. 点双连通生成子图计数](https://loj.ac/p/6729) (二重点連結グラフ) \
 [LibreOJ #6730. 边双连通生成子图计数](https://loj.ac/p/6730) (二重辺連結グラフ) \
-[LibreOJ #6787. 色多项式](https://loj.ac/p/6787) (彩色多項式)
+[LibreOJ #6787. 色多项式](https://loj.ac/p/6787) (彩色多項式)\
+[LibraOJ #2340. 「WC2018」州区划分](https://loj.ac/p/2340) 

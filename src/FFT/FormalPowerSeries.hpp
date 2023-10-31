@@ -3,8 +3,10 @@
 #include <functional>
 #include <memory>
 #include <optional>
+#include <cstdint>
+#include <cstddef>
 #include "src/FFT/NTT.hpp"
-template <class T, std::size_t LM= 1 << 22> class RelaxedConvolution {
+template <class T, size_t LM= 1 << 22> class RelaxedConvolution {
  std::vector<T> a, b, c;
  std::vector<NTTArray<T, LM, true>> ac, bc;
  std::function<T()> ha, hb;
@@ -51,7 +53,7 @@ public:
   return c[n++];
  }
 };
-template <class mod_t, std::size_t LM= 1 << 22> class FormalPowerSeries {
+template <class mod_t, size_t LM= 1 << 22> class FormalPowerSeries {
  using F= std::function<mod_t(int)>;
  using FPS= FormalPowerSeries;
  F h_;
@@ -134,10 +136,10 @@ public:
   auto rc= std::make_shared<RelaxedConvolution<mod_t, LM>>([h= fps.h_](int i) { return h(i + 1) * mod_t(i + 1); }, [](int i, const auto &c) { return i ? c[i - 1] * get_inv<mod_t, LM>(i) : mod_t(1); });
   return FPS([rc](int i) { return i ? rc->at(i - 1) * get_inv<mod_t, LM>(i) : mod_t(1); });
  }
- friend FPS pow(const FPS &fps, std::uint64_t k) {
+ friend FPS pow(const FPS &fps, uint64_t k) {
   if (!k) return FPS(1);
   return FPS([h= fps.h_, kk= mod_t(k), k, cnt= 0ull, s= std::optional<std::function<mod_t(int)>>()](int i) mutable {
-   if (s) return (std::uint64_t)i < cnt ? mod_t(0) : (*s)(i - (int)cnt);
+   if (s) return (uint64_t)i < cnt ? mod_t(0) : (*s)(i - (int)cnt);
    mod_t v= h(i);
    if (v == mod_t(0)) return cnt++, mod_t(0);
    cnt*= k;

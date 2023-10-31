@@ -1,5 +1,5 @@
 ---
-title: 二点連結成分分解
+title: 2頂点連結成分分解
 documentation_of: ../../src/Graph/BiConnectedComponents.hpp
 ---
 

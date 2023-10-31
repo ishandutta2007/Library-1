@@ -17,6 +17,6 @@ signed main() {
   cin >> a >> b;
   g.add_edge(--a, --b);
  }
- cout << g.connected_biparate_graph_num<Mint>()[(1 << N) - 1] << '\n';
+ cout << g.connected_biparate_graph<Mint>().back() << '\n';
  return 0;
 }

@@ -4,17 +4,13 @@
 #include <vector>
 #include <tuple>
 #include "src/Internal/function_traits.hpp"
-#include "src/Internal/tuple_traits.hpp"
 #include "src/Optimization/MinMaxEnum.hpp"
-template <class F> class LiChaoTree {
- using A= argument_type_t<F>;
- static_assert(std::tuple_size_v<A> > 1);
- using T= std::tuple_element_t<0, A>;
- using P= other_than_first_argument_type_t<A>;
+template <class F, class T> class LiChaoTree {};
+template <class F, class T, class... Prms> class LiChaoTree<F, std::tuple<T, Prms...>> {
  using R= result_type_t<F>;
  F f;
  const T LB, UB;
- std::vector<P> ps;
+ std::vector<std::tuple<Prms...>> ps;
  template <MinMaxEnum sgn, bool persistent> class LiChaoTreeInterface {
   LiChaoTree *ins;
   struct Node {
@@ -65,20 +61,18 @@ template <class F> class LiChaoTree {
  public:
   LiChaoTreeInterface()= default;
   LiChaoTreeInterface(LiChaoTree *ins): ins(ins), root(nullptr) {}
-  template <class... Args> std::enable_if_t<sizeof...(Args) == std::tuple_size_v<P>, void> insert(Args &&...args) {
-   static_assert(std::is_convertible_v<std::tuple<Args...>, P>);
-   ins->ps.emplace_back(std::forward<Args>(args)...), addl(root, ins->ps.size() - 1, ins->LB, ins->UB);
-  }
+  void insert(const Prms &...args) { ins->ps.emplace_back(args...), addl(root, ins->ps.size() - 1, ins->LB, ins->UB); }
   // [l,r)
-  template <class... Args> std::enable_if_t<sizeof...(Args) == std::tuple_size_v<P>, void> insert(T l, T r, Args &&...args) {
-   static_assert(std::is_convertible_v<std::tuple<Args...>, P>);
-   if (l >= r) return;
-   ins->ps.emplace_back(std::forward<Args>(args)...), adds(root, ins->ps.size() - 1, l, r, ins->LB, ins->UB);
+  void insert(T l, T r, const Prms &...args) {
+   if (l < r) ins->ps.emplace_back(args...), adds(root, ins->ps.size() - 1, l, r, ins->LB, ins->UB);
   }
   std::pair<R, int> query(T x) const { return query(root, x, ins->LB, ins->UB); }
-  const P &params(int id) const { return ins->ps[id]; }
+  const std::tuple<Prms...> &params(int id) const { return ins->ps[id]; }
  };
 public:
  LiChaoTree(const F &f, T LB= -2e9, T UB= 2e9): f(f), LB(LB), UB(UB) {}
  template <MinMaxEnum sgn= MINIMIZE, bool persistent= false> LiChaoTreeInterface<sgn, persistent> make_tree() { return this; }
 };
+template <class F, class T, class U> LiChaoTree(F, T, U) -> LiChaoTree<F, argument_type_t<F>>;
+template <class F, class T> LiChaoTree(F, T) -> LiChaoTree<F, argument_type_t<F>>;
+template <class F> LiChaoTree(F) -> LiChaoTree<F, argument_type_t<F>>;

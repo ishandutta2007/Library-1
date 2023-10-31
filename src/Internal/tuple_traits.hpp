@@ -23,10 +23,3 @@ template <class T> auto to_array(const T &t) {
 }
 template <class T> using to_tuple_t= decltype(to_tuple(T()));
 template <class T> using to_array_t= decltype(to_array(T()));
-template <class T> struct other_than_first_argument_type_impl {
- using type= void;
-};
-template <class T, class... Args> struct other_than_first_argument_type_impl<std::tuple<T, Args...>> {
- using type= std::tuple<Args...>;
-};
-template <class T> using other_than_first_argument_type_t= typename other_than_first_argument_type_impl<T>::type;

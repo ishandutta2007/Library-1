@@ -22,7 +22,7 @@ signed main() {
  if (P == 0) {
   cout << (g.connected_component_num().back() == 1) << '\n';
  } else {
-  auto e= g.edge_space_rank();
+  auto e= g.edge_num();
   vector<double> h(e.size());
   for (int s= e.size(); s--;) h[s]= pow(100. / P, e[s]);
   auto f= SetPowerSeries<>::log(h);

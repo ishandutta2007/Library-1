@@ -4,7 +4,7 @@ template <unsigned short MAX_V= 21> class UndirectedGraphSetPowerSeries {
  using SPS= SetPowerSeries<MAX_V>;
  template <class T> using sps= std::vector<T>;
  template <class T> using poly= std::vector<T>;
- const unsigned V, sz;
+ const int V, sz;
  unsigned adj[MAX_V][MAX_V]= {0}, edge[MAX_V]= {0};
  template <class T> static inline T pow(T x, int k) {
   for (T ret(1);; x*= x)
@@ -81,10 +81,19 @@ public:
   for (int s= sz; s--;) ret[s]= e[s] + k[s] - __builtin_popcount(s);
   return ret;
  }
- template <class T> inline void selfloop_num(sps<T> &f) const {
+ inline sps<int> odd_deg_num() const {
   sps<int> ret(sz, 0);
-  for (int i= V; i--;) ret[1 << i]= adj[i][i];
-  return SPS::subset_sum(ret), ret;
+  for (int i= V, I= sz; I>>= 1, i--;)
+   for (int t= 0, I2= I << 1; t < sz; t+= I2)
+    for (int u= I, cnt, v, j; u--; ret[t | I | u]+= cnt & 1)
+     for (cnt= 0, v= t | u; v; v^= 1 << j) cnt+= adj[i][j= __builtin_ctz(v)];
+  return ret;
+ }
+ inline sps<int> selfloop_num() const {
+  sps<int> ret(sz, 0);
+  for (int i= 0, I= 1; i < V; ++i, I<<= 1)
+   for (int u= I; u--;) ret[I | u]= ret[u] + adj[i][i];
+  return ret;
  }
  template <class T> static inline sps<T> space_size(const sps<int> &rank) {
   sps<T> ret(rank.size());

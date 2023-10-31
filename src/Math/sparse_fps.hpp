@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <cstdint>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/mod_sqrt.hpp"
 template <class K> std::vector<K> sparse_inv(const std::vector<K> &f, int n) {

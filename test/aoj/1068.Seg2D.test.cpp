@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "src/DataStructure/KDTree.hpp"
+#include "src/DataStructure/SegmentTree_2D.hpp"
 
 // minクエリ
 using namespace std;
@@ -22,11 +22,11 @@ signed main() {
     cin >> grid;
     xy.push_back({i, j, grid});
    }
-  KDTree<int, 2, RminQ> kdt(xy);
+  SegmentTree_2D<int, RminQ> seg(xy);
   while (q--) {
    int r1, c1, r2, c2;
    cin >> r1 >> c1 >> r2 >> c2;
-   cout << kdt.fold_cuboid(r1, r2, c1, c2) << '\n';
+   cout << seg.fold(r1, r2 + 1, c1, c2 + 1) << '\n';
   }
  }
  return 0;

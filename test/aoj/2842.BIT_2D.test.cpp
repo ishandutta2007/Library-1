@@ -1,4 +1,4 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2842"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/HUPC/2842"
 #include <iostream>
 #include <vector>
 #include <array>

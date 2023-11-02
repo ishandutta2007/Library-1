@@ -43,7 +43,7 @@ signed main() {
    cout << kdt.fold_cuboid(l, r - 1, d, u - 1) << '\n';
   } else {
    auto [_, x, y, w, __]= query[i];
-   kdt.set(kdt.get(x, y) + w, x, y);
+   kdt.set(x, y, kdt.get(x, y) + w);
   }
  }
  return 0;

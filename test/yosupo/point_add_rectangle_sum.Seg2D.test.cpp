@@ -3,19 +3,19 @@
 #include <map>
 #include <array>
 #include <vector>
-#include "src/DataStructure/KDTree.hpp"
+#include "src/DataStructure/SegmentTree_2D.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;
  static T ti() { return 0; }
- static T op(const T &l, const T &r) { return l + r; }
+ static T op(T l, T r) { return l + r; }
 };
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  int N, Q;
  cin >> N >> Q;
- map<array<int, 2>, int> mp;
+ map<array<int, 2>, long long> mp;
  vector<array<int, 4>> query;
  for (int i= 0; i < N; i++) {
   int x, y, w;
@@ -36,14 +36,14 @@ signed main() {
    mp[{x, y}];
   }
  }
- KDTree<long long, 2, RSQ> kdt(mp);
+ SegmentTree_2D<int, RSQ> seg(mp);
  for (int i= 0; i < Q; i++) {
   if (query[i][0] != -1) {
    auto [l, d, r, u]= query[i];
-   cout << kdt.fold_cuboid(l, r - 1, d, u - 1) << '\n';
+   cout << seg.fold(l, r, d, u) << '\n';
   } else {
    auto [_, x, y, w]= query[i];
-   kdt.set(x, y, kdt.get(x, y) + w);
+   seg.set(x, y, seg.get(x, y) + w);
   }
  }
  return 0;

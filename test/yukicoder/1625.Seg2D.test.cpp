@@ -7,7 +7,7 @@
 #include <array>
 #include <vector>
 #include <algorithm>
-#include "src/DataStructure/KDTree.hpp"
+#include "src/DataStructure/SegmentTree_2D.hpp"
 using namespace std;
 struct RmaxQ {
  using T= long long;
@@ -42,12 +42,12 @@ signed main() {
    query.emplace_back(op, l, r, 0);
   }
  }
- KDTree<int, 2, RmaxQ> kdt(mp);
+ SegmentTree_2D<int, RmaxQ> seg(mp);
  for (auto [op, l, r, x]: query) {
   if (op == 1) {
-   kdt.set(l, r, kdt.get(l, r) + x);
+   seg.set(l, r, seg.get(l, r) + x);
   } else {
-   auto ans= kdt.fold_cuboid(l, r, l, r);
+   auto ans= seg.fold(l, r + 1, l, r + 1);
    cout << (ans ? ans : -1) << '\n';
   }
  }

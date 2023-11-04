@@ -4,6 +4,7 @@ documentation_of: ../../src/DataStructure/KDTree.hpp
 ---
 
 $\mathcal{O}(k\cdot N^{1-1/k})$　で動くと思っておく.\
+$Q=10^5$ は大丈夫だけど $Q=2\times 10^5$ だと無理なイメージ. \
 領域を与える類のは全て境界は含まれるとする. (例えば矩形は閉区間の直積)\
 半群は乗らない. モノイドの単位元 `M::ti` は明示的に与える必要あり. \
 内部でサイズを持たせていないので, `M::mp` はsizeを渡せない(2引数).
@@ -73,6 +74,7 @@ KDTree<int,2,int> kdt(xyv);
 |`apply_ball(x_1,...x_k,r, a)`| 球(円) 内部に位置する点についてその点に乗っている値を集約した値に `a` を作用させる. <br> 引数は K+1+1 個 ( 中心: $(x_1,\dots,x_K)$, 半径: $r$ と 作用素 `a`). |
 |`set(x_1,...x_k, v)`|点 $(x_1,\dots,x_K)$ の値を `v` に変更する. <br> 点が存在しないとassertで落ちる.|
 |`get(x_1,...x_k)`|点 $(x_1,\dots,x_K)$ の値を返す.　<br> 点が存在しないとassertで落ちる.|
+|`mul(x_1,...x_k, v)`|点 $(x_1,\dots,x_K)$ の値に `v` を (モノイド演算で) かける. <br> 点が存在しないとassertで落ちる.|
 |`nearest_neighbor(x_1,...,x_k)`|点 $(x_1,\dots,x_K)$ と最も近い点を返す. <br> 点の座標を返す. <br> そもそも一つも点がない場合は assert で落ちる.|
 
 ## 参考
@@ -81,5 +83,7 @@ KDTree<int,2,int> kdt(xyv);
 [square869120Contest #4 G - Get the Salary of Atcoder](https://atcoder.jp/contests/s8pc-4/tasks/s8pc_4_g) (遅延伝搬) \
 [第二回 アルゴリズム実技検定 過去問 N - ビルの建設](https://atcoder.jp/contests/past202004-open/tasks/past202004_n) (双対) \
 [AtCoder Beginner Contest 234 Ex - Enumerate Pairs](https://atcoder.jp/contests/abc234/tasks/abc234_h) (円形クエリ, 列挙) \
+[AtCoder Beginner Contest 266 Ex - Snuke Panic (2D)](https://atcoder.jp/contests/abc266/tasks/abc266_h) (2次元 max) \
 [AtCoder Regular Contest 010 D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4) (最近傍探索) \
+[JOI 2018/2019 春合宿 過去問 A - 試験 (Examination)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_a)(3次元 sum ← 通る, or 2次元 sum + 走査 )\
 [Happy Query Contest 2019 Grid Xor Query](https://www.hackerrank.com/contests/happy-query-contest/challenges/grid-xor-query) (2次元 xor)

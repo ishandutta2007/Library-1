@@ -60,7 +60,7 @@ template <class pos_t, size_t K, class M, class... PK, class... PK2> class KDTre
   else return T();
  }
  template <bool z, size_t k, class P> static inline auto get_(const P &p) {
-  if constexpr (z == 0) return std::get<k>(p);
+  if constexpr (z) return std::get<k>(p);
   else return std::get<k>(p.first);
  }
  template <class P, size_t... I> Range to_range(const P &p, std::index_sequence<I...>) { return {(assert(std::get<I + I>(p) <= std::get<I + I + 1>(p)), Sec{std::get<I + I>(p), std::get<I + I + 1>(p)})...}; }
@@ -89,7 +89,7 @@ template <class pos_t, size_t K, class M, class... PK, class... PK2> class KDTre
   auto md= bg + (ed - bg) / 2;
   int t= ts++;
   std::nth_element(bg, md, ed, [&](int a, int b) { return get_<z, div>(p[a]) < get_<z, div>(p[b]); }), set_range_lp<z>(t, *md, bg, ed, p, std::make_index_sequence<K>());
-  if constexpr (z == 0) {
+  if constexpr (z) {
    if constexpr (!std::is_void_v<M>) {
     if constexpr (std::tuple_size_v<P> == K + 1) ns[t].val= std::get<K>(p[*md]);
     else ns[t].val= v;
@@ -105,7 +105,7 @@ template <class pos_t, size_t K, class M, class... PK, class... PK2> class KDTre
   auto md= bg + (ed - bg) / 2;
   int t= ts++;
   std::nth_element(bg, md, ed, [&](int a, int b) { return get_<z, div>(p[a]) < get_<z, div>(p[b]); }), set_range_lp<z>(t, bg, ed, p, std::make_index_sequence<K>());
-  if constexpr (z == 0) {
+  if constexpr (z) {
    if constexpr (!std::is_void_v<M>) {
     if constexpr (std::tuple_size_v<P> == K + 1) ns[t].val= std::get<K>(p[t]);
     else ns[t].val= def_val();
@@ -189,14 +189,16 @@ template <class pos_t, size_t K, class M, class... PK, class... PK2> class KDTre
   app(ns[t].ch[0], in, inall, out, x), app(ns[t].ch[1], in, inall, out, x);
   if constexpr (monoid_v<M>) update(t);
  }
- inline bool set(int t, const Pos &pos, const T &x) {
+ template <bool z> inline bool set(int t, const Pos &pos, const T &x) {
   if (t == -1) return false;
   bool isok= true;
   for (uint8_t k= K; k--; isok&= pos[k] == ns[t].pos[k])
    if (ns[t].range[k][1] < pos[k] || pos[k] < ns[t].range[k][0]) return false;
   if constexpr (dual_v<M>) push(t);
-  if (isok) ns[t].val= x;
-  else if (!(isok= set(ns[t].ch[0], pos, x))) isok= set(ns[t].ch[1], pos, x);
+  if (isok) {
+   if constexpr (z) ns[t].val= x;
+   else ns[t].val= M::op(ns[t].val, x);
+  } else if (!(isok= set<z>(ns[t].ch[0], pos, x))) isok= set<z>(ns[t].ch[1], pos, x);
   if constexpr (monoid_v<M>)
    if (isok) update(t);
   return isok;
@@ -215,21 +217,21 @@ public:
  template <class P, typename= std::enable_if_t<std::disjunction_v<canbe_Pos<P>, canbe_PosV<P>>>> KDTreeImpl(const P *p, size_t n): ns(n) {
   std::vector<int> ids(n);
   int ts= 0;
-  std::iota(ids.begin(), ids.end(), 0), build<0, 0>(ts, ids.begin(), ids.end(), p);
+  std::iota(ids.begin(), ids.end(), 0), build<1, 0>(ts, ids.begin(), ids.end(), p);
  }
  template <class P, typename= std::enable_if_t<std::disjunction_v<canbe_Pos<P>, canbe_PosV<P>>>> KDTreeImpl(const std::vector<P> &p): KDTreeImpl(p.data(), p.size()) {}
  template <class P, typename= std::enable_if_t<canbe_Pos<P>::value>> KDTreeImpl(const std::set<P> &p): KDTreeImpl(std::vector(p.begin(), p.end())) {}
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const P *p, size_t n, U v): ns(n) {
   std::vector<int> ids(n);
   int ts= 0;
-  std::iota(ids.begin(), ids.end(), 0), build<0, 0>(ts, ids.begin(), ids.end(), p, v);
+  std::iota(ids.begin(), ids.end(), 0), build<1, 0>(ts, ids.begin(), ids.end(), p, v);
  }
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::vector<P> &p, U v): KDTreeImpl(p.data(), p.size(), v) {}
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::set<P> &p, U v): KDTreeImpl(std::vector(p.begin(), p.end()), v) {}
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::pair<P, U> *p, size_t n): ns(n) {
   std::vector<int> ids(n);
   int ts= 0;
-  std::iota(ids.begin(), ids.end(), 0), build<1, 0>(ts, ids.begin(), ids.end(), p);
+  std::iota(ids.begin(), ids.end(), 0), build<0, 0>(ts, ids.begin(), ids.end(), p);
  }
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::vector<std::pair<P, U>> &p): KDTreeImpl(p.data(), p.size()) {}
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> KDTreeImpl(const std::map<P, U> &p): KDTreeImpl(std::vector(p.begin(), p.end())) {}
@@ -265,16 +267,20 @@ public:
   long_pos_t r2= long_pos_t(r) * r;
   app(-ns.empty(), in_ball({xs...}, r2), inall_ball({xs...}, r2), out({xs...}, r2), a);
  }
- void set(PK... p, T v) { assert(ns.size()), assert(set(0, {p...}, v)); }
- T get(PK... p) {
+ void set(PK... xs, T v) { assert(ns.size()), assert(set<1>(0, {xs...}, v)); }
+ void mul(PK... xs, T v) {
+  static_assert(monoid_v<M>, "\"mul\" is not available");
+  assert(ns.size()), assert(set<0>(0, {xs...}, v));
+ }
+ T get(PK... xs) {
   assert(ns.size());
-  auto [ret, flg]= get(0, {p...});
+  auto [ret, flg]= get(0, {xs...});
   return assert(flg), ret;
  }
- Pos nearest_neighbor(PK... p) const {
+ Pos nearest_neighbor(PK... xs) const {
   assert(ns.size());
   std::pair<int, long_pos_t> ret= {-1, -1};
-  return nns(0, {p...}, ret), ns[ret.first].pos;
+  return nns(0, {xs...}, ret), ns[ret.first].pos;
  }
 };
 template <class pos_t, size_t K, class M= void> using KDTree= KDTreeImpl<pos_t, K, M, to_tuple_t<std::array<pos_t, K>>, to_tuple_t<std::array<pos_t, K + K>>>;

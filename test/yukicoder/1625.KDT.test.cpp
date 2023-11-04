@@ -44,9 +44,8 @@ signed main() {
  }
  KDTree<int, 2, RmaxQ> kdt(mp);
  for (auto [op, l, r, x]: query) {
-  if (op == 1) {
-   kdt.set(l, r, kdt.get(l, r) + x);
-  } else {
+  if (op == 1) kdt.mul(l, r, x);
+  else {
    auto ans= kdt.fold_cuboid(l, r, l, r);
    cout << (ans ? ans : -1) << '\n';
   }

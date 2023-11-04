@@ -44,9 +44,8 @@ signed main() {
  }
  SegmentTree_2D<int, RmaxQ> seg(mp);
  for (auto [op, l, r, x]: query) {
-  if (op == 1) {
-   seg.set(l, r, seg.get(l, r) + x);
-  } else {
+  if (op == 1) seg.mul(l, r, x);
+  else {
    auto ans= seg.fold(l, r + 1, l, r + 1);
    cout << (ans ? ans : -1) << '\n';
   }

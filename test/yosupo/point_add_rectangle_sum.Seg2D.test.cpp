@@ -43,7 +43,7 @@ signed main() {
    cout << seg.fold(l, r, d, u) << '\n';
   } else {
    auto [_, x, y, w]= query[i];
-   seg.set(x, y, seg.get(x, y) + w);
+   seg.mul(x, y, w);
   }
  }
  return 0;

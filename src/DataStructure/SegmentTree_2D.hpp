@@ -4,6 +4,7 @@
 #include <numeric>
 #include <map>
 #include <set>
+#include <cassert>
 #include "src/Internal/tuple_traits.hpp"
 template <class pos_t, class M> class SegmentTree_2D {
 public:
@@ -21,9 +22,13 @@ public:
  inline int y2i(pos_t y) const {
   return std::lower_bound(yxs.begin(), yxs.end(), Pos{y, 0}, [](const Pos &a, const Pos &b) { return a[0] < b[0]; }) - yxs.begin();
  }
- inline int xy2i(pos_t x, pos_t y) const { return std::lower_bound(yxs.begin(), yxs.end(), Pos{y, x}) - yxs.begin(); }
+ inline int xy2i(pos_t x, pos_t y) const {
+  Pos p{y, x};
+  auto it= std::lower_bound(yxs.begin(), yxs.end(), p);
+  return assert(p == *it), it - yxs.begin();
+ }
  template <bool z, size_t k, class P> inline auto get_(const P &p) {
-  if constexpr (z == 0) return std::get<k>(p);
+  if constexpr (z) return std::get<k>(p);
   else return std::get<k>(p.first);
  }
  template <bool z, class XYW> inline void build(const XYW *xyw, int n, const T &v= M::ti()) {
@@ -41,7 +46,7 @@ public:
   for (int r: ord)
    for (int i= ix[r] + sz, j= -1; i; j= i, i>>= 1) {
     int p= ptr[i]++;
-    if constexpr (z == 0) {
+    if constexpr (z) {
      if constexpr (std::tuple_size_v<XYW> == 3) val[id[i + 1] + p]= std::get<2>(xyw[r]);
      else val[id[i + 1] + p]= v;
     } else val[id[i + 1] + p]= xyw[r].second;
@@ -63,18 +68,28 @@ public:
   }
   return ret;
  }
- inline void seti(int i, int j, T v) {
+ template <bool z> inline void seti(int i, int j, T v) {
   auto dat= val.begin() + id[i] * 2;
-  for (dat[j+= id[i + 1] - id[i]]= v; j;) j>>= 1, dat[j]= M::op(dat[2 * j], dat[2 * j + 1]);
+  j+= id[i + 1] - id[i];
+  if constexpr (z) dat[j]= v;
+  else dat[j]= M::op(dat[j], v);
+  for (; j;) j>>= 1, dat[j]= M::op(dat[2 * j], dat[2 * j + 1]);
+ }
+ template <bool z> inline void set_(pos_t x, pos_t y, T v) {
+  for (int i= 1, p= xy2i(x, y);;) {
+   if (seti<z>(i, p - id[i], v); i >= sz) break;
+   if (int lc= tol[p] - tol[id[i]], rc= (p - id[i]) - lc; tol[p + 1] - tol[p]) p= id[2 * i] + lc, i= 2 * i;
+   else p= id[2 * i + 1] + rc, i= 2 * i + 1;
+  }
  }
 public:
- template <class P, typename= std::enable_if_t<std::disjunction_v<canbe_Pos<P>, canbe_PosV<P>>>> SegmentTree_2D(const P *p, size_t n) { build<0>(p, n); }
+ template <class P, typename= std::enable_if_t<std::disjunction_v<canbe_Pos<P>, canbe_PosV<P>>>> SegmentTree_2D(const P *p, size_t n) { build<1>(p, n); }
  template <class P, typename= std::enable_if_t<std::disjunction_v<canbe_Pos<P>, canbe_PosV<P>>>> SegmentTree_2D(const std::vector<P> &p): SegmentTree_2D(p.data(), p.size()) {}
  template <class P, typename= std::enable_if_t<canbe_Pos<P>::value>> SegmentTree_2D(const std::set<P> &p): SegmentTree_2D(std::vector(p.begin(), p.end())) {}
- template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const P *p, size_t n, const U &v) { build<0>(p, n, v); }
+ template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const P *p, size_t n, const U &v) { build<1>(p, n, v); }
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const std::vector<P> &p, const U &v): SegmentTree_2D(p.data(), p.size(), v) {}
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const std::set<P> &p, const U &v): SegmentTree_2D(std::vector(p.begin(), p.end()), v) {}
- template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const std::pair<P, U> *p, size_t n) { build<1>(p, n); }
+ template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const std::pair<P, U> *p, size_t n) { build<0>(p, n); }
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const std::vector<std::pair<P, U>> &p): SegmentTree_2D(p.data(), p.size()) {}
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const std::map<P, U> &p): SegmentTree_2D(std::vector(p.begin(), p.end())) {}
  // [l,r) x [u,d)
@@ -89,12 +104,7 @@ public:
   };
   return dfs(dfs, 1, 0, sz, y2i(u), y2i(d)), ret;
  }
- void set(pos_t x, pos_t y, T v) {
-  for (int i= 1, p= xy2i(x, y);;) {
-   if (seti(i, p - id[i], v); i >= sz) break;
-   if (int lc= tol[p] - tol[id[i]], rc= (p - id[i]) - lc; tol[p + 1] - tol[p]) p= id[2 * i] + lc, i= 2 * i;
-   else p= id[2 * i + 1] + rc, i= 2 * i + 1;
-  }
- }
+ void set(pos_t x, pos_t y, T v) { set_<1>(x, y, v); }
+ void mul(pos_t x, pos_t y, T v) { set_<0>(x, y, v); }
  T get(pos_t x, pos_t y) const { return val[xy2i(x, y) + id[2]]; }
 };

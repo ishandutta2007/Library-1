@@ -98,9 +98,9 @@ public:
   for (int u;; k-= L[v] - L[u] + 1, v= P[u])
    if (L[v] - k >= L[u= PP[v]]) return I[L[v] - k];
  }
- int la_w(int v, Cost w) const {
+ int la_w(int v, C w) const {
   static_assert(weight, "\'la_w\' is not available");
-  for (Cost c;; w-= c) {
+  for (C c;; w-= c) {
    int u= PP[v];
    c= DW[v] - DW[u] + W[u];
    if (w < c) {
@@ -121,11 +121,11 @@ public:
   int w= lca(u, v), d_uw= D[u] - D[w], d_vw= D[v] - D[w];
   return k > d_uw + d_vw ? -1 : k <= d_uw ? la(u, k) : la(v, d_uw + d_vw - k);
  }
- int jump_w(int u, int v, Cost w) const {
+ int jump_w(int u, int v, C w) const {
   static_assert(weight, "\'jump_w\' is not available");
   if (u == v) return u;
   int z= lca(u, v);
-  Cost d_uz= DW[u] - DW[z], d_vz= DW[v] - DW[z];
+  C d_uz= DW[u] - DW[z], d_vz= DW[v] - DW[z];
   return w >= d_uz + d_vz ? v : w <= d_uz ? la_w(u, w) : la_w(v, d_uz + d_vz - w);
  }
  int dist(int u, int v) const { return D[u] + D[v] - D[lca(u, v)] * 2; }

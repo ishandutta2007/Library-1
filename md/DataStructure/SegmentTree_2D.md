@@ -23,7 +23,7 @@ struct RMQ{
 
 |名前|概要|
 |---|---|
-|`SegmentTree_2D(P* p, n)` <br> `SegmentTree_2D(vector<P>& p)` <br> `SegmentTree_2D(set<P>& p)` <br>(クラス`P` は `tuple<pos_t,...,pos_t>` like)|コンストラクタ. <br> n個の点の座標を与える. <br> この時の初期値はモノイドの単位元.|
+|`SegmentTree_2D(P* p, n)` <br> `SegmentTree_2D(vector<P>& p)` <br> `SegmentTree_2D(set<P>& p)` <br>(クラス`P` は `tuple<pos_t,pos_t>` like)|コンストラクタ. <br> n個の点の座標を与える. <br> この時の初期値はモノイドの単位元.|
 
 使用例
 ```c++
@@ -34,7 +34,7 @@ SegmentTree_2D<int,RMQ> seg(xy);
 
 |||
 |---|---|
-|`SegmentTree_2D(P* p,int n, U v)` <br> `SegmentTree_2D(vector<P>& p, U v)` <br> `SegmentTree_2D(set<P>& p, U v)` <br>(クラス`P` は `tuple<pos_t,...,pos_t>` like)|コンストラクタ. <br> n個の点の座標と点に乗せる共通の初期値を与える.|
+|`SegmentTree_2D(P* p,int n, U v)` <br> `SegmentTree_2D(vector<P>& p, U v)` <br> `SegmentTree_2D(set<P>& p, U v)` <br>(クラス`P` は `tuple<pos_t,pos_t>` like)|コンストラクタ. <br> n個の点の座標と点に乗せる共通の初期値を与える.|
 
 使用例
 ```c++
@@ -45,7 +45,7 @@ SegmentTree_2D<int,RMQ> seg(xy,1);
 
 |||
 |---|---|
-|`SegmentTree_2D(P* p,int n)` <br> `SegmentTree_2D(vector<P>& p)` <br> (クラス`P` は `tuple<pos_t,...,pos_t, T>` like)|コンストラクタ. <br> n個の点の座標と各々の点に乗せる初期値を与える.|
+|`SegmentTree_2D(P* p,int n)` <br> `SegmentTree_2D(vector<P>& p)` <br> (クラス`P` は `tuple<pos_t,pos_t,T>` like)|コンストラクタ. <br> n個の点の座標と各々の点に乗せる初期値を与える.|
 
 使用例
 ```c++
@@ -56,7 +56,7 @@ SegmentTree_2D<int,RMQ> seg(xyv);
 
 |||
 |---|---|
-|`SegmentTree_2D(pair<P,U>* p,int n)` <br> `SegmentTree_2D(vector<pair<P,U>>& p)` <br> `SegmentTree_2D(map<P,U>& p)` <br> (クラス`P` は `tuple<pos_t,...,pos_t>` like)|コンストラクタ. <br> n個の点の座標と各々の点に乗せる初期値を与える.|
+|`SegmentTree_2D(pair<P,U>* p,int n)` <br> `SegmentTree_2D(vector<pair<P,U>>& p)` <br> `SegmentTree_2D(map<P,U>& p)` <br> (クラス`P` は `tuple<pos_t,pos_t>` like)|コンストラクタ. <br> n個の点の座標と各々の点に乗せる初期値を与える.|
 
 使用例
 ```c++
@@ -79,4 +79,5 @@ SegmentTree_2D<int,RMQ> seg(xyv);
 [AtCoder Beginner Contest 266 Ex - Snuke Panic (2D)](https://atcoder.jp/contests/abc266/tasks/abc266_h) (2次元 max) \
 [技術室奥プログラミングコンテスト#6 Day1 N - Jump and Walk](https://atcoder.jp/contests/tkppc6-1/tasks/tkppc6_1_n) (2次元 min, kdtだとTLE)\
 [JOI 2018/2019 春合宿 過去問 A - 試験 (Examination)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_a)(2次元 sum + 走査)\
+[H - 3人の昼食 (The Lunch)](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_h)\
 [Happy Query Contest 2019 Grid Xor Query](https://www.hackerrank.com/contests/happy-query-contest/challenges/grid-xor-query) (2次元 xor)

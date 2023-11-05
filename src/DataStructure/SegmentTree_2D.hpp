@@ -7,7 +7,6 @@
 #include <cassert>
 #include "src/Internal/tuple_traits.hpp"
 template <class pos_t, class M> class SegmentTree_2D {
-public:
  using T= typename M::T;
  using Pos= std::array<pos_t, 2>;
  std::vector<pos_t> xs;

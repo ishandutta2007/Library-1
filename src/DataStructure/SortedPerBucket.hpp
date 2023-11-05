@@ -41,29 +41,28 @@ template <class T, size_t B= 700> class SortedPerBucket {
   U ret= 0;
   if (size_t i= l / B, j= r / B, k= l % B, m= r % B; i < j) {
    if (k) {
-    for (; k < dat[i].n; k++) ret+= one(dat[i].get(k));
-    i++;
+    for (; k < dat[i].n; ++k) ret+= one(dat[i].get(k));
+    ++i;
    }
-   for (; i < j; i++) ret+= all(dat[i]);
-   if (m)
-    for (; m--;) ret+= one(dat[j].get(m));
+   for (; i < j; ++i) ret+= all(dat[i]);
+   for (; m--;) ret+= one(dat[j].get(m));
   } else
-   for (; k < m; k++) ret+= one(dat[i].get(k));
+   for (; k < m; ++k) ret+= one(dat[i].get(k));
   return ret;
  }
  template <class All, class One> inline void update(size_t l, size_t r, const All &all, const One &one) {
   if (size_t i= l / B, j= r / B, k= l % B, m= r % B; i < j) {
    if (k) {
     for (dat[i].eval(); k < dat[i].n; k++) one(dat[i].a[k]);
-    dat[i].build(), i++;
+    dat[i].build(), ++i;
    }
-   for (; i < j; i++) all(dat[i]);
+   for (; i < j; ++i) all(dat[i]);
    if (m) {
     for (dat[j].eval(); m--;) one(dat[j].a[m]);
     dat[j].build();
    }
   } else {
-   for (dat[i].eval(); k < m; k++) one(dat[i].a[k]);
+   for (dat[i].eval(); k < m; ++k) one(dat[i].a[k]);
    dat[i].build();
   }
  }
@@ -94,7 +93,7 @@ public:
  // sum a[i] s.t. (l <= i < r)  && (lb <= a[i] < ub)
  T sum(size_t l, size_t r, T lb, T ub) const { return sum(l, r, ub) - sum(l, r, lb); }
  void set(size_t k, T x) {
-  auto [i, j]= div(k, B);
+  size_t i= k / B, j= k % B;
   dat[i].eval(), dat[i].a[j]= x, dat[i].build();
  }
  T get(size_t k) const { return dat[k / B].get(k % B); }

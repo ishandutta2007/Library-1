@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
-template <class T= long long> class WaveletMatrix {
+template <class T> class WaveletMatrix {
  struct SuccinctIndexableDictionary {
   std::size_t len, blocks, zeros;
   std::vector<unsigned> bit, sum;
@@ -22,7 +22,6 @@ template <class T= long long> class WaveletMatrix {
  std::vector<SuccinctIndexableDictionary> mat;
  std::vector<T> vec;
 public:
- WaveletMatrix()= default;
  WaveletMatrix(const std::vector<T> &v): len(v.size()), lg(32 - __builtin_clz(std::max<int>(len, 1))), mat(lg, len), vec(v) {
   std::sort(vec.begin(), vec.end());
   vec.erase(std::unique(vec.begin(), vec.end()), vec.end());

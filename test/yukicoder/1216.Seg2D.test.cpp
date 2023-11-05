@@ -3,6 +3,9 @@
 #include <vector>
 #include <array>
 #include <tuple>
+
+// 重みつき木
+
 #include "src/DataStructure/SegmentTree_2D.hpp"
 #include "src/Graph/Tree.hpp"
 using namespace std;

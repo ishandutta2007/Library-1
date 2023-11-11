@@ -12,15 +12,9 @@ using u128= __uint128_t;
  if (n >= mod) n-= mod; \
  return n
 #define PLUS(U, M) \
- CE IL U plus(U l, U r) const { \
-  if (l+= r; l >= M) l-= M; \
-  return l; \
- }
+ CE IL U plus(U l, U r) const { return l+= r, l < (M) ? l : l - (M); }
 #define DIFF(U, C, M) \
- CE IL U diff(U l, U r) const { \
-  if (l-= r; l >> C) l+= M; \
-  return l; \
- }
+ CE IL U diff(U l, U r) const { return l-= r, l >> C ? l + (M) : l; }
 #define SGN(U) \
  static CE IL U set(U n) { return n; } \
  static CE IL U get(U n) { return n; } \

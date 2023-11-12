@@ -12,14 +12,13 @@ template <class Int, class U, class B> struct MInt: public B {
  using Uint= U;
  static CE inline auto mod() { return B::md.mod; }
  CE MInt(): x(0) {}
- template <class T, enable_if_t<is_modint_v<T> && !is_same_v<T, MInt>, nullptr_t> = nullptr> CE MInt(T v): x(B::md.set(v.val() % B::md.mod)) {}
+ template <class T, typename= enable_if_t<is_modint_v<T> && !is_same_v<T, MInt>>> CE MInt(T v): x(B::md.set(v.val() % B::md.mod)) {}
  CE MInt(__int128_t n): x(B::md.set((n < 0 ? ((n= (-n) % B::md.mod) ? B::md.mod - n : n) : n % B::md.mod))) {}
  CE MInt operator-() const { return MInt() - *this; }
 #define FUNC(name, op) \
  CE MInt name const { \
   MInt ret; \
-  ret.x= op; \
-  return ret; \
+  return ret.x= op, ret; \
  }
  FUNC(operator+(const MInt& r), B::md.plus(x, r.x))
  FUNC(operator-(const MInt& r), B::md.diff(x, r.x))

@@ -10,6 +10,7 @@ test/aoj/0187*.test.cpp
 test/aoj/0204*.test.cpp
 test/aoj/0214*.test.cpp
 test/aoj/2429*.test.cpp
+test/atcoder/arc055_*.test.cpp
 test/atcoder/arc066_*.test.cpp
 test/atcoder/arc070_*.test.cpp
 test/atcoder/arc080_*.test.cpp

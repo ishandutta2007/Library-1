@@ -22,17 +22,29 @@ signed main() {
   int l, r, t;
   cin >> l >> r >> t, l--;
   int n= r - l;
-  auto a= rh.sub(l, n - t), b= rh.sub(l + t, n - t);
+  auto rhT= rh.sub(l, n);
+  auto a= rhT.sub(0, n - t), b= rhT.sub(t, n - t);
   int s= lcp(a, b);
   if (s >= n - t) {
    cout << "Yes" << '\n';
-  } else if (a.sub(s + 1) == b.sub(s + 1)) {
-   cout << "Yes" << '\n';
-  } else if (s + t < n - t && a.sub(s + 1, t - 1) == b.sub(s + 1, t - 1) && a.sub(s + t + 1) == b.sub(s + t + 1) && S[l + s] == S[l + s + t + t]) {
-   cout << "Yes" << '\n';
-  } else {
-   cout << "No" << '\n';
+   continue;
   }
+  if (s < t) {
+   if (a.sub(s + 1) == b.sub(s + 1)) {
+    cout << "Yes" << '\n';
+    continue;
+   }
+  }
+  if (s + t > n - t) {
+   cout << (a.sub(s + 1) == b.sub(s + 1) ? "Yes" : "No") << '\n';
+   continue;
+  }
+  bool isok= a.sub(s + 1, t - 1) == b.sub(s + 1, t - 1);
+  if (t + s + t < n) {
+   isok&= S[l + s] == S[l + t + s + t];
+   isok&= a.sub(s + t + 1) == b.sub(s + t + 1);
+  }
+  cout << (isok ? "Yes" : "No") << '\n';
  }
  return 0;
 }

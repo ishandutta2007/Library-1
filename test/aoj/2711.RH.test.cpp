@@ -9,11 +9,10 @@ using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- using Mint= ModInt<(1ll << 61) - 1>;
+ using Mint= ModInt<998244353>;
  using K= CartesianProduct<Mint, Mint>;
  using RH= RollingHash<K>;
- K base= {rng(2, Mint::mod() - 1), rng(2, Mint::mod() - 1)};
- RH::set_base(base);
+ RH::init({rng(), rng()});
  string S;
  cin >> S;
  RH rh(S);
@@ -22,13 +21,13 @@ signed main() {
  while (Q--) {
   int l, r, t;
   cin >> l >> r >> t, l--;
-  auto a= rh.sub(l, r - t), b= rh.sub(l + t, r);
+  auto a= rh.sub(l, r - l - t), b= rh.sub(l + t, r - l - t);
   int s= lcp(a, b);
   if (s >= r - (l + t)) {
    cout << "Yes" << '\n';
-  } else if (a.get_hash(s + 1) == b.get_hash(s + 1)) {
+  } else if (a.sub(s + 1) == b.sub(s + 1)) {
    cout << "Yes" << '\n';
-  } else if (s + t < r - l - t && a.get_hash(s + 1, s + t) == b.get_hash(s + 1, s + t) && a.get_hash(s + t + 1) == b.get_hash(s + t + 1) && S[l + s] == S[l + s + t + t]) {
+  } else if (s + t < r - l - t && a.sub(s + 1, t - 1) == b.sub(s + 1, t - t) && a.sub(s + t + 1) == b.sub(s + t + 1) && S[l + s] == S[l + s + t + t]) {
    cout << "Yes" << '\n';
   } else {
    cout << "No" << '\n';

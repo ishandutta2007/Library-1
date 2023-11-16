@@ -21,7 +21,7 @@ template <class T> class WaveletMatrix {
  std::vector<SuccinctIndexableDictionary> mat;
  std::vector<T> vec;
 public:
- WaveletMatrix(const std::vector<T> &v): len(v.size()), lg(32 - __builtin_clz(std::max<int>(len, 1))), mat(lg, len), vec(v) {
+ WaveletMatrix(const std::vector<T> &v): len(v.size()), lg(len ? 32 - __builtin_clz(len) : 1), mat(lg, len), vec(v) {
   std::sort(vec.begin(), vec.end()), vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
   std::vector<unsigned> cur(len), nex(len);
   for (int i= len; i--;) cur[i]= std::lower_bound(vec.begin(), vec.end(), v[i]) - vec.begin();

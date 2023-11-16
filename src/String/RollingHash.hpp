@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <array>
 template <class K, class Int= int> class RollingHash {
  static inline std::vector<K> pw, hsh;
  static inline K bs;

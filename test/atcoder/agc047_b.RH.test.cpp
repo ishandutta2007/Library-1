@@ -14,7 +14,7 @@ signed main() {
  using Mint= ModInt<998244353>;
  using K= CartesianProduct<Mint, Mint>;
  using RH= RollingHash<K>;
- RH::set_base({rng(), rng()});
+ RH::init({rng(), rng()});
  int N;
  cin >> N;
  vector<string> S(N);
@@ -24,7 +24,7 @@ signed main() {
  map<K, vector<int>> mp;
  for (int i= 0; i < N; ++i) {
   int c= S[i][0] - 'a';
-  K h= rh[i].get_hash(1);
+  K h= rh[i].sub(1).hash();
   auto &v= mp[h];
   if (v.empty()) v.resize(26);
   v[c]++;
@@ -36,7 +36,7 @@ signed main() {
   fill_n(used, 26, false);
   for (int j= 0; j < n; ++j) {
    used[S[i][j] - 'a']= true;
-   K h= rh[i].get_hash(j + 1);
+   K h= rh[i].sub(j + 1).hash();
    for (int k= 0; k < 26; ++k)
     if (used[k])
      if (auto it= mp.find(h); it != mp.end()) ans+= it->second[k];

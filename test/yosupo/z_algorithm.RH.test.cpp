@@ -9,17 +9,14 @@ using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- using Mint= ModInt<(1ll << 61) - 1>;
+ using Mint= ModInt<998244353>;
  using K= CartesianProduct<Mint, Mint>;
  using RH= RollingHash<K>;
- K base= {rng(2, Mint::mod() - 1), rng(2, Mint::mod() - 1)};
- RH::set_base(base);
+ RH::init({rng(), rng()});
  string S;
  cin >> S;
  RH rh(S);
  int N= S.length();
- for (int i= 0; i < N; i++) {
-  cout << lcp(rh, rh.sub(i, N)) << " \n"[i == N - 1];
- }
+ for (int i= 0; i < N; i++) cout << lcp(rh, rh.sub(i)) << " \n"[i == N - 1];
  return 0;
 }

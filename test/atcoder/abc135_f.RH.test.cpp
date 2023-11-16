@@ -12,7 +12,7 @@ signed main() {
  using Mint= ModInt<998244353>;
  using K= CartesianProduct<Mint, Mint>;
  using RH= RollingHash<K>;
- RH::set_base({rng(), rng()});
+ RH::init({rng(), rng()});
  string s, t;
  cin >> s >> t;
  int N= s.length(), M= t.length();
@@ -20,9 +20,9 @@ signed main() {
  for (int i= (M + N - 1) / N; i--;) ss+= s;
  RH rs(ss), rt(t);
  vector<int> next(N, -1);
- auto th= rt.get_hash();
+ auto th= rt.hash();
  for (int i= 0; i < N; ++i)
-  if (rs.get_hash(i, i + M) == th) next[i]= (i + M) % N;
+  if (rs.sub(i, M).hash() == th) next[i]= (i + M) % N;
  vector<int> dep(N, -1);
  int ans= 0;
  for (int i= 0; i < N; ++i) {

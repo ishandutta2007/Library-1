@@ -21,13 +21,14 @@ signed main() {
  while (Q--) {
   int l, r, t;
   cin >> l >> r >> t, l--;
-  auto a= rh.sub(l, r - l - t), b= rh.sub(l + t, r - l - t);
+  int n= r - l;
+  auto a= rh.sub(l, n - t), b= rh.sub(l + t, n - t);
   int s= lcp(a, b);
-  if (s >= r - (l + t)) {
+  if (s >= n - t) {
    cout << "Yes" << '\n';
   } else if (a.sub(s + 1) == b.sub(s + 1)) {
    cout << "Yes" << '\n';
-  } else if (s + t < r - l - t && a.sub(s + 1, t - 1) == b.sub(s + 1, t - t) && a.sub(s + t + 1) == b.sub(s + t + 1) && S[l + s] == S[l + s + t + t]) {
+  } else if (s + t < n - t && a.sub(s + 1, t - 1) == b.sub(s + 1, t - 1) && a.sub(s + t + 1) == b.sub(s + t + 1) && S[l + s] == S[l + s + t + t]) {
    cout << "Yes" << '\n';
   } else {
    cout << "No" << '\n';

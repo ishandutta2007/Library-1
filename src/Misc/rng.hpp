@@ -1,5 +1,6 @@
 #pragma once
 #include <random>
+#include <cstdint>
 uint64_t rng() {
  static uint64_t x= 10150724397891781847ULL * std::random_device{}();
  return x^= x << 7, x^= x >> 9;

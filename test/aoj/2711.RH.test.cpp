@@ -12,7 +12,7 @@ signed main() {
  using Mint= ModInt<998244353>;
  using K= CartesianProduct<Mint, Mint>;
  using RH= RollingHash<K>;
- RH::init({rng(2, Mint::mod() - 1), rng(2, Mint::mod() - 1)});
+ RH::init({3, 7});
  string S;
  cin >> S;
  RH rh(S);

@@ -1,8 +1,10 @@
 #pragma once
 #include <vector>
-template <class T, class F> struct SparseTable {
+template <class T, class F> class SparseTable {
  std::vector<std::vector<T>> dat;
- const F &f;
+ F f;
+public:
+ SparseTable() {}
  SparseTable(const std::vector<T> &v, const F &f): f(f) {
   int n= v.size(), log= n > 1 ? 31 - __builtin_clz(n - 1) : 0;
   dat.resize(log + 1), dat[0].assign(v.begin(), v.end());
@@ -10,7 +12,7 @@ template <class T, class F> struct SparseTable {
    for (dat[i + 1].resize(j= dat[i].size() - I); j--;) dat[i + 1][j]= f(dat[i][j], dat[i][j + I]);
  }
  // [l, r)
- T fold(int l, int r) {
+ T fold(int l, int r) const {
   if (r == l + 1) return dat[0][l];
   int k= 31 - __builtin_clz(r - l - 1);
   return f(dat[k][l], dat[k][r - (1 << k)]);

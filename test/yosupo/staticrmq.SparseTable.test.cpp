@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/static_range_frequency"
+#define PROBLEM "https://judge.yosupo.jp/problem/staticrmq"
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/SparseTable.hpp"

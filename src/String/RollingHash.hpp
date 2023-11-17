@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <array>
+#include <cassert>
 template <class K, class Int= int> class RollingHash {
 public:
  static inline std::vector<K> pw, hsh;

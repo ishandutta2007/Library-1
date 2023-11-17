@@ -3,6 +3,7 @@
 #include <string>
 #include <array>
 template <class K, class Int= int> class RollingHash {
+public:
  static inline std::vector<K> pw, hsh;
  static inline K bs;
  static inline std::vector<Int> str;
@@ -13,7 +14,7 @@ template <class K, class Int= int> class RollingHash {
  int bg, n;
  RollingHash(int b, int n): bg(b), n(n) {}
  template <class C> static int bin_srch(int ok, int ng, const C &check) {
-  for (int x; ng - ok > 1;) (check(x= (ok + ng) / 2) ? ok : ng)= x;
+  for (int x; ng - ok > 1;) x= (ok + ng) / 2, (check(x) ? ok : ng)= x;
   return ok;
  }
  template <size_t I> static K concat(const std::array<RollingHash, I> &v) {
@@ -32,8 +33,14 @@ public:
  RollingHash(const std::string &s): RollingHash(std::vector<Int>(s.begin(), s.end())) {}
  inline size_t length() const { return n; }
  inline K hash() const { return hsh[bg + n] - hsh[bg] * pw[n]; }
- RollingHash sub(int b, int n) const { return {bg + b, n}; }
- RollingHash sub(int b) const { return {bg + b, n - b}; }
+ RollingHash sub(int b, int m) const {
+  assert(b + m <= n), assert(m >= 0);
+  return {bg + b, m};
+ }
+ RollingHash sub(int b) const {
+  assert(b <= n);
+  return {bg + b, n - b};
+ }
  template <class... Args> friend std::enable_if_t<std::conjunction_v<std::is_same<Args, RollingHash>...>, K> concat_hash(const Args &...rh) { return concat(std::array{rh...}); }
  friend int lcp(const RollingHash &l, const RollingHash &r) {
   return bin_srch(0, std::min(l.n, r.n) + 1, [&](int x) { return l.sub(0, x) == r.sub(0, x); });

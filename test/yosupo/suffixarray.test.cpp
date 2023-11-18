@@ -8,10 +8,8 @@ signed main() {
  ios::sync_with_stdio(0);
  string S;
  cin >> S;
- SuffixArray SA(S);
- for (int i= 0; i < S.length(); i++) {
-  cout << (i ? " " : "") << SA[i];
- }
- cout << endl;
+ int n= S.length();
+ SuffixArray sa(S);
+ for (int i= 0; i < n; ++i) cout << sa[i] << " \n"[i + 1 == n];
  return 0;
 }

@@ -8,13 +8,10 @@ signed main() {
  ios::sync_with_stdio(0);
  string S;
  cin >> S;
- SuffixArray SA(S);
+ SuffixArray sa(S);
  int N= S.length();
- auto LCP= SA.get_lcp();
- long long ans= 0;
- for (int i= 0; i < N; i++) {
-  ans+= (N - SA[i]) - LCP[i];
- }
- cout << ans << endl;
+ long long ans= (long long)N * (N + 1) / 2;
+ for (int i= N; --i;) ans-= sa.LCP[i - 1];
+ cout << ans << '\n';
  return 0;
 }

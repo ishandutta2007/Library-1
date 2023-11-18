@@ -14,7 +14,8 @@ signed main() {
  while (Q--) {
   string p;
   cin >> p;
-  cout << (sa.count(p) > 0) << "\n";
+  auto [l, r]= sa.pattern_matching(p);
+  cout << (r > l) << '\n';
  }
  cout << flush;
  return 0;

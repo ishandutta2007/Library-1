@@ -10,7 +10,7 @@ signed main() {
  cin >> T >> P;
  SuffixArray sa(T);
  auto [l, r]= sa.pattern_matching(P);
- vector<int> ans(sa.SA.begin() + l, sa.SA.begin() + r);
+ vector<int> ans(sa.begin() + l, sa.begin() + r);
  sort(ans.begin(), ans.end());
  for (auto a: ans) cout << a << "\n";
  return 0;

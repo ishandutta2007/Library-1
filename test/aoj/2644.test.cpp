@@ -12,8 +12,8 @@ signed main() {
  cin >> S;
  int N= S.length();
  SuffixArray sa(S);
- SparseTable mn(sa.SA, [](int x, int y) { return min(x, y); });
- SparseTable mx(sa.SA, [](int x, int y) { return max(x, y); });
+ SparseTable mn(sa.to_vec(), [](int x, int y) { return min(x, y); });
+ SparseTable mx(sa.to_vec(), [](int x, int y) { return max(x, y); });
  int m;
  cin >> m;
  while (m--) {

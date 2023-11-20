@@ -3,8 +3,6 @@
 #include <vector>
 #include <algorithm>
 template <class Int= int> struct SuffixArray {
- std::vector<Int> s;
- std::vector<int> sa;
  std::vector<int> static sa_is(const std::vector<int> &s, int K) {
   const int n= s.size();
   std::vector<char> t(n);
@@ -47,6 +45,8 @@ template <class Int= int> struct SuffixArray {
   return sa;
  }
 public:
+ std::vector<Int> s;
+ std::vector<int> sa;
  SuffixArray(const std::vector<Int> &S): s(S) {
   auto v= s;
   std::sort(v.begin(), v.end()), v.erase(std::unique(v.begin(), v.end()), v.end());
@@ -62,8 +62,6 @@ public:
  size_t size() const { return sa.size(); }
  auto begin() const { return sa.begin(); }
  auto end() const { return sa.end(); }
- auto &to_vec() const { return sa; }
- auto &string() const { return s; }
  // return {l,r} s.t. P is a prefix of S[sa[i]:] ( i in [l,r) )
  // l == r if P is not a substring of S
  // O(|P|log|S|)
@@ -97,14 +95,13 @@ public:
   const int n= sa.size(), log= n > 2 ? 31 - __builtin_clz(n - 2) : 0;
   dat.resize(log + 1), dat[0].resize(n - 1);
   auto &lcp= dat[0];
-  auto &s= sa.string();
   for (int i= n; i--;) rnk[sa[i]]= i;
   for (int i= 0, h= 0; i < n; ++i) {
    if (rnk[i] == n - 1) {
     h= 0;
     continue;
    }
-   for (int j= sa[rnk[i] + 1]; i + h < n && j + h < n && s[i + h] == s[j + h];) ++h;
+   for (int j= sa[rnk[i] + 1]; i + h < n && j + h < n && sa.s[i + h] == sa.s[j + h];) ++h;
    if ((lcp[rnk[i]]= h)) --h;
   }
   for (int i= 0, I= 1, j; i < log; ++i, I<<= 1)

@@ -65,7 +65,7 @@ public:
  // return {l,r} s.t. P is a prefix of S[sa[i]:] ( i in [l,r) )
  // l == r if P is not a substring of S
  // O(|P|log|S|)
- auto pattern_matching(const std::vector<Int> &P) const {
+ std::pair<int, int> pattern_matching(const std::vector<Int> &P) const {
   const int n= s.size(), m= P.size();
   if (n < m) return {0, 0};
   auto f1= [&](int h) {
@@ -83,7 +83,7 @@ public:
    return true;
   };
   auto L= std::partition_point(sa.begin(), sa.end(), f1), R= std::partition_point(L, sa.end(), f2);
-  return std::make_pair(L - sa.begin(), R - sa.begin());
+  return {L - sa.begin(), R - sa.begin()};
  }
  auto pattern_matching(const std::string &P) const { return pattern_matching(std::vector<Int>(P.begin(), P.end())); }
 };

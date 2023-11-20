@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <tuple>
 #include <cmath>
+#include <cstdint>
 // (q,l,r) : i in (l,r], ⌊N/i⌋ = q
 std::vector<std::tuple<uint64_t, uint64_t, uint64_t>> enumerate_quotients(uint64_t N) {
  uint64_t sq= std::sqrt(N), prev= N, x;

@@ -2,9 +2,10 @@
 #include <vector>
 #include <algorithm>
 #include <map>
+#include <cstdint>
 template <int LIM= 1 << 24> class Sieve {
  static inline int ps[LIM >> 4], lpf[LIM >> 1], lpfpw[LIM >> 1], psz= 0;
- static inline std::int8_t lpfe[LIM >> 1];
+ static inline int8_t lpfe[LIM >> 1];
  static inline void sieve(int N) {  // O(N)
   static int n= 2, i= 1;
   if (n == 2) ps[psz++]= 2, n++;

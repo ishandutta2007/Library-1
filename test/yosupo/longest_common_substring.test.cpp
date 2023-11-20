@@ -11,12 +11,13 @@ signed main() {
  int N= S.length();
  S+= "$" + T;
  SuffixArray sa(S);
+ LCPArray lcp(sa);
  int a= 0, c= 0, len= 0;
  for (int i= 0; i + 1 < N; ++i) {
-  int x= sa.SA[i], y= sa.SA[i + 1];
+  int x= sa[i], y= sa[i + 1];
   if (x > y) swap(x, y);
-  if (x < N && N < y && len < sa.LCP[i]) {
-   len= sa.LCP[i];
+  if (x < N && N < y && len < lcp[i]) {
+   len= lcp[i];
    a= x, c= y - N - 1;
   }
  }

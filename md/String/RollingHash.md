@@ -10,6 +10,7 @@ documentation_of: ../../src/String/RollingHash.hpp
 （辞書順による比較のために `operator<` が定義されていて欲しい）
 
 
+
 |`static` 関数|概要|
 |---|---|
 |`init(b)`|基底 $b$ をセットして初期化する. 最初に必ず呼ぶ.|
@@ -20,21 +21,21 @@ documentation_of: ../../src/String/RollingHash.hpp
 |`RollingHash(s)`|コンストラクタ. 文字列 $S$ を渡す. <br> 引数のクラスは`vector<Int>`か`string` を想定している.|
 |`length()`|文字列の長さを返す.|
 |`hash()`|文字列を指すハッシュ値を返す.|
-|`sub(int b,int n)`|部分文字列 $S\lbrack b:b+n\rbrack$ に対応する `RollingHash` クラスのインスタンスを返す. |
+|`sub(int b,int n)`|部分文字列 $S_{b:b+n}$ に対応する `RollingHash` クラスのインスタンスを返す. |
 |`to_str()`|文字列に直して`string`で返す. デバッグ用.|
 
 |演算子オーバーロード|概要|計算量|
 |---|---|---|
 |`operator==(r)`|文字列が等しいなら `true`.|$\mathcal{O}(1)$|
 |`operator!=(r)`|文字列が等しくないなら `true`.|$\mathcal{O}(1)$|
-|`operator<(r)`|左辺が右辺より辞書順で小さいなら `true`. |$\mathcal{O}(\log n)$<br> ただし $n=\min(\lvert S_l\rvert,\lvert S_r\rvert)$|
+|`operator<(r)`|対応する2つの文字列 $L,R$ について辞書順比較 $L\lt R$ (`bool`値) を返す . |$\mathcal{O}(\log n)$<br> ただし $n=\min(\lvert L\rvert,\lvert R\rvert)$|
 
 |関数|概要|
 |---|---|
 |`concat_hash(rh...)`| 複数の `RollingHash` クラスのインスタンスを与える. <br> 対応する文字列をその順にconcatしたときのハッシュ値を返す.|
 |`lcp(l,r)`|2つの `RollingHash` クラスのインスタンスを与える. <br>対応する2つの文字列のLCP(最長共通接頭辞; Longest Common Prefix)の長さを返す.|
 |`lcs(l,r)`|2つの `RollingHash` クラスのインスタンスを与える. <br>対応する2つの文字列の最長共通接尾辞(Longest Common Suffix)の長さを返す.|
-|`concat_cmp(l,r)`|2つの `RollingHash` クラスのインスタンスを与える. <br>対応する2つの文字列 $S_l,S_r$ についてconcatの前後を変えた際辞書順比較 $S_lS_r < S_rS_l$ (`bool`値) を返す .|
+|`concat_cmp(l,r)`|2つの `RollingHash` クラスのインスタンスを与える. <br>対応する2つの文字列 $L,R$ についてconcatの前後を変えた際辞書順比較 $LR < RL$ (`bool`値) を返す .|
 
 
 ### 備考

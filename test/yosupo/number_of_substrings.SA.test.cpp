@@ -9,9 +9,10 @@ signed main() {
  string S;
  cin >> S;
  SuffixArray sa(S);
+ LCPArray lcp(sa);
  int N= S.length();
  long long ans= (long long)N * (N + 1) / 2;
- for (int i= N; --i;) ans-= sa.LCP[i - 1];
+ for (int i= N; --i;) ans-= lcp[i - 1];
  cout << ans << '\n';
  return 0;
 }

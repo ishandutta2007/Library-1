@@ -1,71 +1,10 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <algorithm>
-#include <cassert>
-#include "src/DataStructure/SparseTable.hpp"
-template <bool use_lcp_query= false, class Int= int> struct SuffixArray {
- std::vector<int> SA, ISA, LCP;
- SuffixArray(const std::vector<Int> &S): s(S) {
-  auto v= s;
-  sort(v.begin(), v.end()), v.erase(unique(v.begin(), v.end()), v.end());
-  std::vector<int> s_cpy(s.size() + 1);
-  for (int i= s.size(); i--;) s_cpy[i]= std::lower_bound(v.begin(), v.end(), s[i]) - v.begin() + 1;
-  SA= sa_is(s_cpy, v.size() + 1), SA.erase(SA.begin()), build();
- }
- SuffixArray(const std::string &S): s(S.begin(), S.end()) {
-  std::vector<int> s_cpy(s.size() + 1);
-  std::copy(s.begin(), s.end(), s_cpy.begin()), SA= sa_is(s_cpy, 128), SA.erase(SA.begin()), build();
- }
- // lcp of S[i:] and S[j:]
- int lcp(int i, int j) const {
-  static_assert(use_lcp_query);
-  assert(i < SA.size() && j < SA.size());
-  if (i == j) return SA.size() - i;
-  auto [l, r]= std::minmax(ISA[i], ISA[j]);
-  return lcp_mn.fold(l, r);
- }
- int operator[](int i) const { return SA[i]; }
- int size() const { return SA.size(); }
- // return {l,r} s.t. P is a prefix of S[SA[i]:] ( i in [l,r) )
- // l == r if P is not a substring of S
- // O(|P|log|S|)
- std::pair<int, int> pattern_matching(const std::vector<Int> &P) const {
-  const int n= s.size(), m= P.size();
-  if (n < m) return {0, 0};
-  auto f1= [&](int h) {
-   for (int j= 0; h + j < n && j < m; ++j) {
-    if (s[h + j] < P[j]) return true;
-    if (s[h + j] > P[j]) return false;
-   }
-   return n - h < m;
-  };
-  auto f2= [&](int h) {
-   for (int j= 0; h + j < n && j < m; ++j)
-    if (s[h + j] > P[j]) return false;
-   return true;
-  };
-  auto L= std::partition_point(SA.begin(), SA.end(), f1), R= std::partition_point(L, SA.end(), f2);
-  return {L - SA.begin(), R - SA.begin()};
- }
- std::pair<int, int> pattern_matching(const std::string &P) const { return pattern_matching(std::vector<Int>(P.begin(), P.end())); }
-private:
+template <class Int= int> struct SuffixArray {
  std::vector<Int> s;
- using ST= SparseTable<int, int (*)(int, int)>;
- ST lcp_mn;
- void build() {
-  const int n= SA.size();
-  ISA.resize(n), LCP.resize(n - 1);
-  for (int i= SA.size(); i--;) ISA[SA[i]]= i;
-  for (int i= 0, h= 0; i < n; ++i) {
-   if (ISA[i] == n - 1) {
-    h= 0;
-    continue;
-   }
-   for (int j= SA[ISA[i] + 1]; i + h < n && j + h < n && s[i + h] == s[j + h];) ++h;
-   if ((LCP[ISA[i]]= h)) --h;
-  }
-  if constexpr (use_lcp_query) lcp_mn= ST(LCP, [](int a, int b) { return std::min(a, b); });
- }
+ std::vector<int> sa;
  std::vector<int> static sa_is(const std::vector<int> &s, int K) {
   const int n= s.size();
   std::vector<char> t(n);
@@ -106,5 +45,80 @@ private:
   for (int i= n, j; i--;)
    if ((j= sa[i] - 1) >= 0 && t[j]) sa[--bkt_r[s[j]]]= j;
   return sa;
+ }
+public:
+ SuffixArray(const std::vector<Int> &S): s(S) {
+  auto v= s;
+  std::sort(v.begin(), v.end()), v.erase(std::unique(v.begin(), v.end()), v.end());
+  std::vector<int> s_cpy(s.size() + 1);
+  for (int i= s.size(); i--;) s_cpy[i]= std::lower_bound(v.begin(), v.end(), s[i]) - v.begin() + 1;
+  sa= sa_is(s_cpy, v.size() + 1), sa.erase(sa.begin());
+ }
+ SuffixArray(const std::string &S): s(S.begin(), S.end()) {
+  std::vector<int> s_cpy(s.size() + 1);
+  std::copy(s.begin(), s.end(), s_cpy.begin()), sa= sa_is(s_cpy, 128), sa.erase(sa.begin());
+ }
+ int operator[](int i) const { return sa[i]; }
+ size_t size() const { return sa.size(); }
+ auto begin() const { return sa.begin(); }
+ auto end() const { return sa.end(); }
+ auto &to_vec() const { return sa; }
+ auto &string() const { return s; }
+ // return {l,r} s.t. P is a prefix of S[sa[i]:] ( i in [l,r) )
+ // l == r if P is not a substring of S
+ // O(|P|log|S|)
+ auto pattern_matching(const std::vector<Int> &P) const {
+  const int n= s.size(), m= P.size();
+  if (n < m) return {0, 0};
+  auto f1= [&](int h) {
+   auto t= s.begin() + h;
+   for (int j= 0, e= std::min(n - h, m); j < e; ++j) {
+    if (t[j] < P[j]) return true;
+    if (t[j] > P[j]) return false;
+   }
+   return n - h < m;
+  };
+  auto f2= [&](int h) {
+   auto t= s.begin() + h;
+   for (int j= 0, e= std::min(n - h, m); j < e; ++j)
+    if (t[j] > P[j]) return false;
+   return true;
+  };
+  auto L= std::partition_point(sa.begin(), sa.end(), f1), R= std::partition_point(L, sa.end(), f2);
+  return std::make_pair(L - sa.begin(), R - sa.begin());
+ }
+ auto pattern_matching(const std::string &P) const { return pattern_matching(std::vector<Int>(P.begin(), P.end())); }
+};
+class LCPArray {
+ std::vector<int> rnk;
+ std::vector<std::vector<int>> dat;
+public:
+ template <class Int> LCPArray(const SuffixArray<Int> &sa): rnk(sa.size()) {
+  const int n= sa.size(), log= n > 2 ? 31 - __builtin_clz(n - 2) : 0;
+  dat.resize(log + 1), dat[0].resize(n - 1);
+  auto &lcp= dat[0];
+  auto &s= sa.string();
+  for (int i= n; i--;) rnk[sa[i]]= i;
+  for (int i= 0, h= 0; i < n; ++i) {
+   if (rnk[i] == n - 1) {
+    h= 0;
+    continue;
+   }
+   for (int j= sa[rnk[i] + 1]; i + h < n && j + h < n && s[i + h] == s[j + h];) ++h;
+   if ((lcp[rnk[i]]= h)) --h;
+  }
+  for (int i= 0, I= 1, j; i < log; ++i, I<<= 1)
+   for (dat[i + 1].resize(j= dat[i].size() - I); j--;) dat[i + 1][j]= std::min(dat[i][j], dat[i][j + I]);
+ }
+ int operator[](int i) const { return dat[0][i]; }
+ size_t size() const { return dat[0].size(); }
+ auto begin() const { return dat[0].begin(); }
+ auto end() const { return dat[0].end(); }
+ int operator()(int i, int j) const {
+  if (i == j) return rnk.size() - i;
+  auto [l, r]= std::minmax(rnk[i], rnk[j]);
+  if (r == l + 1) return dat[0][l];
+  int k= 31 - __builtin_clz(r - l - 1);
+  return std::min(dat[k][l], dat[k][r - (1 << k)]);
  }
 };

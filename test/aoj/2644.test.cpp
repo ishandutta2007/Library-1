@@ -10,7 +10,6 @@ signed main() {
  ios::sync_with_stdio(0);
  string S;
  cin >> S;
- int N= S.length();
  SuffixArray sa(S);
  SparseTable mn(sa.sa, [](int x, int y) { return min(x, y); });
  SparseTable mx(sa.sa, [](int x, int y) { return max(x, y); });

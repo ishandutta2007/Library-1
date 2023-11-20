@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <string>
 #include <tuple>
-template <class Int> std::vector<int> z_algorithm(const std::vector<Int> &s) {
+template <class T> std::vector<int> z_algorithm(const std::vector<T> &s) {
  const int n= s.size();
  if (n == 0) return {};
  std::vector<int> z(n);

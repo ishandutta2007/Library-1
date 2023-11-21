@@ -4,6 +4,7 @@
 #include <cmath>
 #include <cassert>
 #include <numeric>
+#include <cstdint>
 template <class T> struct DirichletSeries {
  using Self= DirichletSeries;
  uint64_t N;  // <= K * L

@@ -14,6 +14,14 @@ template <class String> std::vector<int> z_algorithm(const String &s) {
  }
  return z[0]= n, z;
 }
+std::vector<int> z_to_kmp(const std::vector<int> &z) {
+ const int n= z.size();
+ std::vector<int> kmp(n + 1);
+ kmp[0]= -1;
+ for (int i= n; --i;) kmp[i + z[i]]= std::max(kmp[i + z[i]], z[i]);
+ for (int i= n; i--;) kmp[i]= std::max(kmp[i], kmp[i + 1] - 1);
+ return kmp;
+}
 namespace string_internal {
 template <class String> auto run_enumerate_(const String &s, typename String::value_type a= 0) {
  using Run= std::tuple<int, int, int>;

@@ -12,6 +12,6 @@ signed main() {
  auto [l, r]= sa.pattern_matching(P);
  vector<int> ans(sa.begin() + l, sa.begin() + r);
  sort(ans.begin(), ans.end());
- for (auto a: ans) cout << a << "\n";
+ for (auto a: ans) cout << a << '\n';
  return 0;
 }

@@ -19,6 +19,6 @@ signed main() {
  int N= P.length(), M= T.length();
  auto hash= rp.hash();
  for (int i= 0; i + N <= M; i++)
-  if (rt.sub(i, N).hash() == hash) cout << i << "\n";
+  if (rt.sub(i, N).hash() == hash) cout << i << '\n';
  return 0;
 }

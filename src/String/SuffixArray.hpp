@@ -82,7 +82,7 @@ public:
    return true;
   };
   auto L= std::partition_point(sa.begin(), sa.end(), f1), R= std::partition_point(L, sa.end(), f2);
-  return {L + sa.begin(), R + sa.begin()};
+  return {L - sa.begin(), R - sa.begin()};
  }
 };
 class LCPArray {

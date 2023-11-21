@@ -7,7 +7,7 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- LiChaoTree lct([](int x, int a, long long b) { return a * x + b; });
+ LiChaoTree lct([](int x, long long a, long long b) { return a * x + b; });
  auto cht= lct.make_tree<MINIMIZE>();
  while (N--) {
   long long a, b;
@@ -18,7 +18,7 @@ signed main() {
   bool op;
   cin >> op;
   if (op) {
-   long long p;
+   int p;
    cin >> p;
    cout << cht.query(p).first << '\n';
   } else {

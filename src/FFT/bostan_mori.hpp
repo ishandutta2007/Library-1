@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include "src/FFT/fps_inv.hpp"
 #include "src/FFT/convolve.hpp"
 namespace div_at_internal {
@@ -7,7 +8,7 @@ template <class K> int deg(const std::vector<K> &p) {
  for (int n= p.size() - 1;; n--)
   if (n < 0 || p[n] != ZERO) return n;
 }
-template <std::size_t LM, class mod_t> void div_at_ntt(std::vector<mod_t> &p, std::vector<mod_t> &q, uint64_t &k) {
+template <size_t LM, class mod_t> void div_at_ntt(std::vector<mod_t> &p, std::vector<mod_t> &q, uint64_t &k) {
  static_assert(!is_nttfriend<mod_t, LM>());
  using GNA= GlobalNTTArray<mod_t, LM, 0>;
  using GNA1= GlobalNTTArray<mod_t, LM, 1>;
@@ -21,7 +22,7 @@ template <std::size_t LM, class mod_t> void div_at_ntt(std::vector<mod_t> &p, st
   for (int i= m; i--;) q[i]= GNA1::bf.get(i << 1);
  }
 }
-template <std::size_t LM, class mod_t> void div_at_ntt_fast(std::vector<mod_t> &p, std::vector<mod_t> &q, uint64_t &k) {
+template <size_t LM, class mod_t> void div_at_ntt_fast(std::vector<mod_t> &p, std::vector<mod_t> &q, uint64_t &k) {
  static_assert(is_nttfriend<mod_t, LM>());
  using ntt= NTT<mod_t>;
  const unsigned m= deg(q) + 1, offset= std::max<unsigned>(deg(p) + 1, m), len= pw2((offset + m) - 1), len2= len >> 1;
@@ -38,7 +39,7 @@ template <std::size_t LM, class mod_t> void div_at_ntt_fast(std::vector<mod_t> &
 }
 }  // namespace div_at_internal
 #define __FPS_DIVAT(Vec) \
- template <class mod_t, std::size_t LM= 1 << 22> mod_t div_at(Vec p, Vec q, uint64_t k) { \
+ template <class mod_t, size_t LM= 1 << 22> mod_t div_at(Vec p, Vec q, uint64_t k) { \
   using namespace div_at_internal; \
   const int n= deg(p) + 1, m= deg(q) + 1; \
   assert(m != 0); \
@@ -60,8 +61,8 @@ __FPS_DIVAT(__POLYNOMIAL)
 #endif
 // a[n] = c[0] * a[n-1] + c[1] * a[n-2] + ... + c[d-1] * a[n-d]
 // return a[k]
-template <class mod_t, std::size_t LM= 1 << 22> mod_t linear_recurrence(std::vector<mod_t> c, std::vector<mod_t> a, uint64_t k) {
- const std::size_t d= c.size();
+template <class mod_t, size_t LM= 1 << 22> mod_t linear_recurrence(std::vector<mod_t> c, std::vector<mod_t> a, uint64_t k) {
+ const size_t d= c.size();
  assert(d <= a.size());
  for (auto &x: c) x= -x;
  c.insert(c.begin(), mod_t(1)), a.resize(d);

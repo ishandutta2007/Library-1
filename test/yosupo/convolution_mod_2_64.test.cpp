@@ -8,7 +8,7 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, M;
  cin >> N >> M;
- vector<std::uint64_t> a(N), b(M);
+ vector<unsigned long long> a(N), b(M);
  for (int i= 0; i < N; i++) cin >> a[i];
  for (int j= 0; j < M; j++) cin >> b[j];
  auto c= convolve(a, b);

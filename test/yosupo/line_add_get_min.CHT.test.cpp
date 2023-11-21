@@ -7,9 +7,9 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- ConvexHullTrick<int64_t, MINIMIZE> cht;
+ ConvexHullTrick<long long, MINIMIZE> cht;
  for (int i= 0; i < N; ++i) {
-  int a, b;
+  long long a, b;
   cin >> a >> b;
   cht.insert(a, b);
  }
@@ -21,7 +21,7 @@ signed main() {
    cin >> p;
    cout << cht.query(p) << '\n';
   } else {
-   int a, b;
+   long long a, b;
    cin >> a >> b;
    cht.insert(a, b);
   }

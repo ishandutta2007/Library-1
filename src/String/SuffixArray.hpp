@@ -2,8 +2,10 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-template <class Int= int> struct SuffixArray {
- std::vector<int> static sa_is(const std::vector<int> &s, int K) {
+template <class String> struct SuffixArray {
+ String s;
+ std::vector<int> sa;
+ static inline std::vector<int> sa_is(const std::vector<int> &s, int K) {
   const int n= s.size();
   std::vector<char> t(n);
   std::vector<int> bkt(K, 0), bkt_l(K), bkt_r(K), sa(n), p1;
@@ -45,18 +47,15 @@ template <class Int= int> struct SuffixArray {
   return sa;
  }
 public:
- std::vector<Int> s;
- std::vector<int> sa;
- SuffixArray(const std::vector<Int> &S): s(S) {
-  auto v= s;
-  std::sort(v.begin(), v.end()), v.erase(std::unique(v.begin(), v.end()), v.end());
+ SuffixArray(const String &S): s(S) {
   std::vector<int> s_cpy(s.size() + 1);
-  for (int i= s.size(); i--;) s_cpy[i]= std::lower_bound(v.begin(), v.end(), s[i]) - v.begin() + 1;
-  sa= sa_is(s_cpy, v.size() + 1), sa.erase(sa.begin());
- }
- SuffixArray(const std::string &S): s(S.begin(), S.end()) {
-  std::vector<int> s_cpy(s.size() + 1);
-  std::copy(s.begin(), s.end(), s_cpy.begin()), sa= sa_is(s_cpy, 128), sa.erase(sa.begin());
+  if constexpr (std::is_convertible_v<String, std::string>) std::copy(s.begin(), s.end(), s_cpy.begin()), sa= sa_is(s_cpy, 128), sa.erase(sa.begin());
+  else {
+   auto v= s;
+   sort(v.begin(), v.end()), v.erase(unique(v.begin(), v.end()), v.end());
+   for (int i= s.size(); i--;) s_cpy[i]= std::lower_bound(v.begin(), v.end(), s[i]) - v.begin() + 1;
+   sa= sa_is(s_cpy, v.size() + 1), sa.erase(sa.begin());
+  }
  }
  int operator[](int i) const { return sa[i]; }
  size_t size() const { return sa.size(); }
@@ -65,7 +64,7 @@ public:
  // return {l,r} s.t. P is a prefix of S[sa[i]:] ( i in [l,r) )
  // l == r if P is not a substring of S
  // O(|P|log|S|)
- std::pair<int, int> pattern_matching(const std::vector<Int> &P) const {
+ auto pattern_matching(const String &P) const {
   const int n= s.size(), m= P.size();
   if (n < m) return {0, 0};
   auto f1= [&](int h) {
@@ -83,15 +82,14 @@ public:
    return true;
   };
   auto L= std::partition_point(sa.begin(), sa.end(), f1), R= std::partition_point(L, sa.end(), f2);
-  return {L - sa.begin(), R - sa.begin()};
+  return std::make_pair(L, R);
  }
- auto pattern_matching(const std::string &P) const { return pattern_matching(std::vector<Int>(P.begin(), P.end())); }
 };
 class LCPArray {
  std::vector<int> rnk;
  std::vector<std::vector<int>> dat;
 public:
- template <class Int> LCPArray(const SuffixArray<Int> &sa): rnk(sa.size()) {
+ template <class String> LCPArray(const SuffixArray<String> &sa): rnk(sa.size()) {
   const int n= sa.size(), log= n > 2 ? 31 - __builtin_clz(n - 2) : 0;
   dat.resize(log + 1), dat[0].resize(n - 1);
   auto &lcp= dat[0];

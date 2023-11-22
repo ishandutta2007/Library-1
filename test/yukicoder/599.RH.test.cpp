@@ -1,7 +1,6 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/enumerate_palindromes"
+#define PROBLEM "https://yukicoder.me/problems/no/599"
 #include <iostream>
-#include <string>
-#include <algorithm>
+#include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/CartesianProduct.hpp"
 #include "src/String/RollingHash.hpp"
@@ -10,19 +9,22 @@ using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- using Mint= ModInt<998244353>;
+ using Mint= ModInt<int(1e9) + 7>;
  using K= CartesianProduct<Mint, Mint>;
  using RH= RollingHash<K>;
  RH::init({rng(), rng()});
  string S;
  cin >> S;
- int N= S.length();
+ int n= S.length();
  RH rh(S);
- reverse(S.begin(), S.end());
- RH rhrv(S);
- for (int i= 0; i < N + N - 1; ++i) {
-  int n= lcp(rh.sub((i + 1) / 2), rhrv.sub((N + N - i - 1) / 2));
-  cout << n * 2 - !(i & 1) << " \n"[i == N + N - 2];
+ vector<Mint> dp(n / 2 + 1);
+ dp[0]= 1;
+ Mint ans= 0;
+ for (int i= 0; i <= n / 2; ++i) {
+  for (int j= 0; j < i; ++j)
+   if (rh.sub(j, i - j) == rh.sub(n - i, i - j)) dp[i]+= dp[j];
+  ans+= dp[i];
  }
+ cout << ans << '\n';
  return 0;
 }

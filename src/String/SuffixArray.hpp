@@ -85,10 +85,8 @@ public:
   return {L - sa.begin(), R - sa.begin()};
  }
 };
-class LCPArray {
+struct LCPArray {
  std::vector<int> rnk;
- std::vector<std::vector<int>> dat;
-public:
  template <class String> LCPArray(const SuffixArray<String> &sa): rnk(sa.size()) {
   const int n= sa.size(), log= n > 2 ? 31 - __builtin_clz(n - 2) : 0;
   dat.resize(log + 1), dat[0].resize(n - 1);
@@ -116,4 +114,6 @@ public:
   int k= 31 - __builtin_clz(r - l - 1);
   return std::min(dat[k][l], dat[k][r - (1 << k)]);
  }
+private:
+ std::vector<std::vector<int>> dat;
 };

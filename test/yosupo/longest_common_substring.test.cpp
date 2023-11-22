@@ -8,17 +8,18 @@ signed main() {
  ios::sync_with_stdio(0);
  string S, T;
  cin >> S >> T;
- int N= S.length();
+ int n= S.length();
  S+= "$" + T;
+ int N= S.length();
  SuffixArray sa(S);
  LCPArray lcp(sa);
  int a= 0, c= 0, len= 0;
  for (int i= 0; i + 1 < N; ++i) {
   int x= sa[i], y= sa[i + 1];
   if (x > y) swap(x, y);
-  if (x < N && N < y && len < lcp[i]) {
+  if (x < n && n < y && len < lcp[i]) {
    len= lcp[i];
-   a= x, c= y - N - 1;
+   a= x, c= y - n - 1;
   }
  }
  cout << a << " " << a + len << " " << c << " " << c + len << "\n";

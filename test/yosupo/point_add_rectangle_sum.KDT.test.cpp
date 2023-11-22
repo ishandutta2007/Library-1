@@ -8,14 +8,14 @@ using namespace std;
 struct RSQ {
  using T= long long;
  static T ti() { return 0; }
- static T op(const T &l, const T &r) { return l + r; }
+ static T op(T l, T r) { return l + r; }
 };
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  int N, Q;
  cin >> N >> Q;
- map<array<int, 2>, int> mp;
+ map<array<int, 2>, long long> mp;
  vector<array<int, 4>> query;
  for (int i= 0; i < N; i++) {
   int x, y, w;

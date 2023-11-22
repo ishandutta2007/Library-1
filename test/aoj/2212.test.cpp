@@ -30,7 +30,7 @@ int main() {
   cin >> P;
   vector<string> t(P);
   for (int i= 0; i < P; i++) cin >> t[i];
-  AhoCorasick<char> ac(t);
+  AhoCorasick ac(t);
   queue<int> que;
   int K= N * M * ac.state_size();
   int dist[K];

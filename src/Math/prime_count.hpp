@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <tuple>
 #include <cmath>
+#include <cstdint>
 template <class T> class QuotientSum {
  uint64_t N;
  size_t K;

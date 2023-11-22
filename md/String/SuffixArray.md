@@ -29,6 +29,11 @@ $\SA_k=i \Leftrightarrow$ 接尾辞を辞書順で並べたときの $k$ 番目 
 
 ## `LCPArray` クラス
 $\mathrm{LCP}_k:=$ $S_{\SA_k:}$ と $S_{\SA_{k+1}:}$ の共通接頭辞の長さ
+
+|メンバ変数|概要|
+|---|---|
+|`rnk`| 配列 $\mathrm{rank}$. <br> $\mathrm{rank}_{i}=k\Leftrightarrow \SA_k=i$ <br>`vector<int>` 型でサイズは $n$.|
+
 |メンバ関数|概要|計算量|
 |---|---|---|
 |`LCPArray(sa)`|コンストラクタ.<br> `SuffixArray`クラスを渡す.|$\mathcal{O}(n\log n)$|

@@ -13,7 +13,7 @@ int main() {
  cin >> N;
  vector<string> S(N);
  for (int i= 0; i < N; i++) cin >> S[i];
- AhoCorasick<char> ac(S);
+ AhoCorasick ac(S);
  string t;
  cin >> t;
  int M= t.length();
@@ -21,7 +21,7 @@ int main() {
  fill_n(dp, M + 1, 0);
  dp[0]= 1;
  for (int i= 0, s= ac.initial_state();;) {
-  auto ps= ac.match_patterns(s);
+  auto ps= ac.matched_patterns(s);
   for (int j: ps) {
    int k= i - S[j].length();
    if (i < 0) continue;

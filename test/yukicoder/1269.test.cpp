@@ -25,7 +25,7 @@ int main() {
    Fs.push_back(F);
   }
  }
- AhoCorasick<int8_t> ac(Fs);
+ AhoCorasick ac(Fs);
  int M= ac.state_size();
  vector<Mint> dp(M);
  dp[0]= 1;

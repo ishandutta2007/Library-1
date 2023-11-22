@@ -2,10 +2,9 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
-template <typename S> struct AhoCorasick {
- using symbol_t= S;
- template <class Array> AhoCorasick(const std::vector<Array> &ps) {
-  static_assert(std::is_convertible_v<decltype(ps[0][0]), symbol_t>);
+template <class String> struct AhoCorasick {
+ using symbol_t= typename String::value_type;
+ AhoCorasick(const std::vector<String> &ps) {
   const size_t n= ps.size();
   std::vector<int> ord(n), rows;
   std::iota(ord.begin(), ord.end(), 0), std::sort(ord.begin(), ord.end(), [&](int l, int r) { return ps[l] < ps[r]; });
@@ -15,10 +14,10 @@ template <typename S> struct AhoCorasick {
     if (ps[ord[i - 1]][j] != ps[ord[i]][j]) break;
   size_t nodes= 1;
   for (size_t i= 0; i < n; i++) nodes+= ps[ord[i]].size() - lcp[i];
-  beg.reserve(nodes + 1), es.reserve(nodes), match.reserve(nodes), rows.reserve(n + 1);
+  bg.reserve(nodes + 1), es.reserve(nodes), match.reserve(nodes), rows.reserve(n + 1);
   for (size_t row= 0; row < n; row++)
    if (!ps[ord[row]].empty()) rows.push_back(row);
-  rows.push_back(-1), beg.push_back(0), match.push_back({});
+  rows.push_back(-1), bg.push_back(0), match.push_back({});
   for (int i= 0; i < n && ps[ord[i]].empty(); i++) match[0].push_back(ord[i]);
   for (size_t col= 0; rows[0] != -1; col++) {
    int size= 0;
@@ -26,27 +25,27 @@ template <typename S> struct AhoCorasick {
     if (r == -1) break;
     size_t row= r;
     if (size++; lcp[row] <= col) {
-     if (size_t par= prev[row]; beg[par] == -1) beg[par]= es.size();
-     es.push_back(ps[ord[row]][col]), beg.push_back(-1);
+     if (size_t par= prev[row]; bg[par] == -1) bg[par]= es.size();
+     es.push_back(ps[ord[row]][col]), bg.push_back(-1);
      if (match.push_back({}); col + 1 == ps[ord[row]].size())
       for (int i= row; i < n && ps[ord[i]] == ps[ord[row]]; i++) match.back().push_back(ord[i]);
     }
-    if (cur[row]= beg.size() - 1; col + 1 == ps[ord[row]].size()) r= -1;
+    if (cur[row]= bg.size() - 1; col + 1 == ps[ord[row]].size()) r= -1;
    }
    *std::remove(rows.begin(), rows.begin() + size, -1)= -1, prev.swap(cur);
   }
-  beg.push_back(es.size());
-  for (size_t i= beg.size() - 1; --i;)
-   if (beg[i] == -1) beg[i]= beg[i + 1];
+  bg.push_back(es.size());
+  for (size_t i= bg.size() - 1; --i;)
+   if (bg[i] == -1) bg[i]= bg[i + 1];
   fail.assign(match.size(), -1);
   for (int u= 0, ed= match.size(); u < ed; u++)
-   for (auto i= beg[u], v= i + 1; i < beg[u + 1]; i++, v++) {
+   for (auto i= bg[u], v= i + 1; i < bg[u + 1]; i++, v++) {
     int r= fail[v]= transition(fail[u], es[i]);
     match[v].insert(match[v].end(), match[r].begin(), match[r].end());
    }
  }
  inline int initial_state() const { return 0; }
- inline std::vector<int> match_patterns(int s) const { return match[s]; }
+ inline std::vector<int> matched_patterns(int s) const { return match[s]; }
  inline bool is_accept(int s) const { return !match[s].empty(); }
  inline int transition(int u, symbol_t c) const {
   for (; u >= 0; u= fail[u])
@@ -55,12 +54,12 @@ template <typename S> struct AhoCorasick {
  }
  inline int state_size() const { return match.size(); }
 private:
- std::vector<int> beg, fail;
+ std::vector<int> bg, fail;
  std::vector<symbol_t> es;
  std::vector<std::vector<int>> match;
  inline int next(int s, symbol_t c) const {
-  int index= std::lower_bound(es.begin() + beg[s], es.begin() + beg[s + 1], c) - es.begin();
-  if (index != beg[s + 1] && c == es[index]) return index + 1;
+  int index= std::lower_bound(es.begin() + bg[s], es.begin() + bg[s + 1], c) - es.begin();
+  if (index != bg[s + 1] && c == es[index]) return index + 1;
   return -1;
  }
 };

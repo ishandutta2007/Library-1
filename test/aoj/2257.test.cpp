@@ -36,7 +36,7 @@ int main() {
   for (int i= 1; i < n; i++) adj[0].push_back(i);
   vector<string> seasonword(K);
   for (int i= 0; i < K; i++) cin >> seasonword[i];
-  AhoCorasick<char> ac(seasonword);
+  AhoCorasick ac(seasonword);
   unordered_map<uint64_t, Mint> memo;
   auto dfs= [&](auto self, int v, int l, bool kigo, int s) -> Mint {
    if (l > M) return 0;
@@ -50,7 +50,7 @@ int main() {
     if (m > M) continue;
     int t= s;
     int kigo_num= kigo;
-    for (char c: us) t= ac.transition(t, c), kigo_num+= ac.match_patterns(t).size();
+    for (char c: us) t= ac.transition(t, c), kigo_num+= ac.matched_patterns(t).size();
     if (kigo_num > 1) continue;
     ret+= self(self, u, m, kigo_num, t);
    }

@@ -22,6 +22,7 @@ documentation_of: ../../src/String/RollingHash.hpp
 |`length()`|文字列の長さを返す.|
 |`hash()`|文字列を指すハッシュ値を返す.|
 |`sub(int b,int n)`|部分文字列 $S_{b:b+n}$ に対応する `RollingHash` クラスのインスタンスを返す. |
+|`sub(int b)`|接尾辞 $S_{b:}$ に対応する `RollingHash` クラスのインスタンスを返す. |
 |`to_str()`|文字列に直して`string`で返す. デバッグ用.|
 
 |演算子オーバーロード|概要|計算量|

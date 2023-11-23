@@ -6,7 +6,7 @@ class CartesianTree {
  std::vector<int> par;
  int rt;
 public:
- template <class T> CartesianTree(const std::vector<T>& a, bool is_min= 1): rg(a.size()), ch(a.size(), std::array{-1, -1}), par(a.size(), -1) {
+ template <class Vec> CartesianTree(const Vec &a, bool is_min= 1): rg(a.size()), ch(a.size(), std::array{-1, -1}), par(a.size(), -1) {
   const int n= a.size();
   auto comp= [&](int l, int r) { return (is_min ? a[l] < a[r] : a[l] > a[r]) || (a[l] == a[r] && l < r); };
   int st[n], t= 0;

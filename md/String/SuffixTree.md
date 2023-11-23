@@ -2,7 +2,7 @@
 title: Suffix Tree (接尾辞木)
 documentation_of: ../../src/String/SuffixTree.hpp
 ---
-![mississippi.html](/img/suffixtree.svg)
+![suffixtree.svg](https://github.com/hashiryo/Library/blob/master/img/suffixtree.svg?raw=true)
 
 ## `SuffixTree` クラス
 

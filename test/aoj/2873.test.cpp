@@ -13,7 +13,7 @@ signed main() {
  cin >> N;
  vector<string> P(N);
  for (int i= 0; i < N; ++i) cin >> P[i];
- AhoCorasick<int> aho(P);
+ AhoCorasick aho(P);
  int n= S.length();
  int ans= 0;
  for (int i= 0, s= aho.initial_state(); i < n; ++i) {

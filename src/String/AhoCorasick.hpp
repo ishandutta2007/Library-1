@@ -47,9 +47,9 @@ template <class String> struct AhoCorasick {
  inline int initial_state() const { return 0; }
  inline std::vector<int> matched_patterns(int s) const { return match[s]; }
  inline bool is_accept(int s) const { return !match[s].empty(); }
- inline int transition(int u, symbol_t c) const {
-  for (; u >= 0; u= fail[u])
-   if (int v= next(u, c); v != -1) return v;
+ inline int transition(int s, symbol_t c) const {
+  for (; s >= 0; s= fail[s])
+   if (int v= next(s, c); v != -1) return v;
   return 0;
  }
  inline int state_size() const { return match.size(); }

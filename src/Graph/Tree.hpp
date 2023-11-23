@@ -82,6 +82,7 @@ public:
  int to_seq(int v) const { return L[v]; }
  int to_node(int i) const { return I[i]; }
  int parent(int v) const { return P[v]; }
+ int head(int v) const { return PP[v]; }
  int root(int v) const {
   for (v= PP[v];; v= PP[P[v]])
    if (P[v] == -1) return v;
@@ -102,13 +103,9 @@ public:
   static_assert(weight, "\'la_w\' is not available");
   for (C c;; w-= c) {
    int u= PP[v];
-   c= DW[v] - DW[u] + W[u];
-   if (w < c) {
+   if (c= DW[v] - DW[u] + W[u]; w < c) {
     int ok= L[v], ng= L[u] - 1;
-    while (ok - ng > 1) {
-     if (int m= (ok + ng) / 2; DW[v] - DW[I[m]] <= w) ok= m;
-     else ng= m;
-    }
+    for (int m; ok - ng > 1;) m= (ok + ng) / 2, (DW[v] - DW[I[m]] <= w ? ok : ng)= m;
     return I[ok];
    }
    if (v= P[u]; v == -1) return u;

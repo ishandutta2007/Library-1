@@ -11,14 +11,15 @@ signed main() {
  cin >> N;
  LiChaoTree lct([](long long x, long long a, long long b) { return a * x + b; });
  auto cht= lct.make_tree<MAXIMIZE>();
- long long ans;
+ long long ans= -1e18;
  cht.insert(0, 0);
  for (int i= 0;;) {
   long long Q;
   cin >> Q;
-  ans= cht.query(Q).first;
+  long long dp= cht.query(Q).first;
+  ans= max(ans, dp);
   if (++i == N) break;
-  cht.insert(Q, ans);
+  cht.insert(Q, dp);
  }
  cout << ans << '\n';
  return 0;

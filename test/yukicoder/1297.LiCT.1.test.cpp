@@ -9,7 +9,7 @@ signed main() {
  ios::sync_with_stdio(0);
  long long N, C;
  cin >> N >> C;
- LiChaoTree lct([](long long x, long long a, long long b) { return a * x + b; });
+ LiChaoTree lct([](long long x, long long a, long long b) { return (__int128_t)a * x + b; }, -1e17, 1e17);
  auto cht1= lct.make_tree<MINIMIZE>(), cht2= lct.make_tree<MINIMIZE>();
  cht2.insert(0, 0);
  for (long long i= 0;;) {
@@ -19,6 +19,7 @@ signed main() {
   if (++i == N) break;
   cht2.insert(i, cht1.query(i).first + c * i);
  }
- cout << (cht1.query(N).first + (N - 1) * N * C) / 2 << '\n';
+ long long ans= (cht1.query(N).first + (N - 1) * N * C) / 2;
+ cout << ans << '\n';
  return 0;
 }

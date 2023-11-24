@@ -25,6 +25,6 @@ signed main() {
    if (rh.sub(j, i - j) == rh.sub(n - i, i - j)) dp[i]+= dp[j];
   ans+= dp[i];
  }
- cout << ans << '\n';
+ cout << ans;
  return 0;
 }

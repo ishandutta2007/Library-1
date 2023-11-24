@@ -10,14 +10,15 @@ signed main() {
  int N;
  cin >> N;
  ConvexHullTrick<long long, MAXIMIZE> cht;
- long long ans;
+ long long ans= -1e18;
  cht.insert(0, 0);
  for (int i= 0;;) {
   long long Q;
   cin >> Q;
-  ans= cht.query(Q);
+  long long dp= cht.query(Q);
+  ans= max(ans, dp);
   if (++i == N) break;
-  cht.insert(Q, ans);
+  cht.insert(Q, dp);
  }
  cout << ans << '\n';
  return 0;

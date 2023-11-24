@@ -21,3 +21,7 @@ test/hackerrank/minimum-history-query.DynSeg.test.cpp
 test/hackerrank/drawing-rectangles.test.cpp
 test/hackerrank/range-counting-query.Mo.test.cpp
 test/hackerrank/grid-xor-query.KDT.test.cpp
+test/hackerrank/ashton-and-string.SuffixTree*.test.cpp
+test/hackerrank/morgan-and-a-string.RH*.test.cpp
+test/hackerrank/save-humanity.RH*.test.cpp
+test/hackerrank/string-function-calculation.SuffixTree*.test.cpp

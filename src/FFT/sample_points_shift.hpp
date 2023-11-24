@@ -3,13 +3,14 @@
 #include <algorithm>
 #include <numeric>
 #include <cassert>
+#include <cstdint>
 #include "src/FFT/NTT.hpp"
-template <class mod_t, std::size_t LM= 1 << 24> std::vector<mod_t> sample_points_shift(const std::vector<mod_t>& y, mod_t c, int m= 1) {
+template <class mod_t, size_t LM= 1 << 24> std::vector<mod_t> sample_points_shift(const std::vector<mod_t>& y, mod_t c, int m= 1) {
  assert(m <= mod_t::mod()), assert(y.size() <= mod_t::mod());
  static constexpr int TH= (int[]){45, 32, 75, 130, 180, 260}[nttarr_cat<mod_t, LM>];
  if (m == 0) return {};
- std::uint64_t c_64= c.val(), nc1= (c + (m - 1)).val();
- std::uint32_t k= y.size(), d= k - 1, i= d, e;
+ uint64_t c_64= c.val(), nc1= (c + (m - 1)).val();
+ uint32_t k= y.size(), d= k - 1, i= d, e;
  if (c_64 + m <= k) return std::vector<mod_t>(y.begin() + c_64, y.begin() + c_64 + m);
  mod_t *x= GlobalArray<mod_t, LM, 0>::bf, *p= GlobalArray<mod_t, LM, 1>::bf, *bf;
  for (x[d]= 1; i; i--) x[i - 1]= x[i] * i;

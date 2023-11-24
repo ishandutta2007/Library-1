@@ -23,7 +23,9 @@ documentation_of: ../../src/String/SuffixTree.hpp
 |`substr(l,n)`|部分文字列 $S_{l:l+n}$ を構成する頂点のうちの末端の頂点を返す. |$\mathcal{O}(\log n)$|
 
 ## 問題例
-[デンソークリエイトプログラミングコンテスト2022 Winter(AtCoder Beginner Contest 280) Ex - Substring Sort](https://atcoder.jp/contests/abc280/tasks/abc280_h)
+[デンソークリエイトプログラミングコンテスト2022 Winter(AtCoder Beginner Contest 280) Ex - Substring Sort](https://atcoder.jp/contests/abc280/tasks/abc280_h)\
+[HackerRank Ashton and String](https://www.hackerrank.com/challenges/ashton-and-string)\
+[HackerRank String Function Calculation](https://www.hackerrank.com/challenges/string-function-calculation)
 
 ## 参考
 [https://twitter.com/maspy_stars/status/1565901414236205057?s=20&t=S2Tu6ayozHcakxai8dmh4g](https://twitter.com/maspy_stars/status/1565901414236205057?s=20&t=S2Tu6ayozHcakxai8dmh4g)

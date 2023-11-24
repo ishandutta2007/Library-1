@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <cassert>
+#include <cstdint>
 #include "src/Math/is_prime.hpp"
 class StirlingNumber {
  const uint16_t p;

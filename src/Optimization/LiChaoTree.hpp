@@ -17,10 +17,15 @@ template <class F, class T, class... Prms> class LiChaoTree<F, std::tuple<T, Prm
    int id= -1;
    Node *ch[2]= {nullptr, nullptr};
   } *root;
-  static constexpr R ID= (sgn == MINIMIZE ? std::numeric_limits<R>::max() : std::numeric_limits<R>::lowest()) / 2;
-  static inline bool cmp(R p, R n, int pi, int ni) {
+  inline R eval(int id, T x) const { return std::apply(ins->f, std::tuple_cat(std::make_tuple(x), ins->ps[id])); }
+  static inline bool cmp_res(const R &p, const R &n, int pi, int ni) {
    if constexpr (sgn == MINIMIZE) return p > n || (p == n && pi > ni);
    else return p < n || (p == n && pi > ni);
+  }
+  inline bool cmp(T x, int pi, int ni) const {
+   if (pi == -1) true;
+   if (ni == -1) false;
+   return cmp_res(eval(pi, x), eval(ni, x), pi, ni);
   }
   static inline bool end(T l, T r) {
    if constexpr (std::is_floating_point_v<T>) return r - l < 1e-9;
@@ -30,16 +35,15 @@ template <class F, class T, class... Prms> class LiChaoTree<F, std::tuple<T, Prm
    if constexpr (std::is_floating_point_v<T>) return r;
    else return r - 1;
   }
-  inline R eval(int id, T x) const { return id < 0 ? ID : std::apply(ins->f, std::tuple_cat(std::make_tuple(x), ins->ps[id])); }
   inline void addl(Node *&t, int id, T xl, T xr) {
    if (!t) return t= new Node{id}, void();
    T xr_= ub(xr);
-   bool bl= cmp(eval(t->id, xl), eval(id, xl), t->id, id), br= cmp(eval(t->id, xr_), eval(id, xr_), t->id, id);
+   bool bl= cmp(xl, t->id, id), br= cmp(xr_, t->id, id);
    if (!bl && !br) return;
    if constexpr (persistent) t= new Node(*t);
    if (bl && br) return t->id= id, void();
    T xm= (xl + xr) / 2;
-   if (cmp(eval(t->id, xm), eval(id, xm), t->id, id)) std::swap(t->id, id), bl= !bl;
+   if (cmp(xm, t->id, id)) std::swap(t->id, id), bl= !bl;
    if (!end(xl, xr)) bl ? addl(t->ch[0], id, xl, xm) : addl(t->ch[1], id, xm, xr);
   }
   inline void adds(Node *&t, int id, T l, T r, T xl, T xr) {
@@ -51,12 +55,12 @@ template <class F, class T, class... Prms> class LiChaoTree<F, std::tuple<T, Prm
    adds(t->ch[0], id, l, r, xl, xm), adds(t->ch[1], id, l, r, xm, xr);
   }
   inline std::pair<R, int> query(const Node *t, T x, T xl, T xr) const {
-   if (!t) return {ID, -1};
+   if (!t) return {R(), -1};
    R a= eval(t->id, x);
    if (end(xl, xr)) return {a, t->id};
    T xm= (xl + xr) / 2;
    auto b= x < xm ? query(t->ch[0], x, xl, xm) : query(t->ch[1], x, xm, xr);
-   return cmp(a, b.first, t->id, b.second) ? b : std::make_pair(a, t->id);
+   return b.second != -1 && cmp_res(a, b.first, t->id, b.second) ? b : std::make_pair(a, t->id);
   }
  public:
   LiChaoTreeInterface()= default;

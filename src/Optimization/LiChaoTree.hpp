@@ -23,8 +23,8 @@ template <class F, class T, class... Prms> class LiChaoTree<F, std::tuple<T, Prm
    else return p < n || (p == n && pi > ni);
   }
   inline bool cmp(T x, int pi, int ni) const {
-   if (pi == -1) true;
-   if (ni == -1) false;
+   if (pi == -1) return true;
+   if (ni == -1) return false;
    return cmp_res(eval(pi, x), eval(ni, x), pi, ni);
   }
   static inline bool end(T l, T r) {

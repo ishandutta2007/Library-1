@@ -6,7 +6,7 @@ namespace mul {
 template <class T> struct Totient {
  static constexpr T f(uint64_t p, short e) {
   T ret= p - 1;
-  while (e-- > 1) ret*= p;
+  while (--e) ret*= p;
   return ret;
  }
  static std::vector<T> poly() { return {-1, 1}; }

@@ -4,10 +4,9 @@
 #include <tuple>
 #include <cmath>
 #include <cstdint>
-template <class T> class PrimeSum {
+template <class T> struct PrimeSum {
  uint64_t N;
  size_t K;
-public:
  std::vector<T> Xs, Xl;
  PrimeSum(uint64_t N= 0): N(N), K(std::sqrt(N)), Xs(K + 1), Xl(K + 1) {}
  PrimeSum(uint64_t N, size_t K, const std::vector<T> &s, const std::vector<T> &l): N(N), K(K), Xs(s), Xl(l) {}
@@ -22,40 +21,26 @@ public:
   for (auto &x: Xl) x*= r;
   return *this;
  }
- PrimeSum &operator+=(T r) {
-  for (auto &x: Xs) x+= r;
-  for (auto &x: Xl) x+= r;
-  return *this;
- }
- PrimeSum &operator-=(T r) {
-  for (auto &x: Xs) x-= r;
-  for (auto &x: Xl) x-= r;
-  return *this;
- }
  PrimeSum &operator+=(const PrimeSum &r) {
-  for (size_t i= Xs.size(); i--;) Xs[i]+= r.Xs[i];
-  for (size_t i= Xl.size(); i--;) Xl[i]+= r.Xl[i];
+  for (size_t i= K + 1; i--;) Xs[i]+= r.Xs[i];
+  for (size_t i= K + 1; i--;) Xl[i]+= r.Xl[i];
   return *this;
  }
  PrimeSum &operator-=(const PrimeSum &r) {
-  for (size_t i= Xs.size(); i--;) Xs[i]-= r.Xs[i];
-  for (size_t i= Xl.size(); i--;) Xl[i]-= r.Xl[i];
+  for (size_t i= K + 1; i--;) Xs[i]-= r.Xs[i];
+  for (size_t i= K + 1; i--;) Xl[i]-= r.Xl[i];
   return *this;
  }
  PrimeSum operator*(T r) const { return PrimeSum(*this)*= r; }
- PrimeSum operator+(T r) const { return PrimeSum(*this)+= r; }
- PrimeSum operator-(T r) const { return PrimeSum(*this)-= r; }
  friend PrimeSum operator*(T l, const PrimeSum &r) { return r * l; }
- friend PrimeSum operator+(T l, const PrimeSum &r) { return r + l; }
- friend PrimeSum operator-(T l, PrimeSum r) {
-  for (auto &x: r.Xs) x= l - x;
-  for (auto &x: r.Xl) x= l - x;
-  return r;
- }
  PrimeSum operator+(const PrimeSum &r) const { return PrimeSum(*this)+= r; }
  PrimeSum operator-(const PrimeSum &r) const { return PrimeSum(*this)-= r; }
  inline T sum() const { return Xl[1]; }
- inline T sum(uint64_t n) const { return n <= K ? Xs[n] : Xl[N / n]; }
+ inline T &sum(uint64_t n) const { return n <= K ? Xs[n] : Xl[N / n]; }
+ void add(uint64_t p, T v) {
+  for (size_t i= p; i <= K; ++i) Xs[i]+= v;
+  for (size_t i= std::min<uint64_t>(N / p, K); i; --i) Xl[i]+= v;
+ }
 };
 template <class T> class ExtendedEratosthenesSieve {
  uint64_t N;
@@ -66,26 +51,26 @@ public:
  ExtendedEratosthenesSieve(uint64_t N, size_t D): N(N), K(std::sqrt(N)), pwsum(D + 1) {
   std::vector<std::vector<T>> s(D + 1, std::vector<T>(K + 1)), l(D + 1, std::vector<T>(K + 1));
   T fct= 1;
-  for (int d= D + 1; d; --d) fct*= d;
+  for (size_t d= D + 1; d; --d) fct*= d;
   fct= T(1) / fct;
-  for (int n= 1, d= 0; n <= K; ++n, d= 0)
+  for (size_t n= 1, d= 0; n <= K; ++n, d= 0)
    for (T prd= n; d <= D; prd*= (n + ++d)) s[d][n]= prd;
-  for (int n= 1, d= 0; n <= K; ++n, d= 0)
+  for (size_t n= 1, d= 0; n <= K; ++n, d= 0)
    for (T prd= N / n; d <= D; prd*= ((N / n) + ++d)) l[d][n]= prd;
-  for (int d= D + 1; --d; fct*= d + 1)
-   for (int n= 1; n <= K; ++n) s[d][n]*= fct, l[d][n]*= fct;
+  for (size_t d= D + 1; --d; fct*= d + 1)
+   for (size_t n= 1; n <= K; ++n) s[d][n]*= fct, l[d][n]*= fct;
   if (D >= 2) {
    std::vector<T> stir(D + 1, 0);
    stir[1]= 1;
-   for (int d= 2; d <= D; stir[d++]= 1) {
-    for (int j= d; --j;) stir[j]= stir[j - 1] + stir[j] * (d - 1);
-    for (int n= 1; n <= K; ++n)
-     for (int j= 1; j < d; ++j) s[d][n]-= stir[j] * s[j][n], l[d][n]-= stir[j] * l[j][n];
+   for (size_t d= 2; d <= D; stir[d++]= 1) {
+    for (size_t j= d; --j;) stir[j]= stir[j - 1] + stir[j] * (d - 1);
+    for (size_t n= 1; n <= K; ++n)
+     for (size_t j= 1; j < d; ++j) s[d][n]-= stir[j] * s[j][n], l[d][n]-= stir[j] * l[j][n];
    }
   }
-  for (int d= 0; d <= D; ++d)
-   for (int n= 1; n <= K; ++n) s[d][n]-= 1, l[d][n]-= 1;
-  for (int p= 2, d= 0; p <= K; ++p, d= 0)
+  for (size_t d= 0; d <= D; ++d)
+   for (size_t n= 1; n <= K; ++n) s[d][n]-= 1, l[d][n]-= 1;
+  for (size_t p= 2, d= 0; p <= K; ++p, d= 0)
    if (s[0][p] != s[0][p - 1]) {
     primes.emplace_back(p);
     uint64_t q= uint64_t(p) * p, M= N / p;
@@ -116,15 +101,15 @@ public:
   size_t psz= primes.size();
   for (size_t j= psz; j--;) {
    uint64_t p= primes[j], M= N / p, q= p * p;
-   int t= K / p, u= std::min<uint64_t>(K, N / q);
+   size_t t= K / p, u= std::min<uint64_t>(K, N / q);
    T tk= X.Xs[p - 1];
    for (auto i= q; i <= K; ++i) X.Xs[i]+= (X.Xs[i / p] - tk) * f(p, 1);
-   for (int i= u; i > t; --i) X.Xl[i]+= (X.Xs[M / i] - tk) * f(p, 1);
-   for (int i= t; i; --i) X.Xl[i]+= (X.Xl[i * p] - tk) * f(p, 1);
+   for (size_t i= u; i > t; --i) X.Xl[i]+= (X.Xs[M / i] - tk) * f(p, 1);
+   for (size_t i= t; i; --i) X.Xl[i]+= (X.Xl[i * p] - tk) * f(p, 1);
   }
   for (auto n= K; n; --n) X.Xs[n]+= 1;
   for (auto n= K; n; --n) X.Xl[n]+= 1;
-  auto dfs= [&](auto rc, uint64_t n, size_t bg, T cf) -> T {
+  auto dfs= [&](auto &rc, uint64_t n, size_t bg, T cf) -> T {
    if (cf == T(0)) return T(0);
    T ret= cf * X.sum(n);
    for (auto i= bg; i < psz; ++i) {

@@ -1,7 +1,7 @@
 #define PROBLEM "https://www.hackerrank.com/contests/university-codesprint-5/challenges/cube-loving-numbers"
 #include <iostream>
 #include <vector>
-#include "src/Math/Sieve.hpp"
+#include "src/NumberTheory/Sieve.hpp"
 // 倍数メビウス
 using namespace std;
 signed main() {

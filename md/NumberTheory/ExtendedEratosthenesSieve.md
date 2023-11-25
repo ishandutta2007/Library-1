@@ -3,6 +3,8 @@ title: 拡張エラトステネス篩
 documentation_of: ../../src/NumberTheory/ExtendedEratosthenesSieve.hpp
 ---
 
+
+
 ## 計算量
 $\mathcal{O} (d^2\sqrt{N}+dN^{3/4}/\log N)$ \
 $d$ := degre of polynomial

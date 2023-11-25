@@ -5,7 +5,7 @@
 #include <vector>
 #include "src/Math/Combination.hpp"
 #include "src/Math/ModInt.hpp"
-#include "src/Math/Sieve.hpp"
+#include "src/NumberTheory/Sieve.hpp"
 #include "src/FFT/sample_points_shift.hpp"
 using namespace std;
 signed main() {

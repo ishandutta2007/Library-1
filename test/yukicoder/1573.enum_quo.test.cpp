@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1573"
 // O(√N)
 #include <iostream>
-#include "src/Math/enumerate_quotients.hpp"
+#include "src/NumberTheory/enumerate_quotients.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 signed main() {

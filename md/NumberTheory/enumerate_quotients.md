@@ -1,6 +1,6 @@
 ---
 title: $\lfloor N/i \rfloor$ の列挙
-documentation_of: ../../src/Math/enumerate_quotients.hpp
+documentation_of: ../../src/NumberTheory/enumerate_quotients.hpp
 ---
 
 $\lbrack N\rbrack = \lbrace1,2,\dots,N\rbrace$ を $\left\lfloor \frac{N}{i} \right\rfloor$ が等しくなるような

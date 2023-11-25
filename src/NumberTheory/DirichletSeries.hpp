@@ -9,24 +9,49 @@ template <class T> struct DirichletSeries {
  using Self= DirichletSeries;
  uint64_t N;  // <= K * L
  size_t K;
- // x: i (1 <= i <= K), Xl : 1+2+...+⌊N/i⌋ (1 <= i <= L)
+ // x : f(i) (1 <= i <= K)
+ // Xs : f(1)+f(2)+...+f(i) (1 <= i <= K)
+ // Xl : f(1)+f(2)+...+f(⌊N/i⌋) (1 <= i <= L)
  std::vector<T> x, Xs, Xl;
  DirichletSeries(uint64_t N, const std::vector<T> &x, const std::vector<T> &Xs, const std::vector<T> &Xl): N(N), K(x.size() - 1), x(x), Xs(Xs), Xl(Xl) { assert(K + 1 == Xs.size()), assert(N < uint64_t(K) * Xl.size()); }
  DirichletSeries(uint64_t N, bool unit= false): N(N), K(N > 1 ? std::max(std::ceil(std::pow((double)N / std::log2(N), 2. / 3)), std::sqrt(N) + 1) : 1) {
   if (assert(N > 0), x.resize(K + 1), Xs.resize(K + 1), Xl.resize(size_t(double(N - 1 + K) / K) + 1); unit) x[1]= 1, std::fill(Xl.begin() + 1, Xl.end(), 1), std::fill(Xs.begin() + 1, Xs.end(), 1);
  }
- template <class F, std::enable_if_t<std::is_convertible_v<std::invoke_result_t<F, uint64_t>, T>, std::nullptr_t> = nullptr> DirichletSeries(uint64_t N, const F &sum): DirichletSeries(N) {
+ template <class F, typename= std::enable_if_t<std::is_convertible_v<std::invoke_result_t<F, uint64_t>, T>>> DirichletSeries(uint64_t N, const F &sum): DirichletSeries(N) {
   for (size_t i= Xs.size(); --i;) Xs[i]= sum(i);
   for (size_t i= x.size(); --i;) x[i]= Xs[i] - Xs[i - 1];
   for (size_t i= Xl.size(); --i;) Xl[i]= sum(uint64_t((double)N / i));
  }
- Self &operator*=(const T &r) {
-  for (size_t i= x.size(); --i;) x[i]*= r;
-  for (size_t i= Xs.size(); --i;) Xs[i]*= r;
-  for (size_t i= Xl.size(); --i;) Xl[i]*= r;
+ Self operator-() const {
+  std::vector<T> y= x, Ys= Xs, Yl= Xl;
+  for (auto &e: y) e= -e;
+  for (auto &e: Ys) e= -e;
+  for (auto &e: Yl) e= -e;
+  return Self(N, y, Ys, Yl);
+ }
+ Self &operator+=(T r) {
+  for (auto &e: Xl) e+= r;
+  for (auto &e: Xs) e+= r;
+  return x[1]+= r, *this;
+ }
+ Self &operator-=(T r) {
+  for (auto &e: Xl) e-= r;
+  for (auto &e: Xs) e-= r;
+  return x[1]-= r, *this;
+ }
+ Self &operator*=(T r) {
+  for (auto &e: x) e*= r;
+  for (auto &e: Xs) e*= r;
+  for (auto &e: Xl) e*= r;
   return *this;
  }
- Self operator*(const T &r) const { return Self(*this)*= r; }
+ Self &operator/=(T r) {
+  T inv= T(1) / r;
+  for (auto &e: x) e*= inv;
+  for (auto &e: Xs) e*= inv;
+  for (auto &e: Xl) e*= inv;
+  return *this;
+ }
  Self &operator+=(const Self &r) {
   assert(N == r.N), assert(K == r.K), assert(Xl.size() == r.Xl.size());
   for (size_t i= x.size(); --i;) x[i]+= r.x[i];
@@ -40,31 +65,21 @@ template <class T> struct DirichletSeries {
   for (size_t i= Xs.size(); --i;) Xs[i]-= r.Xs[i];
   for (size_t i= Xl.size(); --i;) Xl[i]-= r.Xl[i];
  }
+ Self operator+(T r) const { return Self(*this)+= r; }
+ Self operator-(T r) const { return Self(*this)-= r; }
+ Self operator*(T r) const { return Self(*this)*= r; }
+ Self operator/(T r) const { return Self(*this)/= r; }
  Self operator+(const Self &r) const { return Self(*this)+= r; }
  Self operator-(const Self &r) const { return Self(*this)-= r; }
- Self operator-() const {
-  std::vector<T> a(x.size()), As(Xl.size()), A(Xl.size());
-  for (size_t i= x.size(); --i;) a[i]= -x[i];
-  for (size_t i= Xs.size(); --i;) As[i]= -Xs[i];
-  for (size_t i= Xl.size(); --i;) A[i]= -Xl[i];
-  return Self(N, a, As, A);
+ friend Self operator+(T l, Self r) { return r+= l; }
+ friend Self operator-(T l, Self r) {
+  for (auto &e: r.x) e= -e;
+  for (auto &e: r.Xs) e= l - e;
+  for (auto &e: r.Xl) e= l - e;
+  return r.x[1]+= l, r;
  }
- Self &operator+=(const T &r) {
-  for (size_t i= Xl.size(); --i;) Xl[i]+= r;
-  for (size_t i= Xs.size(); --i;) Xs[i]+= r;
-  return x[1]+= r, *this;
- }
- Self &operator-=(const T &r) {
-  for (size_t i= Xl.size(); --i;) Xl[i]-= r;
-  for (size_t i= Xs.size(); --i;) Xs[i]-= r;
-  return x[1]-= r, *this;
- }
- Self operator+(const T &r) const { return Self(*this)+= r; }
- Self operator-(const T &r) const { return Self(*this)-= r; }
- friend Self operator+(const T &l, Self r) { return r+= l; }
- friend Self operator-(const T &l, Self r) { return -(r-= l); }
- friend Self operator*(const T &l, Self r) { return r*= l; }
- friend Self operator/(const T &l, Self r) { return (Self(r.N, true)/= r)*= l; }
+ friend Self operator*(T l, const Self &r) { return r * l; }
+ friend Self operator/(T l, const Self &r) { return (Self(r.N, true)/= r)*= l; }
  Self operator*(const Self &r) const {
   assert(N == r.N), assert(K == r.K), assert(Xl.size() == r.Xl.size());
   std::vector<T> c(K + 1), Cs(K + 1), C(Xl.size());
@@ -76,8 +91,8 @@ template <class T> struct DirichletSeries {
   for (size_t i= 1; i <= K; ++i) Cs[i]= Cs[i - 1] + c[i];
   return Self(N, c, Cs, C);
  }
- Self &operator*=(const Self &r) { return *this= *this * r; }
  Self operator/(const Self &r) const { return Self(*this)/= r; }
+ Self &operator*=(const Self &r) { return *this= *this * r; }
  Self &operator/=(const Self &r) {
   assert(N == r.N), assert(K == r.K), assert(Xl.size() == r.Xl.size());
   for (size_t i= 1, j, ed; i <= K; i++)
@@ -146,7 +161,7 @@ template <class T> struct DirichletSeries {
  inline T sum() const { return Xl[1]; }
  inline T sum(uint64_t n) const { return n <= K ? Xs[n] : Xl[(double)N / n]; }
 };
-template <class T>  // 1, zeta(s), O(N)
+template <class T>  // 1, zeta(s), O(K+L)
 DirichletSeries<T> get_1(uint64_t N) {
  DirichletSeries<T> ret(N);
  for (size_t i= ret.Xl.size(); --i;) ret.Xl[i]= uint64_t((double)N / i);
@@ -163,7 +178,7 @@ DirichletSeries<T> get_Id(uint64_t N) {
  for (size_t i= 1; i <= ret.K; ++i) ret.Xs[i]= ret.Xs[i - 1] + ret.x[i];
  return ret;
 }
-template <class T>  // n^2, zeta(s-2), O(N)
+template <class T>  // n^2, zeta(s-2), O(K+L)
 DirichletSeries<T> get_Id2(uint64_t N) {
  DirichletSeries<T> ret(N);
  __uint128_t a, b, c;
@@ -178,7 +193,7 @@ template <class T> DirichletSeries<T> get_d(uint64_t N) { return get_1<T>(N).squ
 template <class T> DirichletSeries<T> get_sigma(uint64_t N) { return get_1<T>(N) * get_Id<T>(N); }
 // Euler's totient, zeta(s-1)/zeta(s), O(N^(2/3)log^(1/3)N))
 template <class T> DirichletSeries<T> get_phi(uint64_t N) { return get_Id<T>(N)/= get_1<T>(N); }
-template <class T>  // zeta(2s), O(N)
+template <class T>  // zeta(2s), O(K+L)
 DirichletSeries<T> get_1sq(uint64_t N) {
  DirichletSeries<T> ret(N);
  for (size_t i= 1, e= ret.x.size(); i * i <= e; ++i) ret.x[i * i]= 1;

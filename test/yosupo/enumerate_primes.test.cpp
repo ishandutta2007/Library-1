@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/enumerate_primes"
 #include <iostream>
 #include <vector>
-#include "src/Math/Sieve.hpp"
+#include "src/NumberTheory/Sieve.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -1,8 +1,7 @@
 ---
-title: 素数カウント 他
-documentation_of: ../../src/Math/prime_count.hpp
+title: 拡張エラトステネス篩
+documentation_of: ../../src/NumberTheory/ExtendedEratosthenesSieve.hpp
 ---
-乗法的関数や加法的関数の累積和も添えて
 
 ## 計算量
 $\mathcal{O} (d^2\sqrt{N}+dN^{3/4}/\log N)$ \

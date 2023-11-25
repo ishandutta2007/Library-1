@@ -1,13 +1,13 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/counting_primes"
 #include <iostream>
-#include "src/Math/prime_count.hpp"
+#include "src/NumberTheory/ExtendedEratosthenesSieve.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  long long N;
  cin >> N;
- auto [_, pi]= prime_count_table(N);
- cout << pi.sum() << '\n';
+ ExtendedEratosthenesSieve<long long> ees(N, 0);
+ cout << ees.pwsum[0].sum() << '\n';
  return 0;
 }

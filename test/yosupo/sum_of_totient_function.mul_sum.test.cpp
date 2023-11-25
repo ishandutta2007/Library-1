@@ -2,16 +2,18 @@
 // O(N^(3/4)/log N)
 #include <iostream>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/prime_count.hpp"
-#include "src/Math/multiplicative_and_additive.hpp"
+#include "src/NumberTheory/ExtendedEratosthenesSieve.hpp"
+#include "src/NumberTheory/famous_arithmetic_functions.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  using Mint= ModInt<998244353>;
- using namespace multiplicative_functions;
+ using namespace famous_arithmetic_functions;
+ using T= mul::Totient<Mint>;
  long long N;
  cin >> N;
- cout << multiplicative_sum<Mint>(N, Totient<Mint>::f, Totient<Mint>::poly()) << '\n';
+ ExtendedEratosthenesSieve<Mint> ees(N, 1);
+ cout << ees.multiplicative_sum(T::f, T::poly()) << '\n';
  return 0;
 }

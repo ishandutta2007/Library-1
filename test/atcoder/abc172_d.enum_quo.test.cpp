@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/abc172/tasks/abc172_d"
 // O(√N)
 #include <iostream>
-#include "src/Math/enumerate_quotients.hpp"
+#include "src/NumberTheory/enumerate_quotients.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

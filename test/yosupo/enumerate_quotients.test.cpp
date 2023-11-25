@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/enumerate_quotients"
 #include <iostream>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/enumerate_quotients.hpp"
+#include "src/NumberTheory/enumerate_quotients.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

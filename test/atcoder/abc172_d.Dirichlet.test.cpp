@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/abc172/tasks/abc172_d"
 // O(N^(2/3)log^(1/3)N))
 #include <iostream>
-#include "src/Math/DirichletSeries.hpp"
+#include "src/NumberTheory/DirichletSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

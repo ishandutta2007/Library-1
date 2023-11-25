@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 #include <cstdint>
-namespace multiplicative_functions {
+namespace famous_arithmetic_functions {
+namespace mul {
 template <class T> struct Totient {
  static constexpr T f(uint64_t p, short e) {
   T ret= p - 1;
@@ -28,8 +29,7 @@ template <class T, uint64_t k> struct Divisor {
  }
  static std::vector<T> poly() {
   std::vector<T> ret(k + 1, 0);
-  ret[0]+= 1, ret[k]+= 1;
-  return ret;
+  return ret[0]+= 1, ret[k]+= 1, ret;
  }
 };
 template <class T> struct Dedekind {
@@ -40,8 +40,8 @@ template <class T> struct Dedekind {
  }
  static std::vector<T> poly() { return {1, 1}; }
 };
-}  // namespace multiplicative_functions
-namespace additive_functions {
+}  // namespace mul
+namespace add {
 template <class T> struct BigOmega {  // the total number of prime factors of n
  static constexpr T f(uint64_t, short e) { return e; }
  static std::vector<T> poly() { return {1}; }
@@ -58,4 +58,5 @@ template <class T> struct Sopf {  // the sum of the distinct primes dividing n
  static constexpr T f(uint64_t p, short) { return p; }
  static std::vector<T> poly() { return {0, 1}; }
 };
-}  // namespace additive_functions
+}  // namespace add
+}

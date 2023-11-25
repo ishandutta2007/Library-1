@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/abc172/tasks/abc172_d"
 // O(N^(3/4)/log N)
 #include <iostream>
-#include "src/Math/prime_count.hpp"
+#include "src/NumberTheory/ExtendedEratosthenesSieve.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,6 +13,7 @@ signed main() {
  };
  long long N;
  cin >> N;
- cout << multiplicative_sum<long long>(N, f, {0, 2}) << '\n';
+ ExtendedEratosthenesSieve<long long> ees(N, 1);
+ cout << ees.multiplicative_sum(f, {0, 2}) << '\n';
  return 0;
 }

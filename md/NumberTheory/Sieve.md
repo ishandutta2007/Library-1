@@ -1,6 +1,6 @@
 ---
-title: 篩 他
-documentation_of: ../../src/Math/Sieve.hpp
+title: 線形篩 他
+documentation_of: ../../src/NumberTheory/Sieve.hpp
 ---
 線形篩による素数列挙の前処理 \
 乗法的関数 テーブル列挙 や gcd畳み込みなど

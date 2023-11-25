@@ -2,7 +2,13 @@
 title: Li-Chao-Tree
 documentation_of: ../../src/Optimization/LiChaoTree.hpp
 ---
-( 例えば 一次関数などの ) 高々一点で交わる $x$ の関数群 $f_i(x) = f(x; \boldsymbol{p}^{(i)})= f(x;p^{(i)}_0,\dots,p^{(i)}_n)$ を扱うデータ構造. \
+( 例えば 一次関数などの ) 高々一点で交わる $x$ の関数群
+
+$\displaystyle
+f_i(x) = f(x; \boldsymbol{p}^{(i)})= f(x;p^{(i)}_0,\dots,p^{(i)}_n)
+$ 
+
+を扱うデータ構造. \
 浮動小数点数もいけるはず. \
 2点以上で交わる可能性がある関数群を挿入した時の動作は未定義.\
 クラステンプレートは推論させる.

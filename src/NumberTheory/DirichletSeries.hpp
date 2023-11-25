@@ -159,7 +159,7 @@ template <class T> struct DirichletSeries {
   return Self(N, c, Cs, C);
  }
  inline T sum() const { return Xl[1]; }
- inline T sum(uint64_t n) const { return n <= K ? Xs[n] : Xl[(double)N / n]; }
+ inline T &sum(uint64_t n) const { return n <= K ? Xs[n] : Xl[(double)N / n]; }
 };
 template <class T>  // 1, zeta(s), O(K+L)
 DirichletSeries<T> get_1(uint64_t N) {

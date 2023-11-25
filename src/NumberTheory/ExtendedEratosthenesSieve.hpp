@@ -36,7 +36,7 @@ template <class T> struct PrimeSum {
  PrimeSum operator+(const PrimeSum &r) const { return PrimeSum(*this)+= r; }
  PrimeSum operator-(const PrimeSum &r) const { return PrimeSum(*this)-= r; }
  inline T sum() const { return Xl[1]; }
- inline T &sum(uint64_t n) const { return n <= K ? Xs[n] : Xl[N / n]; }
+ inline T sum(uint64_t n) const { return n <= K ? Xs[n] : Xl[N / n]; }
  void add(uint64_t p, T v) {
   for (size_t i= p; i <= K; ++i) Xs[i]+= v;
   for (size_t i= std::min<uint64_t>(N / p, K); i; --i) Xl[i]+= v;

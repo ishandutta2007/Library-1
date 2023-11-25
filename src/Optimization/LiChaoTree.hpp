@@ -56,10 +56,11 @@ template <class F, class T, class... Prms> class LiChaoTree<F, std::tuple<T, Prm
   }
   inline std::pair<R, int> query(const Node *t, T x, T xl, T xr) const {
    if (!t) return {R(), -1};
-   R a= eval(t->id, x);
-   if (end(xl, xr)) return {a, t->id};
+   if (end(xl, xr)) return {t->id == -1 ? R() : eval(t->id, x), t->id};
    T xm= (xl + xr) / 2;
    auto b= x < xm ? query(t->ch[0], x, xl, xm) : query(t->ch[1], x, xm, xr);
+   if (t->id == -1) return b;
+   R a= eval(t->id, x);
    return b.second != -1 && cmp_res(a, b.first, t->id, b.second) ? b : std::make_pair(a, t->id);
   }
  public:

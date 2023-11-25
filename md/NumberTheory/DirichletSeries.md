@@ -1,6 +1,6 @@
 ---
 title: ディリクレ級数
-documentation_of: ../../src/Math/DirichletSeries.hpp
+documentation_of: ../../src/NumberTheory/DirichletSeries.hpp
 ---
 
 $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$

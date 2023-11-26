@@ -24,7 +24,7 @@ signed main() {
  tree.insert(L, N + 1, 0, 0);
  for (int i= 1; i < N; ++i) {
   auto dp= tree.query(i).first;
-  tree.insert(i + L, N + 1, i, dp);
+  tree.insert(i, dp, i + L);
  }
  cout << tree.query(N).first << '\n';
  return 0;

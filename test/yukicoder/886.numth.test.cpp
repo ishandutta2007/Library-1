@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/Sieve.hpp"
+#include "src/NumberTheory/Sieve.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

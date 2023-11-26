@@ -59,8 +59,8 @@ public:
   if (!(adj[u][v])) edge[u]^= (1 << v), edge[v]^= (1 << u);
  }
  const unsigned *operator[](int u) const { return adj[u]; }
- template <class T> static inline sps<T> only_connected(const sps<T> &f) { SPS::log(f); }
- template <class T> static inline sps<T> disjoint_union(const sps<T> &f) { SPS::exp(f); }
+ template <class T> static inline sps<T> only_connected(const sps<T> &f) { return SPS::log(f); }
+ template <class T> static inline sps<T> disjoint_union(const sps<T> &f) { return SPS::exp(f); }
  template <class T> static inline sps<T> only_biconnected(sps<T> f) { return transform_articulation(f, SPS::template log<T>), f; }
  template <class T> static inline sps<T> articulation_union(sps<T> f) { return transform_articulation(f, SPS::template exp<T>), f; }
  template <class T> inline sps<T> only_2edge_connected(sps<T> f) const { return transform_bridge<T, false>(f), f; }

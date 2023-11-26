@@ -6,7 +6,6 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  using GSPS= UndirectedGraphSetPowerSeries<15>;
- using SPS= SetPowerSeries<15>;
  int n, m;
  cin >> n >> m;
  GSPS g(n);
@@ -17,6 +16,6 @@ signed main() {
  }
  auto f= g.cycle_graph<long long>();
  for (int i= n; i--;) f[1 << i]= 1;
- cout << g.only_connected(g.bridge_union(f)).back() << '\n';
+ cout << g.disjoint_union(g.bridge_union(f)).back() << '\n';
  return 0;
 }

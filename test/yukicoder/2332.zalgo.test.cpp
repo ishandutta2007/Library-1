@@ -22,7 +22,7 @@ signed main() {
  auto tree= lct.make_tree<MINIMIZE>();
  long long ans= 0;
  for (int i= 0; i < M; ++i) {
-  if (ans >= 0) tree.insert(i + 1, i + Z[i] + 1, C[i], ans - (long long)C[i] * i);
+  if (ans >= 0) tree.insert(C[i], ans - (long long)C[i] * i, i + 1, i + Z[i] + 1);
   auto [a, b]= tree.query(i + 1);
   ans= b < 0 ? -1 : a;
  }

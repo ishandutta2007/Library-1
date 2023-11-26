@@ -26,7 +26,7 @@ signed main() {
   } else {
    long long l, r, a, b;
    cin >> l >> r >> a >> b;
-   cht.insert(l, r, a, b);
+   cht.insert(a, b, l, r);
   }
  }
  return 0;

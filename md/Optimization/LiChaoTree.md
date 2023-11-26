@@ -23,7 +23,7 @@ auto tree = lct.make_tree<MINIMIZE>();
 クエリ
 ```c++
 tree.insert(2, 3); // 2x+3
-tree.insert(0, 2, 1, 1); // x+1 (0<= x < 2)
+tree.insert(1, 1, 0, 2); // x+1 (0<= x < 2)
 auto [val1, id1] = tree.query(1);
 cout << val1 << " "<< id1 << endl; // 2 1
 auto [val2, id2] = tree.query(-1);
@@ -45,7 +45,9 @@ cout << val2 << " "<< id2 << endl; // 1 0
 
 |メンバ関数|概要|計算量|
 |---|---|---|
-|1. `insert(p_0,...,p_n)` <br> 2. `insert(l,r,p_0,...,p_n)`|1. 関数 $f(x;p_0,\dots,p_n)$ を挿入. <br> 2. 半開区間制約付きの関数 $f(x;p_0,\dots,p_n) \hspace{1mm}x\in\lbrack l,r) $ を挿入. | 1. $\mathcal{O}(\log n)$ <br> 2.$\mathcal{O}((\log n)^2)$　|
+| `insert(p_0,...,p_n)` |関数 $f(x;p_0,\dots,p_n)$ を挿入. | $\mathcal{O}(\log n)$　|
+| `insert(p_0,...,p_n,l)`| 半開区間制約付きの関数 $f(x;p_0,\dots,p_n) \hspace{1mm}x\in\lbrack l,\mathrm{UB}) $ を挿入. | $\mathcal{O}((\log n)^2)$　|
+| `insert(p_0,...,p_n,l,r)`| 半開区間制約付きの関数 $f(x;p_0,\dots,p_n) \hspace{1mm}x\in\lbrack l,r) $ を挿入. | $\mathcal{O}((\log n)^2)$　|
 |`query(x)` | { $x$ における最小値(最大値), それを達成する関数の番号 } を返す. <br>存在しない場合 { 未定義, -1 } を返す. |$\mathcal{O}(\log n)$ | 
 
 ## 問題例

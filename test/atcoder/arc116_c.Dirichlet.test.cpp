@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/arc116/tasks/arc116_c"
 #include <iostream>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/DirichletSeries.hpp"
+#include "src/NumberTheory/DirichletSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

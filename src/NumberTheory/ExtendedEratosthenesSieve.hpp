@@ -4,17 +4,18 @@
 #include <tuple>
 #include <cmath>
 #include <cstdint>
+#include <cassert>
 template <class T> struct PrimeSum {
  uint64_t N;
  size_t K;
  std::vector<T> Xs, Xl;
  PrimeSum(uint64_t N= 0): N(N), K(std::sqrt(N)), Xs(K + 1), Xl(K + 1) {}
- PrimeSum(uint64_t N, size_t K, const std::vector<T> &s, const std::vector<T> &l): N(N), K(K), Xs(s), Xl(l) {}
+ PrimeSum(uint64_t N, size_t K, const std::vector<T> &s, const std::vector<T> &l): N(N), K(std::sqrt(N)), Xs(s), Xl(l) {}
  PrimeSum operator-() const {
   auto Ys= Xs, Yl= Xl;
   for (auto &x: Ys) x= -x;
   for (auto &x: Yl) x= -x;
-  return PrimeSum(N, K, Ys, Yl);
+  return PrimeSum(N, Ys, Yl);
  }
  PrimeSum &operator*=(T r) {
   for (auto &x: Xs) x*= r;
@@ -82,7 +83,7 @@ public:
      for (uint64_t n= K; n >= q; --n) s[d][n]-= (s[d][n / p] - tk) * pw;
     }
    }
-  for (int d= 0; d <= D; ++d) pwsum[d]= PrimeSum(N, K, s[d], l[d]);
+  for (size_t d= 0; d <= D; ++d) pwsum[d]= PrimeSum(N, s[d], l[d]);
  }
  template <class F> T additive_sum(const F &f, const PrimeSum<T> &X) const {
   T ret= X.sum();

@@ -26,13 +26,13 @@ signed main() {
  tree1.insert(0, 0);
  for (int i= 1; i <= N; ++i) {
   auto dp1= tree1.query(i).first;
-  tree2.insert(i, dp1);
+  tree2.insert(i, dp1, i);
   auto dp2= tree2.query(i).first;
   if (i == N) {
    cout << dp2 << '\n';
    break;
   }
-  tree1.insert(i, dp2);
+  tree1.insert(i, dp2, i + 1);
  }
  return 0;
 }

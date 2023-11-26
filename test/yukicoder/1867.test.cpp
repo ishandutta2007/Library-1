@@ -31,7 +31,7 @@ signed main() {
   auto tree= lct.make_tree<MINIMIZE>();
   for (int i= k; i <= N; ++i) {
    ndp[i]= tree.query(i).first;
-   if (i < N) tree.insert(i);
+   if (i < N) tree.insert(i, i + 1);
   }
   copy(ndp + k, ndp + N + 1, dp + k);
   cout << dp[N] << '\n';

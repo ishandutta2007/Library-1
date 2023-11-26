@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <tuple>
+#include <cassert>
 #include "src/Internal/function_traits.hpp"
 #include "src/Optimization/MinMaxEnum.hpp"
 template <class F, class T> class LiChaoTree {};

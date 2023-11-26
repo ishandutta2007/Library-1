@@ -10,7 +10,7 @@ template <class T> struct PrimeSum {
  size_t K;
  std::vector<T> Xs, Xl;
  PrimeSum(uint64_t N= 0): N(N), K(std::sqrt(N)), Xs(K + 1), Xl(K + 1) {}
- PrimeSum(uint64_t N, size_t K, const std::vector<T> &s, const std::vector<T> &l): N(N), K(std::sqrt(N)), Xs(s), Xl(l) {}
+ PrimeSum(uint64_t N, const std::vector<T> &s, const std::vector<T> &l): N(N), K(std::sqrt(N)), Xs(s), Xl(l) {}
  PrimeSum operator-() const {
   auto Ys= Xs, Yl= Xl;
   for (auto &x: Ys) x= -x;

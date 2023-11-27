@@ -8,7 +8,7 @@ $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$
 
 ## `PrimeSum<T>` クラス
 正の整数 $N$ が与えられるとする. <br>
-ある数論的関数 $f$ と $k\in \lbrace a\in \mathbb{N}\; \vert\; \exist m \in \mathbb{N}, a=\floor{\frac{N}{m}}\rbrace$ について
+ある数論的関数 $f$ と $k\in \lbrace a\in \mathbb{N}\; \vert\; \exists m \in \mathbb{N}, a=\floor{\frac{N}{m}}\rbrace$ について
 
 $\displaystyle
 F_p(k) = \sum_{\substack{p\leq k\newline p \text{ is a prime}}} f(p)
@@ -38,7 +38,7 @@ $f$ や $F$ そのものは保持しない. \
 |---|---|
 |`PrimeSum(N, Xs, Xl)`|コンストラクタ. $N$ と配列を直接渡して構築.||
 |`PrimeSum(N=0)`|コンストラクタ. $N$ を渡して構築. <br> $f(n)\equiv \varepsilon(n)$ のケースとして構築. |
-|`sum(k)`| $F_p(k)$ を返す. <br>ただし <br> $\displaystyle k\in\left \lbrace a\in \mathbb{N}\; \vert\; \exist m \in \mathbb{N}, a=\floor{\frac{N}{m}}\right\rbrace$ <br>のケースのみ想定.|
+|`sum(k)`| $F_p(k)$ を返す. <br>ただし <br> $\displaystyle k\in\left \lbrace a\in \mathbb{N}\; \vert\; \exists m \in \mathbb{N}, a=\floor{\frac{N}{m}}\right\rbrace$ <br>のケースのみ想定.|
 |`sum()`|$\displaystyle F_p(N)= \sum_{\substack{p\leq N\newline p \text{ is a prime}}} f(p)$ を返す.|
 |`add(p, v)`| $f(p)\leftarrow f(p)+v$ <br> $p$ は素数を想定. |
 

@@ -51,15 +51,10 @@ public:
  std::vector<PrimeSum<T>> pwsum;
  ExtendedEratosthenesSieve(uint64_t N, size_t D): N(N), K(std::sqrt(N)), pwsum(D + 1) {
   std::vector<std::vector<T>> s(D + 1, std::vector<T>(K + 1)), l(D + 1, std::vector<T>(K + 1));
-  T fct= 1;
-  for (size_t d= D + 1; d; --d) fct*= d;
-  fct= T(1) / fct;
-  for (size_t n= 1, d= 0; n <= K; ++n, d= 0)
-   for (T prd= n; d <= D; prd*= (n + ++d)) s[d][n]= prd;
-  for (size_t n= 1, d= 0; n <= K; ++n, d= 0)
-   for (T prd= N / n; d <= D; prd*= ((N / n) + ++d)) l[d][n]= prd;
-  for (size_t d= D + 1; --d; fct*= d + 1)
-   for (size_t n= 1; n <= K; ++n) s[d][n]*= fct, l[d][n]*= fct;
+  for (int n= 1, d= 0; n <= K; ++n, d= 0)
+   for (T prd= n; d <= D; prd*= (n + ++d)) s[d][n]= prd / (d + 1);
+  for (int n= 1, d= 0; n <= K; ++n, d= 0)
+   for (T prd= N / n; d <= D; prd*= ((N / n) + ++d)) l[d][n]= prd / (d + 1);
   if (D >= 2) {
    std::vector<T> stir(D + 1, 0);
    stir[1]= 1;

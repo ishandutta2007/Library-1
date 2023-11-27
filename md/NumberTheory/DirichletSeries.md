@@ -8,7 +8,7 @@ $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$
 ディリクレ級数の四則演算で作り上げた数論的関数の累積和を計算するためのもの.
 ## `DirichletSeries<T>` クラス
 正の整数 $N$ が与えられるとする. <br>
-ある数論的関数 $f$ と $k\in \lbrace a\in \mathbb{N}\; \vert\; \exist m \in \mathbb{N}, a=\floor{\frac{N}{m}}\rbrace$ について
+ある数論的関数 $f$ と $k\in \lbrace a\in \mathbb{N}\; \vert\; \exists m \in \mathbb{N}, a=\floor{\frac{N}{m}}\rbrace$ について
 
 $\displaystyle
 F(k) = \sum_{n=1}^k f(n)
@@ -69,7 +69,7 @@ $
 |`DirichletSeries(N, x, Xs, Xl)`|コンストラクタ. $N$ と配列を直接渡して構築.||
 |`DirichletSeries(N, unit=false)`|コンストラクタ. $N$ を渡して構築. <br> `unit` が `false` なら $f(n)\equiv0$, `true` なら $f(n)\equiv \varepsilon(n)$ のケースとして構築. <br> それぞれディリクレ級数の零元, 単元を意味する. ||
 |`DirichletSeries(N, sum)`|コンストラクタ. $N$ と関数 $F$ を渡して構築. ||
-|`sum(k)`| $F(k)$ を返す. <br>ただし <br> $\displaystyle k\in\left \lbrace a\in \mathbb{N}\; \vert\; \exist m \in \mathbb{N}, a=\floor{\frac{N}{m}}\right\rbrace$ <br>のケースのみ想定.|$\mathcal{O}(1)$|
+|`sum(k)`| $F(k)$ を返す. <br>ただし <br> $\displaystyle k\in\left \lbrace a\in \mathbb{N}\; \vert\; \exists m \in \mathbb{N}, a=\floor{\frac{N}{m}}\right\rbrace$ <br>のケースのみ想定.|$\mathcal{O}(1)$|
 |`sum()`|$\displaystyle F(N)=\sum_{n=1}^N f(n)$ を返す.|$\mathcal{O}(1)$
 |`square()`|$\displaystyle h(n)=\sum_{ij=n}f(i)f(j)$ についての `DirichletSeries` クラスのオブジェクトを返す. <br> `operator*(f,f)` と同じ結果 (定数倍速い).|$O(K\log K+\sqrt{NL})$|
 |`pow(M)`|$\displaystyle h(n)=\sum_{i_1\cdots i_M=n}f(i_1)\cdots f(i_M)$ についての `DirichletSeries` クラスのオブジェクトを返す. <br> つまりディリクレ積の $M$ 乗.|$\mathcal{O}(R(N)\log N)$<br> ただし $R(N)=\mathcal{O}(K\log K+\sqrt{NL})$|

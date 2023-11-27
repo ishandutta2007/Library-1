@@ -65,7 +65,10 @@ template <class F, class T, class... Prms> class LiChaoTree<F, std::tuple<T, Prm
   LiChaoTreeInterface(LiChaoTree *ins): ins(ins), root(nullptr) {}
   void insert(const Prms &...args) { ins->ps.emplace_back(args...), addl(root, ins->ps.size() - 1, ins->LB, ins->UB); }
   // [l, r)
-  void insert(const Prms &...args, T l, T r) { l= std::max(l, ins->LB), r= std::min(r, ins->UB), assert(l < r), ins->ps.emplace_back(args...), adds(root, ins->ps.size() - 1, l, r, ins->LB, ins->UB); }
+  void insert(const Prms &...args, T l, T r) {
+   l= std::max(l, ins->LB), r= std::min(r, ins->UB);
+   if (l < r) ins->ps.emplace_back(args...), adds(root, ins->ps.size() - 1, l, r, ins->LB, ins->UB);
+  }
   // [l, UB)
   void insert(const Prms &...args, T l) { insert(args..., l, ins->UB); }
   std::pair<R, int> query(T x) const { return assert(ins->LB <= x && x < ins->UB), query(root, x, ins->LB, ins->UB); }

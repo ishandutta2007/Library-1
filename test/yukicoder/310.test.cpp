@@ -2,14 +2,14 @@
 #include <iostream>
 #include <algorithm>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/Combination.hpp"
+#include "src/Math/FactorialPrecalculation.hpp"
 #include "src/LinearAlgebra/MinimalPolynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  using Mint= ModInt<int(1e9 + 7)>;
- using Comb= Combination<Mint>;
+ using F= FactorialPrecalculation<Mint>;
  using Vec= Vector<Mint>;
  int N, M;
  cin >> N >> M;
@@ -59,7 +59,7 @@ signed main() {
   return ret;
  };
  ans*= linear_map_det<Mint>(f, n - 1);
- for (int i= 0; i < n; ++i) ans*= Comb::fact(in[V[i]] - 1);
+ for (int i= 0; i < n; ++i) ans*= F::fact(in[V[i]] - 1);
  cout << ans << '\n';
  return 0;
 }

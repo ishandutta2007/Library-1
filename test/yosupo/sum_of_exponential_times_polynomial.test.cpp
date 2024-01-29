@@ -3,7 +3,7 @@
  */
 #include <iostream>
 #include <vector>
-#include "src/Math/Combination.hpp"
+#include "src/Math/FactorialPrecalculation.hpp"
 #include "src/Math/ModInt.hpp"
 #include "src/NumberTheory/Sieve.hpp"
 #include "src/FFT/sample_points_shift.hpp"
@@ -12,7 +12,7 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  using Mint= ModInt<998244353>;
- using C= Combination<Mint>;
+ using F= FactorialPrecalculation<Mint>;
  long long r, d, n;
  cin >> r >> d >> n;
  if (--n < 0) {
@@ -31,7 +31,7 @@ signed main() {
  if (r == 1) ans= sample_points_shift<Mint>(sum, n)[0];
  else {
   for (int i= 0; i <= d; i++) {
-   Mint tmp= C::nCr(d + 1, i + 1) * rpow[d - i] * sum[i];
+   Mint tmp= F::nCr(d + 1, i + 1) * rpow[d - i] * sum[i];
    ans+= (d - i) & 1 ? -tmp : tmp;
   }
   ans/= Mint(1 - r).pow(d + 1);

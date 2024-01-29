@@ -3,7 +3,7 @@
  */
 #include <iostream>
 #include <vector>
-#include "src/Math/Combination.hpp"
+#include "src/Math/FactorialPrecalculation.hpp"
 #include "src/Math/ModInt.hpp"
 #include "src/NumberTheory/Sieve.hpp"
 using namespace std;
@@ -11,7 +11,7 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  using Mint= ModInt<998244353>;
- using C= Combination<Mint>;
+ using F= FactorialPrecalculation<Mint>;
  long long r, d;
  cin >> r >> d;
  vector<Mint> sum(d + 1), rpow(d + 1), pd= Sieve<>::pow_table<Mint>(d + 1, d);
@@ -20,7 +20,7 @@ signed main() {
  for (int i= 1; i <= d; i++) sum[i]= sum[i - 1] + rpow[i] * pd[i];
  Mint ans= 0;
  for (int i= 0; i <= d; i++) {
-  Mint tmp= C::nCr(d + 1, i + 1) * rpow[d - i] * sum[i];
+  Mint tmp= F::nCr(d + 1, i + 1) * rpow[d - i] * sum[i];
   ans+= (d - i) & 1 ? -tmp : tmp;
  }
  ans/= Mint(1 - r).pow(d + 1);

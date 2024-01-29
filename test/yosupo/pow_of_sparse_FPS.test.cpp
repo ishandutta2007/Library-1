@@ -11,12 +11,8 @@ int main() {
  long long N, K, M;
  cin >> N >> K >> M;
  vector<Mint> a(N);
- while (K--) {
-  int i;
-  cin >> i;
-  cin >> a[i];
- }
- auto ans= sparse_pow(a, M, N);
+ for (int i; K--;) cin >> i >> a[i];
+ auto ans= sfps::pow(a, M, N - 1);
  for (int i= 0; i < N; i++) cout << ans[i] << " \n"[i == N - 1];
  return 0;
 }

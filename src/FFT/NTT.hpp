@@ -3,6 +3,15 @@
 #include <limits>
 #include "src/Math/is_prime.hpp"
 #include "src/Math/ModInt.hpp"
+template <class mod_t, size_t LM> mod_t get_inv(int n) {
+ static_assert(is_modint_v<mod_t>);
+ static const auto m= mod_t::mod();
+ static mod_t dat[LM];
+ static int l= 1;
+ if (l == 1) dat[l++]= 1;
+ while (l <= n) dat[l++]= dat[m % l] * (m - m / l);
+ return dat[n];
+}
 namespace math_internal {
 #define CE constexpr
 #define ST static
@@ -121,11 +130,21 @@ TP<class T, u8 t, class B> struct NI: public B {
 #define IV3 ST CE m3 iv32= m3(1) / m2::mod(), iv31= iv32 / m1::mod();
 #define IV4 ST CE m4 iv43= m4(1) / m3::mod(), iv42= iv43 / m2::mod(), iv41= iv42 / m1::mod();
 #define IV5 ST CE m5 iv54= m5(1) / m4::mod(), iv53= iv54 / m3::mod(), iv52= iv53 / m2::mod(), iv51= iv52 / m1::mod();
-TP<u8 t, u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM, bool v> struct NB { ARR(1) };
-TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<2, M1, M2, M3, M4, M5, LM, 0> { ARR(1) ARR(2) IV2 };
-TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<3, M1, M2, M3, M4, M5, LM, 0> { ARR(1) ARR(2) ARR(3) IV2 IV3 };
-TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<4, M1, M2, M3, M4, M5, LM, 0> { ARR(1) ARR(2) ARR(3) ARR(4) IV2 IV3 IV4 };
-TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<5, M1, M2, M3, M4, M5, LM, 0> { ARR(1) ARR(2) ARR(3) ARR(4) ARR(5) IV2 IV3 IV4 IV5 };
+TP<u8 t, u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM, bool v> struct NB {
+ ARR(1)
+};
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<2, M1, M2, M3, M4, M5, LM, 0> {
+ ARR(1) ARR(2) IV2
+};
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<3, M1, M2, M3, M4, M5, LM, 0> {
+ ARR(1) ARR(2) ARR(3) IV2 IV3
+};
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<4, M1, M2, M3, M4, M5, LM, 0> {
+ ARR(1) ARR(2) ARR(3) ARR(4) IV2 IV3 IV4
+};
+TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<5, M1, M2, M3, M4, M5, LM, 0> {
+ ARR(1) ARR(2) ARR(3) ARR(4) ARR(5) IV2 IV3 IV4 IV5
+};
 #undef ARR
 #define VC(_) \
  using m##_= ModInt<M##_>; \
@@ -195,7 +214,13 @@ TP<class T, u32 LM, bool v> using NTTArray= NI<T, nttarr_type<T, LM>, conditiona
 #undef TP
 }
 using math_internal::is_nttfriend, math_internal::nttarr_type, math_internal::nttarr_cat, math_internal::NTT, math_internal::NTTArray;
-template <class T, size_t LM, int id= 0> struct GlobalNTTArray { static inline NTTArray<T, LM, 0> bf; };
-template <class T, size_t LM, size_t LM2, int id= 0> struct GlobalNTTArray2D { static inline NTTArray<T, LM, 0> bf[LM2]; };
-template <class T, size_t LM, int id= 0> struct GlobalArray { static inline T bf[LM]; };
+template <class T, size_t LM, int id= 0> struct GlobalNTTArray {
+ static inline NTTArray<T, LM, 0> bf;
+};
+template <class T, size_t LM, size_t LM2, int id= 0> struct GlobalNTTArray2D {
+ static inline NTTArray<T, LM, 0> bf[LM2];
+};
+template <class T, size_t LM, int id= 0> struct GlobalArray {
+ static inline T bf[LM];
+};
 constexpr unsigned pw2(unsigned n) { return --n, n|= n >> 1, n|= n >> 2, n|= n >> 4, n|= n >> 8, n|= n >> 16, ++n; }

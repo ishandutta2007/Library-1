@@ -17,7 +17,7 @@ int main() {
   cin >> l;
   f[l]= 1;
  }
- auto g= sparse_pow(f, N + 1, N + 1);
+ auto g= sfps::pow(f, N + 1, N);
  cout << g[N] / (N + 1) << '\n';
  return 0;
 }

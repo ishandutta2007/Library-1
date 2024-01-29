@@ -20,9 +20,9 @@ template <class Int, class U, class B> struct MInt: public B {
   MInt ret; \
   return ret.x= op, ret; \
  }
- FUNC(operator+(const MInt& r), B::md.plus(x, r.x))
- FUNC(operator-(const MInt& r), B::md.diff(x, r.x))
- FUNC(operator*(const MInt& r), B::md.mul(x, r.x))
+ FUNC(operator+(const MInt & r), B::md.plus(x, r.x))
+ FUNC(operator-(const MInt & r), B::md.diff(x, r.x))
+ FUNC(operator*(const MInt & r), B::md.mul(x, r.x))
  FUNC(pow(u64 k), math_internal::pow(x, k, B::md))
 #undef FUNC
  CE MInt operator/(const MInt& r) const { return *this * r.inv(); }
@@ -47,12 +47,3 @@ template <u64 MOD> using ModInt= conditional_t < (MOD < (1 << 30)) & MOD, MInt<i
 #undef CE
 }
 using math_internal::ModInt;
-template <class mod_t, size_t LM> mod_t get_inv(int n) {
- static_assert(is_modint_v<mod_t>);
- static const auto m= mod_t::mod();
- static mod_t dat[LM];
- static int l= 1;
- if (l == 1) dat[l++]= 1;
- while (l <= n) dat[l++]= dat[m % l] * (m - m / l);
- return dat[n];
-}

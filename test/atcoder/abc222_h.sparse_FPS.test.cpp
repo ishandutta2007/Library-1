@@ -9,7 +9,7 @@ signed main() {
  using Mint= ModInt<998244353>;
  int N;
  cin >> N;
- auto F= sparse_pow<Mint>({1, 3, 1}, 2 * N, N);
+ auto F= sfps::pow<Mint>({1, 3, 1}, 2 * N, N - 1);
  cout << F[N - 1] / N << '\n';
  return 0;
 }

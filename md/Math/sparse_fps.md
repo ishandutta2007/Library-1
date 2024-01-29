@@ -2,5 +2,25 @@
 title: 疎な形式的冪級数
 documentation_of: ../../src/Math/sparse_fps.hpp
 ---
+
+疎な形式的冪級数を入力にしてなんらかの(疎とは限らない)形式的冪級数を計算する. \
+疎な形式的冪級数は(非ゼロだけ持つみたいな)特別な持ち方をせず， `vector<mod_t>` で持つ. \
+`sfps` 名前空間の中に関数が置いてある.
+
+## 関数
+
+|名前|概要|計算量|
+|---|---|---|
+|`inv(f, N)`|$1/f$ を $x^N$ の項まで計算する. <br> $f$ の定数項が 0 だとassert で落ちる. <br> 返り値のサイズは $N+1$. |以下，形式的冪級数 $f$ の非ゼロ成分数を $\mathcal{O}(S_f)$ とする. <br> $\mathcal{O}(NS_f)$|
+|`div(f, g, N)`| $f/g$ を $x^N$ の項まで計算する. <br> $g$ の定数項が 0 だとassert で落ちる. <br> $f$ は疎でなくともかまわない.　<br> 返り値のサイズは $N+1$. | $\mathcal{O}(NS_g)$|
+|`log(f, N)`| $\log f$ を $x^N$ の項まで計算する. <br> $f$ の定数項が 1 でないと assert で落ちる.  <br> 返り値のサイズは $N+1$. | $\mathcal{O}(NS_f)$|
+|`exp(f, N)`| $\exp f$ を $x^N$ の項まで計算する. <br> $f$ の定数項が 0 でないと assert で落ちる.  <br> 返り値のサイズは $N+1$. | $\mathcal{O}(NS_f)$|
+|`pow(f, k, N)`| $f^k$ を $x^N$ の項まで計算する.<br> $k$ は $0$ や負の整数でもよい. <br> 返り値のサイズは $N+1$. | $\mathcal{O}(NS_f)$|
+|`sqrt(f, N)`| $\sqrt{f}$ のひとつを $x^N$ の項まで計算する.　<br> 存在しない場合，空の配列を返す. <br> 正常な返り値のサイズは $N+1$. | $\mathcal{O}(NS_f)$|
+|`exp_of_div(f, g, N)`| $\exp (f/g)$ を $x^N$ の項まで計算する. <br> $f/g$ の定数項が 0 でないと assert で落ちる. <br> 返り値のサイズは $N+1$. | $\mathcal{O}(N(S_f+S_g))$|
+|`pow_of_div(f, g, k, N)`| $(f/g)^k$ を $x^N$ の項まで計算する. <br> 負冪の項を含むようなら assert で落ちる. <br> $k$ は $0$ や負の整数でもよい. <br> 返り値のサイズは $N+1$. | $\mathcal{O}(N(S_f+S_g))$ |
+|`pow_mul_pow(f, k, g, l, N)`| $f^kg^l$ を $x^N$ の項まで計算する.<br> $k,l$ は $0$ や負の整数でもよい. <br> 負冪の項を含むようなら assert で落ちる. <br> 返り値のサイズは $N+1$. | $\mathcal{O}(N(S_f+S_g))$|
+|`sqrt_of_div(f, g, N)`| $\sqrt{f/g}$ を $x^N$ の項まで計算する. <br> 負冪の項を含むようなら assert で落ちる. <br> 存在しない場合，空の配列を返す. <br> 正常な返り値のサイズは $N+1$. | $\mathcal{O}(N(S_f+S_g))$|
+
 ## 参考
 [https://maspypy.com/多項式・形式的べき級数-高速に計算できるもの](https://maspypy.com/%E5%A4%9A%E9%A0%85%E5%BC%8F%E3%83%BB%E5%BD%A2%E5%BC%8F%E7%9A%84%E3%81%B9%E3%81%8D%E7%B4%9A%E6%95%B0-%E9%AB%98%E9%80%9F%E3%81%AB%E8%A8%88%E7%AE%97%E3%81%A7%E3%81%8D%E3%82%8B%E3%82%82%E3%81%AE)

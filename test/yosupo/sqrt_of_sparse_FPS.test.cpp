@@ -11,12 +11,8 @@ int main() {
  long long N, K;
  cin >> N >> K;
  vector<Mint> a(N);
- while (K--) {
-  int i;
-  cin >> i;
-  cin >> a[i];
- }
- auto ans= sparse_sqrt(a, N);
+ for (int i; K--;) cin >> i >> a[i];
+ auto ans= sfps::sqrt(a, N - 1);
  if (ans.empty()) cout << -1 << '\n';
  else
   for (int i= 0; i < N; i++) cout << ans[i] << " \n"[i == N - 1];

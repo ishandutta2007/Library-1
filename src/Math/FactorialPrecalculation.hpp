@@ -33,7 +33,7 @@ public:
  }
  static inline mod_t nPr(int n, int r) { return r < 0 || n < r ? mod_t(0) : fact(n) * finv(n - r); }
  // [x^r] (1 + x)^n
- static inline mod_t nCr(int n, int r) { return nPr(n, r) * finv(r); }
+ static inline mod_t nCr(int n, int r) { return r < 0 || n < r ? mod_t(0) : fact(n) * finv(n - r) * finv(r); }
  // [x^r] (1 - x)^{-n}
  static inline mod_t nHr(int n, int r) { return !r ? mod_t(1) : nCr(n + r - 1, r); }
 };

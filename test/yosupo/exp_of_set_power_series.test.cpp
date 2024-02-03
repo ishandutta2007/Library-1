@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/SetPowerSeries.hpp"
+#include "src/Math/set_power_series.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  int S= 1 << N;
  vector<Mint> b(S);
  for (int i= 0; i < S; ++i) cin >> b[i];
- auto c= SetPowerSeries<20>::exp(b);
+ auto c= sps::exp(b);
  for (int i= 0; i < S; ++i) cout << c[i] << " \n"[i == S - 1];
  return 0;
 }

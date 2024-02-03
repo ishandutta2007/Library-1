@@ -16,7 +16,7 @@ test/atcoder/arc070_*.test.cpp
 test/atcoder/arc080_*.test.cpp
 test/atcoder/arc085_*.test.cpp
 test/atcoder/arc097_*.test.cpp
-test/atcoder/abc*_ex.*.cpp
+# test/atcoder/abc*_ex.*.cpp
 test/hackerrank/minimum-history-query.DynSeg.test.cpp
 test/hackerrank/drawing-rectangles.test.cpp
 test/hackerrank/range-counting-query.Mo.test.cpp

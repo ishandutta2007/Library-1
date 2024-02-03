@@ -2,7 +2,7 @@
 // 連結グラフ
 #include <iostream>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/SetPowerSeries.hpp"
+#include "src/Math/set_power_series.hpp"
 #include "src/Graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
@@ -11,12 +11,8 @@ signed main() {
  using Mint= ModInt<998244353>;
  int N, M;
  cin >> N >> M;
- UndirectedGraphSetPowerSeries<17> g(N);
- for (int i= 0; i < M; i++) {
-  int a, b;
-  cin >> a >> b;
-  g.add_edge(--a, --b);
- }
+ UndirectedGraphSetPowerSeries g(N);
+ for (int i= 0, a, b; i < M; i++) cin >> a >> b, g.add_edge(--a, --b);
  auto tmp= g.graph<Mint>();
  auto tmp2= g.connected_graph<Mint>();
  for (int k= 1; k < N; k++) {

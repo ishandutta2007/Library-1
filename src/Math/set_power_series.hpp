@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <vector>
 #include <cassert>
-#include <cstdint>
 namespace sps {
 namespace sps_internal {
 using namespace std;
@@ -14,7 +13,7 @@ using namespace std;
 template <int t, class T> void rec(T A[], int l) {
  if (l > 127) {
   l>>= 1, rec<t>(A, l), rec<t>(A + l, l);
-  for (int s= l; s--;) ZETA(s, l);
+  for (int s= 0; s < l; ++s) ZETA(s, l);
  } else
   for (int k= 1; k < l; k<<= 1)
    for (int i= 0; i < l; i+= k + k)
@@ -68,8 +67,8 @@ template <class T> void rnk_mobius(T F[], T f[], int n) {
 }
 template <class T> void cnv_(T A[], const T B[], int n) {
  for (int s= 1 << (n - 1); s--;) {
-  T t;
-  T *a= A + s * n, *b= B + s * n;
+  T t, *a= A + s * n;
+  const T* b= B + s * n;
   for (int c= __builtin_popcount(s), d= min(2 * c, n - 1), e; d >= c; a[d--]= t)
    for (t= 0, e= d - c; e <= c; ++e) t+= a[e] * b[d - e];
  }
@@ -96,7 +95,6 @@ template <class T> vector<T> inv(const vector<T>& f) {
  const int N= f.size(), n= __builtin_ctz(N);
  assert(!(N & (N - 1))), assert(f[0] == 1);
  vector<T> h(N);
- return h[0]= 1, div_na(h.data(), f.data(), N), h;
  if (n < 11) return h[0]= 1, div_na(h.data(), f.data(), N), h;
  vector<T> F((n + 1) << n), G((n + 1) << n);
  rnk_zeta(f.data(), G.data(), n);
@@ -156,8 +154,8 @@ template <class T, class P> vector<T> self_relaxed_convolve(const P& phi, int n)
   for (int s= 0; s < l; phi(u, f[u]), ++s, ++u)
    for (int t= s; t; --t&= s) f[u]+= f[u ^ t] * f[t];
  for (; i < n; l<<= 1, ++i)
-  oncnv_(
-      f.data(), f.data() + l, [&](int s, T& x) { phi(s | l, x); }, i);
+  phi(l, f[l]), oncnv_(
+                    f.data(), f.data() + l, [&](int s, T& x) { phi(s | l, x); }, i);
  return f;
 }
 // exp(f) , "f[empty] = 0" is required,  O(n^2 2^n)
@@ -167,9 +165,9 @@ template <class T> vector<T> exp(const vector<T>& f) {
  vector<T> h(N);
  int i= 0, l= 1;
  for (h[0]= 1; l < e; l<<= 1, ++i) cnv_na(h.data(), f.data() + l, h.data() + l, l);
- if (l < N) {
-  vector<T> F(n << (n - 1)), G(n << (n - 1));
-  for (; l < N; l<<= 1, ++i) fill_n(F.data(), (i + 1) << i, 0), fill_n(G.data(), (i + 1) << (i - 1), 0), rnk_zeta(h.data(), F.data(), i), rnk_zeta(f.data() + l, G.data(), i), cnv_(F.data(), G.data(), i + 1), rnk_mobius(F.data(), h.data() + l, i);
+ for (; l < N; l<<= 1, ++i) {
+  vector<T> F((i + 1) << i), G((i + 1) << i);
+  rnk_zeta(h.data(), F.data(), i), rnk_zeta(f.data() + l, G.data(), i), cnv_(F.data(), G.data(), i + 1), rnk_mobius(F.data(), h.data() + l, i);
  }
  return h;
 }
@@ -180,10 +178,11 @@ template <class T> vector<T> log(const vector<T>& f) {
  vector<T> h(N);
  int i= n - 1, l= N >> 1;
  if (i > 11) {
-  vector<T> F(n << (n - 1)), G(n << (n - 1));
+  vector<T> G(n << (n - 1));
   rnk_zeta(f.data(), G.data(), n - 1);
   for (; i > 11; l>>= 1, --i) {
-   fill_n(F.data(), (i + 1) << i, 0), rnk_zeta(f.data() + l, F.data(), i);
+   vector<T> F((i + 1) << i);
+   rnk_zeta(f.data() + l, F.data(), i);
    for (int s= l; s--;) {
     T *a= F.data() + s * (i + 1), *b= G.data() + s * n;
     for (int d= 0, c= __builtin_popcount(s); d++ < i;)
@@ -226,9 +225,10 @@ template <class T> vector<T> poly_comp(vector<T> P, vector<T> f) {
  }
  return f[0]= 0, egf_comp(F, f);
 }
-template <class T> egf_(T* b, T* h, int M) {
- T *a, d;
+template <class T> vector<T> _egfT(T* b, T* h, int M, int n) {
+ T *a, *d;
  vector<T> c(n + 1);
+ int l= M;
  if (int i= __builtin_ctz(M); i > 10) {
   vector<T> F((i + 1) << i), G((i + 1) << i);
   for (int m, s; i > 10; fill_n(F.data(), (i + 1) << i, 0), rnk_zeta(h, F.data(), i), cnv_(F.data(), G.data(), i + 1), rnk_mobius(F.data(), h, i), b-= (l>>= 1), --i)
@@ -240,7 +240,7 @@ template <class T> egf_(T* b, T* h, int M) {
    for (a= h + (m - l), d= a + (m - l), s= l; s--;)
     for (a[t= s]+= d[s] * b[0]; t; --t&= s) a[s]+= d[s ^ t] * b[t];
  for (int i= 1; i <= n; ++i) c[i]= h[(1 << (n - i)) - 1];
- return c
+ return c;
 }
 // [X^{[n]}] f^k/k! for k=0,1,...,n , O(n^2 2^n)
 template <class T> vector<T> egf_T(vector<T> f) {
@@ -248,14 +248,14 @@ template <class T> vector<T> egf_T(vector<T> f) {
  assert(!(N & (N - 1)));
  if (n == 0) return {1};
  if (n == 1) return {0, f[1]};
- return egf_(f.data() + (N >> 2), f.data() + (N >> 1), N >> 2);
+ return _egfT(f.data() + (N >> 2), f.data() + (N >> 1), N >> 2, n);
 }
 // [X^{[n]}] f^k/k! g for k=0,1,...,n , O(n^2 2^n)
 template <class T> vector<T> egf_T(const vector<T>& f, vector<T> g) {
  const int N= f.size(), n= __builtin_ctz(N);
  assert(!(N & (N - 1)));
  if (n == 0) return {g[1]};
- return egf_(f.data() + (N >> 1), g.data(), N >> 1);
+ return _egfT(f.data() + (N >> 1), g.data(), N >> 1, n);
 }
 }
 using sps_internal::subset_zeta, sps_internal::subset_mobius, sps_internal::supset_zeta, sps_internal::supset_mobius, sps_internal::or_convolve, sps_internal::and_convolve, sps_internal::convolve, sps_internal::semi_relaxed_convolve, sps_internal::self_relaxed_convolve, sps_internal::inv, sps_internal::div, sps_internal::exp, sps_internal::log, sps_internal::egf_comp, sps_internal::poly_comp, sps_internal::egf_T;

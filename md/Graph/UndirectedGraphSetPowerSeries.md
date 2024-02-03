@@ -53,7 +53,6 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 [https://github.com/EntropyIncreaser/ioi2021-homework/blob/master/thesis/main.tex](https://github.com/EntropyIncreaser/ioi2021-homework/blob/master/thesis/main.tex)
 
 ## 問題例
-[AtCoder Beginner Contest 253 Ex - We Love Forest](https://atcoder.jp/contests/abc253/tasks/abc253_h) (木) \
 [LibreOJ #155. Tutte 多项式](https://loj.ac/p/155) (Tutte 多項式) \
 [LibreOJ #3165. 「CEOI2019」游乐园](https://loj.ac/p/3165) (acyclic_orientations (Tutte 多項式, 彩色多項式)) \
 [LibreOJ #6673. EntropyIncreaser 与山林](https://loj.ac/p/6673) (オイラーグラフ) \

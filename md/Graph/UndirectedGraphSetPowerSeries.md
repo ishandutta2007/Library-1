@@ -7,9 +7,6 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 1. $S\subseteq V$ を頂点集合とする**誘導**部分グラフの "ほげ" の個数を $f_S$ とするとき,  $f$ が「ほげの個数を表す集合冪級数」であるとする.
 2. $S\subseteq V$ を頂点集合とする部分グラフのうちそれが "ほげグラフ" であるものの個数を $f_S$ とするとき, $f$ が「ほげグラフを表す集合冪級数」であるとする. 
 
-内部でグラフを隣接行列で表すが，重み(多重辺)を表す型をテンプレートで渡す. デフォルトは `int` .
-
-
 ## メンバ関数
 
 ※ `selfloop_num()`, `tutte_polynomial(x,y)` 以外は自己ループは無視する. \

@@ -1,6 +1,6 @@
 ---
 title: 集合冪級数
-documentation_of: ../../src/Math/SetPowerSeries.hpp
+documentation_of: ../../src/Math/set_power_series.hpp
 ---
 
 集合 $S,T,U \in 2^{\lbrace0,1,\dots,n-1\rbrace}$ を2進数表記によって非負整数と同一視する.\
@@ -23,12 +23,14 @@ $K$は乗法の逆元は必要としない. (各演算は定義できる)
 
 | 名前    | 概要  | 計算量    |
 | --- | --- | --- |
-| `subset_zeta(f)`   | $g_S = \sum_{T \subseteq S} f_T$ となる $g$ を返す.| $\mathcal{O}(n2^n)$ |
-| `subset_mobius(f)`    | $f_S = \sum_{T \subseteq S} g_T$ となる $g$ を返す.| $\mathcal{O}(n2^n)$ |
-| `supset_zeta(f)`   | $g_S = \sum_{S \subseteq T} f_T$ となる $g$ を返す.| $\mathcal{O}(n2^n)$ |
-| `supset_mobius(f)`    | $f_S = \sum_{S \subseteq T} g_T$ となる $g$ を返す.| $\mathcal{O}(n2^n)$ |
+| `subset_zeta(f)`   | $f$ を $g_S = \sum_{T \subseteq S} f_T$ となる $g$ に変換する.| $\mathcal{O}(n2^n)$ |
+| `subset_mobius(f)`    | $f$ を $f_S = \sum_{T \subseteq S} g_T$ となる $g$ に変換する.| $\mathcal{O}(n2^n)$ |
+| `supset_zeta(f)`   | $f$ を $g_S = \sum_{S \subseteq T} f_T$ となる $g$ に変換する.| $\mathcal{O}(n2^n)$ |
+| `supset_mobius(f)`    | $f$ を $f_S = \sum_{S \subseteq T} g_T$ となる $g$ に変換する.| $\mathcal{O}(n2^n)$ |
+| `hadamard(f)`   | $f$ を $g_S = \sum_{T} (-1)^{\lvert T\cap S \rvert} f_T$ となる $g$ に変換する. <br> $2^{n/2}$ で割っていない. | $\mathcal{O}(n2^n)$ |
 | `or_convolve(f,g)`   | $h_S = \sum_{U\cup T = S} f_Ug_{T}$ となる $h$ を返す.  | $\mathcal{O}(n2^n)$    |
 | `and_convolve(f,g)`   | $h_S = \sum_{U\cap T = S} f_Ug_{T}$ となる $h$ を返す.  | $\mathcal{O}(n2^n)$    |
+| `xor_convolve(f,g)`   | $h_S = \sum_{U\oplus T = S} f_Ug_{T}$ となる $h$ を返す.  | $\mathcal{O}(n2^n)$    |
 | `convolve(f,g)`   | $h = fg$ つまり $h_S = \sum_{T \subseteq S} f_Tg_{S\backslash T}$ となる $h$ を返す.  | $\mathcal{O}(n^22^n)$    |
 | `semi_relaxed_convolve(f, init, phi)` | $\displaystyle  h_S=\begin{cases}  \text{init} & S = \varnothing, \newline \phi_S\left(\sum_{T \subsetneq S} h_Tf_{S\backslash T}\right)& S \neq \varnothing \end{cases}$<br> となる $h$ を返す. <br> $\phi_S$ は `phi(int,T&)` という参照渡しの関数で与える. | $\mathcal{O}(n^22^n)$    |
 | `self_relaxed_convolve<T>(phi, n)`    | $\displaystyle h_S=\begin{cases} 0 & S= \varnothing, \newline \phi_S\left(\frac{1}{2}\sum_{\varnothing \neq T \subsetneq S}  h_Th_{S\backslash T}\right) & S \neq \varnothing \end{cases}$<br> となる $h$ を返す. <br> $\phi_S$ は `phi(int,T&)` という参照渡しの関数で与える.　<br> | $\mathcal{O}(n^22^n)$    |

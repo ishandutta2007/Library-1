@@ -9,7 +9,8 @@ using namespace std;
  if constexpr (!t) A[s + l]+= A[s]; \
  else if constexpr (t == 1) A[s + l]-= A[s]; \
  else if constexpr (t == 2) A[s]+= A[s + l]; \
- else A[s]-= A[s + l]
+ else if constexpr (t == 3) A[s]-= A[s + l]; \
+ else tie(A[s], A[s + l])= make_pair(A[s] + A[s + l], A[s] - A[s + l]);
 template <int t, class T> void rec(T A[], int l) {
  if (l > 127) {
   l>>= 1, rec<t>(A, l), rec<t>(A + l, l);
@@ -20,13 +21,13 @@ template <int t, class T> void rec(T A[], int l) {
     for (int j= 0; j < k; ++j) ZETA(i + j, k);
 }
 #undef ZETA
-/* subset_zeta:   f -> g s.t. g[S] = sum_{T subseteq S} f[T]  O(n 2^n) */
+/*  f -> g s.t. g[S] = sum_{T subseteq S} f[T]  O(n 2^n) */
 template <class T> void subset_zeta(vector<T>& f) { rec<0>(f.data(), f.size()); }
-/* supset_zeta:   f -> g s.t. g[S] = sum_{S subseteq T} f[T]  O(n 2^n) */
+/*  f -> g s.t. g[S] = sum_{S subseteq T} f[T]  O(n 2^n) */
 template <class T> void subset_mobius(vector<T>& f) { rec<1>(f.data(), f.size()); }
-/* subset_mobius: f -> g s.t. f[S] = sum_{T subseteq S} g[T]  O(n 2^n) */
+/*  f -> g s.t. f[S] = sum_{T subseteq S} g[T]  O(n 2^n) */
 template <class T> void supset_zeta(vector<T>& f) { rec<2>(f.data(), f.size()); }
-/* supset_mobius: f -> g s.t. f[S] = sum_{S subseteq T} g[T]  O(n 2^n) */
+/*  f -> g s.t. f[S] = sum_{S subseteq T} g[T]  O(n 2^n) */
 template <class T> void supset_mobius(vector<T>& f) { rec<3>(f.data(), f.size()); }
 /* h[S] = sum_{U | T == S} f[U]g[T]  O(n 2^n) */
 template <class T> vector<T> or_convolve(vector<T> f, vector<T> g) {
@@ -39,6 +40,19 @@ template <class T> vector<T> and_convolve(vector<T> f, vector<T> g) {
  supset_zeta(f), supset_zeta(g);
  for (int s= f.size(); s--;) f[s]*= g[s];
  return supset_mobius(f), f;
+}
+/* f -> g s.t. g[S] = sum_{T} (-1)^{|S & T|} f[T] */
+template <class T> void hadamard(vector<T>& f) { rec<4>(f.data(), f.size()); }
+/* h[S] = sum_{U ^ T = S} f[U]g[T] */
+template <class T> vector<T> xor_convolve(vector<T> f, vector<T> g) {
+ hadamard(f), hadamard(g);
+ for (int s= f.size(); s--;) f[s]*= g[s];
+ hadamard(f);
+ if (T iv= T(1) / f.size(); iv == 0)
+  for (int s= f.size(); s--;) f[s]/= f.size();
+ else
+  for (int s= f.size(); s--;) f[s]*= iv;
+ return f;
 }
 template <int t, class T> void rec_r(T A[], int l, int n, int c= 0) {
  if (l >= (n << 4)) {
@@ -87,7 +101,7 @@ template <class T> vector<T> convolve(const vector<T>& f, const vector<T>& g) {
  return rnk_zeta(f.data(), F.data(), n), rnk_zeta(g.data(), G.data(), n), cnv_(F.data(), G.data(), n + 1), rnk_mobius(F.data(), h.data(), n), h;
 }
 template <class T> void div_na(T f[], const T g[], int N) {
- for (int s= 1; s < N; ++s)
+ for (int s= 1, t; s < N; ++s)
   for (int t= s; t; --t&= s) f[s]-= f[s ^ t] * g[t];
 }
 // 1/f, "f[empty] = 1" is required, O(n^2 2^n)
@@ -126,10 +140,10 @@ template <class T, class P> void oncnv_(const T f[], T h[], const P& phi, int n)
  T* a= G.data() + (1 << n);
  for (int l= 1 << n; l>>= 1;) phi(l, a[l]= h[0] * f[l]), h[l]= a[l];
  for (int d= 2, s; d <= n; ++d) {
-  for (rec<0>(a, 1 << n), a+= (s= 1 << n); s--;)
+  for (rec<0>(a, 1 << n), a+= (s= 1 << n); --s;)
    if (int c= __builtin_popcount(s); c <= d && d <= 2 * c)
     for (int e= d; e--;) a[s]+= G[e << n | s] * F[s * (n + 1) + d - e];
-  for (rec<1>(a, 1 << n), s= 1 << n; s--;)
+  for (rec<1>(a, 1 << n), s= 1 << n; --s;)
    if (__builtin_popcount(s) == d) phi(s, a[s]), h[s]= a[s];
    else a[s]= 0;
  }
@@ -160,12 +174,12 @@ template <class T, class P> vector<T> self_relaxed_convolve(const P& phi, int n)
 }
 // exp(f) , "f[empty] = 0" is required,  O(n^2 2^n)
 template <class T> vector<T> exp(const vector<T>& f) {
- const int N= f.size(), n= __builtin_ctz(N), e= min(N, 1 << 11);
+ const int N= f.size(), n= __builtin_ctz(N), e= min(n, 11);
  assert(!(N & (N - 1))), assert(f[0] == 0);
  vector<T> h(N);
  int i= 0, l= 1;
- for (h[0]= 1; l < e; l<<= 1, ++i) cnv_na(h.data(), f.data() + l, h.data() + l, l);
- for (; l < N; l<<= 1, ++i) {
+ for (h[0]= 1; i < e; l<<= 1, ++i) cnv_na(h.data(), f.data() + l, h.data() + l, l);
+ for (; i < n; l<<= 1, ++i) {
   vector<T> F((i + 1) << i), G((i + 1) << i);
   rnk_zeta(h.data(), F.data(), i), rnk_zeta(f.data() + l, G.data(), i), cnv_(F.data(), G.data(), i + 1), rnk_mobius(F.data(), h.data() + l, i);
  }
@@ -173,40 +187,54 @@ template <class T> vector<T> exp(const vector<T>& f) {
 }
 // log(f) , "f[empty] = 1" is required,  O(n^2 2^n)
 template <class T> vector<T> log(const vector<T>& f) {
- const int N= f.size(), n= __builtin_ctz(N);
+ const int N= f.size(), n= __builtin_ctz(N), e= min(n, 12);
  assert(!(N & (N - 1))), assert(f[0] == 1);
- vector<T> h(N);
- int i= n - 1, l= N >> 1;
- if (i > 11) {
+ vector<T> h= f;
+ int i= 0, l= 1;
+ for (; i < e; l<<= 1, ++i) div_na(h.data() + l, f.data(), l);
+ if (i < n) {
   vector<T> G(n << (n - 1));
   rnk_zeta(f.data(), G.data(), n - 1);
-  for (; i > 11; l>>= 1, --i) {
-   vector<T> F((i + 1) << i);
-   rnk_zeta(f.data() + l, F.data(), i);
-   for (int s= l; s--;) {
-    T *a= F.data() + s * (i + 1), *b= G.data() + s * n;
-    for (int d= 0, c= __builtin_popcount(s); d++ < i;)
-     for (int e= max(0, d - c); e < d; ++e) a[d]-= a[e] * b[d - e];
+  for (; i < n; l<<= 1, ++i) {
+   vector<T> F((i + 1) << i, 0);
+   if constexpr (is_floating_point_v<T>) {
+    fill_n(F.data(), l, h[l]= f[l]);
+    T* a= F.data() + l;
+    for (int m= l; m>>= 1;) h[l | m]= a[m]= f[l | m] - h[l] * f[m];
+    for (int d= 2, s; d <= i; ++d) {
+     for (rec<0>(a, l), a+= (s= l); --s;)
+      if (int c= __builtin_popcount(s); c <= d && d <= 2 * c)
+       for (int e= d; e--;) a[s]+= F[e << i | s] * G[s * n + d - e];
+     for (rec<1>(a, l), s= l; --s;)
+      if (__builtin_popcount(s) == d) h[l | s]= a[s]= f[l | s] - a[s];
+      else a[s]= 0;
+    }
+   } else {
+    rnk_zeta(f.data() + l, F.data(), i);
+    for (int s= l; s--;) {
+     T t, *a= F.data() + s * (i + 1), *b= G.data() + s * n;
+     for (int d= 0, c= __builtin_popcount(s), e; d++ < i; a[d]-= t)
+      for (t= 0, e= max(0, d - c); e < d; ++e) t+= a[e] * b[d - e];
+    }
+    rnk_mobius(F.data(), h.data() + l, i);
    }
-   rnk_mobius(F.data(), h.data() + l, i);
   }
  }
- for (; l; l>>= 1) copy_n(f.data() + l, l, h.data() + l), div_na(h.data() + l, f.data(), l);
  return h;
 }
 // F(f) =  sum_i F_i f^i/i! , "f[empty] = 0" is required, O(n^2 2^n)
 template <class T> vector<T> egf_comp(const vector<T>& F, const vector<T>& f) {
- const int N= f.size(), n= __builtin_ctz(N), e= min(N, 1 << 11);
+ const int N= f.size(), n= __builtin_ctz(N), e= min(n, 11);
  assert(!(N & (N - 1))), assert(f[0] == 0);
  vector<T> h(N);
  T* b= h.data() + N;
  for (int i= n - F.size(); i++ < n;) h[N - (1 << i)]= F[n - i];
  int i= 0, l= 1;
- for (; l < e; l<<= 1, ++i)
+ for (; i < e; l<<= 1, ++i)
   for (int j= N >> 1; j >= l; j>>= 1) cnv_na(b - j, f.data() + l, b - j - j + l, l);
- if (l < N) {
+ if (i < n) {
   vector<T> A(n << (n - 1)), B(n << (n - 1));
-  for (; l < N; l<<= 1, ++i) {
+  for (; i < n; l<<= 1, ++i) {
    fill_n(B.data(), (i + 1) << i, 0), rnk_zeta(f.data() + l, B.data(), i);
    for (int j= N >> 1; j >= l; j>>= 1) fill_n(A.data(), (i + 1) << i, 0), rnk_zeta(b - j, A.data(), i), cnv_(A.data(), B.data(), i + 1), rnk_mobius(A.data(), b - j - j + l, i);
   }
@@ -258,5 +286,5 @@ template <class T> vector<T> egf_T(const vector<T>& f, vector<T> g) {
  return _egfT(f.data() + (N >> 1), g.data(), N >> 1, n);
 }
 }
-using sps_internal::subset_zeta, sps_internal::subset_mobius, sps_internal::supset_zeta, sps_internal::supset_mobius, sps_internal::or_convolve, sps_internal::and_convolve, sps_internal::convolve, sps_internal::semi_relaxed_convolve, sps_internal::self_relaxed_convolve, sps_internal::inv, sps_internal::div, sps_internal::exp, sps_internal::log, sps_internal::egf_comp, sps_internal::poly_comp, sps_internal::egf_T;
+using sps_internal::subset_zeta, sps_internal::subset_mobius, sps_internal::supset_zeta, sps_internal::supset_mobius, sps_internal::hadamard, sps_internal::or_convolve, sps_internal::and_convolve, sps_internal::xor_convolve, sps_internal::convolve, sps_internal::semi_relaxed_convolve, sps_internal::self_relaxed_convolve, sps_internal::inv, sps_internal::div, sps_internal::exp, sps_internal::log, sps_internal::egf_comp, sps_internal::poly_comp, sps_internal::egf_T;
 }

@@ -1,10 +1,11 @@
 #pragma once
 #include "src/Math/set_power_series.hpp"
-template <class Int= int> class UndirectedGraphSetPowerSeries {
+class UndirectedGraphSetPowerSeries {
+ using u64= unsigned long long;
  template <class T> using Sps= std::vector<T>;
  template <class T> using Poly= std::vector<T>;
  const int n, N, m, o;
- std::vector<Int> adj;
+ std::vector<u64> adj;
  std::vector<int> es;
  template <class T> static inline T pow(T x, int k) {
   for (T ret(1);; x*= x)
@@ -54,7 +55,7 @@ template <class Int= int> class UndirectedGraphSetPowerSeries {
     T* dp0s= dp0.data() + (s * K);
     for (int u= s | I, S= u, j, j0, j1; S; S^= 1 << j) {
      j= __builtin_ctz(S), j0= j + j, j1= j0 + 1;
-     const Int *A0= adj.data() + (j0 * m), *A1= A0 + m;
+     const u64 *A0= adj.data() + (j0 * m), *A1= A0 + m;
      T dp0s0= dp0s[j0], dp0s1= dp0s[j1];
      cyc[u]+= dp0s0 * A0[b] + dp0s1 * A1[b];
      for (int U= I - 1 - s, k, k0, k1; U; U^= 1 << k) {
@@ -77,7 +78,7 @@ template <class Int= int> class UndirectedGraphSetPowerSeries {
     for (int j= 0; j < K; ++j) dp1s[b]+= dp0s[j];
     for (int u= s | I, S= u, j, j0, j1; S; S^= 1 << j) {
      j= __builtin_ctz(S), j0= j + j, j1= j0 + 1;
-     const Int *A0= adj.data() + (j0 * m), *A1= A0 + m;
+     const u64 *A0= adj.data() + (j0 * m), *A1= A0 + m;
      T dp0s0= dp0s[j0], dp0s1= dp0s[j1], dp1s0= dp1s[j0], dp1s1= dp1s[j1];
      cyc[u]+= dp0s0 * A0[b] + dp0s1 * A1[b], pth[u]+= dp1s0 + dp1s1;
      for (int U= I - 1 - s, k, k0, k1; U; U^= 1 << k) {
@@ -92,7 +93,7 @@ template <class Int= int> class UndirectedGraphSetPowerSeries {
  }
 public:
  UndirectedGraphSetPowerSeries(int n): n(n), N(1 << n), m(n + (n & 1)), o(m / 2), adj(m * m), es(n) {}
- UndirectedGraphSetPowerSeries(const std::vector<std::vector<Int>>& g): n(g.size()), N(1 << n), m(n + (n & 1)), o(m / 2), adj(m * m), es(n) {
+ template <class Int> UndirectedGraphSetPowerSeries(const std::vector<std::vector<Int>>& g): n(g.size()), N(1 << n), m(n + (n & 1)), o(m / 2), adj(m * m), es(n) {
   for (int i= n; i--;)
    for (int j= i; j--;) assert(g[i][j] == g[j][i]);
   for (int i= n; i--;)
@@ -100,7 +101,7 @@ public:
   for (int i= n; i--;)
    for (int j= n; j--;) es[i]|= !(!(adj[i * m + j])) << j;
  }
- void add_edge(int u, int v, Int cnt= 1) {
+ void add_edge(int u, int v, u64 cnt= 1) {
   adj[u * m + v]= (adj[v * m + u]+= cnt), es[u]|= (1 << v), es[v]|= (1 << u);
   if (!(adj[u * m + v])) es[u]^= (1 << v), es[v]^= (1 << u);
  }
@@ -111,8 +112,8 @@ public:
  template <class T> static inline Sps<T> articulation_union(Sps<T> f) { return transform_articulation(f, sps::exp<T>), f; }
  template <class T> inline Sps<T> only_2edge_connected(Sps<T> f) const { return transform_bridge<T, false>(f), f; }
  template <class T> inline Sps<T> bridge_union(Sps<T> f) const { return transform_bridge<T, true>(f), f; }
- inline Sps<Int> edge_num() const {
-  Sps<Int> ret(N, 0);
+ inline Sps<u64> edge_num() const {
+  Sps<u64> ret(N, 0);
   for (int i= n; i--;)
    for (int j= i; j--;) ret[(1 << i) | (1 << j)]= adj[i * m + j];
   return sps::subset_zeta(ret), ret;
@@ -122,27 +123,27 @@ public:
   for (int s= N; s--;) bfs(s, [&](int) { ret[s]++; });
   return ret;
  }
- inline Sps<Int> cycle_space_rank() const {
-  Sps<Int> e= edge_num(), ret(N, 0);
+ inline Sps<u64> cycle_space_rank() const {
+  Sps<u64> e= edge_num(), ret(N, 0);
   Sps<int> k= connected_component_num();
   for (int s= N; s--;) ret[s]= e[s] + k[s] - __builtin_popcount(s);
   return ret;
  }
- inline Sps<Int> odd_deg_num() const {
-  Sps<Int> ret(N, 0);
+ inline Sps<u64> odd_deg_num() const {
+  Sps<u64> ret(N, 0);
   for (int i= n, I= N; I>>= 1, i--;)
    for (int t= 0, I2= I << 1; t < N; t+= I2)
     for (int u= I, cnt, v, j; u--; ret[t | I | u]+= cnt & 1)
      for (cnt= 0, v= t | u; v; v^= 1 << j) cnt+= adj[i * m + (j= __builtin_ctz(v))];
   return ret;
  }
- inline Sps<Int> selfloop_num() const {
-  Sps<Int> ret(N, 0);
+ inline Sps<u64> selfloop_num() const {
+  Sps<u64> ret(N, 0);
   for (int i= 0, I= 1; i < n; ++i, I<<= 1)
    for (int u= I; u--;) ret[I | u]= ret[u] + adj[i * m + i];
   return ret;
  }
- template <class T> static inline Sps<T> space_size(const Sps<int>& rank) {
+ template <class T, class Int> static inline Sps<T> space_size(const Sps<Int>& rank) {
   Sps<T> ret(rank.size());
   for (int s= rank.size(); s--;) ret[s]= pow<T>(2, rank[s]);
   return ret;

@@ -7,6 +7,9 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 1. $S\subseteq V$ を頂点集合とする**誘導**部分グラフの "ほげ" の個数を $f_S$ とするとき,  $f$ が「ほげの個数を表す集合冪級数」であるとする.
 2. $S\subseteq V$ を頂点集合とする部分グラフのうちそれが "ほげグラフ" であるものの個数を $f_S$ とするとき, $f$ が「ほげグラフを表す集合冪級数」であるとする. 
 
+内部でグラフを隣接行列で表すが，重み(多重辺)を表す型をテンプレートで渡す. デフォルトは `int` .
+
+
 ## メンバ関数
 
 ※ `selfloop_num()`, `tutte_polynomial(x,y)` 以外は自己ループは無視する. \
@@ -16,7 +19,7 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 |---|---|---|
 |`UndirectedGraphSetPowerSeries(n)`|コンストラクタ. <br> 頂点数 $n$ を渡す| 以下 $n=\lvert V\rvert$ とする.|
 |`UndirectedGraphSetPowerSeries`<br>`(vector<vector<int>> g)`|コンストラクタ. <br>隣接行列を渡す.||
-|`add_edge(u,v)`|無向辺 $(u,v)$ を追加する.||
+|`add_edge(u,v,c=1)`|無向辺 $(u,v)$ を $c$ 本追加する.||
 |`operator[](u)`|隣接行列の第u行目を返す.||
 |`only_connected(f)`| 集合冪級数 $f$ が表すグラフについて, そのうち連結してるものだけに制限したグラフ (e.g. 森 → 木) を表す集合冪級数を返す. <br> $f_{\varnothing}=1$ でないと assert で落ちる.      |$\mathcal{O}(n^22^n)$|
 |`disjoint_union(f)`|集合冪級数 $f$ が表すグラフについて, それを [disjoint union](https://en.wikipedia.org/wiki/Disjoint_union_of_graphs) (e.g. 木 → 森) したグラフを表す集合冪級数を返す. <br> $f$ が表すグラフは連結であることを想定している. <br> $f_{\varnothing}=0$ でないと assert で落ちる. |$\mathcal{O}(n^22^n)$|
@@ -45,8 +48,9 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 |`colorings_using_exactly_k_colors_num<T>()`|グラフ $G$ について要素数が $n+1$ 個の配列 `a` を返す.<br> `a[k]` はちょうど $k$ 色を使った頂点彩色の組み合わせ数である.  |$\mathcal{O}(n^22^n)$|
 |`chromatic_polynomial<T>()`|グラフ $G$ の[彩色多項式](https://en.wikipedia.org/wiki/Chromatic_polynomial) $P(G,x)=\sum_{i=0}^na_ix^i$ (の係数) を返す. <br> $n=0$ の場合は`vector({0})`を返す.|$\mathcal{O}(n^22^n)$|
 |`tutte_polynomial<T>(x,y)`|グラフ $G$ の[Tutte多項式](https://en.wikipedia.org/wiki/Tutte_polynomial)に対して $x,y$ を代入した値を返す. |$\mathcal{O}(n^22^n)$|
-
-
+|`perfect_matching<T>()`|グラフ $G$ の完全マッチングの組み合わせ数を返す. |$\mathcal{O}(n^22^{n/2})$|
+|`all_matching<T>()`|グラフ $G$ の（完全とは限らない）マッチングの組み合わせ数を返す. |$\mathcal{O}(n^22^{n/2})$|
+|`k_matching<T>()`|グラフ $G$ について要素数が $\lfloor n/2\rfloor+1$ 個の配列 `a` を返す. <br> `a[k]` はちょうど $k$ 本のマッチングがある組み合わせ数である.|$\mathcal{O}(n^22^{n/2})$|
 
 
 ## 参考
@@ -60,4 +64,6 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 [LibreOJ #6729. 点双连通生成子图计数](https://loj.ac/p/6729) (二重点連結グラフ) \
 [LibreOJ #6730. 边双连通生成子图计数](https://loj.ac/p/6730) (二重辺連結グラフ) \
 [LibreOJ #6787. 色多项式](https://loj.ac/p/6787) (彩色多項式)\
-[LibraOJ #2340. 「WC2018」州区划分](https://loj.ac/p/2340) 
+[LibraOJ #2340. 「WC2018」州区划分](https://loj.ac/p/2340) \
+[Xmas Contest 2022 F - Fast as Fast as Ryser](https://atcoder.jp/contests/xmascon22/tasks/xmascon22_f) (k-matchig) \
+[Yuhao Du Contest 7 F. Fast as Ryser](https://qoj.ac/contest/449/problem/2068) (k-mathcing)

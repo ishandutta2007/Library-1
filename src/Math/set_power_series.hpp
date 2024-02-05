@@ -101,7 +101,7 @@ template <class T> vector<T> convolve(const vector<T>& f, const vector<T>& g) {
  return rnk_zeta(f.data(), F.data(), n), rnk_zeta(g.data(), G.data(), n), cnv_(F.data(), G.data(), n + 1), rnk_mobius(F.data(), h.data(), n), h;
 }
 template <class T> void div_na(T f[], const T g[], int N) {
- for (int s= 1, t; s < N; ++s)
+ for (int s= 1; s < N; ++s)
   for (int t= s; t; --t&= s) f[s]-= f[s ^ t] * g[t];
 }
 // 1/f, "f[empty] = 1" is required, O(n^2 2^n)

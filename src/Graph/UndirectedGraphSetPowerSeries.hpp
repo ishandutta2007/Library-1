@@ -162,7 +162,7 @@ public:
   return ret;
  }
  template <class T> inline Sps<T> tree() const {
-  Sps<int> e= edge_num();
+  Sps<u64> e= edge_num();
   Sps<T> ret= {0, 1};
   ret.reserve(N);
   for (int I= 2; I < N; I<<= 1) {

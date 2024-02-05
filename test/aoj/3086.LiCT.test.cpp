@@ -21,11 +21,8 @@ signed main() {
  auto w= [&](int i, int j, long long d) { return d + seg.fold(j, i); };
  LiChaoTree lct(w, 1, N + 1);
  auto tree= lct.make_tree<MAXIMIZE>();
- tree.insert(L, N + 1, 0, 0);
- for (int i= 1; i < N; ++i) {
-  auto dp= tree.query(i).first;
-  tree.insert(i, dp, i + L);
- }
+ tree.insert(0, 0, L);
+ for (int i= 1; i < N; ++i) tree.insert(i, tree.query(i).first, i + L);
  cout << tree.query(N).first << '\n';
  return 0;
 }

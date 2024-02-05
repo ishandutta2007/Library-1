@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/primitive_root"
 #include <iostream>
-#include "src/Math/Factors.hpp"
+#include "src/Math/OrderFp.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,7 +10,7 @@ signed main() {
  while (Q--) {
   long long p;
   cin >> p;
-  cout << primitive_root(p) << '\n';
+  cout << OrderFp(p).primitive_root() << '\n';
  }
  return 0;
 }

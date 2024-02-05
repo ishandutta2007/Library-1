@@ -12,8 +12,6 @@ static_assert(f[2].first == 5);
 static_assert(f[2].second == 1);
 constexpr int n= totient(100);
 static_assert(n == 40);
-constexpr int g= primitive_root(998244353);
-static_assert(g == 3);
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);

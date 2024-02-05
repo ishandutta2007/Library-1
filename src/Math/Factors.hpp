@@ -3,6 +3,7 @@
 #include <cassert>
 #include <iostream>
 #include <algorithm>
+#include <vector>
 #include "src/Math/is_prime.hpp"
 #include "src/Math/binary_gcd.hpp"
 namespace math_internal {
@@ -58,38 +59,8 @@ public:
  constexpr Factors()= default;
  constexpr Factors(u64 n) { init(n), bubble_sort(dat, dat + sz); }
 };
-template <class Uint, class MP> constexpr Uint inner_primitive_root(Uint p) {
- const MP md(p);
- const auto f= Factors(p - 1);
- for (Uint ret= 2, one= md.set(1), ng= 0;; ret++) {
-  for (auto [q, e]: f)
-   if ((ng= (md.norm(pow(md.set(ret), (p - 1) / q, md)) == one))) break;
-  if (!ng) return ret;
- }
-}
-constexpr u64 primitive_root(u64 p) {
- if (assert(is_prime(p)); p == 2) return 1;
- if (p < (1 << 30)) return inner_primitive_root<u32, MP_Mo<u32, u64, 32, 31>>(p);
- if (p < (1ull << 62)) return inner_primitive_root<u64, MP_Mo<u64, u128, 64, 63>>(p);
- return inner_primitive_root<u64, MP_D2B1>(p);
-}
-class Divisors: public ConstexprArray<u64, 110600> {
- constexpr void init(const Factors &f) {
-  dat[sz++]= 1;
-  for (auto [p, e]: f) {
-   u64 pw= p;
-   size_t psz= sz;
-   for (uint16_t i= 1; i <= e; ++i, pw*= p)
-    for (size_t j= 0; j < psz; ++j) dat[sz++]= dat[j] * pw;
-  }
- }
-public:
- constexpr Divisors()= default;
- constexpr Divisors(const Factors &f) { init(f), bubble_sort(dat, dat + sz); };
- constexpr Divisors(u64 n): Divisors(Factors(n)) {}
-};
 }  // namespace math_internal
-using math_internal::Factors, math_internal::Divisors, math_internal::primitive_root;
+using math_internal::Factors;
 constexpr uint64_t totient(const Factors &f) {
  uint64_t ret= 1, i= 0;
  for (auto [p, e]: f)
@@ -97,3 +68,17 @@ constexpr uint64_t totient(const Factors &f) {
  return ret;
 }
 constexpr auto totient(uint64_t n) { return totient(Factors(n)); }
+template <class Uint= uint64_t> std::vector<Uint> enumerate_divisors(const Factors &f) {
+ int sz= 1;
+ for (auto [p, e]: f) sz*= e + 1;
+ std::vector<Uint> ret(sz, 1);
+ sz= 1;
+ for (auto [p, e]: f) {
+  int nxt= sz;
+  for (Uint pw= 1, i= e; pw*= p, i--;)
+   for (int j= 0; j < sz;) ret[nxt++]= ret[j++] * pw;
+  sz= nxt;
+ }
+ return ret;
+}
+template <class Uint> std::vector<Uint> enumerate_divisors(Uint n) { return enumerate_divisors<Uint>(Factors(n)); }

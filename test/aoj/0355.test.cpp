@@ -7,12 +7,12 @@
 #include <algorithm>
 #include <string>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/CartesianProduct.hpp"
+#include "src/Misc/Pointwise.hpp"
 #include "src/Misc/rng.hpp"
 #include "src/DataStructure/SegmentTree_Beats.hpp"
 using namespace std;
 using Mint= ModInt<int(1e9) + 7>;
-using K= CartesianProduct<Mint, Mint>;
+using K= Pointwise<Mint, Mint>;
 K bs, iv;
 K pw[200010];
 void init(int n) {

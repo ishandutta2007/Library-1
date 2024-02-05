@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/aplusb"
 #include <iostream>
-#include "src/Math/Factors.hpp"
+#include "src/NumberTheory/Factors.hpp"
 using namespace std;
 constexpr auto f= Factors(2 * 2 * 3 * 5);
 static_assert(f.size() == 3);

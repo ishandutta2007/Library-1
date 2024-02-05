@@ -4,7 +4,7 @@
 #include "src/Math/ModInt.hpp"
 #include "src/Graph/rerooting.hpp"
 #include "src/Misc/rng.hpp"
-#include "src/Math/CartesianProduct.hpp"
+#include "src/Misc/Pointwise.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -19,7 +19,7 @@ signed main() {
  }
  tree.build(0);
  using Mint= ModInt<(1ll << 61) - 1>;
- using K= CartesianProduct<Mint, Mint>;
+ using K= Pointwise<Mint, Mint>;
  using Data= pair<int, K>;
  vector<K> hash(N);
  for (auto& x: hash) x= {rng(2, Mint::mod() - 1), rng(2, Mint::mod() - 1)};

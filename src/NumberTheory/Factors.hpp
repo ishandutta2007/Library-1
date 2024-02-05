@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "src/Math/is_prime.hpp"
+#include "src/NumberTheory/is_prime.hpp"
 #include "src/Math/binary_gcd.hpp"
 namespace math_internal {
 template <class T> constexpr void bubble_sort(T *bg, T *ed) {

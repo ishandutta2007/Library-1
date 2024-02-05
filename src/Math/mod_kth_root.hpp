@@ -2,8 +2,7 @@
 #include <vector>
 #include <cmath>
 #include "src/Math/mod_inv.hpp"
-#include "src/Math/Factors.hpp"
-#include "src/Math/binary_gcd.hpp"
+#include "src/NumberTheory/Factors.hpp"
 namespace math_internal {
 template <class Int, class MP> inline i64 peth_root(Int c, Int pi, int ei, const MP &md) {
  const Int p= md.mod;

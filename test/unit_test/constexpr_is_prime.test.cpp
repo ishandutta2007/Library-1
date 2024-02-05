@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/aplusb"
 #include <iostream>
-#include "src/Math/is_prime.hpp"
+#include "src/NumberTheory/is_prime.hpp"
 using namespace std;
 constexpr auto f= is_prime(1000000007);
 static_assert(f == true);

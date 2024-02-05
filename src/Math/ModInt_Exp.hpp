@@ -1,5 +1,5 @@
 #pragma once
-#include "src/Math/Factors.hpp"
+#include "src/NumberTheory/Factors.hpp"
 template <uint64_t MOD> class ModInt_Exp {
  static_assert(MOD < 1uLL << 63, "MOD must be smaller than 2^63");
  using Uint= std::conditional_t < MOD<(1ull << 32), uint32_t, uint64_t>;

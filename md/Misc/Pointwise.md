@@ -1,6 +1,6 @@
 ---
-title: 代数系を並列に扱う ($K_1\times K_2\times\cdots\times K_n$)
-documentation_of: ../../src/Math/CartesianProduct.hpp
+title: 体を並列に扱う ($K_1\times K_2\times\cdots\times K_n$)
+documentation_of: ../../src/Misc/Pointwise.hpp
 ---
 [Rolling Hash](RollingHash.md) などのハッシュ計算をする時に, baseを変えたパターンのを並行して扱うのを便利にするために作った.
 ## 問題例

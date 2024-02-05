@@ -1,6 +1,6 @@
 #pragma once
 #include <array>
-#include "src/Math/Factors.hpp"
+#include "src/NumberTheory/Factors.hpp"
 namespace math_internal {
 class OrderFp {
  u64 p;

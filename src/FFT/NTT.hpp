@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 #include <limits>
-#include "src/Math/is_prime.hpp"
+#include "src/NumberTheory/is_prime.hpp"
 #include "src/Math/ModInt.hpp"
 template <class mod_t, size_t LM> mod_t get_inv(int n) {
  static_assert(is_modint_v<mod_t>);

@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/primality_test"
 #include <iostream>
-#include "src/Math/is_prime.hpp"
+#include "src/NumberTheory/is_prime.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdint>
-#include "src/Math/is_prime.hpp"
+#include "src/NumberTheory/is_prime.hpp"
 class StirlingNumber {
  const uint16_t p;
  std::vector<std::vector<uint16_t>> c, s1, s2;

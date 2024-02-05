@@ -1,6 +1,6 @@
 ---
 title: 高速素因数分解など
-documentation_of: ../../src/Math/Factors.hpp
+documentation_of: ../../src/NumberTheory/Factors.hpp
 ---
 
 ## `Factors` クラス

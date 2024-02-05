@@ -1,7 +1,7 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/factorize"
 #include <iostream>
 #include <vector>
-#include "src/Math/Factors.hpp"
+#include "src/NumberTheory/Factors.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -24,9 +24,9 @@ $K$は乗法の逆元は必要としない. (各演算は定義できる)
 | 名前    | 概要  | 計算量    |
 | --- | --- | --- |
 | `subset_zeta(f)`   | $f$ を $g_S = \sum_{T \subseteq S} f_T$ となる $g$ に変換する.| $\mathcal{O}(n2^n)$ |
-| `subset_mobius(f)`    | $f$ を $f_S = \sum_{T \subseteq S} g_T$ となる $g$ に変換する.| $\mathcal{O}(n2^n)$ |
+| `subset_mobius(f)`    | $f$ を $f_S = \sum_{T \subseteq S} h_T$ となる $h$ に変換する.| $\mathcal{O}(n2^n)$ |
 | `supset_zeta(f)`   | $f$ を $g_S = \sum_{S \subseteq T} f_T$ となる $g$ に変換する.| $\mathcal{O}(n2^n)$ |
-| `supset_mobius(f)`    | $f$ を $f_S = \sum_{S \subseteq T} g_T$ となる $g$ に変換する.| $\mathcal{O}(n2^n)$ |
+| `supset_mobius(f)`    | $f$ を $f_S = \sum_{S \subseteq T} h_T$ となる $h$ に変換する.| $\mathcal{O}(n2^n)$ |
 | `hadamard(f)`   | $f$ を $g_S = \sum_{T} (-1)^{\lvert T\cap S \rvert} f_T$ となる $g$ に変換する. <br> $2^{n/2}$ で割っていない. | $\mathcal{O}(n2^n)$ |
 | `or_convolve(f,g)`   | $h_S = \sum_{U\cup T = S} f_Ug_{T}$ となる $h$ を返す.  | $\mathcal{O}(n2^n)$    |
 | `and_convolve(f,g)`   | $h_S = \sum_{U\cap T = S} f_Ug_{T}$ となる $h$ を返す.  | $\mathcal{O}(n2^n)$    |

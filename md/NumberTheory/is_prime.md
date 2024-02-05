@@ -1,6 +1,6 @@
 ---
 title: 素数判定
-documentation_of: ../../src/Math/is_prime.hpp
+documentation_of: ../../src/NumberTheory/is_prime.hpp
 ---
 
 constexpr で呼べる

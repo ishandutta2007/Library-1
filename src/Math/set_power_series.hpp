@@ -5,7 +5,7 @@
 namespace sps {
 namespace sps_internal {
 using namespace std;
-#define ZETA(s, l) \
+#define _ZETA(s, l) \
  if constexpr (!t) A[s + l]+= A[s]; \
  else if constexpr (t == 1) A[s + l]-= A[s]; \
  else if constexpr (t == 2) A[s]+= A[s + l]; \
@@ -14,20 +14,20 @@ using namespace std;
 template <int t, class T> void rec(T A[], int l) {
  if (l > 127) {
   l>>= 1, rec<t>(A, l), rec<t>(A + l, l);
-  for (int s= 0; s < l; ++s) ZETA(s, l);
+  for (int s= 0; s < l; ++s) _ZETA(s, l);
  } else
   for (int k= 1; k < l; k<<= 1)
    for (int i= 0; i < l; i+= k + k)
-    for (int j= 0; j < k; ++j) ZETA(i + j, k);
+    for (int j= 0; j < k; ++j) _ZETA(i + j, k);
 }
-#undef ZETA
+#undef _ZETA
 /*  f -> g s.t. g[S] = sum_{T subseteq S} f[T]  O(n 2^n) */
 template <class T> void subset_zeta(vector<T>& f) { rec<0>(f.data(), f.size()); }
-/*  f -> g s.t. g[S] = sum_{S subseteq T} f[T]  O(n 2^n) */
+/*  f -> h s.t. f[S] = sum_{T subseteq S} h[T]  O(n 2^n) */
 template <class T> void subset_mobius(vector<T>& f) { rec<1>(f.data(), f.size()); }
-/*  f -> g s.t. f[S] = sum_{T subseteq S} g[T]  O(n 2^n) */
+/*  f -> g s.t. g[S] = sum_{S subseteq T} f[T]  O(n 2^n) */
 template <class T> void supset_zeta(vector<T>& f) { rec<2>(f.data(), f.size()); }
-/*  f -> g s.t. f[S] = sum_{S subseteq T} g[T]  O(n 2^n) */
+/*  f -> h s.t. f[S] = sum_{S subseteq T} h[T]  O(n 2^n) */
 template <class T> void supset_mobius(vector<T>& f) { rec<3>(f.data(), f.size()); }
 /* h[S] = sum_{U | T == S} f[U]g[T]  O(n 2^n) */
 template <class T> vector<T> or_convolve(vector<T> f, vector<T> g) {
@@ -148,7 +148,8 @@ template <class T, class P> void oncnv_(const T f[], T h[], const P& phi, int n)
    else a[s]= 0;
  }
 }
-// h[S] = phi(S, sum_{T subsetneq S} h[T]f[S/T] )   O(n^2 2^n)
+// h[S] = phi(S, sum_{T subsetneq S} h[T]f[S/T] )  O(n^2 2^n)
+// phi: [](int, T&x)
 template <class T, class P> vector<T> semi_relaxed_convolve(const vector<T>& f, T init, const P& phi) {
  const int N= f.size(), n= __builtin_ctz(N);
  assert(!(N & (N - 1)));
@@ -159,7 +160,8 @@ template <class T, class P> vector<T> semi_relaxed_convolve(const vector<T>& f, 
  } else oncnv_(f.data(), h.data(), phi, n);
  return h;
 }
-// h[S] = phi(S, 1/2 sum_{empty neq T subseteq S} h[T]h[S/T] )   O(n^2 2^n)
+// h[S] = phi(S, 1/2 sum_{empty neq T subseteq S} h[T]h[S/T] )  O(n^2 2^n)
+// phi: [](int, T&x)
 template <class T, class P> vector<T> self_relaxed_convolve(const P& phi, int n) {
  const int e= min(n, 12);
  int i= 0, l= 1;

@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "src/Math/Factors.hpp"
+#include "src/NumberTheory/Factors.hpp"
 #include "src/Math/mod_inv.hpp"
 class BinomialCoefficient {  // mod <= 1e6
  using i64= int64_t;

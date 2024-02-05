@@ -13,10 +13,10 @@ signed main() {
  using F= FactorialPrecalculation<Mint>;
  long long N, M;
  cin >> N >> M;
- long long D[N];
- for (int i= 0; i < N; ++i) cin >> D[i];
  long long S= 1 << N;
- long long f[S]= {1};
+ long long D[N], f[S];
+ for (int i= 0; i < N; ++i) cin >> D[i];
+ f[0]= 1;
  for (int i= 0, I= 1; i < N; ++i, I<<= 1)
   for (int s= 0; s < I; ++s) {
    long long g= gcd(f[s], D[i]), a= D[i] / g;

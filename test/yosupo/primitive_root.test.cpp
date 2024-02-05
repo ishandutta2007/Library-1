@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/primitive_root"
 #include <iostream>
-#include "src/Math/OrderFp.hpp"
+#include "src/NumberTheory/OrderFp.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

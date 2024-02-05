@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include "src/Math/ModInt.hpp"
-#include "src/Math/CartesianProduct.hpp"
+#include "src/Misc/Pointwise.hpp"
 #include "src/String/RollingHash.hpp"
 #include "src/Misc/rng.hpp"
 using namespace std;
@@ -10,7 +10,7 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  using Mint= ModInt<998244353>;
- using K= CartesianProduct<Mint, Mint>;
+ using K= Pointwise<Mint, Mint>;
  using RH= RollingHash<K>;
  RH::init({rng(), rng()});
  int T;

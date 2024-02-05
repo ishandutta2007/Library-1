@@ -1,5 +1,5 @@
 #pragma once
-#include "src/Math/Factors.hpp"
+#include "src/NumberTheory/Factors.hpp"
 namespace math_internal {
 constexpr u64 rec(u64 a, u64 b, u64 m) {
  if (a == 0) return (b ^ 1) & 1;

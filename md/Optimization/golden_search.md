@@ -4,7 +4,7 @@ documentation_of: ../../src/Optimization/golden_search.hpp
 ---
 
 引数の型が `long double` の単峰関数が対象. \
-引数の型が整数な単峰関数を対象にする場合は[フィボナッチ探索](fibonacci_search.md) を使う.
+引数の型が整数な単峰関数を対象にする場合は[フィボナッチ探索](src/Optimization/fibonacci_search.hpp) を使う.
 
 ## 関数
 

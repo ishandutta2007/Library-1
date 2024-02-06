@@ -79,10 +79,9 @@ template <class T> void rnk_mobius(T F[], T f[], int n) {
  rec_r<1>(F, (n + 1) << n, n + 1);
  for (int s= 1 << n; s--;) f[s]= F[s * (n + 1) + __builtin_popcount(s)];
 }
-template <class T> void cnv_(T A[], const T B[], int n) {
+template <class T> void cnv_(T A[], T B[], int n) {
  for (int s= 1 << (n - 1); s--;) {
-  T t, *a= A + s * n;
-  const T* b= B + s * n;
+  T t, *a= A + s * n, *b= B + s * n;
   for (int c= __builtin_popcount(s), d= min(2 * c, n - 1), e; d >= c; a[d--]= t)
    for (t= 0, e= d - c; e <= c; ++e) t+= a[e] * b[d - e];
  }
@@ -97,8 +96,10 @@ template <class T> vector<T> convolve(const vector<T>& f, const vector<T>& g) {
  assert(!(N & (N - 1))), assert(N == (int)g.size());
  vector<T> h(N);
  if (n < 11) return cnv_na(f.data(), g.data(), h.data(), N), h;
- vector<T> F((n + 1) << n), G((n + 1) << n);
- return rnk_zeta(f.data(), F.data(), n), rnk_zeta(g.data(), G.data(), n), cnv_(F.data(), G.data(), n + 1), rnk_mobius(F.data(), h.data(), n), h;
+ vector<T> F((n + 1) << n);
+ if (rnk_zeta(f.data(), F.data(), n); f.data() == g.data()) return cnv_(F.data(), F.data(), n + 1), rnk_mobius(F.data(), h.data(), n), h;
+ vector<T> G((n + 1) << n);
+ return rnk_zeta(g.data(), G.data(), n), cnv_(F.data(), G.data(), n + 1), rnk_mobius(F.data(), h.data(), n), h;
 }
 template <class T> void div_na(T f[], const T g[], int N) {
  for (int s= 1; s < N; ++s)

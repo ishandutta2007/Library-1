@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
-#include "src/NumberTheory/Sieve.hpp"
+#include "src/NumberTheory/tables.hpp"
 using namespace std;
 // O(MAX_A log log MAX_A)
 
@@ -17,7 +17,7 @@ signed main() {
  vector<Mint> c(MAX_A + 1, 0);
  Mint sum= 0;
  for (int i= 0, A; i < N; i++) cin >> A, c[A]+= A, sum+= A;
- auto tmp= Sieve<>::gcd_conv(c, c);
+ auto tmp= gcd_convolve(c, c);
  Mint sum2= 0;
  for (int d= 1; d <= MAX_A; d++) sum2+= tmp[d] / d;
  cout << (sum2 - sum) / 2 << '\n';

@@ -5,7 +5,7 @@
 #include <vector>
 #include "src/Math/FactorialPrecalculation.hpp"
 #include "src/Math/ModInt.hpp"
-#include "src/NumberTheory/Sieve.hpp"
+#include "src/NumberTheory/enumerate_primes.hpp"
 #include "src/FFT/sample_points_shift.hpp"
 using namespace std;
 signed main() {
@@ -23,7 +23,7 @@ signed main() {
   cout << (d ? 0 : 1) << '\n';
   return 0;
  }
- vector<Mint> sum(d + 2), rpow(d + 2), pd= Sieve<>::pow_table<Mint>(d + 2, d);
+ vector<Mint> sum(d + 2), rpow(d + 2), pd= pow_table<Mint>(d + 2, d);
  rpow[0]= 1, sum[0]= rpow[0] * pd[0];
  for (int i= 1; i <= d + 1; i++) rpow[i]= rpow[i - 1] * r;
  for (int i= 1; i <= d + 1; i++) sum[i]= sum[i - 1] + rpow[i] * pd[i];

@@ -1,7 +1,7 @@
 #define PROBLEM "https://atcoder.jp/contests/abc172/tasks/abc172_d"
 // O(N)
 #include <iostream>
-#include "src/NumberTheory/Sieve.hpp"
+#include "src/NumberTheory/tables.hpp"
 #include "src/NumberTheory/famous_arithmetic_functions.hpp"
 using namespace std;
 signed main() {
@@ -10,7 +10,7 @@ signed main() {
  using namespace famous_arithmetic_functions;
  int N;
  cin >> N;
- auto d= Sieve<>::multiplicative_table<long long>(N, mul::Divisor<int, 0>::f);
+ auto d= multiplicative_table<long long>(N, mul::Divisor<int, 0>::f);
  long long ans= 0;
  for (long long i= 1; i <= N; i++) ans+= d[i] * i;
  cout << ans << '\n';

@@ -2,7 +2,7 @@
 #include <array>
 #include <algorithm>
 #include <numeric>
-#include "src/DataStructure/CsrArray.hpp"
+#include "src/Internal/ListRange.hpp"
 class DulmageMendelsohn {
  std::vector<int> blg[2], mate[2], pos[2];
  std::vector<std::array<int, 2>> es;

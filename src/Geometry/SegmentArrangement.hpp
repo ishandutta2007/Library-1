@@ -3,7 +3,7 @@
 #include <unordered_set>
 #include "src/Geometry/Segment.hpp"
 #include "src/Geometry/angle.hpp"
-#include "src/DataStructure/CsrArray.hpp"
+#include "src/Internal/ListRange.hpp"
 namespace geo {
 template <class K> class SegmentArrangement {
  vector<Point<K>> ps;

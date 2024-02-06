@@ -10,11 +10,11 @@ documentation_of: ../../src/String/SuffixTree.hpp
 
 |メンバ変数|概要|
 |---|---|
-|`tree`| 接尾辞木の木の部分. <br> [`Tree<void>`](/md/Graph/Tree.md) クラス.|
+|`tree`| 接尾辞木の木の部分. <br> [`Tree<void>`](src/Graph/Tree.hpp) クラス.|
 
 |メンバ関数|概要|計算量|
 |---|---|---|
-|`SuffixTree(sa, lcp)`|コンストラクタ. <br> 引数は [`SuffixArray` と `LCPArray`](SuffixArray.md) .|$\mathcal{O}(n)$ |
+|`SuffixTree(sa, lcp)`|コンストラクタ. <br> 引数は [`SuffixArray` と `LCPArray`](src/String/SuffixArray.hpp) .|$\mathcal{O}(n)$ |
 |`operator[](v)`| 接尾辞木上の頂点 v が指す矩形の情報を返す. <br> (suffix array の添字方向) $\times$ ( 高さ/ lcp 方向 )の矩形 $\lbrack l, r) \times \lbrack d, u)$ を意味する4つの整数 {l,r,d,u} を返す. ||
 |`begin()`| 矩形情報配列の `begin()` を返す.||
 |`end()`| 矩形情報配列の `end()` を返す||

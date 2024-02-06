@@ -3,10 +3,11 @@ title: 原始根と位数 $\mathbb{F}_p^{\times}$
 documentation_of: ../../src/NumberTheory/OrderFp.hpp
 ---
 
-`constexpr` できる. \
-原始根を求める関数は同じ $p$ に対して繰り返し使うものでないので
 
-## メンバ
+## `OrderFp` クラス
+
+`constexpr` できる. \
+原始根を求める関数は同じ $p$ に対して繰り返し使うものでもないので二分木実装せず簡単にした.
 
 | メンバ変数 | 概要 |
 | ---| --- |

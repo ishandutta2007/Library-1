@@ -101,4 +101,4 @@ $N$ を与えて, 具体的な数論的関数についての `DirichletSeries` �
 [LibreOJ #6491. 「XXOI 2018」简单的最大公约数](https://loj.ac/p/6491) \
 [LibreOJ #6686. Stupid GCD](https://loj.ac/p/6686) \
 [LibreOJ #6714. Stupid Product](https://loj.ac/p/6714)\
-[LibreOJ #572. 「LibreOJ Round #11」Misaka Network 与求和](https://loj.ac/p/572) ([prime count](md/NumberTheory/ExtendedEratosthenesSieve.md) もいる)
+[LibreOJ #572. 「LibreOJ Round #11」Misaka Network 与求和](https://loj.ac/p/572) ([prime count](src/NumberTheory/ExtendedEratosthenesSieve.hpp) もいる)

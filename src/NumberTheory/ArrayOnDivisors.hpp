@@ -1,6 +1,6 @@
 #pragma once
 #include "src/NumberTheory/Factors.hpp"
-template <class T> class ArrayOnDivisors {
+template <class T> struct ArrayOnDivisors {
  uint64_t n;
  uint8_t shift;
  std::vector<int> os, id;
@@ -9,6 +9,7 @@ template <class T> class ArrayOnDivisors {
 #define _UP for (int j= k; j < a; ++j)
 #define _DWN for (int j= a; j-- > k;)
 #define _OP(J, K, op) dat[i + J].second op##= dat[i + K].second
+#define _FUN(J, K, name) name(dat[i + J].second, dat[i + K].second)
 #define _ZETA(op) \
  int k= 1; \
  for (auto [p, e]: factors) { \
@@ -45,8 +46,36 @@ public:
  void multiple_zeta() { _ZETA(_DWN _OP(j - k, j, +)) }
  /* f -> h s.t. f(n) = sum_{n|m} h(m) */
  void multiple_mobius() { _ZETA(_UP _OP(j - k, j, -)) }
+ /* f -> g s.t. g(n) = sum_{m|n} f(m), add(T& a, T b): a+=b */
+ template <class F> void divisor_zeta(const F &add) { _ZETA(_UP _FUN(j, j - k, add)) }
+ /* f -> h s.t. f(n) = sum_{m|n} h(m), sub(T& a, T b): a-=b */
+ template <class F> void divisor_mobius(const F &sub) { _ZETA(_UP _FUN(j, j - k, sub)) }
+ /* f -> g s.t. g(n) = sum_{n|m} f(m), add(T& a, T b): a+=b */
+ template <class F> void multiple_zeta(const F &add) { _ZETA(_UP _FUN(j - k, j, add)) }
+ /* f -> h s.t. f(n) = sum_{n|m} h(m), sub(T& a, T b): a-=b */
+ template <class F> void multiple_mobius(const F &sub) { _ZETA(_UP _FUN(j - k, j, sub)) }
 #undef _UP
 #undef _DWN
 #undef _OP
 #undef _ZETA
+ // f(p,e): multiplicative function of p^e
+ template <typename F> void set_multiplicative(const F &f) {
+  int k= 1;
+  dat[0].second= 1;
+  for (auto [p, e]: factors)
+   for (int m= k, d= 1; d <= e; ++d)
+    for (int i= 0; i < m;) dat[k++].second= dat[i++].second * f(p, d);
+ }
+ void set_totient() {
+  int k= 1;
+  dat[0].second= 1;
+  for (auto [p, e]: factors) {
+   uint64_t b= p - 1;
+   for (int m= k; e--; b*= p)
+    for (int i= 0; i < m;) dat[k++].second= dat[i++].second * b;
+  }
+ }
+ void set_mobius() {
+  set_multiplicative([](auto, auto e) { return e == 1 ? -1 : 0; });
+ }
 };

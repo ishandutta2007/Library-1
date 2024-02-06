@@ -65,3 +65,6 @@ $f$ や $F$ そのものは保持しない. \
 [LibreOJ #572. 「LibreOJ Round #11」Misaka Network 与求和](https://loj.ac/p/572) \
 [LibreOJ #6686. Stupid GCD](https://loj.ac/p/6686) (2次多項式) \
 [LibreOJ #6053. 简单的函数](https://loj.ac/p/6053) (単純な多項式でない)
+
+## 参考
+[https://oi-wiki.org/math/number-theory/min-25/](https://oi-wiki.org/math/number-theory/min-25/)

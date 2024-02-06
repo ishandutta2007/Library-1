@@ -69,15 +69,14 @@ constexpr uint64_t totient(const Factors &f) {
 }
 constexpr auto totient(uint64_t n) { return totient(Factors(n)); }
 template <class Uint= uint64_t> std::vector<Uint> enumerate_divisors(const Factors &f) {
- int sz= 1;
- for (auto [p, e]: f) sz*= e + 1;
- std::vector<Uint> ret(sz, 1);
- sz= 1;
+ int k= 1;
+ for (auto [p, e]: f) k*= e + 1;
+ std::vector<Uint> ret(k, 1);
+ k= 1;
  for (auto [p, e]: f) {
-  int nxt= sz;
-  for (Uint pw= 1, i= e; pw*= p, i--;)
-   for (int j= 0; j < sz;) ret[nxt++]= ret[j++] * pw;
-  sz= nxt;
+  int sz= k;
+  for (Uint pw= 1; pw*= p, e--;)
+   for (int j= 0; j < sz;) ret[k++]= ret[j++] * pw;
  }
  return ret;
 }

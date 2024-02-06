@@ -6,7 +6,7 @@
 #include <tuple>
 #include <numeric>
 #include <cassert>
-#include "src/DataStructure/CsrArray.hpp"
+#include "src/Internal/ListRange.hpp"
 template <class Cost= void, bool weight= false> class Tree {
  template <class D, class T> struct Edge_B {
   int to;

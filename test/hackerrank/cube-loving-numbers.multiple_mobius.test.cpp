@@ -1,7 +1,7 @@
 #define PROBLEM "https://www.hackerrank.com/contests/university-codesprint-5/challenges/cube-loving-numbers"
 #include <iostream>
 #include <vector>
-#include "src/NumberTheory/Sieve.hpp"
+#include "src/NumberTheory/tables.hpp"
 // 倍数メビウス
 using namespace std;
 signed main() {
@@ -15,7 +15,7 @@ signed main() {
   cin >> N;
   for (; a * a * a <= N; a++) f[a]= N / (a * a * a);
   vector<long long> g(f, f + a);
-  Sieve<>::multiple_mobius(g);
+  multiple_mobius(g);
   for (; --a >= 2;) ans+= g[a];
   cout << ans << '\n';
  }

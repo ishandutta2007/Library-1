@@ -1,15 +1,14 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/enumerate_primes"
 #include <iostream>
 #include <vector>
-#include "src/NumberTheory/Sieve.hpp"
+#include "src/NumberTheory/enumerate_primes.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
- using S= Sieve<int(5e8 + 10)>;
  int N, A, B;
  cin >> N >> A >> B;
- auto ps= S::get_primes(N);
+ auto ps= enumerate_primes(N);
  int pi= ps.size();
  vector<int> ans;
  for (int i= 0; A * i + B < pi; i++) ans.push_back(ps[A * i + B]);

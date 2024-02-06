@@ -5,7 +5,7 @@
 #include <vector>
 #include "src/Math/FactorialPrecalculation.hpp"
 #include "src/Math/ModInt.hpp"
-#include "src/NumberTheory/Sieve.hpp"
+#include "src/NumberTheory/enumerate_primes.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,7 +14,7 @@ signed main() {
  using F= FactorialPrecalculation<Mint>;
  long long r, d;
  cin >> r >> d;
- vector<Mint> sum(d + 1), rpow(d + 1), pd= Sieve<>::pow_table<Mint>(d + 1, d);
+ vector<Mint> sum(d + 1), rpow(d + 1), pd= pow_table<Mint>(d + 1, d);
  rpow[0]= 1, sum[0]= rpow[0] * pd[0];
  for (int i= 1; i <= d; i++) rpow[i]= rpow[i - 1] * r;
  for (int i= 1; i <= d; i++) sum[i]= sum[i - 1] + rpow[i] * pd[i];

@@ -76,7 +76,7 @@ template <class T> struct DirichletSeries {
    for (j= K / i; j > i; --j) ret.x[i * j]+= x[i] * x[j];
   ret.x+= ret.x;
   for (i= l; i; --i) ret.x[i * i]+= x[i] * x[i];
-  for (l= L; l; ret.X[l]+= ret.X[l], ret.X[K + l--]-= tmp * tmp)
+  for (l= L; l; ret.X[K + l]+= ret.X[K + l], ret.X[K + l--]-= tmp * tmp)
    for (tmp= sum(i= std::sqrt(n= (double)N / l)); i; --i) ret.X[K + l]+= x[i] * sum((double)n / i);
   for (size_t i= 1; i <= K; ++i) ret.X[i]= ret.X[i - 1] + ret.x[i];
   return ret;
@@ -143,7 +143,7 @@ template <class T> DirichletSeries<T> get_Id(uint64_t N) {
 template <class T> DirichletSeries<T> get_Id2(uint64_t N) {
  DirichletSeries<T> ret(N);
  __uint128_t a, b, c;
- for (size_t l= ret.L; l; --l) a= (double)N / l, b= (a * (a + 1)) >> 1, c= (a + a + 1), ret.Xl[l]= c % 3 == 0 ? T(c / 3) * b : T(b / 3) * c;
+ for (size_t l= ret.L; l; --l) a= (double)N / l, b= (a * (a + 1)) >> 1, c= (a + a + 1), ret.X[ret.K + l]= c % 3 == 0 ? T(c / 3) * b : T(b / 3) * c;
  for (uint64_t i= ret.K; i; --i) ret.x[i]= i * i;
  for (size_t i= 1; i <= ret.K; ++i) ret.X[i]= ret.X[i - 1] + ret.x[i];
  return ret;
@@ -158,8 +158,8 @@ template <class T>  // zeta(2s), O(K+L)
 DirichletSeries<T> get_1sq(uint64_t N) {
  DirichletSeries<T> ret(N);
  for (size_t i= 1, e= ret.x.size(); i * i <= e; ++i) ret.x[i * i]= 1;
- for (size_t i= 1; i <= ret.K; ++i) ret.Xs[i]= ret.Xs[i - 1] + ret.x[i];
- for (size_t l= ret.Xl.size(); --l;) ret.Xl[l]= uint64_t(std::sqrt((double)N / l));
+ for (size_t i= 1; i <= ret.K; ++i) ret.X[i]= ret.X[i - 1] + ret.x[i];
+ for (size_t l= ret.L; l; --l) ret.X[ret.K + l]= uint64_t(std::sqrt((double)N / l));
  return ret;
 }
 // Liouville, zeta(2s)/zeta(s), O(N^(2/3)log^(1/3)N))

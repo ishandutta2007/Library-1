@@ -4,9 +4,9 @@
 template <class T> std::vector<CumSumQuotient<T>> sums_of_powers_on_primes(uint64_t N, size_t D) {
  size_t K= std::sqrt(N);
  std::vector ret(D + 1, CumSumQuotient<T>(N));
- for (int n= 1, d= 0; n <= K; ++n, d= 0)
+ for (size_t n= 1, d= 0; n <= K; ++n, d= 0)
   for (T prd= n; d <= D; prd*= (n + ++d)) ret[d].X[n]= prd / (d + 1);
- for (int n= 1, d= 0; n <= K; ++n, d= 0)
+ for (size_t n= 1, d= 0; n <= K; ++n, d= 0)
   for (T prd= N / n; d <= D; prd*= ((N / n) + ++d)) ret[d].X[n + K]= prd / (d + 1);
  if (D >= 2) {
   std::vector<T> stir(D + 1, 0);
@@ -32,7 +32,7 @@ template <class T> std::vector<CumSumQuotient<T>> sums_of_powers_on_primes(uint6
 }
 template <class T, class F> T additive_sum(const CumSumQuotient<T> &P, const F &f) {
  T ret= P.sum();
- for (uint64_t d= 2, nN, nd; nN; d= nd) ret+= P(nN= double(P.N) / d) * ((nd= double(P.N) / nN + 1) - d);
+ for (uint64_t d= 2, nN, nd; nN= double(P.N) / d; d= nd) ret+= P(nN) * ((nd= double(P.N) / nN + 1) - d);
  for (uint64_t p: enumerate_primes(P.K))
   for (uint64_t pw= p * p, e= 2; pw <= P.N; ++e, pw*= p) ret+= (f(p, e) - f(p, e - 1)) * (P.N / pw);
  return ret;

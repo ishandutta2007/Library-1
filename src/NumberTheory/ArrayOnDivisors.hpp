@@ -19,14 +19,14 @@ template <class T> struct ArrayOnDivisors {
  }
 public:
  Factors factors;
- template <class Uint> ArrayOnDivisors(uint64_t n, const Factors &factors, const std::vector<Uint> &divisors): n(n), shift(__builtin_clzll(divisors.size()) - 1), os((1 << (64 - shift)) + 1), id(divisors.size()), dat(divisors.size()), factors(factors) {
+ template <class Uint> ArrayOnDivisors(uint64_t N, const Factors &factors, const std::vector<Uint> &divisors): n(N), shift(__builtin_clzll(divisors.size()) - 1), os((1 << (64 - shift)) + 1), id(divisors.size()), dat(divisors.size()), factors(factors) {
   for (int i= divisors.size(); i--;) dat[i].first= divisors[i];
   for (auto d: divisors) ++os[hash(d)];
   std::partial_sum(os.begin(), os.end(), os.begin());
   for (int i= divisors.size(); i--;) id[--os[hash(divisors[i])]]= i;
  }
- ArrayOnDivisors(uint64_t n, const Factors &factors): ArrayOnDivisors(n, factors, enumerate_divisors(factors)) {}
- ArrayOnDivisors(uint64_t n): ArrayOnDivisors(n, Factors(n)) {}
+ ArrayOnDivisors(uint64_t N, const Factors &factors): ArrayOnDivisors(N, factors, enumerate_divisors(factors)) {}
+ ArrayOnDivisors(uint64_t N): ArrayOnDivisors(N, Factors(N)) {}
  T &operator[](uint64_t i) {
   assert(i && n % i == 0);
   for (unsigned a= hash(i), j= os[a]; j < os[a + 1]; ++j)

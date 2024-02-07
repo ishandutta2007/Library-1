@@ -7,7 +7,7 @@ template <class T> struct CumSumQuotient {
  std::valarray<T> X;
  CumSumQuotient(uint64_t N): N(N), K(std::sqrt(N)), X(K + K + 1) {}
  T &operator[](uint64_t i) { return i > K ? X[K + double(N) / i] : X[i]; }
- const T &operator()(uint64_t i) const { return i > K ? X[K + double(N) / i] : X[i]; }
+ T operator()(uint64_t i) const { return i > K ? X[K + double(N) / i] : X[i]; }
  CumSumQuotient &operator+=(const CumSumQuotient &r) { return X+= r.X, *this; }
  CumSumQuotient &operator-=(const CumSumQuotient &r) { return X-= r.X, *this; }
  CumSumQuotient &operator*=(T a) { return X*= a, *this; }
@@ -23,4 +23,5 @@ template <class T> struct CumSumQuotient {
   for (size_t j= std::min<uint64_t>(N / i, K) + K; j >= i; --j) X[j]+= v;
  }
  T sum() const { return X[K + 1]; }
+ T sum(uint64_t i) const { return i > K ? X[K + double(N) / i] : X[i]; }
 };

@@ -37,11 +37,11 @@ $
 
 ||概要 |計算量|
 |---|---|---|
-|`operator-(F)`|$-F(n)$|$\Omicron(\sqrt{N})$|
-|`operator+(F,G)`|$F(n)+G(n)$|$\Omicron(\sqrt{N})$|
-|`operator-(F,G)`|$F(n)-G(n)$|$\Omicron(\sqrt{N})$|
-|`operator*(F,a)`|$F(n)\cdot a$|$\Omicron(\sqrt{N})$|
-|`operator*(a,F)`|$a\cdot F(n)$ (上と同じ)|$\Omicron(\sqrt{N})$|
+|`operator-(F)`|$-F(n)$|$O(\sqrt{N})$|
+|`operator+(F,G)`|$F(n)+G(n)$|$O(\sqrt{N})$|
+|`operator-(F,G)`|$F(n)-G(n)$|$O(\sqrt{N})$|
+|`operator*(F,a)`|$F(n)\cdot a$|$O(\sqrt{N})$|
+|`operator*(a,F)`|$a\cdot F(n)$ (上と同じ)|$O(\sqrt{N})$|
 
 
 |メンバ関数|概要|
@@ -49,7 +49,8 @@ $
 |`CumSumQuotient(N)`|コンストラクタ. $N$ を渡して構築. 要素はデフォルト値. |
 |`operator[](n)`| $F(n)$ の値を左参照で返す. <br> $n\in \left\lbrace \left. \floor{\frac{N}{x}} \right \vert x\in \mathbb{Z}, 1\leq x\leq N\right\rbrace$ を想定.|
 |`operator()(n)`| $F(n)$ の値を返す. <br> $n\in \left\lbrace \left. \floor{\frac{N}{x}} \right \vert x\in \mathbb{Z}, 1\leq x\leq N\right\rbrace$ を想定.|
-|`sum()`|$\displaystyle F(N)= \sum_{i=1}^N f(i)$ を返す.|
+|`sum(n)`|$\displaystyle F(n)= \sum_{i=1}^n f(i)$ を返す.|
+|`sum()`|$\displaystyle F(N)= \sum_{i=1}^N f(i)$ を返す.　`sum(N)` と同じ．|
 |`add(i, v)`| $f(i)\leftarrow f(i)+v$|
 
 

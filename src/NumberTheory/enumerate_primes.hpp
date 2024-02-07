@@ -1,18 +1,27 @@
 #pragma once
 #include <algorithm>
+#include <cstdint>
 #include "src/Internal/ListRange.hpp"
 namespace nt_internal {
 using namespace std;
 vector<int> ps, lf;
 void sieve(int N) {
- static int n= 2, i= 1;
+ static int n= 2;
  if (n > N) return;
- if (lf.resize((N >> 1) + 1); n == 2) ps.push_back(n++);
- for (; n <= N; n+= 2, ++i) {
-  if (!lf[i]) ps.push_back(lf[i]= n);
-  for (int j= 1, e= min(lf[i], N / n), k= ps.size(); j < k && ps[j] <= e; ++j) lf[(ps[j] * n) >> 1]= ps[j];
+ if (lf.resize((N + 1) >> 1); n == 2) ps.push_back(n++);
+ int M= (N - 1) / 2;
+ for (int j= 1, e= ps.size(); j < e; ++j) {
+  int p= ps[j];
+  if (int64_t(p) * p > N) break;
+  for (auto k= int64_t(p) * max(n / p / 2 * 2 + 1, p) / 2; k <= M; k+= p) lf[k]+= p * !lf[k];
  }
+ for (; n <= N; n+= 2)
+  if (!lf[n >> 1]) {
+   ps.push_back(lf[n >> 1]= n);
+   for (auto j= int64_t(n) * n / 2; j <= M; j+= n) lf[j]+= n * !lf[j];
+  }
 }
+ListRange<int> enumerate_primes() { return {ps.cbegin(), ps.cend()}; }
 ListRange<int> enumerate_primes(int N) {
  sieve(N);
  return {ps.cbegin(), upper_bound(ps.cbegin(), ps.cend(), N)};

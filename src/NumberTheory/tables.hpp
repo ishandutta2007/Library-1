@@ -6,7 +6,7 @@ vector<char> lfe;
 void set_lfe(int N) {
  static int n= 3, i= 1;
  if (n > N) return;
- for (sieve(N), lfw.resize((N >> 1) + 1), copy(lf.begin() + i, lf.begin() + (N >> 1) + 1, lfw.begin() + i), lfe.resize((N >> 1) + 1, 1); n <= N; n+= 2, ++i)
+ for (sieve(N), lfw.resize((N + 1) >> 1), copy(lf.begin() + i, lf.begin() + ((N + 1) >> 1), lfw.begin() + i), lfe.resize(((N + 1) >> 1), 1); n <= N; n+= 2, ++i)
   if (int j= (n / lf[i]) >> 1; lf[i] == lf[j]) lfe[i]+= lfe[j], lfw[i]*= lfw[j];
 }
 // O(log n)

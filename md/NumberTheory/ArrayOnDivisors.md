@@ -28,5 +28,8 @@ documentation_of: ../../src/NumberTheory/ArrayOnDivisors.hpp
 |`set_totient(f)`|オイラーのトーシェント関数 $\varphi$ によってテーブルを埋める. |$O(d(N))$|
 |`set_mobius(f)`|メビウス関数 $\mu$ によってテーブルを埋める. |$O(d(N))$|
 
+## 問題例
+[AtCoder Regular Contest 064 F - Rotated Palindromes](https://atcoder.jp/contests/arc064/tasks/arc064_d) (約数メビウス)
+
 ## 参考
 [https://maspypy.github.io/library/nt/array_on_divisors.hpp](https://maspypy.github.io/library/nt/array_on_divisors.hpp)

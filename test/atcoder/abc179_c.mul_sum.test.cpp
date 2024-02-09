@@ -8,7 +8,7 @@ signed main() {
  ios::sync_with_stdio(0);
  long long N;
  cin >> N;
- auto Ps= sums_of_powers_on_primes<long long>(N, 0);
+ auto Ps= sums_of_powers_on_primes<long long>(N - 1, 0);
  auto f= [](long long, short e) { return e + 1; };
  cout << multiplicative_sum(Ps[0], f) << '\n';
  return 0;

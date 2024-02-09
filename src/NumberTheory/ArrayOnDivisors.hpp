@@ -19,6 +19,7 @@ template <class T> struct ArrayOnDivisors {
  }
 public:
  Factors factors;
+ ArrayOnDivisors() {}
  template <class Uint> ArrayOnDivisors(uint64_t N, const Factors &factors, const std::vector<Uint> &divisors): n(N), shift(__builtin_clzll(divisors.size()) - 1), os((1 << (64 - shift)) + 1), id(divisors.size()), dat(divisors.size()), factors(factors) {
   for (int i= divisors.size(); i--;) dat[i].first= divisors[i];
   for (auto d: divisors) ++os[hash(d)];

@@ -5,7 +5,7 @@ using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- FunctionalGraph graph(64);
+ vector<int> to(64);
  for (int s= 0; s < 64; ++s) {
   int t= (s << 1) & 63;
   bool isok= true;
@@ -13,9 +13,9 @@ signed main() {
   if (!(s & 2) && !(s & 16)) isok= false;
   if (!(s & 4) && !(s & 8)) isok= false;
   if (isok) t|= 1;
-  graph.add_edge(s, t);
+  to[s]= t;
  }
- graph.build();
+ FunctionalGraph g(to);
  long long N;
  cin >> N;
  int K;
@@ -25,10 +25,10 @@ signed main() {
  int s= 63;
  long long cur= N;
  for (int i= K; i--;) {
-  s= graph.jump(s, cur - A[i]) & 62;
+  s= g.jump(s, cur - A[i]) & 62;
   cur= A[i];
  }
- s= graph.jump(s, cur - 1);
+ s= g.jump(s, cur - 1);
  cout << ((s & 1) ? "Yes" : "No") << '\n';
  return 0;
 }

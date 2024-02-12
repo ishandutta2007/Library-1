@@ -10,14 +10,12 @@ signed main() {
  string S;
  cin >> S;
  int N= S.length();
- FunctionalGraph graph(N);
- for (int i= 0; i < N; ++i)
-  if (S[i] == 'L') graph.add_edge(i, i - 1);
-  else graph.add_edge(i, i + 1);
- graph.build();
+ vector<int> to(N);
+ for (int i= 0; i < N; ++i) to[i]= S[i] == 'L' ? i - 1 : i + 1;
+ FunctionalGraph g(to);
  BigInt K("1" + string(100, '0'));
  vector cnt(N, 0);
- for (int i= 0; i < N; ++i) ++cnt[graph.jump(i, K)];
+ for (int i= 0; i < N; ++i) ++cnt[g.jump(i, K)];
  for (int i= 0; i < N; ++i) cout << cnt[i] << " \n"[i == N - 1];
  return 0;
 }

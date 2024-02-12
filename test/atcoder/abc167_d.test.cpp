@@ -8,13 +8,8 @@ signed main() {
  int N;
  long long K;
  cin >> N >> K;
- FunctionalGraph graph(N);
- for (int i= 0; i < N; ++i) {
-  int A;
-  cin >> A;
-  graph.add_edge(i, --A);
- }
- graph.build();
- cout << graph.jump(0, K) + 1 << '\n';
+ vector<int> A(N);
+ for (int i= 0; i < N; ++i) cin >> A[i];
+ cout << FunctionalGraph(A).jump(0, K) + 1 << '\n';
  return 0;
 }

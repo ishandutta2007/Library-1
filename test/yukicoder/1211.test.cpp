@@ -15,14 +15,14 @@ signed main() {
  long long l= 0, h= 1ll << 50;
  while (h - l > 1) {
   long long x= (h + l) / 2;
-  FunctionalGraph graph(N + N + 1);
+  vector<int> to(N + N + 1);
   for (int i= 0, j= 0; i < N + N + 1; ++i) {
    while (j < N + N && sum[j] - sum[i] < x) ++j;
-   graph.add_edge(i, j);
+   to[i]= j;
   }
-  graph.build();
+  FunctionalGraph g(to);
   bool isok= false;
-  for (int i= 0; i < N; ++i) isok|= (graph.jump(i, K) <= i + N);
+  for (int i= 0; i < N; ++i) isok|= (g.jump(i, K) <= i + N);
   (isok ? l : h)= x;
  }
  cout << l << '\n';

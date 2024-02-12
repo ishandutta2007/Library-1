@@ -6,7 +6,6 @@ documentation_of: ../../src/Graph/HeavyLightDecomposition.hpp
 ## 使い方 イメージ
 
 ```c++
-
 // Graph g を構築
 int n,m; cin>>n>>m;
 Graph g(n);
@@ -56,4 +55,4 @@ HL分解＋オイラーツアーで頂点集合を数列に \
 | `jump(u,v,k)`| 頂点 u から 頂点 v へ向けて 長さ k 移動した先の頂点を返す. <br>存在しないなら -1|
 | `dist(u,v)`| 頂点 u から 頂点 v までの辺の数を返す. <br> u と v が非連結の場合は未定義.|
 | `in_subtree(u,v)`| 頂点 v を根とする部分木に頂点 u が属するなら `true`, そうでないなら `false`.|
-| `subtree_size(v)`| 頂点 v を根とする部分木の頂点数を返す. |
+| `subtree_size(v, root=-1)`| 点 v を根とした部分木の頂点数を返す. <br> 第二引数を指定した場合，その点を全体の木の根とした場合になる．|

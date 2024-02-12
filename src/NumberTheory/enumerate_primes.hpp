@@ -21,8 +21,8 @@ void sieve(int N) {
    for (auto j= int64_t(n) * n / 2; j <= M; j+= n) lf[j]+= n * !lf[j];
   }
 }
-ListRange<int> enumerate_primes() { return {ps.cbegin(), ps.cend()}; }
-ListRange<int> enumerate_primes(int N) {
+ConstListRange<int> enumerate_primes() { return {ps.cbegin(), ps.cend()}; }
+ConstListRange<int> enumerate_primes(int N) {
  sieve(N);
  return {ps.cbegin(), upper_bound(ps.cbegin(), ps.cend(), N)};
 }

@@ -10,6 +10,6 @@ signed main() {
  cin >> N;
  auto Ps= sums_of_powers_on_primes<long long>(N - 1, 0);
  auto f= [](long long, short e) { return e + 1; };
- cout << multiplicative_sum(Ps[0], f) << '\n';
+ cout << multiplicative_sum(2 * Ps[0], f) << '\n';
  return 0;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <iostream>
 #include <iterator>
 template <class T> struct ListRange {
  using Iterator= typename std::vector<T>::iterator;

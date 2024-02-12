@@ -1,47 +1,47 @@
 #pragma once
-#include "src/Graph/Tree.hpp"
+#include "src/Graph/HeavyLightDecomposition.hpp"
 class FunctionalGraph {
- std::vector<int> to, rt;
- Tree<> tree;
+ std::vector<int> t, rt;
+ HeavyLightDecomposition hld;
 public:
- FunctionalGraph(int n): to(n, -1), rt(n, -1), tree(n + 1) {}
- void add_edge(int src, int dst) { assert(to[src] == -1), to[src]= dst; }
- void build() {
-  const int n= to.size();
+ FunctionalGraph(const std::vector<int> &to): t(to) {
+  const int n= t.size();
+  rt.assign(n, -1);
   for (int u, w, v= n; v--;)
    if (rt[v] == -1) {
-    for (rt[v]= -2, w= to[v];; rt[w]= -2, w= to[w])
-     if (assert(w != -1); rt[w] != -1) {
+    for (rt[v]= -2, w= t[v];; rt[w]= -2, w= t[w])
+     if (assert(0 <= w && w < n); rt[w] != -1) {
       if (rt[w] != -2) w= rt[w];
       break;
      }
-    for (u= v; rt[u] == -2; u= to[u]) rt[u]= w;
+    for (u= v; rt[u] == -2; u= t[u]) rt[u]= w;
    }
+  Graph tree(n + 1);
   for (int v= n; v--;)
-   if (rt[v] == v) tree.add_edge(v, n);
-   else tree.add_edge(v, to[v]);
-  tree.build(n);
+   if (rt[v] == v) tree.add_edge(n, v);
+   else tree.add_edge(t[v], v);
+  tree.build(0), hld= HeavyLightDecomposition(tree, n);
  }
  template <class Int> std::enable_if_t<std::is_convertible_v<int, Int>, int> jump(int v, Int k) const {
-  int n= to.size(), d= tree.depth(v) - 1;
-  if (k <= d) return tree.jump(v, n, (int)k);
-  int b= to[v= rt[v]], l= (k-= d) % tree.depth(b);
+  int n= t.size(), d= hld.depth(v) - 1;
+  if (k <= d) return hld.jump(v, n, (int)k);
+  int b= t[v= rt[v]], l= (k-= d) % hld.depth(b);
   if (l == 0) return v;
-  return tree.jump(b, n, l - 1);
+  return hld.jump(b, n, l - 1);
  }
  // ((a_0,...,a_{i-1}) x 1, (a_i,...,a_{j-1}) x loop_num, (a_j,...,a_m) x 1)
  template <class Int> std::enable_if_t<std::is_convertible_v<int, Int>, std::array<std::pair<std::vector<int>, Int>, 3>> path(int v, Int k) const {
   std::array<std::pair<std::vector<int>, Int>, 3> ret;
-  int n= to.size(), d= tree.depth(v) - 1;
+  int n= t.size(), d= hld.depth(v) - 1;
   if (ret[0].second= 1; k <= d) {
-   for (int e= k; e--; v= to[v]) ret[0].first.push_back(v);
+   for (int e= k; e--; v= t[v]) ret[0].first.push_back(v);
    return ret;
   }
-  for (int e= d; e--; v= to[v]) ret[0].first.push_back(v);
-  int b= to[v= rt[v]], c= tree.depth(b), l= (k-= d) % c;
+  for (int e= d; e--; v= t[v]) ret[0].first.push_back(v);
+  int b= t[v= rt[v]], c= hld.depth(b), l= (k-= d) % c;
   ret[1].second= k / c, ret[2].second= 1;
-  for (int e= c; e--; v= to[v]) ret[1].first.push_back(v);
-  for (int e= l; e--; v= to[v]) ret[2].first.push_back(v);
+  for (int e= c; e--; v= t[v]) ret[1].first.push_back(v);
+  for (int e= l; e--; v= t[v]) ret[2].first.push_back(v);
   return ret;
  }
 };

@@ -7,10 +7,9 @@ signed main() {
  ios::sync_with_stdio(0);
  long long N, X, M;
  cin >> N >> X >> M;
- FunctionalGraph graph(M);
- for (long long i= 0; i < M; ++i) graph.add_edge(i, i * i % M);
- graph.build();
- auto [a, b, c]= graph.path(X, N);
+ vector<int> to(M);
+ for (int i= 0; i < M; ++i) to[i]= i * i % M;
+ auto [a, b, c]= FunctionalGraph(to).path(X, N);
  long long ans= 0;
  for (int x: b.first) ans+= x;
  ans*= b.second;

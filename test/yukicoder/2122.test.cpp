@@ -15,14 +15,13 @@ signed main() {
  int a= stoi(s);
  long long M, L;
  cin >> M >> L;
- FunctionalGraph graph(N);
+ vector<int> to(N);
  for (int n= 0; n < N; ++n) {
   auto x= linear_recurrence<Mint>({n, 1}, {0, 1}, M);
   if (M & 1) x-= 1;
-  graph.add_edge(n, x.val());
+  to[n]= x.val();
  }
- graph.build();
- string ans= to_string(graph.jump(a, L));
+ string ans= to_string(FunctionalGraph(to).jump(a, L));
  ans= string(4 - ans.length(), '0') + ans;
  cout << ans << '\n';
  return 0;

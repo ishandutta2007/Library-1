@@ -1,5 +1,5 @@
 ---
-title: 約数配列
+title: $\lfloor N/x \rfloor$ の配列
 documentation_of: ../../src/NumberTheory/CumSumQuotient.hpp
 ---
 

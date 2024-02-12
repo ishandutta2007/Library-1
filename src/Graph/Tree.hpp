@@ -73,7 +73,7 @@ public:
   for (int i= n; i--;) I[L[i]]= i;
  }
  size_t size() const { return P.size(); }
- const ListRange<Edge> operator[](int v) const { return {g.cbegin() + pos[v], g.cbegin() + pos[v + 1]}; }
+ ConstListRange<Edge> operator[](int v) const { return {g.cbegin() + pos[v], g.cbegin() + pos[v + 1]}; }
  int depth(int v) const { return D[v]; }
  C depth_w(int v) const {
   static_assert(weight, "\'depth_w\' is not available");

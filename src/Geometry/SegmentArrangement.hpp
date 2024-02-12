@@ -54,7 +54,7 @@ public:
  }
  size_t vertex_size() const { return ps.size(); }
  size_t face_size() const { return cmp.size(); }
- const ListRange<int> out_edges(int v) const { return {g.begin() + pos[v], g.begin() + pos[v + 1]}; }
+ ConstListRange<int> out_edges(int v) const { return {g.cbegin() + pos[v], g.cbegin() + pos[v + 1]}; }
  Point<K> point(int v) const { return ps[v]; }
  int vertex(const Point<K> &p) const { return lower_bound(ps.begin(), ps.end(), p) - ps.begin(); }
  int to_v(int e) const { return dst[e]; }

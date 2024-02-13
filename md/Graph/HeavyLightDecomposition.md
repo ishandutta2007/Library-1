@@ -41,7 +41,7 @@ HL分解＋オイラーツアーで頂点集合を数列に \
 
 | 名前 | 概要 |
 | --- | --- |
-| `HeavyLightDecomposition(g, root=0)` | コンストラクタ. 　[`Graph`](src/Graph/Graph.hpp) クラスの g と 根とする頂点 root を渡す. <br> g は親から子へ向かう有向辺さえあれば良い． |
+| `HeavyLightDecomposition(g, root=0)` | コンストラクタ. 　[`Graph`](Graph.hpp) クラスの g と 根とする頂点 root を渡す. <br> g は親から子へ向かう有向辺さえあれば良い． |
 | `size()`| 頂点数を返す.|
 | `path<edge=0>(u,v)` | 頂点 u から頂点 v へのパスを表す"**閉**"区間列を返す. <br> `edge`フラグが true なら LCA を含めないような区間列を返す. |
 | `subtree(v)` | 頂点 v を根とする部分木を表す"**半開**"区間を返す. |

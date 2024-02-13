@@ -3,7 +3,8 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include "src/Graph/rerooting.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,30 +14,24 @@ signed main() {
  string S;
  cin >> S;
  int n= S.length();
- Tree<char> tree(N);
- for (int i= 0; i < N - 1; ++i) {
-  int u, v;
-  char c;
-  cin >> u >> v >> c;
-  tree.add_edge(--u, --v, c);
- }
- tree.build();
+ Graph g(N - 1);
+ vector<char> c(N - 1);
+ for (int i= 0; i < N - 1; ++i) cin >> g[i] >> c[i], --g[i];
+ g.build(N, 0);
  using Data= vector<int>;
- auto f_ee= [&](const Data &l, const Data &r) {
-  Data ret(n + 1);
-  for (int i= 0; i <= n; ++i) ret[i]= max(l[i], r[i]);
-  return ret;
- };
- auto f_ve= [&](Data d, int, const auto &e) {
+ auto put_edge= [&](int, int e, Data d) {
   for (int i= n; i--;)
-   if (S[i] == e.cost) d[i + 1]= max(d[i + 1], d[i] + 1);
+   if (S[i] == c[e]) d[i + 1]= max(d[i + 1], d[i] + 1);
   for (int i= 0; i < n; ++i) d[i + 1]= max(d[i + 1], d[i]);
   return d;
  };
- auto f_ev= [&](const Data &d, int) { return d; };
- auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data(n + 1, 0));
+ auto op= [&](Data l, const Data &r) {
+  for (int i= 0; i <= n; ++i) l[i]= max(l[i], r[i]);
+  return l;
+ };
+ auto put_vertex= [&](int, const Data &d) { return d; };
  int ans= 0;
- for (const auto &v: dp) ans= max(ans, v[n]);
+ for (const auto &v: Rerooting<Data>(g, put_edge, op, Data(n + 1, 0), put_vertex)) ans= max(ans, v[n]);
  cout << ans << '\n';
  return 0;
 }

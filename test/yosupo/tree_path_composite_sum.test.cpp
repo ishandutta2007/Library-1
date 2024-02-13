@@ -2,8 +2,8 @@
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
-#include "src/Graph/Tree.hpp"
-#include "src/Graph/rerooting.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,22 +13,15 @@ signed main() {
  cin >> N;
  vector<Mint> a(N);
  for (int i= 0; i < N; ++i) cin >> a[i];
- using Cost= pair<Mint, Mint>;
- Tree<Cost> tree(N);
- for (int i= 0; i < N - 1; ++i) {
-  int u, v, b, c;
-  cin >> u >> v >> b >> c;
-  tree.add_edge(u, v, Cost{b, c});
- }
- tree.build();
+ Graph g(N - 1);
+ vector<Mint> b(N - 1), c(N - 1);
+ for (int i= 0; i < N - 1; ++i) cin >> g[i] >> b[i] >> c[i];
+ g.build(N, 0);
  using Data= pair<Mint, int>;
- auto f_ee= [&](const Data &l, const Data &r) { return Data{l.first + r.first, l.second + r.second}; };
- auto f_ev= [&](const Data &d, int v) { return Data{d.first + a[v], d.second + 1}; };
- auto f_ve= [&](Data d, int, const auto &e) {
-  d.first= e.cost.first * d.first + e.cost.second * d.second;
-  return d;
- };
- auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data{0, 0});
+ auto put_edge= [&](int, int e, const Data &d) { return Data{b[e] * d.first + c[e], d.second}; };
+ auto op= [&](const Data &l, const Data &r) { return Data{l.first + r.first, l.second + r.second}; };
+ auto put_vertex= [&](int v, const Data &d) { return Data{d.first + a[v], d.second + 1}; };
+ Rerooting<Data> dp(g, put_edge, op, Data{0, 0}, put_vertex);
  for (int i= 0; i < N; ++i) cout << dp[i].first << " \n"[i == N - 1];
  return 0;
 }

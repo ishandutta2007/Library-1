@@ -2,26 +2,23 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Graph/rerooting.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- Tree<long long> tree(N);
- for (int i= 0; i < N - 1; ++i) {
-  int A, B, C;
-  cin >> A >> B >> C;
-  tree.add_edge(--A, --B, C);
- }
- tree.build();
+ Graph g(N - 1);
+ vector<int> C(N - 1);
+ for (int i= 0; i < N - 1; ++i) cin >> g[i] >> C[i], --g[i];
+ g.build(N, 0);
  vector<long long> D(N);
  for (int i= 0; i < N; ++i) cin >> D[i];
- auto f_ee= [&](long long l, long long r) { return max(l, r); };
- auto f_ve= [&](long long d, int, const auto& e) { return max(d, D[e.to]) + e.cost; };
- auto f_ev= [&](long long d, int) { return d; };
- auto dp= rerooting<long long>(tree, f_ee, f_ve, f_ev, 0ll);
- for (long long x: dp) cout << x << '\n';
+ auto put_edge= [&](int v, int e, long long d) { return max(d, D[g[e] - v]) + C[e]; };
+ auto op= [&](long long l, long long r) { return max(l, r); };
+ auto put_vertex= [&](int, long long d) { return d; };
+ for (long long x: Rerooting<long long>(g, put_edge, op, 0, put_vertex)) cout << x << '\n';
  return 0;
 }

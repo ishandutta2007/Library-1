@@ -3,7 +3,8 @@
 #include <algorithm>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/FactorialPrecalculation.hpp"
-#include "src/Graph/rerooting.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,18 +13,13 @@ signed main() {
  using F= FactorialPrecalculation<Mint>;
  int N;
  cin >> N;
- Tree tree(N);
- for (int i= 0; i < N - 1; ++i) {
-  int a, b;
-  cin >> a >> b;
-  tree.add_edge(--a, --b);
- }
- tree.build();
+ Graph g(N - 1);
+ for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
+ g.build(N, 0);
  using Data= pair<int, Mint>;
- auto f_ee= [&](const Data &l, const Data &r) { return Data{l.first + r.first, F::nCr(l.first + r.first, l.first) * l.second * r.second}; };
- auto f_ve= [&](const Data &d, int, auto) { return d; };
- auto f_ev= [&](const Data &d, int) { return Data{d.first + 1, d.second}; };
- auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data{0, 1});
- for (auto [_, x]: dp) cout << x << '\n';
+ auto put_edge= [&](int, int, const Data &d) { return d; };
+ auto op= [&](const Data &l, const Data &r) { return Data{l.first + r.first, F::nCr(l.first + r.first, l.first) * l.second * r.second}; };
+ auto put_vertex= [&](int, const Data &d) { return Data{d.first + 1, d.second}; };
+ for (auto [_, x]: Rerooting<Data>(g, put_edge, op, Data{0, 1}, put_vertex)) cout << x << '\n';
  return 0;
 }

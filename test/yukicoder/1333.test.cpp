@@ -2,7 +2,8 @@
 #include <iostream>
 #include <tuple>
 #include "src/Math/ModInt.hpp"
-#include "src/Graph/rerooting.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,27 +11,23 @@ signed main() {
  using Mint= ModInt<int(1e9 + 7)>;
  int N;
  cin >> N;
- Tree<Mint> tree(N);
- for (int i= 0; i < N - 1; ++i) {
-  int u, v;
-  Mint w;
-  cin >> u >> v >> w;
-  tree.add_edge(--u, --v, w);
- }
- tree.build();
+ Graph g(N - 1);
+ vector<Mint> w(N - 1);
+ for (int i= 0; i < N - 1; ++i) cin >> g[i] >> w[i], --g[i];
+ g.build(N, 0);
  using Data= tuple<int, Mint, Mint>;
- auto f_ee= [&](const Data& l, const Data& r) { return Data{get<0>(l) + get<0>(r), get<1>(l) + get<1>(r), get<2>(l) + get<2>(r)}; };
- auto f_ve= [&](const Data& d, int, const auto& e) {
+ auto put_edge= [&](int, int e, const Data& d) {
   auto [d0, d1, d2]= d;
-  ++d0;
-  d2+= (d1 * 2 + e.cost * d0) * e.cost;
-  d1+= e.cost * d0;
-  return Data{d0, d1, d2};
+  return Data{d0 + 1, d1 + w[e] * d0, d2 + w[e] * (d1 + d1 + w[e] * d0)};
  };
- auto f_ev= [&](const Data& d, int) { return d; };
- auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data{0, Mint(), Mint()});
+ auto op= [&](const Data& l, const Data& r) {
+  auto [l0, l1, l2]= l;
+  auto [r0, r1, r2]= r;
+  return Data{l0 + r0, l1 + r1, l2 + r2};
+ };
+ auto put_vertex= [&](int, const Data& d) { return d; };
  Mint ans= 0;
- for (auto [_, __, x]: dp) ans+= x;
+ for (auto [_, __, x]: Rerooting<Data>(g, put_edge, op, Data{0, 0, 0}, put_vertex)) ans+= x;
  cout << ans / 2 << '\n';
  return 0;
 }

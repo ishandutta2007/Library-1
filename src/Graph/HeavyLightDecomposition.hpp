@@ -49,12 +49,7 @@ public:
  bool connected(int u, int v) const { return root(u) == root(v); }
  // u is in v
  bool in_subtree(int u, int v) const { return L[v] <= L[u] && L[u] < R[v]; }
- int subtree_size(int v, int root= -1) const {
-  if (root == -1) return R[v] - L[v];
-  if (v == root) return size();
-  int x= jump(v, root, 1);
-  return in_subtree(v, x) ? R[v] - L[v] : size() - R[x] + L[x];
- }
+ int subtree_size(int v) const { return R[v] - L[v]; }
  int lca(int u, int v) const {
   for (;; v= P[PP[v]]) {
    if (L[u] > L[v]) std::swap(u, v);

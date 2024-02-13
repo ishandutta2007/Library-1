@@ -11,11 +11,11 @@ documentation_of: ../../src/NumberTheory/ArrayOnDivisors.hpp
 
 | メンバ変数  | 概要  |
 | --- | --- | 
-|`factors` | $N$ の[素因数分解](src/NumberTheory/Factors.hpp) |
+|`factors` | $N$ の[素因数分解](Factors.hpp) |
 
 | メンバ関数  | 概要  | 計算量    |
 | --- | --- | --- |
-| 1. `ArrayOnDivisors(N, f, d)` <br> 2. `ArrayOnDivisors(N, f)` <br> 3. `ArrayOnDivisors(N)` | コンストラクタ. <br> 1. 整数 $N$ とその[素因数分解](src/NumberTheory/Factors.hpp), $N$ の全約数の列 を引数にする. <br> 2. 整数 $N$ とその素因数分解 を引数にする. <br> 3.  整数 $N$ を引数にする. | 1. $O(d(N))$  <br> 2. $O(d(N))$ <br> 3. $O(N^{1/4})$  |
+| 1. `ArrayOnDivisors(N, f, d)` <br> 2. `ArrayOnDivisors(N, f)` <br> 3. `ArrayOnDivisors(N)` | コンストラクタ. <br> 1. 整数 $N$ とその[素因数分解](Factors.hpp), $N$ の全約数の列 を引数にする. <br> 2. 整数 $N$ とその素因数分解 を引数にする. <br> 3.  整数 $N$ を引数にする. | 1. $O(d(N))$  <br> 2. $O(d(N))$ <br> 3. $O(N^{1/4})$  |
 |`operator[](i)`| 添字 $i$ の値を左参照値で返す. <br> $i$ が $N$ の約数でないなら `assert` で落ちる. ||
 |`size()`|配列のサイズを返す. つまり $d(N)$.||
 |`begin()`|(添字，値)のペアの列のイテレータ.||

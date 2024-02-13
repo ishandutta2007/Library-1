@@ -3,6 +3,8 @@ title: 全方位木DP
 documentation_of: ../../src/Graph/Rerooting.hpp
 ---
 
+![image of tree dp](../../img/rerooting.drawio.svg)
+
 ## `Rerooting<T>` クラス
 全方位木DPの値(型 : `T` )が入っている配列だと思って使う. (`operator[](int v)`, `begin()`, `end()` がある. )
 
@@ -13,8 +15,8 @@ Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, HeavyLightDecomposition hld, F1 put
 ```
 |引数|概要|
 |---|---|
-|`Graph g`|[グラフクラス](src/Graph/Graph.hpp)|
-|`HeavyLightDecomposition hld`|g を [重軽分解](src/Graph/HeavyLightDecomposition.hpp)したもの. <br> 省略できる (1). (ただし 内部で作ってる) |
+|`Graph g`|[`Graph` クラス](Graph.hpp)|
+|`HeavyLightDecomposition hld`|g を [重軽分解](HeavyLightDecomposition.hpp)したもの. <br> 省略できる (1). (ただし 内部で作ってる) |
 |`put_edge(int v, int e, T t) -> U`| 頂点 v と v から出る辺 e の情報によってクラス `T` の値 `t` をモノイド `U` の元に変換|
 |`op(U l, U r) -> U`|モノイド `U` の二項演算|
 |`U ui`|モノイド `U` の単位元|

@@ -8,7 +8,7 @@ signed main() {
  long long N, X, M;
  cin >> N >> X >> M;
  vector<int> to(M);
- for (int i= 0; i < M; ++i) to[i]= i * i % M;
+ for (long long i= 0; i < M; ++i) to[i]= i * i % M;
  auto [a, b, c]= FunctionalGraph(to).path(X, N);
  long long ans= 0;
  for (int x: b.first) ans+= x;

@@ -30,7 +30,7 @@ public:
  // ((a_0,...,a_{i-1}) x 1, (a_i,...,a_{j-1}) x loop_num, (a_j,...,a_m) x 1)
  template <class Int> std::enable_if_t<std::is_convertible_v<int, Int>, std::array<std::pair<std::vector<int>, Int>, 3>> path(int v, Int k) const {
   std::array<std::pair<std::vector<int>, Int>, 3> ret;
-  int n= t.size(), d= hld.depth(v) - 1;
+  int d= hld.depth(v) - 1;
   if (ret[0].second= 1; k <= d) {
    for (int e= k; e--; v= t[v]) ret[0].first.push_back(v);
    return ret;

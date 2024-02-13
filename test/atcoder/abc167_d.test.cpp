@@ -9,7 +9,7 @@ signed main() {
  long long K;
  cin >> N >> K;
  vector<int> A(N);
- for (int i= 0; i < N; ++i) cin >> A[i];
+ for (int i= 0; i < N; ++i) cin >> A[i], --A[i];
  cout << FunctionalGraph(A).jump(0, K) + 1 << '\n';
  return 0;
 }

@@ -49,4 +49,4 @@ for(int v=0;v<n;++v)
 |`build(direct)`|隣接リストを構築する. <br> 引数が `false` なら辺を無向辺とみなす.<br> 引数が `true` なら辺を有向辺とみなす.|
 |`vertex_size()`|頂点の数を返す. <br> **※`build` 関数が実行済みであることを前提とする**　|
 |`edge_size()`|辺の数を返す.|
-|`operator()(u)`| 頂点 $u$ から出る辺 (の番号) のリストを返す. <br> 返り値は [`ListRange<int>`](src/Internal/ListRange.hpp). <br> **※`build` 関数が実行済みであることを前提とする**　|
+|`operator()(u)`| 頂点 $u$ から出る辺 (の番号) のリストを返す. <br> 返り値は [`ListRange<int>`](../Internal/ListRange.hpp). <br> **※`build` 関数が実行済みであることを前提とする**　|

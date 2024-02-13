@@ -3,7 +3,7 @@ title: 全方位木DP
 documentation_of: ../../src/Graph/Rerooting.hpp
 ---
 
-![image of tree dp](../../img/rerooting.drawio.svg)
+![image of tree dp](https://github.com/hashiryo/Library/blob/master/img/rerooting.drawio.svg?raw=true)
 
 ## `Rerooting<T>` クラス
 全方位木DPの値(型 : `T` )が入っている配列だと思って使う. (`operator[](int v)`, `begin()`, `end()` がある. )
@@ -13,6 +13,7 @@ documentation_of: ../../src/Graph/Rerooting.hpp
 Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, F1 put_edge, F2 op, U ui, F3 put_vertex) // (1)
 Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, HeavyLightDecomposition hld, F1 put_edge, F2 op, U ui, F3 put_vertex) // (2)
 ```
+
 |引数|概要|
 |---|---|
 |`Graph g`|[`Graph` クラス](Graph.hpp)|
@@ -23,6 +24,7 @@ Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, HeavyLightDecomposition hld, F1 put
 |`put_vertex(int v, U sum) -> T`| 頂点 v でモノイド `U` の総積をクラス `T` の値に変換|
 
 ### メンバ関数
+
 |名前|概要|
 |---|---|
 |`operator[](int v)`| 頂点 v についての全方位木DPの値を返す.|

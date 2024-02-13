@@ -16,11 +16,9 @@ public:
      }
     for (u= v; rt[u] == -2; u= t[u]) rt[u]= w;
    }
-  Graph tree(n + 1);
-  for (int v= n; v--;)
-   if (rt[v] == v) tree.add_edge(n, v);
-   else tree.add_edge(t[v], v);
-  tree.build(0), hld= HeavyLightDecomposition(tree, n);
+  Graph g(n);
+  for (int v= n; v--;) g[v]= {(rt[v] == v ? n : t[v]), v};
+  g.build(n + 1, 1), hld= HeavyLightDecomposition(g, n);
  }
  template <class Int> std::enable_if_t<std::is_convertible_v<int, Int>, int> jump(int v, Int k) const {
   int n= t.size(), d= hld.depth(v) - 1;

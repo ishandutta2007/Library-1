@@ -31,6 +31,7 @@ publicメンバ変数 `x`, `y` を持つ. \
 |`dist2(p,q)`|点 $\boldsymbol{p}$, $\boldsymbol{q}$ 間のユークリッド距離の二乗.|
 |`dist(a,b)`|オブジェクト $a$, $b$ 間のユークリッド距離. <br> `Rational` は動かない. <br> `dist2` の結果を `sqrt` したもの. <br> 直線・線分・多角形なども `dist2` を定義することで自動的にこれも定義される.|
 |`ccw(p0,p1,p2)`|$\boldsymbol{p}_0\rightarrow \boldsymbol{p}_1\rightarrow \boldsymbol{p}_2$ の順に訪れた時の軌道を5種類に分類. <br> `COUNTER_CLOCKWISE`: 左折 <br> `CLOCKWISE`: 右折 <br> `ONLINE_FRONT`: 直進 <br> `ONLINE_BACK`: Uターン ( $\boldsymbol{p}_2$ が $\boldsymbol{p}_0$ より後ろ )　<br>  `ON_SEGMENT`: Uターン( $\boldsymbol{p}_2$ が $\boldsymbol{p}_0$ と $\boldsymbol{p}_1$ の間)  |
+|`operator>>(istream&is, Point&p)`|`x y`のフォーマットの入力に対応. |
 
 ## `Affine<K>` クラス
 アフィン変換のための関数オブジェクト.\

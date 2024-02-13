@@ -2,7 +2,8 @@
 #include <iostream>
 #include "src/Misc/compress.hpp"
 #include "src/Math/ModInt.hpp"
-#include "src/Graph/rerooting.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/Rerooting.hpp"
 #include "src/Misc/rng.hpp"
 #include "src/Misc/Pointwise.hpp"
 using namespace std;
@@ -11,24 +12,20 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- Tree tree(N);
- for (int i= 1; i < N; ++i) {
-  int p;
-  cin >> p;
-  tree.add_edge(p, i);
- }
- tree.build(0);
+ Graph g;
+ for (int i= 1, p; i < N; ++i) cin >> p, g.emplace_back(p, i);
+ g.build(N, 0);
  using Mint= ModInt<(1ll << 61) - 1>;
  using K= Pointwise<Mint, Mint>;
  using Data= pair<int, K>;
  vector<K> hash(N);
  for (auto& x: hash) x= {rng(2, Mint::mod() - 1), rng(2, Mint::mod() - 1)};
- auto f_ee= [&](const Data& l, const Data& r) { return Data{max(l.first, r.first), l.second * r.second}; };
- auto f_ve= [&](const Data& d, int, auto) { return Data{d.first, d.second + hash[d.first]}; };
- auto f_ev= [&](const Data& d, int) { return Data{d.first + 1, d.second}; };
- auto dp= rerooting<Data>(tree, f_ee, f_ve, f_ev, Data{0, K{1, 1}});
+ auto put_edge= [&](int, int, const Data& d) { return Data{d.first, d.second + hash[d.first]}; };
+ auto op= [&](const Data& l, const Data& r) { return Data{max(l.first, r.first), l.second * r.second}; };
+ auto put_vertex= [&](int, const Data& d) { return Data{d.first + 1, d.second}; };
+ Rerooting<Data> dp(g, put_edge, op, Data{0, K{1, 1}}, put_vertex);
  vector<K> ans(N);
- for (int i= 0; i < N; ++i) ans[i]= dp.get(0, i).second;
+ for (int i= 0; i < N; ++i) ans[i]= dp(0, i).second;
  auto vec= ans;
  auto id= compress(vec);
  cout << vec.size() << '\n';

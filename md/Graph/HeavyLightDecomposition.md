@@ -7,15 +7,17 @@ documentation_of: ../../src/Graph/HeavyLightDecomposition.hpp
 
 ```c++
 // Graph g を構築
-int n,m; cin>>n>>m;
-Graph g(n);
-for(int i=0,u,v;i<m;++i)cin>>u>>v,g.add_edge(u,v);
-g.build(1);
+int n; cin>>n;
+Graph g(n-1);
+for(int i=0;i<n-1;++i)cin>>g[i],--g[i];
+g.build(n, 0);
 
 // HLD を構築
 HeavyLightDecomposition hld(g, 0); // 頂点 0 を根にして構築
 
 // クエリ
+// 例えばセグ木, seg1, seg2, seg3 があるとして
+int Q;cin>>>Q;
 while(Q--){
  int t;cin>>t;
  if(t == 1){ // path query
@@ -35,7 +37,7 @@ while(Q--){
 ## `HeavyLightDecomposition` クラス
 
 HL分解＋オイラーツアーで頂点集合を数列に \
-非連結(森)でも動くはず
+非連結(森)でもある程度動くはず
 
 | 名前 | 概要 |
 | --- | --- |
@@ -55,4 +57,4 @@ HL分解＋オイラーツアーで頂点集合を数列に \
 | `jump(u,v,k)`| 頂点 u から 頂点 v へ向けて 長さ k 移動した先の頂点を返す. <br>存在しないなら -1|
 | `dist(u,v)`| 頂点 u から 頂点 v までの辺の数を返す. <br> u と v が非連結の場合は未定義.|
 | `in_subtree(u,v)`| 頂点 v を根とする部分木に頂点 u が属するなら `true`, そうでないなら `false`.|
-| `subtree_size(v, root=-1)`| 点 v を根とした部分木の頂点数を返す. <br> 第二引数を指定した場合，その点を全体の木の根とした場合になる．|
+| `subtree_size(v)`| 頂点 v を根とした部分木の頂点数を返す.|

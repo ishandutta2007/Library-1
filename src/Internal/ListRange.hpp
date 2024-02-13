@@ -10,7 +10,9 @@ template <class T> struct ListRange {
  size_t size() const { return std::distance(bg, ed); }
  T &operator[](int i) const { return bg[i]; }
  friend std::ostream &operator<<(std::ostream &os, const ListRange &r) {
-  return os << '[' << r.bg[0], std::for_each(r.bg + 1, r.ed, [&os](const T &x) { os << ", " << x; }), os << ']';
+  os << '[';
+  for (int i= 0, e= r.size(); i < e; ++i) os << (i ? ", " : "") << r[i];
+  return os << ']';
  }
 };
 template <class T> struct ConstListRange {
@@ -21,6 +23,8 @@ template <class T> struct ConstListRange {
  size_t size() const { return std::distance(bg, ed); }
  const T &operator[](int i) const { return bg[i]; }
  friend std::ostream &operator<<(std::ostream &os, const ConstListRange &r) {
-  return os << '[' << r.bg[0], std::for_each(r.bg + 1, r.ed, [&os](const T &x) { os << ", " << x; }), os << ']';
+  os << '[';
+  for (int i= 0, e= r.size(); i < e; ++i) os << (i ? ", " : "") << r[i];
+  return os << ']';
  }
 };

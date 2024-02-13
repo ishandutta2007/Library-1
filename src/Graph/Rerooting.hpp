@@ -1,5 +1,9 @@
 #pragma once
 #include "src/Graph/HeavyLightDecomposition.hpp"
+// put_edge(int v, int e, T t) -> U
+// op(U l, U r) -> U
+// ui(:U) is the identity element of op
+// put_vertex(int v, U sum) -> T
 template <class T> class Rerooting {
  const HeavyLightDecomposition &hld;
  std::vector<T> dp, dp1, dp2;

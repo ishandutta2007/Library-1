@@ -10,7 +10,8 @@ documentation_of: ../../src/String/SuffixTree.hpp
 
 |メンバ変数|概要|
 |---|---|
-|`tree`| 接尾辞木の木の部分. <br> [`Tree<void>`](src/Graph/Tree.hpp) クラス.|
+|`graph`| 接尾辞木の[`Graph` クラス](../Graph/Graph.hpp) 表現.|
+|`tree`| 接尾辞木の[重軽分解](../Graph/HeavyLightDecomposition.hpp)|
 
 |メンバ関数|概要|計算量|
 |---|---|---|

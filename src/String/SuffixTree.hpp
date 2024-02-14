@@ -7,7 +7,7 @@ struct SuffixTree {
  HeavyLightDecomposition tree;
  std::vector<std::tuple<int, int, int, int>> node;
  std::vector<int> suf;
- template <class String> SuffixTree(const SuffixArray<String> &sa, const LCPArray &lcp): tree(1), suf(sa.size()) {
+ template <class String> SuffixTree(const SuffixArray<String> &sa, const LCPArray &lcp): suf(sa.size()) {
   const int n= sa.size();
   node.emplace_back(0, n, 0, 0);
   if (n == 1) {

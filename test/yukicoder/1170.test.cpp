@@ -19,13 +19,13 @@ signed main() {
  }
  int n= r2r.node_size();
  // 単純な連結だと思うと全部くっついちゃうので 例えばUFとかは使えない
- StronglyConnectedComponents scc(n);
- for (auto [u, v, _]: r2r.get_edges()) scc.add_edge(u, v);
- scc.build();
- int C= scc.components_num();
+ Graph g(n);
+ for (auto [u, v, _]: r2r.get_edges()) g.add_edge(u, v);
+ StronglyConnectedComponents scc(g);
+ int C= scc.size();
  int cnt[C];
  fill_n(cnt, C, 0);
- for (int i= 0; i < N; ++i) ++cnt[scc.belong(i)];
- for (int i= 0; i < N; ++i) cout << cnt[scc.belong(i)] << '\n';
+ for (int i= 0; i < N; ++i) ++cnt[scc(i)];
+ for (int i= 0; i < N; ++i) cout << cnt[scc(i)] << '\n';
  return 0;
 }

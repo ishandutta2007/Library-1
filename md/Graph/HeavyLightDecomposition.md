@@ -40,7 +40,7 @@ HL分解＋オイラーツアーで頂点集合を数列に \
 
 | 名前 | 概要 |
 | --- | --- |
-| `HeavyLightDecomposition(CSRArray<int> adj, root=0)` <br> `HeavyLightDecomposition(Graph g, root=0)` | コンストラクタ. <br> 引数は頂点 to 頂点の隣接リスト([`CSRArray<int>`クラス](../Internal/ListRange.hpp)) adj または [`Graph` クラス](Graph.hpp) g，と根とする頂点 root を渡す. <br> 親から子へ向かう有向辺さえあれば良い． |
+| `HeavyLightDecomposition(CSRArray<int> adj, root=0)` <br> `HeavyLightDecomposition(Graph g, root=0)` | コンストラクタ. <br> 引数は頂点 → 頂点の隣接リスト([`CSRArray<int>`クラス](../Internal/ListRange.hpp)) adj または [`Graph` クラス](Graph.hpp) g，と根とする頂点 root を渡す. <br> 親から子へ向かう有向辺さえあれば良い． |
 | `size()`| 頂点数を返す.|
 | `path<edge=0>(u,v)` | 頂点 u から頂点 v へのパスを表す"**閉**"区間列を返す. <br> `edge`フラグが true なら LCA を含めないような区間列を返す. |
 | `subtree(v)` | 頂点 v を根とする部分木を表す"**半開**"区間を返す. |

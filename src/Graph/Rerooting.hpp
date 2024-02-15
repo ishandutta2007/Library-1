@@ -35,7 +35,7 @@ public:
  }
  template <class U, class F1, class F2, class F3> Rerooting(const Graph &g, const CSRArray<int> &adje, const F1 &put_edge, const F2 &op, const U &ui, const F3 &put_vertex): Rerooting(g, adje, HeavyLightDecomposition(g), put_edge, op, ui, put_vertex) {}
  template <class U, class F1, class F2, class F3> Rerooting(const Graph &g, const HeavyLightDecomposition &hld, const F1 &put_edge, const F2 &op, const U &ui, const F3 &put_vertex): Rerooting(g, g.adjacency_edge(0), hld, put_edge, op, ui, put_vertex) {}
- template <class U, class F1, class F2, class F3> Rerooting(const Graph &g, const F1 &put_edge, const F2 &op, const U &ui, const F3 &put_vertex): Rerooting(g, g.adjacency_edge(0), HeavyLightDecomposition(g), hld, put_edge, op, ui, put_vertex) {}
+ template <class U, class F1, class F2, class F3> Rerooting(const Graph &g, const F1 &put_edge, const F2 &op, const U &ui, const F3 &put_vertex): Rerooting(g, g.adjacency_edge(0), HeavyLightDecomposition(g), put_edge, op, ui, put_vertex) {}
  const T &operator[](int v) const { return dp[v]; }
  auto begin() const { return dp.cbegin(); }
  auto end() const { return dp.cend(); }

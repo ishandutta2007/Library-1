@@ -10,7 +10,7 @@ struct Edge {
 };
 struct Graph: public std::vector<Edge> {
  size_t n;
- Graph(size_t n= 0, size_t m= 0): n(n), vector(m) {}
+ Graph(size_t n= 0, size_t m= 0): vector(m), n(n) {}
  size_t vertex_size() const { return n; }
  size_t edge_size() const { return size(); }
  size_t add_vertex() { return n++; }
@@ -18,7 +18,7 @@ struct Graph: public std::vector<Edge> {
  size_t add_edge(Edge e) { return add_edge(e.s, e.d); }
 #define _ADJ_FOR(a, b) \
  for (auto [u, v]: *this) a; \
- for (int i= 0; i < n; ++i) p[i + 1]+= p[i]; \
+ for (size_t i= 0; i < n; ++i) p[i + 1]+= p[i]; \
  for (int i= size(); i--;) b;
 #define _ADJ(a, b) \
  vector<int> p(n + 1), c(size() << !direct); \

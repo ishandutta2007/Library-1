@@ -1,5 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/scc"
 #include <iostream>
+#include "src/Graph/Graph.hpp"
 #include "src/Graph/StronglyConnectedComponents.hpp"
 using namespace std;
 signed main() {
@@ -7,14 +8,10 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, M;
  cin >> N >> M;
- StronglyConnectedComponents scc(N);
- for (int i= 0; i < M; ++i) {
-  int a, b;
-  cin >> a >> b;
-  scc.add_edge(a, b);
- }
- scc.build();
- int C= scc.components_num();
+ Graph g(N, M);
+ for (int i= 0; i < M; ++i) cin >> g[i];
+ StronglyConnectedComponents scc(g);
+ int C= scc.size();
  cout << C << '\n';
  for (int i= 0; i < C; ++i) {
   auto blk= scc.block(i);

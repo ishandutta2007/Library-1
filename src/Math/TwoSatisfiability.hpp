@@ -1,21 +1,21 @@
 #pragma once
 #include "src/Graph/StronglyConnectedComponents.hpp"
 class TwoSatisfiability {
- int sz;
- StronglyConnectedComponents scc;
+ int n;
+ Graph g;
+ inline int neg(int x) const { return x >= n ? x - n : x + n; }
 public:
- TwoSatisfiability(int n): sz(n), scc(n + n) {}
- void add_if(int u, int v) { scc.add_edge(u, v), scc.add_edge(neg(v), neg(u)); }  // u -> v <=> !v -> !u
- void add_or(int u, int v) { add_if(neg(u), v); }                                 // u or v <=> !u -> v
- void add_nand(int u, int v) { add_if(u, neg(v)); }                               // u nand v <=> u -> !v
- void set_true(int u) { scc.add_edge(neg(u), u); }                                // u <=> !u -> u
- void set_false(int u) { scc.add_edge(u, neg(u)); }                               // !u <=> u -> !u
- inline int neg(int x) const { return x >= sz ? x - sz : x + sz; }
+ TwoSatisfiability(int n): n(n), g(n + n) {}
+ void add_if(int u, int v) { g.add_edge(u, v), g.add_edge(neg(v), neg(u)); }  // u -> v <=> !v -> !u
+ void add_or(int u, int v) { add_if(neg(u), v); }                             // u or v <=> !u -> v
+ void add_nand(int u, int v) { add_if(u, neg(v)); }                           // u nand v <=> u -> !v
+ void set_true(int u) { g.add_edge(neg(u), u); }                              // u <=> !u -> u
+ void set_false(int u) { g.add_edge(u, neg(u)); }                             // !u <=> u -> !u
  std::vector<bool> solve() {
-  scc.build();
-  std::vector<bool> ret(sz);
-  for (int i= 0, l, r; i<sz; ret[i++]= l> r)
-   if (l= scc.belong(i), r= scc.belong(neg(i)); l == r) return {};  // no solution
+  StronglyConnectedComponents scc(g);
+  std::vector<bool> ret(n);
+  for (int i= 0, l, r; i<n; ret[i++]= l> r)
+   if (l= scc(i), r= scc(neg(i)); l == r) return {};  // no solution
   return ret;
  }
 };

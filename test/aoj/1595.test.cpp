@@ -8,9 +8,8 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- Graph g(N - 1);
+ Graph g(N, N - 1);
  for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
- g.build(N, 0);
  auto put_edge= [&](int, int, int d) { return d + 1; };
  auto op= [&](int l, int r) { return max(l, r); };
  auto put_vertex= [&](int v, int d) { return d; };

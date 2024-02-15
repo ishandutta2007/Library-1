@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/3030"
 #include <iostream>
-#include "src/Math/is_prime.hpp"
+#include "src/NumberTheory/is_prime.hpp"
 
 using namespace std;
 signed main() {

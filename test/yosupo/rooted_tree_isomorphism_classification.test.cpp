@@ -12,23 +12,27 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- Graph g;
- for (int i= 1, p; i < N; ++i) cin >> p, g.emplace_back(p, i);
- g.build(N, 0);
+ Graph g(N);
+ for (int i= 1, p; i < N; ++i) cin >> p, g.add_edge(p, i);
+ auto adj= g.adjecency_vertex(1);
  using Mint= ModInt<(1ll << 61) - 1>;
  using K= Pointwise<Mint, Mint>;
- using Data= pair<int, K>;
- vector<K> hash(N);
+ vector<int> dep(N);
+ vector<K> dp(N), hash(N);
  for (auto& x: hash) x= {rng(2, Mint::mod() - 1), rng(2, Mint::mod() - 1)};
- auto put_edge= [&](int, int, const Data& d) { return Data{d.first, d.second + hash[d.first]}; };
- auto op= [&](const Data& l, const Data& r) { return Data{max(l.first, r.first), l.second * r.second}; };
- auto put_vertex= [&](int, const Data& d) { return Data{d.first + 1, d.second}; };
- Rerooting<Data> dp(g, put_edge, op, Data{0, K{1, 1}}, put_vertex);
- vector<K> ans(N);
- for (int i= 0; i < N; ++i) ans[i]= dp(0, i).second;
- auto vec= ans;
+ auto dfs= [&](auto&& dfs, int v) -> void {
+  dp[v]= 1;
+  for (int u: adj[v]) {
+   dfs(dfs, u);
+   dep[v]= max(dep[v], dep[u]);
+   dp[v]*= dp[u] + hash[dep[u]];
+  }
+  ++dep[v];
+ };
+ dfs(dfs, 0);
+ auto vec= dp;
  auto id= compress(vec);
  cout << vec.size() << '\n';
- for (int i= 0; i < N; ++i) cout << id(ans[i]) << " \n"[i == N - 1];
+ for (int i= 0; i < N; ++i) cout << id(dp[i]) << " \n"[i == N - 1];
  return 0;
 }

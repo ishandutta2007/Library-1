@@ -10,9 +10,8 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- Graph g(N - 1);
+ Graph g(N, N - 1);
  for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
- g.build(N, 0);
  using Data= array<int, 2>;
  auto put_edge= [&](int, int, const Data& d) {
   auto x= max(d[0], d[1]);

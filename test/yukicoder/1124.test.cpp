@@ -11,9 +11,8 @@ signed main() {
  using Mint= ModInt<int(1e9 + 7)>;
  int N;
  cin >> N;
- Graph g(N - 1);
+ Graph g(N, N - 1);
  for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
- g.build(N, 0);
  using Data= array<Mint, 2>;
  static constexpr Mint iv2= Mint(1) / 2;
  auto put_edge= [&](int, int, const Data &d) { return Data{d[0] * iv2, d[1] * iv2}; };

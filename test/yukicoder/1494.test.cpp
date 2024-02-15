@@ -14,10 +14,9 @@ signed main() {
  string S;
  cin >> S;
  int n= S.length();
- Graph g(N - 1);
+ Graph g(N, N - 1);
  vector<char> c(N - 1);
  for (int i= 0; i < N - 1; ++i) cin >> g[i] >> c[i], --g[i];
- g.build(N, 0);
  using Data= vector<int>;
  auto put_edge= [&](int, int e, Data d) {
   for (int i= n; i--;)

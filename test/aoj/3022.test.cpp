@@ -1,7 +1,8 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3022"
 #include <iostream>
 #include <vector>
-#include "src/Graph/BiConnectedComponents.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/block_cut_tree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,21 +11,22 @@ signed main() {
  cin >> N >> M;
  vector<long long> w(N);
  for (int i= 0; i < N; ++i) cin >> w[i];
- BiConnectedComponents bcc(N);
- for (int i= 0; i < M; ++i) {
-  int u, v;
-  cin >> u >> v;
-  bcc.add_edge(--u, --v);
- }
- auto bct= bcc.block_cut_tree();
- int K= bct.size(), r= bct.root(0);
+ Graph g(N, M);
+ for (int i= 0; i < M; ++i) cin >> g[i], --g[i];
+ auto bct= block_cut_tree(g).adjecency_vertex(0);
+ int K= bct.size();
  w.resize(K);
- for (int i= K; --i;)
-  if (int u= bct.to_node(i), v= bct.parent(u); u != -1) w[v]+= w[u];
- for (int v= 0; v < N; ++v) {
-  long long ans= w[r] - w[v];
+ vector<int> par(K);
+ auto dfs= [&](auto&& dfs, int v, int p) -> void {
+  par[v]= p;
   for (int u: bct[v])
-   if (u != bct.parent(v)) ans= max(ans, w[u]);
+   if (u != p) dfs(dfs, u, v), w[v]+= w[u];
+ };
+ dfs(dfs, 0, -1);
+ for (int v= 0; v < N; ++v) {
+  long long ans= w[0] - w[v];
+  for (int u: bct[v])
+   if (u != par[v]) ans= max(ans, w[u]);
   cout << ans << '\n';
  }
  return 0;

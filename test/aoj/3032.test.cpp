@@ -1,24 +1,23 @@
-#define PROBLEM "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=3032"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3032"
 #include <iostream>
 #include <algorithm>
-#include "src/Graph/Matching.hpp"
+#include "src/Graph/general_matching.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int N, A, B;
  cin >> N >> A >> B;
- Matching graph(2 * N);
+ Graph g(2 * N);
  int a[N], b[N];
  for (int i= 0; i < N; i++) cin >> a[i] >> b[i];
  for (int i= 0; i < N; i++) {
-  if (abs(a[i] - b[i]) <= A || (B <= abs(a[i] - b[i]) && abs(a[i] - b[i]) <= 2 * A)) graph.add_edge(i, i + N);
+  if (abs(a[i] - b[i]) <= A || (B <= abs(a[i] - b[i]) && abs(a[i] - b[i]) <= 2 * A)) g.add_edge(i, i + N);
   for (int j= i + 1; j < N; j++) {
    int tmp= abs(a[i] + a[j] - b[i] - b[j]);
-   if (tmp <= A || (B <= tmp && tmp <= 2 * A)) graph.add_edge(i, j);
+   if (tmp <= A || (B <= tmp && tmp <= 2 * A)) g.add_edge(i, j);
   }
  }
- graph.build();
- cout << graph.max_matching().size() << '\n';
+ cout << general_matching(g).size() << '\n';
  return 0;
 }

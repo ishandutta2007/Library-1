@@ -16,9 +16,9 @@ public:
      }
     for (u= v; rt[u] == -2; u= t[u]) rt[u]= w;
    }
-  Graph g(n);
+  Graph g(n + 1, n);
   for (int v= n; v--;) g[v]= {(rt[v] == v ? n : t[v]), v};
-  g.build(n + 1, 1), hld= HeavyLightDecomposition(g, n);
+  hld= HeavyLightDecomposition(g.adjacency_vertex(1), n);
  }
  template <class Int> std::enable_if_t<std::is_convertible_v<int, Int>, int> jump(int v, Int k) const {
   int n= t.size(), d= hld.depth(v) - 1;

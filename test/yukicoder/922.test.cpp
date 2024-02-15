@@ -12,9 +12,8 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, M, Q;
  cin >> N >> M >> Q;
- Graph g(M);
+ Graph g(N, M);
  for (int i= 0; i < M; ++i) cin >> g[i], --g[i];
- g.build(N, 0);
  HeavyLightDecomposition forest(g);
  vector<int> cnt(N);
  long long ans= 0;
@@ -31,13 +30,13 @@ signed main() {
  auto put_vertex= [&](int v, Data d) { return d[0]+= cnt[v], d; };
  Rerooting<Data> dp(g, forest, put_edge, op, Data{0, 0}, put_vertex);
  constexpr long long INF= 1ll << 60;
- vector<long long> mi(N, INF);
+ vector<long long> mn(N, INF);
  for (int v= N; v--;) {
   int u= forest.root(v);
-  mi[u]= min(mi[u], dp[v][1]);
+  mn[u]= min(mn[u], dp[v][1]);
  }
  for (int i= 0; i < N; ++i)
-  if (mi[i] != INF) ans+= mi[i];
+  if (mn[i] != INF) ans+= mn[i];
  cout << ans << '\n';
  return 0;
 }

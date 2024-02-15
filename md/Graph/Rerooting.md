@@ -19,7 +19,7 @@ Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, CSRArray<int> adje,  HeavyLightDeco
 |引数|概要|
 |---|---|
 |`Graph g`|[`Graph` クラス](Graph.hpp)|
-|`CSRArray<int> adje`|頂点 to 辺の隣接リスト([`CSRArray<int>`クラス](../Internal/ListRange.hpp)) <br> 省略できる (1), (2). (ただし 内部で作ってる)|
+|`CSRArray<int> adje`|頂点 → 辺の隣接リスト([`CSRArray<int>`クラス](../Internal/ListRange.hpp)) <br> 省略できる (1), (2). (ただし 内部で作ってる)|
 |`HeavyLightDecomposition hld`|g を [重軽分解](HeavyLightDecomposition.hpp)したもの. <br> 省略できる (1), (3). (ただし 内部で作ってる) |
 |`put_edge(int v, int e, T t) -> U`| 頂点 v と v から出る辺 e の情報によってクラス `T` の値 `t` をモノイド `U` の元に変換|
 |`op(U l, U r) -> U`|モノイド `U` の二項演算|

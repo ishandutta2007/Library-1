@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Graph/LinearSystemIncidence.hpp"
+#include "src/Graph/incidence_linear_system.hpp"
 using namespace std;
 // 解無しの判定のverify
 
@@ -11,12 +11,12 @@ signed main() {
  ios::sync_with_stdio(false);
  int N, M;
  cin >> N >> M;
- LinearSystemIncidence<long long> graph(N);
  vector<long long> a(N);
  for (int i= 0; i < N; i++) cin >> a[i];
  for (int i= 0, b; i < N; i++) cin >> b, a[i]-= b;
- for (int i= 0, c, d; i < M; i++) cin >> c >> d, graph.add_edge(--c, --d);
- if (M) cout << (graph.solve(a).empty() ? "No" : "Yes") << '\n';
+ Graph g(N, M);
+ for (int i= 0; i < M; ++i) cin >> g[i], --g[i];
+ if (M) cout << (incidence_linear_system(g, a).empty() ? "No" : "Yes") << '\n';
  else cout << (all_of(begin(a), end(a), [](auto t) { return !t; }) ? "Yes" : "No") << '\n';
  return 0;
 }

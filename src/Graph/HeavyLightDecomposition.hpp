@@ -5,14 +5,15 @@
 class HeavyLightDecomposition {
  std::vector<int> P, PP, D, I, L, R;
 public:
- HeavyLightDecomposition() {}
- HeavyLightDecomposition(const Graph &tree, int root= 0) {
-  const int n= tree.vertex_size();
+ HeavyLightDecomposition()= default;
+ HeavyLightDecomposition(const Graph &g, int root= 0): HeavyLightDecomposition(g.adjacency_vertex(0), root) {}
+ HeavyLightDecomposition(const CSRArray<int> &adj, int root= 0) {
+  const int n= adj.size();
   P.assign(n, -2), PP.resize(n), D.resize(n), I.resize(n), L.resize(n), R.resize(n);
   auto f= [&, i= 0, v= 0, t= 0](int r) mutable {
    for (P[r]= -1, I[t++]= r; i < t; ++i)
-    for (int e: tree(v= I[i]))
-     if (int u= tree[e] - v; P[v] != u) P[I[t++]= u]= v;
+    for (int u: adj[v= I[i]])
+     if (P[v] != u) P[I[t++]= u]= v;
   };
   f(root);
   for (int r= 0; r < n; ++r)
@@ -31,8 +32,8 @@ public:
   for (int i= n; i--;) L[I[i]]= i;
   for (int v: I) {
    int ir= R[v]= L[v] + Z[v];
-   for (int e: tree(v))
-    if (int u= tree[e] - v; u != P[v] && u != nx[v]) L[u]= (ir-= Z[u]);
+   for (int u: adj[v])
+    if (u != P[v] && u != nx[v]) L[u]= (ir-= Z[u]);
    if (nx[v] != -1) L[nx[v]]= L[v] + 1;
   }
   for (int i= n; i--;) I[L[i]]= i;
@@ -57,7 +58,7 @@ public:
   }
  }
  int la(int v, int k) const {
-  assert(0 <= k && k <= D[v]);
+  assert(k <= D[v]);
   for (int u;; k-= L[v] - L[u] + 1, v= P[u])
    if (L[v] - k >= L[u= PP[v]]) return I[L[v] - k];
  }

@@ -18,7 +18,7 @@ signed main() {
  int n= st.size();
  vector<long long> sum(n + 1);
  for (int s= 0; s < n; ++s) {
-  int v= st.tree.to_node(s);
+  int v= st.tree.to_vertex(s);
   auto [l, r, h, hh]= st[v];
   sum[s + 1]= sum[s] + (long long)(hh - h) * (r - l);
  }

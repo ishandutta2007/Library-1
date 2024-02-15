@@ -8,9 +8,8 @@ documentation_of: ../../src/Graph/HeavyLightDecomposition.hpp
 ```c++
 // Graph g を構築
 int n; cin>>n;
-Graph g(n-1);
+Graph g(n,n-1);
 for(int i=0;i<n-1;++i)cin>>g[i],--g[i];
-g.build(n, 0);
 
 // HLD を構築
 HeavyLightDecomposition hld(g, 0); // 頂点 0 を根にして構築
@@ -41,7 +40,7 @@ HL分解＋オイラーツアーで頂点集合を数列に \
 
 | 名前 | 概要 |
 | --- | --- |
-| `HeavyLightDecomposition(g, root=0)` | コンストラクタ. 　[`Graph`](Graph.hpp) クラスの g と 根とする頂点 root を渡す. <br> g は親から子へ向かう有向辺さえあれば良い． |
+| `HeavyLightDecomposition(CSRArray<int> adj, root=0)` <br> `HeavyLightDecomposition(Graph g, root=0)` | コンストラクタ. <br> 引数は頂点 to 頂点の隣接リスト([`CSRArray<int>`クラス](../Internal/ListRange.hpp)) adj または [`Graph` クラス](Graph.hpp) g，と根とする頂点 root を渡す. <br> 親から子へ向かう有向辺さえあれば良い． |
 | `size()`| 頂点数を返す.|
 | `path<edge=0>(u,v)` | 頂点 u から頂点 v へのパスを表す"**閉**"区間列を返す. <br> `edge`フラグが true なら LCA を含めないような区間列を返す. |
 | `subtree(v)` | 頂点 v を根とする部分木を表す"**半開**"区間を返す. |

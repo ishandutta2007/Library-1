@@ -1,23 +1,19 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/biconnected_components"
 #include <iostream>
-#include "src/Graph/BiConnectedComponents.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/block_cut_tree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int N, M;
-
  cin >> N >> M;
- BiConnectedComponents bcc(N);
- for (int i= 0; i < M; ++i) {
-  int a, b;
-  cin >> a >> b;
-  bcc.add_edge(a, b);
- }
- auto bct= bcc.block_cut_tree();
+ Graph g(N, M);
+ for (int i= 0; i < M; ++i) cin >> g[i];
+ auto bct= block_cut_tree(g).adjecency_vertex(0);
  int K= bct.size();
  cout << K - N << '\n';
- for (int i= N; i < K; i++) {
+ for (int i= N; i < K; ++i) {
   cout << bct[i].size();
   for (int v: bct[i]) cout << " " << v;
   cout << '\n';

@@ -11,14 +11,13 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, K;
  cin >> N >> K;
- Graph g(N - 1);
+ Graph g(N, N - 1);
  for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
- g.build(N, 0);
  vector<int> cnt(N);
  for (int i= 0, D; i < K; ++i) cin >> D, ++cnt[--D];
  using Data= array<int, 2>;
  auto put_edge= [&](int v, int e, Data d) {
-  if (cnt[g[e] - v] || d[0]) d[0]+= 2, d[1]+= 1;
+  if (cnt[g[e].to(v)] || d[0]) d[0]+= 2, d[1]+= 1;
   return d;
  };
  auto op= [&](const Data& l, const Data& r) { return Data{l[0] + r[0], max(l[1], r[1])}; };

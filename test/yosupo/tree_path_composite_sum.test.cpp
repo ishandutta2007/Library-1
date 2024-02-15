@@ -13,10 +13,9 @@ signed main() {
  cin >> N;
  vector<Mint> a(N);
  for (int i= 0; i < N; ++i) cin >> a[i];
- Graph g(N - 1);
+ Graph g(N, N - 1);
  vector<Mint> b(N - 1), c(N - 1);
  for (int i= 0; i < N - 1; ++i) cin >> g[i] >> b[i] >> c[i];
- g.build(N, 0);
  using Data= pair<Mint, int>;
  auto put_edge= [&](int, int e, const Data &d) { return Data{b[e] * d.first + c[e], d.second}; };
  auto op= [&](const Data &l, const Data &r) { return Data{l.first + r.first, l.second + r.second}; };

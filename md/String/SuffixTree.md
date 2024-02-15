@@ -10,7 +10,7 @@ documentation_of: ../../src/String/SuffixTree.hpp
 
 |メンバ変数|概要|
 |---|---|
-|`graph`| 接尾辞木の[`Graph` クラス](../Graph/Graph.hpp) 表現.|
+|`graph`| 接尾辞木の[`Graph` クラス](../Graph/Graph.hpp) 表現. <br> 親から子の向きの辺のリスト．|
 |`tree`| 接尾辞木の[重軽分解](../Graph/HeavyLightDecomposition.hpp)|
 
 |メンバ関数|概要|計算量|
@@ -20,8 +20,8 @@ documentation_of: ../../src/String/SuffixTree.hpp
 |`begin()`| 矩形情報配列の `begin()` を返す.||
 |`end()`| 矩形情報配列の `end()` を返す||
 |`size()`|接尾辞木の頂点数を返す.||
-|`substr(l)`|接尾辞 $S_{l:}$ を構成する頂点のうちの末端の頂点を返す.|$\mathcal{O}(1)$|
-|`substr(l,n)`|部分文字列 $S_{l:l+n}$ を構成する頂点のうちの末端の頂点を返す. |$\mathcal{O}(\log n)$|
+|`substr(l)`|接尾辞 $S_{l:}$ を構成する頂点列（根から葉へのパス）のうちの最も子孫な頂点（葉）を返す.|$\mathcal{O}(1)$|
+|`substr(l,n)`|部分文字列 $S_{l:l+n}$ を構成する頂点列（根からのパス）のうちの最も子孫な頂点を返す. |$\mathcal{O}(\log n)$|
 
 ## 問題例
 [デンソークリエイトプログラミングコンテスト2022 Winter(AtCoder Beginner Contest 280) Ex - Substring Sort](https://atcoder.jp/contests/abc280/tasks/abc280_h)\

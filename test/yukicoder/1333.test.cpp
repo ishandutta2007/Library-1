@@ -11,10 +11,9 @@ signed main() {
  using Mint= ModInt<int(1e9 + 7)>;
  int N;
  cin >> N;
- Graph g(N - 1);
+ Graph g(N, N - 1);
  vector<Mint> w(N - 1);
  for (int i= 0; i < N - 1; ++i) cin >> g[i] >> w[i], --g[i];
- g.build(N, 0);
  using Data= tuple<int, Mint, Mint>;
  auto put_edge= [&](int, int e, const Data& d) {
   auto [d0, d1, d2]= d;

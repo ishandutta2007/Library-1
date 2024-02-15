@@ -10,10 +10,9 @@ signed main() {
  ios::sync_with_stdio(0);
  int n;
  cin >> n;
- Graph g(n - 1);
+ Graph g(n, n - 1);
  vector<int> w(n - 1);
  for (int i= 0; i < n - 1; ++i) cin >> g[i] >> w[i];
- g.build(n, 0);
  auto put_edge= [&](int, int e, int d) { return d + w[e]; };
  auto op= [&](int l, int r) { return max(l, r); };
  auto put_vertex= [&](int, int d) { return d; };

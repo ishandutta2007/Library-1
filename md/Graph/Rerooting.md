@@ -12,18 +12,21 @@ documentation_of: ../../src/Graph/Rerooting.hpp
 ```c++
 Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, F1 put_edge, F2 op, U ui, F3 put_vertex) // (1)
 Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, HeavyLightDecomposition hld, F1 put_edge, F2 op, U ui, F3 put_vertex) // (2)
+Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, CSRArray<int> adje, F1 put_edge, F2 op, U ui, F3 put_vertex) // (3)
+Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, CSRArray<int> adje,  HeavyLightDecomposition hld, F1 put_edge, F2 op, U ui, F3 put_vertex) // (4)
 ```
 
 |引数|概要|
 |---|---|
 |`Graph g`|[`Graph` クラス](Graph.hpp)|
-|`HeavyLightDecomposition hld`|g を [重軽分解](HeavyLightDecomposition.hpp)したもの. <br> 省略できる (1). (ただし 内部で作ってる) |
+|`CSRArray<int> adje`|頂点 to 辺の隣接リスト([`CSRArray<int>`クラス](../Internal/ListRange.hpp)) <br> 省略できる (1), (2). (ただし 内部で作ってる)|
+|`HeavyLightDecomposition hld`|g を [重軽分解](HeavyLightDecomposition.hpp)したもの. <br> 省略できる (1), (3). (ただし 内部で作ってる) |
 |`put_edge(int v, int e, T t) -> U`| 頂点 v と v から出る辺 e の情報によってクラス `T` の値 `t` をモノイド `U` の元に変換|
 |`op(U l, U r) -> U`|モノイド `U` の二項演算|
 |`U ui`|モノイド `U` の単位元|
 |`put_vertex(int v, U sum) -> T`| 頂点 v でモノイド `U` の総積をクラス `T` の値に変換|
 
-### メンバ関数
+### その他メンバ関数
 
 |名前|概要|
 |---|---|

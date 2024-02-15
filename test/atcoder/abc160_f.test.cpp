@@ -13,9 +13,8 @@ signed main() {
  using F= FactorialPrecalculation<Mint>;
  int N;
  cin >> N;
- Graph g(N - 1);
+ Graph g(N, N - 1);
  for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
- g.build(N, 0);
  using Data= pair<int, Mint>;
  auto put_edge= [&](int, int, const Data &d) { return d; };
  auto op= [&](const Data &l, const Data &r) { return Data{l.first + r.first, F::nCr(l.first + r.first, l.first) * l.second * r.second}; };

@@ -12,9 +12,8 @@ signed main() {
  using Mint= ModInt<int(1e9 + 7)>;
  int N, K;
  cin >> N >> K;
- Graph g(N - 1);
+ Graph g(N, N - 1);
  for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
- g.build(N, 0);
  HeavyLightDecomposition tree(g, 0);
  using Data= vector<Mint>;
  auto put_edge= [&](int, int, const Data &d) { return d; };
@@ -27,11 +26,11 @@ signed main() {
   return d;
  };
  Rerooting<Data> dp(g, tree, put_edge, op, Data(K, 1), put_vertex);
+ auto adj= g.adjacency_vertex(0);
  Mint ans= 0;
  for (int i= 0; i < N; ++i) {
   Data a(K, 1);
-  for (int e: g(i)) {
-   int j= g[e] - i;
+  for (int j: adj[i]) {
    Data b= dp(i, j);
    if (j == tree.parent(i)) {
     for (int k= 1; k < K; ++k) a[k]*= b[k - 1];

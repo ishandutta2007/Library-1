@@ -13,9 +13,10 @@ public:
    std::vector<int> ei(adj.p.begin(), adj.p.begin() + n);
    for (int s= 0, k= n, p; s < n; ++s)
     if (csr[s] == -2)
-     for (csr[p= s]= -1; p >= 0;)
+     for (csr[p= s]= -1; p >= 0;) {
       if (ei[p] == adj.p[p + 1]) ord[--k]= p, p= csr[p];
       else if (int q= adj.dat[ei[p]++]; csr[q] == -2) csr[q]= p, p= q;
+     }
   }
   for (auto &[s, d]: _g) std::swap(s, d);
   auto adj= _g.adjacency_vertex(1);

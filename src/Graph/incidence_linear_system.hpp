@@ -17,7 +17,7 @@ template <class T> std::vector<T> incidence_linear_system(const Graph &g, std::v
      T tmp= b[p];
      p= g[e].to(p);
      if constexpr (std::is_same_v<T, bool>) x[e]= tmp, b[p]= tmp ^ b[p];
-     else x[e]= g[e].d == p ? -tmp : tmp, b[p]+= tmp;
+     else x[e]= g[e].second == p ? -tmp : tmp, b[p]+= tmp;
     } else if (int q= g[e= adje.dat[ei[p]++]].to(p); pre[q] == -2) pre[p= q]= e;
    }
  return x;

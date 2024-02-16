@@ -44,9 +44,8 @@ signed main() {
   r2r.add_from_range(N + X + ly[i], N + X + ry[i] + 1, i, 0);
   r2r.add_to_range(i, N + X + ly[i], N + X + ry[i] + 1, 1);
  }
- int n= r2r.node_size();
- vector<pair<int, int>> adj[n];
- for (auto [u, v, w]: r2r.get_edges()) adj[u].emplace_back(v, w);
+ int n= r2r.graph.vertex_size();
+ auto adj= r2r.graph.adjacency_edge(1);
  deque<int> dq;
  int s= uf.root(0), g= uf.root(N - 1);
  int dist[n], used[n];
@@ -61,7 +60,9 @@ signed main() {
   if (v == g) break;
   if (used[v]) continue;
   used[v]= true;
-  for (auto [u, w]: adj[v]) {
+  for (int e: adj[v]) {
+   int u= r2r.graph[e].to(v);
+   int w= r2r.weight[e];
    if (dist[u] > dist[v] + w) {
     dist[u]= dist[v] + w;
     if (w) dq.push_back(u);

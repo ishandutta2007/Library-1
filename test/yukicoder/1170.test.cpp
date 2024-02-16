@@ -17,11 +17,8 @@ signed main() {
   int r= upper_bound(x, x + N, x[i] + B) - x;
   r2r.add_to_range(i, l, r), r2r.add_from_range(l, r, i);
  }
- int n= r2r.node_size();
  // 単純な連結だと思うと全部くっついちゃうので 例えばUFとかは使えない
- Graph g(n);
- for (auto [u, v, _]: r2r.get_edges()) g.add_edge(u, v);
- StronglyConnectedComponents scc(g);
+ StronglyConnectedComponents scc(r2r.graph);
  int C= scc.size();
  int cnt[C];
  fill_n(cnt, C, 0);

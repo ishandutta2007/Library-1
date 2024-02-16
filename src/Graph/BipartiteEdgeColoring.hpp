@@ -15,7 +15,7 @@ public:
   std::vector<int> color(m, -1), deg[2]= {std::vector<int>(n[0]), std::vector<int>(n[1])};
   for (auto [l, r]: es) ++deg[0][l], ++deg[1][r];
   const int D= std::max(*std::max_element(deg[0].begin(), deg[0].end()), *std::max_element(deg[1].begin(), deg[1].end()));
-  UnionFind uf[2]= {UnionFind(n[0]), UnionFind(n[1])};
+  UnionFind<> uf[2]= {UnionFind(n[0]), UnionFind(n[1])};
   int cnt[2], col= 0;
   for (int s= 2; s--;) {
    std::priority_queue<std::pair<int, int>> pq;

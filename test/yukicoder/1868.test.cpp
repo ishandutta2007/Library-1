@@ -16,9 +16,8 @@ signed main() {
   cin >> R;
   r2r.add_to_range(i - 1, i, R, 1);
  }
- int n= r2r.node_size();
- vector<pair<int, int>> adj[n];
- for (auto [s, t, w]: r2r.get_edges()) adj[s].emplace_back(t, w);
+ int n= r2r.graph.vertex_size();
+ auto adj= r2r.graph.adjacency_edge(1);
  deque<int> dq;
  int dist[n], used[n];
  fill_n(dist, n, 1 << 30);
@@ -31,7 +30,9 @@ signed main() {
   if (v == N - 1) break;
   if (used[v]) continue;
   used[v]= true;
-  for (auto [u, c]: adj[v]) {
+  for (int e: adj[v]) {
+   int u= r2r.graph[e].to(v);
+   int c= r2r.weight[e];
    if (dist[u] > dist[v] + c) {
     dist[u]= dist[v] + c;
     if (c) dq.push_back(u);

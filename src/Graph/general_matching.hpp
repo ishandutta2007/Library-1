@@ -22,15 +22,15 @@ std::vector<Edge> general_matching(const CSRArray<int> &adj) {
     if (id[y] == ts) {
      int u= f(f, x), v= f(f, y), w= rt;
      if (u == v) continue;
-     for (; u != rt || v != rt; fs[u]= {x, y}, u= f(f, fs[mate[u]].s)) {
+     for (; u != rt || v != rt; fs[u]= {x, y}, u= f(f, fs[mate[u]].first)) {
       if (v != rt) std::swap(u, v);
-      if (fs[u].s == x && fs[u].d == y) {
+      if (fs[u].first == x && fs[u].second == y) {
        w= u;
        break;
       }
      }
-     for (int a= u; a != w; a= f(f, fs[mate[a]].s)) id[a]= ts, p[a]= w, que[s++]= a;
-     for (int b= v; b != w; b= f(f, fs[mate[b]].s)) id[b]= ts, p[b]= w, que[s++]= b;
+     for (int a= u; a != w; a= f(f, fs[mate[a]].first)) id[a]= ts, p[a]= w, que[s++]= a;
+     for (int b= v; b != w; b= f(f, fs[mate[b]].first)) id[b]= ts, p[b]= w, que[s++]= b;
     } else if (id[mate[y]] != ts) fs[y]= {-1, -1}, fs[mate[y]]= {x, -1}, id[mate[y]]= ts, p[mate[y]]= y, que[s++]= mate[y];
    }
   }

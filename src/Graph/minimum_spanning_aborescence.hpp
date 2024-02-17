@@ -1,6 +1,5 @@
 #pragma once
 #include <utility>
-#include <cassert>
 #include "src/Graph/Graph.hpp"
 #include "src/DataStructure/UnionFind.hpp"
 // return edge ids of minimum spanning aborescence

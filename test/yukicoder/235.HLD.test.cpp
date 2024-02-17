@@ -1,6 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/235"
 #include <iostream>
-#include "src/Graph/Tree.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/HeavyLightDecomposition.hpp"
 #include "src/DataStructure/SegmentTree_Beats.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
@@ -26,13 +27,9 @@ signed main() {
  Mint S[N], C[N];
  for (int i= 0; i < N; ++i) cin >> S[i];
  for (int i= 0; i < N; ++i) cin >> C[i];
- Tree tree(N);
- for (int i= 0; i < N - 1; ++i) {
-  int A, B;
-  cin >> A >> B;
-  tree.add_edge(--A, --B);
- }
- tree.build(0);
+ Graph g(N, N - 1);
+ for (int i= 0; i < N - 1; ++i) cin >> g[i];
+ HeavyLightDecomposition tree(g, 0);
  vector<typename Mono::T> vec(N);
  for (int v= 0; v < N; ++v) vec[tree.to_seq(v)]= {S[v], C[v]};
  SegmentTree_Beats<Mono> seg(vec);

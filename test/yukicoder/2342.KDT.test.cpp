@@ -6,7 +6,8 @@
 #include <tuple>
 #include <vector>
 #include "src/Math/ModInt.hpp"
-#include "src/Graph/Tree.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/HeavyLightDecomposition.hpp"
 #include "src/DataStructure/KDTree.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
@@ -21,13 +22,9 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- Tree tree(N);
- for (int i= N - 1; i--;) {
-  int A, B;
-  cin >> A >> B;
-  tree.add_edge(A - 1, B - 1);
- }
- tree.build(0);
+ Graph g(N, N - 1);
+ for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
+ HeavyLightDecomposition tree(g, 0);
  vector<tuple<int, int, Mint>> xy;
  for (int v= 0; v < N; ++v) {
   Mint X;

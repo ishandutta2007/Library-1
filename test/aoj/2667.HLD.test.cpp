@@ -1,7 +1,8 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2667"
 // パス総和、部分木加算
 #include <iostream>
-#include "src/Graph/Tree.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/HeavyLightDecomposition.hpp"
 #include "src/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
 using namespace std;
 signed main() {
@@ -9,13 +10,9 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- Tree tree(N);
- for (int i= 0; i < N - 1; ++i) {
-  int a, b;
-  cin >> a >> b;
-  tree.add_edge(a, b);
- }
- tree.build(0);
+ Graph g(N, N - 1);
+ for (int i= 0; i < N - 1; ++i) cin >> g[i];
+ HeavyLightDecomposition tree(g, 0);
  BinaryIndexedTree_RangeAdd<long long> bit(N);
  while (Q--) {
   int op, a, b;

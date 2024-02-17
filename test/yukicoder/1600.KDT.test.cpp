@@ -3,13 +3,12 @@
 #include <vector>
 #include <array>
 #include <tuple>
-
-// 重みつき木
 // Q=2*10^5 で 2*Q回クエリあるみたいなもんだけど 通る
 
 #include "src/Math/ModInt.hpp"
 #include "src/DataStructure/UnionFind.hpp"
-#include "src/Graph/Tree.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/HeavyLightDecomposition.hpp"
 #include "src/DataStructure/KDTree.hpp"
 using namespace std;
 struct RMQ {
@@ -23,22 +22,28 @@ signed main() {
  using Mint= ModInt<1000000007>;
  int N, M;
  cin >> N >> M;
- vector<pair<int, int>> es;
- vector<char> used(M);
- UnionFind uf(N);
+ vector<Edge> es(M);
+ for (int i= 0; i < M; ++i) cin >> es[i], --es[i];
+ Graph g(N);
+ vector<Mint> C;
  Mint w= 1;
- Tree<Mint, true> tree(N);
+ UnionFind uf(N);
+ vector<char> used(M);
  for (int i= 0; i < M; ++i) {
-  int A, B;
-  cin >> A >> B, --A, --B;
-  es.emplace_back(A, B);
+  auto [A, B]= es[i];
   w+= w;
   if (uf.unite(A, B)) {
    used[i]= true;
-   tree.add_edge(A, B, w);
+   g.add_edge(A, B), C.push_back(w);
   }
  }
- tree.build();
+ HeavyLightDecomposition tree(g);
+ auto adj= g.adjacency_edge(0);
+ vector<Mint> dep(N);
+ for (int i= 0, v; i < N; ++i)
+  for (int e: adj[v= tree.to_vertex(i)])
+   if (int u= g[e].to(v); u != tree.parent(v)) dep[u]= dep[v] + C[e];
+ auto dist= [&](int u, int v) { return dep[u] + dep[v] - dep[tree.lca(u, v)] * 2; };
  vector<array<int, 3>> xyw;
  for (int i= 0; i < M; ++i) {
   if (used[i]) continue;
@@ -57,7 +62,7 @@ signed main() {
   if (tree.parent(y) == x) swap(x, y);
   bool u_in= tree.in_subtree(u, x);
   if (!used[e] || u_in == tree.in_subtree(v, x)) {
-   cout << tree.dist_w(u, v) << '\n';
+   cout << dist(u, v) << '\n';
    continue;
   }
   auto [l, r]= tree.subtree(x);
@@ -69,7 +74,7 @@ signed main() {
   auto [p, q]= es[i];
   if (!u_in) swap(u, v);
   if (tree.in_subtree(q, x)) swap(p, q);
-  cout << tree.dist_w(u, p) + tree.dist_w(v, q) + Mint(2).pow(i + 1) << '\n';
+  cout << dist(u, p) + dist(v, q) + Mint(2).pow(i + 1) << '\n';
  }
  return 0;
 }

@@ -3,7 +3,8 @@
 #include <vector>
 #include <algorithm>
 #include "src/Math/ModInt.hpp"
-#include "src/Graph/Tree.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/HeavyLightDecomposition.hpp"
 #include "src/DataStructure/SegmentTree.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
@@ -19,13 +20,9 @@ signed main() {
  cin >> N >> Q;
  Mint a[N], b[N];
  for (int i= 0; i < N; ++i) cin >> a[i] >> b[i];
- Tree tree(N);
- for (int i= 0; i < N - 1; ++i) {
-  int u, v;
-  cin >> u >> v;
-  tree.add_edge(u, v);
- }
- tree.build(0);
+ Graph g(N, N - 1);
+ for (int i= 0; i < N - 1; ++i) cin >> g[i];
+ HeavyLightDecomposition tree(g, 0);
  vector<typename Mono::T> vec(N);
  for (int v= 0; v < N; ++v) vec[tree.to_seq(v)]= {a[v], b[v]};
  SegmentTree<Mono> seg1(vec);

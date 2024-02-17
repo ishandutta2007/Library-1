@@ -1,10 +1,10 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/UTPC/2270"
 // 永続化 + find * 4 の verify
-// tree の par verify
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
-#include "src/Graph/Tree.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/HeavyLightDecomposition.hpp"
 using namespace std;
 struct RsumQ {
  using T= int;
@@ -16,20 +16,16 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- int x[N + 1];
+ vector<int> x(N + 1);
  for (int i= 1; i <= N; i++) cin >> x[i];
- Tree tree(N + 1);
- vector<int> adj[N + 1];
- tree.add_edge(1, 0);
- for (int i= 0; i < N - 1; i++) {
-  int a, b;
-  cin >> a >> b;
-  tree.add_edge(a, b), adj[a].push_back(b), adj[b].push_back(a);
- }
- tree.build(0);
+ Graph g(N + 1, N);
+ g[0]= {0, 1};
+ for (int i= 1; i < N; ++i) cin >> g[i];
+ auto adj= g.adjacency_vertex(0);
+ HeavyLightDecomposition tree(adj, 0);
  using Seg= SegmentTree_Dynamic<RsumQ, true>;
- Seg segs[N + 1];
- auto dfs= [&adj, &segs, &x](auto f, int v, int p) -> void {
+ vector<Seg> segs(N + 1);
+ auto dfs= [&](auto &&f, int v, int p) -> void {
   segs[v]= segs[p];
   segs[v].set(x[v], segs[v][x[v]] + 1);
   for (int u: adj[v])

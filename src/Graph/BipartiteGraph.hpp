@@ -3,11 +3,11 @@
 #include <algorithm>
 #include <numeric>
 #include <cassert>
-#include "src/DataStructure/CsrArray.hpp"
+#include "src/Internal/ListRange.hpp"
 class BipartiteGraph {
  std::vector<std::array<int, 2>> es;
  std::vector<int> col, pos, ord, pre, mate, blg;
- CsrArray<int> dag_[2];
+ CSRArray<int> dag_[2];
  int l;
 public:
  BipartiteGraph(int n): col(n, -1), pos(n + 1), ord(n), mate(n, -1), blg(n, -3), l(0) {}
@@ -84,7 +84,7 @@ public:
  int component_num() const { return pos.size() - 1; }
  int belong(int v) const { return blg[v]; }
  ConstListRange<int> block(int k) const { return {pre.cbegin() + pos[k], pre.cbegin() + pos[k + 1]}; }
- template <bool rev> const CsrArray<int> &dag() { return dag_[rev]; }
+ template <bool rev> const CSRArray<int> &dag() { return dag_[rev]; }
  std::vector<std::array<int, 2>> max_matching() const {
   std::vector<std::array<int, 2>> ret;
   for (int i= l; i--;)

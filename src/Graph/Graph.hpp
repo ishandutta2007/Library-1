@@ -25,7 +25,7 @@ struct Graph: std::vector<Edge> {
  } else { \
   _ADJ_FOR((++p[u], ++p[v]), (c[--p[(*this)[i].first]]= a, c[--p[(*this)[i].second]]= b)) \
  } \
- return {std::move(c), std::move(p)}
+ return {c, p}
  CSRArray<int> adjacency_vertex(bool direct) const { _ADJ((*this)[i].second, (*this)[i].first); }
  CSRArray<int> adjacency_edge(bool direct) const { _ADJ(i, i); }
 #undef _ADJ

@@ -1,5 +1,5 @@
 ---
-title: Incremental-Bridge-Connectivity (2辺連結成分)
+title: Incremental-Bridge-Connectivity (二辺連結成分)
 documentation_of: ../../src/Graph/IncrementalBridgeConnectivity.hpp
 ---
 ## 問題例

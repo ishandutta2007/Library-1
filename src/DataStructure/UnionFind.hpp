@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <algorithm>
+#include <cassert>
 template <bool undoable= false> class UnionFind {
  std::vector<int> par;
  std::vector<std::pair<int, int>> his;
@@ -25,7 +26,6 @@ public:
  void undo() {
   static_assert(undoable, "\'undo\' is not enabled");
   auto [u, s]= his.back();
-  assert(par[par[u]] < 0);
   his.pop_back(), par[par[u]]-= s, par[u]= s;
  }
  void rollback(size_t t) {

@@ -1,7 +1,8 @@
 #define PROBLEM "https://atcoder.jp/contests/abc202/tasks/abc202_e"
 #include <iostream>
 #include <vector>
-#include "src/Graph/Tree.hpp"
+#include "src/Graph/Graph.hpp"
+#include "src/Graph/HeavyLightDecomposition.hpp"
 #include "src/DataStructure/WaveletMatrix.hpp"
 using namespace std;
 signed main() {
@@ -9,13 +10,9 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- Tree tree(N);
- for (int i= 1; i < N; ++i) {
-  int p;
-  cin >> p;
-  tree.add_edge(p - 1, i);
- }
- tree.build(0);
+ Graph g(N);
+ for (int i= 1, p; i < N; ++i) cin >> p, g.add_edge(p - 1, i);
+ HeavyLightDecomposition tree(g, 0);
  vector<int> d(N);
  for (int v= N; v--;) d[tree.to_seq(v)]= tree.depth(v);
  WaveletMatrix wm(d);

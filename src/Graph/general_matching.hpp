@@ -11,7 +11,7 @@ std::pair<std::vector<int>, std::vector<int>> general_matching(const Graph &g, c
  std::vector<Edge> fs(n);
  auto rematch= [&](auto self, int u, int v) -> void {
   int w;
-  if (w= m[u], m[u]= v; w == -1 || m[w] != u) return;
+  if (w= m[u], m[u]= v; w == -1) return;
   if (auto [x, y]= fs[u]; y == -1) self(self, m[w]= x, w);
   else self(self, x, y), self(self, y, x);
  };

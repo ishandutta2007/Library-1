@@ -16,7 +16,7 @@ struct Graph: std::vector<Edge> {
  size_t add_edge(Edge e) { return emplace_back(e), size() - 1; }
 #define _ADJ_FOR(a, b) \
  for (auto [u, v]: *this) a; \
- for (int i= 0; i < n; ++i) p[i + 1]+= p[i]; \
+ for (size_t i= 0; i < n; ++i) p[i + 1]+= p[i]; \
  for (int i= size(); i--;) { \
   auto [u, v]= (*this)[i]; \
   b; \

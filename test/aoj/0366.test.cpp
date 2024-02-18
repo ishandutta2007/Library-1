@@ -14,7 +14,7 @@ signed main() {
  StronglyConnectedComponents scc(g);
  int C= scc.size();
  if (C == 1) return cout << 0 << '\n', 0;
- auto dag= scc.dag().adjacency_vertex(1);
+ auto dag= scc.dag(g).adjacency_vertex(1);
  int cnt[2]= {0, 0};
  bool st[C];
  fill_n(st, C, true);

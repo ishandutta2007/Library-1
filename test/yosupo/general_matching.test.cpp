@@ -11,6 +11,9 @@ signed main() {
  for (int i= 0; i < M; ++i) cin >> g[i];
  auto ans= general_matching(g);
  cout << ans.size() << '\n';
- for (auto [u, v]: ans) cout << u << " " << v << '\n';
+ for (auto i: ans) {
+  auto [u, v]= g[i];
+  cout << u << " " << v << '\n';
+ }
  return 0;
 }

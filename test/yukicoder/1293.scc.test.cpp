@@ -1,6 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1293"
 #include <iostream>
 #include <algorithm>
+#include <vector>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/StronglyConnectedComponents.hpp"
 using namespace std;
@@ -15,9 +16,8 @@ signed main() {
  for (int i= 0; i < N; ++i) g.add_edge(i, i + N);
  StronglyConnectedComponents scc(g);
  int C= scc.size();
- auto dag= scc.dag().adjacency_vertex(1);
- long long dp[C];
- fill_n(dp, C, 0);
+ auto dag= scc.dag(g).adjacency_vertex(1);
+ vector<long long> dp(C);
  for (int i= 0; i < N; ++i) ++dp[scc(i)];
  for (int i= 0; i < C; ++i)
   for (int j: dag[i]) dp[j]+= dp[i];

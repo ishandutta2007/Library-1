@@ -8,7 +8,7 @@ struct Edge: std::pair<int, int> {
 };
 struct Graph: std::vector<Edge> {
  size_t n;
- Graph(size_t n= 0, size_t m= 0): n(n), vector(m) {}
+ Graph(size_t n= 0, size_t m= 0): vector(m), n(n) {}
  size_t vertex_size() const { return n; }
  size_t edge_size() const { return size(); }
  size_t add_vertex() { return n++; }
@@ -19,15 +19,17 @@ struct Graph: std::vector<Edge> {
  for (int i= 0; i < n; ++i) p[i + 1]+= p[i]; \
  for (int i= size(); i--;) b;
 #define _ADJ(a, b) \
- vector<int> p(n + 1), c(size() << !direct); \
- if (direct) { \
+ vector<int> p(n + 1), c(size() << !dir); \
+ if (!dir) { \
+  _ADJ_FOR((++p[u], ++p[v]), (c[--p[(*this)[i].first]]= a, c[--p[(*this)[i].second]]= b)) \
+ } else if (dir > 0) { \
   _ADJ_FOR(++p[u], c[--p[(*this)[i].first]]= a) \
  } else { \
-  _ADJ_FOR((++p[u], ++p[v]), (c[--p[(*this)[i].first]]= a, c[--p[(*this)[i].second]]= b)) \
+  _ADJ_FOR(++p[v], c[--p[(*this)[i].second]]= b) \
  } \
  return {c, p}
- CSRArray<int> adjacency_vertex(bool direct) const { _ADJ((*this)[i].second, (*this)[i].first); }
- CSRArray<int> adjacency_edge(bool direct) const { _ADJ(i, i); }
+ CSRArray<int> adjacency_vertex(int dir) const { _ADJ((*this)[i].second, (*this)[i].first); }
+ CSRArray<int> adjacency_edge(int dir) const { _ADJ(i, i); }
 #undef _ADJ
 #undef _ADJ_FOR
 };

@@ -36,7 +36,7 @@ public:
  Graph dag(const Graph &g) const {
   Graph ret(size());
   for (auto [s, d]: g)
-   if (int u= b[s], v= b[d]; u != v) ret.add_edge(u, v);
+   if (b[s] != b[d]) ret.add_edge(b[s], b[d]);
   return std::sort(ret.begin(), ret.end()), ret.erase(std::unique(ret.begin(), ret.end()), ret.end()), ret;
  }
 };

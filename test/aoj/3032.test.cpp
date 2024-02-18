@@ -1,6 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3032"
 #include <iostream>
 #include <algorithm>
+#include "src/Graph/Graph.hpp"
 #include "src/Graph/general_matching.hpp"
 using namespace std;
 signed main() {
@@ -18,6 +19,7 @@ signed main() {
    if (tmp <= A || (B <= tmp && tmp <= 2 * A)) g.add_edge(i, j);
   }
  }
- cout << general_matching(g).size() << '\n';
+ auto [ans, _]= general_matching(g);
+ cout << ans.size() << '\n';
  return 0;
 }

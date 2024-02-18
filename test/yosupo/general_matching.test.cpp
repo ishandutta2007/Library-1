@@ -9,7 +9,7 @@ signed main() {
  cin >> N >> M;
  Graph g(N, M);
  for (int i= 0; i < M; ++i) cin >> g[i];
- auto ans= general_matching(g);
+ auto [ans, _]= general_matching(g);
  cout << ans.size() << '\n';
  for (auto i: ans) {
   auto [u, v]= g[i];

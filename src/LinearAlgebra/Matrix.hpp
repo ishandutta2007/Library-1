@@ -2,7 +2,7 @@
 #include <cassert>
 #include <vector>
 #include "src/LinearAlgebra/Vector.hpp"
-namespace la_internal {
+namespace _la_internal {
 template <class R> class Matrix {
 public:
  size_t W;
@@ -150,4 +150,4 @@ template <class K> static bool is_zero(K x) {
  else return x == K();
 }
 }
-using la_internal::Matrix;
+using _la_internal::Matrix;

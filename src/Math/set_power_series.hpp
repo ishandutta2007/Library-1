@@ -3,7 +3,7 @@
 #include <vector>
 #include <cassert>
 namespace sps {
-namespace sps_internal {
+namespace _sps_internal {
 using namespace std;
 #define _ZETA(s, l) \
  if constexpr (!t) A[s + l]+= A[s]; \
@@ -289,5 +289,5 @@ template <class T> vector<T> egf_T(const vector<T>& f, vector<T> g) {
  return _egfT(f.data() + (N >> 1), g.data(), N >> 1, n);
 }
 }
-using sps_internal::subset_zeta, sps_internal::subset_mobius, sps_internal::supset_zeta, sps_internal::supset_mobius, sps_internal::hadamard, sps_internal::or_convolve, sps_internal::and_convolve, sps_internal::xor_convolve, sps_internal::convolve, sps_internal::semi_relaxed_convolve, sps_internal::self_relaxed_convolve, sps_internal::inv, sps_internal::div, sps_internal::exp, sps_internal::log, sps_internal::egf_comp, sps_internal::poly_comp, sps_internal::egf_T;
+using _sps_internal::subset_zeta, _sps_internal::subset_mobius, _sps_internal::supset_zeta, _sps_internal::supset_mobius, _sps_internal::hadamard, _sps_internal::or_convolve, _sps_internal::and_convolve, _sps_internal::xor_convolve, _sps_internal::convolve, _sps_internal::semi_relaxed_convolve, _sps_internal::self_relaxed_convolve, _sps_internal::inv, _sps_internal::div, _sps_internal::exp, _sps_internal::log, _sps_internal::egf_comp, _sps_internal::poly_comp, _sps_internal::egf_T;
 }

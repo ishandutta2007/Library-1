@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "src/LinearAlgebra/Matrix.hpp"
 template <class K> Matrix<K> hessenberg(Matrix<K> A, bool mint= false) {
- using la_internal::is_zero;
+ using _la_internal::is_zero;
  const size_t n= A.width();
  assert(n == A.height());
  for (size_t j= 0, i, r; j + 2 < n; ++j) {
@@ -61,7 +61,7 @@ template <class K> std::vector<K> det_of_first_degree_poly_mat(Matrix<K> M0, Mat
   } else
    for (piv= p; piv < n; ++piv)
     if (M1[piv][p] != K()) break;
-  if (piv == n || la_internal::is_zero(M1[piv][p])) {
+  if (piv == n || _la_internal::is_zero(M1[piv][p])) {
    if (++cnt > n) return std::vector<K>(n + 1);
    for (r= p; r--;)
     for (v= M1[r][p], M1[r][p]= K(), i= n; i--;) M0[i][p]-= v * M0[i][r];

@@ -3,7 +3,7 @@
 #include <numeric>
 #include <vector>
 #include "src/LinearAlgebra/Matrix.hpp"
-namespace la_internal {
+namespace _la_internal {
 template <class K> class LU_Decomposition {
  Matrix<K> dat;
  vector<size_t> perm, piv;
@@ -179,4 +179,4 @@ public:
  }
 };
 }
-using la_internal::LU_Decomposition;
+using _la_internal::LU_Decomposition;

@@ -17,18 +17,21 @@ struct Graph: std::vector<Edge> {
 #define _ADJ_FOR(a, b) \
  for (auto [u, v]: *this) a; \
  for (int i= 0; i < n; ++i) p[i + 1]+= p[i]; \
- for (int i= size(); i--;) b;
+ for (int i= size(); i--;) { \
+  auto [u, v]= (*this)[i]; \
+  b; \
+ }
 #define _ADJ(a, b) \
  vector<int> p(n + 1), c(size() << !dir); \
  if (!dir) { \
-  _ADJ_FOR((++p[u], ++p[v]), (c[--p[(*this)[i].first]]= a, c[--p[(*this)[i].second]]= b)) \
+  _ADJ_FOR((++p[u], ++p[v]), (c[--p[u]]= a, c[--p[v]]= b)) \
  } else if (dir > 0) { \
-  _ADJ_FOR(++p[u], c[--p[(*this)[i].first]]= a) \
+  _ADJ_FOR(++p[u], c[--p[u]]= a) \
  } else { \
-  _ADJ_FOR(++p[v], c[--p[(*this)[i].second]]= b) \
+  _ADJ_FOR(++p[v], c[--p[v]]= b) \
  } \
  return {c, p}
- CSRArray<int> adjacency_vertex(int dir) const { _ADJ((*this)[i].second, (*this)[i].first); }
+ CSRArray<int> adjacency_vertex(int dir) const { _ADJ(v, u); }
  CSRArray<int> adjacency_edge(int dir) const { _ADJ(i, i); }
 #undef _ADJ
 #undef _ADJ_FOR

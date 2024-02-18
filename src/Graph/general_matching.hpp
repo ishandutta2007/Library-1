@@ -1,9 +1,13 @@
 #pragma once
+#include <cassert>
 #include "src/Graph/Graph.hpp"
-std::vector<int> general_matching(const Graph &g) {
+// {matching, partner(-1 if unmatched)}
+std::pair<std::vector<int>, std::vector<int>> general_matching(const Graph &g, const std::vector<int> &partner= {}) {
  auto adj= g.adjacency_vertex(0);
  const int n= adj.size();
- std::vector<int> q(n), id(n, -1), p(n), m(n, -1);
+ std::vector<int> q(n), id(n, -1), p(n), m(partner);
+ if (m.empty()) m.assign(n, -1);
+ assert((int)m.size() == n);
  std::vector<Edge> fs(n);
  auto rematch= [&](auto self, int u, int v) -> void {
   int w;
@@ -41,6 +45,6 @@ std::vector<int> general_matching(const Graph &g) {
   if (m[rt] == -1) t+= check(rt);
  p.clear();
  for (int i= 0, e= g.edge_size(); i < e; ++i)
-  if (auto [u, v]= g[i]; m[u] == v) p.push_back(i), m[u]= m[v]= -1;
- return p;
+  if (auto [u, v]= g[i]; m[u] == v && q[u] >= 0) p.push_back(i), q[u]= q[v]= -1;
+ return {p, m};
 }

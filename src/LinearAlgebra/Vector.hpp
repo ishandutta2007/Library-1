@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <valarray>
-namespace la_internal {
+namespace _la_internal {
 using namespace std;
 template <class R> struct Vector: public valarray<R> {
  using valarray<R>::valarray;
@@ -52,4 +52,4 @@ public:
  friend Vector operator*(bool b, const Vector &r) { return r * b; }
 };
 }
-using la_internal::Vector;
+using _la_internal::Vector;

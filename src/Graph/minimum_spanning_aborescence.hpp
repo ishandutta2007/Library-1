@@ -2,7 +2,7 @@
 #include <utility>
 #include "src/Graph/Graph.hpp"
 #include "src/DataStructure/UnionFind.hpp"
-// return edge ids of minimum spanning aborescence
+// return {total cost, edge ids of minimum spanning aborescence}
 template <class cost_t> std::pair<cost_t, std::vector<int>> minimum_spanning_aborescence(const Graph &g, std::vector<cost_t> w, int root) {
  const int n= g.vertex_size(), m= g.edge_size();
  assert((int)w.size() == m);

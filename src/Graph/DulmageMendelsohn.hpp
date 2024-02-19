@@ -7,8 +7,8 @@ class DulmageMendelsohn {
  std::vector<int> b, m, a;
  CSRArray<int> dag[2];
 public:
- DulmageMendelsohn(const BipartiteGraph &g): L(g.left_size()) {
-  auto adj= g.adjacency_vertex(0);
+ DulmageMendelsohn(const BipartiteGraph &bg): L(bg.left_size()) {
+  auto adj= bg.adjacency_vertex(0);
   const int n= adj.size();
   m.assign(n, -1), b.assign(n, -3), a= _bg_internal::_bm(L, adj, m);
   std::vector<int> q(n - L);
@@ -46,7 +46,7 @@ public:
   for (int i= 0; i <= k; ++i) a[i + 1]+= a[i];
   for (int i= n; i--;) m[--a[b[i]]]= i;
   Graph h(k + 1);
-  for (auto [l, r]: g)
+  for (auto [l, r]: bg)
    if (b[l] != b[r]) h.add_edge(b[l], b[r]);
   std::sort(h.begin(), h.end()), h.erase(std::unique(h.begin(), h.end()), h.end()), dag[0]= h.adjacency_vertex(1), dag[1]= h.adjacency_vertex(-1);
  }

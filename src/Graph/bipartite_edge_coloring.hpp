@@ -3,12 +3,12 @@
 #include <numeric>
 #include "src/DataStructure/UnionFind.hpp"
 #include "src/Graph/BipartiteGraph.hpp"
-std::vector<int> bipartite_edge_coloring(BipartiteGraph g) {
- const int m= g.edge_size();
- int L= g.left_size(), n= g.vertex_size(), D, col= 0;
+std::vector<int> bipartite_edge_coloring(BipartiteGraph bg) {
+ const int m= bg.edge_size();
+ int L= bg.left_size(), n= bg.vertex_size(), D, col= 0;
  {
   std::vector<int> deg(n), id(n);
-  for (auto [l, r]: g) ++deg[l], ++deg[r];
+  for (auto [l, r]: bg) ++deg[l], ++deg[r];
   D= *std::max_element(deg.begin(), deg.end());
   UnionFind uf(n);
   for (int _: {0, n}) {
@@ -29,13 +29,13 @@ std::vector<int> bipartite_edge_coloring(BipartiteGraph g) {
    if (uf.root(i) == i) id[i]= cl++;
   for (; i < n; ++i)
    if (uf.root(i) == i) id[i]= cr++;
-  L= std::max(cl, cr), deg.assign(n= L + L, 0), g.reserve(L * D);
-  for (auto &[l, r]: g) ++deg[l= id[uf.root(l)]], ++deg[r= id[uf.root(r)] + L];
+  L= std::max(cl, cr), deg.assign(n= L + L, 0), bg.reserve(L * D);
+  for (auto &[l, r]: bg) ++deg[l= id[uf.root(l)]], ++deg[r= id[uf.root(r)] + L];
   for (int l= 0, r= L; l < L; ++l)
    while (deg[l] < D) {
     while (r < n && deg[r] == D) ++r;
     int x= D - std::max(deg[l], deg[r]);
-    for (int k= x; k--;) g.add_edge(l, r);
+    for (int k= x; k--;) bg.add_edge(l, r);
     deg[l]+= x, deg[r]+= x;
    }
  }
@@ -50,16 +50,16 @@ std::vector<int> bipartite_edge_coloring(BipartiteGraph g) {
   }
   if (d & 1) {
    CSRArray<int> adj{std::vector<int>(idx.size()), std::vector<int>(L + 1)};
-   for (int e: idx) ++adj.p[g[e].first];
+   for (int e: idx) ++adj.p[bg[e].first];
    for (int i= 0; i < L; ++i) adj.p[i + 1]+= adj.p[i];
    for (int e: idx) {
-    auto [l, r]= g[e];
+    auto [l, r]= bg[e];
     adj.dat[--adj.p[l]]= r;
    }
    std::vector<int> mate(n, -1), rm;
    _bg_internal::_bm(L, adj, mate);
    for (int e: idx) {
-    auto [l, r]= g[e];
+    auto [l, r]= bg[e];
     if (mate[l] == r) {
      if (mate[l]= mate[r]= -1; e < m) color[e]= col;
     } else rm.push_back(e);
@@ -71,12 +71,12 @@ std::vector<int> bipartite_edge_coloring(BipartiteGraph g) {
   {
    std::vector<int> c(mm), p(n + 1);
    for (int e: idx) {
-    auto [l, r]= g[e];
+    auto [l, r]= bg[e];
     ++p[l], ++p[r];
    }
    for (int i= 0; i < L; ++i) p[i + 1]+= p[i];
    for (int i= mm; i--;) {
-    auto [l, r]= g[idx[i]];
+    auto [l, r]= bg[idx[i]];
     c[--p[l]]= i, c[--p[r]]= i;
    }
    std::vector<int> it(p.begin(), p.begin() + n);
@@ -86,7 +86,7 @@ std::vector<int> bipartite_edge_coloring(BipartiteGraph g) {
      for (std::vector<std::pair<int, int>> st= {{v, -1}}; st.size();) {
       auto [u, e]= st.back();
       if (used1[u]= 1; it[u] == p[u + 1]) circuit.push_back(e), st.pop_back();
-      else if (int i= c[it[u]++]; !used2[i]) used2[i]= 1, st.emplace_back(g[idx[i]].to(u), i);
+      else if (int i= c[it[u]++]; !used2[i]) used2[i]= 1, st.emplace_back(bg[idx[i]].to(u), i);
      }
      circuit.pop_back();
     }

@@ -2,8 +2,8 @@
 #include <utility>
 #include "src/Graph/Graph.hpp"
 #include "src/DataStructure/UnionFind.hpp"
-// return {total cost, es ids}
-// {0, {}} if the graph has no spanning aborescence of the root
+// return {total cost, edge ids}
+// return {0, {}} if the graph has no spanning aborescence of the root
 template <class cost_t> std::pair<cost_t, std::vector<int>> minimum_spanning_aborescence(const Graph &g, std::vector<cost_t> w, int root) {
  const int n= g.vertex_size(), m= g.edge_size();
  assert((int)w.size() == m);

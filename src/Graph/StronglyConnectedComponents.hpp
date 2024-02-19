@@ -6,7 +6,7 @@ class StronglyConnectedComponents {
 public:
  StronglyConnectedComponents(const Graph &g) {
   const int n= g.vertex_size();
-  m.assign(n, -2), b.resize(n), q= {0};
+  m.assign(n, -2), b.resize(n);
   {
    auto adj= g.adjacency_vertex(1);
    std::vector<int> c(adj.p.begin(), adj.p.begin() + n);
@@ -20,6 +20,7 @@ public:
   auto adj= g.adjacency_vertex(-1);
   std::vector<char> z(n);
   int k= 0, p= 0;
+  q= {0};
   for (int s: b)
    if (!z[s]) {
     for (z[m[k++]= s]= 1; p < k; ++p)

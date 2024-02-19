@@ -11,7 +11,7 @@ struct BipartiteGraph: Graph {
  size_t left_size() const { return L; }
  size_t right_size() const { return this->n - L; }
 };
-std::vector<int> paint_in_2_color(const CSRArray<int> &adj) {
+std::vector<int> paint_two_colors(const CSRArray<int> &adj) {
  const int n= adj.size();
  std::vector<int> col(n, -1);
  for (int s= n; s--;)
@@ -24,11 +24,11 @@ std::vector<int> paint_in_2_color(const CSRArray<int> &adj) {
   }
  return col;
 }
-std::vector<int> paint_in_2_color(const Graph &g) { return paint_in_2_color(g.adjacency_vertex(0)); }
+std::vector<int> paint_two_colors(const Graph &g) { return paint_two_colors(g.adjacency_vertex(0)); }
 // { BipartiteGraph , original to new, new to original }
 // {{},{},{}} if not bipartite
 std::tuple<BipartiteGraph, std::vector<int>, std::vector<int>> graph_to_bipartite(const Graph &g, std::vector<int> color= {}) {
- if (color.empty()) color= paint_in_2_color(g);
+ if (color.empty()) color= paint_two_colors(g);
  if (color.empty()) return {};
  const int n= g.vertex_size(), m= g.edge_size();
  std::vector<int> a(n), b(n);
@@ -62,15 +62,15 @@ std::vector<int> _bm(int L, const CSRArray<int> &adj, std::vector<int> &m) {
  return a;
 }
 }
-template <bool lexical= false> std::pair<std::vector<int>, std::vector<int>> bipartite_matching(const BipartiteGraph &g, std::vector<int> partner= {}) {
- const int L= g.left_size(), M= g.edge_size();
- if (partner.empty()) partner.assign(g.vertex_size(), -1);
- assert(partner.size() == g.vertex_size());
+template <bool lexical= false> std::pair<std::vector<int>, std::vector<int>> bipartite_matching(const BipartiteGraph &bg, std::vector<int> partner= {}) {
+ const int L= bg.left_size(), M= bg.edge_size();
+ if (partner.empty()) partner.assign(bg.vertex_size(), -1);
+ assert(partner.size() == bg.vertex_size());
  {
   CSRArray<int> adj{std::vector<int>(M), std::vector<int>(L + 1)};
-  for (auto [l, r]: g) ++adj.p[l];
+  for (auto [l, r]: bg) ++adj.p[l];
   for (int i= 0; i < L; ++i) adj.p[i + 1]+= adj.p[i];
-  for (auto [l, r]: g) adj.dat[--adj.p[l]]= r;
+  for (auto [l, r]: bg) adj.dat[--adj.p[l]]= r;
   if constexpr (lexical) {
    for (int l= L; l--;) std::sort(adj[l].begin(), adj[l].end());
    _bg_internal::_bm(L, adj, partner);
@@ -92,6 +92,6 @@ template <bool lexical= false> std::pair<std::vector<int>, std::vector<int>> bip
  std::vector<int> c;
  std::vector<char> p(L);
  for (int i= 0; i < M; ++i)
-  if (auto [l, r]= g[i]; partner[l] == r && !p[l]) c.push_back(i), p[l]= 1;
+  if (auto [l, r]= bg[i]; partner[l] == r && !p[l]) c.push_back(i), p[l]= 1;
  return {c, partner};
 }

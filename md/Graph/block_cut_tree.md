@@ -6,7 +6,7 @@ documentation_of: ../../src/Graph/block_cut_tree.hpp
 
 |関数名|概要|計算量|
 |---|---|---|
-|`block_cut_tree(CSRArray<int> adj)` <br> `block_cut_tree(Graph g)` |無向グラフ g を二点連結成分分解して構築した block-cut-tree (拡張) を返す. <br> 引数は頂点 → 頂点の隣接リスト([`CSRArray<int>`クラス](../Internal/ListRange.hpp)) もしくは [`Graph`クラス](Graph.hpp) で無向グラフを渡す.　<br> 返り値は `Graph` クラス．|$O(n+m)$ <br> ただし頂点数，辺数をそれぞれ $n,m$ とした.|
+|`block_cut_tree(CSRArray<int> adj)` <br> `block_cut_tree(Graph g)` |無向グラフ g を二点連結成分分解して構築した block-cut-tree (拡張) を返す. <br> 引数は頂点 → 頂点の隣接リスト([`CSRArray<int>`クラス](../Internal/ListRange.hpp)) もしくは [`Graph`クラス](Graph.hpp) で無向グラフを渡す.　<br> 返り値は `Graph` クラス．|$O(V+E)$ |
 
 
 ### block-cut-tree (拡張) について

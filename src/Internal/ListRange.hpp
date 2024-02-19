@@ -3,17 +3,17 @@
 #include <iostream>
 #include <iterator>
 #include <type_traits>
-#define _LR(name, IT, CT) \
+#define _LR(name, IT, C) \
  template <class T> struct name { \
   using Iterator= typename std::vector<T>::IT; \
   Iterator bg, ed; \
   Iterator begin() const { return bg; } \
   Iterator end() const { return ed; } \
   size_t size() const { return std::distance(bg, ed); } \
-  CT &operator[](int i) const { return bg[i]; } \
+  C T &operator[](int i) C { return bg[i]; } \
  }
-_LR(ListRange, iterator, const T);
-_LR(ConstListRange, const_iterator, const T);
+_LR(ListRange, iterator, );
+_LR(ConstListRange, const_iterator, const);
 #undef _LR
 template <class T> struct CSRArray {
  std::vector<T> dat;

@@ -54,8 +54,8 @@ for(int v=0;v<n;++v)
 |`edge_size()`|辺の数を返す．|
 |`add_vertex()`|内部で頂点を 1 つ増やし，その頂点番号を返す．|
 |`add_edge(Edge e)` <br> `add_edge(s,d)`| 辺 $e=(s,d)$ を追加し，その辺の番号を返す．|
-|`adjacency_vertex(dir)`|頂点 → 頂点の隣接リストを返す. <br> 引数が正なら有向グラフ.<br> 引数が $0$ なら無向グラフ．<br> 引数が負なら逆向きの有向グラフ. <br>返り値は[`CSRArray<int>` クラス](../Internal/ListRange.hpp)|
-|`adjacency_edge(dir)`|頂点 → 辺番号の隣接リストを返す. <br> 引数が正なら有向グラフ.<br> 引数が $0$ なら無向グラフ．<br> 引数が負なら逆向きの有向グラフ. <br>返り値は[`CSRArray<int>` クラス](../Internal/ListRange.hpp)|
+|`adjacency_vertex(dir)`|頂点 → 頂点の隣接リストを返す. <br> 引数が正なら有向グラフ.<br> 引数が $0$ なら無向グラフ．<br> 引数が負なら逆向きの有向グラフ. <br> 返り値は[`CSRArray<int>` クラス](../Internal/ListRange.hpp)． <br> 辺番号でソートされている．|
+|`adjacency_edge(dir)`|頂点 → 辺番号の隣接リストを返す. <br> 引数が正なら有向グラフ.<br> 引数が $0$ なら無向グラフ．<br> 引数が負なら逆向きの有向グラフ. <br>返り値は[`CSRArray<int>` クラス](../Internal/ListRange.hpp)． <br> 辺番号はソートされている．|
 
 
 ## 参考

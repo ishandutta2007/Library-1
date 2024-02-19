@@ -1,6 +1,6 @@
 ---
 title: 二部グラフの辺彩色
-documentation_of: ../../src/Graph/BipartiteEdgeColoring.hpp
+documentation_of: ../../src/old/BipartiteEdgeColoring.hpp
 ---
 明示的に二部グラフを表現する \
 頂点の添字は左右それぞれ [0,L), [0,R) で表現

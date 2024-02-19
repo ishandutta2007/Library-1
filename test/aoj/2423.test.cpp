@@ -2,7 +2,7 @@
 // 辞書順マッチングのverify
 #include <iostream>
 #include <vector>
-#include "src/Graph/BipartiteMatching.hpp"
+#include "src/Graph/BipartiteGraph.hpp"
 #include "src/Geometry/Circle.hpp"
 #include "src/Geometry/min_enclosing_circle.hpp"
 using namespace std;
@@ -13,7 +13,7 @@ signed main() {
  using R= long double;
  int n, m;
  cin >> n >> m;
- BipartiteMatching bm(m, n);
+ BipartiteGraph bg(m, n);
  R rs[n];
  for (int i= 0; i < n; i++) cin >> rs[i];
  for (int j= 0; j < m; j++) {
@@ -23,11 +23,11 @@ signed main() {
   for (int k= 0; k < p; k++) cin >> ps[k];
   R r= min_enclosing_circle(ps).r;
   for (int i= 0; i < n; i++)
-   if (sgn(rs[i] - r) >= 0) bm.add_edge(j, i);
+   if (sgn(rs[i] - r) >= 0) bg.add_edge(j, i + m);
  }
- bm.build<1>();
- if (bm.max_matching().size() < m) cout << "NG" << '\n';
+ auto [mc, mate]= bipartite_matching<true>(bg);
+ if (mc.size() < m) cout << "NG" << '\n';
  else
-  for (int l= 0; l < m; ++l) cout << bm.l_to_r(l) + 1 << '\n';
+  for (int l= 0; l < m; ++l) cout << mate[l] - m + 1 << '\n';
  return 0;
 }

@@ -34,7 +34,7 @@ template <class cost_t> std::pair<cost_t, std::vector<int>> minimum_spanning_abo
  for (int i= n; i--;) {
   if (i == root) continue;
   for (int v= i;;) {
-   if (top[v] == -1) return {cost_t(), std::vector<int>()};
+   if (top[v] == -1) return {};
    int x= uf2.root(g[es[v]= top[v]].first);
    if (sum+= w[es[v]], upd(es[v], w[es[v]]); uf.unite(v, x)) break;
    int t= uf2.time();

@@ -1,6 +1,6 @@
 ---
 title: 木
-documentation_of: ../../src/Graph/Tree.hpp
+documentation_of: ../../src/old/Tree.hpp
 ---
 HL分解＋オイラーツアーで頂点集合を数列に \
 非連結(森)でも動くはず

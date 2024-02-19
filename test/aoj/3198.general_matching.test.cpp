@@ -1,9 +1,11 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3198"
+
+// 推論補助のtest (しなくても通るが...)
+// 推論補助しない場合 (最悪ケースで) 0.5s 程度遅くなる
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
-// 推論補助のtest (しなくても通るが...)
-// 推論補助しない場合 (最悪ケースで) 0.5s 程度遅くなる
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/general_matching.hpp"
 using namespace std;

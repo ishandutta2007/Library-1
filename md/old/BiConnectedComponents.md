@@ -1,6 +1,6 @@
 ---
 title: 2頂点連結成分分解
-documentation_of: ../../src/Graph/BiConnectedComponents.hpp
+documentation_of: ../../src/old/BiConnectedComponents.hpp
 ---
 
 ![bct.svg](https://github.com/hashiryo/Library/blob/master/img/bct.svg?raw=true)

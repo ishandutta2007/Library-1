@@ -32,6 +32,8 @@ documentation_of: ../../src/Graph/BipartiteGraph.hpp
 |`bipartite_matching<lexical=false>(bg)`|二部グラフの最大マッチングを実行する. <br> 引数は `BipartiteGraph`．戻り値は2つの要素を `pair` でラッピングしたものを返す．<br> 一つ目は最大マッチングに使われる辺の番号の集合を表す `vector<int>`．<br> 二つ目は各頂点のマッチング相手が記録 (noマッチなら -1) されている `vector<int>` ．<br> またテンプレート引数が `true` の場合，左側の頂点を順に並べた場合のマッチング相手が辞書順になるようにする．|1. $O(E\sqrt{V})$ <br> 2. テンプレート引数が `true` の場合 <br> $O(EV)$ |
 
 
+二部グラフの最小頂点被覆は [Dulmage-Mendelsohn 分解](DulmageMendelsohn.hpp) で実装．
+
 ## 問題例
 [アルゴリズムと数学　演習問題集 047 - Bipartite Graph](https://atcoder.jp/contests/math-and-algorithm/tasks/math_and_algorithm_ao) (二部グラフ判定)\
 [Chokudai SpeedRun 002 K - 種類数 β](https://atcoder.jp/contests/chokudai_S002/tasks/chokudai_S002_k) (二部マッチング, 頂点:2e5+4e5, 辺:4e5)

@@ -11,7 +11,7 @@ struct SuffixTree {
   const int n= sa.size();
   node.emplace_back(0, n, 0, 0);
   if (n == 1) {
-   graph.add_edge(0, 1), graph.n= 2, tree= HeavyLightDecomposition(graph.adjecency_vertex(1), 0), node.emplace_back(0, 1, 0, 1), suf[0]= 1;
+   graph.add_edge(0, 1), graph.n= 2, tree= HeavyLightDecomposition(graph.adjacency_vertex(1), 0), node.emplace_back(0, 1, 0, 1), suf[0]= 1;
    return;
   }
   CartesianTree ct(lcp);
@@ -32,7 +32,7 @@ struct SuffixTree {
   };
   if (int r= ct.root(); lcp[r] > 0) graph.add_edge(0, 1), node.emplace_back(0, n, 0, lcp[r]), dfs(dfs, 1, r, lcp[r]);
   else dfs(dfs, 0, r, 0);
-  graph.n= node.size(), tree= HeavyLightDecomposition(graph.adjecency_vertex(1), 0);
+  graph.n= node.size(), tree= HeavyLightDecomposition(graph.adjacency_vertex(1), 0);
  }
  int size() const { return node.size(); }
  auto &operator[](int i) const { return node[i]; }

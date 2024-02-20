@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
-#include "src/Misc/compress.hpp"
+#include "src/Graph/Graph.hpp"
 #include "src/Graph/IncrementalBridgeConnectivity.hpp"
 #include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;
@@ -16,22 +16,20 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, M, Q;
  cin >> N >> M >> Q;
+ Graph g(N, M);
+ for (int i= 0; i < M; ++i) cin >> g[i], --g[i];
  IncrementalBridgeConnectivity ibc(N);
- int A[M], B[M];
- for (int i= 0; i < M; i++) {
-  cin >> A[i] >> B[i];
-  ibc.add_edge(--A[i], --B[i]);
- }
- vector<int> vec;
- for (int i= 0; i < N; ++i) vec.push_back(ibc.represent(i));
- auto id= compress(vec);
- int n= vec.size();
- auto idx= [&](int i) { return id(ibc.represent(i)); };
+ for (auto [u, v]: g) ibc.add_edge(u, v);
+
+ vector<int> id(N);
+ int n= 0;
+ for (int i= 0; i < N; ++i)
+  if (i == ibc.leader(i)) id[i]= n++;
 
  LinkCutTree<RmaxQ> lct(n);
  for (int i= 0; i < n; i++) lct.set(i, {-1, i});
- for (int i= 0; i < M; i++) {
-  int u= idx(A[i]), v= idx(B[i]);
+ for (auto [u, v]: g) {
+  u= id[ibc.leader(u)], v= id[ibc.leader(v)];
   if (u == v) continue;
   lct.link(u, v);
  }
@@ -42,13 +40,13 @@ signed main() {
   int op, x, y;
   cin >> op >> x >> y;
   if (op == 1) {
-   int u= idx(--x);
+   int u= id[ibc.leader(--x)];
    pq[u].push(y);
    lct.set(u, make_pair(pq[u].top(), u));
   } else {
-   int u= idx(--x), v= idx(--y);
+   int u= id[ibc.leader(--x)], v= id[ibc.leader(--y)];
    auto [ans, i]= lct.fold(u, v);
-   cout << ans << endl;
+   cout << ans << '\n';
    if (ans != -1) {
     pq[i].pop();
     lct.set(i, make_pair(pq[i].top(), i));

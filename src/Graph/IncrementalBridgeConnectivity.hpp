@@ -1,30 +1,31 @@
 #pragma once
-#include <unordered_set>
-#include "src/DataStructure/UnionFind.hpp"
+#include <utility>
+#include <vector>
 class IncrementalBridgeConnectivity {
- UnionFind<> cc, bcc;
- std::vector<int> bbf;
- inline int parent(int v) { return bbf[v] < 0 ? -1 : bcc.root(bbf[v]); }
- int lca(int u, int v) {
-  for (std::unordered_set<int> reached;; std::swap(u, v))
-   if (u != -1) {
-    if (!reached.insert(u).second) return u;
-    u= parent(u);
-   }
- }
- void condense_path(int u, int v) {
-  for (int n; !bcc.same(u, v);) n= parent(u), bbf[u]= bbf[v], bcc.unite(u, v), u= n;
- }
+ std::vector<int> cp, bp, bbf, z;
+ int t;
+ inline int crt(int v) { return cp[v] < 0 ? v : cp[v]= crt(cp[v]); }
+ inline int par(int v) { return bbf[v] < 0 ? -1 : leader(bbf[v]); }
 public:
- IncrementalBridgeConnectivity(int n): cc(n), bcc(n), bbf(n, -1) {}
- int represent(int v) { return bcc.root(v); }
- bool two_edge_connected(int u, int v) { return bcc.same(u, v); }
- bool connected(int u, int v) { return cc.same(u, v); }
+ IncrementalBridgeConnectivity(int n): cp(n, -1), bp(n, -1), bbf(n, -1), z(n), t(0) {}
+ inline int leader(int v) { return bp[v] < 0 ? v : bp[v]= leader(bp[v]); }
+ int size(int v) { return -bp[leader(v)]; }
+ bool two_edge_connected(int u, int v) { return leader(u) == leader(v); }
+ bool connected(int u, int v) { return crt(u) == crt(v); }
  void add_edge(int u, int v) {
-  if (int w; cc.same(u= bcc.root(u), v= bcc.root(v))) w= lca(u, v), condense_path(u, w), condense_path(v, w);
-  else {
-   if (cc.size(u) > cc.size(v)) std::swap(u, v);
-   for (cc.unite(u, v); u != -1;) w= parent(u), bbf[u]= v, v= u, u= w;
-  }
+  int a= crt(u= leader(u)), b= crt(v= leader(v));
+  if (a == b)
+   for (++t, a= u, b= v;;) {
+    if (z[a] == t) {
+     for (int w: {u, v})
+      for (int p; w= leader(w), w != a; bp[a]+= bp[w], bp[w]= a, w= p)
+       if (p= bbf[w], bbf[w]= bbf[a]; bp[a] > bp[w]) std::swap(w, a);
+     return;
+    }
+    if (z[a]= t, a= par(a); b != -1) std::swap(a, b);
+   }
+  if (cp[a] < cp[b]) std::swap(u, v), cp[a]+= cp[b], cp[b]= a;
+  else cp[b]+= cp[a], cp[a]= b;
+  for (int p; u != -1; u= p) p= par(u), bbf[u]= v, v= u;
  }
 };

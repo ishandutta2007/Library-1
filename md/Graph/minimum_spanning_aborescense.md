@@ -1,6 +1,6 @@
 ---
 title: 最小全域有向木
-documentation_of: ../../src/Graph/minimum_spanning_aborescense.hpp
+documentation_of: ../../src/Graph/minimum_spanning_aborescence.hpp
 ---
 
 |関数名|概要|計算量|

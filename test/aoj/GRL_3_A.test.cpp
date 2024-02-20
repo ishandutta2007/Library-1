@@ -10,9 +10,8 @@ signed main() {
  cin >> V >> E;
  Graph g(E);
  for (int i= 0; i < E; ++i) cin >> g[i];
- g.build(V, 0);
- auto bct= block_cut_tree(g);
+ auto bct= block_cut_tree(g).adjacency_vertex(0);
  for (int v= 0; v < V; ++v)
-  if (bct(v).size() > 1) cout << v << '\n';
+  if (bct[v].size() > 1) cout << v << '\n';
  return 0;
 }

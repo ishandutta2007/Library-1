@@ -2,7 +2,7 @@
 #include <unordered_set>
 #include "src/DataStructure/UnionFind.hpp"
 class IncrementalBridgeConnectivity {
- UnionFind cc, bcc;
+ UnionFind<> cc, bcc;
  std::vector<int> bbf;
  inline int parent(int v) { return bbf[v] < 0 ? -1 : bcc.root(bbf[v]); }
  int lca(int u, int v) {

@@ -72,16 +72,16 @@ public:
  int depth(int v) const { return D[v]; }
  int dist(int u, int v) const { return D[u] + D[v] - D[lca(u, v)] * 2; }
  // half-open interval
- std::array<int, 2> subtree(int v) const { return std::array{L[v], R[v]}; }
+ std::pair<int, int> subtree(int v) const { return {L[v], R[v]}; }
  // sequence of closed intervals
- template <bool edge= 0> std::vector<std::array<int, 2>> path(int u, int v) const {
-  std::vector<std::array<int, 2>> up, down;
+ template <bool edge= 0> std::vector<std::pair<int, int>> path(int u, int v) const {
+  std::vector<std::pair<int, int>> up, down;
   while (PP[u] != PP[v]) {
-   if (L[u] < L[v]) down.emplace_back(std::array{L[PP[v]], L[v]}), v= P[PP[v]];
-   else up.emplace_back(std::array{L[u], L[PP[u]]}), u= P[PP[u]];
+   if (L[u] < L[v]) down.emplace_back(L[PP[v]], L[v]), v= P[PP[v]];
+   else up.emplace_back(L[u], L[PP[u]]), u= P[PP[u]];
   }
-  if (L[u] < L[v]) down.emplace_back(std::array{L[u] + edge, L[v]});
-  else if (L[v] + edge <= L[u]) up.emplace_back(std::array{L[u], L[v] + edge});
+  if (L[u] < L[v]) down.emplace_back(L[u] + edge, L[v]);
+  else if (L[v] + edge <= L[u]) up.emplace_back(L[u], L[v] + edge);
   return up.insert(up.end(), down.rbegin(), down.rend()), up;
  }
 };

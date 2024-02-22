@@ -1,5 +1,5 @@
 ---
-title: 周期の利用 (Functionalグラフ)
+title: 周期性の利用 (Functionalグラフ)
 documentation_of: ../../src/Misc/Period.hpp
 ---
 

@@ -59,7 +59,7 @@ public:
   return dc[hld.la(b, l - 1)];
  }
  // x, f(x), f(f(x)), ... f^k(x)
- // (x,...,f^i(x)), (f^(i+1)(x),...,f^(j-1)(x)) x loop, (f^j(x),...,f^k(x))
+ // (x,...,f^i(x)), (f^(i+1)(x),...,f^(j-1)(x)) x cycle, (f^j(x),...,f^k(x))
  // sequence of half-open intervals [l,r)
  template <class Int, class= std::void_t<decltype(std::declval<Int>() % std::declval<int>())>> std::tuple<Path, Path, Int, Path> path(const T &x, Int k) const {
   Iter it= this->mp.find(x);
@@ -68,11 +68,23 @@ public:
   std::array<Path, 3> pth;
   Int cnt= 0;
   if (k > d) {
-   int b= t[rt[v]], c= hld.depth(b), l= (k-= d) % c;
-   if (pth[0]= hld.path(v, hld.la(v, d)), pth[1]= hld.path(b, hld.la(b, c - 1)), cnt= k / c; l) pth[2]= hld.path(b, hld.la(b, l - 1));
+   int r= rt[v], b= t[r], c= hld.depth(b), l= (k-= d) % c;
+   if (pth[0]= hld.path(v, r), pth[1]= hld.path(b, r), cnt= k / c; l) pth[2]= hld.path(b, hld.la(b, l - 1));
   } else pth[0]= hld.path(v, hld.la(v, (int)k));
   for (int s= 3; s--;)
    for (auto &[l, r]: pth[s]) l= n - l, r= n - r + 1;
   return {pth[0], pth[1], cnt, pth[2]};
+ }
+ Path path_upto_cycle(const T &x) const {
+  Iter it= this->mp.find(x);
+  assert(it != this->mp.end());
+  int v= it->second, n= t.size(), r= rt[v], b= t[r], w= hld.lca(b, v);
+  auto p1= hld.path(v, r);
+  if (b != w) {
+   auto p2= hld.path(b, hld.jump(w, b, 1));
+   p1.insert(p1.end(), p2.begin(), p2.end());
+  }
+  for (auto &[l, r]: p1) l= n - l, r= n - r + 1;
+  return p1;
  }
 };

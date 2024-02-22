@@ -1,4 +1,6 @@
 #pragma once
+#include <map>
+#include <unordered_map>
 #include "src/Graph/HeavyLightDecomposition.hpp"
 namespace period_internal {
 template <class Map> struct PeriodB {
@@ -7,7 +9,7 @@ template <class Map> struct PeriodB {
 };
 template <class T> using PerB= std::conditional_t<std::is_integral_v<T>, PeriodB<std::unordered_map<T, int>>, PeriodB<std::map<T, int>>>;
 }
-template <class T= int> struct Period: period_internal::PerB<T> {
+template <class T= int> class Period: period_internal::PerB<T> {
  using typename period_internal::PerB<T>::Iter;
  using Path= std::vector<std::pair<int, int>>;
  std::vector<int> t, rt;

@@ -8,7 +8,7 @@ signed main() {
  ios::sync_with_stdio(0);
  int V, E;
  cin >> V >> E;
- Graph g(E);
+ Graph g(V, E);
  for (int i= 0; i < E; ++i) cin >> g[i];
  auto bct= block_cut_tree(g).adjacency_vertex(0);
  for (int v= 0; v < V; ++v)

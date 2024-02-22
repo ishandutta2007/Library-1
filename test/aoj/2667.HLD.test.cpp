@@ -22,7 +22,7 @@ signed main() {
    bit.add_range(l + 1, r, b);
   } else {
    long long ans= 0;
-   for (auto [x, y]: tree.path<true>(a, b)) ans+= x <= y ? bit.sum(x, y + 1) : bit.sum(y, x + 1);
+   for (auto [x, y]: tree.path(a, b, true)) ans+= x <= y ? bit.sum(x, y + 1) : bit.sum(y, x + 1);
    cout << ans << '\n';
   }
  }

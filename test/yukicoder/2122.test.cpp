@@ -1,7 +1,7 @@
 #define PROBLEM "https://yukicoder.me/problems/no/2122"
 #include <iostream>
 #include <string>
-#include "src/Graph/FunctionalGraph.hpp"
+#include "src/Misc/Period.hpp"
 #include "src/Math/ModInt.hpp"
 #include "src/Math/bostan_mori.hpp"
 using namespace std;
@@ -21,7 +21,7 @@ signed main() {
   if (M & 1) x-= 1;
   to[n]= x.val();
  }
- string ans= to_string(FunctionalGraph(to).jump(a, L));
+ string ans= to_string(Period(to).jump(a, L));
  ans= string(4 - ans.length(), '0') + ans;
  cout << ans << '\n';
  return 0;

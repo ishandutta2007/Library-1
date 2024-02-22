@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include "src/FFT/BigInt.hpp"
-#include "src/Graph/FunctionalGraph.hpp"
+#include "src/Misc/Period.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  int N= S.length();
  vector<int> to(N);
  for (int i= 0; i < N; ++i) to[i]= S[i] == 'L' ? i - 1 : i + 1;
- FunctionalGraph g(to);
+ Period g(to);
  BigInt K("1" + string(100, '0'));
  vector cnt(N, 0);
  for (int i= 0; i < N; ++i) ++cnt[g.jump(i, K)];

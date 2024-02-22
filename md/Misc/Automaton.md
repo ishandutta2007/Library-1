@@ -1,5 +1,5 @@
 ---
-title: 有限オートマトン
+title: オートマトン上のDP
 documentation_of: ../../src/Misc/Automaton.hpp
 ---
 

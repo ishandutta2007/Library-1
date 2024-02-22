@@ -3,7 +3,7 @@
 #include <numeric>
 #include "src/Graph/BipartiteGraph.hpp"
 class DulmageMendelsohn {
- size_t L;
+ int L;
  std::vector<int> b, m, a;
  CSRArray<int> dag[2];
 public:
@@ -59,7 +59,7 @@ public:
   std::vector<int> q(size()), vc;
   z[0]= 1, z.back()= 0;
   for (int v: ord) {
-   int c= v < L, k= b[v], s= z[k];
+   int c= (v >= L), k= b[v], s= z[k];
    if (s == -1) {
     auto &adj= dag[z[q[0]= k]= s= !c];
     for (int i= 0, t= 1; i < t; ++i)

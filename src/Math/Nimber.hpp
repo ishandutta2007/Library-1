@@ -83,6 +83,7 @@ public:
  Nimber operator-(const Nimber &r) const { return Nimber(x ^ r.x); }
  Nimber operator*(const Nimber &r) const { return Nimber(mul(x, r.x)); }
  Nimber operator/(const Nimber &r) const { return Nimber(mul(x, inv(r.x))); }
+ Nimber operator-() const { return *this; }
  Nimber inv() const { return Nimber(inv(x)); }
  Nimber square() const { return Nimber(square(x)); }
  Nimber sqrt() const {

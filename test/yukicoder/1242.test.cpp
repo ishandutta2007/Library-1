@@ -1,6 +1,6 @@
 #define PROBLEM "https://yukicoder.me/problems/no/1242"
 #include <iostream>
-#include "src/Graph/FunctionalGraph.hpp"
+#include "src/Misc/Period.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
   if (isok) t|= 1;
   to[s]= t;
  }
- FunctionalGraph g(to);
+ Period g(to);
  long long N;
  cin >> N;
  int K;

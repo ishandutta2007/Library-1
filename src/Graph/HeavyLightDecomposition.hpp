@@ -71,10 +71,10 @@ public:
  }
  int depth(int v) const { return D[v]; }
  int dist(int u, int v) const { return D[u] + D[v] - D[lca(u, v)] * 2; }
- // half-open interval
+ // half-open interval [l,r)
  std::pair<int, int> subtree(int v) const { return {L[v], R[v]}; }
- // sequence of closed intervals
- template <bool edge= 0> std::vector<std::pair<int, int>> path(int u, int v) const {
+ // sequence of closed intervals [l,r]
+ std::vector<std::pair<int, int>> path(int u, int v, bool edge= 0) const {
   std::vector<std::pair<int, int>> up, down;
   while (PP[u] != PP[v]) {
    if (L[u] < L[v]) down.emplace_back(L[PP[v]], L[v]), v= P[PP[v]];

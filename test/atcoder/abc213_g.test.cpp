@@ -11,14 +11,15 @@ signed main() {
  using Mint= ModInt<998244353>;
  int N, M;
  cin >> N >> M;
+ int all= (1 << N) - 1;
  UndirectedGraphSetPowerSeries g(N);
  for (int i= 0, a, b; i < M; i++) cin >> a >> b, g.add_edge(--a, --b);
- auto tmp= g.graph<Mint>();
- auto tmp2= g.connected_graph<Mint>();
- for (int k= 1; k < N; k++) {
+ auto x= g.graph<Mint>();
+ auto y= g.connected_graph<Mint>();
+ for (int k= 1; k < N; ++k) {
   Mint ans= 0;
-  for (int s= 1; s < (1 << N); s+= 2)
-   if ((s >> k) & 1) ans+= tmp2[s] * tmp[((1 << N) - 1) ^ s];
+  for (int s= 1; s <= all; s+= 2)
+   if ((s >> k) & 1) ans+= y[s] * x[all ^ s];
   cout << ans << '\n';
  }
  return 0;

@@ -11,7 +11,7 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- Graph g(N);
+ Graph g(N, N - 1);
  for (int i= 0; i < N; ++i) cin >> g[i], --g[i];
  auto [bg, nw, ori]= graph_to_bipartite(g);
  int L= bg.left_size();

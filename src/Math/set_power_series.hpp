@@ -194,7 +194,7 @@ template <class T> vector<T> log(const vector<T>& f) {
  assert(!(N & (N - 1))), assert(f[0] == 1);
  vector<T> h= f;
  int i= 0, l= 1;
- for (; i < e; l<<= 1, ++i) div_na(h.data() + l, f.data(), l);
+ for (h[0]= 0; i < e; l<<= 1, ++i) div_na(h.data() + l, f.data(), l);
  if (i < n) {
   vector<T> G(n << (n - 1));
   rnk_zeta(f.data(), G.data(), n - 1);

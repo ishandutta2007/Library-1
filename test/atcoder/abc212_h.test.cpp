@@ -1,4 +1,5 @@
 #define PROBLEM "https://atcoder.jp/contests/abc212/tasks/abc212_h"
+// アダマール変換
 #include <iostream>
 #include <algorithm>
 #include "src/Math/ModInt.hpp"

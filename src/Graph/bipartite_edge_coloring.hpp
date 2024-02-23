@@ -69,12 +69,12 @@ std::vector<int> bipartite_edge_coloring(BipartiteGraph bg) {
   const int mm= idx.size();
   std::vector<int> circuit;
   {
-   std::vector<int> c(mm), p(n + 1);
+   std::vector<int> c(mm * 2), p(n + 1);
    for (int e: idx) {
     auto [l, r]= bg[e];
     ++p[l], ++p[r];
    }
-   for (int i= 0; i < L; ++i) p[i + 1]+= p[i];
+   for (int i= 0; i < n; ++i) p[i + 1]+= p[i];
    for (int i= mm; i--;) {
     auto [l, r]= bg[idx[i]];
     c[--p[l]]= i, c[--p[r]]= i;
@@ -95,6 +95,6 @@ std::vector<int> bipartite_edge_coloring(BipartiteGraph bg) {
   for (int i= mm / 2; i--;) half1[i]= idx[circuit[i * 2]], half2[i]= idx[circuit[i * 2 + 1]];
   rc(rc, d / 2, half1), rc(rc, d / 2, half2);
  };
- std::vector<int> idx(m * D);
+ std::vector<int> idx(L * D);
  return std::iota(idx.begin(), idx.end(), 0), rc(rc, D, idx), color;
 }

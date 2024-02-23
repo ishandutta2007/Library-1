@@ -12,7 +12,7 @@ signed main() {
  int N;
  cin >> N;
  Graph g(N, N - 1);
- for (int i= 0; i < N; ++i) cin >> g[i], --g[i];
+ for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
  auto [bg, nw, ori]= graph_to_bipartite(g);
  int L= bg.left_size();
  DulmageMendelsohn dm(bg);

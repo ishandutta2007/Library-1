@@ -1,10 +1,11 @@
 #pragma once
+#include <cassert>
 #include "src/Graph/Graph.hpp"
 template <class T> std::vector<T> incidence_linear_system(const Graph &g, std::vector<T> b) {
  const int n= g.vertex_size();
  assert((int)b.size() == n);
  std::vector<T> x(g.edge_size());
- auto adje= g.adjecency_edge(0);
+ auto adje= g.adjacency_edge(0);
  std::vector<int> pre(n, -2), ei(adje.p.begin(), adje.p.begin() + n);
  for (int s= 0, p, e; s < n; ++s)
   if (pre[s] == -2)

@@ -1,10 +1,10 @@
 #pragma once
 #include "src/NumberTheory/Factors.hpp"
-template <class T> struct ArrayOnDivisors {
- uint64_t n;
+template <class Int, class T> struct ArrayOnDivisors {
+ Int n;
  uint8_t shift;
  std::vector<int> os, id;
- std::vector<std::pair<uint64_t, T>> dat;
+ std::vector<std::pair<Int, T>> dat;
  unsigned hash(uint64_t i) const { return (i * 11995408973635179863ULL) >> shift; }
 #define _UP for (int j= k; j < a; ++j)
 #define _DWN for (int j= a; j-- > k;)
@@ -20,15 +20,22 @@ template <class T> struct ArrayOnDivisors {
 public:
  Factors factors;
  ArrayOnDivisors() {}
- template <class Uint> ArrayOnDivisors(uint64_t N, const Factors &factors, const std::vector<Uint> &divisors): n(N), shift(__builtin_clzll(divisors.size()) - 1), os((1 << (64 - shift)) + 1), id(divisors.size()), dat(divisors.size()), factors(factors) {
+ template <class Uint> ArrayOnDivisors(Int N, const Factors &factors, const std::vector<Uint> &divisors): n(N), shift(__builtin_clzll(divisors.size()) - 1), os((1 << (64 - shift)) + 1), id(divisors.size()), dat(divisors.size()), factors(factors) {
+  static_assert(std::is_integral_v<Uint>, "Uint must be integral");
   for (int i= divisors.size(); i--;) dat[i].first= divisors[i];
   for (auto d: divisors) ++os[hash(d)];
   std::partial_sum(os.begin(), os.end(), os.begin());
   for (int i= divisors.size(); i--;) id[--os[hash(divisors[i])]]= i;
  }
- ArrayOnDivisors(uint64_t N, const Factors &factors): ArrayOnDivisors(N, factors, enumerate_divisors(factors)) {}
- ArrayOnDivisors(uint64_t N): ArrayOnDivisors(N, Factors(N)) {}
- T &operator[](uint64_t i) {
+ ArrayOnDivisors(Int N, const Factors &factors): ArrayOnDivisors(N, factors, enumerate_divisors(factors)) {}
+ ArrayOnDivisors(Int N): ArrayOnDivisors(N, Factors(N)) {}
+ T &operator[](Int i) {
+  assert(i && n % i == 0);
+  for (unsigned a= hash(i), j= os[a]; j < os[a + 1]; ++j)
+   if (auto &[d, v]= dat[id[j]]; d == i) return v;
+  assert(0);
+ }
+ const T &operator[](Int i) const {
   assert(i && n % i == 0);
   for (unsigned a= hash(i), j= os[a]; j < os[a + 1]; ++j)
    if (auto &[d, v]= dat[id[j]]; d == i) return v;
@@ -71,7 +78,7 @@ public:
   int k= 1;
   dat[0].second= 1;
   for (auto [p, e]: factors) {
-   uint64_t b= p - 1;
+   Int b= p - 1;
    for (int m= k; e--; b*= p)
     for (int i= 0; i < m;) dat[k++].second= dat[i++].second * b;
   }

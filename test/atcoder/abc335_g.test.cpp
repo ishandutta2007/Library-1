@@ -15,7 +15,7 @@ signed main() {
   cin >> A;
   a[i]= ord(A);
  }
- ArrayOnDivisors<long long> x(P - 1, ord.factors);
+ ArrayOnDivisors<long long, long long> x(P - 1, ord.factors);
  for (int i= 0; i < N; ++i) ++x[a[i]];
  x.divisor_zeta();
  long long ans= 0;

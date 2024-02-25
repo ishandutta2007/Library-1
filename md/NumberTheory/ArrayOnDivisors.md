@@ -4,7 +4,7 @@ documentation_of: ../../src/NumberTheory/ArrayOnDivisors.hpp
 ---
 
 
-## `ArrayOnDivisors<T>` クラス
+## `ArrayOnDivisors<Int, T>` クラス
 
 添字が整数 $N$ の約数のみの配列.\
 以下，$d(\cdot)$ を約数の個数を表す関数とする.

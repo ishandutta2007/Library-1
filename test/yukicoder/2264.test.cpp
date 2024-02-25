@@ -15,7 +15,7 @@ signed main() {
  for (int i= 0; i < N; ++i) cin >> A[i];
  int l= 1;
  for (int a: A) l= lcm(l, a);
- ArrayOnDivisors<int> X(l);
+ ArrayOnDivisors<int, int> X(l);
  X.set_totient();
  Mint ans= 0;
  for (auto [d, phi]: X) {

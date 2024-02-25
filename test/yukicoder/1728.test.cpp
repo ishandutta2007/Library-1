@@ -13,7 +13,7 @@ signed main() {
   int N;
   Mint C;
   cin >> N >> C;
-  ArrayOnDivisors<int> A(N);
+  ArrayOnDivisors<int, int> A(N);
   A.set_totient();
   Mint ans= 0;
   for (auto [d, phi]: A) ans+= C.pow(2 * N / d) * phi;

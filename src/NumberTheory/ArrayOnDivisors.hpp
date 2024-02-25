@@ -1,11 +1,12 @@
 #pragma once
 #include "src/NumberTheory/Factors.hpp"
 template <class Int, class T> struct ArrayOnDivisors {
+ using Hint= std::conditional_t<sizeof(Int) == 64, unsigned, uint16_t>;
  Int n;
  uint8_t shift;
- std::vector<int> os, id;
+ std::vector<Hint> os, id;
  std::vector<std::pair<Int, T>> dat;
- unsigned hash(uint64_t i) const { return (i * 11995408973635179863ULL) >> shift; }
+ Hint hash(uint64_t i) const { return (i * 11995408973635179863ULL) >> shift; }
 #define _UP for (int j= k; j < a; ++j)
 #define _DWN for (int j= a; j-- > k;)
 #define _OP(J, K, op) dat[i + J].second op##= dat[i + K].second

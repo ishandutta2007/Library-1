@@ -9,7 +9,7 @@ signed main() {
  using Mint= ModInt<998244353>;
  long long T, m;
  cin >> T >> m;
- ArrayOnDivisors<Mint> X(m);
+ ArrayOnDivisors<long long, Mint> X(m);
  while (T--) {
   int n;
   Mint B, C, D;

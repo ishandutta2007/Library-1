@@ -9,7 +9,7 @@ signed main() {
  using Mint= ModInt<998244353>;
  long long P;
  cin >> P;
- ArrayOnDivisors<Mint> a(P - 1);
+ ArrayOnDivisors<long long, Mint> a(P - 1);
  a.set_totient();
  Mint ans= 1;
  for (auto [d, phi]: a) ans+= phi * d;

@@ -17,7 +17,7 @@ signed main() {
  vector<int> C(K);
  for (int i= 0; i < K; ++i) cin >> C[i], tot+= C[i], g= gcd(g, C[i]);
  Mint ans= 0;
- ArrayOnDivisors<Mint> A(g);
+ ArrayOnDivisors<int, Mint> A(g);
  A.set_totient();
  for (auto [d, phi]: A) {
   Mint tmp= F::fact(tot / d);

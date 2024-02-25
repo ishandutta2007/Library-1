@@ -5,7 +5,7 @@
 // ui(:U) is the identity element of op
 // put_vertex(int v, U sum) -> T
 template <class T> class Rerooting {
- const HeavyLightDecomposition &hld;
+ HeavyLightDecomposition hld;
  std::vector<T> dp, dp1, dp2;
 public:
  template <class U, class F1, class F2, class F3> Rerooting(const Graph &g, const CSRArray<int> &adje, const HeavyLightDecomposition &hld, const F1 &put_edge, const F2 &op, const U &ui, const F3 &put_vertex): hld(hld) {

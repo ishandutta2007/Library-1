@@ -16,7 +16,7 @@ signed main() {
  int tot= 0, g= 0;
  vector<int> C(K);
  for (int i= 0; i < K; ++i) cin >> C[i], tot+= C[i], g= gcd(g, C[i]);
- ArrayOnDivisors<Mint> A(g);
+ ArrayOnDivisors<int, Mint> A(g);
  for (auto &[d, v]: A) {
   v= F::fact(tot / d);
   for (int i= 0; i < K; ++i) v*= F::finv(C[i] / d);

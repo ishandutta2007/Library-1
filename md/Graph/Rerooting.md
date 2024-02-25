@@ -36,15 +36,23 @@ Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, CSRArray<int> adje,  HeavyLightDeco
 |`operator()(int root, int v)`|頂点 root が根である場合の 頂点 v を根とする部分木のDP値を返す.|
 
 ## 問題例
-[AtCoder Regular Contest 097 F - Monochrome Cat](https://atcoder.jp/contests/arc097/tasks/arc097_d) \
 [AtCoder Regular Contest 022 C - ロミオとジュリエット](https://atcoder.jp/contests/arc022/tasks/arc022_3) \
 [AtCoder Regular Contest 028 C - 高橋王国の分割統治](https://atcoder.jp/contests/arc028/tasks/arc028_3) \
+[AtCoder Regular Contest 097 F - Monochrome Cat](https://atcoder.jp/contests/arc097/tasks/arc097_d) \
 [Educational DP Contest V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v) \
 [Typical DP Contest N - 木](https://atcoder.jp/contests/tdpc/tasks/tdpc_tree) \
 [square869120Contest #4 D - Driving on a Tree](https://atcoder.jp/contests/s8pc-4/tasks/s8pc_4_d)\
 [NJPC2017 E - 限界集落](https://atcoder.jp/contests/njpc2017/tasks/njpc2017_e)\
-[第二回全国統一プログラミング王決定戦本戦 D - 木、](https://atcoder.jp/contests/nikkei2019-2-final/tasks/nikkei2019_2_final_d) (根付き木ハッシュ) \
-[yukicoder No.1153 ねこちゃんゲーム](https://yukicoder.me/problems/no/1153) (sp judge)
-
+[第二回全国統一プログラミング王決定戦本戦 D - 木、](https://atcoder.jp/contests/nikkei2019-2-final/tasks/nikkei2019_2_final_d) (根付き木ハッシュ, 二つの全方位木DP, `operator()`) \
+[yukicoder No.1153 ねこちゃんゲーム](https://yukicoder.me/problems/no/1153) (`operator()`,sp judge)\
+[Codeforces Round 302 (Div. 1) D. Road Improvement](https://codeforces.com/contest/543/problem/D)\
+[Codeforces Round 395 (Div. 1) D. Timofey and a flat tree](https://codeforces.com/contest/763/problem/D) (根付き木ハッシュ)\
+[Codeforces Round 397 (Div. 1 + Div. 2 combined) E. Tree Folding](https://codeforces.com/contest/765/problem/E)\
+[Codeforces Round 405 (Div. 2) D. Bear and Tree Jumps](https://codeforces.com/contest/791/problem/D)\
+[Codeforces Round 615 (Div. 3) F. Three Paths on a Tree](https://codeforces.com/contest/1294/problem/F)\
+[Codeforces Round 627 (Div. 3) F. Maximum White Subtree](https://codeforces.com/contest/1324/problem/F)\
+[Codeforces Round 695 (Div. 2) E. Distinctive Roots in a Tree](https://codeforces.com/contest/1467/problem/E)\
+[Codeforces Round 711 (Div. 2) F. Christmas Game](https://codeforces.com/contest/1498/problem/F) (staircase nim)\
+[AIM Tech Round 3 (Div. 1) C. Centroids](https://codeforces.com/contest/708/problem/C) (`operator()`)
 ## 参考
 [https://trap.jp/post/1702/](https://trap.jp/post/1702/)

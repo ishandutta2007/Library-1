@@ -1,10 +1,16 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
 #include <valarray>
 namespace _la_internal {
 using namespace std;
 template <class R> struct Vector: public valarray<R> {
  using valarray<R>::valarray;
+ friend ostream &operator<<(ostream &os, const Vector &v) {
+  os << '[';
+  for (int _= 0, __= v.size(); _ < __; ++_) os << (_ ? ", " : "") << v[_];
+  return os << ']';
+ }
 };
 using u128= __uint128_t;
 using u8= uint8_t;
@@ -50,6 +56,11 @@ public:
  size_t size() const { return n; }
  u128 *data() { return begin(dat); }
  friend Vector operator*(bool b, const Vector &r) { return r * b; }
+ friend ostream &operator<<(ostream &os, const Vector &v) {
+  os << '[';
+  for (int _= 0, __= v.size(); _ < __; ++_) os << (_ ? ", " : "") << v[_];
+  return os << ']';
+ }
 };
 }
 using _la_internal::Vector;

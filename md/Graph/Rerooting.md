@@ -45,7 +45,9 @@ Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, CSRArray<int> adje,  HeavyLightDeco
 [NJPC2017 E - 限界集落](https://atcoder.jp/contests/njpc2017/tasks/njpc2017_e)\
 [第二回全国統一プログラミング王決定戦本戦 D - 木、](https://atcoder.jp/contests/nikkei2019-2-final/tasks/nikkei2019_2_final_d) (根付き木ハッシュ, 二つの全方位木DP, `operator()(root,v)`) \
 [東京工業大学プログラミングコンテスト2019 M - Inversion Numbers of Tree](https://atcoder.jp/contests/ttpc2019/tasks/ttpc2019_m)\
-[yukicoder No.1153 ねこちゃんゲーム](https://yukicoder.me/problems/no/1153) (`operator()(root,v)`,sp judge)\
+[JOI 2018/2019 春合宿 過去問 G - 指定都市 (Designated Cities)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_g) (全方位木DPでない部分が難しい)\
+[yukicoder No.1153 ねこちゃんゲーム](https://yukicoder.me/problems/no/1153) (`operator()(root,v)`, sp judge)\
+[Educational Codeforces Round 46 (Div. 2) G. Two-Paths](https://codeforces.com/contest/1000/problem/G) ( + LCA )\
 [Educational Codeforces Round 67 (Div. 2) E. Tree Painting](https://codeforces.com/contest/1187/problem/E)\
 [Codeforces Round 135 (Div. 2) D. Choosing Capital for Treeland](https://codeforces.com/contest/219/problem/D)\
 [Codeforces Round 292 (Div. 1) D. Drazil and Morning Exercise](https://codeforces.com/contest/516/problem/D)\
@@ -57,7 +59,17 @@ Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, CSRArray<int> adje,  HeavyLightDeco
 [Codeforces Round 627 (Div. 3) F. Maximum White Subtree](https://codeforces.com/contest/1324/problem/F)\
 [Codeforces Round 695 (Div. 2) E. Distinctive Roots in a Tree](https://codeforces.com/contest/1467/problem/E)\
 [Codeforces Round 711 (Div. 2) F. Christmas Game](https://codeforces.com/contest/1498/problem/F) (staircase nim)\
+[VK Cup 2012 Round 1 D. Distance in Tree](https://codeforces.com/contest/161/problem/D)\
 [AIM Tech Round 3 (Div. 1) C. Centroids](https://codeforces.com/contest/708/problem/C) (`operator()(root,v)`)\
-[LibreOJ #10159. 「一本通 5.2 练习 2」旅游规划](https://loj.ac/p/10159) (`operator()(root,v)`)
+[2022 China Collegiate Programming Contest (CCPC) Guilin Site G. Group Homework](https://codeforces.com/gym/104008/problem/G) (`operator()(root,v)`)\
+[LibreOJ #2072. 「JSOI2016」独特的树叶](https://loj.ac/p/2072) (根付き木ハッシュ, 二つの全方位木DP, `operator()(root,v)`)\
+[LibreOJ #3350. 「CEOI2020」星际迷航](https://loj.ac/p/3350)\
+[LibreOJ #6699. 然而第六章的 A 面并没有草莓](https://loj.ac/p/6699) ( + LCA )\
+[LibreOJ #10159. 「一本通 5.2 练习 2」旅游规划](https://loj.ac/p/10159) (`operator()(root,v)`)\
+[洛谷 P2986 [USACO10MAR] Great Cow Gathering G](https://www.luogu.com.cn/problem/P2986)\
+[洛谷 P3047 [USACO12FEB] Nearby Cows G](https://www.luogu.com.cn/problem/P3047)\
+[洛谷 P3478 [POI2008] STA-Station](https://www.luogu.com.cn/problem/P3478)\
+[洛谷 P3647 [APIO2014] 连珠线](https://www.luogu.com.cn/problem/P3647)\
+[洛谷 P6419 [COCI2014-2015#1] Kamp](https://www.luogu.com.cn/problem/P6419)
 ## 参考
 [https://trap.jp/post/1702/](https://trap.jp/post/1702/)

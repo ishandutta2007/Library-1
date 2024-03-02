@@ -68,6 +68,14 @@ public:
   for (auto ret= identity_matrix(W), b= *this;; b*= b)
    if (k & 1 ? ret*= b, !(k>>= 1) : !(k>>= 1)) return ret;
  }
+ friend std::ostream &operator<<(std::ostream &os, const Matrix &m) {
+  os << '[';
+  for (int i= 0, h= m.height(); i < h; os << ']', ++i) {
+   os << '[';
+   for (int j= 0, w= m.width(); j < w; ++j) os << (j ? ", " : "") << m[i][j];
+  }
+  return os << ']';
+ }
 };
 template <> class Matrix<bool> {
  size_t H, W, m;
@@ -143,6 +151,14 @@ public:
   assert(W == H);
   for (auto ret= identity_matrix(W), b= *this;; b*= b)
    if (k & 1 ? ret*= b, !(k>>= 1) : !(k>>= 1)) return ret;
+ }
+ friend std::ostream &operator<<(std::ostream &os, const Matrix &m) {
+  os << '[';
+  for (int i= 0, h= m.height(); i < h; os << ']', ++i) {
+   os << '[';
+   for (int j= 0, w= m.width(); j < w; ++j) os << (j ? ", " : "") << m[i][j];
+  }
+  return os << ']';
  }
 };
 template <class K> static bool is_zero(K x) {

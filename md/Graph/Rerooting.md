@@ -63,6 +63,7 @@ Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, CSRArray<int> adje,  HeavyLightDeco
 [AIM Tech Round 3 (Div. 1) C. Centroids](https://codeforces.com/contest/708/problem/C) (`operator()(root,v)`)\
 [2022 China Collegiate Programming Contest (CCPC) Guilin Site G. Group Homework](https://codeforces.com/gym/104008/problem/G) (`operator()(root,v)`)\
 [LibreOJ #2072. 「JSOI2016」独特的树叶](https://loj.ac/p/2072) (根付き木ハッシュ, 二つの全方位木DP, `operator()(root,v)`)\
+[LibreOJ #2192. 「SHOI2014」概率充电器](https://loj.ac/p/2192)\
 [LibreOJ #3350. 「CEOI2020」星际迷航](https://loj.ac/p/3350)\
 [LibreOJ #6699. 然而第六章的 A 面并没有草莓](https://loj.ac/p/6699) ( + LCA )\
 [LibreOJ #10159. 「一本通 5.2 练习 2」旅游规划](https://loj.ac/p/10159) (`operator()(root,v)`)\

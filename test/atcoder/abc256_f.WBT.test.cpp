@@ -22,13 +22,14 @@ struct Mono {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
+ using WBT= WeightBalancedTree<Mono>;
  int N, Q;
  cin >> N >> Q;
  Mint A[N], D[N];
  for (int i= 0; i < N; i++) cin >> A[i], D[i]= A[i];
  for (int j= 0; j < 3; j++)
   for (int i= 1; i < N; i++) D[i]+= D[i - 1];
- WeightBalancedTree<Mono> wbt(N);
+ WBT wbt(N);
  for (int i= 0; i < N; i++) wbt.set(i, {i, D[i]});
  while (Q--) {
   int op, x;
@@ -37,7 +38,6 @@ signed main() {
    Mint v;
    cin >> v, v-= A[x], A[x]+= v;
    wbt.apply(x, N, {v, v * x, v * x * x / 2});
-   if (wbt.percentage_used() > 90) wbt.rebuild();
   } else {
    cout << wbt[x].val << '\n';
   }

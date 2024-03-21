@@ -1,10 +1,13 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1508"
+
+// split3, push_front, pop_back, operator+, fold, set の verify
+
 #include <iostream>
 #include "src/DataStructure/SplayTree.hpp"
 using namespace std;
 struct RminQ {
  using T= int;
- static T op(const T &l, const T &r) { return min(l, r); }
+ static T op(T l, T r) { return min(l, r); }
 };
 signed main() {
  cin.tie(0);

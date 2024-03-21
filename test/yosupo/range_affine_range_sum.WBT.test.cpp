@@ -1,7 +1,8 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
-// 遅延伝搬のverify
-#include <iostream>
 
+// 遅延伝搬のverify
+
+#include <iostream>
 #include "src/DataStructure/WeightBalancedTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
@@ -21,7 +22,7 @@ signed main() {
  cin >> N >> Q;
  Mint v[N];
  for (int i= 0; i < N; i++) cin >> v[i];
- using WBT= WeightBalancedTree<RaffineQ_RsumQ, 1 << 24>;
+ using WBT= WeightBalancedTree<RaffineQ_RsumQ>;
  WBT wbt(v, v + N);
  while (Q--) {
   bool op;
@@ -34,7 +35,11 @@ signed main() {
    cin >> b >> c;
    wbt.apply(l, r, {b, c});
   }
-  if (WBT::percentage_used() > 90) wbt.rebuild();
+  if (WBT::pool_empty()) {
+   auto dump= wbt.dump();
+   WBT::reset();
+   wbt= WBT(dump);
+  }
  }
  return 0;
 }

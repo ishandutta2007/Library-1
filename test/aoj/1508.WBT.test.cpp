@@ -1,13 +1,14 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1508"
+
+// split3, push_front, pop_back, operator+, fold, set の verify
+
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
-// 平衡二分木のverify
-
 struct RminQ {
  using T= int;
- static T op(const T &l, const T &r) { return min(l, r); }
+ static T op(T l, T r) { return min(l, r); }
 };
 int main() {
  cin.tie(0);
@@ -27,6 +28,5 @@ int main() {
    wbt= a + b + c;
   } else if (x == 1) cout << wbt.fold(y, z + 1) << '\n';
   else wbt.set(y, z);
-  if (WBT::percentage_used() > 97) wbt.rebuild();
  }
 }

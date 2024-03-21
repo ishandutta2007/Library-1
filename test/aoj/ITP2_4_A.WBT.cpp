@@ -3,7 +3,7 @@
 // reverse の verify
 
 #include <iostream>
-#include "src/DataStructure/SplayTree.hpp"
+#include "src/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,8 +11,8 @@ signed main() {
  int n;
  cin >> n;
  int a[n];
- for (int i= 0; i < n; ++i) cin >> a[i];
- SplayTree<int, true> ar(a, a + n);
+ for (int i= 0; i < n; i++) cin >> a[i];
+ WeightBalancedTree<int, true> ar(a, a + n);
  int q;
  cin >> q;
  for (int i= 0; i < q; ++i) {

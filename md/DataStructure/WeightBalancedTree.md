@@ -1,9 +1,9 @@
 ---
-title: 永続Weight-Balanced-Tree
+title: Weight-Balanced-Tree
 documentation_of: ../../src/DataStructure/WeightBalancedTree.hpp
 ---
-永続平衡二分木 \
-※これは永続化（逆に非永続にできるようにしてない）\
+
+永続化できる \
 単位元は必要なし（遅延側も）\
 各ノードが葉のサイズを保持しているのでmapping関数では引数としてsizeを渡せる 
 ## 計算量

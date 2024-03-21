@@ -17,7 +17,7 @@ signed main() {
  int A[N], B[N];
  for (int i= 0; i < N; i++) cin >> A[i];
  for (int i= 0; i < N; i++) cin >> B[i];
- using WBT= WeightBalancedTree<RMQ>;
+ using WBT= WeightBalancedTree<RMQ, false, true>;
  WBT wbt[2]= {WBT(A, A + N), WBT(B, B + N)};
  int Q;
  cin >> Q;

@@ -36,7 +36,7 @@ $P(n)$ は[`CumSumQuotient<T>` クラス](CumSumQuotient.hpp) として扱う.
 [Xmas Contest 2019 E - Sum of f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_e) (加法的関数) \
 [LibreOJ #572. 「LibreOJ Round #11」Misaka Network 与求和](https://loj.ac/p/572) \
 [LibreOJ #6686. Stupid GCD](https://loj.ac/p/6686) ($f(p)$ が2次多項式) \
-[LibreOJ #6053. 简单的函数](https://loj.ac/p/6053) ($f(p)$ が単純な多項式でない)
-
+[LibreOJ #6053. 简单的函数](https://loj.ac/p/6053) ($f(p)$ が単純な多項式でない)\
+[洛谷 P5325 【模板】Min_25 筛](https://www.luogu.com.cn/problem/P5325) ($f(p)$ が2次多項式)
 ## 参考
 [https://oi-wiki.org/math/number-theory/min-25/](https://oi-wiki.org/math/number-theory/min-25/)

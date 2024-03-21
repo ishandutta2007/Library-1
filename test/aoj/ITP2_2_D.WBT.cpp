@@ -3,14 +3,16 @@
 // push_back, operator+= の verify
 
 #include <iostream>
-#include "src/DataStructure/SplayTree.hpp"
+#include <vector>
+#include "src/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int n, q;
  cin >> n >> q;
- SplayTree<int> ar[n];
+ using WBT= WeightBalancedTree<int>;
+ WBT ar[n];
  for (int i= 0; i < q; ++i) {
   int op;
   cin >> op;

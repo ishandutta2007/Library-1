@@ -39,7 +39,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  using E= typename nullptr_or_E<M>::type;
  using WBT= WeightBalancedTree;
  static inline int nmi= 1, nli= 1;
- static constexpr size_t M_SIZE= persistent ? LEAF_SIZE * 10 : LEAF_SIZE * 2;
+ static constexpr size_t M_SIZE= LEAF_SIZE * 10;
  static constexpr size_t L_SIZE= persistent && (dual_v<M> || reversible) ? LEAF_SIZE * 10 : LEAF_SIZE;
  static inline NodeM nm[M_SIZE];
  static inline T nl[L_SIZE];
@@ -316,7 +316,7 @@ public:
   return ret;
  }
  static bool pool_empty() {
-  if constexpr (dual_v<M>) return nmi + LEAF_SIZE >= M_SIZE || nli + LEAF_SIZE >= L_SIZE;
+  if constexpr (persistent && (dual_v<M> || reversible)) return nmi + LEAF_SIZE >= M_SIZE || nli + LEAF_SIZE >= L_SIZE;
   else return nmi + 1000 >= M_SIZE || nli + 1000 >= L_SIZE;
  }
 };

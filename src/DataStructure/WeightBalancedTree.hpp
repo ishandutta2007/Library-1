@@ -86,18 +86,18 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    t->sz^= 0x80000000;
   }
  }
- static inline int toggle(int i) noexcept {
+ static inline void toggle(int &i) noexcept {
   if constexpr (persistent) nm[nmi]= nm[i], i= nmi++;
   auto t= nm + i;
   std::swap(t->ch[0], t->ch[1]);
   if constexpr (semigroup_v<M> && !commute_v<M>) std::swap(t->sum, t->rsum);
-  return t->sz^= 0x40000000, i;
+  t->sz^= 0x40000000;
  }
  static inline void push_tog(int i) noexcept {
   if (auto t= nm + i; t->sz & 0x40000000) {
    auto &[l, r]= t->ch;
-   if (l > 0) l= toggle(l);
-   if (r > 0) r= toggle(r);
+   if (l > 0) toggle(l);
+   if (r > 0) toggle(r);
    t->sz^= 0x40000000;
   }
  }
@@ -297,7 +297,7 @@ public:
   assert(root), assert(a <= b);
   auto [tmp, r]= split(root, b);
   auto [l, c]= split(tmp, a);
-  if (c > 0) c= toggle(c);
+  if (c > 0) toggle(c);
   root= merge(merge(l, c), r);
  }
  std::vector<T> dump() {

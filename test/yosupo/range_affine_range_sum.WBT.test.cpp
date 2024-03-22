@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
 
-// 遅延伝搬のverify
+// apply, fold の verify
 
 #include <iostream>
 #include "src/DataStructure/WeightBalancedTree.hpp"
@@ -29,16 +29,11 @@ signed main() {
   int l, r;
   cin >> op >> l >> r;
   if (op) {
-   cout << wbt.fold(l, r) << endl;
+   cout << wbt.fold(l, r) << '\n';
   } else {
    Mint b, c;
    cin >> b >> c;
    wbt.apply(l, r, {b, c});
-  }
-  if (WBT::pool_empty()) {
-   auto dump= wbt.dump();
-   WBT::reset();
-   wbt= WBT(dump);
   }
  }
  return 0;

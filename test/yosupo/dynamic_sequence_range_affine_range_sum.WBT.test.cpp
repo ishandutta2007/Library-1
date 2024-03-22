@@ -15,6 +15,7 @@ struct RaffineRsumQ {
  static T op(T vl, T vr) { return vl + vr; }
  static void mp(T &val, const E &f, int sz) { val= f[0] * val + f[1] * sz; }
  static void cp(E &pre, const E &suf) { pre[0]*= suf[0], pre[1]= suf[0] * pre[1] + suf[1]; }
+ using commute= void;
 };
 signed main() {
  cin.tie(0);

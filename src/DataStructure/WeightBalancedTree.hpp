@@ -54,8 +54,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  static inline void update(int i) noexcept {
   auto t= nm + i;
   auto [l, r]= t->ch;
-  if constexpr (dual_v<M> || reversible) t->sz= (size(l) + size(r)) | (t->sz & 0xc0000000);
-  else t->sz= size(l) + size(r);
+  t->sz= size(l) + size(r);
   if constexpr (semigroup_v<M>) {
    t->sum= M::op(sum(l), sum(r));
    if constexpr (reversible && !commute_v<M>) t->rsum= M::op(rsum(r), rsum(l));
@@ -142,8 +141,8 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    if constexpr (std::is_same_v<S, T>) return nl[nli]= bg, -nli++;
    else return nl[nli]= *(bg + l), -nli++;
   }
-  size_t m= (l + r) / 2;
-  return nm[nmi]= NodeM{build(l, m, bg), build(m, r, bg)}, update(nmi), nmi++;
+  size_t m= (l + r) / 2, i= nmi++;
+  return nm[i]= NodeM{build(l, m, bg), build(m, r, bg)}, update(i), i;
  }
  void dump(int i, typename std::vector<T>::iterator it) noexcept {
   if (i < 0) *it= nl[-i];

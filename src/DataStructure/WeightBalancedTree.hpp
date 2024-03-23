@@ -60,8 +60,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    if constexpr (reversible && !commute_v<M>) t->rsum= M::op(rsum(r), rsum(l));
   }
  }
- static inline void propagate(int &i, const E &x) noexcept {
-  if constexpr (persistent) nm[nmi]= nm[i], i= nmi++;
+ static inline void propagate(int i, const E &x) noexcept {
   auto t= nm + i;
   if (t->sz >> 31) M::cp(t->laz, x);
   else t->laz= x;
@@ -71,38 +70,33 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   }
   t->sz|= 0x80000000;
  }
- static inline void push_prop(int i) noexcept {
-  if (auto t= nm + i; t->sz >> 31) {
-   auto &[l, r]= t->ch;
-   if (l < 0) {
-    if constexpr (persistent) nl[nli]= nl[-l], l= -nli++;
-    M::mp(nl[-l], t->laz, 1);
-   } else propagate(l, t->laz);
-   if (r < 0) {
-    if constexpr (persistent) nl[nli]= nl[-r], r= -nli++;
-    M::mp(nl[-r], t->laz, 1);
-   } else propagate(r, t->laz);
-   t->sz^= 0x80000000;
-  }
- }
- static inline void toggle(int &i) noexcept {
-  if constexpr (persistent) nm[nmi]= nm[i], i= nmi++;
+ static inline void toggle(int i) noexcept {
   auto t= nm + i;
   std::swap(t->ch[0], t->ch[1]);
   if constexpr (semigroup_v<M> && !commute_v<M>) std::swap(t->sum, t->rsum);
   t->sz^= 0x40000000;
  }
- static inline void push_tog(int i) noexcept {
-  if (auto t= nm + i; t->sz & 0x40000000) {
+ static inline void _push(NodeM *t, int &c) noexcept {
+  if (c > 0) {
+   if constexpr (persistent) nm[nmi]= nm[c], c= nmi++;
+   if constexpr (dual_v<M>)
+    if (t->sz >> 31) propagate(c, t->laz);
+   if constexpr (reversible)
+    if (t->sz & 0x40000000) toggle(c);
+  } else if constexpr (dual_v<M>)
+   if (t->sz >> 31) {
+    if constexpr (persistent) nl[nli]= nl[-c], c= -nli++;
+    M::mp(nl[-c], t->laz, 1);
+   }
+ }
+ static inline void push(int i) noexcept {
+  if (auto t= nm + i; t->sz >> 30) {
    auto &[l, r]= t->ch;
-   if (l > 0) toggle(l);
-   if (r > 0) toggle(r);
-   t->sz^= 0x40000000;
+   _push(t, l), _push(t, r), t->sz&= 0x3fffffff;
   }
  }
  template <bool b> static inline int helper(std::array<int, 2> &m) noexcept {
-  if constexpr (dual_v<M>) push_prop(m[b]);
-  if constexpr (reversible) push_tog(m[b]);
+  if constexpr (dual_v<M> || reversible) push(m[b]);
   int c;
   if constexpr (b) c= _merge({m[0], nm[m[1]].ch[0]});
   else c= _merge({nm[m[0]].ch[1], m[1]});
@@ -118,8 +112,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  }
  static inline int merge(int l, int r) noexcept { return !l ? r : !r ? l : _merge({l, r}); }
  static inline std::pair<int, int> _split(int i, size_t k) noexcept {
-  if constexpr (dual_v<M>) push_prop(i);
-  if constexpr (reversible) push_tog(i);
+  if constexpr (dual_v<M> || reversible) push(i);
   auto t= nm + i;
   auto [l, r]= t->ch;
   if (size_t lsz= size(l); k == lsz) return {l, r};
@@ -147,16 +140,14 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  void dump(int i, typename std::vector<T>::iterator it) noexcept {
   if (i < 0) *it= nl[-i];
   else {
-   if constexpr (dual_v<M>) push_prop(i);
-   if constexpr (reversible) push_tog(i);
+   if constexpr (dual_v<M> || reversible) push(i);
    dump(nm[i].ch[0], it), dump(nm[i].ch[1], it + size(nm[i].ch[0]));
   }
  }
  T fold(int i, size_t l, size_t r) noexcept {
   if (i < 0) return nl[-i];
   if (l <= 0 && msize(i) <= r) return nm[i].sum;
-  if constexpr (dual_v<M>) push_prop(i);
-  if constexpr (reversible) push_tog(i);
+  if constexpr (dual_v<M> || reversible) push(i);
   auto [n0, n1]= nm[i].ch;
   size_t lsz= size(n0);
   if (r <= lsz) return fold(n0, l, r);
@@ -169,10 +160,9 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    M::mp(nl[-i], x, 1);
    return;
   }
-  if (l <= 0 && msize(i) <= r) return propagate(i, x);
-  if constexpr (reversible) push_tog(i);
-  push_prop(i);
   if constexpr (persistent) nm[nmi]= nm[i], i= nmi++;
+  if (l <= 0 && msize(i) <= r) return propagate(i, x);
+  push(i);
   auto &[n0, n1]= nm[i].ch;
   size_t lsz= size(n0);
   if (r <= lsz) apply(n0, l, r, x);
@@ -186,8 +176,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    else nl[-i]= x;
    return;
   }
-  if constexpr (dual_v<M>) push_prop(i);
-  if constexpr (reversible) push_tog(i);
+  if constexpr (dual_v<M> || reversible) push(i);
   if constexpr (persistent) nm[nmi]= nm[i], i= nmi++;
   auto &[l, r]= nm[i].ch;
   size_t lsz= size(l);
@@ -200,8 +189,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    else nl[-i]= M::op(nl[-i], x);
    return;
   }
-  if constexpr (dual_v<M>) push_prop(i);
-  if constexpr (reversible) push_tog(i);
+  if constexpr (dual_v<M> || reversible) push(i);
   if constexpr (persistent) nm[nmi]= nm[i], i= nmi++;
   auto &[l, r]= nm[i].ch;
   size_t lsz= size(l);
@@ -210,8 +198,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  }
  T get_val(int i, size_t k) noexcept {
   if (i < 0) return nl[-i];
-  if constexpr (dual_v<M>) push_prop(i);
-  if constexpr (reversible) push_tog(i);
+  if constexpr (dual_v<M> || reversible) push(i);
   auto [l, r]= nm[i].ch;
   size_t lsz= size(l);
   return lsz > k ? get_val(l, k) : get_val(r, k - lsz);
@@ -221,8 +208,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    if constexpr (persistent) return nl[nli++]= nl[-i];
    else return nl[-i];
   }
-  if constexpr (dual_v<M>) push_prop(i);
-  if constexpr (reversible) push_tog(i);
+  if constexpr (dual_v<M> || reversible) push(i);
   if constexpr (persistent) nm[nmi]= nm[i], i= nmi++;
   auto [l, r]= nm[i].ch;
   size_t lsz= size(l);
@@ -296,6 +282,7 @@ public:
   assert(root), assert(a <= b);
   auto [tmp, r]= split(root, b);
   auto [l, c]= split(tmp, a);
+  if constexpr (persistent) nm[nmi]= nm[c], c= nmi++;
   if (c > 0) toggle(c);
   root= merge(merge(l, c), r);
  }

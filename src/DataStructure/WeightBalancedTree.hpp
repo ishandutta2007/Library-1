@@ -127,7 +127,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   if (k >= size(i)) return {i, 0};
   return _split(i, k);
  }
- template <class S> int build(size_t l, size_t r, const S &bg) noexcept {
+ template <class S> static inline int build(size_t l, size_t r, const S &bg) noexcept {
   if (r - l == 1) {
    if constexpr (std::is_same_v<S, T>) return nl[nli]= bg, -nli++;
    else return nl[nli]= *(bg + l), -nli++;
@@ -135,14 +135,14 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   size_t m= (l + r) / 2, i= nmi++;
   return nm[i]= NodeM{build(l, m, bg), build(m, r, bg)}, update(i), i;
  }
- void dump(int i, typename std::vector<T>::iterator it) noexcept {
+ static inline void dump(int i, typename std::vector<T>::iterator it) noexcept {
   if (i < 0) *it= nl[-i];
   else {
    if constexpr (dual_v<M> || reversible) push(i);
    dump(nm[i].ch[0], it), dump(nm[i].ch[1], it + size(nm[i].ch[0]));
   }
  }
- T fold(int i, size_t l, size_t r) noexcept {
+ static inline T fold(int i, size_t l, size_t r) noexcept {
   if (i < 0) return nl[-i];
   if (l <= 0 && msize(i) <= r) return nm[i].sum;
   if constexpr (dual_v<M> || reversible) push(i);
@@ -152,7 +152,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   if (lsz <= l) return fold(n1, l - lsz, r - lsz);
   return M::op(fold(n0, l, lsz), fold(n1, 0, r - lsz));
  }
- void apply(int &i, size_t l, size_t r, const E &x) noexcept {
+ static inline void apply(int &i, size_t l, size_t r, const E &x) noexcept {
   if (i < 0) {
    if constexpr (persistent) nl[nli]= nl[-i], i= -nli++;
    M::mp(nl[-i], x, 1);
@@ -168,7 +168,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   else apply(n0, l, lsz, x), apply(n1, 0, r - lsz, x);
   if constexpr (semigroup_v<M>) update(i);
  }
- void set_val(int &i, size_t k, const T &x) noexcept {
+ static inline void set_val(int &i, size_t k, const T &x) noexcept {
   if (i < 0) {
    if constexpr (persistent) nl[nli]= x, i= -nli++;
    else nl[-i]= x;
@@ -181,7 +181,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   lsz > k ? set_val(l, k, x) : set_val(r, k - lsz, x);
   if constexpr (semigroup_v<M>) update(i);
  }
- void mul_val(int &i, size_t k, const T &x) noexcept {
+ static inline void mul_val(int &i, size_t k, const T &x) noexcept {
   if (i < 0) {
    if constexpr (persistent) nl[nli]= M::op(nl[-i], x), i= -nli++;
    else nl[-i]= M::op(nl[-i], x);
@@ -194,14 +194,14 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   lsz > k ? mul_val(l, k, x) : mul_val(r, k - lsz, x);
   if constexpr (semigroup_v<M>) update(i);
  }
- T get_val(int i, size_t k) noexcept {
+ static inline T get_val(int i, size_t k) noexcept {
   if (i < 0) return nl[-i];
   if constexpr (dual_v<M> || reversible) push(i);
   auto [l, r]= nm[i].ch;
   size_t lsz= size(l);
   return lsz > k ? get_val(l, k) : get_val(r, k - lsz);
  }
- T &at_val(int i, size_t k) noexcept {
+ static inline T &at_val(int i, size_t k) noexcept {
   if (i < 0) {
    if constexpr (persistent) return nl[nli++]= nl[-i];
    else return nl[-i];
@@ -212,7 +212,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   size_t lsz= size(l);
   return lsz > k ? at_val(l, k) : at_val(r, k - lsz);
  }
- static WBT id_to_wbt(int t) noexcept {
+ static inline WBT id_to_wbt(int t) noexcept {
   WBT ret;
   return ret.root= t, ret;
  }

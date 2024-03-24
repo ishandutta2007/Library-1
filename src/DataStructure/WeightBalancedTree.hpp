@@ -2,7 +2,6 @@
 #include <vector>
 #include <array>
 #include <string>
-#include <tuple>
 #include <cstddef>
 #include <cassert>
 #include "src/Internal/detection_idiom.hpp"
@@ -72,9 +71,8 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  }
  static inline void toggle(int i) noexcept {
   auto t= nm + i;
-  std::swap(t->ch[0], t->ch[1]);
   if constexpr (semigroup_v<M> && !commute_v<M>) std::swap(t->sum, t->rsum);
-  t->sz^= 0x40000000;
+  std::swap(t->ch[0], t->ch[1]), t->sz^= 0x40000000;
  }
  static inline void _push(NodeM *t, int &c) noexcept {
   if (c > 0) {
@@ -225,12 +223,12 @@ public:
  WeightBalancedTree(const std::vector<T> &ar): WeightBalancedTree(ar.data(), ar.data() + ar.size()){};
  WBT &operator+=(WBT rhs) { return root= merge(root, rhs.root), *this; }
  WBT operator+(WBT rhs) { return WBT(*this)+= rhs; }
- std::pair<WBT, WBT> split(size_t k) {
+ std::array<WBT, 2> split(size_t k) {
   assert(root);
   auto [l, r]= split(root, k);
   return {id_to_wbt(l), id_to_wbt(r)};
  }
- std::tuple<WBT, WBT, WBT> split3(size_t a, size_t b) {
+ std::array<WBT, 3> split3(size_t a, size_t b) {
   assert(root), assert(a <= b);
   auto [tmp, r]= split(root, b);
   auto [l, c]= split(tmp, a);
@@ -259,7 +257,7 @@ public:
  }
  void set(size_t k, T val) { set_val(root, k, val); }
  void mul(size_t k, T val) {
-  static_assert(semigroup_v<M>, "\"mul\" is not available\n");
+  static_assert(semigroup_v<M> && commute_v<M>, "\"mul\" is not available\n");
   mul_val(root, k, val);
  }
  T get(size_t k) { return get_val(root, k); }
@@ -293,12 +291,13 @@ public:
  }
  void clear() { root= 0; }
  static void reset() { nmi= 1, nli= 1; }
- static std::string which_available() {
+ static std::string which_unavailable() {
   std::string ret= "";
-  if constexpr (semigroup_v<M>) ret+= "\"fold\" ";
-  else ret+= "\"at\" ";
-  if constexpr (dual_v<M>) ret+= "\"apply\" ";
-  if constexpr (reversible) ret+= "\"reverse\" ";
+  if constexpr (semigroup_v<M>) ret+= "\"at\" ";
+  else ret+= "\"fold\" ";
+  if constexpr (!semigroup_v<M> || !commute_v<M>) ret+= "\"mul\" ";
+  if constexpr (!dual_v<M>) ret+= "\"apply\" ";
+  if constexpr (!reversible) ret+= "\"reverse\" ";
   return ret;
  }
  static bool pool_empty() {

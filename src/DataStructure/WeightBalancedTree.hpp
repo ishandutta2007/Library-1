@@ -50,10 +50,10 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  static inline size_t size(int i) noexcept { return i < 0 ? 1 : msize(i); }
  static inline T sum(int i) noexcept { return i < 0 ? nl[-i] : nm[i].sum; }
  static inline T rsum(int i) noexcept { return i < 0 ? nl[-i] : nm[i].rsum; }
- static inline void update(int i) noexcept {
+ template <bool sz= 1> static inline void update(int i) noexcept {
   auto t= nm + i;
   auto [l, r]= t->ch;
-  t->sz= size(l) + size(r);
+  if constexpr (sz) t->sz= size(l) + size(r);
   if constexpr (semigroup_v<M>) {
    t->sum= M::op(sum(l), sum(r));
    if constexpr (reversible && !commute_v<M>) t->rsum= M::op(rsum(r), rsum(l));
@@ -166,7 +166,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   if (r <= lsz) apply(n0, l, r, x);
   else if (lsz <= l) apply(n1, l - lsz, r - lsz, x);
   else apply(n0, l, lsz, x), apply(n1, 0, r - lsz, x);
-  if constexpr (semigroup_v<M>) update(i);
+  if constexpr (semigroup_v<M>) update<0>(i);
  }
  static inline void set_val(int &i, size_t k, const T &x) noexcept {
   if (i < 0) {
@@ -179,7 +179,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   auto &[l, r]= nm[i].ch;
   size_t lsz= size(l);
   lsz > k ? set_val(l, k, x) : set_val(r, k - lsz, x);
-  if constexpr (semigroup_v<M>) update(i);
+  if constexpr (semigroup_v<M>) update<0>(i);
  }
  static inline void mul_val(int &i, size_t k, const T &x) noexcept {
   if (i < 0) {
@@ -192,7 +192,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   auto &[l, r]= nm[i].ch;
   size_t lsz= size(l);
   lsz > k ? mul_val(l, k, x) : mul_val(r, k - lsz, x);
-  if constexpr (semigroup_v<M>) update(i);
+  if constexpr (semigroup_v<M>) update<0>(i);
  }
  static inline T get_val(int i, size_t k) noexcept {
   if (i < 0) return nl[-i];

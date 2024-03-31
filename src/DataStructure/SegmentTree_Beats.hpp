@@ -66,8 +66,8 @@ private:
   laz[k].flg= false;
  }
  inline void propagate(int k, const E &x) {
-  if (bool success= M::mapping(dat[k], x); k < n) {
-   laz[k].flg ? (M::composition(laz[k].val, x), x) : laz[k].val= x;
+  if (bool success= M::mp(dat[k], x); k < n) {
+   laz[k].flg ? (M::cp(laz[k].val, x), x) : laz[k].val= x;
    if (laz[k].flg= true; !success) eval(k), update(k);
   }
  }

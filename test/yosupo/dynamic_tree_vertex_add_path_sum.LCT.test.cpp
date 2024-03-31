@@ -5,6 +5,7 @@ using namespace std;
 struct RsumQ {
  using T= long long;
  static T op(const T &l, const T &r) { return l + r; }
+ using commute= void;
 };
 signed main() {
  cin.tie(0);

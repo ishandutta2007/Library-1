@@ -31,7 +31,7 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  LinkCutTree<RupdQ_RmaxsumQ> lct(N);
- for (int i= 0; i < N; i++) {
+ for (int i= 0; i < N; ++i) {
   long long w;
   cin >> w;
   lct.set(i, {w, w, w, w, 1});
@@ -39,18 +39,13 @@ signed main() {
  for (int i= 0; i < N - 1; i++) {
   int u, v;
   cin >> u >> v;
-  u--, v--;
-  lct.link(u, v);
+  lct.link(--u, --v);
  }
  while (Q--) {
   long long t, a, b, c;
-  cin >> t >> a >> b >> c;
-  a--, b--;
-  if (t == 1) {
-   lct.apply(a, b, c);
-  } else {
-   cout << lct.fold(a, b).max << '\n';
-  }
+  cin >> t >> a >> b >> c, --a, --b;
+  if (t == 1) lct.apply(a, b, c);
+  else cout << lct.fold(a, b).max << '\n';
  }
  return 0;
 }

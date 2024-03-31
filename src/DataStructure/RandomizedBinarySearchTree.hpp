@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <array>
+#include <tuple>
 #include <utility>
 #include <cstddef>
 #include <cassert>

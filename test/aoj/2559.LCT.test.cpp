@@ -1,4 +1,7 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2559"
+
+// 双対
+
 #include <iostream>
 #include <vector>
 #include <numeric>
@@ -7,8 +10,8 @@
 #include "src/DataStructure/UnionFind.hpp"
 using namespace std;
 struct RchminQ {
- using T= long long;
- using E= long long;
+ using T= int;
+ using E= int;
  static void mp(T &v, const E &f) {
   if (v > f) v= f;
  }
@@ -22,19 +25,16 @@ signed main() {
  int n, m;
  cin >> n >> m;
  UnionFind uf(n);
- int a[m], b[m];
- long long w[m];
- for (int i= 0; i < m; i++) {
-  cin >> a[i] >> b[i] >> w[i];
-  --a[i], --b[i];
- }
- int ord[m];
- iota(ord, ord + m, 0), sort(ord, ord + m, [&](int l, int r) { return w[l] < w[r]; });
+ int a[m], b[m], w[m];
+ for (int i= 0; i < m; i++) cin >> a[i] >> b[i] >> w[i], --a[i], --b[i];
  vector<int> mst_es;
  long long mst_cost= 0;
- for (int i: ord)
-  if (uf.unite(a[i], b[i])) mst_cost+= w[i], mst_es.push_back(i);
-
+ {
+  int ord[m];
+  iota(ord, ord + m, 0), sort(ord, ord + m, [&](int l, int r) { return w[l] < w[r]; });
+  for (int i: ord)
+   if (uf.unite(a[i], b[i])) mst_cost+= w[i], mst_es.push_back(i);
+ }
  static constexpr int INF= 1 << 30;
  LinkCutTree<RchminQ> lct(2 * n - 1, INF);
  int id[m];
@@ -43,14 +43,12 @@ signed main() {
  for (int i: mst_es) id[i]= num++, lct.link(a[i], id[i]), lct.link(id[i], b[i]);
  for (int i= 0; i < m; ++i)
   if (id[i] == -1) lct.apply(a[i], b[i], w[i]);
- long long ans[m];
  for (int i= 0; i < m; ++i) {
-  if (id[i] == -1) ans[i]= mst_cost;
+  if (id[i] == -1) cout << mst_cost << '\n';
   else {
    long long tmp= lct[id[i]];
-   ans[i]= tmp == INF ? -1 : mst_cost - w[i] + tmp;
+   cout << (tmp == INF ? -1 : mst_cost - w[i] + tmp) << '\n';
   }
  }
- for (auto a: ans) cout << a << '\n';
  return 0;
 }

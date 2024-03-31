@@ -13,12 +13,12 @@ struct Mono {
  struct E {
   long long upd, div;
  };
- static bool mapping(T &v, const E &f) {
+ static bool mp(T &v, const E &f) {
   if (f.div == 0) return v.sum= (v.max= f.upd) * v.sz, true;
   if (v.sum != v.max * v.sz) return false;
   return v.sum= (v.max/= f.div) * v.sz, true;
  }
- static void composition(E &pre, const E &suf) {
+ static void cp(E &pre, const E &suf) {
   if (suf.div == 0) pre= suf;
   else pre.upd/= suf.div, pre.div= min(pre.div * suf.div, 1ll << 30);
  }

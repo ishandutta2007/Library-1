@@ -4,14 +4,14 @@
 
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/WeightBalancedTree.hpp"
+#include "src/DataStructure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int n, q;
  cin >> n >> q;
- WeightBalancedTree<int> ar[n];
+ RandomizedBinarySearchTree<int> ar[n];
  for (int i= 0; i < q; ++i) {
   int op;
   cin >> op;

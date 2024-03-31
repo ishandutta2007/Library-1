@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <array>
-#include "src/DataStructure/SplayTree.hpp"
+#include "src/DataStructure/RandomizedBinarySearchTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
@@ -24,30 +24,30 @@ signed main() {
  cin >> N >> Q;
  Mint a[N];
  for (int i= 0; i < N; i++) cin >> a[i];
- SplayTree<RaffineRsumQ, true> st(a, a + N);
+ RandomizedBinarySearchTree<RaffineRsumQ, true> rbst(a, a + N);
  for (int q= 0; q < Q; q++) {
   int op;
   cin >> op;
   if (op == 0) {
    int i, x;
    cin >> i >> x;
-   st.insert(i, x);
+   rbst.insert(i, x);
   } else if (op == 1) {
    int i;
    cin >> i;
-   st.erase(i);
+   rbst.erase(i);
   } else if (op == 2) {
    int l, r;
    cin >> l >> r;
-   st.reverse(l, r);
+   rbst.reverse(l, r);
   } else if (op == 3) {
    int l, r, b, c;
    cin >> l >> r >> b >> c;
-   st.apply(l, r, {b, c});
+   rbst.apply(l, r, {b, c});
   } else {
    int l, r;
    cin >> l >> r;
-   cout << st.fold(l, r) << '\n';
+   cout << rbst.fold(l, r) << '\n';
   }
  }
  return 0;

@@ -12,8 +12,8 @@ struct Mono {
   T(Mint id, Mint v): val(v), coef{(id + 1) * (id + 2) / 2, (id * 2 + 3) / 2} {}
  };
  using E= array<Mint, 3>;
- static void mapping(T &x, const E &mapp) { x.val+= mapp[0] * x.coef[0] - mapp[1] * x.coef[1] + mapp[2]; }
- static void composition(E &pre, const E &suf) { pre[0]+= suf[0], pre[1]+= suf[1], pre[2]+= suf[2]; }
+ static void mp(T &x, const E &mapp) { x.val+= mapp[0] * x.coef[0] - mapp[1] * x.coef[1] + mapp[2]; }
+ static void cp(E &pre, const E &suf) { pre[0]+= suf[0], pre[1]+= suf[1], pre[2]+= suf[2]; }
 };
 signed main() {
  cin.tie(0);

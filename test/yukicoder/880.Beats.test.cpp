@@ -14,13 +14,13 @@ struct Mono {
  struct E {
   uint32_t upd, gcd;
  };
- static bool mapping(T &v, const E &f) {
+ static bool mp(T &v, const E &f) {
   if (f.gcd == 0) return v.sum= (v.lcm= v.max= f.upd) * v.sz, true;
   if (f.gcd % v.lcm == 0) return true;
   if (v.max * v.sz != v.sum) return false;
   return v.sum= (v.lcm= v.max= gcd(v.max, f.gcd)) * v.sz, true;
  }
- static void composition(E &pre, const E &suf) {
+ static void cp(E &pre, const E &suf) {
   if (pre.gcd != 0 && suf.gcd != 0) pre.gcd= gcd(pre.gcd, suf.gcd);
   else pre= {suf.gcd == 0 ? suf.upd : gcd(pre.upd, suf.gcd), 0};
  }

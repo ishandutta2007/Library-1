@@ -7,8 +7,8 @@ struct RupdQ_RminQ {
  using E= int;
  static T ti() { return 0x7fffffff; }
  static T op(T l, T r) { return min(l, r); }
- static bool mapping(T& v, E f) { return v= f, true; }
- static void composition(E& pre, E suf) { pre= suf; }
+ static bool mp(T& v, E f) { return v= f, true; }
+ static void cp(E& pre, E suf) { pre= suf; }
 };
 signed main() {
  cin.tie(0);
@@ -20,7 +20,7 @@ signed main() {
   int com, s, t;
   cin >> com >> s >> t;
   if (com) {
-   cout << seg.fold(s, t + 1) << endl;
+   cout << seg.fold(s, t + 1) << '\n';
   } else {
    int x;
    cin >> x;

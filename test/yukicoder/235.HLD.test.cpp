@@ -13,11 +13,11 @@ struct Mono {
  using E= Mint;
  static T ti() { return {Mint(), Mint()}; }
  static T op(const T &l, const T &r) { return {l.S + r.S, l.C + r.C}; }
- static bool mapping(T &v, E x) {
+ static bool mp(T &v, E x) {
   v.S+= x * v.C;
   return true;
  }
- static void composition(E &p, E s) { p+= s; }
+ static void cp(E &p, E s) { p+= s; }
 };
 signed main() {
  cin.tie(0);
@@ -37,8 +37,7 @@ signed main() {
  cin >> Q;
  while (Q--) {
   int op, X, Y;
-  cin >> op >> X >> Y;
-  --X, --Y;
+  cin >> op >> X >> Y, --X, --Y;
   if (op) {
    Mint ans= 0;
    for (auto [x, y]: tree.path(X, Y)) ans+= x < y ? seg.fold(x, y + 1).S : seg.fold(y, x + 1).S;

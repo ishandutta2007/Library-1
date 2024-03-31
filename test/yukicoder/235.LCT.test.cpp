@@ -13,6 +13,7 @@ struct Mono {
  static T op(const T &vl, const T &vr) { return {vl.val + vr.val, vl.coef + vr.coef}; }
  static void mp(T &val, const E &op) { val.val+= val.coef * op; }
  static void cp(E &pre, const E &suf) { pre+= suf; }
+ using commute= void;
 };
 signed main() {
  cin.tie(0);
@@ -27,18 +28,16 @@ signed main() {
  for (int i= 0; i < N - 1; i++) {
   int A, B;
   cin >> A >> B;
-  A--, B--;
-  lct.link(A, B);
+  lct.link(--A, --B);
  }
  lct.evert(0);
  int Q;
  cin >> Q;
  while (Q--) {
   int op, X, Y;
-  cin >> op >> X >> Y;
-  X--, Y--;
+  cin >> op >> X >> Y, --X, --Y;
   if (op) {
-   cout << lct.fold(X, Y).val << endl;
+   cout << lct.fold(X, Y).val << '\n';
   } else {
    Mint Z;
    cin >> Z;

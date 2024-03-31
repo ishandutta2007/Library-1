@@ -18,7 +18,7 @@ struct Mono {
  static long long max2(long long a, long long a2, long long b, long long b2) { return a == b ? max(a2, b2) : a2 >= b ? a2 : b2 >= a ? b2 : min(a, b); }
  static T ti() { return {0, -INF, INF, -INF, INF, 0, 0, 0}; }
  static T op(const T &vl, const T &vr) { return {vl.sum + vr.sum, max(vl.h, vr.h), min(vl.l, vr.l), max2(vl.h, vl.h2, vr.h, vr.h2), min2(vl.l, vl.l2, vr.l, vr.l2), vl.sz + vr.sz, vl.hc * (vl.h >= vr.h) + vr.hc * (vl.h <= vr.h), vl.lc * (vl.l <= vr.l) + vr.lc * (vl.l >= vr.l)}; }
- static bool mapping(T &v, const E &f) {
+ static bool mp(T &v, const E &f) {
   if (v.h <= f.lb) {
    v.sum= (v.h= v.l= f.lb + f.ad) * (v.hc= v.lc= v.sz);
    v.h2= -INF, v.l2= INF;
@@ -48,7 +48,7 @@ struct Mono {
   }
   return false;
  }
- static void composition(E &pre, const E &suf) {
+ static void cp(E &pre, const E &suf) {
   if (auto tmpl= suf.lb - pre.ad; pre.ub <= tmpl) pre.ub= pre.lb= tmpl;
   else if (auto tmpu= suf.ub - pre.ad; tmpu <= pre.lb) pre.ub= pre.lb= tmpu;
   else pre.lb= max(pre.lb, tmpl), pre.ub= min(pre.ub, tmpu);

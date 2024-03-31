@@ -42,8 +42,8 @@ signed main() {
    int u, v;
    Mint x;
    cin >> u >> v >> x;
-   auto ans= lct.fold(u, v);
-   cout << ans.first * x + ans.second << '\n';
+   auto [c, d]= lct.fold(u, v);
+   cout << c * x + d << '\n';
   }
  }
  return 0;

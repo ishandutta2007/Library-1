@@ -23,7 +23,7 @@ template <typename M> struct SegmentTree_Dual {
  }
  T &operator[](const int k) {
   for (int i= height; i; i--) eval((k + n) >> i);
-  if (laz[k + n].flg) M::mapping(val[k], laz[k + n].val), laz[k + n].flg= false;
+  if (laz[k + n].flg) M::mp(val[k], laz[k + n].val), laz[k + n].flg= false;
   return val[k];
  }
 private:
@@ -40,7 +40,7 @@ private:
   laz[k].flg= false;
  }
  inline void propagate(int k, const E &x) {
-  laz[k].flg ? (M::composition(laz[k].val, x), x) : laz[k].val= x;
+  laz[k].flg ? (M::cp(laz[k].val, x), x) : laz[k].val= x;
   laz[k].flg= true;
  }
 };

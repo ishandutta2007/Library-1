@@ -5,8 +5,8 @@ using namespace std;
 struct RupdQ {
  using T= int;
  using E= int;
- static void mapping(T& v, E f) { v= f; }
- static void composition(E& pre, E suf) { pre= suf; }
+ static void mp(T& v, E f) { v= f; }
+ static void cp(E& pre, E suf) { pre= suf; }
 };
 signed main() {
  cin.tie(0);

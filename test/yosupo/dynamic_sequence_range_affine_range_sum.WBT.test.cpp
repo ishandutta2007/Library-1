@@ -20,12 +20,11 @@ struct RaffineRsumQ {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- using WBT= WeightBalancedTree<RaffineRsumQ, true>;
  int N, Q;
  cin >> N >> Q;
  Mint a[N];
  for (int i= 0; i < N; i++) cin >> a[i];
- WBT wbt(a, a + N);
+ WeightBalancedTree<RaffineRsumQ, true> wbt(a, a + N);
  for (int q= 0; q < Q; q++) {
   int op;
   cin >> op;

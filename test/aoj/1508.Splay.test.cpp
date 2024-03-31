@@ -16,16 +16,16 @@ signed main() {
  cin >> n >> q;
  int a[n];
  for (int i= 0; i < n; i++) cin >> a[i];
- SplayTree<RminQ> splay(a, a + n);
+ SplayTree<RminQ> st(a, a + n);
  while (q--) {
   int x, y, z;
   cin >> x >> y >> z;
   if (x == 0) {
-   auto [l, c, r]= splay.split3(y, z + 1);
+   auto [l, c, r]= st.split3(y, z + 1);
    c.push_front(c.pop_back());
-   splay= l + c + r;
-  } else if (x == 1) cout << splay.fold(y, z + 1) << '\n';
-  else splay.set(y, z);
+   st= l + c + r;
+  } else if (x == 1) cout << st.fold(y, z + 1) << '\n';
+  else st.set(y, z);
  }
  return 0;
 }

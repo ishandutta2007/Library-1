@@ -3,7 +3,7 @@
 // apply, fold の verify
 
 #include <iostream>
-#include "src/DataStructure/WeightBalancedTree.hpp"
+#include "src/DataStructure/SplayTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 
@@ -22,17 +22,17 @@ signed main() {
  cin >> N >> Q;
  Mint v[N];
  for (int i= 0; i < N; i++) cin >> v[i];
- WeightBalancedTree<RaffineQ_RsumQ> wbt(v, v + N);
+ SplayTree<RaffineQ_RsumQ> st(v, v + N);
  while (Q--) {
   bool op;
   int l, r;
   cin >> op >> l >> r;
   if (op) {
-   cout << wbt.fold(l, r) << '\n';
+   cout << st.fold(l, r) << '\n';
   } else {
    Mint b, c;
    cin >> b >> c;
-   wbt.apply(l, r, {b, c});
+   st.apply(l, r, {b, c});
   }
  }
  return 0;

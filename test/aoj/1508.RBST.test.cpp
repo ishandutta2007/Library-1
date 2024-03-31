@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/WeightBalancedTree.hpp"
+#include "src/DataStructure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 struct RminQ {
  using T= int;
@@ -17,15 +17,15 @@ int main() {
  cin >> N >> Q;
  vector<int> A(N);
  for (int i= 0; i < N; i++) cin >> A[i];
- WeightBalancedTree<RminQ> wbt(A);
+ RandomizedBinarySearchTree<RminQ> rbst(A);
  while (Q--) {
   int x, y, z;
   cin >> x >> y >> z;
   if (x == 0) {
-   auto [a, b, c]= wbt.split3(y, z + 1);
+   auto [a, b, c]= rbst.split3(y, z + 1);
    b.push_front(b.pop_back());
-   wbt= a + b + c;
-  } else if (x == 1) cout << wbt.fold(y, z + 1) << '\n';
-  else wbt.set(y, z);
+   rbst= a + b + c;
+  } else if (x == 1) cout << rbst.fold(y, z + 1) << '\n';
+  else rbst.set(y, z);
  }
 }

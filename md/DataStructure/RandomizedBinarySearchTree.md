@@ -1,6 +1,6 @@
 ---
 title: Splay-Tree
-documentation_of: ../../src/DataStructure/SplayTree.hpp
+documentation_of: ../../src/DataStructure/RandomizedBinarySearchTree.hpp
 ---
 単位元は必要なし（遅延側も）\
 各ノードが部分木のサイズを保持しているのでmapping関数では引数としてsizeを渡せる

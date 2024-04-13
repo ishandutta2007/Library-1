@@ -21,7 +21,7 @@ signed main() {
   for (int i= 0; i < BN; ++i) cin >> B[i][0] >> B[i][1];
   KDTree<int, 2, RSQ> kdt(B, 1);
   long long ans= 0;
-  for (auto [x, y]: A) ans+= kdt.fold_ball(x, y, R * 4);
+  for (auto [x, y]: A) ans+= kdt.prod_ball(x, y, R * 4);
   cout << ans << '\n';
  }
  return 0;

@@ -39,7 +39,7 @@ signed main() {
   } else {
    int u, v;
    cin >> u >> v;
-   cout << lct.fold(u, v) << '\n';
+   cout << lct.prod(u, v) << '\n';
   }
  }
  return 0;

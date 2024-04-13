@@ -40,7 +40,7 @@ signed main() {
  for (int i= 0; i < Q; i++) {
   if (query[i][0] != -1) {
    auto [l, d, r, u]= query[i];
-   cout << kdt.fold_cuboid(l, r - 1, d, u - 1) << '\n';
+   cout << kdt.prod_cuboid(l, r - 1, d, u - 1) << '\n';
   } else {
    auto [_, x, y, w]= query[i];
    kdt.mul(x, y, w);

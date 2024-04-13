@@ -26,7 +26,7 @@ signed main() {
   while (q--) {
    int r1, c1, r2, c2;
    cin >> r1 >> c1 >> r2 >> c2;
-   cout << kdt.fold_cuboid(r1, r2, c1, c2) << '\n';
+   cout << kdt.prod_cuboid(r1, r2, c1, c2) << '\n';
   }
  }
  return 0;

@@ -63,7 +63,7 @@ signed main() {
  }
  SegmentTree_2D<long long, RSQ> seg(st);
  for (auto [t, a, b, y]: query) {
-  if (t == 0) cout << seg.fold(a, b, 0, y + 1) << '\n';
+  if (t == 0) cout << seg.prod(a, b, 0, y + 1) << '\n';
   else seg.mul(b, y, t);
  }
  return 0;

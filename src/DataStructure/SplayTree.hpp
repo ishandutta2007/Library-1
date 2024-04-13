@@ -135,7 +135,7 @@ public:
  static std::string which_unavailable() {
   std::string ret= "";
   if constexpr (semigroup_v<M>) ret+= "\"at\" ";
-  else ret+= "\"fold\" ";
+  else ret+= "\"prod\" ";
   if constexpr (!semigroup_v<M> || !commute_v<M>) ret+= "\"mul\" ";
   if constexpr (!dual_v<M>) ret+= "\"apply\" ";
   if constexpr (!reversible) ret+= "\"reverse\" ";
@@ -156,8 +156,8 @@ public:
   static_assert(semigroup_v<M> && commute_v<M>, "\"mul\" is not available");
   splay(rt, k), rt->val= M::op(rt->val, val), update<0>(rt);
  }
- const T &fold(size_t a, size_t b) {
-  static_assert(semigroup_v<M>, "\"fold\" is not available");
+ const T &prod(size_t a, size_t b) {
+  static_assert(semigroup_v<M>, "\"prod\" is not available");
   return between(a, b)->sum;
  }
  void apply(size_t a, size_t b, const E &x) {

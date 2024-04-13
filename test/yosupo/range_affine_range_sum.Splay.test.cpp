@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
 
-// apply, fold の verify
+// apply, prod の verify
 
 #include <iostream>
 #include "src/DataStructure/SplayTree.hpp"
@@ -28,7 +28,7 @@ signed main() {
   int l, r;
   cin >> op >> l >> r;
   if (op) {
-   cout << st.fold(l, r) << '\n';
+   cout << st.prod(l, r) << '\n';
   } else {
    Mint b, c;
    cin >> b >> c;

@@ -143,15 +143,15 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    dump(nm[i].ch[0], it), dump(nm[i].ch[1], it + size(nm[i].ch[0]));
   }
  }
- static inline T fold(int i, size_t l, size_t r) {
+ static inline T prod(int i, size_t l, size_t r) {
   if (i < 0) return nl[-i];
   if (l <= 0 && msize(i) <= r) return nm[i].sum;
   if constexpr (dual_v<M> || reversible) push(i);
   auto [n0, n1]= nm[i].ch;
   size_t lsz= size(n0);
-  if (r <= lsz) return fold(n0, l, r);
-  if (lsz <= l) return fold(n1, l - lsz, r - lsz);
-  return M::op(fold(n0, l, lsz), fold(n1, 0, r - lsz));
+  if (r <= lsz) return prod(n0, l, r);
+  if (lsz <= l) return prod(n1, l - lsz, r - lsz);
+  return M::op(prod(n0, l, lsz), prod(n1, 0, r - lsz));
  }
  static inline void apply(int &i, size_t l, size_t r, const E &x) {
   if (i < 0) {
@@ -268,9 +268,9 @@ public:
  }
  template <class L= M> std::enable_if_t<semigroup_v<L>, T> operator[](size_t k) { return get(k); }
  template <class L= M> std::enable_if_t<!semigroup_v<L>, T> &operator[](size_t k) { return at(k); }
- T fold(size_t a, size_t b) {
-  static_assert(semigroup_v<M>, "\"fold\" is not available\n");
-  return fold(root, a, b);
+ T prod(size_t a, size_t b) {
+  static_assert(semigroup_v<M>, "\"prod\" is not available\n");
+  return prod(root, a, b);
  }
  void apply(size_t a, size_t b, E x) {
   static_assert(dual_v<M>, "\"apply\" is not available\n");
@@ -302,7 +302,7 @@ public:
  static std::string which_unavailable() {
   std::string ret= "";
   if constexpr (semigroup_v<M>) ret+= "\"at\" ";
-  else ret+= "\"fold\" ";
+  else ret+= "\"prod\" ";
   if constexpr (!semigroup_v<M> || !commute_v<M>) ret+= "\"mul\" ";
   if constexpr (!dual_v<M>) ret+= "\"apply\" ";
   if constexpr (!reversible) ret+= "\"reverse\" ";

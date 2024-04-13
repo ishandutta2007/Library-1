@@ -65,7 +65,7 @@ signed main() {
    continue;
   }
   auto [l, r]= tree.subtree(x);
-  int i= min(seg.fold(0, l, l, r), seg.fold(l, r, r, N));
+  int i= min(seg.prod(0, l, l, r), seg.prod(l, r, r, N));
   if (i > M) {
    cout << -1 << '\n';
    continue;

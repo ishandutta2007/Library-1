@@ -42,7 +42,7 @@ signed main() {
    int u, v;
    Mint x;
    cin >> u >> v >> x;
-   auto [c, d]= lct.fold(u, v);
+   auto [c, d]= lct.prod(u, v);
    cout << c * x + d << '\n';
   }
  }

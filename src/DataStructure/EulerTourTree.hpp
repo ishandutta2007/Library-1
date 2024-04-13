@@ -171,14 +171,14 @@ public:
   update(x);
  }
  size_t tree_size(vertex_id x) { return splay(x+= n_st), ((n[x].flag >> 4) & 0xfffff); }
- T fold_tree(vertex_id x) {
-  static_assert(monoid_v<M>, "\"fold\" is not available\n");
+ T prod_tree(vertex_id x) {
+  static_assert(monoid_v<M>, "\"prod\" is not available\n");
   return splay(x+= n_st), n[x].sum;
  }
- T fold_subtree(vertex_id x, vertex_id par= -1) {
-  if (par == -1) return fold_tree(x);
+ T prod_subtree(vertex_id x, vertex_id par= -1) {
+  if (par == -1) return prod_tree(x);
   cut(x, par);
-  T ret= fold_tree(x);
+  T ret= prod_tree(x);
   link(x, par);
   return ret;
  }
@@ -189,7 +189,7 @@ public:
  void apply_subtree(vertex_id x, vertex_id par, E v) { cut(x, par), apply_tree(x, v), link(x, par); }
  static std::string which_available() {
   std::string ret= "";
-  if constexpr (monoid_v<M>) ret+= "\"fold\" ";
+  if constexpr (monoid_v<M>) ret+= "\"prod\" ";
   if constexpr (dual_v<M>) ret+= "\"apply\" ";
   return ret;
  }

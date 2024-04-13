@@ -33,7 +33,7 @@ int main() {
    dicon.set(u, dicon[u] + v);
   } else {
    cin >> v;
-   cout << dicon.fold(v) << '\n';
+   cout << dicon.prod(v) << '\n';
   }
  }
 }

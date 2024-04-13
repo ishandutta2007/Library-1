@@ -29,11 +29,11 @@ signed main() {
  for (auto &[x, y, c]: v) xs+= x, x2s+= Mint(x) * x, ys+= y, y2s+= Mint(y) * y;
  Mint ans= (x2s + y2s) * N - xs * xs - ys * ys;
  for (auto &[x, y, c]: v) {
-  auto [cnt, xs, ys, xys]= seg.fold(0, x, 0, y);
+  auto [cnt, xs, ys, xys]= seg.prod(0, x, 0, y);
   ans+= (xys - xs * y - ys * x + cnt * x * y) * 2;
  }
  for (auto &[x, y, c]: v) {
-  auto [cnt, xs, ys, xys]= seg.fold(x, 0x7fffffff, 0, y);
+  auto [cnt, xs, ys, xys]= seg.prod(x, 0x7fffffff, 0, y);
   ans-= (xys - xs * y - ys * x + cnt * x * y) * 2;
  }
  cout << ans << '\n';

@@ -1,6 +1,6 @@
 #define PROBLEM "https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum"
 
-// insert, erase, reverse, apply, fold の verify
+// insert, erase, reverse, apply, prod の verify
 
 #include <iostream>
 #include <array>
@@ -47,7 +47,7 @@ signed main() {
   } else {
    int l, r;
    cin >> l >> r;
-   cout << st.fold(l, r) << '\n';
+   cout << st.prod(l, r) << '\n';
   }
  }
  return 0;

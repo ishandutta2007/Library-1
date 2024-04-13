@@ -46,7 +46,7 @@ signed main() {
  for (auto [op, l, r, x]: query) {
   if (op == 1) seg.mul(l, r, x);
   else {
-   auto ans= seg.fold(l, r + 1, l, r + 1);
+   auto ans= seg.prod(l, r + 1, l, r + 1);
    cout << (ans ? ans : -1) << '\n';
   }
  }

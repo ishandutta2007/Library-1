@@ -59,7 +59,7 @@ public:
  const T &get(int x) { return ett[0].get(x); }
  void set(int x, T val) { ett[0].set(x, val); }
  int size(int x) { return ett[0].tree_size(x); }
- T fold(int x) { return ett[0].fold_tree(x); }
+ T prod(int x) { return ett[0].prod_tree(x); }
  void apply(int x, E v) { return ett[0].apply_tree(x, v); }
  bool connected(int x, int y) { return ett[0].connected(x, y); }
 };

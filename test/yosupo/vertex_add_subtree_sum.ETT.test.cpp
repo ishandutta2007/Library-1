@@ -22,7 +22,7 @@ signed main() {
   int u;
   cin >> op >> u;
   if (op) {
-   cout << ett.fold_subtree(u, p[u]) << '\n';
+   cout << ett.prod_subtree(u, p[u]) << '\n';
   } else {
    int x;
    cin >> x;

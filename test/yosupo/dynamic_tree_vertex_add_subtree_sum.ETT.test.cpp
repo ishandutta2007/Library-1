@@ -39,7 +39,7 @@ signed main() {
   } else {
    int v, p;
    cin >> v >> p;
-   cout << ett.fold_subtree(v, p) << '\n';
+   cout << ett.prod_subtree(v, p) << '\n';
   }
  }
  return 0;

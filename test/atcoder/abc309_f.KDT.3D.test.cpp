@@ -28,7 +28,7 @@ signed main() {
  KDTree<int, 3, ROrQ> kdt(xyz, 1);
  bool isok= false;
  for (auto [h, w, d]: xyz) {
-  isok= kdt.fold_cuboid(0, h - 1, 0, w - 1, 0, d - 1);
+  isok= kdt.prod_cuboid(0, h - 1, 0, w - 1, 0, d - 1);
   if (isok) break;
  }
  cout << (isok ? "Yes" : "No") << '\n';

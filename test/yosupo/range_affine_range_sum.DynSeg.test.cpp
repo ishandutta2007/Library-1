@@ -26,7 +26,7 @@ signed main() {
   int l, r;
   cin >> op >> l >> r;
   if (op) {
-   cout << seg.fold(l, r) << endl;
+   cout << seg.prod(l, r) << endl;
   } else {
    Mint b, c;
    cin >> b >> c;

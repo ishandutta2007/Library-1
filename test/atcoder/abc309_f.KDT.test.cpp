@@ -31,7 +31,7 @@ signed main() {
  sort(query.begin(), query.end(), [](auto a, auto b) { return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0]; });
  bool isok= false;
  for (auto [h, w, d]: query) {
-  isok= kdt.fold_cuboid(0, w - 1, 0, d - 1);
+  isok= kdt.prod_cuboid(0, w - 1, 0, d - 1);
   if (isok) break;
   kdt.set(w, d, 1);
  }

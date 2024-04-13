@@ -34,7 +34,7 @@ int main() {
   } else if (x == 'R') {
    rbstR.mul(y, z);
   } else {
-   cout << rbstL.fold(y, z) + rbstR.fold(y, z) << '\n';
+   cout << rbstL.prod(y, z) + rbstR.prod(y, z) << '\n';
   }
   now= t;
  }

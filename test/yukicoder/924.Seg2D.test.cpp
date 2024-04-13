@@ -28,8 +28,8 @@ signed main() {
   cin >> L >> R, --L;
   int k= (R - L - 1) / 2;
   long long u= wm.kth_smallest(L, R, k);
-  long long ans= u * k - seg.fold(L, R, -1e9, u);
-  ans+= seg.fold(L, R, u, 1e9) - u * (R - L - k);
+  long long ans= u * k - seg.prod(L, R, -1e9, u);
+  ans+= seg.prod(L, R, u, 1e9) - u * (R - L - k);
   cout << ans << '\n';
  }
  return 0;

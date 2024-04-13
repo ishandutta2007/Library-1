@@ -34,7 +34,7 @@ signed main() {
   } else if (c == 1) {
    if (kdt.get(h1, w1).second) kdt.set(h1, w1, {0, 0});
   } else if (c == 2) {
-   auto [x, y]= kdt.fold_cuboid(h1, h2, w1, w2);
+   auto [x, y]= kdt.prod_cuboid(h1, h2, w1, w2);
    cout << y << " " << x << '\n';
   } else {
    kdt.set(h1, w1, {0, 1});

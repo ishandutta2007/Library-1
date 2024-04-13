@@ -66,7 +66,7 @@ signed main() {
    continue;
   }
   auto [l, r]= tree.subtree(x);
-  int i= min(kdt.fold_cuboid(0, l - 1, l, r - 1), kdt.fold_cuboid(l, r - 1, r, N));
+  int i= min(kdt.prod_cuboid(0, l - 1, l, r - 1), kdt.prod_cuboid(l, r - 1, r, N));
   if (i > M) {
    cout << -1 << '\n';
    continue;

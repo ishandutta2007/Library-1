@@ -247,13 +247,13 @@ public:
   long_pos_t r2= long_pos_t(r) * r;
   return col(-ns.empty(), in_ball({xs...}, r2), out_ball({xs...}, r2), ret), ret;
  }
- T fold_cuboid(PK2... xs) {
-  static_assert(monoid_v<M>, "\"fold_cuboid\" is not available");
+ T prod_cuboid(PK2... xs) {
+  static_assert(monoid_v<M>, "\"prod_cuboid\" is not available");
   auto r= to_range(std::forward_as_tuple(xs...), std::make_index_sequence<K>());
   return fld(-ns.empty(), in_cuboid(r), inall_cuboid(r), out_cuboid(r));
  }
- T fold_ball(PK... xs, pos_t r) {
-  static_assert(monoid_v<M>, "\"fold_ball\" is not available");
+ T prod_ball(PK... xs, pos_t r) {
+  static_assert(monoid_v<M>, "\"prod_ball\" is not available");
   long_pos_t r2= long_pos_t(r) * r;
   return fld(-ns.empty(), in_ball({xs...}, r2), inall_ball({xs...}, r2), out_ball({xs...}, r2));
  }

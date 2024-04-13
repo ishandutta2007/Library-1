@@ -57,7 +57,7 @@ template <class pos_t, class M> class SegmentTree_2D {
    for (int j= id[i + 1] - id[i]; --j > 0;) dat[j]= M::op(dat[j * 2], dat[j * 2 + 1]);
   }
  }
- inline T fold(int i, int a, int b) const {
+ inline T prod(int i, int a, int b) const {
   int n= id[i + 1] - id[i];
   T ret= M::ti();
   auto dat= val.begin() + id[i] * 2;
@@ -92,12 +92,12 @@ public:
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const std::vector<std::pair<P, U>> &p): SegmentTree_2D(p.data(), p.size()) {}
  template <class P, class U, typename= std::enable_if_t<canbe_Pos_and_T_v<P, U>>> SegmentTree_2D(const std::map<P, U> &p): SegmentTree_2D(std::vector(p.begin(), p.end())) {}
  // [l,r) x [u,d)
- T fold(pos_t l, pos_t r, pos_t u, pos_t d) const {
+ T prod(pos_t l, pos_t r, pos_t u, pos_t d) const {
   T ret= M::ti();
   int L= x2i(l), R= x2i(r);
   auto dfs= [&](auto &dfs, int i, int a, int b, int c, int d) -> void {
    if (c == d || R <= a || b <= L) return;
-   if (L <= a && b <= R) return ret= M::op(ret, fold(i, c, d)), void();
+   if (L <= a && b <= R) return ret= M::op(ret, prod(i, c, d)), void();
    int m= (a + b) / 2, ac= tol[id[i] + c] - tol[id[i]], bc= c - ac, ad= tol[id[i] + d] - tol[id[i]], bd= d - ad;
    dfs(dfs, i * 2, a, m, ac, ad), dfs(dfs, i * 2 + 1, m, b, bc, bd);
   };

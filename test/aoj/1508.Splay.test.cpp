@@ -1,6 +1,6 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1508"
 
-// split3, push_front, pop_back, operator+, fold, set の verify
+// split3, push_front, pop_back, operator+, prod, set の verify
 
 #include <iostream>
 #include "src/DataStructure/SplayTree.hpp"
@@ -24,7 +24,7 @@ signed main() {
    auto [l, c, r]= st.split3(y, z + 1);
    c.push_front(c.pop_back());
    st= l + c + r;
-  } else if (x == 1) cout << st.fold(y, z + 1) << '\n';
+  } else if (x == 1) cout << st.prod(y, z + 1) << '\n';
   else st.set(y, z);
  }
  return 0;

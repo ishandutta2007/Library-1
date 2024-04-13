@@ -141,8 +141,8 @@ public:
   expose(k), n[k].val= M::op(n[k].val, v), update(k);
  }
  // [a,b] closed section
- T fold(int a, int b) {
-  static_assert(semigroup_v<M>, "\"fold\" is not available\n");
+ T prod(int a, int b) {
+  static_assert(semigroup_v<M>, "\"prod\" is not available\n");
   return a == b ? get(a) : (evert(a), expose(b), assert(n[a].par != -1), n[b].sum);
  }
  // [a,b] closed section
@@ -153,7 +153,7 @@ public:
  static std::string which_unavailable() {
   std::string ret= "";
   if constexpr (semigroup_v<M>) ret+= "\"at\" ";
-  else ret+= "\"fold\" ";
+  else ret+= "\"prod\" ";
   if constexpr (!semigroup_v<M> || !commute_v<M>) ret+= "\"mul\" ";
   if constexpr (!dual_v<M>) ret+= "\"apply\" ";
   if constexpr (std::is_void_v<M>) ret+= "\"get\" \"set\" ";

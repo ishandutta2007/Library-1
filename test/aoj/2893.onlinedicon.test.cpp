@@ -29,10 +29,10 @@ signed main() {
   dicon.cut(u[i], v[i]);
   long long score;
   if (dicon.connected(u[i], v[i])) {
-   score= dicon.fold(u[i]) / 2 - w[i];
+   score= dicon.prod(u[i]) / 2 - w[i];
   } else {
-   long long WA= dicon.fold(u[i]);
-   long long WB= dicon.fold(v[i]);
+   long long WA= dicon.prod(u[i]);
+   long long WB= dicon.prod(v[i]);
    score= abs(WA - WB) / 2;
   }
   if (min_score > score) min_score= score, ans_u= u[i], ans_v= v[i];

@@ -27,7 +27,7 @@ signed main() {
  while (Q--) {
   int L, R, X;
   cin >> L >> R >> X, --L;
-  auto [cnt, sum]= seg.fold(L, R, 0, X);
+  auto [cnt, sum]= seg.prod(L, R, 0, X);
   cout << sum + (long long)(R - L - cnt) * X << '\n';
  }
  return 0;

@@ -1,6 +1,6 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1508"
 
-// split3, push_front, pop_back, operator+, fold, set の verify
+// split3, push_front, pop_back, operator+, prod, set の verify
 
 #include <iostream>
 #include <vector>
@@ -25,7 +25,7 @@ int main() {
    auto [a, b, c]= wbt.split3(y, z + 1);
    b.push_front(b.pop_back());
    wbt= a + b + c;
-  } else if (x == 1) cout << wbt.fold(y, z + 1) << '\n';
+  } else if (x == 1) cout << wbt.prod(y, z + 1) << '\n';
   else wbt.set(y, z);
  }
 }

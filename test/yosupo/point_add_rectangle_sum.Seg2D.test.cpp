@@ -40,7 +40,7 @@ signed main() {
  for (int i= 0; i < Q; i++) {
   if (query[i][0] != -1) {
    auto [l, d, r, u]= query[i];
-   cout << seg.fold(l, r, d, u) << '\n';
+   cout << seg.prod(l, r, d, u) << '\n';
   } else {
    auto [_, x, y, w]= query[i];
    seg.mul(x, y, w);

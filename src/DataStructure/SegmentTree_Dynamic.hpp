@@ -83,13 +83,13 @@ template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentT
   cp_node(t->ch[0]), cp_node(t->ch[1]), t->lazy_flg= false;
   propagate(t->ch[0], t->lazy, sz / 2), propagate(t->ch[1], t->lazy, sz / 2);
  }
- T fold(np &t, const id_t &l, const id_t &r, std::array<id_t, 2> b, const id_t &bias) {
+ T prod(np &t, const id_t &l, const id_t &r, std::array<id_t, 2> b, const id_t &bias) {
   if (!t || r <= b[0] || b[1] <= l) return def_val();
   if (l <= b[0] && b[1] <= r) return t->val;
   if constexpr (dual_v<M>) push(t, b[1] - b[0]);
   id_t m= (b[0] + b[1]) >> 1;
   bool flg= (bias >> (__builtin_ctzll(b[1] - b[0]) - 1)) & 1;
-  return M::op(fold(t->ch[flg], l, r, {b[0], m}, bias), fold(t->ch[!flg], l, r, {m, b[1]}, bias));
+  return M::op(prod(t->ch[flg], l, r, {b[0], m}, bias), prod(t->ch[!flg], l, r, {m, b[1]}, bias));
  }
  void apply(np &t, const id_t &l, const id_t &r, std::array<id_t, 2> b, const E &x) {
   if (r <= b[0] || b[1] <= l) return;
@@ -168,12 +168,12 @@ public:
  }
  template <class L= M, std::enable_if_t<monoid_v<L>, std::nullptr_t> = nullptr> T operator[](id_t k) { return get(k); }
  template <class L= M, std::enable_if_t<!monoid_v<L>, std::nullptr_t> = nullptr> T &operator[](id_t k) { return at(k); }
- T fold(id_t a, id_t b, id_t bias= 0) {
-  static_assert(monoid_v<M>, "\"fold\" is not available\n");
-  return fold(root, a, b, {0, 1LL << HEIGHT}, bias);
+ T prod(id_t a, id_t b, id_t bias= 0) {
+  static_assert(monoid_v<M>, "\"prod\" is not available\n");
+  return prod(root, a, b, {0, 1LL << HEIGHT}, bias);
  }
  // find i s.t.
- //  check(fold(a,i)) == False, check(fold(a,i+1)) == True
+ //  check(prod(a,i)) == False, check(prod(a,i+1)) == True
  // return -1 if not found
  template <class C> id_t find_first(id_t a, C check, id_t bias= 0) {
   std::array<T, 1> sum{def_val()};
@@ -188,7 +188,7 @@ public:
   return find<0>(a, {0, 1LL << HEIGHT}, bias, HEIGHT, check, ts, sums);
  }
  // find i s.t.
- //  check(fold(i+1,b)) == False, check(fold(i,b)) == True
+ //  check(prod(i+1,b)) == False, check(prod(i,b)) == True
  // return -1 if not found
  template <class C> id_t find_last(id_t b, C check, id_t bias= 0) {
   std::array<T, 1> sum{def_val()};
@@ -212,7 +212,7 @@ public:
  }
  static std::string which_available() {
   std::string ret= "";
-  if constexpr (monoid_v<M>) ret+= "\"fold\" \"find\" ";
+  if constexpr (monoid_v<M>) ret+= "\"prod\" \"find\" ";
   else ret+= "\"at\" ";
   if constexpr (dual_v<M>) ret+= "\"apply\" ";
   return ret;

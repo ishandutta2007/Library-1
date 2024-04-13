@@ -52,7 +52,7 @@ template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentT
    dump(next(t, h, 1), l, r, {m, b[1]}, itr, h - 1);
   } else *(itr + b[0])= t->val;
  }
- T fold(np &t, const id_t &l, const id_t &r, const id_t &bias) {
+ T prod(np &t, const id_t &l, const id_t &r, const id_t &bias) {
   static id_t bits, b[2];
   if (!t) return def_val();
   uint8_t h= (HEIGHT + 1) - t->len;
@@ -60,7 +60,7 @@ template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentT
   if (r <= b[0] || b[1] <= l) return def_val();
   if (l <= b[0] && b[1] <= r) return t->val;
   bool flg= (bias >> (h - 1)) & 1;
-  return M::op(fold(t->ch[flg], l, r, bias), fold(t->ch[!flg], l, r, bias));
+  return M::op(prod(t->ch[flg], l, r, bias), prod(t->ch[!flg], l, r, bias));
  }
  void set_val(np &t, const id_t &k, const T &val) {
   if (!t) return t= new Node{k, HEIGHT + 1, val}, void();
@@ -149,12 +149,12 @@ public:
  }
  template <class L= M, std::enable_if_t<monoid_v<L>, std::nullptr_t> = nullptr> T operator[](id_t k) { return get(k); }
  template <class L= M, std::enable_if_t<!monoid_v<L>, std::nullptr_t> = nullptr> T &operator[](id_t k) { return at(k); }
- T fold(id_t a, id_t b, id_t bias= 0) {
-  static_assert(monoid_v<M>, "\"fold\" is not available\n");
-  return fold(root, a, b, bias);
+ T prod(id_t a, id_t b, id_t bias= 0) {
+  static_assert(monoid_v<M>, "\"prod\" is not available\n");
+  return prod(root, a, b, bias);
  }
  // find i s.t.
- //  check(fold(k,i)) == False, check(fold(k,i+1)) == True
+ //  check(prod(k,i)) == False, check(prod(k,i+1)) == True
  // return -1 if not found
  template <class C> id_t find_first(id_t a, C check, id_t bias= 0) {
   std::array<T, 1> sum{def_val()};
@@ -169,7 +169,7 @@ public:
   return find<0>(a, {0, 1LL << HEIGHT}, bias, HEIGHT, check, ts, sums);
  }
  // find i s.t.
- //  check(fold(i+1,k)) == False, check(fold(i,k)) == True
+ //  check(prod(i+1,k)) == False, check(prod(i,k)) == True
  // return -1 if not found
  template <class C> id_t find_last(id_t b, C check, id_t bias= 0) {
   std::array<T, 1> sum{def_val()};
@@ -190,7 +190,7 @@ public:
  }
  static std::string which_available() {
   std::string ret= "";
-  if constexpr (monoid_v<M>) ret+= "\"fold\" \"find\"";
+  if constexpr (monoid_v<M>) ret+= "\"prod\" \"find\"";
   else ret+= "\"at\" ";
   return ret;
  }

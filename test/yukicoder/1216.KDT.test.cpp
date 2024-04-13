@@ -63,7 +63,7 @@ signed main() {
  }
  KDTree<long long, 2, RSQ> kdt(st);
  for (auto [t, a, b, y]: query) {
-  if (t == 0) cout << kdt.fold_cuboid(a, b - 1, 0, y) << '\n';
+  if (t == 0) cout << kdt.prod_cuboid(a, b - 1, 0, y) << '\n';
   else kdt.mul(b, y, t);
  }
  return 0;

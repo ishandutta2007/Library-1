@@ -137,16 +137,16 @@ template <class M, bool reversible= false> class RandomizedBinarySearchTree {
    return update(t), v;
   }
  }
- static inline T fold(np t, size_t a, size_t b) {
+ static inline T prod(np t, size_t a, size_t b) {
   if (!a && b == t->size()) return t->sum;
   if constexpr (dual_v<M>) push_prop(t);
   if constexpr (reversible) push_tog(t);
   size_t l= t->l ? t->l->size() : 0, k= l + 1;
-  if (b < k) return fold(t->l, a, b);
-  if (a > l) return fold(t->r, a - k, b - k);
+  if (b < k) return prod(t->l, a, b);
+  if (a > l) return prod(t->r, a - k, b - k);
   T ret= t->val;
-  if (a < l) ret= M::op(fold(t->l, a, l), ret);
-  if (b > k) ret= M::op(ret, fold(t->r, 0, b - k));
+  if (a < l) ret= M::op(prod(t->l, a, l), ret);
+  if (b > k) ret= M::op(ret, prod(t->r, 0, b - k));
   return ret;
  }
  static inline void apply(np t, size_t a, size_t b, const E &x) {
@@ -216,7 +216,7 @@ public:
  static std::string which_unavailable() {
   std::string ret= "";
   if constexpr (semigroup_v<M>) ret+= "\"at\" ";
-  else ret+= "\"fold\" ";
+  else ret+= "\"prod\" ";
   if constexpr (!semigroup_v<M> || !commute_v<M>) ret+= "\"mul\" ";
   if constexpr (!dual_v<M>) ret+= "\"apply\" ";
   if constexpr (!reversible) ret+= "\"reverse\" ";
@@ -229,7 +229,7 @@ public:
   auto [l, r]= split(rt, k);
   return {np_to_rbst(l), np_to_rbst(r)};
  }
- std::tuple<SplayTree, SplayTree, SplayTree> split3(size_t a, size_t b) {
+ std::tuple<RBST, RBST, RBST> split3(size_t a, size_t b) {
   assert(a < b), assert(b <= size());
   auto [tmp, r]= split(rt, b);
   auto [l, c]= split(tmp, a);
@@ -268,9 +268,9 @@ public:
  }
  template <class L= M> std::enable_if_t<semigroup_v<L>, T> operator[](size_t k) { return get(k); }
  template <class L= M> std::enable_if_t<!semigroup_v<L>, T> &operator[](size_t k) { return at(k); }
- T fold(size_t a, size_t b) {
-  static_assert(semigroup_v<M>, "\"fold\" is not available\n");
-  return fold(rt, a, b);
+ T prod(size_t a, size_t b) {
+  static_assert(semigroup_v<M>, "\"prod\" is not available\n");
+  return prod(rt, a, b);
  }
  void apply(size_t a, size_t b, E x) {
   static_assert(dual_v<M>, "\"apply\" is not available\n");

@@ -37,7 +37,7 @@ signed main() {
   int op, X, Y;
   cin >> op >> X >> Y, --X, --Y;
   if (op) {
-   cout << lct.fold(X, Y).val << '\n';
+   cout << lct.prod(X, Y).val << '\n';
   } else {
    Mint Z;
    cin >> Z;

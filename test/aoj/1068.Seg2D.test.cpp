@@ -26,7 +26,7 @@ signed main() {
   while (q--) {
    int r1, c1, r2, c2;
    cin >> r1 >> c1 >> r2 >> c2;
-   cout << seg.fold(r1, r2 + 1, c1, c2 + 1) << '\n';
+   cout << seg.prod(r1, r2 + 1, c1, c2 + 1) << '\n';
   }
  }
  return 0;

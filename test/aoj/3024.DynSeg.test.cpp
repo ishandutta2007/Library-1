@@ -28,7 +28,7 @@ signed main() {
    seg[x].set(y, z);
   } else if (x <= 4) {
    x-= 3, y--;
-   cout << seg[x].fold(y, z) << '\n';
+   cout << seg[x].prod(y, z) << '\n';
   } else {
    x-= 5;
    seg[x]= seg[!x];

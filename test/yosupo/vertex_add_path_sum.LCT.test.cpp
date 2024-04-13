@@ -21,7 +21,7 @@ signed main() {
   if (op) {
    int u, v;
    cin >> u >> v;
-   cout << lct.fold(u, v) << '\n';
+   cout << lct.prod(u, v) << '\n';
   } else {
    int p, x;
    cin >> p >> x;

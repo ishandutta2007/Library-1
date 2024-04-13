@@ -27,7 +27,7 @@ signed main() {
  sort(query.begin(), query.end(), [](auto a, auto b) { return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0]; });
  bool isok= false;
  for (auto [h, w, d]: query) {
-  isok= seg.fold(0, w, 0, d);
+  isok= seg.prod(0, w, 0, d);
   if (isok) break;
   seg.set(w, d, 1);
  }

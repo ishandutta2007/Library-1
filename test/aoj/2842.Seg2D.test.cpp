@@ -34,7 +34,7 @@ signed main() {
   } else if (c == 1) {
    if (seg.get(h1, w1).second) seg.set(h1, w1, {0, 0});
   } else if (c == 2) {
-   auto [x, y]= seg.fold(h1, h2 + 1, w1, w2 + 1);
+   auto [x, y]= seg.prod(h1, h2 + 1, w1, w2 + 1);
    cout << y << " " << x << '\n';
   } else {
    seg.set(h1, w1, {0, 1});

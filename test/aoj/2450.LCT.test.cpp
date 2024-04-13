@@ -45,7 +45,7 @@ signed main() {
   long long t, a, b, c;
   cin >> t >> a >> b >> c, --a, --b;
   if (t == 1) lct.apply(a, b, c);
-  else cout << lct.fold(a, b).max << '\n';
+  else cout << lct.prod(a, b).max << '\n';
  }
  return 0;
 }

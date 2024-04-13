@@ -30,7 +30,7 @@ signed main() {
    int u, v;
    Mint x;
    cin >> u >> v >> x;
-   auto [a, b]= lct.fold(u, v);
+   auto [a, b]= lct.prod(u, v);
    cout << a * x + b << '\n';
   } else {
    int p;

@@ -25,7 +25,7 @@ signed main() {
    cin >> x;
    seg.apply(s, t + 1, x);
   } else {
-   cout << seg.fold(s, t + 1) << '\n';
+   cout << seg.prod(s, t + 1) << '\n';
   }
  }
  return 0;

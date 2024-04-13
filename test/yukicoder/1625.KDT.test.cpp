@@ -46,7 +46,7 @@ signed main() {
  for (auto [op, l, r, x]: query) {
   if (op == 1) kdt.mul(l, r, x);
   else {
-   auto ans= kdt.fold_cuboid(l, r, l, r);
+   auto ans= kdt.prod_cuboid(l, r, l, r);
    cout << (ans ? ans : -1) << '\n';
   }
  }

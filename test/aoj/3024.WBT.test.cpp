@@ -29,7 +29,7 @@ signed main() {
    wbt[x].set(y, z);
   } else if (x <= 4) {
    x-= 3, y--;
-   cout << wbt[x].fold(y, z) << '\n';
+   cout << wbt[x].prod(y, z) << '\n';
   } else {
    x-= 5;
    wbt[x]= wbt[!x];

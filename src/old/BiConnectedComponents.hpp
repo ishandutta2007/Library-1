@@ -1,5 +1,5 @@
 #pragma once
-#include "src/Graph/Tree.hpp"
+#include "src/old/Tree.hpp"
 class BiConnectedComponents {
  const size_t n;
  std::vector<std::pair<int, int>> E;

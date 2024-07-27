@@ -8,17 +8,18 @@ signed main() {
  int N;
  cin >> N;
  PiecewiseLinearConvex<long long> f;
- f.add_inf(), f.add_inf(true);
  long long pT= 0;
  for (int i= 0; i < N; ++i) {
   long long i64, D, X;
   cin >> i64 >> D >> X;
   long long dT= i64 - pT;
-  f.chmin_slide_win(-dT, dT);
-  if (D) f.add_ramp(1, X);
-  else f.add_ramp(-1, X);
+  f.add_abs(dT, 0);
+  f.add_linear(-X);
+  if (D) f.chmin_slide_win(0, 1);
+  else f.chmin_slide_win(-1, 0);
+  f.add_linear(X);
   pT= i64;
  }
- cout << (long long)f.min() << '\n';
+ cout << (long long)-f(0) << '\n';
  return 0;
 }

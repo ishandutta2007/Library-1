@@ -20,13 +20,14 @@ signed main() {
  for (int j= 0; j < N; ++j) ++b[id(B[j])];
  for (int k= 1; k <= M; ++k) {
   PiecewiseLinearConvex<long long> f;
-  f.add_inf();
+  f.add_inf(true);
   for (int i= 0; i < n; ++i) {
-   f.chmin_cum();
-   f.shift(a[i] - b[i] * k);
-   if (i < n - 1) f.add_abs(vec[i + 1] - vec[i], 0);
+   f.add_inf(true);
+   f.add_linear(a[i] - b[i] * k);
+   long long c= vec[i + 1] - vec[i];
+   if (i < n - 1) f.chmin_slide_win(-c, c);
   }
-  cout << (long long)f(0) << '\n';
+  cout << (long long)-f.min() << '\n';
  }
  return 0;
 }

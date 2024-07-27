@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc250/tasks/abc250_g"
+#define PROBLEM "https://yukicoder.me/problems/no/1077"
 #include <iostream>
 #include "src/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
@@ -8,12 +8,15 @@ signed main() {
  int N;
  cin >> N;
  PiecewiseLinearConvex<int> f;
+ f.add_inf(), f.add_inf(true);
  for (int i= 0; i < N; ++i) {
-  int P;
-  cin >> P;
-  f.add_abs(1, P);
-  f.chmin_cum(true);
+  int Y;
+  cin >> Y;
+  f.add_inf(true);
+  f.add_linear(-Y);
+  f.chmin_slide_win(-1, 1);
+  f.add_linear(Y);
  }
- cout << f(0) << '\n';
+ cout << -f(0) << '\n';
  return 0;
 }

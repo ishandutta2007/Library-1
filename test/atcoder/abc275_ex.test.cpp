@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "src/Misc/CartesianTree.hpp"
-#include "src/Optimization/PiecewiseLinearConvexfunction.hpp"
+#include "src/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  for (int i= 0; i < N; ++i) cin >> B[i];
  CartesianTree ct(B, false);
  int root= ct.root();
- vector<PiecewiseLinearConvexfunction<>> dp(N);
+ vector<PiecewiseLinearConvex<int>> dp(N);
  auto dfs= [&](auto self, int v) -> void {
   for (int u: ct.children(v))
    if (u != -1) {
@@ -23,10 +23,11 @@ signed main() {
     dp[v]+= dp[u];
    }
   dp[v].add_linear(B[v]);
-  dp[v].cumulative_chmin_rev_with_condition(A[v]);
+  dp[v].add_inf(false, A[v]);
+  dp[v].chmin_cum(true);
   dp[v].add_linear(-B[v]);
  };
  dfs(dfs, root);
- cout << dp[root].eval(0) << '\n';
+ cout << dp[root](0) << '\n';
  return 0;
 }

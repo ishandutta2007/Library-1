@@ -1,6 +1,6 @@
 ---
 title: 区分線形凸関数
-documentation_of: ../../src/Optimization/PiecewiseLinearConvexfunction.hpp
+documentation_of: ../../src/old/PiecewiseLinearConvexfunction.hpp
 ---
 splay木でがんばった. 一般の min-plus 畳み込みは実装していない. \
 メモリプールしている. static 関数 `clear` でノードリセット. 

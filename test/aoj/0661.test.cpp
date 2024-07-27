@@ -1,6 +1,6 @@
 #define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/JOI/Final/0661"
 #include <iostream>
-#include "src/Optimization/PiecewiseLinearConvexfunction.hpp"
+#include "src/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -30,14 +30,18 @@ signed main() {
   }
  }
  int sum= 0;
- PiecewiseLinearConvexfunction f;
+ PiecewiseLinearConvex<int> f;
  f.add_abs(1, 0);
  f.shift(-a[0][1]);
  sum+= a[0][0] + a[0][1];
  for (int i= 1; i < N; ++i) {
   f.add_abs(1, 0);
   f.add_abs(1, -sum);
-  f.convex_convolution_with_abs(1, 0);
+  f.add_linear(-1);
+  f.cum_chmin();
+  f.add_linear(2);
+  f.cum_chmin(true);
+  f.add_linear(-1);
   f.shift(-a[i][1]);
   sum+= a[i][0] + a[i][1];
  }

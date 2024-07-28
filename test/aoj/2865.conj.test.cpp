@@ -11,14 +11,11 @@ signed main() {
  for (int i= 0; i < N - 1; ++i) cin >> d[i];
  for (int i= 0; i < N; ++i) cin >> g[i];
  PiecewiseLinearConvex<long long> f;
- f.add_inf(), f.add_inf(true);
  for (int i= 0; i < N; ++i) {
-  if (i) f.add_abs(d[i - 1], 0);
-  f.add_linear(-g[i]);
-  f.chmin_slide_win(-1, 1);
-  f.add_linear(g[i]);
-  f.add_const(g[i]);
+  if (i) f.chmin_slide_win(-d[i - 1], d[i - 1]);
+  f.add_abs(1, g[i]);
+  f.add_const(-g[i]);
  }
- cout << (long long)f(0) << '\n';
+ cout << (long long)-f.min() << '\n';
  return 0;
 }

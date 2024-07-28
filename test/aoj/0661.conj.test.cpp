@@ -31,21 +31,24 @@ signed main() {
  }
  int sum= 0;
  PiecewiseLinearConvex<int> f;
- f.add_abs(1, 0);
- f.shift(-a[0][1]);
+ f.add_inf(), f.add_inf(true);
+ f.chmin_slide_win(-1, 1);
+ f.add_linear(-a[0][1]);
  sum+= a[0][0] + a[0][1];
  for (int i= 1; i < N; ++i) {
-  f.add_abs(1, 0);
-  f.add_abs(1, -sum);
-  f.add_linear(-1);
-  f.chmin_cum();
-  f.add_linear(2);
-  f.chmin_cum(true);
-  f.add_linear(-1);
-  f.shift(-a[i][1]);
+  f.chmin_slide_win(-1, 1);
+  f.add_linear(sum);
+  f.chmin_slide_win(-1, 1);
+  f.add_linear(-sum);
+  f.shift(-1);
+  f.add_inf(true);
+  f.shift(2);
+  f.add_inf();
+  f.shift(-1);
+  f.add_linear(-a[i][1]);
   sum+= a[i][0] + a[i][1];
  }
- ans+= f(0);
+ ans-= f.min();
  cout << ans << '\n';
  return 0;
 }

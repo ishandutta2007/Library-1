@@ -239,8 +239,8 @@ public:
  //  f(x) += max(a(x-x0),b(x-x0)), (a < b)
  void add_max(T a, T b, T x0) {
   assert(a < b);
-  if (bf[0] && x0 <= bx[0]) y-= D(b) * bx[0], rem+= b;
-  else if (bf[1] && bx[1] <= x0) y-= D(a) * bx[1], rem+= a;
+  if (bf[0] && x0 <= bx[0]) y-= D(b) * x0, rem+= b;
+  else if (bf[1] && bx[1] <= x0) y-= D(a) * x0, rem+= a;
   else if (!m[0] && !m[1]) {
    np t= new Node{{nullptr, nullptr}, nullptr, 0, x0, b - a, b - a, D(x0) * (b - a), 1};
    if (a >= 0) {
@@ -326,7 +326,8 @@ public:
     }
     splay(m[0]);
     if (m[0] == m[1]) m[0]->d= o[0];
-    m[0]->ch[1]= m[1]= nullptr, update(m[0]);
+    m[0]->ch[1]= m[1]= nullptr;
+    update(m[0]);
    }
   } else {
    if (rem < 0) {
@@ -339,16 +340,16 @@ public:
     if (m[1]) splay(m[1]), m[1]->ch[0]= m[0], update(m[1]);
     bf[0]= false;
    } else {
-    bf[0]= false;
-    if (!m[0]) return;
-    if (!m[1]) {
-     m[0]= nullptr;
+    bf[!rev]= false;
+    if (!m[!rev]) return;
+    if (!m[rev]) {
+     m[!rev]= nullptr;
      return;
     }
-    splay(m[1]);
-    if (m[0] == m[1]) m[1]->d= o[1];
-    m[1]->ch[0]= m[0]= nullptr;
-    update(m[1]);
+    splay(m[rev]);
+    if (m[0] == m[1]) m[rev]->d= o[rev];
+    m[rev]->ch[!rev]= m[!rev]= nullptr;
+    update(m[rev]);
    }
   }
  }
@@ -406,7 +407,7 @@ public:
   if (bf[0]) bx[0]+= x0;
   if (bf[1]) bx[1]+= x0;
  }
- // right=true : f(x) +=  inf  (x < x_0), right=false: f(x) += inf  (x_0 < x)
+ // right=false : f(x) +=  inf  (x < x_0), right=true: f(x) += inf  (x_0 < x)
  void add_inf(bool right= false, T x0= 0) {
   if (right) {
    if (bf[1] && bx[1] <= x0) return;

@@ -32,7 +32,7 @@ signed main() {
  SegmentTree_2D<int, RMQ> seg(v);
  long long ans= 0;
  for (int i= 0; i + h1 <= H; ++i)
-  for (int j= 0; j + w1 <= W; ++j) ans= max(ans, sum(i, i + h1, j, j + w1) - seg.fold(i, i + h1 - h2 + 1, j, j + w1 - w2 + 1));
+  for (int j= 0; j + w1 <= W; ++j) ans= max(ans, sum(i, i + h1, j, j + w1) - seg.prod(i, i + h1 - h2 + 1, j, j + w1 - w2 + 1));
  cout << ans << '\n';
  return 0;
 }

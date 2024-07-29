@@ -283,9 +283,9 @@ public:
    r->par= m[0]->par= t;
    m[0]->ch[1]= nullptr;
    update(m[0]);
-   update(m[0]= m[1]= t);
-   o[0]= 0, o[1]= b - a;
-   y-= D(a) * x0, rem+= a;
+   update(t);
+   m[0]= t;
+   y-= D(b) * x0, rem+= b;
   }
  }
  // f(x) +=  max(0, a(x-x0))

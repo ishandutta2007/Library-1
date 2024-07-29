@@ -163,11 +163,7 @@ public:
    }
    t= t->ch[neg];
   } else t= m[neg], splay(t);
-  if (ol + sl(t) < p) {
-   if (neg) slope_lr<1>();
-   else slope_lr<0>();
-   return;
-  }
+  if (ol + sl(t) < p) return neg ? slope_lr<1>() : slope_lr<0>();
   for (;;) {
    push(t);
    T s= ol + sl(t->ch[!neg]), l= s + t->d;
@@ -291,67 +287,35 @@ public:
  // f(x) +=  max(0, a(x-x0))
  void add_ramp(T a, T x0) {
   if (a == 0) return;
-  if (a > 0) add_max(0, a, x0);
-  else add_max(a, 0, x0);
+  a > 0 ? add_max(0, a, x0) : add_max(a, 0, x0);
  }
  // f(x) += a|x-x0|, \/
  void add_abs(T a, T x0) {
   assert(a >= 0);
-  if (a == 0) return;
-  add_max(-a, a, x0);
+  if (a != 0) add_max(-a, a, x0);
  }
  // rev=false: f(x) <- min_{y<=x} f(y), rev=true : f(x) <- min_{x<=y} f(y)
  void chmin_cum(bool rev= false) {
-  if (bf[0] && bf[1] && bx[0] == bx[1]) {
-   y+= D(rem) * bx[0], rem= 0, bf[!rev]= false;
-   return;
-  }
-  slope_eval();
-  if (!rev) {
-   if (rem > 0) {
-    assert(bf[0]);
-    y+= D(rem) * bx[0];
-    m[1]= nullptr, rem= 0, bf[1]= false;
-   } else if (rem < 0) {
-    if (!bf[1]) return;
-    m[1]= new Node{{nullptr, nullptr}, m[0], 0, bx[1], -rem, -rem, -D(bx[1]) * rem, 1};
-    if (m[0]) splay(m[0]), m[0]->ch[1]= m[1], update(m[0]);
-    bf[1]= false;
-   } else {
-    bf[1]= false;
-    if (!m[1]) return;
-    if (!m[0]) {
-     m[1]= nullptr;
-     return;
+  if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
+  else if (slope_eval(); rem == 0) {
+   if (m[!rev]) {
+    if (m[rev]) {
+     splay(m[rev]);
+     if (m[0] == m[1]) m[rev]->d= o[rev];
+     m[rev]->ch[!rev]= nullptr, update(m[rev]);
     }
-    splay(m[0]);
-    if (m[0] == m[1]) m[0]->d= o[0];
-    m[0]->ch[1]= m[1]= nullptr;
-    update(m[0]);
+    m[!rev]= nullptr;
    }
-  } else {
-   if (rem < 0) {
-    assert(bf[1]);
-    y+= D(rem) * bx[1];
-    m[0]= nullptr, rem= 0, bf[0]= false;
-   } else if (rem > 0) {
-    if (!bf[0]) return;
-    m[0]= new Node{{nullptr, nullptr}, m[1], 0, bx[0], rem, rem, D(bx[0]) * rem, 1};
-    if (m[1]) splay(m[1]), m[1]->ch[0]= m[0], update(m[1]);
-    bf[0]= false;
-   } else {
-    bf[!rev]= false;
-    if (!m[!rev]) return;
-    if (!m[rev]) {
-     m[!rev]= nullptr;
-     return;
-    }
-    splay(m[rev]);
-    if (m[0] == m[1]) m[rev]->d= o[rev];
-    m[rev]->ch[!rev]= m[!rev]= nullptr;
-    update(m[rev]);
-   }
+  } else if ((rem > 0) ^ rev) {
+   assert(bf[rev]);
+   y+= D(rem) * bx[rev];
+   m[!rev]= nullptr, rem= 0;
+  } else if (bf[!rev]) {
+   T p= std::abs(rem);
+   m[!rev]= new Node{{nullptr, nullptr}, m[rev], 0, bx[!rev], p, p, D(bx[!rev]) * p, 1};
+   if (m[rev]) splay(m[rev]), m[rev]->ch[!rev]= m[!rev], update(m[rev]);
   }
+  bf[!rev]= false;
  }
  //  f(x) <- min_{lb<=y<=ub} f(x-y). (lb <= ub), \_/ -> \__/
  void chmin_slide_win(T lb, T ub) {

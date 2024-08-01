@@ -8,7 +8,6 @@
 #include <cassert>
 #include "src/Internal/long_traits.hpp"
 template <class T> class PiecewiseLinearConvex {
-public:
  using D= make_long_t<T>;
  struct Node {
   Node *ch[2], *par;
@@ -147,6 +146,12 @@ public:
   splay(s), s->ch[r]= nullptr;
   update(s);
  }
+ void add_r(np t) {
+  if (t) push(t), add_r(t->ch[0]), add_max(0, t->d, t->x), add_r(t->ch[1]);
+ }
+ void add_l(np t) {
+  if (t) push(t), add_l(t->ch[0]), add_max(-t->d, 0, t->x), add_l(t->ch[1]);
+ }
 public:
  PiecewiseLinearConvex(): mn(nullptr), bf{0, 0}, rem(0), y(0) {}
  std::string info() {
@@ -272,7 +277,7 @@ public:
     T p= r ? rem : -rem;
     np t= new Node{{nullptr, nullptr}, mn, 0, bx[!r], p, p, D(bx[!r]) * p, 1};
     if (mn) splay(mn), mn->ch[!r]= t, update(mn);
-    rem= 0, bx[!r]+= b[!r], splay(mn= t), prop(t, b[r]), o[r]= p;
+    rem= 0, bx[!r]+= b[!r], splay(mn= t), prop(t, b[r]), o[r]= p, o[!r]= 0;
    } else if (mn) splay(mn), prop(mn, b[r]);
    if (bf[r]) bx[r]+= b[r];
    y-= D(rem) * b[r];
@@ -309,5 +314,13 @@ public:
    splay(t), ret[!r]= t->x;
   } else assert(bf[!r]);
   return ret;
+ }
+ size_t size() { return mn ? splay(mn), mn->sz : 0; }
+ PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &r) {
+  y+= r.y, rem+= r.rem;
+  if (r.bf[0]) add_inf(false, r.bx[0]);
+  if (r.bf[1]) add_inf(true, r.bx[1]);
+  if (r.mn) splay(r.mn), add_l(r.mn->ch[0]), add_r(r.mn->ch[1]), add_max(-r.o[0], r.o[1], r.mn->x);
+  return *this;
  }
 };

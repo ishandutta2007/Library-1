@@ -39,9 +39,9 @@ template <class T> class PiecewiseLinearConvex {
  }
  static inline void prop(np t, T v) { t->z+= v, t->s+= D(v) * t->a, t->x+= v; }
  static inline void push(np t) {
-  if (t->z) {
-   if (np l= t->ch[0]; l) prop(l, t->z);
-   if (np r= t->ch[1]; r) prop(r, t->z);
+  if (t->z != 0) {
+   if (t->ch[0]) prop(t->ch[0], t->z);
+   if (t->ch[1]) prop(t->ch[1], t->z);
    t->z= 0;
   }
  }
@@ -196,11 +196,11 @@ public:
   else if (mn) {
    np t= mn;
    for (splay_p(t);;) {
+    push(t);
     if (t->x == x0) {
      t->d+= b - a;
      break;
     }
-    push(t);
     np &n= t->ch[t->x < x0];
     if (!n) {
      n= new Node{{nullptr, nullptr}, t, 0, x0, b - a, b - a, D(x0) * (b - a), 1}, t= n;

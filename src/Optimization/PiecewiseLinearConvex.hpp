@@ -39,9 +39,10 @@ template <class T> class PiecewiseLinearConvex {
  }
  static inline void prop(np t, T v) { t->z+= v, t->s+= D(v) * t->a, t->x+= v; }
  static inline void push(np t) {
-  if (t->z != 0) {
-   if (t->z= 0; t->ch[0]) prop(t->ch[0], t->z);
-   if (t->ch[1]) prop(t->ch[1], t->z);
+  if (t->z) {
+   if (np l= t->ch[0]; l) prop(l, t->z);
+   if (np r= t->ch[1]; r) prop(r, t->z);
+   t->z= 0;
   }
  }
  static inline void rot(np t) {
@@ -51,6 +52,11 @@ template <class T> class PiecewiseLinearConvex {
   update(p);
  }
  static inline void splay(np t) {
+  for (np p= t->par; p; rot(t), p= t->par)
+   if (p->par) rot(p->par->ch[p->ch[1] == t] == p ? p : t);
+  update(t);
+ }
+ static inline void splay_p(np t) {
   if (np p= t->par; p) do {
     if (p->par) push(p->par), push(p), push(t), rot(p->par->ch[p->ch[1] == t] == p ? p : t);
     else push(p), push(t);
@@ -87,7 +93,7 @@ template <class T> class PiecewiseLinearConvex {
  D calc_y(T x) {
   if (!mn) return 0;
   if (mn->x == x) return 0;
-  splay(mn);
+  splay_p(mn);
   if (x < mn->x) return mn->ch[0] ? calc_y<0>(mn->ch[0], x, o[0], D(mn->x) * o[0]) : D(mn->x - x) * o[0];
   else return mn->ch[1] ? calc_y<1>(mn->ch[1], x, o[1], D(mn->x) * o[1]) : D(x - mn->x) * o[1];
  }
@@ -139,7 +145,7 @@ template <class T> class PiecewiseLinearConvex {
    mn= nullptr;
    return;
   }
-  splay(mn);
+  splay_p(mn);
   np t= mn, s= t;
   for (; t;)
    if (push(t); lt<r>(x0, t->x)) s= t, t= t->ch[r];
@@ -158,13 +164,13 @@ public:
  std::string info() {
   std::stringstream ss;
   ss << "\n rem:" << rem << ", y:" << y << ", mn:" << mn << "\n bf[0]:" << bf[0] << ", bf[1]:" << bf[1] << ", bx[0]:" << bx[0] << ", bx[1]:" << bx[1] << "\n " << "o[0]:" << o[0] << ", o[1]:" << o[1] << "\n";
-  if (mn) splay(mn), info(mn, 0, ss);
+  if (mn) splay_p(mn), info(mn, 0, ss);
   return ss.str();
  }
  std::vector<T> dump_xs() {
   std::vector<T> xs;
   if (bf[0]) xs.push_back(bx[0]);
-  if (mn) splay(mn), dump_xs(mn, xs);
+  if (mn) splay_p(mn), dump_xs(mn, xs);
   if (bf[1]) xs.push_back(bx[1]);
   return xs;
  }
@@ -176,7 +182,7 @@ public:
  }
  std::vector<T> dump_slopes() {
   std::vector<T> as;
-  if (mn) splay(mn), as.push_back(-o[0]), dump_slopes_l(mn->ch[0], o[0], as), std::reverse(as.begin(), as.end()), as.push_back(o[1]), dump_slopes_r(mn->ch[1], o[1], as);
+  if (mn) splay_p(mn), as.push_back(-o[0]), dump_slopes_l(mn->ch[0], o[0], as), std::reverse(as.begin(), as.end()), as.push_back(o[1]), dump_slopes_r(mn->ch[1], o[1], as);
   else as.push_back(0);
   for (auto &a: as) a+= rem;
   return as;
@@ -221,13 +227,13 @@ public:
  void add_inf(bool right= false, T x0= 0) { return right ? add_inf<1>(x0) : add_inf<0>(x0); }
  // f(x) <- f(x-x0)
  void shift(T x0) {
-  if (bx[0]+= x0, bx[1]+= x0, y-= D(rem) * x0; mn) splay(mn), prop(mn, x0);
+  if (bx[0]+= x0, bx[1]+= x0, y-= D(rem) * x0; mn) splay_p(mn), prop(mn, x0);
  }
  // rev=false: f(x) <- min_{y<=x} f(y), rev=true : f(x) <- min_{x<=y} f(y)
  void chmin_cum(bool rev= false) {
   if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
   else if (slope_eval(); rem == 0) {
-   if (mn) splay(mn), mn->d= o[rev], o[!rev]= 0, mn->ch[!rev]= nullptr, update(mn);
+   if (mn) splay_p(mn), mn->d= o[rev], o[!rev]= 0, mn->ch[!rev]= nullptr, update(mn);
   } else if ((rem > 0) ^ rev) {
    assert(bf[rev]);
    y+= D(rem) * bx[rev];
@@ -235,7 +241,7 @@ public:
   } else if (bf[!rev]) {
    T p= std::abs(rem);
    np t= new Node{{nullptr, nullptr}, mn, 0, bx[!rev], p, p, D(bx[!rev]) * p, 1};
-   if (mn) splay(mn), mn->ch[!rev]= t, update(mn);
+   if (mn) splay_p(mn), mn->ch[!rev]= t, update(mn);
    mn= t, o[rev]= p, o[!rev]= 0;
   }
   bf[!rev]= false;
@@ -246,7 +252,7 @@ public:
   if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
   else if (slope_eval(); rem == 0) {
    if (mn) {
-    splay(mn);
+    splay_p(mn);
     if (o[0] == 0) {
      if (np l= mn->ch[0]; l) prop(l, lb - ub), update(mn);
      prop(mn, ub);
@@ -266,9 +272,9 @@ public:
     y+= D(rem) * bx[!r];
     T p= r ? rem : -rem;
     np t= new Node{{nullptr, nullptr}, mn, 0, bx[!r], p, p, D(bx[!r]) * p, 1};
-    if (mn) splay(mn), mn->ch[!r]= t, update(mn);
+    if (mn) splay_p(mn), mn->ch[!r]= t, update(mn);
     rem= 0, splay(mn= t), prop(t, b[r]), o[r]= p, o[!r]= 0;
-   } else if (y-= D(rem) * b[r]; mn) splay(mn), prop(mn, b[r]);
+   } else if (y-= D(rem) * b[r]; mn) splay_p(mn), prop(mn, b[r]);
   }
   bx[0]+= lb, bx[1]+= ub;
  }
@@ -302,7 +308,7 @@ public:
   } else assert(bf[!r]);
   return ret;
  }
- size_t size() { return mn ? splay(mn), mn->sz : 0; }
+ size_t size() { return mn ? splay_p(mn), mn->sz : 0; }
  PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &r) {
   y+= r.y, rem+= r.rem;
   if (r.bf[0]) add_inf(false, r.bx[0]);

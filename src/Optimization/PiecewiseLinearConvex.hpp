@@ -100,7 +100,7 @@ template <class T> class PiecewiseLinearConvex {
  template <bool r> void slope_lr() {
   np t= mn;
   if (!t) return;
-  splay(t);
+  splay_p(t);
   T ol= o[r];
   if constexpr (r) y-= sum(t->ch[r]) + D(t->x) * ol, rem+= ol + sl(t->ch[r]);
   else y+= sum(t->ch[r]) + D(t->x) * ol, rem-= ol + sl(t->ch[r]);
@@ -117,7 +117,7 @@ template <class T> class PiecewiseLinearConvex {
    o[neg]-= p, o[!neg]+= p, y+= D(t->x) * rem, rem= 0;
    return;
   }
-  splay(t);
+  splay_p(t);
   ou+= D(t->x) * ol;
   t= t->ch[neg];
   if (ol + sl(t) < p) return neg ? slope_lr<1>() : slope_lr<0>();
@@ -198,7 +198,7 @@ public:
   else if (bf[1] && bx[1] <= x0) y-= D(a) * x0, rem+= a;
   else if (mn) {
    np t= mn;
-   for (splay(t);;) {
+   for (splay_p(t);;) {
     if (t->x == x0) {
      t->d+= b - a;
      break;
@@ -271,9 +271,9 @@ public:
    if (bf[!r]) {
     y+= D(rem) * bx[!r];
     T p= r ? rem : -rem;
-    np t= new Node{{nullptr, nullptr}, mn, 0, bx[!r], p, p, D(bx[!r]) * p, 1};
-    if (mn) splay_p(mn), mn->ch[!r]= t, update(mn);
-    rem= 0, splay(mn= t), prop(t, b[r]), o[r]= p, o[!r]= 0;
+    np t= new Node{{nullptr, nullptr}, nullptr, 0, bx[!r], p, p, D(bx[!r]) * p, 1};
+    if (mn) splay_p(mn), t->ch[r]= mn, mn->par= t, update(t);
+    rem= 0, mn= t, prop(t, b[r]), o[r]= p, o[!r]= 0;
    } else if (y-= D(rem) * b[r]; mn) splay_p(mn), prop(mn, b[r]);
   }
   bx[0]+= lb, bx[1]+= ub;
@@ -299,7 +299,7 @@ public:
   std::array<T, 2> ret= {bx[0], bx[1]};
   np t= mn;
   if (!t) return ret;
-  splay(t);
+  splay_p(t);
   bool r= o[0] == 0;
   if (!r && o[1] != 0) ret[0]= ret[1]= t->x;
   else if (ret[r]= t->x, t= t->ch[!r]; t) {
@@ -313,7 +313,7 @@ public:
   y+= r.y, rem+= r.rem;
   if (r.bf[0]) add_inf(false, r.bx[0]);
   if (r.bf[1]) add_inf(true, r.bx[1]);
-  if (r.mn) splay(r.mn), add_l(r.mn->ch[0]), add_r(r.mn->ch[1]), add_max(-r.o[0], r.o[1], r.mn->x);
+  if (r.mn) splay_p(r.mn), add_l(r.mn->ch[0]), add_r(r.mn->ch[1]), add_max(-r.o[0], r.o[1], r.mn->x);
   return *this;
  }
 };

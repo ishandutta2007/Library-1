@@ -40,11 +40,8 @@ signed main() {
   f.add_linear(sum);
   f.chmin_slide_win(-1, 1);
   f.add_linear(-sum);
-  f.shift(-1);
-  f.add_inf(true);
-  f.shift(2);
-  f.add_inf();
-  f.shift(-1);
+  f.add_inf(true, 1);
+  f.add_inf(false, -1);
   f.add_linear(-a[i][1]);
   sum+= a[i][0] + a[i][1];
  }

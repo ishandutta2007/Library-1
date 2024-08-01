@@ -37,11 +37,12 @@ template <class T> class PiecewiseLinearConvex {
   if (np l= t->ch[0]; l) t->sz+= l->sz, t->a+= l->a, t->s+= l->s;
   if (np r= t->ch[1]; r) t->sz+= r->sz, t->a+= r->a, t->s+= r->s;
  }
- static inline void prop(np t, T v) {
-  if (t) t->z+= v, t->s+= D(v) * t->a, t->x+= v;
- }
+ static inline void prop(np t, T v) { t->z+= v, t->s+= D(v) * t->a, t->x+= v; }
  static inline void push(np t) {
-  if (t->z) prop(t->ch[0], t->z), prop(t->ch[1], t->z), t->z= 0;
+  if (t->z != 0) {
+   if (t->z= 0; t->ch[0]) prop(t->ch[0], t->z);
+   if (t->ch[1]) prop(t->ch[1], t->z);
+  }
  }
  static inline void rot(np t) {
   np p= t->par;
@@ -214,27 +215,19 @@ public:
  }
  // f(x) += a|x-x0|, \/
  void add_abs(T a, T x0) {
-  assert(a >= 0);
-  if (a != 0) add_max(-a, a, x0);
+  if (assert(a >= 0); a != 0) add_max(-a, a, x0);
  }
  // right=false : f(x) +=  inf  (x < x_0), right=true: f(x) += inf  (x_0 < x)
  void add_inf(bool right= false, T x0= 0) { return right ? add_inf<1>(x0) : add_inf<0>(x0); }
  // f(x) <- f(x-x0)
  void shift(T x0) {
-  if (y-= D(rem) * x0; mn) splay(mn), prop(mn, x0);
-  if (bf[0]) bx[0]+= x0;
-  if (bf[1]) bx[1]+= x0;
+  if (bx[0]+= x0, bx[1]+= x0, y-= D(rem) * x0; mn) splay(mn), prop(mn, x0);
  }
  // rev=false: f(x) <- min_{y<=x} f(y), rev=true : f(x) <- min_{x<=y} f(y)
  void chmin_cum(bool rev= false) {
   if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
   else if (slope_eval(); rem == 0) {
-   if (mn) {
-    splay(mn);
-    mn->d= o[rev];
-    o[!rev]= 0;
-    mn->ch[!rev]= nullptr, update(mn);
-   }
+   if (mn) splay(mn), mn->d= o[rev], o[!rev]= 0, mn->ch[!rev]= nullptr, update(mn);
   } else if ((rem > 0) ^ rev) {
    assert(bf[rev]);
    y+= D(rem) * bx[rev];
@@ -243,15 +236,14 @@ public:
    T p= std::abs(rem);
    np t= new Node{{nullptr, nullptr}, mn, 0, bx[!rev], p, p, D(bx[!rev]) * p, 1};
    if (mn) splay(mn), mn->ch[!rev]= t, update(mn);
-   mn= t;
-   o[rev]= p, o[!rev]= 0;
+   mn= t, o[rev]= p, o[!rev]= 0;
   }
   bf[!rev]= false;
  }
  //  f(x) <- min_{lb<=y<=ub} f(x-y). (lb <= ub), \_/ -> \__/
  void chmin_slide_win(T lb, T ub) {
   assert(lb <= ub);
-  if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0, bx[0]+= lb, bx[1]+= ub;
+  if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
   else if (slope_eval(); rem == 0) {
    if (mn) {
     splay(mn);
@@ -267,8 +259,6 @@ public:
      update(t), prop(mn->ch[1]= t, ub - lb), mn->d= o[0], o[1]= 0, update(mn), prop(mn, lb);
     }
    }
-   if (bf[0]) bx[0]+= lb;
-   if (bf[1]) bx[1]+= ub;
   } else {
    bool r= rem > 0;
    T b[2]= {lb, ub};
@@ -277,21 +267,18 @@ public:
     T p= r ? rem : -rem;
     np t= new Node{{nullptr, nullptr}, mn, 0, bx[!r], p, p, D(bx[!r]) * p, 1};
     if (mn) splay(mn), mn->ch[!r]= t, update(mn);
-    rem= 0, bx[!r]+= b[!r], splay(mn= t), prop(t, b[r]), o[r]= p, o[!r]= 0;
-   } else if (mn) splay(mn), prop(mn, b[r]);
-   if (bf[r]) bx[r]+= b[r];
-   y-= D(rem) * b[r];
+    rem= 0, splay(mn= t), prop(t, b[r]), o[r]= p, o[!r]= 0;
+   } else if (y-= D(rem) * b[r]; mn) splay(mn), prop(mn, b[r]);
   }
+  bx[0]+= lb, bx[1]+= ub;
  }
  D operator()(T x) {
   assert(!bf[0] || bx[0] <= x), assert(!bf[1] || x <= bx[1]);
   return calc_y(x) + D(rem) * x + y;
  }
  D min() {
-  slope_eval();
-  if (rem > 0) return assert(bf[0]), y + D(rem) * bx[0];
-  if (rem < 0) return assert(bf[1]), y + D(rem) * bx[1];
-  return y;
+  if (slope_eval(); rem == 0) return y;
+  return rem > 0 ? (assert(bf[0]), y + D(rem) * bx[0]) : (assert(bf[1]), y + D(rem) * bx[1]);
  }
  std::array<T, 2> argmin() {
   slope_eval();

@@ -71,8 +71,7 @@ template <class T> class PiecewiseLinearConvex {
  }
  template <bool r> static inline D calc_y(np t, T x, T ol, T ou) {
   for (np n;; t= n) {
-   push(t);
-   if (lt<r>(t->x, x)) n= t->ch[!r];
+   if (push(t); lt<r>(t->x, x)) n= t->ch[!r];
    else {
     ol+= sl(t->ch[!r]), ou+= sum(t->ch[!r]);
     if (t->x == x) break;
@@ -103,7 +102,7 @@ template <class T> class PiecewiseLinearConvex {
   if constexpr (r) y-= sum(t->ch[r]) + D(t->x) * ol, rem+= ol + sl(t->ch[r]);
   else y+= sum(t->ch[r]) + D(t->x) * ol, rem-= ol + sl(t->ch[r]);
   for (; t->ch[r];) push(t), t= t->ch[r];
-  mn= t, o[r]= 0, o[!r]= t->d;
+  splay(mn= t), o[r]= 0, o[!r]= t->d;
  }
  void slope_eval() {
   if (rem == 0 || !mn) return;
@@ -196,8 +195,7 @@ public:
   else if (mn) {
    np t= mn;
    for (splay_p(t);;) {
-    push(t);
-    if (t->x == x0) {
+    if (push(t); t->x == x0) {
      t->d+= b - a;
      break;
     }
@@ -224,7 +222,7 @@ public:
  void add_inf(bool right= false, T x0= 0) { return right ? add_inf<1>(x0) : add_inf<0>(x0); }
  // f(x) <- f(x-x0)
  void shift(T x0) {
-  if (bx[0]+= x0, bx[1]+= x0, y-= D(rem) * x0; mn) splay_p(mn), prop(mn, x0);
+  if (bx[0]+= x0, bx[1]+= x0, y-= D(rem) * x0; mn) splay_p(mn), mn->z+= x0, mn->x+= x0;
  }
  // rev=false: f(x) <- min_{y<=x} f(y), rev=true : f(x) <- min_{x<=y} f(y)
  void chmin_cum(bool rev= false) {
@@ -252,14 +250,14 @@ public:
     splay_p(mn);
     if (o[0] == 0) {
      if (np l= mn->ch[0]; l) prop(l, lb - ub);
-     prop(mn, ub);
+     mn->z+= ub, mn->x+= ub;
     } else if (o[1] == 0) {
      if (np r= mn->ch[1]; r) prop(r, ub - lb);
-     prop(mn, lb);
+     mn->z+= lb, mn->x+= lb;
     } else {
      np r= mn->ch[1], t= new Node{{nullptr, r}, mn, 0, mn->x, o[1], 0, 0, 1};
      if (r) r->par= t;
-     update(t), prop(mn->ch[1]= t, ub - lb), mn->d= o[0], o[1]= 0, prop(mn, lb);
+     update(t), prop(mn->ch[1]= t, ub - lb), mn->d= o[0], o[1]= 0, mn->z+= lb, mn->x+= lb;
     }
    }
   } else {
@@ -270,8 +268,8 @@ public:
     T p= r ? rem : -rem;
     np t= new Node{{nullptr, nullptr}, nullptr, 0, bx[!r], p, p, D(bx[!r]) * p, 1};
     if (mn) splay_p(mn), t->ch[r]= mn, mn->par= t;
-    rem= 0, mn= t, prop(t, b[r]), o[r]= p, o[!r]= 0;
-   } else if (y-= D(rem) * b[r]; mn) splay_p(mn), prop(mn, b[r]);
+    rem= 0, mn= t, t->z+= b[r], t->x+= b[r], o[r]= p, o[!r]= 0;
+   } else if (y-= D(rem) * b[r]; mn) splay_p(mn), mn->z+= b[r], mn->x+= b[r];
   }
   bx[0]+= lb, bx[1]+= ub;
  }

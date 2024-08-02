@@ -119,14 +119,8 @@ template <class T> class PiecewiseLinearConvex {
  }
  template <bool r> void add_inf(T x0) {
   if (bf[r] && !lt<r>(bx[r], x0)) return;
-  assert(!bf[!r] || !lt<r>(bx[!r], x0));
-  bf[r]= true, bx[r]= x0;
-  if (!mn) return;
-  slope_lr<!r>();
-  if (!lt<r>(x0, mn->x)) {
-   mn= nullptr;
-   return;
-  }
+  if (assert(!bf[!r] || !lt<r>(bx[!r], x0)), bf[r]= true, bx[r]= x0; !mn) return;
+  if (slope_lr<!r>(); !lt<r>(x0, mn->x)) return mn= nullptr, void();
   np t= mn, s= t;
   for (; t;)
    if (push(t); lt<r>(x0, t->x)) s= t, t= t->ch[r];
@@ -243,7 +237,7 @@ public:
     T p= r ? rem : -rem;
     np t= new Node{{nullptr, nullptr}, nullptr, 0, bx[!r], p, p, D(bx[!r]) * p, 1};
     if (mn) splay(mn), t->ch[r]= mn, mn->par= t;
-    y+= D(rem) * bx[!r], rem= 0, t->z+= b[r], t->x+= b[r], o[r]= p, o[!r]= 0, mn= t;
+    y+= D(rem) * bx[!r], rem= 0, mn= t, t->z+= b[r], t->x+= b[r], o[r]= p, o[!r]= 0;
    } else if (y-= D(rem) * b[r]; mn) splay(mn), mn->z+= b[r], mn->x+= b[r];
   }
   bx[0]+= lb, bx[1]+= ub;

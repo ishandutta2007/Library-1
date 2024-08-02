@@ -242,8 +242,9 @@ public:
    if (bf[!r]) {
     T p= r ? rem : -rem;
     np t= new Node{{nullptr, nullptr}, nullptr, 0, bx[!r], p, p, D(bx[!r]) * p, 1};
-    if (y+= D(rem) * bx[!r], rem= 0, mn= t, t->z+= b[r], t->x+= b[r], o[r]= p, o[!r]= 0; mn) t->ch[r]= mn, mn->par= t;
-   } else if (y-= D(rem) * b[r]; mn) mn->z+= b[r], mn->x+= b[r];
+    if (mn) splay(mn), t->ch[r]= mn, mn->par= t;
+    y+= D(rem) * bx[!r], rem= 0, t->z+= b[r], t->x+= b[r], o[r]= p, o[!r]= 0, mn= t;
+   } else if (y-= D(rem) * b[r]; mn) splay(mn), mn->z+= b[r], mn->x+= b[r];
   }
   bx[0]+= lb, bx[1]+= ub;
  }

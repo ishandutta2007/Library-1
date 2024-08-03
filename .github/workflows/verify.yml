@@ -3,16 +3,22 @@ name: verify
 on:
   push:
     branches:
-    - master
+    - main
+  pull_request:
 
 jobs:
-  build:
-    # runs-on: ubuntu-latest
-    runs-on: ubuntu-20.04
+  verify:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        id: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19']
 
     steps:
     - uses: actions/checkout@v3
       with:
+        path: main
         fetch-depth: 0
 
     - name: Set up Python
@@ -20,13 +26,129 @@ jobs:
       with:
         python-version: 3.12.0
 
-    - name: Install dependencies
+    - name: Install oj-verify
       run: pip3 install -U online-judge-verify-helper
 
+    - name: Assign test files
+      working-directory: main
+      run: |
+        TEST_FILES=$(
+          find verify -type f -name '*.test.cpp' | \
+          sort | \
+          awk -v n=${{ strategy.job-total }} \
+              -v i=${{ strategy.job-index }} \
+              '{
+                if((NR - 1) % n == i) {
+                  print $0
+                }
+              }' \
+          )
+
+        echo ${TEST_FILES} > .verify-helper/targets.txt
+        cat .verify-helper/targets.txt
+
     - name: Run tests
+      working-directory: main
+      env:
+        YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+      run: |
+        set -eu
+        if [ ! -f ./.verify-helper/timestamps.remote.json ]; then
+          echo '{}' > ./.verify-helper/timestamps.remote.json
+        fi
+
+        echo '{}' > ./.verify-helper/timestamps-${{ matrix.id }}.json
+
+        function run() {
+          oj-verify run $1 --tle 5 || exit 1
+          cd .verify-helper
+          echo >> ./timestamps.remote.json
+          cat ./timestamps.remote.json >> ./timestamps-${{ matrix.id }}.json
+        }
+        export -f run
+
+        head -c -1 ./.verify-helper/targets.txt | \
+        xargs -t -I {} -d ' ' bash -c 'run {}'
+
+    - name: Save timestamps
+      uses: actions/upload-artifact@v3
+      if: ${{ !cancelled() }}
+      with:
+        name: timestamps
+        path: main/.verify-helper/timestamps-${{ matrix.id }}.json
+
+  post-verify:
+    runs-on: ubuntu-latest
+    needs: verify
+    if: ${{ !cancelled() && github.ref_name == github.event.repository.default_branch }}
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        sparse-checkout: .verify-helper
+
+    - name: Load timestamps
+      uses: actions/download-artifact@v3
+      with:
+        name: timestamps
+        path: .verify-helper/timestamps
+
+    - name: Merge timestamps
+      working-directory: .verify-helper
+      run: |
+        touch ./timestamps.remote.json
+
+        jq --slurp --sort-keys 'reduce .[] as $item ({}; . * $item)' \
+        ./timestamps.remote.json timestamps/* > ./merged-timestamps.json
+
+        cp -f ./merged-timestamps.json ./timestamps.remote.json
+        cat ./timestamps.remote.json
+
+    - name: Push merged timestamps
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+      run: |
+        git remote set-url origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+
+        git config --global user.name "GitHub"
+        git config --global user.email "noreply@github.com"
+        git add .verify-helper/timestamps.remote.json
+
+        if (git diff --cached --shortstat | grep '[0-9]'); then
+          git commit -m "[auto-verifier] verify commit ${GITHUB_SHA}"
+          git push origin HEAD:${GITHUB_REF}
+        else
+          echo "No updated timestamps."
+        fi
+
+  gen-docs:
+    runs-on: ubuntu-latest
+    needs: post-verify
+    if: ${{ !cancelled() && github.ref_name == github.event.repository.default_branch }}
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        path: main
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.12.0
+
+    - name: Install oj-verify
+      run: pip3 install -U online-judge-verify-helper
+
+    - working-directory: main
+      run: git pull
+
+    - name: Generate documentation
+      working-directory: main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_PAT: ${{ secrets.GH_PAT }}
-        DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
-      run: oj-verify all -j 2
+      run: oj-verify docs --jobs $(nproc)

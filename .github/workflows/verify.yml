@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
 
@@ -60,7 +60,7 @@ jobs:
           retention-days: 1
 
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [setup]
     env:
       SPLIT_SIZE: "20"
@@ -77,7 +77,7 @@ jobs:
 
       - name: Restore cached results
         if: ${{ ! inputs.ignore_prev_result }}
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         id: restore-cached-results
         with:
           path: ${{github.workspace}}/merged-result.json
@@ -113,7 +113,7 @@ jobs:
           retention-days: 1
 
   docs-and-check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [verify]
     outputs:
       upload-pages: ${{steps.upload-pages.outcome == 'success'}}
@@ -159,7 +159,7 @@ jobs:
           destination: _jekyll
           write-summary: true
       - name: Save result
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: ${{github.workspace}}/merged-result.json
           key: ${{ runner.os }}-verify-result-${{ github.sha }}
@@ -187,7 +187,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

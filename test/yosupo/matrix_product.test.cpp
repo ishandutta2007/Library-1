@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/matrix_product"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/matrix_product
 #include <iostream>
 #include "src/LinearAlgebra/Matrix.hpp"
 #include "src/Math/ModInt.hpp"

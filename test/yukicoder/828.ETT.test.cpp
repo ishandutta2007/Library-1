@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/828"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/828
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/EulerTourTree.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/lca"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/lca
 #include <iostream>
 #include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;

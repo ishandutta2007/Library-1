@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/ICPC/Prelim/1615"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/ICPC/Prelim/1615
 #include <iostream>
 #include "src/Optimization/MaxFlow.hpp"
 using namespace std;

@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc182/tasks/abc182_e"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc182/tasks/abc182_e
 #include <iostream>
 #include "src/DataStructure/RangeSet.hpp"
 using namespace std;

@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/multivariate_convolution"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/multivariate_convolution
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

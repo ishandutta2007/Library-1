@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc228/tasks/abc228_f"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc228/tasks/abc228_f
 
 // kdt は TLE
 

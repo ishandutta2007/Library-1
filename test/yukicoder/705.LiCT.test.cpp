@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/705"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/705
 #include <iostream>
 #include <algorithm>
 #include "src/Optimization/LiChaoTree.hpp"

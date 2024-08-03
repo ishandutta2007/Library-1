@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/min_cost_b_flow"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/min_cost_b_flow
 #include <iostream>
 #include <vector>
 #include "src/Optimization/NetworkSimplex.hpp"

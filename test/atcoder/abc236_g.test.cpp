@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc236/tasks/abc236_g"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc236/tasks/abc236_g
 // (min,max)半環
 #include <iostream>
 #include "src/Math/SemiRing.hpp"

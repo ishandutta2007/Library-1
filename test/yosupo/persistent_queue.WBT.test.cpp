@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/persistent_queue"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/persistent_queue
 
 // 永続性のverify
 

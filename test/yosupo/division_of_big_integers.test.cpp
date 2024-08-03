@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/division_of_big_integers"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/division_of_big_integers
 #include <iostream>
 #include "src/FFT/BigInt.hpp"
 using namespace std;

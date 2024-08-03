@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/kth_root_mod"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/kth_root_mod
 #include <iostream>
 #include "src/Math/mod_kth_root.hpp"
 using namespace std;

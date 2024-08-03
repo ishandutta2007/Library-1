@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/arc105/tasks/arc105_f"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/arc105/tasks/arc105_f
 // 連結二部グラフ
 #include <iostream>
 #include "src/Math/ModInt.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc162/tasks/abc162_e"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc162/tasks/abc162_e
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

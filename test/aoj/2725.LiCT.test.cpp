@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2725"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2725
 #include <iostream>
 #include <numeric>
 #include "src/Optimization/LiChaoTree.hpp"

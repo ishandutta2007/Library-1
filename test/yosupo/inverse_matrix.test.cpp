@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/inverse_matrix"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/inverse_matrix
 #include <iostream>
 #include "src/LinearAlgebra/LU_Decomposition.hpp"
 #include "src/Math/ModInt.hpp"

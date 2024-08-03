@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc309/tasks/abc309_f"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc309/tasks/abc309_f
 
 // 2次元 + 走査
 // 3次元より遅い

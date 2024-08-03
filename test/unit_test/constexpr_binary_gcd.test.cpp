@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/aplusb"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/aplusb
 #include <iostream>
 #include "src/Math/binary_gcd.hpp"
 using namespace std;

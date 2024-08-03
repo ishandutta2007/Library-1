@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/system_of_linear_equations"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/system_of_linear_equations
 #include <iostream>
 #include "src/LinearAlgebra/LU_Decomposition.hpp"
 #include "src/Math/ModInt.hpp"

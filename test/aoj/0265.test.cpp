@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Prelim/0265"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Prelim/0265
 #include "src/Misc/compress.hpp"
 #include "src/Geometry/Polygon.hpp"
 using namespace std;

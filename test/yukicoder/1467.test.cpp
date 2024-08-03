@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1467"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1467
 #include <iostream>
 #include "src/Misc/compress.hpp"
 #include "src/Optimization/PiecewiseLinearConvex.hpp"

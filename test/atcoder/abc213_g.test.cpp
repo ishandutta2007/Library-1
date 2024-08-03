@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc213/tasks/abc213_g"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc213/tasks/abc213_g
 // 連結グラフ
 #include <iostream>
 #include "src/Math/ModInt.hpp"

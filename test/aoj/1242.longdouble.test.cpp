@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1242"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/1242
 // 浮動小数点数 + (std の ceil, floor) だと WA
 #include <iostream>
 #include <algorithm>

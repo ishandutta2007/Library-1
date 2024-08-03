@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1039"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/1039
 #include <iostream>
 #include "src/Geometry/Point.hpp"
 using namespace std;

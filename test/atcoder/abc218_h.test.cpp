@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc218/tasks/abc218_h"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc218/tasks/abc218_h
 // Alien DP
 #include <iostream>
 #include <algorithm>

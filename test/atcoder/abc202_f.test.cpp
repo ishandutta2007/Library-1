@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc202/tasks/abc202_f"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc202/tasks/abc202_f
 #include <iostream>
 #include <vector>
 #include "src/Geometry/Polygon.hpp"

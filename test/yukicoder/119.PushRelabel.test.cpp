@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/119"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/119
 #include <iostream>
 #include <vector>
 #include "src/Optimization/MaxFlow.hpp"

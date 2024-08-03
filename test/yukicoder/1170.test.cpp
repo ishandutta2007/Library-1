@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1170"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1170
 #include <iostream>
 #include <algorithm>
 #include "src/Graph/RangeToRangeGraph.hpp"

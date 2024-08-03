@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/general_matching"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/general_matching
 #include <iostream>
 #include "src/Graph/general_matching.hpp"
 using namespace std;

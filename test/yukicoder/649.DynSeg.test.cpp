@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/649"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/649
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
 using namespace std;

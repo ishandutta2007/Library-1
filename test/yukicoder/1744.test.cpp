@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1744"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1744
 #include <iostream>
 #include <vector>
 #include "src/Graph/DulmageMendelsohn.hpp"

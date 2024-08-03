@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/235"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/235
 #include <iostream>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/HeavyLightDecomposition.hpp"

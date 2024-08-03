@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc276/tasks/abc276_g"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc276/tasks/abc276_g
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/sparse_fps.hpp"

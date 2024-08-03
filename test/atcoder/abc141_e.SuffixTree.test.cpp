@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc141/tasks/abc141_e"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc141/tasks/abc141_e
 #include <iostream>
 #include <string>
 #include "src/DataStructure/SparseTable.hpp"

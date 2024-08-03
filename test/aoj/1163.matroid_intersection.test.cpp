@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1163"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/1163
 // 二部マッチング (分割+分割)
 #include <iostream>
 #include <vector>

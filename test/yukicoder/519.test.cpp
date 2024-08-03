@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/519"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/519
 #include <iostream>
 #include "src/Optimization/WeightedMatching.hpp"
 using namespace std;

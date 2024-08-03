@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/2507"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2507
 #include <iostream>
 #include "src/Graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;

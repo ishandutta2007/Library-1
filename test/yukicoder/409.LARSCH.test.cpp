@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/409"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/409
 #include <iostream>
 #include <algorithm>
 #include "src/Optimization/simplified_larsch_dp.hpp"

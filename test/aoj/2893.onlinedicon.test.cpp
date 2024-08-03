@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2893"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2893
 // 非想定解 MLがギリギリ
 #include <iostream>
 #include "src/DataStructure/OnlineDynamicConnectivity.hpp"

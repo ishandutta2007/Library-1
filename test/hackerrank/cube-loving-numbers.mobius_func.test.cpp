@@ -1,4 +1,4 @@
-#define PROBLEM "https://www.hackerrank.com/contests/university-codesprint-5/challenges/cube-loving-numbers"
+// competitive-verifier: PROBLEM https://www.hackerrank.com/contests/university-codesprint-5/challenges/cube-loving-numbers
 #include <iostream>
 #include "src/NumberTheory/tables.hpp"
 // メビウス関数

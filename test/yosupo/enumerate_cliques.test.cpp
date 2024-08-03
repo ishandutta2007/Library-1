@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/enumerate_cliques"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/enumerate_cliques
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Graph/CliqueProblem.hpp"

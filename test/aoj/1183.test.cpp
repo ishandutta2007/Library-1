@@ -1,5 +1,5 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1183"
-#define ERROR "0.0001"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/1183
+// competitive-verifier: ERROR 0.0001
 #include <iostream>
 #include <iomanip>
 #include <vector>

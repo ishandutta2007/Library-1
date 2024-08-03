@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc282/tasks/abc282_d"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc282/tasks/abc282_d
 
 // 2色塗り分けの verify
 

@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/261"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/261
 #include <iostream>
 #include <vector>
 #include <numeric>

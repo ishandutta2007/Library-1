@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2667"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2667
 // パス総和、部分木加算
 #include <iostream>
 #include "src/Graph/Graph.hpp"

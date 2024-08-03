@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/768"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/768
 #include <iostream>
 #include <vector>
 #include "src/Graph/Graph.hpp"

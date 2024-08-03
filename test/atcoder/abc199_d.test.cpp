@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc199/tasks/abc199_d"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc199/tasks/abc199_d
 #include <iostream>
 #include "src/Math/set_power_series.hpp"
 #include "src/Graph/UndirectedGraphSetPowerSeries.hpp"

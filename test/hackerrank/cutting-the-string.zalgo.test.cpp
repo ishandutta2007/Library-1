@@ -1,4 +1,4 @@
-#define PROBLEM "https://www.hackerrank.com/contests/101hack50/challenges/cutting-the-string"
+// competitive-verifier: PROBLEM https://www.hackerrank.com/contests/101hack50/challenges/cutting-the-string
 
 // c++14 までだった
 

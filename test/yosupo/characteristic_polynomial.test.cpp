@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/characteristic_polynomial"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/characteristic_polynomial
 #include <iostream>
 #include "src/LinearAlgebra/characteristic_polynomial.hpp"
 #include "src/Math/ModInt.hpp"

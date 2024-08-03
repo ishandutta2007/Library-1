@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1339"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1339
 #include <iostream>
 #include "src/Math/ModInt_Runtime.hpp"
 #include "src/Math/DiscreteLogarithm.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/0355"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/0355
 
 // ロリハをセグ木で表現
 

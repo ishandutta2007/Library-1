@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/line_add_get_min"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/line_add_get_min
 #include <iostream>
 #include "src/Optimization/ConvexHullTrick.hpp"
 using namespace std;

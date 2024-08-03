@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/1132"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/1132
 #include <iostream>
 #include <vector>
 #include "src/Geometry/Circle.hpp"

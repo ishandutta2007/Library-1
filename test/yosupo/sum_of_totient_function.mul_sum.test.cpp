@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/sum_of_totient_function"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/sum_of_totient_function
 // O(N^(3/4)/log N)
 #include <iostream>
 #include "src/Math/ModInt.hpp"

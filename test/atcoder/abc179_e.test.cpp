@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc179/tasks/abc179_e"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc179/tasks/abc179_e
 #include <iostream>
 #include "src/Misc/Period.hpp"
 using namespace std;

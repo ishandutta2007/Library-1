@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/dynamic_tree_vertex_set_path_composite
 #include <iostream>
 #include "src/DataStructure/LinkCutTree.hpp"
 #include "src/Math/ModInt.hpp"

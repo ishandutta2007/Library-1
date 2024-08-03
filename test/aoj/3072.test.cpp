@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3072"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/3072
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

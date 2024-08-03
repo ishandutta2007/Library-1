@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/674"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/674
 #include <iostream>
 #include <algorithm>
 #include "src/DataStructure/RangeSet.hpp"

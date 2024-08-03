@@ -1,4 +1,4 @@
-#define PROBLEM "https://www.hackerrank.com/challenges/library-query/problem"
+// competitive-verifier: PROBLEM https://www.hackerrank.com/challenges/library-query/problem
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/SortedPerBucket.hpp"

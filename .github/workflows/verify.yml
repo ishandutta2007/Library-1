@@ -103,7 +103,7 @@ jobs:
         path: |
           ~/.cache/online-judge-tools/library-checker-problems/
           main/.verify-helper/cache/
-        key: verify-${{ hashFiles('main/verify/**/*.test.cpp', 'main/.verify-helper/targets.txt') }}
+        key: verify-${{ hashFiles('main/test/**/*.test.cpp', 'main/.verify-helper/targets.txt') }}
 
     - name: Run tests
       working-directory: main

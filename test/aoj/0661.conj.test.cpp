@@ -31,11 +31,7 @@ signed main() {
  }
  int sum= 0;
  PiecewiseLinearConvex<int> f;
- f.add_inf(), f.add_inf(true);
- f.chmin_slide_win(-1, 1);
- f.add_linear(-a[0][1]);
- sum+= a[0][0] + a[0][1];
- for (int i= 1; i < N; ++i) {
+ for (int i= 0; i < N; ++i) {
   f.chmin_slide_win(-1, 1);
   f.add_linear(sum);
   f.chmin_slide_win(-1, 1);

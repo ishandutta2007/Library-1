@@ -18,8 +18,9 @@ signed main() {
  vector<long long> a(n), b(n);
  for (int i= 0; i < M; ++i) ++a[id(A[i])];
  for (int j= 0; j < N; ++j) ++b[id(B[j])];
+ using PLC= PiecewiseLinearConvex<long long>;
  for (int k= 1; k <= M; ++k) {
-  PiecewiseLinearConvex<long long> f;
+  PLC f;
   f.add_inf(true);
   for (int i= 0; i < n; ++i) {
    f.add_inf(true);
@@ -28,6 +29,7 @@ signed main() {
    if (i < n - 1) f.chmin_slide_win(-c, c);
   }
   cout << (long long)-f.min() << '\n';
+  PLC::clear();
  }
  return 0;
 }

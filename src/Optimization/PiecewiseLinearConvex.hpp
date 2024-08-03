@@ -27,6 +27,7 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
  static inline Node n[NODE_SIZE];
  static inline void info(int t, int d, std::stringstream &ss) {
   if (!t) return;
+  // push(t);
   info(n[t].ch[0], d + 1, ss);
   for (int i= 0; i < d; ++i) ss << "   ";
   ss << " ■ " << n[t] << '\n', info(n[t].ch[1], d + 1, ss);
@@ -220,7 +221,7 @@ public:
    int t= ni++;
    n[t]= Node{{0, 0}, 0, 0, bx[!rev], p, p, D(bx[!rev]) * p, 1};
    if (mn) update(mn), n[t].ch[rev]= mn, n[mn].par= t;
-   mn= t, o[rev]= p, o[!rev]= 0;
+   mn= t, o[rev]= p, o[!rev]= 0, y+= D(rem) * bx[!rev], rem= 0;
   }
   bf[!rev]= false;
  }

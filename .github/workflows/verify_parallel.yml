@@ -1,25 +1,19 @@
-name: verify
+name: verify-parallel
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-    - master
+on: workflow_dispatch
 
 jobs:
-  build:
-    # runs-on: ubuntu-latest
-    runs-on: ubuntu-20.04
+  verify:
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
       with:
+        submodules: true
         fetch-depth: 0
 
     - name: Set up Python
       uses: actions/setup-python@v5
-      with:
-        python-version: 3.12.0
 
     - name: Install dependencies
       run: pip3 install -U online-judge-verify-helper
@@ -28,6 +22,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
-        GH_PAT: ${{ secrets.GH_PAT }}
         DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
-      run: oj-verify all -j 2
+        GH_PAT: ${{ secrets.GH_PAT }}
+      run: python scripts/verify.py

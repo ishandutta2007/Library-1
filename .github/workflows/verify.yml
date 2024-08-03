@@ -93,6 +93,11 @@ jobs:
       - name: Download verify_files.json
         uses: competitive-verifier/actions/download-verify-artifact@v2
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12.0
+          
       - name: Set up competitive-verifier
         uses: competitive-verifier/actions/setup@v2
         with:

@@ -101,7 +101,7 @@ template <class T> class PiecewiseLinearConvex {
   T p= neg ? -rem : rem, ol= 0;
   D ou= 0;
   np t= mn;
-  if (ol= o[neg]; p <= ol) {
+  if (push(t); ol= o[neg]; p <= ol) {
    o[neg]-= p, o[!neg]+= p, y+= D(t->x) * rem, rem= 0;
    return;
   }

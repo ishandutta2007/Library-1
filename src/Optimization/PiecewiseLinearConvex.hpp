@@ -36,10 +36,10 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
   if (t) push(t), dump_xs(n[t].ch[0], xs), xs.push_back(n[t].x), dump_xs(n[t].ch[1], xs);
  }
  static inline void dump_slopes_l(int t, T ofs, std::vector<T> &as) {
-  if (t) push(t), dump_slopes_l(n[t].ch[1], ofs, as), ofs+= sl(n[t].ch[1]) + n[t].d, as.push_back(-ofs), dump_slopes_l(n[t].ch[0], ofs, as);
+  if (t) push(t), dump_slopes_l(n[t].ch[1], ofs, as), ofs+= n[n[t].ch[1]].a + n[t].d, as.push_back(-ofs), dump_slopes_l(n[t].ch[0], ofs, as);
  }
  static inline void dump_slopes_r(int t, T ofs, std::vector<T> &as) {
-  if (t) push(t), dump_slopes_r(n[t].ch[0], ofs, as), ofs+= sl(n[t].ch[0]) + n[t].d, as.push_back(ofs), dump_slopes_r(n[t].ch[1], ofs, as);
+  if (t) push(t), dump_slopes_r(n[t].ch[0], ofs, as), ofs+= n[n[t].ch[0]].a + n[t].d, as.push_back(ofs), dump_slopes_r(n[t].ch[1], ofs, as);
  }
  static inline void update(int t) {
   n[t].sz= 1, n[t].a= n[t].d, n[t].s= D(n[t].x) * n[t].d;
@@ -64,8 +64,6 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
   for (int p= n[t].par; p; rot(t), p= n[t].par)
    if (n[p].par) rot(n[n[p].par].ch[n[p].ch[1] == t] == p ? p : t);
  }
- static inline T sl(int t) { return t ? n[t].a : 0; }
- static inline D sum(int t) { return t ? n[t].s : 0; }
  template <bool r> static inline bool lt(T a, T b) {
   if constexpr (r) return b < a;
   else return a < b;
@@ -75,7 +73,7 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
    for (int s;; t= s) {
     if (push(t); lt<r>(n[t].x, x)) s= n[t].ch[!r];
     else {
-     ol+= sl(n[t].ch[!r]), ou+= sum(n[t].ch[!r]);
+     ol+= n[n[t].ch[!r]].a, ou+= n[n[t].ch[!r]].s;
      if (n[t].x == x) break;
      ol+= n[t].d, ou+= D(n[t].x) * n[t].d, s= n[t].ch[r];
     }
@@ -99,8 +97,8 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
   int t= mn;
   if (!t) return;
   for (; push(t), n[t].ch[r];) t= n[t].ch[r];
-  D p= sum(n[mn].ch[r]) + D(n[mn].x) * o[r];
-  T q= o[r] + sl(n[mn].ch[r]);
+  D p= n[n[mn].ch[r]].s + D(n[mn].x) * o[r];
+  T q= o[r] + n[n[mn].ch[r]].a;
   splay(mn= t), o[r]= 0, o[!r]= n[t].d, r ? (y-= p, rem+= q) : (y+= p, rem-= q);
  }
  void slope_eval() {
@@ -113,13 +111,13 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
    o[neg]-= p, o[!neg]+= p, y+= D(n[t].x) * rem, rem= 0;
    return;
   }
-  if (ou+= D(n[t].x) * ol, t= n[t].ch[neg]; ol + sl(t) < p) return slope_lr(neg);
+  if (ou+= D(n[t].x) * ol, t= n[t].ch[neg]; ol + n[t].a < p) return slope_lr(neg);
   for (T s, l;;) {
-   if (push(t), s= ol + sl(n[t].ch[!neg]), l= s + n[t].d; p < s) t= n[t].ch[!neg];
-   else if (l < p) ol= l, ou+= sum(n[t].ch[!neg]) + D(n[t].x) * n[t].d, t= n[t].ch[neg];
+   if (push(t), s= ol + n[n[t].ch[!neg]].a, l= s + n[t].d; p < s) t= n[t].ch[!neg];
+   else if (l < p) ol= l, ou+= n[n[t].ch[!neg]].s + D(n[t].x) * n[t].d, t= n[t].ch[neg];
    else {
-    if (o[neg]= l - p, o[!neg]= p - s; neg) y+= D(n[t].x) * s - (ou + sum(n[t].ch[!neg]));
-    else y-= D(n[t].x) * s - (ou + sum(n[t].ch[!neg]));
+    if (o[neg]= l - p, o[!neg]= p - s; neg) y+= D(n[t].x) * s - (ou + n[n[t].ch[!neg]].s);
+    else y-= D(n[t].x) * s - (ou + n[n[t].ch[!neg]].s);
     break;
    }
   }

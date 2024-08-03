@@ -16,7 +16,8 @@ jobs:
         id: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19']
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Git checkout
+      uses: actions/checkout@v3
       with:
         path: main
         fetch-depth: 0
@@ -47,28 +48,41 @@ jobs:
         echo ${TEST_FILES} > .verify-helper/targets.txt
         cat .verify-helper/targets.txt
 
+    - name: Cache judge data
+      if: ${{ !cancelled() && github.ref_name == github.event.repository.default_branch }}
+      id: cache-judge
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/online-judge-tools/library-checker-problems/
+          main/.verify-helper/cache/
+        key: verify-${{ hashFiles('main/verify/**/*.test.cpp', 'main/.verify-helper/targets.txt') }}
+
     - name: Run tests
       working-directory: main
       env:
+        CACHE_HIT: ${{ steps.cache-judge.outputs.cache-hit }}
         YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
       run: |
         set -eu
-        if [ ! -f ./.verify-helper/timestamps.remote.json ]; then
+
+        echo '{}' > ./.verify-helper/timestamps.json
+
+        if [ ! -f ./.verify-helper/timestamps.remote.json ] || [ "${CACHE_HIT}" != 'true' ]; then
           echo '{}' > ./.verify-helper/timestamps.remote.json
         fi
 
-        echo '{}' > ./.verify-helper/timestamps-${{ matrix.id }}.json
+        oj d https://judge.yosupo.jp/problem/aplusb &> /dev/null
 
-        function run() {
-          oj-verify run $1 --tle 5 || exit 1
-          cd .verify-helper
-          echo >> ./timestamps.remote.json
-          cat ./timestamps.remote.json >> ./timestamps-${{ matrix.id }}.json
-        }
-        export -f run
+        PARALLEL=$(nproc)
+        echo "Parallel execution: ${PARALLEL}"
 
         head -c -1 ./.verify-helper/targets.txt | \
-        xargs -t -I {} -d ' ' bash -c 'run {}'
+        xargs -P ${PARALLEL} -d ' ' -I {} bash ./.github/workflows/run-test.sh {}
+
+        jq --slurp --sort-keys 'reduce .[] as $item ({}; . * $item)' \
+        ./.verify-helper/timestamps.json > "./.verify-helper/timestamps-${{ matrix.id }}.json"
+        cat "./.verify-helper/timestamps-${{ matrix.id }}.json"
 
     - name: Save timestamps
       uses: actions/upload-artifact@v3
@@ -151,4 +165,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GH_PAT: ${{ secrets.GH_PAT }}
-      run: oj-verify docs --jobs $(nproc)
+      run: rm -r /home/runner/work/_temp/

@@ -85,7 +85,7 @@ template <class T> class PiecewiseLinearConvex {
  D calc_y(T x) {
   if (!mn) return 0;
   if (mn->x == x) return 0;
-  return x < mn->x ? calc_y<0>(mn->ch[0], x, o[0], D(mn->x) * o[0]) : calc_y<1>(mn->ch[1], x, o[1], D(mn->x) * o[1]);
+  return push(mn), x < mn->x ? calc_y<0>(mn->ch[0], x, o[0], D(mn->x) * o[0]) : calc_y<1>(mn->ch[1], x, o[1], D(mn->x) * o[1]);
  }
  void slope_lr(bool r) {
   np t= mn;

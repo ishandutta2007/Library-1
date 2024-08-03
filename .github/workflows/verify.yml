@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
   workflow_call:
     secrets:
+      DROPBOX_TOKEN:
       YUKICODER_TOKEN:
       GH_PAT:
         required: true
@@ -110,6 +111,7 @@ jobs:
       env:
         CACHE_HIT: ${{ steps.cache-judge.outputs.cache-hit }}
         YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+        DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
       run: |
         set -eu
 

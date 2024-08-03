@@ -33,7 +33,7 @@ jobs:
       working-directory: main
       run: |
         TEST_FILES=$(
-          find verify -type f -name '*.test.cpp' | \
+          find test -type f -name '*.test.cpp' | \
           sort | \
           awk -v n=${{ strategy.job-total }} \
               -v i=${{ strategy.job-index }} \

@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/950"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/950
 #include <iostream>
 #include "src/Math/ModInt_Runtime.hpp"
 #include "src/LinearAlgebra/Matrix.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/library/6/NTL/2/NTL_2_A"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/6/NTL/2/NTL_2_A
 #include <iostream>
 #include "src/FFT/BigInt.hpp"
 using namespace std;

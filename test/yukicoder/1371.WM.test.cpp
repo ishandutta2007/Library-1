@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1371"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1371
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/WaveletMatrix.hpp"

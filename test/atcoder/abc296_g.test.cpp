@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc296/tasks/abc296_g"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc296/tasks/abc296_g
 #include <iostream>
 #include "src/Geometry/IncrementalConvexHull.hpp"
 using namespace std;

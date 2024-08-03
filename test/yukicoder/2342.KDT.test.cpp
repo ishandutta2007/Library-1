@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/2342"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2342
 
 // 双対のverify
 

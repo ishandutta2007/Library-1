@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/0524"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/0524
 #include <iostream>
 #include <set>
 #include <vector>

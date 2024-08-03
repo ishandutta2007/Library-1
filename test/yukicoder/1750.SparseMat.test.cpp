@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1750"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1750
 // 疎行列の行列累乗
 #include <iostream>
 #include "src/Math/ModInt.hpp"

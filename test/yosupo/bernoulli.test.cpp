@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/bernoulli_number"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/bernoulli_number
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/sequences.hpp"

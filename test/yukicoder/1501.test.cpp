@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1501"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1501
 #include <iostream>
 #include "src/Math/Rational.hpp"
 using namespace std;

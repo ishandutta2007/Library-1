@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3176"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/3176
 #include <iostream>
 #include <vector>
 #include "src/Geometry/SegmentArrangement.hpp"

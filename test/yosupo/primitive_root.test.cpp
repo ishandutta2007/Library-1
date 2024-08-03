@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/primitive_root"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/primitive_root
 #include <iostream>
 #include "src/NumberTheory/OrderFp.hpp"
 using namespace std;

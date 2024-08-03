@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc337/tasks/abc337_g"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc337/tasks/abc337_g
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/WaveletMatrix.hpp"

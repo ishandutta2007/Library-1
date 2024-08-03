@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/discrete_logarithm_mod"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/discrete_logarithm_mod
 #include <iostream>
 #include "src/Math/ModInt_Runtime.hpp"
 #include "src/Math/DiscreteLogarithm.hpp"

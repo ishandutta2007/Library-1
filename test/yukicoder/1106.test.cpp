@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1106"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1106
 #include <iostream>
 #include <vector>
 #include "src/Misc/Automaton.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/952"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/952
 #include <iostream>
 #include <numeric>
 #include "src/Optimization/monotone_minima.hpp"

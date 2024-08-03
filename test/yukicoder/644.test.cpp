@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/644"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/644
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/NumberTheory/tables.hpp"

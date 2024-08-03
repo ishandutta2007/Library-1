@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/composition_of_formal_power_series"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/composition_of_formal_power_series
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/Polynomial.hpp"

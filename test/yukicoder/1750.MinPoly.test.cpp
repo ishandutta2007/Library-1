@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1750"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1750
 // 最小多項式を用いた行列累乗
 #include <iostream>
 #include "src/Math/ModInt.hpp"

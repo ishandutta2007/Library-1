@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/vertex_add_path_sum"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/vertex_add_path_sum
 #include <iostream>
 #include <vector>
 #include "src/Graph/Graph.hpp"

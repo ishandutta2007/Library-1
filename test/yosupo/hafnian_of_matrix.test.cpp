@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/hafnian_of_matrix"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/hafnian_of_matrix
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1260"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1260
 // O(√N)
 #include <iostream>
 #include "src/NumberTheory/enumerate_quotients.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/2/GRL_2_B"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/2/GRL_2_B
 #include <iostream>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/minimum_spanning_aborescence.hpp"

@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc174/tasks/abc174_f"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc174/tasks/abc174_f
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/DQuery.hpp"

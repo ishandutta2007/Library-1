@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2530"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2530
 // F_2 の線形方程式・カーネル
 #include <iostream>
 #include "src/LinearAlgebra/LU_Decomposition.hpp"

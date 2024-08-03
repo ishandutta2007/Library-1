@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/biconnected_components"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/biconnected_components
 #include <iostream>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/block_cut_tree.hpp"

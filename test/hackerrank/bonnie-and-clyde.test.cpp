@@ -1,4 +1,4 @@
-#define PROBLEM "https://www.hackerrank.com/contests/w33/challenges/bonnie-and-clyde"
+// competitive-verifier: PROBLEM https://www.hackerrank.com/contests/w33/challenges/bonnie-and-clyde
 #include <iostream>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/block_cut_tree.hpp"

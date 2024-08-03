@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc256/tasks/abc256_f"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc256/tasks/abc256_f
 // 双対 の verify
 #include <iostream>
 #include <array>

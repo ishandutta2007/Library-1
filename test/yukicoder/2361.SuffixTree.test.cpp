@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/2361"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2361
 #include <iostream>
 #include <vector>
 #include "src/String/SuffixTree.hpp"

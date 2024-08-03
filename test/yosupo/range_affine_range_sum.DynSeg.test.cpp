@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/range_affine_range_sum"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
 // 遅延伝搬のverify
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"

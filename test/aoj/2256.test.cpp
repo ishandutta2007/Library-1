@@ -1,6 +1,6 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/2256"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2256
 // Rational だと WA か TLE
-#define ERROR "0.000000001"
+// competitive-verifier: ERROR 0.000000001
 #include <iostream>
 #include <iomanip>
 #include <vector>

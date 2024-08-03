@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1625"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1625
 
 // 区間を二次元の点に変換するテク maxクエリ
 

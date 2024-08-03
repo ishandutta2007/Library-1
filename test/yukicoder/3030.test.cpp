@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/3030"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/3030
 #include <iostream>
 #include "src/NumberTheory/is_prime.hpp"
 

@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc133/tasks/abc133_f"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc133/tasks/abc133_f
 
 // 永続配列(at) の verify
 

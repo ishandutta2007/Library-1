@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/RUPC/2880"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/RUPC/2880
 #include <iostream>
 #include <array>
 #include <algorithm>

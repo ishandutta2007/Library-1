@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/0322"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/0322
 
 // multiset 使ったら MLE になった
 

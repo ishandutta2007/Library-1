@@ -1,4 +1,4 @@
-#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/problems/3170"
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/3170
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/SortedPerBucket.hpp"

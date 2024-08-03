@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/arc153/tasks/arc153_b"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/arc153/tasks/arc153_b
 
 // reverse の verify
 

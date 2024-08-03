@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1901"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1901
 #include <iostream>
 #include <vector>
 #include "src/Math/set_power_series.hpp"

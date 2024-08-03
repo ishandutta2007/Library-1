@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/range_kth_smallest"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_kth_smallest
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/WaveletMatrix.hpp"

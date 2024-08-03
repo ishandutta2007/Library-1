@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/counting_primes"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/counting_primes
 #include <iostream>
 #include "src/NumberTheory/sum_on_primes.hpp"
 using namespace std;

@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/658"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/658
 #include <iostream>
 #include <array>
 #include "src/Misc/Period.hpp"

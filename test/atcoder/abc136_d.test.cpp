@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc136/tasks/abc136_d"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc136/tasks/abc136_d
 #include <iostream>
 #include <vector>
 #include "src/FFT/BigInt.hpp"

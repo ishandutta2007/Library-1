@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/sequences.hpp"

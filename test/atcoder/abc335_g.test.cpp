@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc335/tasks/abc335_g"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc335/tasks/abc335_g
 #include <iostream>
 #include "src/NumberTheory/OrderFp.hpp"
 #include "src/NumberTheory/ArrayOnDivisors.hpp"

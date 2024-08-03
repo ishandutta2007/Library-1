@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/runenumerate"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/runenumerate
 #include <iostream>
 #include <string>
 #include "src/String/z_algorithm.hpp"

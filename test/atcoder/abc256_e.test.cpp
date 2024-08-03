@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc256/tasks/abc256_e"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc256/tasks/abc256_e
 #include <iostream>
 #include <vector>
 #include "src/Graph/Graph.hpp"

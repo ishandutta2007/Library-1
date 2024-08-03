@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc280/tasks/abc280_f"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc280/tasks/abc280_f
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/UnionFind_Potential.hpp"

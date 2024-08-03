@@ -1,4 +1,4 @@
-#define PROBLEM "https://yukicoder.me/problems/no/1533"
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1533
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/sparse_fps.hpp"

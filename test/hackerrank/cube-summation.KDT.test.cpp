@@ -1,4 +1,4 @@
-#define PROBLEM "https://www.hackerrank.com/challenges/cube-summation"
+// competitive-verifier: PROBLEM https://www.hackerrank.com/challenges/cube-summation
 #include <iostream>
 #include <set>
 #include <vector>

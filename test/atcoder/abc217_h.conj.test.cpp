@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc217/tasks/abc217_h"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc217/tasks/abc217_h
 #include <iostream>
 #include "src/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;

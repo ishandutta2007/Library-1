@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc135/tasks/abc135_d"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc135/tasks/abc135_d
 #include <iostream>
 #include <vector>
 #include "src/Misc/Automaton.hpp"

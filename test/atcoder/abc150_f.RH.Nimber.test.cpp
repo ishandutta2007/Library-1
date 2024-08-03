@@ -1,4 +1,4 @@
-#define PROBLEM "https://atcoder.jp/contests/abc150/tasks/abc150_f"
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc150/tasks/abc150_f
 #include <iostream>
 #include <vector>
 #include "src/String/RollingHash.hpp"

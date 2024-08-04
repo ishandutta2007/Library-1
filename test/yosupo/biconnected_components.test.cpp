@@ -10,7 +10,7 @@ signed main() {
  cin >> N >> M;
  Graph g(N, M);
  for (int i= 0; i < M; ++i) cin >> g[i];
- auto bct= block_cut_tree(g).adjecency_vertex(0);
+ auto bct= block_cut_tree(g).adjacency_vertex(0);
  int K= bct.size();
  cout << K - N << '\n';
  for (int i= N; i < K; ++i) {

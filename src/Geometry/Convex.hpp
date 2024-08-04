@@ -55,7 +55,7 @@ template <class K> struct Convex: Polygon<K> {
  }
  friend Affine<K>;
 };
-template <class K> pair<Point<K>, Point<K>> farthest_pair(const vector<Point<K>> &ps) { return Convex(ps).farthest_pair(); }
+template <class K> pair<Point<K>, Point<K>> farthest_pair(const vector<Point<K>> &ps) { return Convex<K>(ps).farthest_pair(); }
 template <class K> Convex<K> Affine<K>::operator()(const Convex<K> &c) {
  Convex<K> d;
  for (const auto &p: c) d.dat.emplace_back((*this)(p));

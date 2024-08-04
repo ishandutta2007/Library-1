@@ -76,7 +76,7 @@ template <class K> CCW ccw(const Point<K> &p0, const Point<K> &p1, const Point<K
 }
 template <class K> struct Line;
 template <class K> struct Segment;
-template <class K> struct Polygon;
+template <class K> class Polygon;
 template <class K> struct Convex;
 template <class K> struct Affine {
  K a00= 1, a01= 0, a10= 0, a11= 1;

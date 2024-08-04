@@ -6,7 +6,7 @@
 #include "src/DataStructure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 struct RSQ {
- using T= int;
+ using T= long long;
  static T op(T a, T b) { return a + b; }
  using commute= void;
 };

@@ -108,7 +108,7 @@ public:
   if constexpr (semigroup_v<M>) update(p);
  }
  void cut(int c, int p) {
-  evert(c), expose(p), assert(n[c].ch[0] == p), n[c].ch[0]= n[p].par= -1;
+  evert(p), expose(c), assert(n[c].ch[0] == p), n[c].ch[0]= n[p].par= -1;
   if constexpr (semigroup_v<M>) update(c);
  }
  int root(int x) {

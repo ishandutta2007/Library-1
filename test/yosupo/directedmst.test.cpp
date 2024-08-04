@@ -16,7 +16,7 @@ signed main() {
  auto [X, es]= minimum_spanning_aborescence(g, c, S);
  vector<int> p(N);
  p[S]= S;
- for (auto e: es) X+= c[e], p[g[e].second]= g[e].first;
+ for (auto e: es) p[g[e].second]= g[e].first;
  cout << X << '\n';
  for (int i= 0; i < N; ++i) cout << p[i] << " \n"[i + 1 == N];
  return 0;

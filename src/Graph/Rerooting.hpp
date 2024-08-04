@@ -1,4 +1,5 @@
 #pragma once
+#include <valarray>
 #include "src/Graph/HeavyLightDecomposition.hpp"
 // put_edge(int v, int e, T t) -> U
 // op(U l, U r) -> U
@@ -8,7 +9,7 @@ template <class T> class Rerooting {
  HeavyLightDecomposition hld;
  std::valarray<T> dp, dp1, dp2;
 public:
- template <class U, class F1, class F2, class F3> Rerooting(const Graph &g, const CSRArray<int> &adje, const HeavyLightDecomposition &hld, const F1 &put_edge, const F2 &op, const U &ui, const F3 &put_vertex): hld(hld) {
+ template <class U, class F1, class F2, class F3> Rerooting(const Graph &g, const CSRArray<int> &adje, const HeavyLightDecomposition &hld, const F1 &put_edge, const F2 &op, const U &ui, const F3 &put_vertex) : hld(hld){
   static_assert(std::is_invocable_r_v<U, F1, int, int, T>, "put_edge(int,int,T) is not invocable");
   static_assert(std::is_invocable_r_v<U, F2, U, U>, "op(U,U) is not invocable");
   static_assert(std::is_invocable_r_v<T, F3, int, U>, "put_vertex(int,U) is not invocable");

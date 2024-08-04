@@ -215,8 +215,8 @@ public:
   else if (slope_eval(); rem == 0) {
    if (mn) {
     if (o[rev] != 0) n[mn].d= o[rev], o[!rev]= 0, n[mn].ch[!rev]= 0;
-    else if (mn= n[mn].ch[rev]; mn) {
-     for (; n[mn].ch[!rev];) push(mn), mn= n[mn].ch[!rev];
+    else if (push(mn), mn= n[mn].ch[rev]; mn) {
+     for (; push(mn), n[mn].ch[!rev];) mn= n[mn].ch[!rev];
      splay(mn), o[rev]= n[mn].d, o[!rev]= 0, n[mn].ch[!rev]= 0;
     }
    }
@@ -277,7 +277,7 @@ public:
   bool r= o[0] == 0;
   if (!r && o[1] != 0) ret[0]= ret[1]= n[t].x;
   else if (ret[r]= n[t].x, t= n[t].ch[!r]; t) {
-   for (; n[t].ch[r];) push(t), t= n[t].ch[r];
+   for (; push(t), n[t].ch[r];) t= n[t].ch[r];
    splay(t), ret[!r]= n[t].x, mn= t, o[r]= 0, o[!r]= n[t].d;
   } else assert(bf[!r]);
   return ret;

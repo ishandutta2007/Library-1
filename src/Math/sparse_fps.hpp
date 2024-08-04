@@ -91,7 +91,7 @@ template <class mod_t> vector<mod_t> sqrt_of_div(const vector<mod_t>& f, const v
  vector<mod_t> F(N + 1);
  if (assert(y >= 0); x < 0) return F;
  if (assert(x >= y); (x - y) & 1) return {};  // no solution
- mod_t p0= f[x], ip= mod_t(1) / p0, iq= mod_t(1) / g[y], a= mod_sqrt(p0 * iq, mod_t::mod()), i2= mod_t(1) / 2;
+ mod_t p0= f[x], ip= mod_t(1) / p0, iq= mod_t(1) / g[y], a= mod_sqrt((p0 * iq).val(), mod_t::mod()), i2= mod_t(1) / 2;
  auto p= to_sfps(f, x + 1, N - o + x), q= to_sfps(g, y + 1, N - o + y);
  for (auto& [j, v]: p) v*= ip, j-= x;
  for (auto& [j, v]: q) v*= iq, j-= y;

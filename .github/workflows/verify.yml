@@ -26,6 +26,14 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
+
+      - name: free disk space
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker image ls -aq)
+          df -h
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -57,6 +65,7 @@ jobs:
         id: test-bundled
         run: |
           echo "count=$(find .competitive-verifier/bundled/ -type f | wc -l)" >> $GITHUB_OUTPUT
+
       - name: Upload bundled
         uses: actions/upload-artifact@v4
         if: steps.test-bundled.outputs.count > 0
@@ -65,13 +74,6 @@ jobs:
           path: .competitive-verifier/bundled
           retention-days: 1
 
-      - name: free disk space
-        run: |
-          sudo swapoff -a
-          sudo rm -f /swapfile
-          sudo apt clean
-          docker rmi $(docker image ls -aq)
-          df -h
 
   verify:
     runs-on: ubuntu-20.04
@@ -88,6 +90,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2147483647
+
+      - name: free disk space
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker image ls -aq)
+          df -h
 
       - name: Restore cached results
         if: ${{ ! inputs.ignore_prev_result }}

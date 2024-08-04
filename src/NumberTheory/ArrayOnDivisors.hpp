@@ -1,7 +1,7 @@
 #pragma once
 #include "src/NumberTheory/Factors.hpp"
 template <class Int, class T> struct ArrayOnDivisors {
- using Hint= std::conditional_t<sizeof(Int) == 64, unsigned, uint16_t>;
+ using Hint= std::conditional_t<sizeof(Int) == 8, unsigned, uint16_t>;
  Int n;
  uint8_t shift;
  std::vector<Hint> os, id;
@@ -23,10 +23,9 @@ public:
  ArrayOnDivisors() {}
  template <class Uint> ArrayOnDivisors(Int N, const Factors &factors, const std::vector<Uint> &divisors): n(N), shift(__builtin_clzll(divisors.size()) - 1), os((1 << (64 - shift)) + 1), id(divisors.size()), dat(divisors.size()), factors(factors) {
   static_assert(std::is_integral_v<Uint>, "Uint must be integral");
-  for (int i= divisors.size(); i--;) dat[i].first= divisors[i];
-  for (auto d: divisors) ++os[hash(d)];
-  std::partial_sum(os.begin(), os.end(), os.begin());
-  for (int i= divisors.size(); i--;) id[--os[hash(divisors[i])]]= i;
+  int m= divisors.size(), i= 0;
+  for (; i < m; ++i) ++os[hash(dat[i].first= divisors[i])];
+  for (std::partial_sum(os.begin(), os.end(), os.begin()); i--;) id[--os[hash(divisors[i])]]= i;
  }
  ArrayOnDivisors(Int N, const Factors &factors): ArrayOnDivisors(N, factors, enumerate_divisors(factors)) {}
  ArrayOnDivisors(Int N): ArrayOnDivisors(N, Factors(N)) {}

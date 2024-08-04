@@ -17,7 +17,7 @@ signed main() {
  using Data= tuple<int, Mint, Mint>;
  auto put_edge= [&](int, int e, const Data& d) {
   auto [d0, d1, d2]= d;
-  return Data{d0 + 1, d1 + w[e] * d0, d2 + w[e] * (d1 + d1 + w[e] * d0)};
+  return Data{d0 + 1, d1 + w[e] * (d0 + 1), d2 + w[e] * (d1 + d1 + w[e] * (d0 + 1))};
  };
  auto op= [&](const Data& l, const Data& r) {
   auto [l0, l1, l2]= l;

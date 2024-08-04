@@ -28,7 +28,7 @@ signed main() {
  for (int i= 0; i < N; ++i) cin >> S[i];
  for (int i= 0; i < N; ++i) cin >> C[i];
  Graph g(N, N - 1);
- for (int i= 0; i < N - 1; ++i) cin >> g[i];
+ for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
  HeavyLightDecomposition tree(g, 0);
  vector<typename Mono::T> vec(N);
  for (int v= 0; v < N; ++v) vec[tree.to_seq(v)]= {S[v], C[v]};

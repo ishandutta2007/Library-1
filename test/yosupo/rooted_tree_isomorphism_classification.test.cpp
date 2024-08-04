@@ -14,7 +14,7 @@ signed main() {
  cin >> N;
  Graph g(N);
  for (int i= 1, p; i < N; ++i) cin >> p, g.add_edge(p, i);
- auto adj= g.adjecency_vertex(1);
+ auto adj= g.adjacency_vertex(1);
  using Mint= ModInt<(1ll << 61) - 1>;
  using K= Pointwise<Mint, Mint>;
  vector<int> dep(N);

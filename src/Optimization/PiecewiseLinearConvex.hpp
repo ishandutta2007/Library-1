@@ -282,11 +282,12 @@ public:
   } else assert(bf[!r]);
   return ret;
  }
- size_t size() { return mn ? update(mn), n[mn].sz : 0; }
+ size_t size() const { return mn ? update(mn), n[mn].sz : 0; }
  PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &r) {
+  if (size() < r.size()) std::cerr << "WARNING: size() < r.size()\n" << std::flush;
   if (y+= r.y, rem+= r.rem; r.bf[0]) add_inf(false, r.bx[0]);
   if (r.bf[1]) add_inf(true, r.bx[1]);
-  if (r.mn) add_l(n[r.mn].ch[0]), add_r(n[r.mn].ch[1]), add_max(-r.o[0], r.o[1], n[r.mn].x);
+  if (r.mn) push(r.mn), add_l(n[r.mn].ch[0]), add_r(n[r.mn].ch[1]), add_max(-r.o[0], r.o[1], n[r.mn].x);
   return *this;
  }
 };

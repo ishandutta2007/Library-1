@@ -20,6 +20,7 @@ signed main() {
   for (int u: ct.children(v))
    if (u != -1) {
     self(self, u);
+    if (dp[v].size() < dp[u].size()) swap(dp[v], dp[u]);
     dp[v]+= dp[u];
    }
   dp[v].add_linear(B[v]);

@@ -23,7 +23,7 @@ int main() {
   cin >> x >> t >> y >> z;
   int dt= t - now;
   dt%= 2 * N;
-  if (dt > N) swap(rbstL, rbstR), dt-= N;
+  if (dt > N) swap(rbstL, rbstR), rbstL.reverse(), rbstR.reverse(), dt-= N;
   auto [Ll, Lr]= rbstL.split(dt);
   auto [Rl, Rr]= rbstR.split(N - dt);
   Ll.reverse(), Rr.reverse();

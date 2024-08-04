@@ -91,7 +91,8 @@ template <class mod_t> vector<mod_t> sqrt_of_div(const vector<mod_t>& f, const v
  vector<mod_t> F(N + 1);
  if (assert(y >= 0); x < 0) return F;
  if (assert(x >= y); (x - y) & 1) return {};  // no solution
- mod_t p0= f[x], ip= mod_t(1) / p0, iq= mod_t(1) / g[y], a= mod_sqrt((p0 * iq).val(), mod_t::mod()), i2= mod_t(1) / 2;
+ mod_t p0= f[x], ip= mod_t(1) / p0, iq= mod_t(1) / g[y], c= p0 * iq, a= mod_sqrt(c.val(), mod_t::mod()), i2= mod_t(1) / 2;
+ if (a * a != c) return {};  // no solution
  auto p= to_sfps(f, x + 1, N - o + x), q= to_sfps(g, y + 1, N - o + y);
  for (auto& [j, v]: p) v*= ip, j-= x;
  for (auto& [j, v]: q) v*= iq, j-= y;
@@ -104,11 +105,13 @@ template <class mod_t> vector<mod_t> log(vector<mod_t> f, int N) {
  assert(f[0] == mod_t(1));
  auto p= to_sfps(f, 1, N);
  f.resize(N + 1);
- for (int i= 1; i <= N; ++i, f[i]*= i)
+ for (int i= 2; i <= N; ++i) {
+  f[i]*= i;
   for (auto&& [j, v]: p) {
    if (i <= j) break;
    f[i]-= f[i - j] * v;
   }
+ }
  for (int i= 2; i <= N; ++i) f[i]*= FactorialPrecalculation<mod_t>::inv(i);
  return f[0]= 0, f;
 }

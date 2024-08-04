@@ -1,5 +1,5 @@
 ---
-title: Splay-Tree
+title: Randomized-Binary-Search-Tree
 documentation_of: ../../src/DataStructure/RandomizedBinarySearchTree.hpp
 ---
 単位元は必要なし（遅延側も）\

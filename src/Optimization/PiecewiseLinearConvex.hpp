@@ -213,7 +213,13 @@ public:
  void chmin_cum(bool rev= false) {
   if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
   else if (slope_eval(); rem == 0) {
-   if (mn) n[mn].d= o[rev], o[!rev]= 0, n[mn].ch[!rev]= 0;
+   if (mn) {
+    if (o[rev] != 0) n[mn].d= o[rev], o[!rev]= 0, n[mn].ch[!rev]= 0;
+    else if (mn= n[mn].ch[rev]; mn) {
+     for (; n[mn].ch[!rev];) push(mn), mn= n[mn].ch[!rev];
+     splay(mn), o[rev]= n[mn].d, o[!rev]= 0, n[mn].ch[!rev]= 0;
+    }
+   }
   } else if ((rem > 0) ^ rev) assert(bf[rev]), y+= D(rem) * bx[rev], rem= 0, mn= 0;
   else if (bf[!rev]) {
    T p= std::abs(rem);
@@ -272,7 +278,7 @@ public:
   if (!r && o[1] != 0) ret[0]= ret[1]= n[t].x;
   else if (ret[r]= n[t].x, t= n[t].ch[!r]; t) {
    for (; n[t].ch[r];) push(t), t= n[t].ch[r];
-   splay(t), ret[!r]= n[t].x, splay(mn);
+   splay(t), ret[!r]= n[t].x, mn= t, o[r]= 0, o[!r]= n[t].d;
   } else assert(bf[!r]);
   return ret;
  }

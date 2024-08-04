@@ -42,6 +42,7 @@ jobs:
         uses: competitive-verifier/actions/oj-resolve@v2
         with:
           output-path: verify_files.json
+          config: .competitive-verifier/config.toml
       - name: parse-doxygen
         uses: competitive-verifier/actions/parse-doxygen@v2
         with:
@@ -151,7 +152,7 @@ jobs:
           fi
         env:
           SRCDIR: .artifacts/Bundled-${{ runner.os }}
-          
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:

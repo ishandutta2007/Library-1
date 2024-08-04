@@ -19,9 +19,9 @@ int main() {
  vector<Mint> f(M + M + 1, 1);
  if (K <= M) f[M - K]= f[M + K]= 0;
  int lim= N * M;
- auto F= sparse_pow(f, N + 2, lim);
+ auto F= sfps::pow(f, N + 2, lim);
  f[M]-= s;
- F= sparse_div(F, f, lim), F= sparse_div(F, f, lim);
+ F= sfps::div(F, f, lim), F= sfps::div(F, f, lim);
  for (int i= 1; i < lim; i++) F[i]+= F[i - 1];
  cout << F[lim - 1] << '\n';
  return 0;

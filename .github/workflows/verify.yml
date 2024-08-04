@@ -65,6 +65,14 @@ jobs:
           path: .competitive-verifier/bundled
           retention-days: 1
 
+      - name: free disk space
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker image ls -aq)
+          df -h
+
   verify:
     runs-on: ubuntu-20.04
     needs: [setup]
@@ -122,6 +130,11 @@ jobs:
           name: Result-${{ runner.os }}-${{ matrix.index }}
           path: ${{runner.temp}}/result.json
           retention-days: 1
+
+      - name: Cleanup
+        run: |
+          rm -rf ${{ runner.temp }}/*
+          rm -rf ${{ github.workspace }}/*.json
 
   docs-and-check:
     runs-on: ubuntu-20.04

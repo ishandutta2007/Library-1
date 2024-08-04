@@ -46,11 +46,11 @@ signed main() {
    lct.set(u, make_pair(pq[u].top(), u));
   } else {
    int u= id[ibc.leader(--x)], v= id[ibc.leader(--y)];
-   auto [ans, v]= lct.fold(u, v);
+   auto [ans, w]= lct.prod(u, v);
    cout << ans << '\n';
    if (ans != -1) {
-    pq[v].pop();
-    lct.set(v, make_pair(pq[v].top(), v));
+    pq[w].pop();
+    lct.set(w, make_pair(pq[w].top(), w));
    }
   }
  }

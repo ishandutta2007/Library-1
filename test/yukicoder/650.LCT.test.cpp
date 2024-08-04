@@ -38,7 +38,7 @@ int main() {
   } else {
    int i, j;
    cin >> i >> j;
-   auto ans= lct.fold(i, j);
+   auto ans= lct.prod(i, j);
    cout << ans[0][0] << " " << ans[0][1] << " " << ans[1][0] << " " << ans[1][1] << '\n';
   }
  }

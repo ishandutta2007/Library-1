@@ -3,9 +3,9 @@
 class TwoSatisfiability {
  int n;
  Graph g;
- inline int neg(int x) const { return x >= n ? x - n : x + n; }
 public:
  TwoSatisfiability(int n): n(n), g(n + n) {}
+ inline int neg(int x) const { return x >= n ? x - n : x + n; }
  void add_if(int u, int v) { g.add_edge(u, v), g.add_edge(neg(v), neg(u)); }  // u -> v <=> !v -> !u
  void add_or(int u, int v) { add_if(neg(u), v); }                             // u or v <=> !u -> v
  void add_nand(int u, int v) { add_if(u, neg(v)); }                           // u nand v <=> u -> !v

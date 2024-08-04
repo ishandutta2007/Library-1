@@ -38,7 +38,8 @@ template <class T= int> vector<T> totient_table(int N) {
  vector<T> ret(N + 1);
  set_lfe(N), ret[1]= 1;
  for (int n= 3, i= 1; n <= N; n+= 2, ++i) ret[n]= lfw[i] == n ? lf[i] == n ? n - 1 : ret[n / lf[i]] * lf[i] : ret[lfw[i]] * ret[n / lfw[i]];
- for (int n= 2; n <= N; n+= 2) ret[n]= ret[n >> 1];
+ for (int n= 2; n <= N; n+= 4) ret[n]= ret[n >> 1];
+ for (int n= 4; n <= N; n+= 4) ret[n]= ret[n >> 1] << 1;
  return ret;
 }
 }

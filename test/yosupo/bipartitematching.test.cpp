@@ -13,7 +13,7 @@ signed main() {
  cout << ans.size() << '\n';
  for (int e: ans) {
   auto [l, r]= bg[e];
-  cout << l << " " << r << '\n';
+  cout << l << " " << r - L << '\n';
  }
  return 0;
 }

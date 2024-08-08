@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/segment_add_get_min
+// competitive-verifier: TLE 1
 #include <iostream>
 #include "src/Optimization/LiChaoTree.hpp"
 using namespace std;
@@ -12,7 +13,7 @@ signed main() {
  while (N--) {
   long long l, r, a, b;
   cin >> l >> r >> a >> b;
-  cht.insert(l, r, a, b);
+  cht.insert(a, b, l, r);
  }
  while (Q--) {
   bool op;

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2603
+// competitive-verifier: TLE 1
 #include <iostream>
 #include <algorithm>
 #include "src/Optimization/monotone_minima.hpp"
@@ -27,11 +28,7 @@ signed main() {
  fill_n(dp, n + 1, 1e9);
  dp[0]= 0;
  for (int _= m; _--;) {
-  auto select= [&](int i, int j, int k) {
-   if (i < k) return false;
-   if (i < j) return true;
-   return dp[j] + w(i, j) > dp[k] + w(i, k);
-  };
+  auto select= [&](int i, int j, int k) { return dp[j] + w(i, j) > dp[k] + w(i, k); };
   auto id= monotone_minima(n + 1, n + 1, select);
   for (int i= n; i > 0; --i) {
    int j= id[i];

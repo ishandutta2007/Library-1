@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/952
+// competitive-verifier: TLE 1
 #include <iostream>
 #include <numeric>
 #include "src/Optimization/LiChaoTree.hpp"
@@ -13,7 +14,7 @@ signed main() {
  long long S[N + 1], dp[N + 2], ans[N];
  S[0]= 0;
  for (int i= 0; i < N; ++i) S[i + 1]= S[i] + A[i];
- static constexpr long long INF= 1e18;
+ static constexpr long long INF= 1e17;
  fill_n(dp, N + 2, INF), dp[0]= 0;
  auto w= [&](int i, int j) { return (S[i] - S[j]) * (S[i] - S[j]); };
  for (int l= N; l--;) {
@@ -21,8 +22,8 @@ signed main() {
   LiChaoTree lct(f, 1, N + 2);
   auto tree= lct.make_tree<MINIMIZE>();
   long long ndp[N + 2];
-  for (int i= 0; i < N + 2; ++i) {
-   tree.insert(i);
+  for (int i= 1; i < N + 2; ++i) {
+   tree.insert(i - 1);
    ndp[i]= tree.query(i).first;
   }
   ndp[0]= INF;

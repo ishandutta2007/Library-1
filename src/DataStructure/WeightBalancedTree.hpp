@@ -39,7 +39,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  using E= typename nullptr_or_E<M>::type;
  using WBT= WeightBalancedTree;
  static inline int nmi= 1, nli= 1;
- static constexpr size_t M_SIZE= LEAF_SIZE * (persistent && (dual_v<M> || reversible) ? 10 : 32 - __builtin_clz(len));
+ static constexpr size_t M_SIZE= LEAF_SIZE * (persistent && (dual_v<M> || reversible) ? 10 : 20);
  static constexpr size_t L_SIZE= persistent && (dual_v<M> || reversible) ? LEAF_SIZE * 10 : LEAF_SIZE;
  static inline NodeM nm[M_SIZE];
  static inline T nl[L_SIZE];

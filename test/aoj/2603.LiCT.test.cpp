@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2603
+// competitive-verifier: TLE 1
 #include <iostream>
 #include <algorithm>
 #include "src/Optimization/LiChaoTree.hpp"
@@ -30,10 +31,9 @@ signed main() {
   LiChaoTree lct([&](int i, int j) { return dp[j] + w(i, j); }, 1, n + 1);
   auto tree= lct.make_tree<MINIMIZE>();
   int ndp[n + 1];
-  tree.insert(0);
   for (int i= 1; i <= n; ++i) {
+   tree.insert(i - 1);
    ndp[i]= tree.query(i).first;
-   if (i < n) tree.insert(i);
   }
   ndp[0]= 0, copy_n(ndp, n + 1, dp);
  }

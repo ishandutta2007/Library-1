@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1595
+// competitive-verifier: TLE 1
 #include <iostream>
 #include <array>
 #include "src/Misc/Period.hpp"
@@ -10,7 +11,7 @@ signed main() {
  auto f= [](const Dat &x) -> Dat { return {x[1], x[2], (x[0] + x[1] + x[2]) % 10}; };
  int p, q, r;
  cin >> p >> q >> r;
- Dat init= {p, q, r};
+ Dat init= {p % 10, q % 10, r % 10};
  Period<Dat> period(f, {init});
  long long K;
  cin >> K;

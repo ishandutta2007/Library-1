@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1901
+// competitive-verifier: TLE 3
 #include <iostream>
 #include <vector>
 #include "src/Math/set_power_series.hpp"
@@ -23,6 +24,6 @@ signed main() {
    for (int k= 0; k < N; ++k) c[i + j][k]+= a[i][k] * b[j][k];
  for (int i= 64; i--;) sps::hadamard(c[i]);
  for (int i= 0; i < N; ++i)
-  for (int j= 0; j < 64; ++j) cout << ((c[j][i] >> n) & 1) << " \n"[j == 63];
+  for (int j= 0; j < 63; ++j) cout << ((c[j][i] >> n) & 1) << " \n"[j == 62];
  return 0;
 }

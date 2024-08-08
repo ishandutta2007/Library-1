@@ -52,7 +52,7 @@ public:
  template <class Int, class= std::void_t<decltype(std::declval<Int>() % std::declval<int>())>> T jump(const T &x, Int k) const {
   Iter it= this->mp.find(x);
   assert(it != this->mp.end());
-  int v= it->second, n= t.size(), d= hld.depth(v) - 1;
+  int v= it->second, d= hld.depth(v) - 1;
   if (k <= d) return dc[hld.la(v, (int)k)];
   int b= t[v= rt[v]], l= (k-= d) % hld.depth(b);
   if (l == 0) return dc[v];

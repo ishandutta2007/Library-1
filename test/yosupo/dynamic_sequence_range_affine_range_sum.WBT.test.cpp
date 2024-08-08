@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum
+// competitive-verifier: TLE 2
 
 // insert, erase, reverse, apply, prod の verify
 
@@ -24,7 +25,8 @@ signed main() {
  cin >> N >> Q;
  Mint a[N];
  for (int i= 0; i < N; i++) cin >> a[i];
- WeightBalancedTree<RaffineRsumQ, true> wbt(a, a + N);
+ using WBT= WeightBalancedTree<RaffineRsumQ, true>;
+ WBT wbt(a, a + N);
  for (int q= 0; q < Q; q++) {
   int op;
   cin >> op;
@@ -48,6 +50,11 @@ signed main() {
    int l, r;
    cin >> l >> r;
    cout << wbt.prod(l, r) << '\n';
+  }
+  if (WBT::pool_empty()) {
+   auto dmp= wbt.dump();
+   WBT::reset();
+   wbt= WBT(dmp);
   }
  }
  return 0;

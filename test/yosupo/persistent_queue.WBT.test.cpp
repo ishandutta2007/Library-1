@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/persistent_queue
+// competitive-verifier: TLE 2
 
 // 永続性のverify
 
@@ -11,7 +12,7 @@ signed main() {
  ios::sync_with_stdio(0);
  int Q;
  cin >> Q;
- vector<WeightBalancedTree<int>> S(Q + 1);
+ vector<WeightBalancedTree<int, false, true>> S(Q + 1);
  for (int i= 1; i <= Q; ++i) {
   int op, t;
   cin >> op >> t;

@@ -94,22 +94,22 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    _push(t, l), _push(t, r), t->sz&= 0x3fffffff;
   }
  }
- template <bool b> static inline int helper(std::array<int, 2> m) {
+ template <bool b> static inline int helper(int m[2]) {
   if constexpr (dual_v<M> || reversible) push(m[b]);
   int c;
-  if constexpr (b) c= _merge({m[0], nm[m[1]].ch[0]});
-  else c= _merge({nm[m[0]].ch[1], m[1]});
+  if constexpr (b) c= _merge(m[0], nm[m[1]].ch[0]);
+  else c= _merge(nm[m[0]].ch[1], m[1]);
   if constexpr (persistent) nm[nmi]= nm[m[b]], m[b]= nmi++;
   if (size(nm[m[b]].ch[b]) * 4 >= msize(c)) return nm[m[b]].ch[!b]= c, update(m[b]), m[b];
   return nm[m[b]].ch[!b]= nm[c].ch[b], update(nm[c].ch[b]= m[b]), update(c), c;
  }
- static inline int _merge(std::array<int, 2> m) {
-  int lsz= size(m[0]), rsz= size(m[1]);
-  if (lsz > rsz * 4) return helper<0>(m);
-  if (rsz > lsz * 4) return helper<1>(m);
-  return nm[nmi]= NodeM{m[0], m[1]}, update(nmi), nmi++;
+ static inline int _merge(int l, int r) {
+  int lsz= size(r), rsz= size(r);
+  if (lsz > rsz * 4) return helper<0>({l, r});
+  if (rsz > lsz * 4) return helper<1>({l, r});
+  return nm[nmi]= NodeM{l, r}, update(nmi), nmi++;
  }
- static inline int merge(int l, int r) { return !l ? r : !r ? l : _merge({l, r}); }
+ static inline int merge(int l, int r) { return !l ? r : !r ? l : _merge(l, r); }
  static inline std::pair<int, int> _split(int i, size_t k) {
   if constexpr (dual_v<M> || reversible) push(i);
   auto t= nm + i;
@@ -117,10 +117,10 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   if (size_t lsz= size(l); k == lsz) return {l, r};
   else if (k < lsz) {
    auto [ll, lr]= _split(l, k);
-   return {ll, _merge({lr, r})};
+   return {ll, _merge(lr, r)};
   } else {
    auto [rl, rr]= _split(r, k - lsz);
-   return {_merge({l, rl}), rr};
+   return {_merge(l, rl), rr};
   }
  }
  static inline std::pair<int, int> split(int i, size_t k) {

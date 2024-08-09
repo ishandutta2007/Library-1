@@ -63,7 +63,7 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
   if constexpr (r) return b < a;
   else return a < b;
  }
- template <bool r> inline D calc_y(int t, T x, T ol, T ou) {
+ template <bool r> static inline D calc_y(int t, T x, T ol, T ou) {
   if (t) {
    for (int s;; t= s) {
     if (push(t); lt<r>(n[t].x, x)) s= n[t].ch[!r];
@@ -83,12 +83,12 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
  bool bf[2];
  T o[2], rem, bx[2];
  D y;
- D calc_y(T x) {
+ inline D calc_y(T x) {
   if (!mn) return 0;
   if (n[mn].x == x) return 0;
   return push(mn), x < n[mn].x ? calc_y<0>(n[mn].ch[0], x, o[0], D(n[mn].x) * o[0]) : calc_y<1>(n[mn].ch[1], x, o[1], D(n[mn].x) * o[1]);
  }
- void slope_lr(bool r) {
+ inline void slope_lr(bool r) {
   int t= mn;
   if (!t) return;
   for (; push(t), n[t].ch[r];) t= n[t].ch[r];
@@ -96,7 +96,7 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
   T q= o[r] + n[n[mn].ch[r]].a;
   splay(mn= t), o[r]= 0, o[!r]= n[t].d, r ? (y-= p, rem+= q) : (y+= p, rem-= q);
  }
- void slope_eval() {
+ inline void slope_eval() {
   if (rem == 0 || !mn) return;
   bool neg= rem < 0;
   T p= neg ? -rem : rem, ol= 0;
@@ -118,7 +118,7 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
   }
   splay(mn= t), y+= D(n[t].x) * rem, rem= 0;
  }
- template <bool r> void add_inf(T x0) {
+ template <bool r> inline void add_inf(T x0) {
   if (bf[r] && !lt<r>(bx[r], x0)) return;
   if (assert(!bf[!r] || !lt<r>(bx[!r], x0)), bf[r]= true, bx[r]= x0; !mn) return;
   if (slope_lr(!r); !lt<r>(x0, n[mn].x)) return mn= 0, void();

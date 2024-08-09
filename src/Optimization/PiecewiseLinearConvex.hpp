@@ -28,7 +28,6 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
  static inline Node n[NODE_SIZE];
  static inline void info(int t, int d, std::stringstream &ss) {
   if (!t) return;
-  // push(t);
   info(n[t].ch[0], d + 1, ss);
   for (int i= 0; i < d; ++i) ss << "   ";
   ss << " ■ " << n[t] << '\n', info(n[t].ch[1], d + 1, ss);
@@ -43,17 +42,12 @@ template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseL
   if (t) push(t), dump_slopes_r(n[t].ch[0], ofs, as), ofs+= n[n[t].ch[0]].a + n[t].d, as.push_back(ofs), dump_slopes_r(n[t].ch[1], ofs, as);
  }
  static inline void update(int t) {
-  n[t].sz= 1, n[t].a= n[t].d, n[t].s= D(n[t].x) * n[t].d;
-  if (int l= n[t].ch[0]; l) n[t].sz+= n[l].sz, n[t].a+= n[l].a, n[t].s+= n[l].s;
-  if (int r= n[t].ch[1]; r) n[t].sz+= n[r].sz, n[t].a+= n[r].a, n[t].s+= n[r].s;
+  int l= n[t].ch[0], r= n[t].ch[1];
+  n[t].sz= 1 + n[l].sz + n[r].sz, n[t].a= n[t].d + n[l].a + n[r].a, n[t].s= D(n[t].x) * n[t].d + n[l].s + n[r].s;
  }
  static inline void prop(int t, T v) { n[t].z+= v, n[t].s+= D(v) * n[t].a, n[t].x+= v; }
  static inline void push(int t) {
-  if (n[t].z != 0) {
-   if (n[t].ch[0]) prop(n[t].ch[0], n[t].z);
-   if (n[t].ch[1]) prop(n[t].ch[1], n[t].z);
-   n[t].z= 0;
-  }
+  if (n[t].z != 0) prop(n[t].ch[0], n[t].z), prop(n[t].ch[1], n[t].z), n[t].z= 0;
  }
  static inline void rot(int t) {
   int p= n[t].par;
@@ -283,11 +277,11 @@ public:
   return ret;
  }
  size_t size() const { return mn ? update(mn), n[mn].sz : 0; }
- PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &r) {
-  if (size() < r.size()) std::cerr << "WARNING: size() < r.size()\n" << std::flush;
-  if (y+= r.y, rem+= r.rem; r.bf[0]) add_inf(false, r.bx[0]);
-  if (r.bf[1]) add_inf(true, r.bx[1]);
-  if (r.mn) push(r.mn), add_l(n[r.mn].ch[0]), add_r(n[r.mn].ch[1]), add_max(-r.o[0], r.o[1], n[r.mn].x);
+ PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &g) {
+  if (size() < g.size()) std::cerr << "WARNING: size() < g.size()\n" << std::flush;
+  if (y+= g.y, rem+= g.rem; g.bf[0]) add_inf(false, g.bx[0]);
+  if (g.bf[1]) add_inf(true, g.bx[1]);
+  if (g.mn) push(g.mn), add_l(n[g.mn].ch[0]), add_r(n[g.mn].ch[1]), add_max(-g.o[0], g.o[1], n[g.mn].x);
   return *this;
  }
 };

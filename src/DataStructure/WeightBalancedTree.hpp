@@ -94,7 +94,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    _push(t, l), _push(t, r), t->sz&= 0x3fffffff;
   }
  }
- template <bool b> static inline int helper(std::array<int, 2> &m) {
+ template <bool b> static inline int helper(std::array<int, 2> m) {
   if constexpr (dual_v<M> || reversible) push(m[b]);
   int c;
   if constexpr (b) c= _merge({m[0], nm[m[1]].ch[0]});

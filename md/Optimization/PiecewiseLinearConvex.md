@@ -1,15 +1,15 @@
 ---
 title: 区分線形凸関数
-documentation_of: ../../src/Optimizatin/PiecewiseLinearConvex.hpp
+documentation_of: ../../src/Optimization/PiecewiseLinearConvex.hpp
 ---
 
 ## `PiecewiseLinearConvex<T>` クラス
-splay木でがんばった．一般の min-plus 畳み込みとかはない．\
+weight balanced tree でがんばった．一般の min-plus 畳み込みとかはない．\
 メモリプールしている．static 関数 `clear` でノードリセット．
 
 内部では $y$ 座標の相当する値を `T` より大きい型 `D` で管理している．例えば `T=long long` なら `D=__int128_t` とか．
 
-区分線形凸関数 $f$ の接点の数を $n$ とする．splay木なので計算量はならし
+区分線形凸関数 $f$ の接点の数を $n$ とする. 
 
 | メンバ関数  | 内容| 計算量 |
 | --- | ---| --- |

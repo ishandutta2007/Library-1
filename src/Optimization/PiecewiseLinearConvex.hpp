@@ -91,8 +91,9 @@ public:
  }
  static inline int insert(int t, T x, T d) {
   if (!t) return n[ni]= Node{{0, 0}, 0, x, d, d, D(x) * d, 1}, ni++;
+  push(t);
   if (n[t].x == x) return n[t].d+= d, update(t), t;
-  return push(t), x < n[t].x ? join(insert(n[t].ch[0], x, d), t, n[t].ch[1]) : join(n[t].ch[0], t, insert(n[t].ch[1], x, d));
+  return x < n[t].x ? join(insert(n[t].ch[0], x, d), t, n[t].ch[1]) : join(n[t].ch[0], t, insert(n[t].ch[1], x, d));
  }
  static inline std::array<int, 2> popB(int t) {
   push(t);
@@ -355,10 +356,10 @@ public:
   return ret;
  }
  size_t size() { return n[lr[0]].sz + n[lr[1]].sz + !!mn; }
- PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &r) {
-  if (y+= r.y, rem+= r.rem; r.bf[0]) add_inf(false, r.bx[0]);
-  if (r.bf[1]) add_inf(true, r.bx[1]);
-  if (r.mn) add_l(n[r.mn].ch[0]), add_r(n[r.mn].ch[1]), add_max(-r.o[0], r.o[1], n[r.mn].x);
+ PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &g) {
+  if (y+= g.y, rem+= g.rem; g.bf[0]) add_inf(false, g.bx[0]);
+  if (g.bf[1]) add_inf(true, g.bx[1]);
+  if (g.mn) add_l(g.lr[0]), add_r(g.lr[1]), add_max(-g.o[0], g.o[1], n[g.mn].x);
   return *this;
  }
 };

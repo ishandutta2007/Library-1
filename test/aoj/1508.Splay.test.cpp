@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1508
-
+// competitive-verifier: TL 1
 // split3, push_front, pop_back, operator+, prod, set の verify
 
 #include <iostream>

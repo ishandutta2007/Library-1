@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/396
+// competitive-verifier: TL 1
 
 // reverse, split, + の verify
 

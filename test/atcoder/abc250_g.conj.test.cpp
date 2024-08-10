@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc250/tasks/abc250_g
-// competitive-verifier: TL 1
+// competitive-verifier: TLE 1
 #include <iostream>
 #include "src/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;

@@ -170,25 +170,23 @@ public:
   y-= D(n[t].x) * s - (ou + n[n[t].ch[1]].s);
   return {n[t].ch[0], t, n[t].ch[1]};
  }
- inline void slope_l() {
-  D p= n[lr[0]].s + D(n[mn].x) * o[0];
-  T q= o[0] + n[lr[0]].a;
-  y+= p, rem-= q;
-  if (lr[0]) {
-   auto [a, b]= popF(lr[0]);
-   lr[1]= join(b, mn, lr[1]), mn= a, lr[0]= 0;
+ inline void slope_lr(bool r) {
+  D p= n[lr[r]].s + D(n[mn].x) * o[r];
+  T q= o[r] + n[lr[r]].a;
+  if (r) {
+   y-= p, rem+= q;
+   if (lr[1]) {
+    auto [a, b]= popB(lr[1]);
+    lr[0]= join(lr[0], mn, a), mn= b, lr[1]= 0;
+   }
+  } else {
+   y+= p, rem-= q;
+   if (lr[0]) {
+    auto [a, b]= popF(lr[0]);
+    lr[1]= join(b, mn, lr[1]), mn= a, lr[0]= 0;
+   }
   }
-  o[0]= 0, o[1]= n[mn].d;
- }
- inline void slope_r() {
-  D p= n[lr[1]].s + D(n[mn].x) * o[1];
-  T q= o[1] + n[lr[1]].a;
-  y-= p, rem+= q;
-  if (lr[1]) {
-   auto [a, b]= popB(lr[1]);
-   lr[0]= join(lr[0], mn, a), mn= b, lr[1]= 0;
-  }
-  o[0]= n[mn].d, o[1]= 0;
+  o[!r]= n[mn].d, o[r]= 0;
  }
  inline void slope_eval() {
   if (rem == 0 || !mn) return;
@@ -200,7 +198,7 @@ public:
   }
   D ou= D(n[mn].x) * ol;
   int t= lr[neg];
-  if (ol + n[t].a < p) return neg ? slope_r() : slope_l();
+  if (ol + n[t].a < p) return slope_lr(neg);
   if (neg) {
    auto [a, b, c]= splitR(t, p, ol, ou);
    y+= D(n[b].x) * rem, rem= 0;
@@ -214,7 +212,7 @@ public:
  template <bool r> void add_inf(T x0) {
   if (bf[r] && !lt<r>(bx[r], x0)) return;
   if (assert(!bf[!r] || !lt<r>(bx[!r], x0)), bf[r]= true, bx[r]= x0; !mn) return;
-  if (r ? slope_l() : slope_r(); !lt<r>(x0, n[mn].x)) return mn= lr[0]= lr[1]= 0, void();
+  if (slope_lr(!r); !lt<r>(x0, n[mn].x)) return mn= lr[0]= lr[1]= 0, void();
   lr[r]= cut<r>(lr[r], x0);
  }
  void add_r(int t) {
@@ -234,7 +232,7 @@ public:
   }
   return ss.str();
  }
- static void clear() { ni= 1; }
+ static void reset() { ni= 1; }
  // f(x) += c
  void add_const(D c) { y+= c; }
  // f(x) += ax, /

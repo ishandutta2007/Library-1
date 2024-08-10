@@ -25,7 +25,7 @@ signed main() {
  cin >> N >> Q;
  Mint a[N];
  for (int i= 0; i < N; i++) cin >> a[i];
- using WBT= WeightBalancedTree<RaffineRsumQ, true>;
+ using WBT= WeightBalancedTree<RaffineRsumQ, true, false, 1 << 20>;
  WBT wbt(a, a + N);
  for (int q= 0; q < Q; q++) {
   int op;

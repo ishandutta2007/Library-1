@@ -95,11 +95,13 @@ public:
   return push(t), x < n[t].x ? join(insert(n[t].ch[0], x, d), t, n[t].ch[1]) : join(n[t].ch[0], t, insert(n[t].ch[1], x, d));
  }
  static inline std::array<int, 2> popB(int t) {
+  push(t);
   if (!n[t].ch[1]) return {n[t].ch[0], t};
   auto [a, b]= popB(n[t].ch[1]);
   return {join(n[t].ch[0], t, a), b};
  }
  static inline std::array<int, 2> popF(int t) {
+  push(t);
   if (!n[t].ch[0]) return {t, n[t].ch[1]};
   auto [a, b]= popF(n[t].ch[0]);
   return {a, join(b, t, n[t].ch[1])};
@@ -110,6 +112,7 @@ public:
  }
  template <bool r> static inline int cut(int t, T x) {
   if (!t) return t;
+  push(t);
   if (n[t].x == x) return n[t].ch[!r];
   if (lt<r>(n[t].x, x)) return cut<r>(n[t].ch[!r], x);
   if constexpr (r) return join(n[t].ch[0], t, cut<1>(n[t].ch[1], x));

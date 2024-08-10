@@ -102,7 +102,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    _push(t, l), _push(t, r), t->sz&= 0x3fffffff;
   }
  }
- template <bool b> static inline int helper(int m[2]) {
+ template <bool b> static inline int helper(std::array<int, 2> m) {
   if constexpr (dual_v<M> || reversible) push(m[b]);
   int c;
   if constexpr (b) c= _merge(m[0], nm[m[1]].ch[0]);
@@ -113,8 +113,8 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  }
  static inline int _merge(int l, int r) {
   int lsz= size(r), rsz= size(r);
-  if (lsz > rsz * 4) return helper<0>((int[]){l, r});
-  if (rsz > lsz * 4) return helper<1>((int[]){l, r});
+  if (lsz > rsz * 4) return helper<0>({l, r});
+  if (rsz > lsz * 4) return helper<1>({l, r});
   return nm[nmi]= NodeM(l, r), update(nmi), nmi++;
  }
  static inline int merge(int l, int r) { return !l ? r : !r ? l : _merge(l, r); }

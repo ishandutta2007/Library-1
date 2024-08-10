@@ -119,7 +119,7 @@ public:
   if constexpr (r) return join(n[t].ch[0], t, cut<1>(n[t].ch[1], x));
   else return join(cut<0>(n[t].ch[0], x), t, n[t].ch[1]);
  }
- template <bool r> static inline D calc_y(int t, T x, T ol, T ou) {
+ template <bool r> static inline D calc_y(int t, T x, T ol, D ou) {
   for (; t;) {
    if (push(t); lt<r>(n[t].x, x)) t= n[t].ch[!r];
    else {
@@ -139,7 +139,7 @@ public:
   if (n[mn].x == x) return 0;
   return x < n[mn].x ? -calc_y<0>(lr[0], x, o[0], D(n[mn].x) * o[0]) : calc_y<1>(lr[1], x, o[1], D(n[mn].x) * o[1]);
  }
- inline std::array<int, 3> splitR(int t, T p, T ol, T ou) {
+ inline std::array<int, 3> splitR(int t, T p, T ol, D ou) {
   push(t);
   T s= ol + n[n[t].ch[0]].a;
   if (p < s) {
@@ -155,7 +155,7 @@ public:
   y+= D(n[t].x) * s - (ou + n[n[t].ch[0]].s);
   return {n[t].ch[0], t, n[t].ch[1]};
  }
- inline std::array<int, 3> splitL(int t, T p, T ol, T ou) {
+ inline std::array<int, 3> splitL(int t, T p, T ol, D ou) {
   push(t);
   T s= ol + n[n[t].ch[1]].a;
   if (p < s) {
@@ -271,7 +271,7 @@ public:
   else if (slope_eval(); rem == 0) {
    if (mn) {
     if (o[rev] != 0) n[mn].d= o[rev], o[!rev]= 0, lr[!rev]= 0;
-    else {
+    else if (lr[rev]) {
      if (rev) {
       auto [a, b]= popF(lr[1]);
       mn= a, lr[1]= b;

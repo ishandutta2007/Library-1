@@ -20,26 +20,18 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  _DETECT_TYPE(nullptr_or_E, typename T::E, std::nullptr_t, typename T::E);
  _DETECT_TYPE(myself_or_T, typename T::T, T, typename T::T);
  struct NodeMB {
-  NodeMB(int l= 0, int r= 0): ch{l, r}, sz(0) {}
   std::array<int, 2> ch;
   size_t sz;
  };
- template <class D, bool du> struct NodeMD: NodeMB {
-  using NodeMB::NodeMB;
- };
+ template <class D, bool du> struct NodeMD: NodeMB {};
  template <class D> struct NodeMD<D, 1>: NodeMB {
-  using NodeMB::NodeMB;
   typename M::E laz;
  };
  template <class D, bool sg, bool rev, bool com> struct NodeMS: NodeMD<D, dual_v<M>> {
-  using NodeMD<D, dual_v<M>>::NodeMD;
   typename M::T sum;
  };
- template <class D, bool rev, bool com> struct NodeMS<D, 0, rev, com>: NodeMD<D, dual_v<M>> {
-  using NodeMD<D, dual_v<M>>::NodeMD;
- };
+ template <class D, bool rev, bool com> struct NodeMS<D, 0, rev, com>: NodeMD<D, dual_v<M>> {};
  template <class D> struct NodeMS<D, 1, 1, 0>: NodeMD<D, dual_v<M>> {
-  using NodeMD<D, dual_v<M>>::NodeMD;
   typename M::T sum, rsum;
  };
  using NodeM= NodeMS<void, semigroup_v<M>, reversible, commute_v<M>>;
@@ -115,7 +107,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   int lsz= size(l), rsz= size(r);
   if (lsz > rsz * 4) return helper<0>({l, r});
   if (rsz > lsz * 4) return helper<1>({l, r});
-  return nm[nmi]= NodeM(l, r), update(nmi), nmi++;
+  return nm[nmi].ch= {l, r}, update(nmi), nmi++;
  }
  static inline int merge(int l, int r) { return !l ? r : !r ? l : merge_(l, r); }
  static inline std::pair<int, int> split_(int i, size_t k) {
@@ -142,7 +134,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    else return nl[nli]= *(bg + l), -nli++;
   }
   size_t m= (l + r) / 2, i= nmi++;
-  return nm[i]= NodeM(build(l, m, bg), build(m, r, bg)), update(i), i;
+  return nm[i].ch= {build(l, m, bg), build(m, r, bg)}, update(i), i;
  }
  static inline void dump(int i, typename std::vector<T>::iterator it) {
   if (i < 0) *it= nl[-i];

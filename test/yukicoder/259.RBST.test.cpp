@@ -1,10 +1,10 @@
-// competitive-verifier: PROBLEM https://yukicoder.me/problems/396
+// competitive-verifier: PROBLEM https://yukicoder.me/problems/no/259
 // competitive-verifier: TL 1
 
 // reverse, split, + の verify
 
 #include <iostream>
-#include "src/DataStructure/SplayTree.hpp"
+#include "src/DataStructure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;
@@ -16,7 +16,7 @@ int main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- SplayTree<RSQ, true> stL(N, 0), stR(N, 0);
+ RandomizedBinarySearchTree<RSQ, true> rbstL(N, 0), rbstR(N, 0);
  int now= 0;
  while (Q--) {
   char x;
@@ -24,18 +24,18 @@ int main() {
   cin >> x >> t >> y >> z;
   int dt= t - now;
   dt%= 2 * N;
-  if (dt > N) swap(stL, stR), stL.reverse(), stR.reverse(), dt-= N;
-  auto [Ll, Lr]= stL.split(dt);
-  auto [Rl, Rr]= stR.split(N - dt);
+  if (dt > N) swap(rbstL, rbstR), rbstL.reverse(), rbstR.reverse(), dt-= N;
+  auto [Ll, Lr]= rbstL.split(dt);
+  auto [Rl, Rr]= rbstR.split(N - dt);
   Ll.reverse(), Rr.reverse();
-  stL= Lr + Rr;
-  stR= Ll + Rl;
+  rbstL= Lr + Rr;
+  rbstR= Ll + Rl;
   if (x == 'L') {
-   stL.mul(y, z);
+   rbstL.mul(y, z);
   } else if (x == 'R') {
-   stR.mul(y, z);
+   rbstR.mul(y, z);
   } else {
-   cout << stL.prod(y, z) + stR.prod(y, z) << '\n';
+   cout << rbstL.prod(y, z) + rbstR.prod(y, z) << '\n';
   }
   now= t;
  }

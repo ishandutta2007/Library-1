@@ -10,7 +10,7 @@ namespace wbt_internal {
 #ifdef __LOCAL
 static constexpr size_t __LEAF_SIZE= 1 << 15;
 #else
-static constexpr size_t __LEAF_SIZE= 1 << 20;
+static constexpr size_t __LEAF_SIZE= 1 << 19;
 #endif
 }
 template <class M, bool reversible= false, bool persistent= false, size_t LEAF_SIZE= wbt_internal::__LEAF_SIZE> class WeightBalancedTree {
@@ -105,36 +105,36 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  template <bool b> static inline int helper(std::array<int, 2> m) {
   if constexpr (dual_v<M> || reversible) push(m[b]);
   int c;
-  if constexpr (b) c= _merge(m[0], nm[m[1]].ch[0]);
-  else c= _merge(nm[m[0]].ch[1], m[1]);
+  if constexpr (b) c= merge_(m[0], nm[m[1]].ch[0]);
+  else c= merge_(nm[m[0]].ch[1], m[1]);
   if constexpr (persistent) nm[nmi]= nm[m[b]], m[b]= nmi++;
   if (size(nm[m[b]].ch[b]) * 4 >= msize(c)) return nm[m[b]].ch[!b]= c, update(m[b]), m[b];
   return nm[m[b]].ch[!b]= nm[c].ch[b], update(nm[c].ch[b]= m[b]), update(c), c;
  }
- static inline int _merge(int l, int r) {
-  int lsz= size(r), rsz= size(r);
+ static inline int merge_(int l, int r) {
+  int lsz= size(l), rsz= size(r);
   if (lsz > rsz * 4) return helper<0>({l, r});
   if (rsz > lsz * 4) return helper<1>({l, r});
   return nm[nmi]= NodeM(l, r), update(nmi), nmi++;
  }
- static inline int merge(int l, int r) { return !l ? r : !r ? l : _merge(l, r); }
- static inline std::pair<int, int> _split(int i, size_t k) {
+ static inline int merge(int l, int r) { return !l ? r : !r ? l : merge_(l, r); }
+ static inline std::pair<int, int> split_(int i, size_t k) {
   if constexpr (dual_v<M> || reversible) push(i);
   auto t= nm + i;
   auto [l, r]= t->ch;
   if (size_t lsz= size(l); k == lsz) return {l, r};
   else if (k < lsz) {
-   auto [ll, lr]= _split(l, k);
-   return {ll, _merge(lr, r)};
+   auto [ll, lr]= split_(l, k);
+   return {ll, merge_(lr, r)};
   } else {
-   auto [rl, rr]= _split(r, k - lsz);
-   return {_merge(l, rl), rr};
+   auto [rl, rr]= split_(r, k - lsz);
+   return {merge_(l, rl), rr};
   }
  }
  static inline std::pair<int, int> split(int i, size_t k) {
   if (k == 0) return {0, i};
   if (k >= size(i)) return {i, 0};
-  return _split(i, k);
+  return split_(i, k);
  }
  template <class S> static inline int build(size_t l, size_t r, const S &bg) {
   if (r - l == 1) {
@@ -318,6 +318,6 @@ public:
  }
  static bool pool_empty() {
   if constexpr (persistent && (dual_v<M> || reversible)) return nmi + LEAF_SIZE >= M_SIZE || nli + LEAF_SIZE >= L_SIZE;
-  else return nmi + 1000 >= M_SIZE || nli + 1000 >= L_SIZE;
+  else return nmi + 1000u >= M_SIZE || nli + 1000u >= L_SIZE;
  }
 };

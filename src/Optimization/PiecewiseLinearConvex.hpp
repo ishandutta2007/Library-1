@@ -104,21 +104,16 @@ public:
   auto [a, b]= popF(n[t].ch[0]);
   return {a, join(b, t, n[t].ch[1])};
  }
- static inline int cutL(int t, T x) {
-  if (!t) return t;
-  if (n[t].x == x) return n[t].ch[1];
-  if (n[t].x < x) return cutL(n[t].ch[1], x);
-  return join(cutL(n[t].ch[0], x), t, n[t].ch[1]);
- }
- static inline int cutR(int t, T x) {
-  if (!t) return t;
-  if (n[t].x == x) return n[t].ch[0];
-  if (x < n[t].x) return cutR(n[t].ch[0], x);
-  return join(n[t].ch[0], t, cutR(n[t].ch[1], x));
- }
  template <bool r> static inline bool lt(T a, T b) {
   if constexpr (r) return b < a;
   else return a < b;
+ }
+ template <bool r> static inline int cut(int t, T x) {
+  if (!t) return t;
+  if (n[t].x == x) return n[t].ch[!r];
+  if (lt<r>(n[t].x, x)) return cut<r>(n[t].ch[!r], x);
+  if constexpr (r) return join(n[t].ch[0], t, cut<1>(n[t].ch[1], x));
+  else return join(cut<0>(n[t].ch[0], x), t, n[t].ch[1]);
  }
  template <bool r> static inline D calc_y(int t, T x, T ol, T ou) {
   for (; t;) {
@@ -217,8 +212,7 @@ public:
   if (bf[r] && !lt<r>(bx[r], x0)) return;
   if (assert(!bf[!r] || !lt<r>(bx[!r], x0)), bf[r]= true, bx[r]= x0; !mn) return;
   if (r ? slope_l() : slope_r(); !lt<r>(x0, n[mn].x)) return mn= lr[0]= lr[1]= 0, void();
-  if (r) lr[1]= cutR(lr[1], x0);
-  else lr[0]= cutL(lr[0], x0);
+  lr[r]= cut<r>(lr[r], x0);
  }
  void add_r(int t) {
   if (t) push(t), add_r(n[t].ch[0]), add_max(0, n[t].d, n[t].x), add_r(n[t].ch[1]);
@@ -359,7 +353,7 @@ public:
   } else assert(bf[!r]);
   return ret;
  }
- size_t size() { return n[lr[0]].sz + m[lr[1]].sz + !!mn; }
+ size_t size() { return n[lr[0]].sz + n[lr[1]].sz + !!mn; }
  PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &r) {
   if (y+= r.y, rem+= r.rem; r.bf[0]) add_inf(false, r.bx[0]);
   if (r.bf[1]) add_inf(true, r.bx[1]);

@@ -28,7 +28,7 @@ signed main() {
    if (i < n - 1) f.add_abs(vec[i + 1] - vec[i], 0);
   }
   cout << (long long)f(0) << '\n';
-  PLC::clear();
+  PLC::reset();
  }
  return 0;
 }

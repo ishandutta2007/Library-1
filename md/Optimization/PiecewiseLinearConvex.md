@@ -5,7 +5,7 @@ documentation_of: ../../src/Optimization/PiecewiseLinearConvex.hpp
 
 ## `PiecewiseLinearConvex<T>` クラス
 weight balanced tree でがんばった．一般の min-plus 畳み込みとかはない．\
-メモリプールしている．static 関数 `clear` でノードリセット．
+メモリプールしている．static 関数 `reset` でノードリセット．
 
 内部では $y$ 座標の相当する値を `T` より大きい型 `D` で管理している．例えば `T=long long` なら `D=__int128_t` とか．
 

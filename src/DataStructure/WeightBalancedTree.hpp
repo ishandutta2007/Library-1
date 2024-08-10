@@ -10,7 +10,7 @@ namespace wbt_internal {
 #ifdef __LOCAL
 static constexpr size_t __LEAF_SIZE= 1 << 15;
 #else
-static constexpr size_t __LEAF_SIZE= 1 << 19;
+static constexpr size_t __LEAF_SIZE= 1 << 20;
 #endif
 }
 template <class M, bool reversible= false, bool persistent= false, size_t LEAF_SIZE= wbt_internal::__LEAF_SIZE> class WeightBalancedTree {
@@ -47,7 +47,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  using E= typename nullptr_or_E<M>::type;
  using WBT= WeightBalancedTree;
  static inline int nmi= 1, nli= 1;
- static constexpr size_t M_SIZE= LEAF_SIZE * (persistent && (dual_v<M> || reversible) ? 10 : 20);
+ static constexpr size_t M_SIZE= LEAF_SIZE * 10;
  static constexpr size_t L_SIZE= persistent && (dual_v<M> || reversible) ? LEAF_SIZE * 10 : LEAF_SIZE;
  static inline NodeM nm[M_SIZE];
  static inline T nl[L_SIZE];

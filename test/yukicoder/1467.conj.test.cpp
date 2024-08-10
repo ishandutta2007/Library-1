@@ -29,7 +29,7 @@ signed main() {
    if (i < n - 1) f.chmin_slide_win(-c, c);
   }
   cout << (long long)-f.min() << '\n';
-  PLC::clear();
+  PLC::reset();
  }
  return 0;
 }

@@ -130,6 +130,38 @@ public:
   }
   return D(x) * ol - ou;
  }
+ static inline std::array<int, 3> splitR(int t, T p, T &ol, D &ou) {
+  push(t);
+  T s= ol + n[n[t].ch[0]].a;
+  if (p < s) {
+   auto [a, b, c]= splitR(n[t].ch[0], p, ol, ou);
+   return {a, b, join(c, t, n[t].ch[1])};
+  }
+  ol= s + n[t].d;
+  if (ol < p) {
+   ou+= n[n[t].ch[0]].s + D(n[t].x) * n[t].d;
+   auto [a, b, c]= splitR(n[t].ch[1], p, ol, ou);
+   return {join(n[t].ch[0], t, a), b, c};
+  }
+  ou+= n[n[t].ch[0]].s;
+  return {n[t].ch[0], t, n[t].ch[1]};
+ }
+ static inline std::array<int, 3> splitL(int t, T p, T &ol, D &ou) {
+  push(t);
+  T s= ol + n[n[t].ch[1]].a;
+  if (p < s) {
+   auto [a, b, c]= splitL(n[t].ch[1], p, ol, ou);
+   return {join(n[t].ch[0], t, a), b, c};
+  }
+  ol= s + n[t].d;
+  if (ol < p) {
+   ou+= n[n[t].ch[1]].s + D(n[t].x) * n[t].d;
+   auto [a, b, c]= splitL(n[t].ch[0], p, ol, ou);
+   return {a, b, join(c, t, n[t].ch[1])};
+  }
+  ou+= n[n[t].ch[1]].s;
+  return {n[t].ch[0], t, n[t].ch[1]};
+ }
  int mn, lr[2];
  bool bf[2];
  T o[2], rem, bx[2];
@@ -139,38 +171,6 @@ public:
   if (n[mn].x == x) return 0;
   return x < n[mn].x ? -calc_y<0>(lr[0], x, o[0], D(n[mn].x) * o[0]) : calc_y<1>(lr[1], x, o[1], D(n[mn].x) * o[1]);
  }
- inline std::array<int, 3> splitR(int t, T p, T ol, D ou) {
-  push(t);
-  T s= ol + n[n[t].ch[0]].a;
-  if (p < s) {
-   auto [a, b, c]= splitR(n[t].ch[0], p, ol, ou);
-   return {a, b, join(c, t, n[t].ch[1])};
-  }
-  T l= s + n[t].d;
-  if (l < p) {
-   auto [a, b, c]= splitR(n[t].ch[1], p, l, ou + n[n[t].ch[0]].s + D(n[t].x) * n[t].d);
-   return {join(n[t].ch[0], t, a), b, c};
-  }
-  o[1]= l - p, o[0]= p - s;
-  y+= D(n[t].x) * s - (ou + n[n[t].ch[0]].s);
-  return {n[t].ch[0], t, n[t].ch[1]};
- }
- inline std::array<int, 3> splitL(int t, T p, T ol, D ou) {
-  push(t);
-  T s= ol + n[n[t].ch[1]].a;
-  if (p < s) {
-   auto [a, b, c]= splitL(n[t].ch[1], p, ol, ou);
-   return {join(n[t].ch[0], t, a), b, c};
-  }
-  T l= s + n[t].d;
-  if (l < p) {
-   auto [a, b, c]= splitL(n[t].ch[0], p, l, ou + n[n[t].ch[1]].s + D(n[t].x) * n[t].d);
-   return {a, b, join(c, t, n[t].ch[1])};
-  }
-  o[0]= l - p, o[1]= p - s;
-  y-= D(n[t].x) * s - (ou + n[n[t].ch[1]].s);
-  return {n[t].ch[0], t, n[t].ch[1]};
- }
  inline void slope_eval() {
   bool neg= rem < 0;
   T p= neg ? -rem : rem, ol= o[neg];
@@ -178,17 +178,19 @@ public:
    o[neg]-= p, o[!neg]+= p, y+= D(n[mn].x) * rem, rem= 0;
    return;
   }
-  int t= lr[neg];
   D ou= D(n[mn].x) * ol;
   if (neg) {
-   auto [a, b, c]= splitR(t, p, ol, ou);
-   y+= D(n[b].x) * rem, rem= 0;
+   auto [a, b, c]= splitR(lr[neg], p, ol, ou);
+   o[1]= ol - p, ol-= n[b].d, o[0]= p - ol;
+   y-= D(n[b].x) * o[0] + ou;
    lr[0]= join(lr[0], mn, a), mn= b, lr[1]= c;
   } else {
-   auto [a, b, c]= splitL(t, p, ol, ou);
-   y+= D(n[b].x) * rem, rem= 0;
+   auto [a, b, c]= splitL(lr[neg], p, ol, ou);
+   o[0]= ol - p, ol-= n[b].d, o[1]= p - ol;
+   y+= D(n[b].x) * o[1] + ou;
    lr[1]= join(c, mn, lr[1]), mn= b, lr[0]= a;
   }
+  rem= 0;
  }
  template <bool r> void add_inf(T x0) {
   if (bf[r] && !lt<r>(bx[r], x0)) return;

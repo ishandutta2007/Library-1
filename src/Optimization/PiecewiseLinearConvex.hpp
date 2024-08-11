@@ -197,9 +197,9 @@ public:
    o[neg]-= p, o[!neg]+= p, y+= D(n[mn].x) * rem, rem= 0;
    return;
   }
-  D ou= D(n[mn].x) * ol;
   int t= lr[neg];
   if (ol + n[t].a < p) return slope_lr(neg);
+  D ou= D(n[mn].x) * ol;
   if (neg) {
    auto [a, b, c]= splitR(t, p, ol, ou);
    y+= D(n[b].x) * rem, rem= 0;
@@ -350,7 +350,17 @@ public:
   bx[0]+= lb, bx[1]+= ub;
  }
  D operator()(T x) { return assert(!bf[0] || bx[0] <= x), assert(!bf[1] || x <= bx[1]), calc_y(x) + D(rem) * x + y; }
- D min() { return slope_eval(), rem == 0 ? y : rem > 0 ? (assert(bf[0]), y + D(rem) * bx[0]) : (assert(bf[1]), y + D(rem) * bx[1]); }
+ D min() {
+  if (rem == 0) return y;
+  bool r= rem < 0;
+  T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
+  if (0 < u) {
+   assert(bf[r]);
+   D p= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
+   return r ? y - p : y + p;
+  }
+  return slope_eval(), y;
+ }
  std::array<T, 2> argmin() {
   slope_eval();
   if (rem > 0) {

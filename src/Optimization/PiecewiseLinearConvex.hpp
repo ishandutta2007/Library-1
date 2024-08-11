@@ -300,8 +300,8 @@ public:
         y+= q;
         if (mn) lr[!r]= join(lr[r], mn, lr[!r]);
        }
-       n[mn= ni++]= Node{{0, 0}, 0, bx[r], u, u, D(bx[r]) * u, 1};
        lr[r]= 0, o[!r]= u, o[r]= 0, rem= 0;
+       n[mn= ni++]= Node{{0, 0}, 0, bx[r], u, u, D(bx[r]) * u, 1};
       }
      } else {
       assert(bf[r]);
@@ -333,7 +333,33 @@ public:
  void chmin_slide_win(T lb, T ub) {
   assert(lb <= ub);
   if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
-  else if (slope_eval(); rem == 0) {
+  else {
+   if (rem != 0) {
+    bool r= rem < 0;
+    T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
+    if (0 < u) {
+     T b[2]= {lb, ub};
+     D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
+     if (bf[r]) {
+      if (r) {
+       y-= q;
+       if (mn) lr[!r]= join(lr[!r], mn, lr[r]);
+      } else {
+       y+= q;
+       if (mn) lr[!r]= join(lr[r], mn, lr[!r]);
+      }
+      lr[r]= 0, rem= 0, o[!r]= u, o[r]= 0;
+      n[mn= ni++]= Node{{0, 0}, 0, bx[r] + b[!r], u, 0, 0, 1};
+      prop(lr[!r], b[!r]);
+     } else {
+      y-= D(rem) * b[!r];
+      if (mn) n[mn].x+= b[!r], prop(lr[0], b[!r]), prop(lr[1], b[!r]);
+     }
+     bx[0]+= lb, bx[1]+= ub;
+     return;
+    }
+    slope_eval();
+   }
    if (mn) {
     if (o[0] == 0) {
      n[mn].x+= ub;
@@ -348,18 +374,6 @@ public:
     }
     prop(lr[0], lb), prop(lr[1], ub);
    }
-  } else {
-   bool r= rem > 0;
-   T b[2]= {lb, ub};
-   if (bf[!r]) {
-    T p= r ? rem : -rem;
-    if (mn) {
-     if (r) lr[1]= join(0, mn, lr[1]);
-     else lr[0]= join(lr[0], mn, 0);
-    }
-    n[mn= ni++]= Node{{0, 0}, 0, bx[!r], p, 0, 0, 1};
-    y+= D(rem) * bx[!r], rem= 0, n[mn].x+= b[r], prop(lr[r], b[r]), o[r]= p, o[!r]= 0;
-   } else if (y-= D(rem) * b[r]; mn) n[mn].x+= b[r], prop(lr[r], b[r]);
   }
   bx[0]+= lb, bx[1]+= ub;
  }

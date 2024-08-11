@@ -140,6 +140,33 @@ public:
   ou+= n[n[t].ch[!r]].s;
   return {n[t].ch[0], t, n[t].ch[1]};
  }
+ template <bool l> static inline bool lte(T a, T b) {
+  if constexpr (l) return a < b;
+  else return a <= b;
+ }
+ template <bool l, bool r> static inline std::pair<int, int> split_cum(int t, T p, T &ol, D &ou) {
+  push(t);
+  T s= ol + n[n[t].ch[!r]].a;
+  if (lte<l>(p, s)) {
+   if constexpr (l) {
+    auto [c, b]= split_cum<l, r>(n[t].ch[!r], p, ol, ou);
+    if constexpr (r) return {join(c, t, n[t].ch[r]), b};
+    else return {join(n[t].ch[r], t, c), b};
+   } else return split_cum<l, r>(n[t].ch[!r], p, ol, ou);
+  }
+  ol= s + n[t].d;
+  if (lte<!l>(ol, p)) {
+   ou+= n[n[t].ch[!r]].s + D(n[t].x) * n[t].d;
+   if constexpr (l) return split_cum<l, r>(n[t].ch[r], p, ol, ou);
+   else {
+    auto [a, b]= split_cum<l, r>(n[t].ch[r], p, ol, ou);
+    if constexpr (r) return {join(n[t].ch[!r], t, a), b};
+    else return {join(a, t, n[t].ch[!r]), b};
+   }
+  }
+  ou+= n[n[t].ch[!r]].s;
+  return {n[t].ch[!r ^ l], t};
+ }
  int mn, lr[2];
  bool bf[2];
  T o[2], rem, bx[2];
@@ -161,6 +188,23 @@ public:
    mn= b;
   }
   rem= 0;
+ }
+ template <bool l, bool neg> inline void slope_eval_cum() {
+  T p= neg ? -rem : rem, ol= o[neg];
+  if (lte<l>(p, ol)) o[neg]-= p, o[!neg]+= p, y+= D(n[mn].x) * rem;
+  else {
+   D ou= D(n[mn].x) * ol;
+   auto [a, b]= split_cum<l, neg>(lr[neg], p, ol, ou);
+   o[neg]= ol - p, ol-= n[b].d, ou+= D(n[b].x) * (o[!neg]= p - ol);
+   if constexpr (l) lr[neg]= a;
+   else {
+    if constexpr (neg) lr[!neg]= join(lr[!neg], mn, a);
+    else lr[!neg]= join(a, mn, lr[!neg]);
+   }
+   if constexpr (neg) y-= ou;
+   else y+= ou;
+   mn= b;
+  }
  }
  template <bool r> void add_inf(T x0) {
   if (bf[r] && !lt<r>(bx[r], x0)) return;
@@ -228,8 +272,8 @@ public:
  void chmin_cum(bool rev= false) {
   if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
   else {
+   bool r= rem < 0;
    if (rem != 0) {
-    bool r= rem < 0;
     T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
     if (0 < u) {
      if (r ^ rev) {
@@ -247,11 +291,12 @@ public:
      bf[!rev]= false;
      return;
     }
-    slope_eval(r);
    }
    if (mn) {
-    if (o[rev] != 0) n[mn].d= o[rev], o[!rev]= 0, lr[!rev]= 0;
-    else if (lr[rev]) (std::tie(lr[rev], mn)= rev ? pop<0>(lr[rev]) : pop<1>(lr[rev])), lr[!rev]= 0, o[rev]= n[mn].d, o[!rev]= 0;
+    if (r ^ rev) r ? slope_eval_cum<0, 1>() : slope_eval_cum<0, 0>();
+    else r ? slope_eval_cum<1, 1>() : slope_eval_cum<1, 0>();
+    assert(o[rev] > 0);
+    rem= 0, n[mn].d= o[rev], o[!rev]= 0, lr[!rev]= 0;
    }
   }
   bf[!rev]= false;

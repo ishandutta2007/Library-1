@@ -213,8 +213,25 @@ public:
  template <bool r> void add_inf(T x0) {
   if (bf[r] && !lt<r>(bx[r], x0)) return;
   if (assert(!bf[!r] || !lt<r>(bx[!r], x0)), bf[r]= true, bx[r]= x0; !mn) return;
-  if (slope_lr(!r); !lt<r>(x0, n[mn].x)) return mn= lr[0]= lr[1]= 0, void();
-  lr[r]= cut<r>(lr[r], x0);
+  if (lt<r>(x0, n[mn].x)) return lr[r]= cut<r>(lr[r], x0), void();
+  D p= n[lr[!r]].s + D(n[mn].x) * o[!r];
+  T q= o[!r] + n[lr[!r]].a;
+  if (!r) {
+   y-= p, rem+= q;
+   lr[1]= cut<0>(lr[1], x0);
+   if (lr[1]) {
+    auto [a, b]= popB(lr[1]);
+    lr[0]= a, mn= b, lr[1]= 0;
+   } else mn= lr[0]= 0;
+  } else {
+   y+= p, rem-= q;
+   lr[0]= cut<1>(lr[0], x0);
+   if (lr[0]) {
+    auto [a, b]= popF(lr[0]);
+    lr[1]= b, mn= a, lr[0]= 0;
+   } else mn= lr[1]= 0;
+  }
+  o[r]= n[mn].d, o[!r]= 0;
  }
  void add_r(int t) {
   if (t) push(t), add_r(n[t].ch[0]), add_max(0, n[t].d, n[t].x), add_r(n[t].ch[1]);

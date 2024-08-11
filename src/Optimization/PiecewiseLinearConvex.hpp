@@ -240,7 +240,7 @@ public:
   if (t) push(t), add_l(n[t].ch[0]), add_max(-n[t].d, 0, n[t].x), add_l(n[t].ch[1]);
  }
 public:
- PiecewiseLinearConvex(): mn(0), lr{0, 0}, bf{0, 0}, rem(0), y(0) {}
+ PiecewiseLinearConvex(): mn(0), lr{0, 0}, bf{0, 0}, o{0, 0}, rem(0), y(0) {}
  std::string info() {
   std::stringstream ss;
   if (ss << "\n rem:" << rem << ", y:" << y << ", mn:" << mn << ", lr:{" << lr[0] << ", " << lr[1] << "}\n bf[0]:" << bf[0] << ", bf[1]:" << bf[1] << ", bx[0]:" << bx[0] << ", bx[1]:" << bx[1] << "\n " << "o[0]:" << o[0] << ", o[1]:" << o[1] << "\n"; mn) {
@@ -285,7 +285,34 @@ public:
  // rev=false: f(x) <- min_{y<=x} f(y), rev=true : f(x) <- min_{x<=y} f(y)
  void chmin_cum(bool rev= false) {
   if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
-  else if (slope_eval(); rem == 0) {
+  else {
+   if (rem != 0) {
+    bool r= rem < 0;
+    T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
+    if (0 < u) {
+     if (r ^ rev) {
+      if (bf[r]) {
+       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
+       if (r) {
+        y-= q;
+        if (mn) lr[!r]= join(lr[!r], mn, lr[r]);
+       } else {
+        y+= q;
+        if (mn) lr[!r]= join(lr[r], mn, lr[!r]);
+       }
+       n[mn= ni++]= Node{{0, 0}, 0, bx[r], u, u, D(bx[r]) * u, 1};
+       lr[r]= 0, o[!r]= u, o[r]= 0, rem= 0;
+      }
+     } else {
+      assert(bf[r]);
+      D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
+      (r ? y-= q : y+= q), rem= 0, mn= lr[0]= lr[1]= 0, o[0]= o[1]= 0;
+     }
+     bf[!rev]= false;
+     return;
+    }
+    slope_eval();
+   }
    if (mn) {
     if (o[rev] != 0) n[mn].d= o[rev], o[!rev]= 0, lr[!rev]= 0;
     else if (lr[rev]) {
@@ -299,19 +326,6 @@ public:
      lr[!rev]= 0, o[rev]= n[mn].d, o[!rev]= 0;
     }
    }
-  } else if ((rem > 0) ^ rev) assert(bf[rev]), y+= D(rem) * bx[rev], rem= 0, mn= lr[0]= lr[1]= 0;
-  else if (bf[!rev]) {
-   T p= std::abs(rem);
-   if (mn) {
-    if (rev) {
-     lr[1]= join(0, mn, lr[1]);
-    } else {
-     lr[0]= join(lr[0], mn, 0);
-    }
-   }
-   n[mn= ni++]= Node{{0, 0}, 0, bx[!rev], p, p, D(bx[!rev]) * p, 1};
-   lr[!rev]= 0;
-   o[rev]= p, o[!rev]= 0, y+= D(rem) * bx[!rev], rem= 0;
   }
   bf[!rev]= false;
  }
@@ -356,20 +370,18 @@ public:
   T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
   if (0 < u) {
    assert(bf[r]);
-   D p= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
-   return r ? y - p : y + p;
+   D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
+   return r ? y - q : y + q;
   }
   return slope_eval(), y;
  }
  std::array<T, 2> argmin() {
-  slope_eval();
-  if (rem > 0) {
-   assert(bf[0]);
-   return {bx[0], bx[0]};
-  }
-  if (rem < 0) {
-   assert(bf[1]);
-   return {bx[1], bx[1]};
+  if (rem != 0) {
+   if (bool r= rem < 0; o[r] + n[lr[r]].a < (r ? -rem : rem)) {
+    assert(bf[r]);
+    return {bx[r], bx[r]};
+   }
+   slope_eval();
   }
   std::array<T, 2> ret= {bx[0], bx[1]};
   int t= mn;

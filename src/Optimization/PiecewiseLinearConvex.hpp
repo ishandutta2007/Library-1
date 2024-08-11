@@ -91,21 +91,14 @@ public:
  }
  static inline int insert(int t, T x, T d) {
   if (!t) return n[ni]= Node{{0, 0}, 0, x, d, d, D(x) * d, 1}, ni++;
-  push(t);
-  if (n[t].x == x) return n[t].d+= d, update(t), t;
+  if (push(t); n[t].x == x) return n[t].d+= d, update(t), t;
   return x < n[t].x ? join(insert(n[t].ch[0], x, d), t, n[t].ch[1]) : join(n[t].ch[0], t, insert(n[t].ch[1], x, d));
  }
- static inline std::array<int, 2> popB(int t) {
-  push(t);
-  if (!n[t].ch[1]) return {n[t].ch[0], t};
-  auto [a, b]= popB(n[t].ch[1]);
-  return {join(n[t].ch[0], t, a), b};
- }
- static inline std::array<int, 2> popF(int t) {
-  push(t);
-  if (!n[t].ch[0]) return {t, n[t].ch[1]};
-  auto [a, b]= popF(n[t].ch[0]);
-  return {a, join(b, t, n[t].ch[1])};
+ template <bool r> static inline std::pair<int, int> pop(int t) {
+  if (push(t); !n[t].ch[r]) return {n[t].ch[!r], t};
+  auto [a, s]= pop<r>(n[t].ch[r]);
+  if constexpr (r) return {join(n[t].ch[!r], t, a), s};
+  else return {join(a, t, n[t].ch[!r]), s};
  }
  template <bool r> static inline bool lt(T a, T b) {
   if constexpr (r) return b < a;
@@ -113,8 +106,7 @@ public:
  }
  template <bool r> static inline int cut(int t, T x) {
   if (!t) return t;
-  push(t);
-  if (n[t].x == x) return n[t].ch[!r];
+  if (push(t); n[t].x == x) return n[t].ch[!r];
   if (lt<r>(n[t].x, x)) return cut<r>(n[t].ch[!r], x);
   if constexpr (r) return join(n[t].ch[0], t, cut<1>(n[t].ch[1], x));
   else return join(cut<0>(n[t].ch[0], x), t, n[t].ch[1]);
@@ -130,36 +122,22 @@ public:
   }
   return D(x) * ol - ou;
  }
- static inline std::array<int, 3> splitR(int t, T p, T &ol, D &ou) {
+ template <bool r> static inline std::array<int, 3> split(int t, T p, T &ol, D &ou) {
   push(t);
-  T s= ol + n[n[t].ch[0]].a;
+  T s= ol + n[n[t].ch[!r]].a;
   if (p < s) {
-   auto [a, b, c]= splitR(n[t].ch[0], p, ol, ou);
-   return {a, b, join(c, t, n[t].ch[1])};
+   auto [a, b, c]= split<r>(n[t].ch[!r], p, ol, ou);
+   if constexpr (r) return {a, b, join(c, t, n[t].ch[r])};
+   else return {join(n[t].ch[r], t, a), b, c};
   }
   ol= s + n[t].d;
   if (ol < p) {
-   ou+= n[n[t].ch[0]].s + D(n[t].x) * n[t].d;
-   auto [a, b, c]= splitR(n[t].ch[1], p, ol, ou);
-   return {join(n[t].ch[0], t, a), b, c};
+   ou+= n[n[t].ch[!r]].s + D(n[t].x) * n[t].d;
+   auto [a, b, c]= split<r>(n[t].ch[r], p, ol, ou);
+   if constexpr (r) return {join(n[t].ch[!r], t, a), b, c};
+   else return {a, b, join(c, t, n[t].ch[!r])};
   }
-  ou+= n[n[t].ch[0]].s;
-  return {n[t].ch[0], t, n[t].ch[1]};
- }
- static inline std::array<int, 3> splitL(int t, T p, T &ol, D &ou) {
-  push(t);
-  T s= ol + n[n[t].ch[1]].a;
-  if (p < s) {
-   auto [a, b, c]= splitL(n[t].ch[1], p, ol, ou);
-   return {join(n[t].ch[0], t, a), b, c};
-  }
-  ol= s + n[t].d;
-  if (ol < p) {
-   ou+= n[n[t].ch[1]].s + D(n[t].x) * n[t].d;
-   auto [a, b, c]= splitL(n[t].ch[0], p, ol, ou);
-   return {a, b, join(c, t, n[t].ch[1])};
-  }
-  ou+= n[n[t].ch[1]].s;
+  ou+= n[n[t].ch[!r]].s;
   return {n[t].ch[0], t, n[t].ch[1]};
  }
  int mn, lr[2];
@@ -171,24 +149,16 @@ public:
   if (n[mn].x == x) return 0;
   return x < n[mn].x ? -calc_y<0>(lr[0], x, o[0], D(n[mn].x) * o[0]) : calc_y<1>(lr[1], x, o[1], D(n[mn].x) * o[1]);
  }
- inline void slope_eval() {
-  bool neg= rem < 0;
+ inline void slope_eval(bool neg) {
   T p= neg ? -rem : rem, ol= o[neg];
-  if (p <= ol) {
-   o[neg]-= p, o[!neg]+= p, y+= D(n[mn].x) * rem, rem= 0;
-   return;
-  }
-  D ou= D(n[mn].x) * ol;
-  if (neg) {
-   auto [a, b, c]= splitR(lr[neg], p, ol, ou);
-   o[1]= ol - p, ol-= n[b].d, o[0]= p - ol;
-   y-= D(n[b].x) * o[0] + ou;
-   lr[0]= join(lr[0], mn, a), mn= b, lr[1]= c;
-  } else {
-   auto [a, b, c]= splitL(lr[neg], p, ol, ou);
-   o[0]= ol - p, ol-= n[b].d, o[1]= p - ol;
-   y+= D(n[b].x) * o[1] + ou;
-   lr[1]= join(c, mn, lr[1]), mn= b, lr[0]= a;
+  if (p <= ol) o[neg]-= p, o[!neg]+= p, y+= D(n[mn].x) * rem;
+  else {
+   D ou= D(n[mn].x) * ol;
+   auto [a, b, c]= neg ? split<1>(lr[neg], p, ol, ou) : split<0>(lr[neg], p, ol, ou);
+   o[neg]= ol - p, ol-= n[b].d, ou+= D(n[b].x) * (o[!neg]= p - ol);
+   if (neg) y-= ou, lr[!neg]= join(lr[!neg], mn, a), lr[neg]= c;
+   else y+= ou, lr[!neg]= join(c, mn, lr[!neg]), lr[neg]= a;
+   mn= b;
   }
   rem= 0;
  }
@@ -199,19 +169,10 @@ public:
   D q= n[lr[!r]].s + D(n[mn].x) * o[!r];
   T v= o[!r] + n[lr[!r]].a;
   lr[!r]= cut<r>(lr[!r], x0);
-  if (!r) {
-   y-= q, rem+= v;
-   if (lr[!r]) {
-    auto [a, b]= popB(lr[!r]);
-    lr[r]= a, mn= b, lr[!r]= 0;
-   } else mn= lr[r]= 0;
-  } else {
-   y+= q, rem-= v;
-   if (lr[!r]) {
-    auto [a, b]= popF(lr[!r]);
-    lr[r]= b, mn= a, lr[!r]= 0;
-   } else mn= lr[r]= 0;
-  }
+  if (!r) y-= q, rem+= v;
+  else y+= q, rem-= v;
+  if (lr[!r]) std::tie(lr[r], mn)= pop<!r>(lr[!r]), lr[!r]= 0;
+  else mn= lr[r]= 0;
   o[r]= n[mn].d, o[!r]= 0;
  }
  void add_r(int t) {
@@ -274,13 +235,7 @@ public:
      if (r ^ rev) {
       if (bf[r]) {
        D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
-       if (r) {
-        y-= q;
-        if (mn) lr[!r]= join(lr[!r], mn, lr[r]);
-       } else {
-        y+= q;
-        if (mn) lr[!r]= join(lr[r], mn, lr[!r]);
-       }
+       if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
        lr[r]= 0, o[!r]= u, o[r]= 0, rem= 0;
        n[mn= ni++]= Node{{0, 0}, 0, bx[r], u, u, D(bx[r]) * u, 1};
       }
@@ -292,20 +247,11 @@ public:
      bf[!rev]= false;
      return;
     }
-    slope_eval();
+    slope_eval(r);
    }
    if (mn) {
     if (o[rev] != 0) n[mn].d= o[rev], o[!rev]= 0, lr[!rev]= 0;
-    else if (lr[rev]) {
-     if (rev) {
-      auto [a, b]= popF(lr[1]);
-      mn= a, lr[1]= b;
-     } else {
-      auto [a, b]= popB(lr[0]);
-      lr[0]= a, mn= b;
-     }
-     lr[!rev]= 0, o[rev]= n[mn].d, o[!rev]= 0;
-    }
+    else if (lr[rev]) (std::tie(lr[rev], mn)= rev ? pop<0>(lr[rev]) : pop<1>(lr[rev])), lr[!rev]= 0, o[rev]= n[mn].d, o[!rev]= 0;
    }
   }
   bf[!rev]= false;
@@ -320,15 +266,9 @@ public:
     T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
     if (0 < u) {
      T b[2]= {lb, ub};
-     D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
      if (bf[r]) {
-      if (r) {
-       y-= q;
-       if (mn) lr[!r]= join(lr[!r], mn, lr[r]);
-      } else {
-       y+= q;
-       if (mn) lr[!r]= join(lr[r], mn, lr[!r]);
-      }
+      D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
+      if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
       lr[r]= 0, rem= 0, o[!r]= u, o[r]= 0;
       n[mn= ni++]= Node{{0, 0}, 0, bx[r] + b[!r], u, 0, 0, 1};
       prop(lr[!r], b[!r]);
@@ -339,14 +279,12 @@ public:
      bx[0]+= lb, bx[1]+= ub;
      return;
     }
-    slope_eval();
+    slope_eval(r);
    }
    if (mn) {
-    if (o[0] == 0) {
-     n[mn].x+= ub;
-    } else if (o[1] == 0) {
-     n[mn].x+= lb;
-    } else {
+    if (o[0] == 0) n[mn].x+= ub;
+    else if (o[1] == 0) n[mn].x+= lb;
+    else {
      int t= ni++;
      n[t]= Node{{0, 0}, 0, n[mn].x, o[1], 0, 0, 1};
      lr[1]= join(0, t, lr[1]);
@@ -368,15 +306,16 @@ public:
    D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
    return r ? y - q : y + q;
   }
-  return slope_eval(), y;
+  return slope_eval(r), y;
  }
  std::array<T, 2> argmin() {
   if (rem != 0) {
-   if (bool r= rem < 0; o[r] + n[lr[r]].a < (r ? -rem : rem)) {
+   bool r= rem < 0;
+   if (o[r] + n[lr[r]].a < (r ? -rem : rem)) {
     assert(bf[r]);
     return {bx[r], bx[r]};
    }
-   slope_eval();
+   slope_eval(r);
   }
   std::array<T, 2> ret= {bx[0], bx[1]};
   int t= mn;

@@ -15,8 +15,7 @@ static constexpr size_t __NODE_SIZE= 1 << 15;
 static constexpr size_t __NODE_SIZE= 1 << 22;
 #endif
 }
-template <class T, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseLinearConvex {
-public:
+template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseLinearConvex {
  using D= make_long_t<T>;
  struct Node {
   int ch[2];
@@ -25,7 +24,7 @@ public:
   size_t sz;
   friend std::ostream &operator<<(std::ostream &os, const Node &t) { return os << "{z:" << t.z << ",x:" << t.x << ",d:" << t.d << ",a:" << t.a << ",s:" << t.s << ",sz:" << t.sz << ",ch:(" << t.ch[0] << "," << t.ch[1] << ")}"; }
  };
- static inline int ni= 1;
+ static inline size_t ni= 1;
  static inline Node n[NODE_SIZE];
  static inline void info(int t, int d, std::stringstream &ss) {
   if (!t) return;
@@ -41,6 +40,18 @@ public:
  }
  static inline void dump_slopes_r(int t, T ofs, std::vector<T> &as) {
   if (t) push(t), dump_slopes_r(n[t].ch[0], ofs, as), ofs+= n[n[t].ch[0]].a + n[t].d, as.push_back(ofs), dump_slopes_r(n[t].ch[1], ofs, as);
+ }
+ template <class Iter> static inline int build(Iter bg, Iter ed) {
+  if (bg == ed) return 0;
+  auto md= bg + (ed - bg) / 2;
+  int t= ni++;
+  return std::tie(n[t].d, n[t].x)= *md, n[t].z= 0, n[t].ch[0]= build(bg, md), n[t].ch[1]= build(md + 1, ed), update(t), t;
+ }
+ template <class Iter> static inline void dump(Iter itr, int t) {
+  if (!t) return;
+  push(t);
+  size_t sz= n[n[t].ch[0]].sz;
+  dump(itr, n[t].ch[0]), *(itr + sz)= {n[t].d, n[t].x}, dump(itr + sz + 1, n[t].ch[1]);
  }
  std::vector<T> dump_xs() {
   std::vector<T> xs;
@@ -68,31 +79,56 @@ public:
   int l= n[t].ch[0], r= n[t].ch[1];
   n[t].sz= 1 + n[l].sz + n[r].sz, n[t].a= n[t].d + n[l].a + n[r].a, n[t].s= D(n[t].x) * n[t].d + n[l].s + n[r].s;
  }
- static inline void prop(int t, T v) { n[t].z+= v, n[t].s+= D(v) * n[t].a, n[t].x+= v; }
+ template <bool b= 1> static inline void prop(int &t, T v) {
+  if constexpr (persistent && b) {
+   if (!t) return;
+   n[ni]= n[t], t= ni++;
+  }
+  n[t].z+= v, n[t].s+= D(v) * n[t].a, n[t].x+= v;
+ }
  static inline void push(int t) {
   if (n[t].z != 0) prop(n[t].ch[0], n[t].z), prop(n[t].ch[1], n[t].z), n[t].z= 0;
  }
- static inline int joinL(int l, int t, int r) {
-  push(l);
-  r= join(n[l].ch[1], t, r);
-  if (n[n[l].ch[0]].sz * 4 >= n[r].sz) return n[l].ch[1]= r, update(l), l;
-  return n[l].ch[1]= n[r].ch[0], update(l), n[r].ch[0]= l, update(r), r;
+ template <bool r> static inline int join_(int t, int a, int b) {
+  push(a);
+  if constexpr (r) b= join<0>(b, t, n[a].ch[0]);
+  else b= join<0>(n[a].ch[1], t, b);
+  if constexpr (persistent) n[ni]= n[a], a= ni++;
+  if (n[n[a].ch[r]].sz * 4 >= n[b].sz) return n[a].ch[!r]= b, update(a), a;
+  return n[a].ch[!r]= n[b].ch[r], update(a), n[b].ch[r]= a, update(b), b;
  }
- static inline int joinR(int l, int t, int r) {
-  push(r);
-  l= join(l, t, n[r].ch[0]);
-  if (n[n[r].ch[1]].sz * 4 >= n[l].sz) return n[r].ch[0]= l, update(r), r;
-  return n[r].ch[0]= n[l].ch[1], update(r), n[l].ch[1]= r, update(l), l;
- }
- static inline int join(int l, int t, int r) {
-  if (n[l].sz > n[r].sz * 4) return joinL(l, t, r);
-  if (n[r].sz > n[l].sz * 4) return joinR(l, t, r);
+ template <bool b= 1> static inline int join(int l, int t, int r) {
+  if constexpr (persistent && b) n[ni]= n[t], t= ni++;
+  if (n[l].sz > n[r].sz * 4) return join_<0>(t, l, r);
+  if (n[r].sz > n[l].sz * 4) return join_<1>(t, r, l);
   return n[t].ch[0]= l, n[t].ch[1]= r, update(t), t;
  }
+ static inline std::array<int, 3> split(int t, T x) {
+  if (!t) return {0, 0, 0};
+  push(t);
+  if (n[t].x < x) {
+   auto [a, b, c]= split(n[t].ch[1], x);
+   return {join(n[t].ch[0], t, a), b, c};
+  } else if (x < n[t].x) {
+   auto [a, b, c]= split(n[t].ch[0], x);
+   return {a, b, join(c, t, n[t].ch[1])};
+  }
+  return {n[t].ch[0], t, n[t].ch[1]};
+ }
+ static inline int unite(int l, int r) {
+  if (!l) return r;
+  if (!r) return l;
+  push(l);
+  if constexpr (persistent) n[ni]= n[l], l= ni++;
+  auto [a, b, c]= split(r, n[l].x);
+  return n[l].d+= n[b].d, join<0>(unite(a, n[l].ch[0]), l, unite(n[l].ch[1], c));
+ }
  static inline int insert(int t, T x, T d) {
-  if (!t) return n[ni]= Node{{0, 0}, 0, x, d, d, D(x) * d, 1}, ni++;
-  if (push(t); n[t].x == x) return n[t].d+= d, update(t), t;
-  return x < n[t].x ? join(insert(n[t].ch[0], x, d), t, n[t].ch[1]) : join(n[t].ch[0], t, insert(n[t].ch[1], x, d));
+  if (!t) return n[ni++]= Node{{0, 0}, 0, x, d, d, D(x) * d, 1}, ni - 1;
+  push(t);
+  if constexpr (persistent) n[ni]= n[t], t= ni++;
+  if (n[t].x == x) return n[t].d+= d, update(t), t;
+  return x < n[t].x ? join<0>(insert(n[t].ch[0], x, d), t, n[t].ch[1]) : join<0>(n[t].ch[0], t, insert(n[t].ch[1], x, d));
  }
  template <bool r> static inline std::pair<int, int> pop(int t) {
   if (push(t); !n[t].ch[r]) return {n[t].ch[!r], t};
@@ -115,8 +151,7 @@ public:
   for (; t;) {
    if (push(t); lt<r>(n[t].x, x)) t= n[t].ch[!r];
    else {
-    ol+= n[n[t].ch[!r]].a, ou+= n[n[t].ch[!r]].s;
-    if (n[t].x == x) break;
+    if (ol+= n[n[t].ch[!r]].a, ou+= n[n[t].ch[!r]].s; n[t].x == x) break;
     ol+= n[t].d, ou+= D(n[t].x) * n[t].d, t= n[t].ch[r];
    }
   }
@@ -219,14 +254,32 @@ public:
   else mn= lr[r]= 0;
   o[r]= n[mn].d, o[!r]= 0;
  }
- void add_r(int t) {
-  if (t) push(t), add_r(n[t].ch[0]), add_max(0, n[t].d, n[t].x), add_r(n[t].ch[1]);
- }
- void add_l(int t) {
-  if (t) push(t), add_l(n[t].ch[0]), add_max(-n[t].d, 0, n[t].x), add_l(n[t].ch[1]);
+ inline void prop(T x) {
+  if constexpr (persistent) n[ni].z= 0, n[ni].x= n[mn].x, n[ni].d= n[mn].d, mn= ni++;
+  n[mn].x+= x;
  }
 public:
+ // f(x) := 0
  PiecewiseLinearConvex(): mn(0), lr{0, 0}, bf{0, 0}, o{0, 0}, rem(0), y(0) {}
+ //  f(x) := sum max(0, a(x-x0))
+ PiecewiseLinearConvex(const std::vector<std::pair<T, T>> &ramps): PiecewiseLinearConvex() {
+  int m= ramps.size();
+  if (!m) return;
+  std::vector<std::pair<T, T>> w(m);
+  int s= 0, t= 0;
+  for (auto [d, x]: ramps) {
+   if (d == 0) continue;
+   if (d < 0) y-= D(d) * x, rem+= d, d= -d;
+   w[s++]= {d, x};
+  }
+  std::sort(w.begin(), w.begin() + s, [](auto a, auto b) { return a.second < b.second; });
+  for (int i= 0; i < s; ++i) {
+   if (t && w[t - 1].second == w[i].second) w[t - 1].first+= w[i].first;
+   else w[t++]= w[i];
+  }
+  std::tie(n[ni].d, n[ni].x)= w[0], mn= ni++, o[1]= n[mn].d;
+  lr[1]= build(w.begin() + 1, w.begin() + t);
+ }
  std::string info() {
   std::stringstream ss;
   if (ss << "\n rem:" << rem << ", y:" << y << ", mn:" << mn << ", lr:{" << lr[0] << ", " << lr[1] << "}\n bf[0]:" << bf[0] << ", bf[1]:" << bf[1] << ", bx[0]:" << bx[0] << ", bx[1]:" << bx[1] << "\n " << "o[0]:" << o[0] << ", o[1]:" << o[1] << "\n"; mn) {
@@ -236,7 +289,22 @@ public:
   }
   return ss.str();
  }
+ template <class... Args> static inline void rebuild(Args &...plc) {
+  debug("rebuild");
+  static_assert(std::conjunction_v<std::is_same<PiecewiseLinearConvex, Args>...>);
+  constexpr size_t m= sizeof...(Args);
+  std::array<std::vector<std::pair<T, T>>, m> ls, rs;
+  std::array<std::pair<T, T>, m> mns;
+  int i= 0;
+  (int[]){(mns[i]= {n[plc.mn].d, n[plc.mn].x}, ls[i].resize(n[plc.lr[0]].sz), rs[i].resize(n[plc.lr[1]].sz), dump(ls[i].begin(), plc.lr[0]), dump(rs[i].begin(), plc.lr[1]), ++i)...};
+  ni= 1, i= 0;
+  (int[]){((plc.mn ? (std::tie(n[ni].d, n[ni].x)= mns[i], plc.mn= ni++) : 0), plc.lr[0]= build(ls[i].begin(), ls[i].end()), plc.lr[1]= build(rs[i].begin(), rs[i].end()), ++i)...};
+ }
  static void reset() { ni= 1; }
+ static bool pool_empty() {
+  if constexpr (persistent) return ni >= NODE_SIZE * 0.8;
+  else return ni + 1000 >= NODE_SIZE;
+ }
  // f(x) += c
  void add_const(D c) { y+= c; }
  // f(x) += ax, /
@@ -246,13 +314,15 @@ public:
   assert(a < b);
   if (bf[0] && x0 <= bx[0]) y-= D(b) * x0, rem+= b;
   else if (bf[1] && bx[1] <= x0) y-= D(a) * x0, rem+= a;
-  else if (mn) {
-   if (n[mn].x == x0) n[mn].d+= b - a, o[1]+= b - a, y-= D(a) * x0, rem+= a;
-   else {
-    if (n[mn].x < x0) lr[1]= insert(lr[1], x0, b - a), y-= D(a) * x0, rem+= a;
-    else lr[0]= insert(lr[0], x0, b - a), y-= D(b) * x0, rem+= b;
+  else if (T c= b - a; mn) {
+   if (n[mn].x == x0) {
+    if constexpr (persistent) n[ni]= n[mn], mn= ni++;
+    n[mn].d+= c, o[1]+= c, y-= D(a) * x0, rem+= a;
+   } else {
+    if (n[mn].x < x0) lr[1]= insert(lr[1], x0, c), y-= D(a) * x0, rem+= a;
+    else lr[0]= insert(lr[0], x0, c), y-= D(b) * x0, rem+= b;
    }
-  } else n[mn= ni++]= Node{{0, 0}, 0, x0, b - a, b - a, D(x0) * (b - a), 1}, y-= D(a) * x0, rem+= a, o[0]= 0, o[1]= b - a;
+  } else n[ni].x= x0, n[ni].d= c, mn= ni++, y-= D(a) * x0, rem+= a, o[0]= 0, o[1]= c;
  }
  // f(x) +=  max(0, a(x-x0))
  void add_ramp(T a, T x0) {
@@ -266,7 +336,7 @@ public:
  void add_inf(bool right= false, T x0= 0) { return right ? add_inf<1>(x0) : add_inf<0>(x0); }
  // f(x) <- f(x-x0)
  void shift(T x0) {
-  if (bx[0]+= x0, bx[1]+= x0, y-= D(rem) * x0; mn) n[mn].x+= x0, prop(lr[0], x0), prop(lr[1], x0);
+  if (bx[0]+= x0, bx[1]+= x0, y-= D(rem) * x0; mn) prop(x0), prop(lr[0], x0), prop(lr[1], x0);
  }
  // rev=false: f(x) <- min_{y<=x} f(y), rev=true : f(x) <- min_{x<=y} f(y)
  void chmin_cum(bool rev= false) {
@@ -280,8 +350,7 @@ public:
       if (bf[r]) {
        D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
        if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
-       lr[r]= 0, o[!r]= u, o[r]= 0, rem= 0;
-       n[mn= ni++]= Node{{0, 0}, 0, bx[r], u, u, D(bx[r]) * u, 1};
+       lr[r]= 0, o[!r]= u, o[r]= 0, rem= 0, mn= ni++, n[mn].x= bx[r], n[mn].d= u;
       }
      } else {
       assert(bf[r]);
@@ -295,8 +364,8 @@ public:
    if (mn) {
     if (r ^ rev) r ? slope_eval_cum<0, 1>() : slope_eval_cum<0, 0>();
     else r ? slope_eval_cum<1, 1>() : slope_eval_cum<1, 0>();
-    assert(o[rev] > 0);
-    rem= 0, n[mn].d= o[rev], o[!rev]= 0, lr[!rev]= 0;
+    if constexpr (persistent) n[ni]= n[mn], mn= ni++;
+    n[mn].d= o[rev], rem= 0, o[!rev]= 0, lr[!rev]= 0;
    }
   }
   bf[!rev]= false;
@@ -313,13 +382,11 @@ public:
      T b[2]= {lb, ub};
      if (bf[r]) {
       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
-      if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
-      lr[r]= 0, rem= 0, o[!r]= u, o[r]= 0;
-      n[mn= ni++]= Node{{0, 0}, 0, bx[r] + b[!r], u, 0, 0, 1};
-      prop(lr[!r], b[!r]);
+      if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]), prop<0>(lr[!r], b[!r]);
+      lr[r]= 0, rem= 0, o[!r]= u, o[r]= 0, mn= ni++, n[mn].x= bx[r] + b[!r], n[mn].d= u, n[mn].z= 0;
      } else {
       y-= D(rem) * b[!r];
-      if (mn) n[mn].x+= b[!r], prop(lr[0], b[!r]), prop(lr[1], b[!r]);
+      if (mn) prop(b[!r]), prop(lr[0], b[!r]), prop(lr[1], b[!r]);
      }
      bx[0]+= lb, bx[1]+= ub;
      return;
@@ -327,14 +394,12 @@ public:
     slope_eval(r);
    }
    if (mn) {
-    if (o[0] == 0) n[mn].x+= ub;
-    else if (o[1] == 0) n[mn].x+= lb;
+    if (o[0] == 0) prop(ub);
+    else if (o[1] == 0) prop(lb);
     else {
-     int t= ni++;
-     n[t]= Node{{0, 0}, 0, n[mn].x, o[1], 0, 0, 1};
-     lr[1]= join(0, t, lr[1]);
+     n[ni].x= n[mn].x, n[ni++].d= o[1], lr[1]= join<0>(0, ni - 1, lr[1]);
+     prop(lb);
      n[mn].d= o[0], o[1]= 0;
-     n[mn].x+= lb;
     }
     prop(lr[0], lb), prop(lr[1], ub);
    }
@@ -374,10 +439,18 @@ public:
   return ret;
  }
  size_t size() { return n[lr[0]].sz + n[lr[1]].sz + !!mn; }
- PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &g) {
-  if (y+= g.y, rem+= g.rem; g.bf[0]) add_inf(false, g.bx[0]);
-  if (g.bf[1]) add_inf(true, g.bx[1]);
-  if (g.mn) add_l(g.lr[0]), add_r(g.lr[1]), add_max(-g.o[0], g.o[1], n[g.mn].x);
-  return *this;
+ PiecewiseLinearConvex &operator+=(const PiecewiseLinearConvex &g) { return *this= *this + g; }
+ PiecewiseLinearConvex operator+(PiecewiseLinearConvex g) const {
+  PiecewiseLinearConvex ret= *this;
+  if (g.bf[0]) ret.add_inf(false, g.bx[0]);
+  if (g.bf[1]) ret.add_inf(true, g.bx[1]);
+  if (bf[0]) g.add_inf(false, bx[0]);
+  if (bf[1]) g.add_inf(true, bx[1]);
+  ret.y+= g.y, ret.rem+= g.rem;
+  if (!g.mn) return ret;
+  if (!ret.mn) return ret.mn= g.mn, ret.lr[0]= g.lr[0], ret.lr[1]= g.lr[1], ret.o[0]= g.o[0], ret.o[1]= g.o[1], ret;
+  ret.y+= n[ret.lr[0]].s + D(n[ret.mn].x) * ret.o[0], ret.rem-= ret.o[0] + n[ret.lr[0]].a + n[g.lr[0]].s + D(n[g.mn].x) * g.o[0], ret.rem-= g.o[0] + n[g.lr[0]].a;
+  int t= unite(join(ret.lr[0], ret.mn, ret.lr[1]), join(g.lr[0], g.mn, g.lr[1]));
+  return std::tie(ret.lr[1], ret.mn)= pop<0>(t), ret.lr[0]= 0, ret.o[0]= 0, ret.o[1]= n[ret.mn].d, ret;
  }
 };

@@ -53,28 +53,6 @@ template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NOD
   size_t sz= n[n[t].ch[0]].sz;
   dump(itr, n[t].ch[0]), *(itr + sz)= {n[t].d, n[t].x}, dump(itr + sz + 1, n[t].ch[1]);
  }
- std::vector<T> dump_xs() {
-  std::vector<T> xs;
-  if (bf[0]) xs.push_back(bx[0]);
-  dump_xs(lr[0], xs);
-  if (mn) xs.push_back(n[mn].x);
-  dump_xs(lr[1], xs);
-  if (bf[1]) xs.push_back(bx[1]);
-  return xs;
- }
- std::vector<std::pair<T, D>> dump_xys() {
-  auto xs= dump_xs();
-  std::vector<std::pair<T, D>> xys(xs.size());
-  for (int i= xs.size(); i--;) xys[i]= {xs[i], operator()(xs[i])};
-  return xys;
- }
- std::vector<T> dump_slopes() {
-  std::vector<T> as;
-  if (mn) as.push_back(-o[0]), dump_slopes_l(lr[0], o[0], as), std::reverse(as.begin(), as.end()), as.push_back(o[1]), dump_slopes_r(lr[1], o[1], as);
-  else as.push_back(0);
-  for (auto &a: as) a+= rem;
-  return as;
- }
  static inline void update(int t) {
   int l= n[t].ch[0], r= n[t].ch[1];
   n[t].sz= 1 + n[l].sz + n[r].sz, n[t].a= n[t].d + n[l].a + n[r].a, n[t].s= D(n[t].x) * n[t].d + n[l].s + n[r].s;
@@ -395,11 +373,7 @@ public:
    if (mn) {
     if (o[0] == 0) prop(ub);
     else if (o[1] == 0) prop(lb);
-    else {
-     n[ni].x= n[mn].x, n[ni++].d= o[1], lr[1]= join<0>(0, ni - 1, lr[1]);
-     prop(lb);
-     n[mn].d= o[0], o[1]= 0;
-    }
+    else n[ni].x= n[mn].x, n[ni].d= o[1], n[ni++].z= 0, lr[1]= join<0>(0, ni - 1, lr[1]), prop(lb), n[mn].d= o[0], o[1]= 0;
     prop(lr[0], lb), prop(lr[1], ub);
    }
   }
@@ -451,5 +425,27 @@ public:
   ret.y+= n[ret.lr[0]].s + D(n[ret.mn].x) * ret.o[0], ret.rem-= ret.o[0] + n[ret.lr[0]].a + n[g.lr[0]].s + D(n[g.mn].x) * g.o[0], ret.rem-= g.o[0] + n[g.lr[0]].a;
   int t= unite(join(ret.lr[0], ret.mn, ret.lr[1]), join(g.lr[0], g.mn, g.lr[1]));
   return std::tie(ret.lr[1], ret.mn)= pop<0>(t), ret.lr[0]= 0, ret.o[0]= 0, ret.o[1]= n[ret.mn].d, ret;
+ }
+ std::vector<T> dump_xs() {
+  std::vector<T> xs;
+  if (bf[0]) xs.push_back(bx[0]);
+  dump_xs(lr[0], xs);
+  if (mn) xs.push_back(n[mn].x);
+  dump_xs(lr[1], xs);
+  if (bf[1]) xs.push_back(bx[1]);
+  return xs;
+ }
+ std::vector<std::pair<T, D>> dump_xys() {
+  auto xs= dump_xs();
+  std::vector<std::pair<T, D>> xys(xs.size());
+  for (int i= xs.size(); i--;) xys[i]= {xs[i], operator()(xs[i])};
+  return xys;
+ }
+ std::vector<T> dump_slopes() {
+  std::vector<T> as;
+  if (mn) as.push_back(-o[0]), dump_slopes_l(lr[0], o[0], as), std::reverse(as.begin(), as.end()), as.push_back(o[1]), dump_slopes_r(lr[1], o[1], as);
+  else as.push_back(0);
+  for (auto &a: as) a+= rem;
+  return as;
  }
 };

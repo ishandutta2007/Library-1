@@ -3,17 +3,38 @@ title: 区分線形凸関数
 documentation_of: ../../src/Optimization/PiecewiseLinearConvex.hpp
 ---
 
-## `PiecewiseLinearConvex<T>` クラス
+## `PiecewiseLinearConvex<T, persistent, NODE_SIZE>` クラス
+
+区分線形凸関数 $f(x)$ ．
+
 weight balanced tree でがんばった．一般の min-plus 畳み込みとかはない．\
 メモリプールしている．static 関数 `reset` でノードリセット．
 
 内部では $y$ 座標の相当する値を `T` より大きい型 `D` で管理している．例えば `T=long long` なら `D=__int128_t` とか．
 
+テンプレートの第二引数を `true` にすることで永続化する．
+
 区分線形凸関数 $f$ の接点の数を $n$ とする. 
 
-| メンバ関数  | 内容| 計算量 |
+### コンストラクタ
+
+||内容|計算量|
+|---|---|---|
+| `PiecewiseLinearConvex()`  | コンストラクタ $\displaystyle f(x) := 0$.| $O(1)$ |
+|`PiecewiseLinearConvex(v)`|コンストラクタ $\displaystyle f(x) := \sum_{i=1}^n \max(0, a_i(x-x_i))$. <br> 引数は `std::vector<std::pair<T,T>>` で，$\lbrace(a_1,x_1),\dots,(a_n,x_n)\rbrace$ を渡す．|$O(n)$|
+
+### static メンバ関数
+
+|名前|内容|
+|---|---|
+|`pool_empty()`|ノードプールがいっぱいになりそうだったら `true` を返す．|
+|`reset()`|ノードプールをリセット．|
+|`rebuild(plc...)`|ノードプールをリセットして，参照渡しで引数に与えた `PiecewiseLinearConvex` インスタンスは再構築復元する．|
+
+### メンバ関数
+
+| 名前  | 内容| 計算量 |
 | --- | ---| --- |
-| `PiecewiseLinearConvex()`  | コンストラクタ $\displaystyle f(x) := 0$| $O(1)$ |
 | `add_const(c)`      | $\displaystyle f(x)\leftarrow f(x)+c $ |$O(1)$ |
 | `add_linear(a)` | $\displaystyle f(x)\leftarrow f(x) + ax$ | $O(1)$ |
 | `add_max(a,b,x0)` |$\displaystyle f(x)\leftarrow f(x) + \max(a(x-x_0), b(x-x_0)) $ <br> ただし $a\lt b$ を要求|$O(\log n)$ |
@@ -27,7 +48,8 @@ weight balanced tree でがんばった．一般の min-plus 畳み込みとか�
 | `argmin()`   | 閉区間 $[l, r] = \lbrace y:f(y) = \min_x f(x)\rbrace$ を返す．| $O(\log n)$|
 | `min()`      | $\min_x f(x)$ を返す.　<br> 返り値は `T` より大きい型 `D` (`T=long long`なら `__int128_t`) |$O(\log n)$|
 | `size()`      |$f$ の接点の数 $n$ を返す．| $O(1)$ |
-| `operator+=(g)`| $f(x)\leftarrow f(x)+g(x)$| $O(m\log (n+m))$ <br> ただし $g$ の接点の数を $m$ とした |
+| `operator+(g)`| $f(x)+g(x)$ を返す．<br> 永続化してないと破壊的．| $\displaystyle O\left(m\log \left(\frac{n}{m}+1\right)\right)$ <br> ただし $f,g$ の接点の数の小さい方を $m$, 大きい方を $n$ とした． |
+| `operator+=(g)`| $f(x)\leftarrow f(x)+g(x)$　<br> 永続化してないと $g$ は破壊される．| $\displaystyle O\left(m\log \left(\frac{n}{m}+1\right)\right)$ <br> ただし $f,g$ の接点の数の小さい方を $m$, 大きい方を $n$ とした． |
 | `info()`| デバッグ用出力．返り値は `string`．| $O(n)$ |
 | `dump_xs()`| $f$ の接点の $x$ 座標を返す．返り値は `vector<T>`．| $O(n)$ |
 | `dump_xys()`| $f$ の接点の $x,y$ 座標を返す．返り値は `vector<pair<T,D>>` | $O(n)$ |

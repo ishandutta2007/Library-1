@@ -255,7 +255,7 @@ public:
    if (t && w[t - 1].second == w[i].second) w[t - 1].first+= w[i].first;
    else w[t++]= w[i];
   }
-  std::tie(n[ni].d, n[ni].x)= w[0], mn= ni++, o[1]= n[mn].d;
+  std::tie(n[ni].d, n[ni].x)= w[0], n[ni].z= 0, mn= ni++, o[1]= n[mn].d;
   lr[1]= build(w.begin() + 1, w.begin() + t);
  }
  std::string info() {
@@ -275,7 +275,7 @@ public:
   int i= 0;
   (int[]){(mns[i]= {n[plc.mn].d, n[plc.mn].x}, ls[i].resize(n[plc.lr[0]].sz), rs[i].resize(n[plc.lr[1]].sz), dump(ls[i].begin(), plc.lr[0]), dump(rs[i].begin(), plc.lr[1]), ++i)...};
   ni= 1, i= 0;
-  (int[]){((plc.mn ? (std::tie(n[ni].d, n[ni].x)= mns[i], plc.mn= ni++) : 0), plc.lr[0]= build(ls[i].begin(), ls[i].end()), plc.lr[1]= build(rs[i].begin(), rs[i].end()), ++i)...};
+  (int[]){((plc.mn ? (std::tie(n[ni].d, n[ni].x)= mns[i], n[ni].z= 0, plc.mn= ni++) : 0), plc.lr[0]= build(ls[i].begin(), ls[i].end()), plc.lr[1]= build(rs[i].begin(), rs[i].end()), ++i)...};
  }
  static void reset() { ni= 1; }
  static bool pool_empty() {
@@ -299,7 +299,7 @@ public:
     if (n[mn].x < x0) lr[1]= insert(lr[1], x0, c), y-= D(a) * x0, rem+= a;
     else lr[0]= insert(lr[0], x0, c), y-= D(b) * x0, rem+= b;
    }
-  } else n[ni].x= x0, n[ni].d= c, mn= ni++, y-= D(a) * x0, rem+= a, o[0]= 0, o[1]= c;
+  } else n[ni].x= x0, n[ni].d= c, n[ni].z= 0, mn= ni++, y-= D(a) * x0, rem+= a, o[0]= 0, o[1]= c;
  }
  // f(x) +=  max(0, a(x-x0))
  void add_ramp(T a, T x0) {
@@ -318,34 +318,37 @@ public:
  // rev=false: f(x) <- min_{y<=x} f(y), rev=true : f(x) <- min_{x<=y} f(y)
  void chmin_cum(bool rev= false) {
   if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
-  else {
+  else if (rem != 0) {
    bool r= rem < 0;
-   if (rem != 0) {
-    T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
-    if (0 < u) {
-     if (r ^ rev) {
-      if (bf[r]) {
-       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
-       if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
-       lr[r]= 0, o[!r]= u, o[r]= 0, rem= 0, mn= ni++, n[mn].x= bx[r], n[mn].d= u;
-      }
-     } else {
-      assert(bf[r]);
+   T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
+   if (0 < u) {
+    if (r ^ rev) {
+     if (bf[r]) {
       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
-      (r ? y-= q : y+= q), rem= 0, mn= lr[0]= lr[1]= 0, o[0]= o[1]= 0;
+      if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
+      o[!r]= u, rem= 0, mn= ni++, n[mn].x= bx[r], n[mn].d= u;
      }
-     bf[!rev]= false;
-     return;
+    } else {
+     assert(bf[r]);
+     D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
+     (r ? y-= q : y+= q), rem= 0, mn= lr[r]= 0, o[r]= 0;
     }
-   }
-   if (mn) {
+   } else {
     if (r ^ rev) r ? slope_eval_cum<0, 1>() : slope_eval_cum<0, 0>();
     else r ? slope_eval_cum<1, 1>() : slope_eval_cum<1, 0>();
     if constexpr (persistent) n[ni]= n[mn], mn= ni++;
-    n[mn].d= o[rev], rem= 0, o[!rev]= 0, lr[!rev]= 0;
+    n[mn].d= o[rev], rem= 0;
+   }
+  } else if (mn) {
+   if (o[rev] == 0) {
+    if (lr[rev]) std::tie(lr[rev], mn)= rev ? pop<0>(lr[rev]) : pop<1>(lr[rev]), o[rev]= n[mn].d;
+    else mn= 0;
+   } else {
+    if constexpr (persistent) n[ni]= n[mn], mn= ni++;
+    n[mn].d= o[rev];
    }
   }
-  bf[!rev]= false;
+  lr[!rev]= 0, bf[!rev]= false, o[!rev]= 0;
  }
  //  f(x) <- min_{lb<=y<=ub} f(x-y). (lb <= ub), \_/ -> \__/
  void chmin_slide_win(T lb, T ub) {
@@ -422,7 +425,7 @@ public:
   ret.y+= g.y, ret.rem+= g.rem;
   if (!g.mn) return ret;
   if (!ret.mn) return ret.mn= g.mn, ret.lr[0]= g.lr[0], ret.lr[1]= g.lr[1], ret.o[0]= g.o[0], ret.o[1]= g.o[1], ret;
-  ret.y+= n[ret.lr[0]].s + D(n[ret.mn].x) * ret.o[0], ret.rem-= ret.o[0] + n[ret.lr[0]].a + n[g.lr[0]].s + D(n[g.mn].x) * g.o[0], ret.rem-= g.o[0] + n[g.lr[0]].a;
+  ret.y+= n[ret.lr[0]].s + D(n[ret.mn].x) * ret.o[0] + n[g.lr[0]].s + D(n[g.mn].x) * g.o[0], ret.rem-= ret.o[0] + n[ret.lr[0]].a + g.o[0] + n[g.lr[0]].a;
   int t= unite(join(ret.lr[0], ret.mn, ret.lr[1]), join(g.lr[0], g.mn, g.lr[1]));
   return std::tie(ret.lr[1], ret.mn)= pop<0>(t), ret.lr[0]= 0, ret.o[0]= 0, ret.o[1]= n[ret.mn].d, ret;
  }

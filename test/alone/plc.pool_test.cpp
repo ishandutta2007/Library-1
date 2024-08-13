@@ -2,7 +2,8 @@
 
 // メモリプールが汚れた状態で PiecewiseLinearConvex を使っても正しく動作するかテストする。
 // その他，関数に仕込んだ assert が落ちないことも確認する。
-#include <iostream>
+#include <cstdlib>
+#include <cassert>
 #include "src/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 namespace test1 {

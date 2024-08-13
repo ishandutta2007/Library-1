@@ -41,11 +41,12 @@ template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NOD
  static inline void dump_slopes_r(int t, T ofs, std::vector<T> &as) {
   if (t) push(t), dump_slopes_r(n[t].ch[0], ofs, as), ofs+= n[n[t].ch[0]].a + n[t].d, as.push_back(ofs), dump_slopes_r(n[t].ch[1], ofs, as);
  }
+ static inline int create(T d, T x) { return n[ni].d= d, n[ni].x= x, n[ni].z= 0, ni++; }
  template <class Iter> static inline int build(Iter bg, Iter ed) {
   if (bg == ed) return 0;
   auto md= bg + (ed - bg) / 2;
-  int t= ni++;
-  return std::tie(n[t].d, n[t].x)= *md, n[t].z= 0, n[t].ch[0]= build(bg, md), n[t].ch[1]= build(md + 1, ed), update(t), t;
+  int t= create(md->first, md->second);
+  return n[t].ch[0]= build(bg, md), n[t].ch[1]= build(md + 1, ed), update(t), t;
  }
  template <class Iter> static inline void dump(Iter itr, int t) {
   if (!t) return;
@@ -102,7 +103,7 @@ template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NOD
   return n[l].d+= n[b].d, join<0>(unite(a, n[l].ch[0]), l, unite(n[l].ch[1], c));
  }
  static inline int insert(int t, T x, T d) {
-  if (!t) return n[ni++]= Node{{0, 0}, 0, x, d, d, D(x) * d, 1}, ni - 1;
+  if (!t) return n[ni]= Node{{0, 0}, 0, x, d, d, D(x) * d, 1}, ni++;
   push(t);
   if constexpr (persistent) n[ni]= n[t], t= ni++;
   if (n[t].x == x) return n[t].d+= d, update(t), t;
@@ -218,6 +219,7 @@ template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NOD
    else y+= ou;
    mn= b;
   }
+  rem= 0;
  }
  template <bool r> void add_inf(T x0) {
   if (bf[r] && !lt<r>(bx[r], x0)) return;
@@ -233,7 +235,7 @@ template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NOD
   o[r]= n[mn].d, o[!r]= 0;
  }
  inline void prop(T x) {
-  if constexpr (persistent) n[ni].z= 0, n[ni].x= n[mn].x, n[ni].d= n[mn].d, mn= ni++;
+  if constexpr (persistent) mn= create(n[mn].d, n[mn].x);
   n[mn].x+= x;
  }
 public:
@@ -255,8 +257,7 @@ public:
    if (t && w[t - 1].second == w[i].second) w[t - 1].first+= w[i].first;
    else w[t++]= w[i];
   }
-  std::tie(n[ni].d, n[ni].x)= w[0], n[ni].z= 0, mn= ni++, o[1]= n[mn].d;
-  lr[1]= build(w.begin() + 1, w.begin() + t);
+  mn= create(w[0].first, w[0].second), o[1]= n[mn].d, lr[1]= build(w.begin() + 1, w.begin() + t);
  }
  std::string info() {
   std::stringstream ss;
@@ -273,9 +274,9 @@ public:
   std::array<std::vector<std::pair<T, T>>, m> ls, rs;
   std::array<std::pair<T, T>, m> mns;
   int i= 0;
-  (int[]){(mns[i]= {n[plc.mn].d, n[plc.mn].x}, ls[i].resize(n[plc.lr[0]].sz), rs[i].resize(n[plc.lr[1]].sz), dump(ls[i].begin(), plc.lr[0]), dump(rs[i].begin(), plc.lr[1]), ++i)...};
+  (int[]){((void)(mns[i]= {n[plc.mn].d, n[plc.mn].x}, ls[i].resize(n[plc.lr[0]].sz), rs[i].resize(n[plc.lr[1]].sz), dump(ls[i].begin(), plc.lr[0]), dump(rs[i].begin(), plc.lr[1])), ++i)...};
   ni= 1, i= 0;
-  (int[]){((plc.mn ? (std::tie(n[ni].d, n[ni].x)= mns[i], n[ni].z= 0, plc.mn= ni++) : 0), plc.lr[0]= build(ls[i].begin(), ls[i].end()), plc.lr[1]= build(rs[i].begin(), rs[i].end()), ++i)...};
+  (int[]){((void)((plc.mn ? (plc.mn= create(mns[i].first, mns[i].second)) : 0), plc.lr[0]= build(ls[i].begin(), ls[i].end()), plc.lr[1]= build(rs[i].begin(), rs[i].end())), ++i)...};
  }
  static void reset() { ni= 1; }
  static bool pool_empty() {
@@ -293,13 +294,13 @@ public:
   else if (bf[1] && bx[1] <= x0) y-= D(a) * x0, rem+= a;
   else if (T c= b - a; mn) {
    if (n[mn].x == x0) {
-    if constexpr (persistent) n[ni]= n[mn], mn= ni++;
+    if constexpr (persistent) mn= create(n[mn].d, n[mn].x);
     n[mn].d+= c, o[1]+= c, y-= D(a) * x0, rem+= a;
    } else {
     if (n[mn].x < x0) lr[1]= insert(lr[1], x0, c), y-= D(a) * x0, rem+= a;
     else lr[0]= insert(lr[0], x0, c), y-= D(b) * x0, rem+= b;
    }
-  } else n[ni].x= x0, n[ni].d= c, n[ni].z= 0, mn= ni++, y-= D(a) * x0, rem+= a, o[0]= 0, o[1]= c;
+  } else mn= create(c, x0), y-= D(a) * x0, rem+= a, o[0]= 0, o[1]= c;
  }
  // f(x) +=  max(0, a(x-x0))
  void add_ramp(T a, T x0) {
@@ -326,7 +327,7 @@ public:
      if (bf[r]) {
       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
       if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
-      o[!r]= u, rem= 0, mn= ni++, n[mn].x= bx[r], n[mn].d= u;
+      o[!r]= u, rem= 0, mn= create(u, bx[r]);
      }
     } else {
      assert(bf[r]);
@@ -336,16 +337,16 @@ public:
    } else {
     if (r ^ rev) r ? slope_eval_cum<0, 1>() : slope_eval_cum<0, 0>();
     else r ? slope_eval_cum<1, 1>() : slope_eval_cum<1, 0>();
-    if constexpr (persistent) n[ni]= n[mn], mn= ni++;
-    n[mn].d= o[rev], rem= 0;
+    if constexpr (persistent) mn= create(o[rev], n[mn].x);
+    else n[mn].d= o[rev];
    }
   } else if (mn) {
    if (o[rev] == 0) {
     if (lr[rev]) std::tie(lr[rev], mn)= rev ? pop<0>(lr[rev]) : pop<1>(lr[rev]), o[rev]= n[mn].d;
     else mn= 0;
    } else {
-    if constexpr (persistent) n[ni]= n[mn], mn= ni++;
-    n[mn].d= o[rev];
+    if constexpr (persistent) mn= create(o[rev], n[mn].x);
+    else n[mn].d= o[rev];
    }
   }
   lr[!rev]= 0, bf[!rev]= false, o[!rev]= 0;
@@ -363,7 +364,7 @@ public:
      if (bf[r]) {
       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
       if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]), prop<0>(lr[!r], b[!r]);
-      lr[r]= 0, rem= 0, o[!r]= u, o[r]= 0, mn= ni++, n[mn].x= bx[r] + b[!r], n[mn].d= u, n[mn].z= 0;
+      lr[r]= 0, rem= 0, o[!r]= u, o[r]= 0, mn= create(u, bx[r] + b[!r]);
      } else {
       y-= D(rem) * b[!r];
       if (mn) prop(b[!r]), prop(lr[0], b[!r]), prop(lr[1], b[!r]);
@@ -376,7 +377,7 @@ public:
    if (mn) {
     if (o[0] == 0) prop(ub);
     else if (o[1] == 0) prop(lb);
-    else n[ni].x= n[mn].x, n[ni].d= o[1], n[ni++].z= 0, lr[1]= join<0>(0, ni - 1, lr[1]), prop(lb), n[mn].d= o[0], o[1]= 0;
+    else lr[1]= join<0>(0, create(o[1], n[mn].x), lr[1]), prop(lb), n[mn].d= o[0], o[1]= 0;
     prop(lr[0], lb), prop(lr[1], ub);
    }
   }

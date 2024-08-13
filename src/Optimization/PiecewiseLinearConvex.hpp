@@ -290,7 +290,6 @@ public:
   return ss.str();
  }
  template <class... Args> static inline void rebuild(Args &...plc) {
-  debug("rebuild");
   static_assert(std::conjunction_v<std::is_same<PiecewiseLinearConvex, Args>...>);
   constexpr size_t m= sizeof...(Args);
   std::array<std::vector<std::pair<T, T>>, m> ls, rs;

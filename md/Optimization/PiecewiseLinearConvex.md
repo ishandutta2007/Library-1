@@ -62,7 +62,10 @@ weight balanced tree でがんばった．一般の min-plus 畳み込みとか�
 [第2回 ドワンゴからの挑戦状 予選 E - 花火](https://atcoder.jp/contests/dwango2016-prelims/tasks/dwango2016qual_e) \
 [AtCoder Regular Contest 070 E - NarrowRectangles](https://atcoder.jp/contests/arc070/tasks/arc070_c)\
 [Codeforces Round 371 (Div. 1) C. Sonya and Problem Wihtout a Legend](https://codeforces.com/contest/713/problem/C)\
+[Codeforces 2020 Petrozavodsk Winter Camp, Jagiellonian U Contest C. Bookface](https://codeforces.com/gym/102576/problem/C)\
+[MemSQL Start[c]UP 3.0 - Round 2 and Codeforces Round 437 (Div. 1) D. Buy Low Sell High](https://codeforces.com/contest/866/problem/D)\
 [Singapore NOI 2018 safety](https://oj.uz/problem/view/NOI18_safety) \
+[LMIO 2019 Potatoes and fertilizers](https://oj.uz/problem/view/LMIO19_bulves) \
 [APIO 2016 P2 — Fireworks](https://oj.uz/problem/view/APIO16_fireworks) (`operator+=`)\
 [CodeChef CCDSAP Exam](https://www.codechef.com/problems/CCDSAP?tab=statement)\
 [CodeChef Tree Balancing](https://www.codechef.com/problems/TREEBAL) (永続，`operator+=`)

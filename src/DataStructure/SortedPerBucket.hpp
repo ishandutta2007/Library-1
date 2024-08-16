@@ -68,27 +68,24 @@ template <class T, size_t B= 700> class SortedPerBucket {
  }
 public:
  SortedPerBucket(size_t n): n(n) {
-  for (int l= 0, r; l < n; l= r) r= std::min(l + B, n), dat.emplace_back(r - l);
+  for (size_t l= 0, r; l < n; l= r) r= std::min(l + B, n), dat.emplace_back(r - l);
  }
  SortedPerBucket(const std::vector<T> &a): n(a.size()) {
-  for (int l= 0, r; l < n; l= r) r= std::min(l + B, n), dat.emplace_back(a.data() + l, r - l);
+  for (size_t l= 0, r; l < n; l= r) r= std::min(l + B, n), dat.emplace_back(a.data() + l, r - l);
  }
  // count i s.t. (l <= i < r) && (a[i] < ub)
  size_t count(size_t l, size_t r, T ub) const {
-  return fold<size_t>(
-      l, r, [&](const Dat &d) { return d.count(ub); }, [&](T x) { return x < ub; });
+  return fold<size_t>(l, r, [&](const Dat &d) { return d.count(ub); }, [&](T x) { return x < ub; });
  }
  // count i s.t. (l <= i < r) && (lb <= a[i] < ub)
  size_t count(size_t l, size_t r, T lb, T ub) const { return count(l, r, ub) - count(l, r, lb); }
  // sum a[i] s.t. (l <= i < r)
  T sum(size_t l, size_t r) const {
-  return fold<T>(
-      l, r, [&](const Dat &d) { return d.sum(); }, [&](T x) { return x; });
+  return fold<T>(l, r, [&](const Dat &d) { return d.sum(); }, [&](T x) { return x; });
  }
  // sum a[i] s.t. (l <= i < r) && (a[i] < ub)
  T sum(size_t l, size_t r, T ub) const {
-  return fold<T>(
-      l, r, [&](const Dat &d) { return d.sum(ub); }, [&](T x) { return x < ub ? x : 0; });
+  return fold<T>(l, r, [&](const Dat &d) { return d.sum(ub); }, [&](T x) { return x < ub ? x : 0; });
  }
  // sum a[i] s.t. (l <= i < r)  && (lb <= a[i] < ub)
  T sum(size_t l, size_t r, T lb, T ub) const { return sum(l, r, ub) - sum(l, r, lb); }
@@ -99,8 +96,7 @@ public:
  T get(size_t k) const { return dat[k / B].get(k % B); }
  T operator[](size_t k) const { return get(k); }
  void add(size_t l, size_t r, T v) {
-  update(
-      l, r, [&](Dat &d) { d.add+= v; }, [&](T &x) { x+= v; });
+  update(l, r, [&](Dat &d) { d.add+= v; }, [&](T &x) { x+= v; });
  }
  void chmin(size_t l, size_t r, T ub) {
   auto f= [&](Dat &d) {

@@ -11,14 +11,14 @@
 template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class PiecewiseLinearConvex {
  using D= make_long_t<T>;
  struct Node {
-  int ch[2];
-  T z, x, d, a;
-  D s;
-  size_t sz;
+  int ch[2]= {0, 0};
+  T z= 0, x= 0, d= 0, a= 0;
+  D s= 0;
+  size_t sz= 0;
   friend std::ostream &operator<<(std::ostream &os, const Node &t) { return os << "{z:" << t.z << ",x:" << t.x << ",d:" << t.d << ",a:" << t.a << ",s:" << t.s << ",sz:" << t.sz << ",ch:(" << t.ch[0] << "," << t.ch[1] << ")}"; }
  };
  static inline size_t ni= 1;
- static inline Node *n= new Node[NODE_SIZE];
+ static inline Node *n= new Node[NODE_SIZE]{Node{}};
  static inline void info(int t, int d, std::stringstream &ss) {
   if (!t) return;
   info(n[t].ch[0], d + 1, ss);
@@ -281,7 +281,7 @@ public:
  }
  static void reset() { ni= 1; }
  static bool pool_empty() {
-  if constexpr (persistent) return ni >= NODE_SIZE * 0.8;
+  if constexpr (persistent) return ni >= NODE_SIZE * 0.85;
   else return ni + 1000 >= NODE_SIZE;
  }
  // f(x) += c
@@ -328,7 +328,7 @@ public:
      if (u > 0 && bf[r]) {
       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
       if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
-      o[!r]= u, rem= 0, mn= create(u, bx[r]);
+      o[!r]= u, rem= 0, mn= create(u, bx[r]), lr[r]= 0, o[r]= 0;
      }
     } else {
      assert(bf[r]);

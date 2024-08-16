@@ -4,6 +4,8 @@
 // その他，関数に仕込んだ assert が落ちないことも確認する。
 #include <cstdlib>
 #include <cassert>
+#include <vector>
+#include <tuple>
 #include "src/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 namespace test1 {

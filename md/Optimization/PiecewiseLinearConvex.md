@@ -10,7 +10,7 @@ documentation_of: ../../src/Optimization/PiecewiseLinearConvex.hpp
 weight balanced tree でがんばった．一般の min-plus 畳み込みとかはない．\
 メモリプールしている．static 関数 `reset` でノードリセット．
 
-内部では $y$ 座標の相当する値を `T` より大きい型 `D` で管理している．例えば `T=long long` なら `D=__int128_t` とか．
+内部では $y$ 座標に相当する値を `T` より大きい型 `D` で管理している．例えば `T=long long` なら `D=__int128_t` とか．
 
 テンプレートの第二引数を `true` にすることで永続化する．
 
@@ -29,7 +29,7 @@ weight balanced tree でがんばった．一般の min-plus 畳み込みとか�
 |---|---|
 |`pool_empty()`|ノードプールがいっぱいになりそうだったら `true` を返す．|
 |`reset()`|ノードプールをリセット．|
-|`rebuild(plc...)`|ノードプールをリセットして，参照渡しで引数に与えた `PiecewiseLinearConvex` インスタンスは再構築復元する．|
+| 1. `rebuild(plc...)` <br>2. `rebuild(plcs)`|ノードプールをリセットして，参照渡しで引数に与えた `PiecewiseLinearConvex` インスタンスは再構築復元する．<br> 1. 可変引数 `PiecewiseLinearConvex&...` <br> 2. `std::vector<PiecewiseLinearConvex>&`|
 
 ### メンバ関数
 
@@ -40,7 +40,7 @@ weight balanced tree でがんばった．一般の min-plus 畳み込みとか�
 | `add_max(a,b,x0)` |$\displaystyle f(x)\leftarrow f(x) + \max(a(x-x_0), b(x-x_0)) $ <br> ただし $a\lt b$ を要求|$O(\log n)$ |
 | `add_ramp(a,x0)` | $\displaystyle f(x)\leftarrow f(x) + \max(a(x-x_0,0))$ |$O(\log n)$|
 | `add_abs(a,x0)` | $\displaystyle f(x)\leftarrow f(x) + a\lvert  x-x_0 \rvert$ <br> ただし $a\ge0$を要求| $O(\log n)$|
-| `add_inf(right=false, x0)`  | `right=false` のとき，$\displaystyle f(x)\leftarrow \begin{cases}  \infty  & x \lt x_0 \newline f(x) & x_0 \le x \end{cases} $ <br> `right=true` のとき，$\displaystyle f(x)\leftarrow \begin{cases} f(x) & x \le x_0 \newline \infty & x_0 \lt x \end{cases} $ |$O(\log n)$|
+| `add_inf(right=false, x0)`  | `right=false` のとき，<br> $\displaystyle f(x)\leftarrow \begin{cases}  \infty  & x \lt x_0 \newline f(x) & x_0 \le x \end{cases} $ <br> `right=true` のとき，<br> $\displaystyle f(x)\leftarrow \begin{cases} f(x) & x \le x_0 \newline \infty & x_0 \lt x \end{cases} $ |$O(\log n)$|
 | `shift(a)`   | $\displaystyle f(x)\leftarrow f(x-a)$|$O(1)$|
 | `chmin_cum(rev=false)`| `rev=false` のとき， $\displaystyle f(x)\leftarrow\min_{y\le x}f(y)$ <br> `rev=true` のとき，$\displaystyle f(x)\leftarrow\min_{y\ge x}f(y)$| $O(\log n)$|
 | `chmin_slide_win(lb,ub)`| $\displaystyle f(x)\leftarrow\min_{x-\mathrm{ub}\le y\le x-\mathrm{lb}}f(y)= \min_{\mathrm{lb}\le y\le \mathrm{ub}} f(x-y)$ <br> ただし $\mathrm{lb}\le\mathrm{ub}$ を要求．|$O(\log n)$|
@@ -58,9 +58,14 @@ weight balanced tree でがんばった．一般の min-plus 畳み込みとか�
 
 ## 問題例
 [Kyoto University Programming Contest 2016 H - 壁壁壁壁壁壁壁](https://atcoder.jp/contests/kupc2016/tasks/kupc2016_h) \
-[東京大学プログラミングコンテスト2012 L - じょうしょうツリー](https://atcoder.jp/contests/utpc2012/tasks/utpc2012_12) (`operator+=` のverify)\
+[東京大学プログラミングコンテスト2012 L - じょうしょうツリー](https://atcoder.jp/contests/utpc2012/tasks/utpc2012_12) (`operator+=`)\
 [第2回 ドワンゴからの挑戦状 予選 E - 花火](https://atcoder.jp/contests/dwango2016-prelims/tasks/dwango2016qual_e) \
-[AtCoder Regular Contest 070 E - NarrowRectangles](https://atcoder.jp/contests/arc070/tasks/arc070_c)
+[AtCoder Regular Contest 070 E - NarrowRectangles](https://atcoder.jp/contests/arc070/tasks/arc070_c)\
+[Codeforces Round 371 (Div. 1) C. Sonya and Problem Wihtout a Legend](https://codeforces.com/contest/713/problem/C)\
+[Singapore NOI 2018 safety](https://oj.uz/problem/view/NOI18_safety) \
+[APIO 2016 P2 — Fireworks](https://oj.uz/problem/view/APIO16_fireworks) (`operator+=`)\
+[CodeChef CCDSAP Exam](https://www.codechef.com/problems/CCDSAP?tab=statement)\
+[CodeChef Tree Balancing](https://www.codechef.com/problems/TREEBAL) (永続，`operator+=`)
 
 ## 参考
 [https://tokoharuland.hateblo.jp/entry/2019/12/25/000000](https://tokoharuland.hateblo.jp/entry/2019/12/25/000000)\

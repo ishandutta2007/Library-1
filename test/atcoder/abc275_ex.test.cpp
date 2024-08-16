@@ -16,20 +16,17 @@ signed main() {
  for (int i= 0; i < N; ++i) cin >> B[i];
  CartesianTree ct(B, false);
  int root= ct.root();
- vector<PiecewiseLinearConvex<int>> dp(N);
- auto dfs= [&](auto self, int v) -> void {
+ using PLC= PiecewiseLinearConvex<int>;
+ auto dfs= [&](auto &&dfs, int v) -> PLC {
+  PLC f;
   for (int u: ct.children(v))
-   if (u != -1) {
-    self(self, u);
-    if (dp[v].size() < dp[u].size()) swap(dp[v], dp[u]);
-    dp[v]+= dp[u];
-   }
-  dp[v].add_linear(B[v]);
-  dp[v].add_inf(false, A[v]);
-  dp[v].chmin_cum(true);
-  dp[v].add_linear(-B[v]);
+   if (u != -1) f+= dfs(dfs, u);
+  f.add_linear(B[v]);
+  f.add_inf(false, A[v]);
+  f.chmin_cum(true);
+  f.add_linear(-B[v]);
+  return f;
  };
- dfs(dfs, root);
- cout << dp[root](0) << '\n';
+ cout << dfs(dfs, root)(0) << '\n';
  return 0;
 }

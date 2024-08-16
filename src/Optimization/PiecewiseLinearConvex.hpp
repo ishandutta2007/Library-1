@@ -8,14 +8,7 @@
 #include <cassert>
 #include <utility>
 #include "src/Internal/long_traits.hpp"
-namespace plc_internal {
-#ifdef __LOCAL
-static constexpr size_t __NODE_SIZE= 1 << 15;
-#else
-static constexpr size_t __NODE_SIZE= 1 << 22;
-#endif
-}
-template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NODE_SIZE> class PiecewiseLinearConvex {
+template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class PiecewiseLinearConvex {
  using D= make_long_t<T>;
  struct Node {
   int ch[2];
@@ -25,7 +18,7 @@ template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NOD
   friend std::ostream &operator<<(std::ostream &os, const Node &t) { return os << "{z:" << t.z << ",x:" << t.x << ",d:" << t.d << ",a:" << t.a << ",s:" << t.s << ",sz:" << t.sz << ",ch:(" << t.ch[0] << "," << t.ch[1] << ")}"; }
  };
  static inline size_t ni= 1;
- static inline Node n[NODE_SIZE];
+ static inline Node *n= new Node[NODE_SIZE];
  static inline void info(int t, int d, std::stringstream &ss) {
   if (!t) return;
   info(n[t].ch[0], d + 1, ss);
@@ -162,18 +155,18 @@ template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NOD
   push(t);
   T s= ol + n[n[t].ch[!r]].a;
   if (lte<l>(p, s)) {
+   auto [c, b]= split_cum<l, r>(n[t].ch[!r], p, ol, ou);
    if constexpr (l) {
-    auto [c, b]= split_cum<l, r>(n[t].ch[!r], p, ol, ou);
     if constexpr (r) return {join(c, t, n[t].ch[r]), b};
     else return {join(n[t].ch[r], t, c), b};
-   } else return split_cum<l, r>(n[t].ch[!r], p, ol, ou);
+   } else return {c, b};
   }
   ol= s + n[t].d;
   if (lte<!l>(ol, p)) {
    ou+= n[n[t].ch[!r]].s + D(n[t].x) * n[t].d;
-   if constexpr (l) return split_cum<l, r>(n[t].ch[r], p, ol, ou);
+   auto [a, b]= split_cum<l, r>(n[t].ch[r], p, ol, ou);
+   if constexpr (l) return {a, b};
    else {
-    auto [a, b]= split_cum<l, r>(n[t].ch[r], p, ol, ou);
     if constexpr (r) return {join(n[t].ch[!r], t, a), b};
     else return {join(a, t, n[t].ch[!r]), b};
    }
@@ -240,7 +233,7 @@ template <class T, bool persistent= false, size_t NODE_SIZE= plc_internal::__NOD
  }
 public:
  // f(x) := 0
- PiecewiseLinearConvex(): mn(0), lr{0, 0}, bf{0, 0}, o{0, 0}, rem(0), y(0) {}
+ PiecewiseLinearConvex(): mn(0), lr{0, 0}, bf{0, 0}, o{0, 0}, rem(0), bx{0, 0}, y(0) {}
  //  f(x) := sum max(0, a(x-x0))
  PiecewiseLinearConvex(const std::vector<std::pair<T, T>> &ramps): PiecewiseLinearConvex() {
   int m= ramps.size();
@@ -274,9 +267,17 @@ public:
   std::array<std::vector<std::pair<T, T>>, m> ls, rs;
   std::array<std::pair<T, T>, m> mns;
   int i= 0;
-  (int[]){((void)(mns[i]= {n[plc.mn].d, n[plc.mn].x}, ls[i].resize(n[plc.lr[0]].sz), rs[i].resize(n[plc.lr[1]].sz), dump(ls[i].begin(), plc.lr[0]), dump(rs[i].begin(), plc.lr[1])), ++i)...};
+  (void)(int[]){(mns[i]= {n[plc.mn].d, n[plc.mn].x}, ls[i].resize(n[plc.lr[0]].sz), rs[i].resize(n[plc.lr[1]].sz), dump(ls[i].begin(), plc.lr[0]), dump(rs[i].begin(), plc.lr[1]), ++i)...};
   ni= 1, i= 0;
-  (int[]){((void)((plc.mn ? (plc.mn= create(mns[i].first, mns[i].second)) : 0), plc.lr[0]= build(ls[i].begin(), ls[i].end()), plc.lr[1]= build(rs[i].begin(), rs[i].end())), ++i)...};
+  (void)(int[]){((plc.mn ? (plc.mn= create(mns[i].first, mns[i].second)) : 0), plc.lr[0]= build(ls[i].begin(), ls[i].end()), plc.lr[1]= build(rs[i].begin(), rs[i].end()), ++i)...};
+ }
+ static inline void rebuild(std::vector<PiecewiseLinearConvex> &plcs) {
+  size_t m= plcs.size();
+  std::vector<std::vector<std::pair<T, T>>> ls(m), rs(m);
+  std::vector<std::pair<T, T>> mns(m);
+  for (int i= m; i--;) mns[i]= {n[plcs[i].mn].d, n[plcs[i].mn].x}, ls[i].resize(n[plcs[i].lr[0]].sz), rs[i].resize(n[plcs[i].lr[1]].sz), dump(ls[i].begin(), plcs[i].lr[0]), dump(rs[i].begin(), plcs[i].lr[1]);
+  ni= 1;
+  for (int i= m; i--;) (plcs[i].mn ? (plcs[i].mn= create(mns[i].first, mns[i].second)) : 0), plcs[i].lr[0]= build(ls[i].begin(), ls[i].end()), plcs[i].lr[1]= build(rs[i].begin(), rs[i].end());
  }
  static void reset() { ni= 1; }
  static bool pool_empty() {
@@ -322,9 +323,9 @@ public:
   else if (rem != 0) {
    bool r= rem < 0;
    T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
-   if (0 < u) {
+   if (0 <= u) {
     if (r ^ rev) {
-     if (bf[r]) {
+     if (u > 0 && bf[r]) {
       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
       if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
       o[!r]= u, rem= 0, mn= create(u, bx[r]);
@@ -334,12 +335,13 @@ public:
      D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
      (r ? y-= q : y+= q), rem= 0, mn= lr[r]= 0, o[r]= 0;
     }
-   } else {
-    if (r ^ rev) r ? slope_eval_cum<0, 1>() : slope_eval_cum<0, 0>();
-    else r ? slope_eval_cum<1, 1>() : slope_eval_cum<1, 0>();
-    if constexpr (persistent) mn= create(o[rev], n[mn].x);
-    else n[mn].d= o[rev];
+    bf[!rev]= false;
+    return;
    }
+   if ((r ^ rev)) r ? slope_eval_cum<0, 1>() : slope_eval_cum<0, 0>();
+   else r ? slope_eval_cum<1, 1>() : slope_eval_cum<1, 0>();
+   if constexpr (persistent) mn= create(o[rev], n[mn].x);
+   else n[mn].d= o[rev];
   } else if (mn) {
    if (o[rev] == 0) {
     if (lr[rev]) std::tie(lr[rev], mn)= rev ? pop<0>(lr[rev]) : pop<1>(lr[rev]), o[rev]= n[mn].d;
@@ -349,7 +351,7 @@ public:
     else n[mn].d= o[rev];
    }
   }
-  lr[!rev]= 0, bf[!rev]= false, o[!rev]= 0;
+  bf[!rev]= false, lr[!rev]= 0, o[!rev]= 0;
  }
  //  f(x) <- min_{lb<=y<=ub} f(x-y). (lb <= ub), \_/ -> \__/
  void chmin_slide_win(T lb, T ub) {

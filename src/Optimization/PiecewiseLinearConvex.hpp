@@ -35,6 +35,10 @@ template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class Piec
   if (t) push(t), dump_slopes_r(n[t].ch[0], ofs, as), ofs+= n[n[t].ch[0]].a + n[t].d, as.push_back(ofs), dump_slopes_r(n[t].ch[1], ofs, as);
  }
  static inline int create(T d, T x) { return n[ni].d= d, n[ni].x= x, n[ni].z= 0, ni++; }
+ static inline bool lt(T a, T b) {
+  if constexpr (std::is_floating_point_v<T>) return 1e-15 < b - a;
+  else return a < b;
+ }
  template <class Iter> static inline int build(Iter bg, Iter ed) {
   if (bg == ed) return 0;
   auto md= bg + (ed - bg) / 2;
@@ -78,10 +82,10 @@ template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class Piec
  static inline std::array<int, 3> split(int t, T x) {
   if (!t) return {0, 0, 0};
   push(t);
-  if (n[t].x < x) {
+  if (lt(n[t].x, x)) {
    auto [a, b, c]= split(n[t].ch[1], x);
    return {join(n[t].ch[0], t, a), b, c};
-  } else if (x < n[t].x) {
+  } else if (lt(x, n[t].x)) {
    auto [a, b, c]= split(n[t].ch[0], x);
    return {a, b, join(c, t, n[t].ch[1])};
   }
@@ -99,8 +103,9 @@ template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class Piec
   if (!t) return n[ni]= Node{{0, 0}, 0, x, d, d, D(x) * d, 1}, ni++;
   push(t);
   if constexpr (persistent) n[ni]= n[t], t= ni++;
-  if (n[t].x == x) return n[t].d+= d, update(t), t;
-  return x < n[t].x ? join<0>(insert(n[t].ch[0], x, d), t, n[t].ch[1]) : join<0>(n[t].ch[0], t, insert(n[t].ch[1], x, d));
+  if (lt(x, n[t].x)) return join<0>(insert(n[t].ch[0], x, d), t, n[t].ch[1]);
+  if (lt(n[t].x, x)) return join<0>(n[t].ch[0], t, insert(n[t].ch[1], x, d));
+  return n[t].d+= d, update(t), t;
  }
  template <bool r> static inline std::pair<int, int> pop(int t) {
   if (push(t); !n[t].ch[r]) return {n[t].ch[!r], t};
@@ -108,22 +113,25 @@ template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class Piec
   if constexpr (r) return {join(n[t].ch[!r], t, a), s};
   else return {join(a, t, n[t].ch[!r]), s};
  }
- template <bool r> static inline bool lt(T a, T b) {
-  if constexpr (r) return b < a;
-  else return a < b;
+ template <bool g> static inline bool lgt(T a, T b) {
+  if constexpr (g) return lt(b, a);
+  else return lt(a, b);
  }
  template <bool r> static inline int cut(int t, T x) {
   if (!t) return t;
-  if (push(t); n[t].x == x) return n[t].ch[!r];
-  if (lt<r>(n[t].x, x)) return cut<r>(n[t].ch[!r], x);
-  if constexpr (r) return join(n[t].ch[0], t, cut<1>(n[t].ch[1], x));
-  else return join(cut<0>(n[t].ch[0], x), t, n[t].ch[1]);
+  if (push(t); lgt<r>(n[t].x, x)) return cut<r>(n[t].ch[!r], x);
+  if (lgt<r>(x, n[t].x)) {
+   if constexpr (r) return join(n[t].ch[0], t, cut<1>(n[t].ch[1], x));
+   else return join(cut<0>(n[t].ch[0], x), t, n[t].ch[1]);
+  }
+  return n[t].ch[!r];
  }
  template <bool r> static inline D calc_y(int t, T x, T ol, D ou) {
   for (; t;) {
-   if (push(t); lt<r>(n[t].x, x)) t= n[t].ch[!r];
+   if (push(t); lgt<r>(n[t].x, x)) t= n[t].ch[!r];
    else {
-    if (ol+= n[n[t].ch[!r]].a, ou+= n[n[t].ch[!r]].s; n[t].x == x) break;
+    ol+= n[n[t].ch[!r]].a, ou+= n[n[t].ch[!r]].s;
+    if (!lgt<r>(x, n[t].x)) break;
     ol+= n[t].d, ou+= D(n[t].x) * n[t].d, t= n[t].ch[r];
    }
   }
@@ -132,13 +140,13 @@ template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class Piec
  template <bool r> static inline std::array<int, 3> split(int t, T p, T &ol, D &ou) {
   push(t);
   T s= ol + n[n[t].ch[!r]].a;
-  if (p < s) {
+  if (lt(p, s)) {
    auto [a, b, c]= split<r>(n[t].ch[!r], p, ol, ou);
    if constexpr (r) return {a, b, join(c, t, n[t].ch[r])};
    else return {join(n[t].ch[r], t, a), b, c};
   }
   ol= s + n[t].d;
-  if (ol < p) {
+  if (lt(ol, p)) {
    ou+= n[n[t].ch[!r]].s + D(n[t].x) * n[t].d;
    auto [a, b, c]= split<r>(n[t].ch[r], p, ol, ou);
    if constexpr (r) return {join(n[t].ch[!r], t, a), b, c};
@@ -148,8 +156,8 @@ template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class Piec
   return {n[t].ch[0], t, n[t].ch[1]};
  }
  template <bool l> static inline bool lte(T a, T b) {
-  if constexpr (l) return a < b;
-  else return a <= b;
+  if constexpr (l) return lt(a, b);
+  else return !lt(b, a);
  }
  template <bool l, bool r> static inline std::pair<int, int> split_cum(int t, T p, T &ol, D &ou) {
   push(t);
@@ -180,8 +188,9 @@ template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class Piec
  D y;
  inline D calc_y(T x) {
   if (!mn) return 0;
-  if (n[mn].x == x) return 0;
-  return x < n[mn].x ? -calc_y<0>(lr[0], x, o[0], D(n[mn].x) * o[0]) : calc_y<1>(lr[1], x, o[1], D(n[mn].x) * o[1]);
+  if (lt(x, n[mn].x)) return -calc_y<0>(lr[0], x, o[0], D(n[mn].x) * o[0]);
+  if (lt(n[mn].x, x)) return calc_y<1>(lr[1], x, o[1], D(n[mn].x) * o[1]);
+  return 0;
  }
  inline void slope_eval(bool neg) {
   T p= neg ? -rem : rem, ol= o[neg];
@@ -215,9 +224,9 @@ template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class Piec
   rem= 0;
  }
  template <bool r> void add_inf(T x0) {
-  if (bf[r] && !lt<r>(bx[r], x0)) return;
-  if (assert(!bf[!r] || !lt<r>(bx[!r], x0)), bf[r]= true, bx[r]= x0; !mn) return;
-  if (lt<r>(x0, n[mn].x)) return lr[r]= cut<r>(lr[r], x0), void();
+  if (bf[r] && !lgt<r>(bx[r], x0)) return;
+  if (assert(!bf[!r] || !lgt<r>(bx[!r], x0)), bf[r]= true, bx[r]= x0; !mn) return;
+  if (lgt<r>(x0, n[mn].x)) return lr[r]= cut<r>(lr[r], x0), void();
   D q= n[lr[!r]].s + D(n[mn].x) * o[!r];
   T v= o[!r] + n[lr[!r]].a;
   lr[!r]= cut<r>(lr[!r], x0);
@@ -241,13 +250,13 @@ public:
   std::vector<std::pair<T, T>> w(m);
   int s= 0, t= 0;
   for (auto [d, x]: ramps) {
-   if (d == 0) continue;
-   if (d < 0) y-= D(d) * x, rem+= d, d= -d;
+   if (lt(d, 0)) y-= D(d) * x, rem+= d, d= -d;
+   if (!lt(0, d)) continue;
    w[s++]= {d, x};
   }
   std::sort(w.begin(), w.begin() + s, [](auto a, auto b) { return a.second < b.second; });
   for (int i= 0; i < s; ++i) {
-   if (t && w[t - 1].second == w[i].second) w[t - 1].first+= w[i].first;
+   if (t && !lt(w[t - 1].second, w[i].second) && !lt(w[i].second, w[t - 1].second)) w[t - 1].first+= w[i].first;
    else w[t++]= w[i];
   }
   mn= create(w[0].first, w[0].second), o[1]= n[mn].d, lr[1]= build(w.begin() + 1, w.begin() + t);
@@ -281,7 +290,7 @@ public:
  }
  static void reset() { ni= 1; }
  static bool pool_empty() {
-  if constexpr (persistent) return ni >= NODE_SIZE * 0.85;
+  if constexpr (persistent) return ni >= NODE_SIZE * 0.8;
   else return ni + 1000 >= NODE_SIZE;
  }
  // f(x) += c
@@ -290,26 +299,26 @@ public:
  void add_linear(T a) { rem+= a; }
  //  f(x) += max(a(x-x0),b(x-x0)), (a < b)
  void add_max(T a, T b, T x0) {
-  assert(a < b);
+  assert(lt(a, b));
   if (bf[0] && x0 <= bx[0]) y-= D(b) * x0, rem+= b;
   else if (bf[1] && bx[1] <= x0) y-= D(a) * x0, rem+= a;
   else if (T c= b - a; mn) {
-   if (n[mn].x == x0) {
+   if (lt(n[mn].x, x0)) lr[1]= insert(lr[1], x0, c), y-= D(a) * x0, rem+= a;
+   else if (lt(x0, n[mn].x)) lr[0]= insert(lr[0], x0, c), y-= D(b) * x0, rem+= b;
+   else {
     if constexpr (persistent) mn= create(n[mn].d, n[mn].x);
     n[mn].d+= c, o[1]+= c, y-= D(a) * x0, rem+= a;
-   } else {
-    if (n[mn].x < x0) lr[1]= insert(lr[1], x0, c), y-= D(a) * x0, rem+= a;
-    else lr[0]= insert(lr[0], x0, c), y-= D(b) * x0, rem+= b;
    }
   } else mn= create(c, x0), y-= D(a) * x0, rem+= a, o[0]= 0, o[1]= c;
  }
  // f(x) +=  max(0, a(x-x0))
  void add_ramp(T a, T x0) {
-  if (a != 0) a > 0 ? add_max(0, a, x0) : add_max(a, 0, x0);
+  if (lt(0, a)) add_max(0, a, x0);
+  else if (lt(a, 0)) add_max(a, 0, x0);
  }
  // f(x) += a|x-x0|, \/
  void add_abs(T a, T x0) {
-  if (assert(a >= 0); a != 0) add_max(-a, a, x0);
+  if (assert(!lt(a, 0)); lt(0, a)) add_max(-a, a, x0);
  }
  // right=false : f(x) +=  inf  (x < x_0), right=true: f(x) += inf  (x_0 < x)
  void add_inf(bool right= false, T x0= 0) { return right ? add_inf<1>(x0) : add_inf<0>(x0); }
@@ -319,16 +328,15 @@ public:
  }
  // rev=false: f(x) <- min_{y<=x} f(y), rev=true : f(x) <- min_{x<=y} f(y)
  void chmin_cum(bool rev= false) {
-  if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
-  else if (rem != 0) {
-   bool r= rem < 0;
+  if (bf[0] && bf[1] && !lt(bx[0], bx[1])) y+= D(rem) * bx[0], rem= 0;
+  else if (bool r= lt(rem, 0); r || lt(0, rem)) {
    T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
-   if (0 <= u) {
+   if (!lt(u, 0)) {
     if (r ^ rev) {
-     if (u > 0 && bf[r]) {
+     if (lt(0, u) && bf[r]) {
       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
       if (r ? y-= q : y+= q; mn) lr[!r]= join(lr[0], mn, lr[1]);
-      o[!r]= u, rem= 0, mn= create(u, bx[r]), lr[r]= 0, o[r]= 0;
+      o[!r]= u, rem= 0, mn= create(u, bx[r]), lr[!rev]= 0, o[!rev]= 0;
      }
     } else {
      assert(bf[r]);
@@ -343,7 +351,7 @@ public:
    if constexpr (persistent) mn= create(o[rev], n[mn].x);
    else n[mn].d= o[rev];
   } else if (mn) {
-   if (o[rev] == 0) {
+   if (!lt(0, o[rev])) {
     if (lr[rev]) std::tie(lr[rev], mn)= rev ? pop<0>(lr[rev]) : pop<1>(lr[rev]), o[rev]= n[mn].d;
     else mn= 0;
    } else {
@@ -356,12 +364,11 @@ public:
  //  f(x) <- min_{lb<=y<=ub} f(x-y). (lb <= ub), \_/ -> \__/
  void chmin_slide_win(T lb, T ub) {
   assert(lb <= ub);
-  if (bf[0] && bf[1] && bx[0] == bx[1]) y+= D(rem) * bx[0], rem= 0;
+  if (bf[0] && bf[1] && !lt(bx[0], bx[1])) y+= D(rem) * bx[0], rem= 0;
   else {
-   if (rem != 0) {
-    bool r= rem < 0;
+   if (bool r= lt(rem, 0); r || lt(0, rem)) {
     T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
-    if (0 < u) {
+    if (lt(0, u)) {
      T b[2]= {lb, ub};
      if (bf[r]) {
       D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
@@ -377,8 +384,8 @@ public:
     slope_eval(r);
    }
    if (mn) {
-    if (o[0] == 0) prop(ub);
-    else if (o[1] == 0) prop(lb);
+    if (!lt(0, o[0])) prop(ub);
+    else if (!lt(0, o[1])) prop(lb);
     else lr[1]= join<0>(0, create(o[1], n[mn].x), lr[1]), prop(lb), n[mn].d= o[0], o[1]= 0;
     prop(lr[0], lb), prop(lr[1], ub);
    }
@@ -387,10 +394,10 @@ public:
  }
  D operator()(T x) { return assert(!bf[0] || bx[0] <= x), assert(!bf[1] || x <= bx[1]), calc_y(x) + D(rem) * x + y; }
  D min() {
-  if (rem == 0) return y;
-  bool r= rem < 0;
+  bool r= lt(rem, 0);
+  if (!r && !lt(0, rem)) return y;
   T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
-  if (0 < u) {
+  if (!lt(u, 0)) {
    assert(bf[r]);
    D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
    return r ? y - q : y + q;
@@ -398,9 +405,8 @@ public:
   return slope_eval(r), y;
  }
  std::array<T, 2> argmin() {
-  if (rem != 0) {
-   bool r= rem < 0;
-   if (o[r] + n[lr[r]].a < (r ? -rem : rem)) {
+  if (bool r= lt(rem, 0); r || lt(0, rem)) {
+   if (lt(o[r] + n[lr[r]].a, (r ? -rem : rem))) {
     assert(bf[r]);
     return {bx[r], bx[r]};
    }
@@ -409,12 +415,12 @@ public:
   std::array<T, 2> ret= {bx[0], bx[1]};
   int t= mn;
   if (!t) return ret;
-  bool r= o[0] == 0;
-  if (!r && o[1] != 0) ret[0]= ret[1]= n[t].x;
-  else if (ret[r]= n[t].x, t= lr[!r]; t) {
-   for (; push(t), n[t].ch[r];) t= n[t].ch[r];
-   ret[!r]= n[t].x;
-  } else assert(bf[!r]);
+  bool r= lt(0, o[0]);
+  if (r && lt(0, o[1])) ret[0]= ret[1]= n[t].x;
+  else if (ret[!r]= n[t].x, t= lr[r]; t) {
+   for (; push(t), n[t].ch[!r];) t= n[t].ch[!r];
+   ret[r]= n[t].x;
+  } else assert(bf[r]);
   return ret;
  }
  size_t size() { return n[lr[0]].sz + n[lr[1]].sz + !!mn; }

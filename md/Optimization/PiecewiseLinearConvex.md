@@ -10,7 +10,8 @@ documentation_of: ../../src/Optimization/PiecewiseLinearConvex.hpp
 weight balanced tree でがんばった．一般の min-plus 畳み込みとかはない．\
 メモリプールしている．static 関数 `reset` でノードリセット．
 
-内部では $y$ 座標に相当する値を `T` より大きい型 `D` で管理している．例えば `T=long long` なら `D=__int128_t` とか．
+`T` は $x$ 座標および傾きに相当する値の型．
+内部では $y$ 座標に相当する値を `T` より大きい型 `D` で管理している．例えば `T=long long` なら `D=__int128_t` とか．浮動小数点数もたぶん使える．
 
 テンプレートの第二引数を `true` にすることで永続化する．
 
@@ -61,9 +62,11 @@ weight balanced tree でがんばった．一般の min-plus 畳み込みとか�
 [東京大学プログラミングコンテスト2012 L - じょうしょうツリー](https://atcoder.jp/contests/utpc2012/tasks/utpc2012_12) (`operator+=`)\
 [第2回 ドワンゴからの挑戦状 予選 E - 花火](https://atcoder.jp/contests/dwango2016-prelims/tasks/dwango2016qual_e) \
 [AtCoder Regular Contest 070 E - NarrowRectangles](https://atcoder.jp/contests/arc070/tasks/arc070_c)\
+[CSES Increasing Array II](https://cses.fi/problemset/task/2132/) \
 [Codeforces Round 371 (Div. 1) C. Sonya and Problem Wihtout a Legend](https://codeforces.com/contest/713/problem/C)\
 [Codeforces 2020 Petrozavodsk Winter Camp, Jagiellonian U Contest C. Bookface](https://codeforces.com/gym/102576/problem/C)\
 [MemSQL Start[c]UP 3.0 - Round 2 and Codeforces Round 437 (Div. 1) D. Buy Low Sell High](https://codeforces.com/contest/866/problem/D)\
+[Codeforces Round 584 - Dasha Code Championship - Elimination Round (rated, open for everyone, Div. 1 + Div. 2)](https://codeforces.com/contest/1209/problem/H) (`long double`)\
 [Singapore NOI 2018 safety](https://oj.uz/problem/view/NOI18_safety) \
 [LMIO 2019 Potatoes and fertilizers](https://oj.uz/problem/view/LMIO19_bulves) \
 [APIO 2016 P2 — Fireworks](https://oj.uz/problem/view/APIO16_fireworks) (`operator+=`)\

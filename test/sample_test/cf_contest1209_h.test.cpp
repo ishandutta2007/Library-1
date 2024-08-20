@@ -19,7 +19,7 @@ namespace TEST {
 signed main(stringstream& scin, stringstream& scout) {
  int n, L;
  scin >> n >> L;
- PiecewiseLinearConvex<long double, false, 1 << 20> f;
+ PiecewiseLinearConvex<long double> f;
  f.add_inf(), f.add_inf(true);
  auto no_belt= [&](int y, int x) {
   if (y == x) return;
@@ -51,7 +51,7 @@ namespace TEST_conj {
 signed main(stringstream& scin, stringstream& scout) {
  int n, L;
  scin >> n >> L;
- PiecewiseLinearConvex<long double, false, 1 << 20> f;
+ PiecewiseLinearConvex<long double> f;
  auto no_belt= [&](int y, int x) {
   if (y == x) return;
   f.add_inf(true, 1);

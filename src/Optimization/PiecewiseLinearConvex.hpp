@@ -8,7 +8,7 @@
 #include <cassert>
 #include <utility>
 #include "src/Internal/long_traits.hpp"
-template <class T, bool persistent= false, size_t NODE_SIZE= 1 << 22> class PiecewiseLinearConvex {
+template <class T, bool persistent= false, size_t NODE_SIZE= 1 << (20 + 2 * persistent)> class PiecewiseLinearConvex {
  using D= make_long_t<T>;
  struct Node {
   int ch[2]= {0, 0};
@@ -341,7 +341,7 @@ public:
     } else {
      assert(bf[r]);
      D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
-     (r ? y-= q : y+= q), rem= 0, mn= lr[r]= 0, o[r]= 0;
+     (r ? y-= q : y+= q), rem= 0, mn= lr[0]= lr[1]= 0, o[0]= o[1]= 0;
     }
     bf[!rev]= false;
     return;
@@ -397,7 +397,7 @@ public:
   bool r= lt(rem, 0);
   if (!r && !lt(0, rem)) return y;
   T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
-  if (!lt(u, 0)) {
+  if (lt(0, u)) {
    assert(bf[r]);
    D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
    return r ? y - q : y + q;

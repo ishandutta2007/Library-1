@@ -40,7 +40,7 @@ signed main() {
    f.shift(a[i] - b[i]);
    if (i < n - 1) f.add_abs(vec[i + 1] - vec[i], 0);
   }
-  ans+= f(0);
+  ans+= f(0).value();
  }
  cout << ans << '\n';
  return 0;

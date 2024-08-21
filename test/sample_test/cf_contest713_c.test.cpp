@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-// https://cses.fi/problemset/task/2132/
+// https://codeforces.com/contest/713/problem/C
 #include <sstream>
 #include <string>
 #include <cassert>
@@ -17,10 +17,11 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> n;
  PiecewiseLinearConvex<int> f;
  for (int i= 0; i < n; ++i) {
-  int x;
-  scin >> x;
+  int a;
+  scin >> a;
   f.chmin_cum();
-  f.add_abs(1, x);
+  f.shift(1);
+  f.add_abs(1, a);
  }
  scout << f.min().value() << '\n';
  return 0;
@@ -33,20 +34,24 @@ signed main(stringstream& scin, stringstream& scout) {
  PiecewiseLinearConvex<int> f;
  f.add_inf();
  for (int i= 0; i < n; ++i) {
-  int x;
-  scin >> x;
+  int a;
+  scin >> a;
   f.add_inf(true);
-  f.add_linear(-x);
+  f.add_linear(1);
+  f.add_linear(-a);
   f.chmin_slide_win(-1, 1);
-  f.add_linear(x);
+  f.add_linear(a);
  }
  scout << -f(0).value() << '\n';
  return 0;
 }
 }
 signed main() {
- assert(test(TEST::main, "5\n3 8 5 6 5\n", "4\n"));
+ assert(test(TEST::main, "7\n2 1 5 11 5 9 11\n", "9\n"));
+ assert(test(TEST::main, "5\n5 4 3 2 1\n", "12\n"));
 
- assert(test(TEST_conj::main, "5\n3 8 5 6 5\n", "4\n"));
+ assert(test(TEST_conj::main, "7\n2 1 5 11 5 9 11\n", "9\n"));
+ assert(test(TEST_conj::main, "5\n5 4 3 2 1\n", "12\n"));
+
  return 0;
 }

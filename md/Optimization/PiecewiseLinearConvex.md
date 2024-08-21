@@ -45,9 +45,9 @@ slope trick を weight balanced tree で実装したもの．一般の min-plus 
 | `shift(a)`   | $\displaystyle f(x)\leftarrow f(x-a)$|$O(1)$|
 | `chmin_cum(rev=false)`| `rev=false` のとき， $\displaystyle f(x)\leftarrow\min_{y\le x}f(y)$ <br> `rev=true` のとき，$\displaystyle f(x)\leftarrow\min_{y\ge x}f(y)$| $O(\log n)$|
 | `chmin_slide_win(lb,ub)`| $\displaystyle f(x)\leftarrow\min_{x-\mathrm{ub}\le y\le x-\mathrm{lb}}f(y)= \min_{\mathrm{lb}\le y\le \mathrm{ub}} f(x-y)$ <br> ただし $\mathrm{lb}\le\mathrm{ub}$ を要求．|$O(\log n)$|
-| `operator()(a)` | $f(a)$ を返す．<br> 返り値は `T` より大きい型 `D` (`T=long long`なら `__int128_t`) | $O(\log n)$ |
-| `argmin()`   | 閉区間 $[l, r] = \lbrace y:f(y) = \min_x f(x)\rbrace$ を返す．| $O(\log n)$|
-| `min()`      | $\min_x f(x)$ を返す.　<br> 返り値は `T` より大きい型 `D` (`T=long long`なら `__int128_t`) |$O(\log n)$|
+| `operator()(a)` | $f(a)$ を返す．<br> 返り値は `optional<D>`．存在しない場合 ($\infty$の場合) 無効値 (`nullopt`) を返す．<br> `D` は `T` より大きい型 (`T=long long`なら `D=__int128_t`) | $O(\log n)$ |
+| `argmin()`   | 閉区間 $[l, r] = \lbrace y:f(y) = \min_x f(x)\rbrace$ を返す．<br> ただし存在しない場合，invalidな値($\lbrack 1,0\rbrack$)を返す．| $O(\log n)$|
+| `min()`      | $\min_x f(x)$ を返す.　<br> 返り値は `optional<D>`．存在しない場合無効値 (`nullopt`) を返す．<br> `D` は `T` より大きい型 (`T=long long`なら `D=__int128_t`) |$O(\log n)$|
 | `size()`      |$f$ の接点の数 $n$ を返す．| $O(1)$ |
 | `operator+(g)`| $f(x)+g(x)$ を返す．<br> 永続化してないと破壊的．| $\displaystyle O\left(m\log \left(\frac{n}{m}+1\right)\right)$ <br> ただし $f,g$ の接点の数の小さい方を $m$, 大きい方を $n$ とした． |
 | `operator+=(g)`| $f(x)\leftarrow f(x)+g(x)$　<br> 永続化してないと $g$ は破壊される．| $\displaystyle O\left(m\log \left(\frac{n}{m}+1\right)\right)$ <br> ただし $f,g$ の接点の数の小さい方を $m$, 大きい方を $n$ とした． |
@@ -73,8 +73,10 @@ slope trick を weight balanced tree で実装したもの．一般の min-plus 
 [LMIO 2019 Potatoes and fertilizers](https://oj.uz/problem/view/LMIO19_bulves) \
 [APIO 2016 P2 — Fireworks](https://oj.uz/problem/view/APIO16_fireworks) (`operator+=`)\
 [CodeChef CCDSAP Exam](https://www.codechef.com/problems/CCDSAP)\
+[CodeChef Manufacturing Goods](https://www.codechef.com/problems/CZMG17) (解なし判定あり)\
 [CodeChef Tangling Tree](https://www.codechef.com/problems/TANGLINGTREE) (`operator+=`)\
-[CodeChef Tree Balancing](https://www.codechef.com/problems/TREEBAL) (永続，`operator+=`)
+[CodeChef Tree Balancing](https://www.codechef.com/problems/TREEBAL) (永続，`operator+=`)\
+[ICPC WF Conquer The World](https://icpc.kattis.com/problems/conquertheworld) (`operator+=`)
 
 ## 参考
 [https://tokoharuland.hateblo.jp/entry/2019/12/25/000000](https://tokoharuland.hateblo.jp/entry/2019/12/25/000000)\

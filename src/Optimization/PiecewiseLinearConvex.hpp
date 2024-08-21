@@ -7,6 +7,7 @@
 #include <string>
 #include <cassert>
 #include <utility>
+#include <optional>
 #include "src/Internal/long_traits.hpp"
 template <class T, bool persistent= false, size_t NODE_SIZE= 1 << (20 + 2 * persistent)> class PiecewiseLinearConvex {
  using D= make_long_t<T>;
@@ -392,13 +393,17 @@ public:
   }
   bx[0]+= lb, bx[1]+= ub;
  }
- D operator()(T x) { return assert(!bf[0] || bx[0] <= x), assert(!bf[1] || x <= bx[1]), calc_y(x) + D(rem) * x + y; }
- D min() {
+ std::optional<D> operator()(T x) {
+  if (bf[0] && x < bx[0]) return std::nullopt;
+  if (bf[1] && bx[1] < x) return std::nullopt;
+  return calc_y(x) + D(rem) * x + y;
+ }
+ std::optional<D> min() {
   bool r= lt(rem, 0);
   if (!r && !lt(0, rem)) return y;
   T u= (r ? -rem : rem) - o[r] - n[lr[r]].a;
   if (lt(0, u)) {
-   assert(bf[r]);
+   if (!bf[r]) return std::nullopt;
    D q= n[lr[r]].s + D(n[mn].x) * o[r] + D(u) * bx[r];
    return r ? y - q : y + q;
   }
@@ -407,7 +412,7 @@ public:
  std::array<T, 2> argmin() {
   if (bool r= lt(rem, 0); r || lt(0, rem)) {
    if (lt(o[r] + n[lr[r]].a, (r ? -rem : rem))) {
-    assert(bf[r]);
+    if (!bf[r]) return {1, 0};  // no solution
     return {bx[r], bx[r]};
    }
    slope_eval(r);
@@ -420,7 +425,7 @@ public:
   else if (ret[!r]= n[t].x, t= lr[r]; t) {
    for (; push(t), n[t].ch[!r];) t= n[t].ch[!r];
    ret[r]= n[t].x;
-  } else assert(bf[r]);
+  } else if (!bf[r]) return {1, 0};  // no solution
   return ret;
  }
  size_t size() { return n[lr[0]].sz + n[lr[1]].sz + !!mn; }

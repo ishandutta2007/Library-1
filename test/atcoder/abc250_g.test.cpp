@@ -18,6 +18,6 @@ signed main() {
   f.add_linear(P);
   f.add_inf();
  }
- cout << -f.min() << '\n';
+ cout << -f.min().value() << '\n';
  return 0;
 }

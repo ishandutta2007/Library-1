@@ -41,7 +41,7 @@ signed main() {
   f.add_linear(-a[i][1]);
   sum+= a[i][0] + a[i][1];
  }
- ans-= f.min();
+ ans-= f.min().value();
  cout << ans << '\n';
  return 0;
 }

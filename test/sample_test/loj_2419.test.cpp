@@ -31,7 +31,7 @@ signed main(stringstream& scin, stringstream& scout) {
   f.add_linear(X);
   f.add_abs(Z, 0);
  }
- scout << f(0) << '\n';
+ scout << f(0).value() << '\n';
  return 0;
 }
 }
@@ -48,7 +48,7 @@ signed main(stringstream& scin, stringstream& scout) {
   f.add_inf(true, X);
   f.chmin_slide_win(-Z, Z);
  }
- scout << -f.min() << '\n';
+ scout << -f.min().value() << '\n';
  return 0;
 }
 }

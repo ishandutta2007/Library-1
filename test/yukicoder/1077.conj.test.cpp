@@ -17,6 +17,6 @@ signed main() {
   f.chmin_slide_win(-1, 1);
   f.add_linear(Y);
  }
- cout << -f(0) << '\n';
+ cout << -f(0).value() << '\n';
  return 0;
 }

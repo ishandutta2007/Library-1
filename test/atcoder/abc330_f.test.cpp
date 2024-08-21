@@ -29,7 +29,7 @@ signed main() {
   PLC Fy= fy, Gy= gy;
   Gy.shift(-m);
   Fy+= Gy;
-  long long a= Fx.min() + Fy.min();
+  long long a= Fx.min().value() + Fy.min().value();
   (a <= K ? h : l)= m;
   if (PLC::pool_empty()) PLC::rebuild(fx, gx, fy, gy);
  }

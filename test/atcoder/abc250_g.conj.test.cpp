@@ -15,6 +15,6 @@ signed main() {
   f.add_abs(1, P);
   f.chmin_cum(true);
  }
- cout << f(0) << '\n';
+ cout << f(0).value() << '\n';
  return 0;
 }

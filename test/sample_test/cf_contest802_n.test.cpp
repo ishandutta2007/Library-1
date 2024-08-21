@@ -42,7 +42,7 @@ signed main(stringstream& scin, stringstream& scout) {
    }
    f.add_inf();
   }
-  long long ret= f.min() + (long long)p * k;
+  long long ret= f.min().value() + (long long)p * k;
   PLC::reset();
   return ret;
  };
@@ -71,7 +71,7 @@ signed main(stringstream& scin, stringstream& scout) {
    }
    f.chmin_cum(true);
   }
-  long long ret= -f(0) + (long long)p * k;
+  long long ret= -f(0).value() + (long long)p * k;
   PLC::reset();
   return ret;
  };

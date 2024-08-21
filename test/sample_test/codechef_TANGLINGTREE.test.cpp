@@ -16,15 +16,15 @@ namespace TEST {
 signed main(stringstream& scin, stringstream& scout) {
  using PLC= PiecewiseLinearConvex<int>;
  int T;
- cin >> T;
+ scin >> T;
  while (T--) {
   int N;
-  cin >> N;
+  scin >> N;
   vector<int> W(N);
-  for (int i= 0; i < N; ++i) cin >> W[i];
+  for (int i= 0; i < N; ++i) scin >> W[i];
   Graph g(N, N - 1);
   vector<int> R(N - 1);
-  for (int e= 0; e < N - 1; ++e) cin >> g[e] >> R[e], --g[e];
+  for (int e= 0; e < N - 1; ++e) scin >> g[e] >> R[e], --g[e];
   auto adj= g.adjacency_edge(0);
   auto dfs= [&](auto&& dfs, int v, int p) -> pair<PLC, PLC> {
    PLC f1, f2;
@@ -47,7 +47,7 @@ signed main(stringstream& scin, stringstream& scout) {
    return {f1, f2};
   };
   auto [f, _]= dfs(dfs, 0, -1);
-  cout << -f.min() << '\n';
+  scout << -f.min().value() << '\n';
   PLC::reset();
  }
  return 0;

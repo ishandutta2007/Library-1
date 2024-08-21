@@ -16,6 +16,6 @@ signed main() {
   f.add_abs(1, 0), f.add_abs(1, A);
   pA= A;
  }
- cout << (long long)f.min() << '\n';
+ cout << (long long)f.min().value() << '\n';
  return 0;
 }

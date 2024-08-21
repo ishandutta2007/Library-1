@@ -20,6 +20,6 @@ signed main() {
   f.add_linear(A);
   pA= A;
  }
- cout << (long long)-f(0) << '\n';
+ cout << (long long)-f(0).value() << '\n';
  return 0;
 }

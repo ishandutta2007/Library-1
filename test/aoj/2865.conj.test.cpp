@@ -17,6 +17,6 @@ signed main() {
   f.add_abs(1, g[i]);
   f.add_const(-g[i]);
  }
- cout << (long long)-f.min() << '\n';
+ cout << (long long)-f.min().value() << '\n';
  return 0;
 }

@@ -18,6 +18,6 @@ signed main() {
   f.shift(1);
   f.add_abs(1, A[i]);
  }
- cout << (long long)f.min() << '\n';
+ cout << (long long)f.min().value() << '\n';
  return 0;
 }

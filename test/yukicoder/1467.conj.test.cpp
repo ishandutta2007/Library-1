@@ -30,7 +30,7 @@ signed main() {
     f.chmin_slide_win(-c, c);
    }
   }
-  cout << (long long)-f.min() << '\n';
+  cout << (long long)-f.min().value() << '\n';
   PLC::reset();
  }
  return 0;

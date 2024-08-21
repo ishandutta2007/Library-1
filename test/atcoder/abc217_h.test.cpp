@@ -19,6 +19,6 @@ signed main() {
   else f.add_ramp(-1, X);
   pT= i64;
  }
- cout << (long long)f.min() << '\n';
+ cout << (long long)f.min().value() << '\n';
  return 0;
 }

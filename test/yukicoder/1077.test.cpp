@@ -14,6 +14,6 @@ signed main() {
   f.chmin_cum();
   f.add_abs(1, Y);
  }
- cout << f.min() << '\n';
+ cout << f.min().value() << '\n';
  return 0;
 }

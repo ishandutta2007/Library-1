@@ -29,7 +29,7 @@ vector<long long> solve(const vector<pair<int, int>> &init, const vector<tuple<i
   } else if (op == 6) {
    f.chmin_slide_win(a, b);
   }
-  ans.push_back(f.min());
+  ans.push_back(f.min().value());
  }
  PLC::reset();
  return ans;
@@ -87,7 +87,7 @@ vector<long long> solve(const std::vector<pair<int, int>> &init, const vector<tu
   } else if (op == 7) {
    f.add_linear(a);
   }
-  ans.push_back(f(0));
+  ans.push_back(f(0).value());
  }
  PLC::reset();
  return ans;
@@ -148,7 +148,7 @@ vector<long long> solve(const vector<pair<int, int>> &init, const vector<tuple<i
   auto [l, r]= f.argmin();
   ans.push_back(l);
   ans.push_back(r);
-  ans.push_back(f.min());
+  ans.push_back(f.min().value());
  }
  PLC::reset();
  return ans;
@@ -205,7 +205,7 @@ vector<long long> solve(const vector<pair<int, int>> &init, const vector<tuple<i
   } else if (op == 7) {
    f.add_inf(false, a);
   }
-  ans.push_back(f.min());
+  ans.push_back(f.min().value());
  }
  PLC::reset();
  return ans;
@@ -266,7 +266,7 @@ vector<long long> solve(const vector<pair<int, int>> &init, const vector<tuple<i
   } else if (op == 7) {
    f+= fs[a];
   }
-  ans.push_back(f.min());
+  ans.push_back(f.min().value());
   fs.push_back(f);
  }
  PLC::reset();
@@ -339,7 +339,7 @@ vector<long long> solve(const std::vector<pair<int, int>> &init, const vector<tu
   } else if (op == 8) {
    f+= fs[a];
   }
-  ans.push_back(f(0));
+  ans.push_back(f(0).value());
   fs.push_back(f);
  }
  PLC::reset();

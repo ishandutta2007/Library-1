@@ -43,7 +43,7 @@ signed main(stringstream& scin, stringstream& scout) {
   f.add_inf();
  }
  no_belt(y, L);
- scout << fixed << setprecision(12) << f.min() << '\n';
+ scout << fixed << setprecision(12) << f.min().value() << '\n';
  return 0;
 }
 }
@@ -70,7 +70,7 @@ signed main(stringstream& scin, stringstream& scout) {
   f.chmin_cum(true);
  }
  no_belt(y, L);
- scout << fixed << setprecision(12) << -f(0) << '\n';
+ scout << fixed << setprecision(12) << -f(0).value() << '\n';
  return 0;
 }
 }

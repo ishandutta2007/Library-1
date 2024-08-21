@@ -41,7 +41,7 @@ signed main() {
    long long c= vec[i + 1] - vec[i];
    if (i < n - 1) f.chmin_slide_win(-c, c);
   }
-  ans-= f.min();
+  ans-= f.min().value();
  }
  cout << ans << '\n';
  return 0;

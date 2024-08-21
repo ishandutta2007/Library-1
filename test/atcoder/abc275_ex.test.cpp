@@ -27,6 +27,6 @@ signed main() {
   f.add_linear(-B[v]);
   return f;
  };
- cout << dfs(dfs, root)(0) << '\n';
+ cout << dfs(dfs, root)(0).value() << '\n';
  return 0;
 }

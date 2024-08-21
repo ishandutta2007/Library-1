@@ -25,7 +25,7 @@ signed main(stringstream& scin, stringstream& scout) {
   f.shift(B[i] - A[i]);
   if (i < N - 1) f.add_abs(1, 0);
  }
- scout << (long long)f(0) << '\n';
+ scout << (long long)f(0).value() << '\n';
  return 0;
 }
 }
@@ -42,7 +42,7 @@ signed main(stringstream& scin, stringstream& scout) {
   f.add_linear(-B[i] + A[i]);
   if (i < N - 1) f.chmin_slide_win(-1, 1);
  }
- scout << (long long)-f.min() << '\n';
+ scout << (long long)-f.min().value() << '\n';
  return 0;
 }
 }

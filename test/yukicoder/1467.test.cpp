@@ -28,7 +28,7 @@ signed main() {
    f.shift(a[i] - b[i] * k);
    if (i < n - 1) f.add_abs(vec[i + 1] - vec[i], 0);
   }
-  cout << (long long)f(0) << '\n';
+  cout << (long long)f(0).value() << '\n';
   PLC::reset();
  }
  return 0;

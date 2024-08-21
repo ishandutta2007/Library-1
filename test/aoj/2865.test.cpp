@@ -20,6 +20,6 @@ signed main() {
   f.add_linear(g[i]);
   f.add_const(g[i]);
  }
- cout << (long long)f(0) << '\n';
+ cout << (long long)f(0).value() << '\n';
  return 0;
 }

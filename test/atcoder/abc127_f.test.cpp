@@ -18,7 +18,7 @@ signed main() {
    f.add_const(b);
   } else {
    auto [l, r]= f.argmin();
-   cout << l << " " << f.min() << '\n';
+   cout << l << " " << f.min().value() << '\n';
   }
  }
  return 0;

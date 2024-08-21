@@ -42,7 +42,7 @@ signed main() {
   f.shift(-a[i][1]);
   sum+= a[i][0] + a[i][1];
  }
- ans+= f(0);
+ ans+= f(0).value();
  cout << ans << '\n';
  return 0;
 }

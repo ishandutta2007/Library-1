@@ -21,7 +21,7 @@ signed main(stringstream& scin, stringstream& scout) {
   int n, d;
   scin >> n >> d;
   long long c[n];
-  for (int i= 0; i < n; ++i) cin >> c[i];
+  for (int i= 0; i < n; ++i) scin >> c[i];
   sort(c, c + n);
   PLC f;
   f.add_inf();
@@ -46,7 +46,7 @@ signed main(stringstream& scin, stringstream& scout) {
   int n, d;
   scin >> n >> d;
   long long c[n];
-  for (int i= 0; i < n; ++i) cin >> c[i];
+  for (int i= 0; i < n; ++i) scin >> c[i];
   sort(c, c + n);
   PLC f;
   for (int i= 0; i < n; ++i) {

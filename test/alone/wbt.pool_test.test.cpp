@@ -174,10 +174,9 @@ void test() {
    l= rand() % N;
    --N;
   } else {
-   l= rand() % N, r= rand() % N, a= rand() % N, b= rand() % N;
-   if (l > r) swap(l, r);
-   if (a > b) swap(a, b);
-   ++r, ++b;
+   int x= rand() % N;
+   l= rand() % (N - x), r= l + x + 1;
+   a= rand() % (N - x), b= a + x + 1;
   }
   querys.emplace_back(op, l, r, a, b);
  }

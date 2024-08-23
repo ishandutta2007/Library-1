@@ -1,4 +1,4 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/aplusb
+// competitive-verifier: STANDALONE
 #include <iostream>
 #include <random>
 #include <cassert>
@@ -17,12 +17,7 @@ void test(int X) {
  }
 }
 signed main() {
- cin.tie(0);
- ios::sync_with_stdio(false);
  Nimber::init();
- int A, B;
- cin >> A >> B;
- test(A), test(B);
- cout << A + B << '\n';
+ test(0), test(1);
  return 0;
 }

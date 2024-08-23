@@ -1,7 +1,7 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/aplusb
-#include <iostream>
+// competitive-verifier: STANDALONE
+
 #include "src/Math/ModInt.hpp"
-using namespace std;
+
 using Mint= ModInt<1000000007>;
 constexpr auto a= Mint(2) + 3;
 static_assert(a == 5);
@@ -17,11 +17,4 @@ constexpr auto f= -Mint(2);
 static_assert(f == 1000000005);
 constexpr auto g= Mint(2).inv();
 static_assert(g == 500000004);
-signed main() {
- cin.tie(0);
- ios::sync_with_stdio(false);
- int A, B;
- cin >> A >> B;
- cout << A + B << '\n';
- return 0;
-}
+signed main() { return 0; }

@@ -108,6 +108,22 @@ template <class T, bool persistent= false, size_t NODE_SIZE= 1 << (20 + 2 * pers
   if (lt(n[t].x, x)) return join<0>(n[t].ch[0], t, insert(n[t].ch[1], x, d));
   return n[t].d+= d, update(t), t;
  }
+ static inline int erase(int t, T x, T d) {
+  assert(t);
+  push(t);
+  if (lt(x, n[t].x)) return join(erase(n[t].ch[0], x, d), t, n[t].ch[1]);
+  if (lt(n[t].x, x)) return join(n[t].ch[0], t, erase(n[t].ch[1], x, d));
+  assert(!lt(n[t].d, d));
+  if (lt(d, n[t].d)) {
+   if constexpr (persistent) n[ni]= n[t], t= ni++;
+   return n[t].d-= d, update(t), t;
+  }
+  if (n[t].ch[1]) {
+   auto [a, s]= pop<0>(n[t].ch[1]);
+   return join(n[t].ch[0], s, a);
+  }
+  return n[t].ch[0];
+ }
  template <bool r> static inline std::pair<int, int> pop(int t) {
   if (push(t); !n[t].ch[r]) return {n[t].ch[!r], t};
   auto [a, s]= pop<r>(n[t].ch[r]);
@@ -323,6 +339,36 @@ public:
  }
  // right=false : f(x) +=  inf  (x < x_0), right=true: f(x) += inf  (x_0 < x)
  void add_inf(bool right= false, T x0= 0) { return right ? add_inf<1>(x0) : add_inf<0>(x0); }
+ //  f(x) -= max(a(x-x0),b(x-x0)), (a < b)
+ void subtract_max(T a, T b, T x0) {
+  assert(lt(a, b));
+  if (bf[0] && x0 <= bx[0]) y+= D(b) * x0, rem-= b;
+  else if (bf[1] && bx[1] <= x0) y+= D(a) * x0, rem-= a;
+  else {
+   assert(mn);
+   T c= b - a;
+   if (lt(n[mn].x, x0)) lr[1]= erase(lr[1], x0, c), y+= D(a) * x0, rem-= a;
+   else if (lt(x0, n[mn].x)) lr[0]= erase(lr[0], x0, c), y+= D(b) * x0, rem-= b;
+   else {
+    assert(!lt(n[mn].d, c));
+    if (lt(c, n[mn].d)) {
+     if constexpr (persistent) mn= create(n[mn].d, n[mn].x);
+     n[mn].d-= c, o[1]+= o[0] - c, y+= D(o[0] + a) * x0, rem-= o[0] + a, o[0]= 0;
+    } else if (lr[1]) y+= D(o[0] + a) * x0, rem-= o[0] + a, o[0]= 0, std::tie(lr[1], mn)= pop<0>(lr[1]), o[1]= n[mn].d;
+    else if (lr[0]) y-= D(o[1] - b) * x0, rem+= o[1] - b, o[1]= 0, std::tie(lr[0], mn)= pop<1>(lr[0]), o[0]= n[mn].d;
+    else mn= 0, y+= D(a + o[0]) * x0, rem-= a + o[0], o[0]= o[1]= 0;
+   }
+  }
+ }
+ // f(x) -= max(0, a(x-x0))
+ void subtract_ramp(T a, T x0) {
+  if (lt(0, a)) subtract_max(0, a, x0);
+  else if (lt(a, 0)) subtract_max(a, 0, x0);
+ }
+ // f(x) -= a|x-x0|, \/
+ void subtract_abs(T a, T x0) {
+  if (assert(!lt(a, 0)); lt(0, a)) subtract_max(-a, a, x0);
+ }
  // f(x) <- f(x-x0)
  void shift(T x0) {
   if (bx[0]+= x0, bx[1]+= x0, y-= D(rem) * x0; mn) prop(x0), prop(lr[0], x0), prop(lr[1], x0);

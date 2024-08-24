@@ -39,8 +39,11 @@ slope trick を weight balanced tree で実装したもの．一般の min-plus 
 | `add_const(c)`      | $\displaystyle f(x)\leftarrow f(x)+c $ |$O(1)$ |
 | `add_linear(a)` | $\displaystyle f(x)\leftarrow f(x) + ax$ | $O(1)$ |
 | `add_max(a,b,x0)` |$\displaystyle f(x)\leftarrow f(x) + \max(a(x-x_0), b(x-x_0)) $ <br> ただし $a\lt b$ を要求|$O(\log n)$ |
-| `add_ramp(a,x0)` | $\displaystyle f(x)\leftarrow f(x) + \max(a(x-x_0,0))$ |$O(\log n)$|
+| `add_ramp(a,x0)` | $\displaystyle f(x)\leftarrow f(x) + \max(a(x-x_0),0)$ |$O(\log n)$|
 | `add_abs(a,x0)` | $\displaystyle f(x)\leftarrow f(x) + a\lvert  x-x_0 \rvert$ <br> ただし $a\ge0$を要求| $O(\log n)$|
+| `subtract_max(a,b,x0)` |$\displaystyle f(x)\leftarrow f(x) - \max(a(x-x_0), b(x-x_0)) $ <br> ただし $a\lt b$ を要求<br> $f$ が凸性を保てないとassertで落ちる．<br>$\sum_{i} \lvert x-x_i\rvert$ から $\sum_{i\ne j} \lvert x-x_i\rvert$<br>を求めるときなどに使う想定．|$O(\log n)$ |
+| `subtract_ramp(a,x0)` | $\displaystyle f(x)\leftarrow f(x) - \max(a(x-x_0),0)$ <br> $f$ が凸性を保てないとassertで落ちる．|$O(\log n)$|
+| `subtract_abs(a,x0)` | $\displaystyle f(x)\leftarrow f(x) - a\lvert  x-x_0 \rvert$ <br> ただし $a\ge0$を要求<br> $f$ が凸性を保てないとassertで落ちる．| $O(\log n)$|
 | `add_inf(right=false, x0)`  | `right=false` のとき，<br> $\displaystyle f(x)\leftarrow \begin{cases}  \infty  & x \lt x_0 \newline f(x) & x_0 \le x \end{cases} $ <br> `right=true` のとき，<br> $\displaystyle f(x)\leftarrow \begin{cases} f(x) & x \le x_0 \newline \infty & x_0 \lt x \end{cases} $ |$O(\log n)$|
 | `shift(a)`   | $\displaystyle f(x)\leftarrow f(x-a)$|$O(1)$|
 | `chmin_cum(rev=false)`| `rev=false` のとき， $\displaystyle f(x)\leftarrow\min_{y\le x}f(y)$ <br> `rev=true` のとき，$\displaystyle f(x)\leftarrow\min_{y\ge x}f(y)$| $O(\log n)$|
@@ -55,8 +58,6 @@ slope trick を weight balanced tree で実装したもの．一般の min-plus 
 | `dump_xs()`| $f$ の接点の $x$ 座標を返す．返り値は `vector<T>`．| $O(n)$ |
 | `dump_xys()`| $f$ の接点の $x,y$ 座標を返す．返り値は `vector<pair<T,D>>` | $O(n)$ |
 | `dump_slopes()`| $f$ の区分線形の 傾きを返す．返り値は `vector<T>` | $O(n)$ |
-
-
 ## 問題例
 [Kyoto University Programming Contest 2016 H - 壁壁壁壁壁壁壁](https://atcoder.jp/contests/kupc2016/tasks/kupc2016_h) \
 [東京大学プログラミングコンテスト2012 L - じょうしょうツリー](https://atcoder.jp/contests/utpc2012/tasks/utpc2012_12) (`operator+=`)\

@@ -87,39 +87,40 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    _push(t, l), _push(t, r), t->sz&= 0x3fffffff;
   }
  }
- template <bool b> static inline int helper(std::array<int, 2> m) {
-  if constexpr (dual_v<M> || reversible) push(m[b]);
-  int c;
-  if constexpr (b) c= merge_(m[0], nm[m[1]].ch[0]);
-  else c= merge_(nm[m[0]].ch[1], m[1]);
-  if constexpr (persistent) nm[nmi]= nm[m[b]], m[b]= nmi++;
-  if (size(nm[m[b]].ch[b]) * 4 >= msize(c)) return nm[m[b]].ch[!b]= c, update(m[b]), m[b];
-  return nm[m[b]].ch[!b]= nm[c].ch[b], update(nm[c].ch[b]= m[b]), update(c), c;
+ template <bool r> static inline int join_(int t, int a, int b) {
+  if constexpr (dual_v<M> || reversible) push(a);
+  if constexpr (r) b= join(b, t, nm[a].ch[0]);
+  else b= join(nm[a].ch[1], t, b);
+  if constexpr (persistent) nm[nmi]= nm[a], a= nmi++;
+  if (size(nm[a].ch[r]) * 4 >= msize(b)) return nm[a].ch[!r]= b, update(a), a;
+  return nm[a].ch[!r]= nm[b].ch[r], update(a), nm[b].ch[r]= a, update(b), b;
  }
- static inline int merge_(int l, int r) {
+ template <bool b= 1> static inline int join(int l, int t, int r) {
   int lsz= size(l), rsz= size(r);
-  if (lsz > rsz * 4) return helper<0>({l, r});
-  if (rsz > lsz * 4) return helper<1>({l, r});
-  return nm[nmi].ch= {l, r}, update(nmi), nmi++;
+  if (lsz > rsz * 4) return join_<0>(t, l, r);
+  if (rsz > lsz * 4) return join_<1>(t, r, l);
+  return nm[t].ch= {l, r}, update(t), t;
  }
- static inline int merge(int l, int r) { return !l ? r : !r ? l : merge_(l, r); }
- static inline std::pair<int, int> split_(int i, size_t k) {
+ static inline int merge(int l, int r) { return !l ? r : !r ? l : (++nmi, join(l, nmi - 1, r)); }
+ static inline std::array<int, 3> split_(int i, size_t k) {
   if constexpr (dual_v<M> || reversible) push(i);
-  auto t= nm + i;
-  auto [l, r]= t->ch;
-  if (size_t lsz= size(l); k == lsz) return {l, r};
-  else if (k < lsz) {
-   auto [ll, lr]= split_(l, k);
-   return {ll, merge_(lr, r)};
+  auto [l, r]= nm[i].ch;
+  size_t lsz= size(l);
+  if (k == lsz) return {l, i, r};
+  if constexpr (persistent) nm[nmi]= nm[i], i= nmi++;
+  if (k < lsz) {
+   auto [a, b, c]= split_(l, k);
+   return {a, b, join(c, i, r)};
   } else {
-   auto [rl, rr]= split_(r, k - lsz);
-   return {merge_(l, rl), rr};
+   auto [a, b, c]= split_(r, k - lsz);
+   return {join(l, i, a), b, c};
   }
  }
  static inline std::pair<int, int> split(int i, size_t k) {
   if (k == 0) return {0, i};
   if (k >= size(i)) return {i, 0};
-  return split_(i, k);
+  auto [l, c, r]= split_(i, k);
+  return {l, r};
  }
  template <class S> static inline int build(size_t l, size_t r, const S &bg) {
   if (r - l == 1) {

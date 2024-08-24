@@ -15,13 +15,13 @@ documentation_of: ../../src/String/SuffixTree.hpp
 
 |メンバ関数|概要|計算量|
 |---|---|---|
-|`SuffixTree(sa, lcp)`|コンストラクタ. <br> 引数は [`SuffixArray` と `LCPArray`](src/String/SuffixArray.hpp) .|$\mathcal{O}(n)$ |
+|`SuffixTree(sa, lcp)`|コンストラクタ. <br> 引数は [`SuffixArray` と `LCPArray`](src/String/SuffixArray.hpp) .|$O(n)$ |
 |`operator[](v)`| 接尾辞木上の頂点 v が指す矩形の情報を返す. <br> (suffix array の添字方向) $\times$ ( 高さ/ lcp 方向 )の矩形 $\lbrack l, r) \times \lbrack d, u)$ を意味する4つの整数 {l,r,d,u} を返す. ||
 |`begin()`| 矩形情報配列の `begin()` を返す.||
 |`end()`| 矩形情報配列の `end()` を返す||
 |`size()`|接尾辞木の頂点数を返す.||
-|`substr(l)`|接尾辞 $S_{l:}$ を構成する頂点列（根から葉へのパス）のうちの最も子孫な頂点（葉）を返す.|$\mathcal{O}(1)$|
-|`substr(l,n)`|部分文字列 $S_{l:l+n}$ を構成する頂点列（根からのパス）のうちの最も子孫な頂点を返す. |$\mathcal{O}(\log n)$|
+|`substr(l)`|接尾辞 $S_{l:}$ を構成する頂点列（根から葉へのパス）のうちの最も子孫な頂点（葉）を返す.|$O(1)$|
+|`substr(l,n)`|部分文字列 $S_{l:l+n}$ を構成する頂点列（根からのパス）のうちの最も子孫な頂点を返す. |$O(\log n)$|
 
 ## 問題例
 [デンソークリエイトプログラミングコンテスト2022 Winter(AtCoder Beginner Contest 280) Ex - Substring Sort](https://atcoder.jp/contests/abc280/tasks/abc280_h)\

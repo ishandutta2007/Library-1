@@ -27,9 +27,9 @@ documentation_of: ../../src/String/RollingHash.hpp
 
 |演算子オーバーロード|概要|計算量|
 |---|---|---|
-|`operator==(r)`|文字列が等しいなら `true`.|$\mathcal{O}(1)$|
-|`operator!=(r)`|文字列が等しくないなら `true`.|$\mathcal{O}(1)$|
-|`operator<(r)`|対応する2つの文字列 $L,R$ について辞書順比較 $L\lt R$ (`bool`値) を返す . |$\mathcal{O}(\log n)$<br> ただし $n=\min(\lvert L\rvert,\lvert R\rvert)$|
+|`operator==(r)`|文字列が等しいなら `true`.|$O(1)$|
+|`operator!=(r)`|文字列が等しくないなら `true`.|$O(1)$|
+|`operator<(r)`|対応する2つの文字列 $L,R$ について辞書順比較 $L\lt R$ (`bool`値) を返す . |$O(\log n)$<br> ただし $n=\min(\lvert L\rvert,\lvert R\rvert)$|
 
 |関数|概要|
 |---|---|
@@ -40,7 +40,7 @@ documentation_of: ../../src/String/RollingHash.hpp
 
 
 ### 備考
-比較が $\mathcal{O}(1)$ じゃないので sort をするときは [stable_sort](https://cpprefjp.github.io/reference/algorithm/stable_sort.html) を使うと良さげ.
+比較が $O(1)$ じゃないので sort をするときは [stable_sort](https://cpprefjp.github.io/reference/algorithm/stable_sort.html) を使うと良さげ.
 
 
 

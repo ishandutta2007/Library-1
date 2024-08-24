@@ -6,7 +6,7 @@ documentation_of: ../../src/DataStructure/SegmentTree_Patricia.hpp
 遅延伝搬不可 \
 永続化可
 ## 計算量
-$\mathcal{O}(\log N)$
+$O(\log N)$
 ## 問題例
 [Codeforces Round #470 (rated, Div. 1, based on VK Cup 2018 Round 1) C. Perfect Security](https://codeforces.com/contest/947/problem/C) (find+xor) \
 [Codeforces Round #477 (rated, Div. 1, based on VK Cup 2018 Round 3) C. Big Secret](https://codeforces.com/contest/966/problem/C) (find+xor) \

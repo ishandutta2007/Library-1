@@ -3,7 +3,7 @@ title: kD-Tree
 documentation_of: ../../src/DataStructure/KDTree.hpp
 ---
 
-$\mathcal{O}(k\cdot N^{1-1/k})$　で動くと思っておく.\
+$O(k\cdot N^{1-1/k})$　で動くと思っておく.\
 $Q=10^5$ は大丈夫だけど $Q=2\times 10^5$ だと無理なイメージ. \
 領域を与える類のは全て境界は含まれるとする. (例えば矩形は閉区間の直積)\
 半群は乗らない. モノイドの単位元 `M::ti` は明示的に与える必要あり. \

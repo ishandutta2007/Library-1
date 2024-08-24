@@ -9,7 +9,7 @@ $$
 を求める. ( $d\le n/2$ )
 
 ## 計算量
- $\mathcal{O}(n^2) $
+ $O(n^2) $
 
 ## 問題例
 [天下一プログラマーコンテスト2015予選B C - 擬二等辺三角形](https://atcoder.jp/contests/tenka1-2015-qualb/tasks/tenka1_2015_qualB_c)

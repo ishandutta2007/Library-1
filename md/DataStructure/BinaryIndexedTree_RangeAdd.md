@@ -4,4 +4,4 @@ documentation_of: ../../src/DataStructure/BinaryIndexedTree_RangeAdd.hpp
 ---
 0-indexed
 ## 計算量
-$\mathcal{O}(\log N)$
+$O(\log N)$

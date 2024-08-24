@@ -4,4 +4,4 @@ documentation_of: ../../src/Math/mod_sqrt.hpp
 ---
 
 ## 計算量
- $\mathcal{O} (\log p) $
+ $O (\log p) $

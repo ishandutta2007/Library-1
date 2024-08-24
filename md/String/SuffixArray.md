@@ -20,12 +20,12 @@ $\SA_k=i \Leftrightarrow$ 接尾辞を辞書順で並べたときの $k$ 番目 
 
 |メンバ関数|概要|計算量|
 |---|---|---|
-|`SuffixArray(S)`|コンストラクタ. 文字列 $S$ を渡す. <br> 引数は通常 `vector<T>` か `string` を想定.|$\mathcal{O}(n)$ か $\mathcal{O}(n\log n)$|
+|`SuffixArray(S)`|コンストラクタ. 文字列 $S$ を渡す. <br> 引数は通常 `vector<T>` か `string` を想定.|$O(n)$ か $O(n\log n)$|
 |`operator[](k)`| $\SA_k$ を返す.||
 |`begin()`|$\SA$ の `begin()` を返す.||
 |`end()`|$\SA$ の `end()` を返す||
 |`size()`|$n$ を返す.||
-|`pattern_matching(P)`|文字列 $S$ の部分文字列でパターン文字列 $P$ と一致する箇所を探す.<br> 返り値は二つの非負整数 $l, r$ <br>s.t. $\lbrace \SA_k\;\vert\; l \leq k \lt r \rbrace = \lbrace i \;\vert\;P$ が $S_{i:}$ の接頭辞$\rbrace$ <br> ただし $P$ が $S$ の部分文字列でないとき $l=r$ .<br> 引数は `String`.|$\mathcal{O}(\lvert P\rvert \log n)$|
+|`pattern_matching(P)`|文字列 $S$ の部分文字列でパターン文字列 $P$ と一致する箇所を探す.<br> 返り値は二つの非負整数 $l, r$ <br>s.t. $\lbrace \SA_k\;\vert\; l \leq k \lt r \rbrace = \lbrace i \;\vert\;P$ が $S_{i:}$ の接頭辞$\rbrace$ <br> ただし $P$ が $S$ の部分文字列でないとき $l=r$ .<br> 引数は `String`.|$O(\lvert P\rvert \log n)$|
 
 ## `LCPArray` クラス
 $\mathrm{LCP}_k:=$ $S_{\SA_k:}$ と $S_{\SA_{k+1}:}$ の共通接頭辞の長さ
@@ -36,11 +36,11 @@ $\mathrm{LCP}_k:=$ $S_{\SA_k:}$ と $S_{\SA_{k+1}:}$ の共通接頭辞の長さ
 
 |メンバ関数|概要|計算量|
 |---|---|---|
-|`LCPArray(sa)`|コンストラクタ.<br> `SuffixArray`クラスを渡す.|$\mathcal{O}(n\log n)$|
+|`LCPArray(sa)`|コンストラクタ.<br> `SuffixArray`クラスを渡す.|$O(n\log n)$|
 |`operator[](k)`| $\mathrm{LCP}_k$ を返す.||
 |`begin()`| $\mathrm{LCP}$ の `begin()` を返す.||
 |`end()`|$\mathrm{LCP}$ の `end()` を返す||
-|`lcp(i,j)`|$S_{\SA_i:}$ と $S_{\SA_j:}$ の共通接頭辞の長さを返す. |$\mathcal{O}(1)$|
+|`lcp(i,j)`|$S_{\SA_i:}$ と $S_{\SA_j:}$ の共通接頭辞の長さを返す. |$O(1)$|
 ## 問題例
 [AtCoder Beginner Contest 240 Ex - Sequence of Substrings](https://atcoder.jp/contests/abc240/tasks/abc240_h) (lcp(i,j), 部分文字列ソート, ロリハでTLE)\
 [square869120Contest #2 E - 部分文字列](https://atcoder.jp/contests/s8pc-2/tasks/s8pc_2_e) (lcp配列)\

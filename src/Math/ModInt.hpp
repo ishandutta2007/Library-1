@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include "src/Math/mod_inv.hpp"
 #include "src/Internal/Remainder.hpp"
 #include "src/Internal/modint_traits.hpp"

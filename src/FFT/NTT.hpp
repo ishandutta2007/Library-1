@@ -9,7 +9,7 @@ template <class mod_t, size_t LM> mod_t get_inv(int n) {
  static mod_t dat[LM];
  static int l= 1;
  if (l == 1) dat[l++]= 1;
- while (l <= n) dat[l++]= dat[m % l] * (m - m / l);
+ for(;l <= n;++l) dat[l]= dat[m % l] * (m - m / l);
  return dat[n];
 }
 namespace math_internal {
@@ -218,9 +218,9 @@ template <class T, size_t LM, int id= 0> struct GlobalNTTArray {
  static inline NTTArray<T, LM, 0> bf;
 };
 template <class T, size_t LM, size_t LM2, int id= 0> struct GlobalNTTArray2D {
- static inline NTTArray<T, LM, 0> bf[LM2];
+ static inline NTTArray<T, LM, 0>* bf= new NTTArray<T, LM, 0>[LM2];
 };
 template <class T, size_t LM, int id= 0> struct GlobalArray {
- static inline T bf[LM];
+ static inline T* bf= new T[LM];
 };
 constexpr unsigned pw2(unsigned n) { return --n, n|= n >> 1, n|= n >> 2, n|= n >> 4, n|= n >> 8, n|= n >> 16, ++n; }

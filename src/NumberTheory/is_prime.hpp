@@ -1,11 +1,10 @@
 #pragma once
-#include <initializer_list>
 #include "src/Internal/Remainder.hpp"
 namespace math_internal {
-template <class Uint, class MP, u64... args> constexpr bool miller_rabin(Uint n) {
+template <class Uint, class MP, u32... args> constexpr bool miller_rabin(Uint n) {
  const MP md(n);
  const Uint s= __builtin_ctzll(n - 1), d= n >> s, one= md.set(1), n1= md.norm(md.set(n - 1));
- for (auto a: {args...})
+ for (u32 a: (u32[]){args...})
   if (Uint b= a % n; b)
    if (Uint p= md.norm(pow(md.set(b), d, md)); p != one)
     for (int i= s; p != n1; p= md.norm(md.mul(p, p)))

@@ -9,7 +9,7 @@ template <class mod_t, size_t LM> mod_t get_inv(int n) {
  static mod_t dat[LM];
  static int l= 1;
  if (l == 1) dat[l++]= 1;
- for(;l <= n;++l) dat[l]= dat[m % l] * (m - m / l);
+ for (; l <= n; ++l) dat[l]= dat[m % l] * (m - m / l);
  return dat[n];
 }
 namespace math_internal {
@@ -125,7 +125,7 @@ TP<class T, u8 t, class B> struct NI: public B {
 #define ARR(_) \
  using m##_= ModInt<M##_>; \
  using ntt##_= NTT<m##_>; \
- m##_ dt##_[LM]= {};
+ m##_* dt##_= new m##_[LM];
 #define IV2 ST CE m2 iv21= m2(1) / m1::mod();
 #define IV3 ST CE m3 iv32= m3(1) / m2::mod(), iv31= iv32 / m1::mod();
 #define IV4 ST CE m4 iv43= m4(1) / m3::mod(), iv42= iv43 / m2::mod(), iv41= iv42 / m1::mod();

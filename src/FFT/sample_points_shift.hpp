@@ -5,7 +5,7 @@
 #include <cassert>
 #include <cstdint>
 #include "src/FFT/NTT.hpp"
-template <class mod_t, size_t LM= 1 << 24> std::vector<mod_t> sample_points_shift(const std::vector<mod_t>& y, mod_t c, int m= 1) {
+template <class mod_t, size_t LM= 1 << 23> std::vector<mod_t> sample_points_shift(const std::vector<mod_t>& y, mod_t c, int m= 1) {
  assert(m <= (int)mod_t::mod()), assert(y.size() <= mod_t::mod());
  static constexpr int TH= (int[]){45, 32, 75, 130, 180, 260}[nttarr_cat<mod_t, LM>];
  if (m == 0) return {};

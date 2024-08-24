@@ -41,7 +41,7 @@ signed main() {
    y[i]= Mint(sum[i] - ans) * rinvpow;
    rinvpow*= rinv;
   }
-  ans+= Mint(r).pow(n) * sample_points_shift<Mint>(y, n)[0];
+  ans+= Mint(r).pow(n) * sample_points_shift<Mint, 1 << 24>(y, n)[0];
  }
  cout << ans << '\n';
  return 0;

@@ -17,8 +17,8 @@ template <class M, bool reversible= false> class SplayTree {
  using E= typename nullptr_or_E<M>::type;
  template <class D> struct NodeB {
   T val;
-  D *ch[2], *par;
-  size_t sz;
+  D *ch[2]= {nullptr, nullptr}, *par= nullptr;
+  size_t sz= 0;
  };
  template <class D, bool du> struct NodeD: NodeB<D> {};
  template <class D> struct NodeD<D, 1>: NodeB<D> {
@@ -42,9 +42,9 @@ template <class M, bool reversible= false> class SplayTree {
  template <class S> static inline np build(size_t bg, size_t ed, np par, const S &val) {
   if (bg == ed) return nullptr;
   size_t mid= bg + (ed - bg) / 2;
-  np t;
-  if constexpr (std::is_same_v<S, T>) t= new Node{val};
-  else t= new Node{val[mid]};
+  np t= new Node;
+  if constexpr (std::is_same_v<S, T>) t->val= val;
+  else t->val= val[mid];
   return t->par= par, t->ch[0]= build(bg, mid, t, val), t->ch[1]= build(mid + 1, ed, t, val), update(t), t;
  }
  static inline void dump(typename std::vector<T>::iterator itr, np t) {
@@ -196,14 +196,18 @@ public:
  }
  SplayTree operator+(SplayTree rhs) { return SplayTree(*this)+= rhs; }
  void push_back(const T &val) {
-  rt= new Node{val, {rt, nullptr}, nullptr};
-  if (rt->ch[0]) rt->ch[0]->par= rt;
-  update(rt);
+  if (rt) {
+   np t= new Node;
+   t->ch[0]= rt, rt->par= t, rt= t;
+  } else rt= new Node;
+  rt->val= val, update(rt);
  }
  void push_front(const T &val) {
-  rt= new Node{val, {nullptr, rt}, nullptr};
-  if (rt->ch[1]) rt->ch[1]->par= rt;
-  update(rt);
+  if (rt) {
+   np t= new Node;
+   t->ch[1]= rt, rt->par= t, rt= t;
+  } else rt= new Node;
+  rt->val= val, update(rt);
  }
  void insert(size_t k, const T &val) {
   assert(k <= size());
@@ -211,7 +215,9 @@ public:
   if (k == rt->size()) return push_back(val);
   splay(rt, k);
   np l= std::exchange(rt->ch[0], nullptr);
-  update(rt), rt= new Node{val, {l, rt}, nullptr}, l->par= rt->ch[1]->par= rt, update(rt);
+  update(rt);
+  np t= new Node;
+  t->ch[0]= l, t->ch[1]= rt, l->par= rt->par= t, t->val= val, rt= t, update(rt);
  }
  T pop_back() {
   splay(rt, rt->size() - 1);

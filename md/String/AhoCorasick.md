@@ -12,7 +12,7 @@ pattern と suffix がマッチする文字列を受理するDFA. \
 
 |メンバ関数|概要|
 |---|---|
-|`AhoCorasick(P)`|コンストラクタ. <br>パターン文字列の集合 $\mathcal{P}$ を渡す. <br> 引数の型は `vector<String>`.<br> 計算量は $\mathcal{O}\left(\sum_{P\in \mathcal{P}}\lvert P\rvert\right)$.|
+|`AhoCorasick(P)`|コンストラクタ. <br>パターン文字列の集合 $\mathcal{P}$ を渡す. <br> 引数の型は `vector<String>`.<br> 計算量は $O\left(\sum_{P\in \mathcal{P}}\lvert P\rvert\right)$.|
 |`initial_state()`|オートマトンの初期状態を意味する整数を返す.|
 |`matched_patterns(s)`|オートマトンの状態 $s$ の時にマッチしているパターン文字列を全て返す. <br> 実際には $\mathcal{P}=\lbrace P_i\rbrace$ の中の何番目かを指す添字 $i$ の集合を返す. <br> 返り値は`vector<int>`.|
 |`is_accept(s)`|オートマトンの状態 $s$ が受理状態 (マッチしているパターン文字列が存在する) なら `true` を返す. |

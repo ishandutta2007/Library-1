@@ -16,10 +16,10 @@ documentation_of: ../../src/Optimization/MaxFlow.hpp
 
 ### 内部アルゴリズム
 #### `Dinic`
-- 計算量 $\mathcal{O}(n^2 m)$
+- 計算量 $O(n^2 m)$
 
 #### `PushRelabel`
-- 計算量 $\mathcal{O}(n^2 \sqrt{m})$
+- 計算量 $O(n^2 \sqrt{m})$
 
 ## 問題例
 [LibreOJ #127. 最大流 加强版](https://loj.ac/p/127) (Dinicだと落ちる)

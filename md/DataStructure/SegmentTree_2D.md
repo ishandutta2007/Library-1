@@ -70,10 +70,10 @@ SegmentTree_2D<int,RMQ> seg(xyv);
 
 |||計算量|
 |---|---|---|
-|`fold(l,r,u,d)`| 直方体(長方形) 内部に位置する点についてその点に乗っている値を集約した値を返す. <br> **※半開区間** $\lbrack l,r )\times \lbrack u,d)$ |以下, 点の個数を $n$ とする. <br> $\mathcal{O}((\log n)^2)$|
-|`set(x,y,v)`|点 $(x,y)$ の値を `v` に変更する. <br> 点が存在しないとassertで落ちる.|$\mathcal{O}(\log n)$|
-|`get(x,y)`|点 $(x,y)$ の値を返す.　<br> 点が存在しないとassertで落ちる.|$\mathcal{O}(\log n)$|
-|`mul(x,y,v)`|点 $(x,y)$ の値に `v` を (モノイド演算で) かける. <br> 点が存在しないとassertで落ちる.|$\mathcal{O}(\log n)$|
+|`fold(l,r,u,d)`| 直方体(長方形) 内部に位置する点についてその点に乗っている値を集約した値を返す. <br> **※半開区間** $\lbrack l,r )\times \lbrack u,d)$ |以下, 点の個数を $n$ とする. <br> $O((\log n)^2)$|
+|`set(x,y,v)`|点 $(x,y)$ の値を `v` に変更する. <br> 点が存在しないとassertで落ちる.|$O(\log n)$|
+|`get(x,y)`|点 $(x,y)$ の値を返す.　<br> 点が存在しないとassertで落ちる.|$O(\log n)$|
+|`mul(x,y,v)`|点 $(x,y)$ の値に `v` を (モノイド演算で) かける. <br> 点が存在しないとassertで落ちる.|$O(\log n)$|
 
 ## 問題例
 [AtCoder Beginner Contest 266 Ex - Snuke Panic (2D)](https://atcoder.jp/contests/abc266/tasks/abc266_h) (2次元 max) \

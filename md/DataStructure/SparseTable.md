@@ -10,5 +10,5 @@ documentation_of: ../../src/DataStructure/SparseTable.hpp
 
 |名前|概要|計算量|
 |---|---|---|
-|`SparseTable(v,f)`|コンストラクタ. <br> 配列 `v` と2変数引数の関数 `f` 渡す. |以下配列のサイズを $n$ とする. <br> $\mathcal{O}(n\log n)$|
-|`fold(l,r)`|半開区間$\lbrack l,r)$ について `f` でまとめあげた値を返す.|$\mathcal{O}(1)$|
+|`SparseTable(v,f)`|コンストラクタ. <br> 配列 `v` と2変数引数の関数 `f` 渡す. |以下配列のサイズを $n$ とする. <br> $O(n\log n)$|
+|`fold(l,r)`|半開区間$\lbrack l,r)$ について `f` でまとめあげた値を返す.|$O(1)$|

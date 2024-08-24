@@ -5,7 +5,7 @@ documentation_of: ../../src/DataStructure/SegmentTree_Dynamic.hpp
 遅延伝搬可 \
 永続化可
 ## 計算量
-$\mathcal{O}(\log N)$
+$O(\log N)$
 ## 問題例
 [Codeforces Round #265 (Div. 1) E. The Classic Problem](https://codeforces.com/contest/464/problem/E) (永続+遅延伝搬+find+find) \
 [Codeforces Round #470 (rated, Div. 1, based on VK Cup 2018 Round 1) C. Perfect Security](https://codeforces.com/contest/947/problem/C) (find+xor) \

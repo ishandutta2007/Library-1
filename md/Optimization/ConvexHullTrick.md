@@ -10,18 +10,18 @@ templateの第二引数で最大最小を指定. デフォルトは最小値取�
 |メンバ関数|概要|計算量|
 |---|---|---|
 |`empty()`|何も直線を挿入していないなら true||
-|`insert(k,m)`|直線 $y=kx+m$ を挿入 | $\mathcal{O}(\log n)$　|
-|`query_line(x)` | $x$ における最小値(最大値)をとる直線 $y=kx+m$ の係数 $(k,m)$ を返す. |$\mathcal{O}(\log n)$ | 
-|`query(x)` | $x$ における最小値(最大値) を返す |$\mathcal{O}(\log n)$ | 
+|`insert(k,m)`|直線 $y=kx+m$ を挿入 | $O(\log n)$　|
+|`query_line(x)` | $x$ における最小値(最大値)をとる直線 $y=kx+m$ の係数 $(k,m)$ を返す. |$O(\log n)$ | 
+|`query(x)` | $x$ における最小値(最大値) を返す |$O(\log n)$ | 
 
 ## `ConvexHullTrick_XY`
 
 |メンバ関数|概要|計算量|
 |---|---|---|
 |`empty()`|何も直線を挿入していないなら true||
-|`insert(a,b)`|直線 $ax+by$ を挿入 | $\mathcal{O}(\log n)$　|
-|`get_min(x,y)` | $(x,y)$ における最小値を返す.  |$\mathcal{O}(\log n)$ | 
-|`get_max(x,y)` | $(x,y)$ における最大値を返す.  |$\mathcal{O}(\log n)$ | 
+|`insert(a,b)`|直線 $ax+by$ を挿入 | $O(\log n)$　|
+|`get_min(x,y)` | $(x,y)$ における最小値を返す.  |$O(\log n)$ | 
+|`get_max(x,y)` | $(x,y)$ における最大値を返す.  |$O(\log n)$ | 
 
 ## 問題例
 [AtCoder Regular Contest 051 D - 長方形](https://atcoder.jp/contests/arc051/tasks/arc051_d) (ax+by) \

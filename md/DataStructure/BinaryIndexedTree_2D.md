@@ -4,4 +4,4 @@ documentation_of: ../../src/DataStructure/BinaryIndexedTree_2D.hpp
 ---
 1-indexed
 ## 計算量
-$\mathcal{O}(\log HW)$
+$O(\log HW)$

@@ -11,10 +11,10 @@ documentation_of: ../../src/Graph/CliqueProblem.hpp
 | --------------------------- | ------------------------------------------- | ----------------------------------------------- |
 | `CliqueProblem(n)`          | コンストラクタ. グラフの頂点数 n を与える.  |                                                 |
 | `add_edge(u,v)`             | 無向辺 (u,v) を加える.                      |                                                 |
-| `get_max_clique()`          | 最大クリークの一つを返す.                   | $\mathcal{O}(1.381^nn)$                         |
-| `get_max_independent_set()` | 最大独立集合の一つを返す.                   | $\mathcal{O}(1.381^nn)$                         |
-| `get_min_vertex_cover()`    | 最小頂点被覆の一つを返す.                   | $\mathcal{O}(1.381^nn)$                         |
-| `enumerate_cliques(out)`    | すべてのクリークcに対してout(c) を実行する. | $\mathcal{O}(n2^{\sqrt{2m}})$ <br> $m$ は辺の数 |
+| `get_max_clique()`          | 最大クリークの一つを返す.                   | $O(1.381^nn)$                         |
+| `get_max_independent_set()` | 最大独立集合の一つを返す.                   | $O(1.381^nn)$                         |
+| `get_min_vertex_cover()`    | 最小頂点被覆の一つを返す.                   | $O(1.381^nn)$                         |
+| `enumerate_cliques(out)`    | すべてのクリークcに対してout(c) を実行する. | $O(n2^{\sqrt{2m}})$ <br> $m$ は辺の数 |
 
 
 ## 問題例

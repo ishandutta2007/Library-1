@@ -1,7 +1,7 @@
 // competitive-verifier: STANDALONE
 
-// https://www.luogu.com.cn/problem/P5586
-// 融合永続, split3, apply, fold, reverse, 強制オンラインクエリ
+// https://www.luogu.com.cn/problem/P5350
+// 融合永続, split3, apply, fold, reverse, ML厳しめ
 #include <sstream>
 #include <string>
 #include <cassert>
@@ -34,7 +34,7 @@ struct Mono {
  using commute= void;
 };
 signed main(stringstream& scin, stringstream& scout) {
- using WBT= WeightBalancedTree<Mono, 1, 1, 1 << 19>;
+ using WBT= WeightBalancedTree<Mono, 1, 1, 500'000>;
  int n, m;
  scin >> n >> m;
  WBT wbt;
@@ -43,29 +43,23 @@ signed main(stringstream& scin, stringstream& scout) {
   for (int i= 0; i < n; ++i) scin >> v[i];
   wbt= WBT(v);
  }
- int lst= 0;
  while (m--) {
   int t, l, r;
   scin >> t >> l >> r;
-  l^= lst, r^= lst;
   --l;
   if (t == 1) {
-   lst= wbt.prod(l, r).val();
-   scout << lst << '\n';
+   scout << wbt.prod(l, r) << '\n';
   } else if (t == 2) {
    int val;
    scin >> val;
-   val^= lst;
    wbt.apply(l, r, -val);
   } else if (t == 3) {
    int val;
    scin >> val;
-   val^= lst;
    if (val) wbt.apply(l, r, val);
   } else if (t == 4) {
    int l2, r2;
    scin >> l2 >> r2;
-   l2^= lst, r2^= lst;
    --l2;
    auto [a, b, c]= wbt.split3(l, r);
    auto [d, e, f]= wbt.split3(l2, r2);
@@ -73,7 +67,6 @@ signed main(stringstream& scin, stringstream& scout) {
   } else if (t == 5) {
    int l2, r2;
    scin >> l2 >> r2;
-   l2^= lst, r2^= lst;
    --l2;
    if (l2 > l) swap(l, l2), swap(r, r2);
    auto [a, b, c]= wbt.split3(l, r);
@@ -96,17 +89,17 @@ signed main(stringstream& scin, stringstream& scout) {
 signed main() {
  assert(test(TEST::main,
              "10 10\n"
-             "7 1 3 2 2 4 0 1 2 2\n"
+             "7 1 3 2 2 4 0 1 2 2 \n"
              "4 10 10 3 3\n"
              "3 4 10 5\n"
              "6 6 7\n"
              "6 9 10\n"
              "1 10 10\n"
-             "5 14 13 1 0\n"
-             "2 15 13 7\n"
-             "5 3 3 2 2\n"
-             "5 5 3 15 13\n"
-             "3 4 14 7\n",
+             "5 9 10 6 7\n"
+             "2 8 10 0\n"
+             "5 4 4 5 5\n"
+             "5 2 4 8 10\n"
+             "3 3 9 0\n",
              "7\n"
              "7 0 0 0 7 7 7 1 2 7\n"));
  return 0;

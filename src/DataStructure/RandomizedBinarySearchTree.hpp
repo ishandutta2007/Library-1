@@ -19,8 +19,8 @@ template <class M, bool reversible= false> class RandomizedBinarySearchTree {
  using RBST= RandomizedBinarySearchTree;
  template <class D> struct NodeB {
   T val;
-  D *l, *r;
-  size_t sz;
+  D *l= nullptr, *r= nullptr;
+  size_t sz= 0;
  };
  template <class D, bool du> struct NodeD: NodeB<D> {};
  template <class D> struct NodeD<D, 1>: NodeB<D> {
@@ -86,9 +86,9 @@ template <class M, bool reversible= false> class RandomizedBinarySearchTree {
  template <class S> static inline np build(size_t bg, size_t ed, const S &val) {
   if (bg == ed) return nullptr;
   size_t mid= bg + (ed - bg) / 2;
-  np t;
-  if constexpr (std::is_same_v<S, T>) t= new Node{val};
-  else t= new Node{val[mid]};
+  np t= new Node;
+  if constexpr (std::is_same_v<S, T>) t->val= val;
+  else t->val= val[mid];
   return t->l= build(bg, mid, val), t->r= build(mid + 1, ed, val), update(t), t;
  }
  static inline void dump(typename std::vector<T>::iterator itr, np t) {
@@ -236,16 +236,16 @@ public:
   return {np_to_rbst(l), np_to_rbst(c), np_to_rbst(r)};
  }
  void push_back(const T &v) {
-  np t= new Node{v};
-  update(t), rt= merge(rt, t);
+  np t= new Node;
+  t->val= v, update(t), rt= merge(rt, t);
  }
  void push_front(const T &v) {
-  np t= new Node{v};
-  update(t), rt= merge(t, rt);
+  np t= new Node;
+  t->val= v, update(t), rt= merge(t, rt);
  }
  void insert(size_t k, const T &v) {
   auto [l, r]= split(rt, k);
-  rt= new Node{v}, update(rt), rt= merge(merge(l, rt), r);
+  rt= new Node, rt->val= v, update(rt), rt= merge(merge(l, rt), r);
  }
  T pop_back() {
   auto [l, t]= split(rt, size() - 1);

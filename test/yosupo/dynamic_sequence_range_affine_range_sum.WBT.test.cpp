@@ -25,7 +25,7 @@ signed main() {
  cin >> N >> Q;
  Mint a[N];
  for (int i= 0; i < N; i++) cin >> a[i];
- using WBT= WeightBalancedTree<RaffineRsumQ, true, false, 1 << 20>;
+ using WBT= WeightBalancedTree<RaffineRsumQ, true>;
  WBT wbt(a, a + N);
  for (int q= 0; q < Q; q++) {
   int op;
@@ -50,11 +50,6 @@ signed main() {
    int l, r;
    cin >> l >> r;
    cout << wbt.prod(l, r) << '\n';
-  }
-  if (WBT::pool_empty()) {
-   auto dmp= wbt.dump();
-   WBT::reset();
-   wbt= WBT(dmp);
   }
  }
  return 0;

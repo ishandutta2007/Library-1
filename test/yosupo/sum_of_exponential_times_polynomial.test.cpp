@@ -28,7 +28,7 @@ signed main() {
  for (int i= 1; i <= d + 1; i++) rpow[i]= rpow[i - 1] * r;
  for (int i= 1; i <= d + 1; i++) sum[i]= sum[i - 1] + rpow[i] * pd[i];
  Mint ans= 0;
- if (r == 1) ans= sample_points_shift<Mint>(sum, n)[0];
+ if (r == 1) ans= sample_points_shift<Mint, 1 << 24>(sum, n)[0];
  else {
   for (int i= 0; i <= d; i++) {
    Mint tmp= F::nCr(d + 1, i + 1) * rpow[d - i] * sum[i];

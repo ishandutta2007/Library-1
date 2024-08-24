@@ -6,7 +6,7 @@
 #include <cstdint>
 #include "src/FFT/NTT.hpp"
 template <class mod_t, size_t LM= 1 << 24> std::vector<mod_t> sample_points_shift(const std::vector<mod_t>& y, mod_t c, int m= 1) {
- assert(m <= mod_t::mod()), assert(y.size() <= mod_t::mod());
+ assert(m <= (int)mod_t::mod()), assert(y.size() <= mod_t::mod());
  static constexpr int TH= (int[]){45, 32, 75, 130, 180, 260}[nttarr_cat<mod_t, LM>];
  if (m == 0) return {};
  uint64_t c_64= c.val(), nc1= (c + (m - 1)).val();
@@ -18,7 +18,7 @@ template <class mod_t, size_t LM= 1 << 24> std::vector<mod_t> sample_points_shif
  for (i= d / 2 + 1; i--;) x[i]= x[d - i]= x[i] * x[d - i] * t;
  for (i= k; i--;) x[i]*= y[i];
  for (i= 1; i < k; i+= 2) x[d - i]= -x[d - i];
- auto f= [&](mod_t a, int n, mod_t ret[]) {
+ auto f= [&](mod_t a, uint32_t n, mod_t ret[]) {
   using GNA1= GlobalNTTArray<mod_t, LM, 1>;
   using GNA2= GlobalNTTArray<mod_t, LM, 2>;
   mod_t* q= GlobalArray<mod_t, LM, 2>::bf;

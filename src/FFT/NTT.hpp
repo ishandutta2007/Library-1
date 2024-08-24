@@ -6,7 +6,7 @@
 template <class mod_t, size_t LM> mod_t get_inv(int n) {
  static_assert(is_modint_v<mod_t>);
  static const auto m= mod_t::mod();
- static mod_t dat[LM];
+ static mod_t* dat= new mod_t[LM];
  static int l= 1;
  if (l == 1) dat[l++]= 1;
  for (; l <= n; ++l) dat[l]= dat[m % l] * (m - m / l);

@@ -4,31 +4,44 @@
 #include <valarray>
 namespace _la_internal {
 using namespace std;
-template <class R> struct Vector: public valarray<R> {
- using valarray<R>::valarray;
- friend ostream &operator<<(ostream &os, const Vector &v) {
-  os << '[';
-  for (int _= 0, __= v.size(); _ < __; ++_) os << (_ ? ", " : "") << v[_];
-  return os << ']';
+template <class R> class Vector {
+ valarray<R> dat;
+public:
+ Vector()= default;
+ Vector(size_t n): dat(n) {}
+ Vector(size_t n, const R &v): dat(v, n) {}
+ Vector(const initializer_list<R> &v): dat(v) {}
+ R &operator[](int i) { return dat[i]; }
+ const R &operator[](int i) const { return dat[i]; }
+ bool operator==(const Vector &r) const {
+  if (dat.size() != r.dat.size()) return false;
+  for (int i= dat.size(); i--;)
+   if (dat[i] != r.dat[i]) return false;
+  return true;
  }
+ bool operator!=(const Vector &r) const { return !(*this == r); }
+ Vector &operator+=(const Vector &r) { return dat+= r.dat, *this; }
+ Vector &operator-=(const Vector &r) { return dat-= r.dat, *this; }
+ Vector &operator*=(const R &r) { return dat*= r, *this; }
+ Vector operator+(const Vector &r) const { return Vector(*this)+= r; }
+ Vector operator-(const Vector &r) const { return Vector(*this)-= r; }
+ Vector operator*(const R &r) const { return Vector(*this)*= r; }
+ size_t size() const { return dat.size(); }
+ R *data() { return begin(dat); }
 };
 using u128= __uint128_t;
 using u8= uint8_t;
 class Ref {
  u128 *ref;
  u8 i;
- bool val;
 public:
- Ref(u128 *r, u8 j, bool v): ref(r), i(j), val(v) {}
- ~Ref() {
-  if (val ^ ((*ref >> i) & 1)) *ref^= u128(1) << i;
- }
- Ref &operator=(const Ref &r) { return val= r.val, *this; }
- Ref &operator=(bool b) { return val= b, *this; }
- Ref &operator|=(bool b) { return val|= b, *this; }
- Ref &operator&=(bool b) { return val&= b, *this; }
- Ref &operator^=(bool b) { return val^= b, *this; }
- operator bool() const { return val; }
+ Ref(u128 *ref, u8 i): ref(ref), i(i) {}
+ Ref &operator=(const Ref &r) { return *this= bool(r); }
+ Ref &operator=(bool b) { return *ref&= ~(u128(1) << i), *ref|= u128(b) << i, *this; }
+ Ref &operator|=(bool b) { return *ref|= u128(b) << i, *this; }
+ Ref &operator&=(bool b) { return *ref&= ~(u128(!b) << i), *this; }
+ Ref &operator^=(bool b) { return *ref^= u128(b) << i, *this; }
+ operator bool() const { return (*ref >> i) & 1; }
 };
 template <> class Vector<bool> {
  size_t n;
@@ -36,31 +49,36 @@ template <> class Vector<bool> {
 public:
  Vector(): n(0) {}
  Vector(size_t n): n(n), dat((n + 127) >> 7) {}
- Vector(bool b, size_t n): n(n), dat(-u128(b), (n + 127) >> 7) {}
- Ref operator[](int i) {
-  u128 *ref= begin(dat) + (i >> 7);
-  u8 j= i & 127;
-  bool val= (*ref >> j) & 1;
-  return Ref{ref, j, val};
+ Vector(size_t n, bool b): n(n), dat(-u128(b), (n + 127) >> 7) {
+  if (int k= n & 127; k) dat[dat.size() - 1]&= (u128(1) << k) - 1;
  }
+ Vector(const initializer_list<bool> &v): n(v.size()), dat((n + 127) >> 7) {
+  int i= 0;
+  for (bool b: v) dat[i >> 7]|= u128(b) << (i & 127), ++i;
+ }
+ Ref operator[](int i) { return {begin(dat) + (i >> 7), i & 127}; }
  bool operator[](int i) const { return (dat[i >> 7] >> (i & 127)) & 1; }
+ bool operator==(const Vector &r) const {
+  if (dat.size() != r.dat.size()) return false;
+  for (int i= dat.size(); i--;)
+   if (dat[i] != r.dat[i]) return false;
+  return true;
+ }
+ bool operator!=(const Vector &r) const { return !(*this == r); }
  Vector &operator+=(const Vector &r) { return dat^= r.dat, *this; }
  Vector &operator-=(const Vector &r) { return dat^= r.dat, *this; }
- Vector &operator*=(bool b) {
-  if (!b) dat= 0;
-  return *this;
- }
+ Vector &operator*=(bool b) { return dat*= b, *this; }
  Vector operator+(const Vector &r) const { return Vector(*this)+= r; }
  Vector operator-(const Vector &r) const { return Vector(*this)-= r; }
  Vector operator*(bool b) const { return Vector(*this)*= b; }
  size_t size() const { return n; }
  u128 *data() { return begin(dat); }
- friend Vector operator*(bool b, const Vector &r) { return r * b; }
- friend ostream &operator<<(ostream &os, const Vector &v) {
-  os << '[';
-  for (int _= 0, __= v.size(); _ < __; ++_) os << (_ ? ", " : "") << v[_];
-  return os << ']';
- }
 };
+template <class R> Vector<R> operator*(const R &r, const Vector<R> &v) { return v * r; }
+template <class R> ostream &operator<<(ostream &os, const Vector<R> &v) {
+ os << '[';
+ for (int _= 0, __= v.size(); _ < __; ++_) os << (_ ? ", " : "") << v[_];
+ return os << ']';
+}
 }
 using _la_internal::Vector;

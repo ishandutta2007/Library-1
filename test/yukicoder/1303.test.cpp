@@ -22,9 +22,7 @@ signed main() {
   for (int i= N; i--;)
    for (int j= i; j--;)
     if (L[i][j] == 0) M1[i][j]-= 1, M1[j][i]-= 1, M1[i][i]+= 1, M1[j][j]+= 1;
-  vector<int> p(N - 1);
-  iota(p.begin(), p.end(), 0);
-  auto poly= det_of_first_degree_poly_mat(L.submatrix(p, p), M1.submatrix(p, p));
+  auto poly= det_of_first_degree_poly_mat(L.submatrix_rm({0}, {0}), M1.submatrix_rm({0}, {0}));
   cout << 0 << '\n';
   cout << poly[0] + poly[1] << '\n';
  } else {  // unconnected

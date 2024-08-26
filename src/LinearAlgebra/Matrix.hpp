@@ -9,7 +9,13 @@ template <class R, class D> struct Mat {
   for (; n--;) ret[n][n]= R(true);
   return ret;
  }
- D submatrix(vector<int> rm_r, vector<int> rm_c) const {
+ D submatrix(const vector<int> &rows, const vector<int> &cols) const {
+  D ret(rows.size(), cols.size());
+  for (int i= rows.size(); i--;)
+   for (int j= cols.size(); j--;) ret[i][j]= D(*((D *)this))[rows[i]][cols[j]];
+  return ret;
+ }
+ D submatrix_rm(vector<int> rm_r, vector<int> rm_c) const {
   sort(begin(rm_r), end(rm_r)), sort(begin(rm_c), end(rm_c)), rm_r.erase(unique(begin(rm_r), end(rm_r)), end(rm_r)), rm_c.erase(unique(begin(rm_c), end(rm_c)), end(rm_c));
   const size_t H= ((D *)this)->height(), W= ((D *)this)->width(), n= rm_r.size(), m= rm_c.size();
   vector<int> rows(H - n), cols(W - m);
@@ -19,10 +25,7 @@ template <class R, class D> struct Mat {
   for (size_t i= 0, j= 0, k= 0; i < W; ++i)
    if (j < m && rm_c[j] == i) ++j;
    else cols[k++]= i;
-  D ret(H - n, W - m);
-  for (int i= H - n; i--;)
-   for (int j= W - m; j--;) ret[i][j]= D(*((D *)this))[rows[i]][cols[j]];
-  return ret;
+  return submatrix(rows, cols);
  }
  bool operator==(const D &r) const {
   if (((D *)this)->width() == r.width() || ((D *)this)->height() == r.height()) return false;

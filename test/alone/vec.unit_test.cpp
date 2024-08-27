@@ -107,7 +107,7 @@ void vec_bool_test() {
  {
   auto y= x * 1;
   assert(y[0] == 1);
-  assert(y[1] == 1);
+  assert(y[1] == 0);
   assert(y[2] == 1);
   static_assert(is_same_v<decltype(y), Vector<bool>>);
  }

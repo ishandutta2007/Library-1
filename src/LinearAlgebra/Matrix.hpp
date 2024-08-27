@@ -49,6 +49,7 @@ template <class R, class D> struct Mat {
 template <class R> class Matrix: public Mat<R, Matrix<R>> {
  size_t W;
  valarray<R> dat;
+ friend class Mat<R, Matrix<R>>;
 public:
  using Mat<R, Matrix<R>>::operator*;
  Matrix(): W(0) {}
@@ -98,6 +99,7 @@ public:
 template <> class Matrix<bool>: public Mat<bool, Matrix<bool>> {
  size_t H, W, m;
  valarray<u128> dat;
+ friend class Mat<bool, Matrix<bool>>;
  class Array {
   u128 *bg;
  public:

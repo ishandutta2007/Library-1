@@ -28,11 +28,11 @@ signed main() {
        ii++;
       }
      auto c= LU_Decomposition(A).linear_equations(b);
-     if (abs((c * m[k]).sum() - v[k]) < 1e-5) {
+     if (abs(dot(c, m[k]) - v[k]) < 1e-5) {
       ans= l;
       return;
      }
-     if (abs((c * m[l]).sum() - v[l]) < 1e-5) {
+     if (abs(dot(c, m[k]) - v[l]) < 1e-5) {
       ans= k;
       return;
      }

@@ -49,7 +49,7 @@ template <class R, class D> struct Mat {
 template <class R> class Matrix: public Mat<R, Matrix<R>> {
  size_t W;
  valarray<R> dat;
- friend class Mat<R, Matrix<R>>;
+ friend struct Mat<R, Matrix<R>>;
 public:
  using Mat<R, Matrix<R>>::operator*;
  Matrix(): W(0) {}
@@ -99,7 +99,7 @@ public:
 template <> class Matrix<bool>: public Mat<bool, Matrix<bool>> {
  size_t H, W, m;
  valarray<u128> dat;
- friend class Mat<bool, Matrix<bool>>;
+ friend struct Mat<bool, Matrix<bool>>;
  class Array {
   u128 *bg;
  public:
@@ -142,7 +142,7 @@ public:
   assert(W == r.H);
   Matrix ret(H, r.W);
   u128 *c= begin(ret.dat);
-  for (size_t i= 0; i < H; ++i, advance(c, m)) {
+  for (size_t i= 0; i < H; ++i, advance(c, r.m)) {
    ConstArray a= this->operator[](i);
    const u128 *b= begin(r.dat);
    for (size_t k= 0; k < W; ++k, advance(b, r.m))
@@ -157,8 +157,11 @@ public:
   assert(W == r.size());
   Vector<bool> ret(H);
   auto a= begin(dat);
-  for (size_t i= 0; i < H; ++i)
-   for (size_t j= 0; j < m; ++j, ++a) ret[i]^= *a & r[j];
+  for (size_t i= 0; i < H; ++i) {
+   u128 v= 0;
+   for (size_t j= 0; j < m; ++j, ++a) v^= *a & r.dat[j];
+   ret[i]= __builtin_parityll(v >> 64) ^ __builtin_parityll(u64(v));
+  }
   return ret;
  }
  Vector<bool> operator()(const Vector<bool> &r) const { return *this * r; }

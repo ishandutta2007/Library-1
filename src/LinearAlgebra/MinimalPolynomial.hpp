@@ -65,7 +65,7 @@ public:
 };
 template <class mod_t, class LinMap> mod_t linear_map_det(const LinMap &M, int n) {
  Vector<mod_t> b(n);
- for (auto &x: b) x= rng(1, mod_t::mod() - 1);
+ for (int i= n; i--;) b[i]= rng(1, mod_t::mod() - 1);
  std::vector<mod_t> D(n);
  for (auto &x: D) x= rng(1, mod_t::mod() - 1);
  auto f= [&](Vector<mod_t> a) {

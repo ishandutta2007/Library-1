@@ -44,9 +44,9 @@ signed main() {
  if (s != -1) ++in[V[t]], ++out[V[s]];
  auto f= [&](const Vec &v) {
   Mint sum= 0;
-  for (auto &x: v) sum+= x;
-  Vec ret(-sum, n - 1);
-  for (int i= 0; i < n - 1; ++i) ret[i]+= v[i] * n;
+  for (int i= n - 1; i--;) sum+= v[i];
+  Vec ret(n - 1, -sum);
+  for (int i= n - 1; i--;) ret[i]+= v[i] * n;
   for (int i= 0; i < M; ++i)
    if (B[i] < n - 1) {
     ret[B[i]]-= v[B[i]];

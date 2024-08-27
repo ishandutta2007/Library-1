@@ -56,7 +56,7 @@ public:
   int i= 0;
   for (bool b: v) dat[i >> 7]|= u128(b) << (i & 127), ++i;
  }
- Ref operator[](int i) { return {begin(dat) + (i >> 7), i & 127}; }
+ Ref operator[](int i) { return {begin(dat) + (i >> 7), u8(i & 127)}; }
  bool operator[](int i) const { return (dat[i >> 7] >> (i & 127)) & 1; }
  bool operator==(const Vector &r) const {
   if (dat.size() != r.dat.size()) return false;

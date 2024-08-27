@@ -32,7 +32,7 @@ signed main() {
       ans= l;
       return;
      }
-     if (abs(dot(c, m[k]) - v[l]) < 1e-5) {
+     if (abs(dot(c, m[l]) - v[l]) < 1e-5) {
       ans= k;
       return;
      }

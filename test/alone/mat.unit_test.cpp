@@ -59,6 +59,17 @@ void mat_int_test() {
   static_assert(is_same_v<decltype(C), Matrix<int>>);
  }
  {
+  Matrix<int> B= {{1, 2}, {3, 4}, {5, 6}};
+  auto C= A * B;
+  assert(C.width() == 2);
+  assert(C.height() == 2);
+  assert(C[0][0] == 22);
+  assert(C[0][1] == 28);
+  assert(C[1][0] == 49);
+  assert(C[1][1] == 64);
+  static_assert(is_same_v<decltype(C), Matrix<int>>);
+ }
+ {
   Vector<int> x= {1, 2, 3};
   auto y= A * x;
   assert(y.size() == 2);
@@ -157,6 +168,17 @@ void mat_bool_test() {
   assert(C[1][0] == 0);
   assert(C[1][1] == 0);
   assert(C[1][2] == 1);
+  static_assert(is_same_v<decltype(C), Matrix<bool>>);
+ }
+ {
+  Matrix<bool> B= {{1, 0}, {0, 1}, {1, 1}};
+  auto C= A * B;
+  assert(C.width() == 2);
+  assert(C.height() == 2);
+  assert(C[0][0] == 0);
+  assert(C[0][1] == 1);
+  assert(C[1][0] == 0);
+  assert(C[1][1] == 1);
   static_assert(is_same_v<decltype(C), Matrix<bool>>);
  }
  {

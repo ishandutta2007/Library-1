@@ -57,6 +57,10 @@ void vec_int_test() {
   assert(x[1] == 2);
   assert(x[2] == 3);
  }
+ {
+  Vector<int> y= {4, 5, 6};
+  assert(dot(x, y) == 26);
+ }
 }
 void vec_bool_test() {
  {
@@ -131,6 +135,10 @@ void vec_bool_test() {
   assert(x[0] == 0);
   assert(x[1] == 0);
   assert(x[2] == 1);
+ }
+ {
+  Vector<bool> y= {0, 1, 1};
+  assert(dot(x, y) == 1);
  }
 }
 signed main() {

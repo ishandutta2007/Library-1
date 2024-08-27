@@ -45,7 +45,7 @@ public:
   std::vector<mod_t> v((n + 1) << 1);
   for (size_t i= v.size(), j= 0;; b= M(b)) {
    if (j < n) bs[j]= b;
-   if (v[j++]= (a * b).sum(); !(--i)) break;
+   if (v[j++]= dot(a, b); !(--i)) break;
   }
   rev= berlekamp_massey(v);
   for (auto &x: rev) x= -x;

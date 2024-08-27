@@ -28,7 +28,7 @@ template <class R, class D> struct Mat {
   return submatrix(rows, cols);
  }
  bool operator==(const D &r) const {
-  if (((D *)this)->width() == r.width() || ((D *)this)->height() == r.height()) return false;
+  if (((D *)this)->width() != r.width() || ((D *)this)->height() != r.height()) return false;
   for (int i= ((D *)this)->dat.size(); i--;)
    if (((D *)this)->dat[i] != r.dat[i]) return false;
   return true;

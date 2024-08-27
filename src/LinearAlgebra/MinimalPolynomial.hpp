@@ -41,7 +41,7 @@ public:
  MinimalPolynomial(const LinMap &M, Vector<mod_t> b): n(b.size()), bs(n) {
   static_assert(is_modint_v<mod_t>);
   Vector<mod_t> a(n);
-  for (auto &x: a) x= rng(1, mod_t::mod() - 1);
+  for (size_t i= n; i--;) a[i]= rng(1, mod_t::mod() - 1);
   std::vector<mod_t> v((n + 1) << 1);
   for (size_t i= v.size(), j= 0;; b= M(b)) {
    if (j < n) bs[j]= b;

@@ -59,7 +59,7 @@ void vec_int_test() {
  }
  {
   Vector<int> y= {4, 5, 6};
-  assert(dot(x, y) == 26);
+  assert(dot(x, y) == 32);
  }
 }
 void vec_bool_test() {

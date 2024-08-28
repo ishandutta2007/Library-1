@@ -4,10 +4,8 @@
 #include <valarray>
 namespace _la_internal {
 using namespace std;
-template <class R> class Matrix;
-template <class R> class Vector {
+template <class R> struct Vector {
  valarray<R> dat;
-public:
  Vector()= default;
  Vector(size_t n): dat(n) {}
  Vector(size_t n, const R &v): dat(v, n) {}
@@ -21,6 +19,8 @@ public:
   return true;
  }
  bool operator!=(const Vector &r) const { return !(*this == r); }
+ explicit operator bool() const { return dat.size(); }
+ Vector operator-() const { return Vector(dat.size())-= *this; }
  Vector &operator+=(const Vector &r) { return dat+= r.dat, *this; }
  Vector &operator-=(const Vector &r) { return dat-= r.dat, *this; }
  Vector &operator*=(const R &r) { return dat*= r, *this; }
@@ -28,12 +28,11 @@ public:
  Vector operator-(const Vector &r) const { return Vector(*this)-= r; }
  Vector operator*(const R &r) const { return Vector(*this)*= r; }
  size_t size() const { return dat.size(); }
- R *data() { return begin(dat); }
  friend R dot(const Vector<R> &a, const Vector<R> &b) { return assert(a.size() == b.size()), (a.dat * b.dat).sum(); }
 };
 using u128= __uint128_t;
-using u8= uint8_t;
 using u64= uint64_t;
+using u8= uint8_t;
 class Ref {
  u128 *ref;
  u8 i;
@@ -48,9 +47,8 @@ public:
 };
 template <> class Vector<bool> {
  size_t n;
- valarray<u128> dat;
- friend class Matrix<bool>;
 public:
+ valarray<u128> dat;
  Vector(): n(0) {}
  Vector(size_t n): n(n), dat((n + 127) >> 7) {}
  Vector(size_t n, bool b): n(n), dat(-u128(b), (n + 127) >> 7) {
@@ -69,6 +67,8 @@ public:
   return true;
  }
  bool operator!=(const Vector &r) const { return !(*this == r); }
+ explicit operator bool() const { return n; }
+ Vector operator-() const { return Vector(*this); }
  Vector &operator+=(const Vector &r) { return dat^= r.dat, *this; }
  Vector &operator-=(const Vector &r) { return dat^= r.dat, *this; }
  Vector &operator*=(bool b) { return dat*= b, *this; }
@@ -76,7 +76,6 @@ public:
  Vector operator-(const Vector &r) const { return Vector(*this)-= r; }
  Vector operator*(bool b) const { return Vector(*this)*= b; }
  size_t size() const { return n; }
- u128 *data() { return begin(dat); }
  friend bool dot(const Vector<bool> &a, const Vector<bool> &b) {
   assert(a.size() == b.size());
   u128 v= 0;

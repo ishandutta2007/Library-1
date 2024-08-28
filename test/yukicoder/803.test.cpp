@@ -22,7 +22,7 @@ signed main() {
   for (int j= l - 1; j <= r - 1; j++) A[30 + i][j]= 1;
  }
  LU_Decomposition lu(A);
- if (lu.linear_equations(b).size()) cout << ModInt<int(1e9 + 7)>(2).pow(lu.kernel().size()) << '\n';
+ if (lu.linear_equations(b)) cout << ModInt<int(1e9 + 7)>(2).pow(lu.kernel().size()) << '\n';
  else cout << 0 << '\n';
  return 0;
 }

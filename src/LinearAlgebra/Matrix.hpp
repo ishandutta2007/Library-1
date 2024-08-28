@@ -15,17 +15,17 @@ template <class R, class D> struct Mat {
    for (int j= cols.size(); j--;) ret[i][j]= D(*((D *)this))[rows[i]][cols[j]];
   return ret;
  }
- D submatrix_rm(vector<int> rm_r, vector<int> rm_c) const {
-  sort(begin(rm_r), end(rm_r)), sort(begin(rm_c), end(rm_c)), rm_r.erase(unique(begin(rm_r), end(rm_r)), end(rm_r)), rm_c.erase(unique(begin(rm_c), end(rm_c)), end(rm_c));
-  const size_t H= ((D *)this)->height(), W= ((D *)this)->width(), n= rm_r.size(), m= rm_c.size();
-  vector<int> rows(H - n), cols(W - m);
+ D submatrix_rm(vector<int> rows, vector<int> cols) const {
+  sort(begin(rows), end(rows)), sort(begin(cols), end(cols)), rows.erase(unique(begin(rows), end(rows)), end(rows)), cols.erase(unique(begin(cols), end(cols)), end(cols));
+  const size_t H= ((D *)this)->height(), W= ((D *)this)->width(), n= rows.size(), m= cols.size();
+  vector<int> rs(H - n), cs(W - m);
   for (size_t i= 0, j= 0, k= 0; i < H; ++i)
-   if (j < n && rm_r[j] == i) ++j;
-   else rows[k++]= i;
+   if (j < n && rows[j] == i) ++j;
+   else rs[k++]= i;
   for (size_t i= 0, j= 0, k= 0; i < W; ++i)
-   if (j < m && rm_c[j] == i) ++j;
-   else cols[k++]= i;
-  return submatrix(rows, cols);
+   if (j < m && cols[j] == i) ++j;
+   else cs[k++]= i;
+  return submatrix(rs, cs);
  }
  bool operator==(const D &r) const {
   if (((D *)this)->width() != r.width() || ((D *)this)->height() != r.height()) return false;
@@ -53,7 +53,8 @@ template <class R> class Matrix: public Mat<R, Matrix<R>> {
 public:
  using Mat<R, Matrix<R>>::operator*;
  Matrix(): W(0) {}
- Matrix(size_t h, size_t w, R v= R()): W(w), dat(v, h * w) {}
+ Matrix(size_t h, size_t w): W(w), dat(h * w) {}
+ Matrix(size_t h, size_t w, R v): W(w), dat(v, h * w) {}
  Matrix(initializer_list<initializer_list<R>> v): W(v.size() ? v.begin()->size() : 0), dat(v.size() * W) {
   auto it= begin(dat);
   for (const auto &r: v) {
@@ -100,25 +101,22 @@ template <> class Matrix<bool>: public Mat<bool, Matrix<bool>> {
  size_t H, W, m;
  valarray<u128> dat;
  friend struct Mat<bool, Matrix<bool>>;
- class Array {
+ struct Array {
   u128 *bg;
- public:
   Array(u128 *it): bg(it) {}
-  u128 *data() const { return bg; }
   Ref operator[](int i) { return Ref{bg + (i >> 7), u8(i & 127)}; }
   bool operator[](int i) const { return (bg[i >> 7] >> (i & 127)) & 1; }
  };
- class ConstArray {
+ struct ConstArray {
   const u128 *bg;
- public:
   ConstArray(const u128 *it): bg(it) {}
-  const u128 *data() const { return bg; }
   bool operator[](int i) const { return (bg[i >> 7] >> (i & 127)) & 1; }
  };
 public:
  using Mat<bool, Matrix<bool>>::operator*;
  Matrix(): H(0), W(0), m(0) {}
- Matrix(size_t h, size_t w, bool b= 0): H(h), W(w), m((w + 127) >> 7), dat(-u128(b), h * m) {
+ Matrix(size_t h, size_t w): H(h), W(w), m((w + 127) >> 7), dat(h * m) {}
+ Matrix(size_t h, size_t w, bool b): H(h), W(w), m((w + 127) >> 7), dat(-u128(b), h * m) {
   if (size_t i= h, k= w & 127; k)
    for (u128 s= (u128(1) << k) - 1; i--;) dat[i * m]&= s;
  }

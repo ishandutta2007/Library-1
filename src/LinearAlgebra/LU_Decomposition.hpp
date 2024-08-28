@@ -127,7 +127,7 @@ public:
    auto b= A.get(perm[psz]);
    for (size_t r= psz + 1; r < h; ++r) {
     auto a= A[perm[r]];
-    if (bool m= a[c]; m) add_upper(a.data(), b.data(), c, w), a[psz]= 1;
+    if (bool m= a[c]; m) add_upper(a.bg, b.bg, c, w), a[psz]= 1;
    }
    piv[psz++]= c;
   }
@@ -144,10 +144,10 @@ public:
    if (i < n && piv[i] == c) ++i;
    else {
     auto &a= ker[c - i];
-    subst_lower(a.data(), dat[c].data(), i), a[c]= 1;
+    subst_lower(begin(a.dat), dat[c].bg, i), a[c]= 1;
     for (size_t j= i, k; j--;) {
      bool x= a[j];
-     if (a[j]= 0, a[k= piv[j]]= x; x) add_lower(a.data(), dat[k].data(), j);
+     if (a[j]= 0, a[k= piv[j]]= x; x) add_lower(begin(a.dat), dat[k].bg, j);
     }
    }
   }
@@ -158,10 +158,10 @@ public:
   assert(h == b.size());
   Vector<bool> y(h), x(w);
   for (size_t c= 0; c < h; ++c)
-   if (y[c]^= b[perm[c]]; c < w && y[c]) add_upper(y.data(), dat[c].data(), c + 1, h);
-  if (any1_upper(y.data(), n, h)) return Vector<bool>();  // no solution
+   if (y[c]^= b[perm[c]]; c < w && y[c]) add_upper(begin(y.dat), dat[c].bg, c + 1, h);
+  if (any1_upper(begin(y.dat), n, h)) return Vector<bool>();  // no solution
   for (size_t i= n; i--;)
-   if ((x[piv[i]]= y[i])) add_lower(y.data(), dat[piv[i]].data(), i);
+   if ((x[piv[i]]= y[i])) add_lower(begin(y.dat), dat[piv[i]].bg, i);
   return x;
  }
  Matrix<bool> inverse_matrix() const {
@@ -171,9 +171,9 @@ public:
   for (size_t i= 0; i < n; ++i) {
    Vector<bool> y(n);
    for (size_t c= 0; c < n; ++c)
-    if (y[c]^= perm[c] == i; c < n && y[c]) add_upper(y.data(), dat[c].data(), c, n);
+    if (y[c]^= perm[c] == i; c < n && y[c]) add_upper(begin(y.dat), dat[c].bg, c, n);
    for (size_t j= n; j--;)
-    if ((ret[j][i]= y[j])) add_lower(y.data(), dat[j].data(), j);
+    if ((ret[j][i]= y[j])) add_lower(begin(y.dat), dat[j].bg, j);
   }
   return ret;
  }

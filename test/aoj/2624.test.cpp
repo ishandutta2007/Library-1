@@ -19,7 +19,7 @@ signed main() {
  cin >> T;
  LU_Decomposition lu(A.pow(T));
  auto c= lu.linear_equations(v);
- if (!c.size()) cout << "none" << '\n';
+ if (!c) cout << "none" << '\n';
  else if (!lu.kernel().empty()) cout << "ambiguous" << '\n';
  else
   for (int i= 0; i < N; i++) cout << c[i] << " \n"[i == N - 1];

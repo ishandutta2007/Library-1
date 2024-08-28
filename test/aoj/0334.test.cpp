@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Final/0334
+// competitive-verifier: TLE 0.5
 // 辞書順マッチングのverify
 #include <iostream>
 #include "src/Graph/BipartiteGraph.hpp"

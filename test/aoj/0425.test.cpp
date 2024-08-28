@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Final/0425
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <numeric>
 #include <algorithm>

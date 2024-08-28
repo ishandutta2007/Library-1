@@ -80,7 +80,7 @@ public:
  friend bool dot(const Vector<bool> &a, const Vector<bool> &b) {
   assert(a.size() == b.size());
   u128 v= 0;
-  for (int i= a.size(); i--;) v^= a.dat[i] & b.dat[i];
+  for (int i= a.dat.size(); i--;) v^= a.dat[i] & b.dat[i];
   return __builtin_parityll(v >> 64) ^ __builtin_parityll(u64(v));
  }
 };

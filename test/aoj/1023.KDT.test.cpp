@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/1023
+// competitive-verifier: TLE 0.5
 
 // 円形クエリ
 

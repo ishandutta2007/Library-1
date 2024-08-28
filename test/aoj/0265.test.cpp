@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Prelim/0265
+// competitive-verifier: TLE 0.5
 #include "src/Misc/compress.hpp"
 #include "src/Geometry/Polygon.hpp"
 using namespace std;

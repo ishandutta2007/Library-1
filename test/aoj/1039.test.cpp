@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/1039
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Geometry/Point.hpp"
 using namespace std;

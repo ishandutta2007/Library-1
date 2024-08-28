@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/0570
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <string>
@@ -53,8 +54,7 @@ signed main() {
   }
   return {-1, -1};
  };
- Automaton dfa_zz(
-     alp, state_t{-2, -2}, tr_zz, [&](state_t) { return true; }, state_t{-1, -1});
+ Automaton dfa_zz(alp, state_t{-2, -2}, tr_zz, [&](state_t) { return true; }, state_t{-1, -1});
  auto dfa= dfa_a & dfa_b & dfa_m & dfa_zz;
  cout << dfa.num<Mint>(n) << '\n';
  return 0;

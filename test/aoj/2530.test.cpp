@@ -20,7 +20,7 @@ signed main() {
      if (di != 0 || dj != 0)
       for (int ni= i, nj= j; 0 <= ni && ni < R && 0 <= nj && nj < C; ni+= di, nj+= dj) A[i * C + j][ni * C + nj]= 1;
  LU_Decomposition lu(A);
- if (lu.linear_equations(b).size()) cout << ModInt<int(1e9 + 9)>(2).pow(lu.kernel().size()) << '\n';
+ if (lu.linear_equations(b)) cout << ModInt<int(1e9 + 9)>(2).pow(lu.kernel().size()) << '\n';
  else cout << 0 << '\n';
  return 0;
 }

@@ -16,7 +16,7 @@ signed main() {
  for (int i= 0; i < N; i++) cin >> b[i];
  LU_Decomposition lu(A);
  auto res= lu.linear_equations(b);
- if (!res.size()) cout << -1 << '\n';
+ if (!res) cout << -1 << '\n';
  else {
   auto ker= lu.kernel();
   cout << ker.size() << '\n';

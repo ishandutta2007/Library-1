@@ -15,7 +15,7 @@ documentation_of: ../../src/LinearAlgebra/Matrix.hpp
 |`Matrix()`|$0\times 0$ 行列 (invalid)|
 |`Matrix(n,m)`|$n\times m$ 行列|
 |`Matrix(n,m,a)`|$n\times m$ 行列, 全成分が $a$|
-|`Matrix({{...},...,{...}})`|initializer_list|
+|`Matrix(initializer_list<initializer_list<R>>)`|initializer_list|
 
 
 | static メンバ関数 | 概要  |

@@ -9,7 +9,7 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  for (int d; cin >> d && d;) {
-  vector m(d + 3, Vector<double>(1, d + 1));
+  vector m(d + 3, Vector<double>(d + 1, 1));
   vector<double> v(d + 3);
   for (int i= 0; i < d + 3; ++i) cin >> v[i];
   for (int i= 0; i < d + 3; ++i)

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Summer/2450
+// competitive-verifier: TLE 1
 // Do use segment tree
 #include <iostream>
 #include <algorithm>

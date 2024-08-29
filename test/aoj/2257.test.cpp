@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2257
+// competitive-verifier: TLE 7
 #include <iostream>
 #include <map>
 #include <vector>

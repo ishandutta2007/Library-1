@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2711
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <string>
 #include "src/Math/ModInt.hpp"

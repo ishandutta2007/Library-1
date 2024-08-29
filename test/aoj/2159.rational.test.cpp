@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2159
+// competitive-verifier: TLE 0.5
 // long long だと TLE(WA?)
 #include <iostream>
 #include <vector>

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/HUPC/2674
+// competitive-verifier: TLE 1
 // range_freq
 #include <iostream>
 #include <vector>

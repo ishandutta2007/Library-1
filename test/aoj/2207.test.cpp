@@ -1,4 +1,5 @@
-// competitive-verifier: PROBLEM http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2207
+// competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2207
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <map>
 #include <string>

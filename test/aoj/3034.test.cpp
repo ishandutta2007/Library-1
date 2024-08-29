@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/3034
 // competitive-verifier: ERROR 0.000001
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <algorithm>

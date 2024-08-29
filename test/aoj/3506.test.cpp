@@ -1,4 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/3506
+// competitive-verifier: TLE 0.5
+
 #include <iostream>
 #include <deque>
 #include <vector>

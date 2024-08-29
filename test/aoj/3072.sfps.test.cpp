@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
-#include "src/FFT/fps_inv.hpp"
+#include "src/Math/sparse_fps.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,12 +11,13 @@ signed main() {
  using Mint= ModInt<998244353>;
  int N, K, P;
  cin >> N >> K >> P;
- Mint p= Mint(P) / 100, q= Mint(1) - p;
- vector<Mint> f(N + 1, -p * p / N);
- f[0]= p, f.resize(K);
- auto g= inv(f);
- Mint ans= 1;
- for (int i= 1; i < K; i++) ans-= g[i] * q;
+ Mint p= Mint(P) / 100, ans= 1, c= (Mint(1) - p) / p;
+ vector<Mint> f(N + 2);
+ f[0]= N;
+ f[1]= -(p + N);
+ f[N + 1]= p;
+ auto g= sfps::div({c * N, -c * N}, f, K);
+ for (int i= 1; i < K; ++i) ans-= g[i];
  cout << ans << '\n';
  return 0;
 }

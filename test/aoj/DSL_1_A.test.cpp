@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/1/DSL_1_A
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/DataStructure/UnionFind.hpp"
 using namespace std;

@@ -11,7 +11,7 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  using namespace geo;
- using Q= long double;
+ using Q= double;
  for (int N; cin >> N && N;) {
   vector<Point<Q>> ps(N);
   for (int i= 0; i < N; ++i) cin >> ps[i];

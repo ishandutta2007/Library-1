@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/agc018/tasks/agc018_c
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <algorithm>
 #include "src/Optimization/min_Lconvex.hpp"

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc236/tasks/abc236_g
+// competitive-verifier: TLE 0.5
 // (min,max)半環
 #include <iostream>
 #include "src/Math/SemiRing.hpp"

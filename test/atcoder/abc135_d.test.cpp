@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc135/tasks/abc135_d
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Misc/Automaton.hpp"

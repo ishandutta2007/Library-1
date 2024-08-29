@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc179/tasks/abc179_c
+// competitive-verifier: TLE 0.5
 // O(√N)
 #include <iostream>
 #include "src/NumberTheory/enumerate_quotients.hpp"

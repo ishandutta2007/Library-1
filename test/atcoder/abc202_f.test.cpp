@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc202/tasks/abc202_f
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Geometry/Polygon.hpp"

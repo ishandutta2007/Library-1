@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc305/tasks/abc305_Ex
+// competitive-verifier: TLE 0.5
 // https://atcoder.jp/contests/abc305/tasks/abc305_h
 #include <iostream>
 #include <algorithm>

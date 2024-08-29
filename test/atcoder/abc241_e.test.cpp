@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc241/tasks/abc241_e
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Misc/Period.hpp"
 using namespace std;

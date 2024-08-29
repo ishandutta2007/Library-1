@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/arc116/tasks/arc116_c
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/NumberTheory/DirichletSeries.hpp"

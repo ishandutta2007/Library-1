@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc155/tasks/abc155_e
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <string>

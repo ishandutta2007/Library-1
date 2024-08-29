@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc228/tasks/abc228_d
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <map>
 #include "src/DataStructure/RangeSet.hpp"

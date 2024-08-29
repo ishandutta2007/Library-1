@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc212/tasks/abc212_g
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/NumberTheory/ArrayOnDivisors.hpp"

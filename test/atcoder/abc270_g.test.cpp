@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc270/tasks/abc270_g
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <array>
 #include "src/Math/ModInt_Runtime.hpp"
@@ -11,8 +12,7 @@ signed main() {
  using Aff= array<Mint, 2>;
  auto mp= [](Aff f, Mint x) { return f[0] * x + f[1]; };
  auto op= [](Aff l, Aff r) { return Aff{l[0] * r[0], l[0] * r[1] + l[1]}; };
- DiscreteLogarithm log(
-     mp, op, [](Mint x) { return x.val(); }, 1e9);
+ DiscreteLogarithm log(mp, op, [](Mint x) { return x.val(); }, 1e9);
  int T;
  cin >> T;
  while (T--) {

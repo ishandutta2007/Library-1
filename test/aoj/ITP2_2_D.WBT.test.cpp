@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/lesson/8/ITP2/all/ITP2_2_D
-
+// competitive-verifier: TLE 0.5
 // push_back, operator+= の verify
 
 #include <iostream>

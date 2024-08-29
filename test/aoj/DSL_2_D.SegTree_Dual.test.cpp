@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_D
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Dual.hpp"
 using namespace std;

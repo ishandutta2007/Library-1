@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/6/NTL/1/NTL_1_D
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/NumberTheory/Factors.hpp"
 using namespace std;

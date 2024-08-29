@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/1/CGL_1_B
 // competitive-verifier: ERROR 0.00000001
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <iomanip>
 #include "src/Geometry/Line.hpp"

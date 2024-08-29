@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/lesson/8/ITP2/all/ITP2_4_B
-
+// competitive-verifier: TLE 0.5
 // split, split3, operator+ の verify
 
 #include <iostream>

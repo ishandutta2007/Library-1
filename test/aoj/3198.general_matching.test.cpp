@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/3198
+// competitive-verifier: TLE 1.5
 
 // 推論補助のtest (しなくても通るが...)
 // 推論補助しない場合 (最悪ケースで) 0.5s 程度遅くなる

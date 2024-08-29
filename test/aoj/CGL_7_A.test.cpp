@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/4/CGL/7/CGL_7_A
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Geometry/Circle.hpp"
 using namespace std;

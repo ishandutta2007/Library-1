@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/enumerate_palindromes
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <string>
 #include <algorithm>

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/suffixarray
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <string>
 #include "src/String/SuffixArray.hpp"

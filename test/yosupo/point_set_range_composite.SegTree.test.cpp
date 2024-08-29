@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_set_range_composite
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <utility>

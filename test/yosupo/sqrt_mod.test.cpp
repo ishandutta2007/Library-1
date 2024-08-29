@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/sqrt_mod
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/mod_sqrt.hpp"
 using namespace std;

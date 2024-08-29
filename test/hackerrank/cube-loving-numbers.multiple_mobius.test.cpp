@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://www.hackerrank.com/contests/university-codesprint-5/challenges/cube-loving-numbers
+// competitive-verifier: TLE 1
 #include <iostream>
 #include <vector>
 #include "src/NumberTheory/tables.hpp"

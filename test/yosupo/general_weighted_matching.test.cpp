@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/general_weighted_matching
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Optimization/WeightedMatching.hpp"

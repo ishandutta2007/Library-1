@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_add_range_sum
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/DataStructure/BinaryIndexedTree.hpp"
 using namespace std;

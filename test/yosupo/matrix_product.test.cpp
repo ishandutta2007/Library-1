@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/matrix_product
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/LinearAlgebra/Matrix.hpp"
 #include "src/Math/ModInt.hpp"

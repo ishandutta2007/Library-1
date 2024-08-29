@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://www.hackerrank.com/contests/w33/challenges/bonnie-and-clyde
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/block_cut_tree.hpp"

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/sparse_matrix_det
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/LinearAlgebra/MinimalPolynomial.hpp"

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/general_matching
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Graph/general_matching.hpp"
 using namespace std;

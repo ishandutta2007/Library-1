@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_kth_smallest
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/WaveletMatrix.hpp"

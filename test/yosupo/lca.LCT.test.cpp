@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/lca
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/exp_of_set_power_series
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

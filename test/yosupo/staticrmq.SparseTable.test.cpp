@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/staticrmq
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/SparseTable.hpp"

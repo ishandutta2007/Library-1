@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <array>

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/tetration_mod
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/mod_tetration.hpp"
 using namespace std;

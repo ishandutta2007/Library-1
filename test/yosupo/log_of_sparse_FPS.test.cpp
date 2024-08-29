@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/log_of_formal_power_series_sparse
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/bipartitematching
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/general_matching.hpp"

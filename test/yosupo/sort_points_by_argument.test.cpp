@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/sort_points_by_argument
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <algorithm>

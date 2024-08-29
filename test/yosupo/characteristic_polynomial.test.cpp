@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/characteristic_polynomial
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/LinearAlgebra/characteristic_polynomial.hpp"
 #include "src/Math/ModInt.hpp"

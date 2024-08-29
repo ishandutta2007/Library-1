@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/set_xor_min
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
 // find + xor の verify

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://www.hackerrank.com/challenges/library-query/problem
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/SortedPerBucket.hpp"

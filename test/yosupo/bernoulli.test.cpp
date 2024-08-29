@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/bernoulli_number
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/sequences.hpp"

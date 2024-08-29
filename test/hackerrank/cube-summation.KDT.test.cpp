@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://www.hackerrank.com/challenges/cube-summation
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <set>
 #include <vector>

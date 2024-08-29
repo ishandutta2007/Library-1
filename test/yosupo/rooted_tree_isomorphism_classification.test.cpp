@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/rooted_tree_isomorphism_classification
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Misc/compress.hpp"
 #include "src/Math/ModInt.hpp"

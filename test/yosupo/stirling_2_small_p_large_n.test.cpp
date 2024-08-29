@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/stirling_number_of_the_second_kind_small_p_large_n
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/StirlingNumber.hpp"
 using namespace std;

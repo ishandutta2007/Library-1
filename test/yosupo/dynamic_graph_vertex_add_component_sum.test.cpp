@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/dynamic_graph_vertex_add_component_sum
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/DataStructure/OnlineDynamicConnectivity.hpp"
 using namespace std;

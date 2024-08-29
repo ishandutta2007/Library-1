@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2624
+// competitive-verifier: TLE 0.5
 // F_2 の行列累乗
 // F_2 の線形方程式・カーネル
 #include <iostream>

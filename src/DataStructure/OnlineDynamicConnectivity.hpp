@@ -42,16 +42,17 @@ public:
   } else ett[0].link(x, y, true);
  }
  void cut(int x, int y) {
-  for (int k= 0; k < ett.size(); k++)
+  int m= ett.size();
+  for (int k= 0; k < m; ++k)
    if (adj[k][x].count(y)) {
     adj[k][x].erase(y), adj[k][y].erase(x);
     if (adj[k][x].size() == 0) ett[k].subedge_set(x, 0);
     if (adj[k][y].size() == 0) ett[k].subedge_set(y, 0);
     return;
    }
-  for (int k= ett.size(); k--;)
+  for (int k= m; k--;)
    if (ett[k].edge_exist(x, y)) {
-    if (k + 1 == ett.size()) ett.emplace_back(N), adj.emplace_back(N);
+    if (k + 1 == m) ett.emplace_back(N), adj.emplace_back(N);
     replace(x, y, k + 1);
    }
  }

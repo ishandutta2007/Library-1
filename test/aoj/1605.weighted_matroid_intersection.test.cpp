@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/1605
+// competitive-verifier: TLE 0.5
 // 重み付き
 // (グラフ+分割)
 #include <iostream>

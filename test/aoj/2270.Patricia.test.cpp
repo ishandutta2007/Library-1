@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/UTPC/2270
+// competitive-verifier: TLE 1
 // 永続化 + find * 4 の verify
 #include <iostream>
 #include <algorithm>

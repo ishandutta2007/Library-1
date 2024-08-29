@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/HUPC/2842
+// competitive-verifier: TLE 1
 #include <iostream>
 #include <set>
 #include <vector>

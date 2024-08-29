@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/ICPC/Regional/1328
+// competitive-verifier: TLE 0.5
 // double型の行列の連立一次方程式のverify
 #include <iostream>
 #include <vector>

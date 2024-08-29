@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2603
+// competitive-verifier: TLE 0.5
 // Alien DP
 #include <iostream>
 #include <algorithm>

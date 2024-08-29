@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2495
 // competitive-verifier: ERROR 0.000000001
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Geometry/intersection_area.hpp"

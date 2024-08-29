@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/VPC/RUPC/2880
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <array>
 #include <algorithm>

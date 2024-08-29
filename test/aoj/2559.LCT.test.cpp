@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2559
-
+// competitive-verifier: TLE 0.5
 // 双対
 
 #include <iostream>

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc160/tasks/abc160_f
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <algorithm>
 #include "src/Math/ModInt.hpp"

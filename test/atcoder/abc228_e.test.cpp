@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc228/tasks/abc228_e
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/ModInt_Exp.hpp"
 using namespace std;

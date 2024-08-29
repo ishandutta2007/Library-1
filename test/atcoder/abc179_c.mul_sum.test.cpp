@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc179/tasks/abc179_c
+// competitive-verifier: TLE 0.5
 // O(N^(3/4)/logN))
 #include <iostream>
 #include "src/NumberTheory/sum_on_primes.hpp"

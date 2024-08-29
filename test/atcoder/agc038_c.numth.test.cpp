@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/agc038/tasks/agc038_c
-
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

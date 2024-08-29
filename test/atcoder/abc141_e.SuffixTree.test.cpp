@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc141/tasks/abc141_e
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <string>
 #include "src/DataStructure/SparseTable.hpp"

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc182/tasks/abc182_e
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/DataStructure/RangeSet.hpp"
 using namespace std;

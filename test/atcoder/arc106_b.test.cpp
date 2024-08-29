@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/arc106/tasks/arc106_b
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <algorithm>

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/arc107/tasks/arc107_f
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Optimization/MaxFlow.hpp"

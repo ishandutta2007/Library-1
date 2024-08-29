@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc244/tasks/abc244_Ex
+// competitive-verifier: TLE 0.5
 // https://atcoder.jp/contests/abc244/tasks/abc244_h
 #include <iostream>
 #include "src/Optimization/ConvexHullTrick.hpp"

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/arc105/tasks/arc105_f
+// competitive-verifier: TLE 0.5
 // 連結二部グラフ
 #include <iostream>
 #include "src/Math/ModInt.hpp"

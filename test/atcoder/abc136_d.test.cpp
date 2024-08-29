@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc136/tasks/abc136_d
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/FFT/BigInt.hpp"

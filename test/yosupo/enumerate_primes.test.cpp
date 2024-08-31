@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/enumerate_primes
-// competitive-verifier: TLE 1.0
+// competitive-verifier: TLE 2
 #include <iostream>
 #include <vector>
 #include "src/NumberTheory/enumerate_primes.hpp"

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/421
+// competitive-verifier: TLE 0.5
 // 2部マッチング(分割+分割) (2500+2500 頂点)
 // |台集合|<=5000
 // |共通独立集合|<=2500

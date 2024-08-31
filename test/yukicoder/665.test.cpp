@@ -1,10 +1,11 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/665
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/sample_points_shift.hpp"
 using namespace std;
-//より厳しい制約: http://codeforces.com/contest/622/problem/F
+// より厳しい制約: http://codeforces.com/contest/622/problem/F
 
 signed main() {
  cin.tie(0);

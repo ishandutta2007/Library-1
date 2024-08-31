@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 2
 // 遅延伝搬のverify
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"

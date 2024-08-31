@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1615
+// competitive-verifier: TLE 0.5
 // 重み付き二部マッチング(非想定解)
 // 制約が厳しい
 #include <iostream>

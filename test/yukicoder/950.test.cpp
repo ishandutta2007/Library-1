@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/950
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/ModInt_Runtime.hpp"
 #include "src/LinearAlgebra/Matrix.hpp"
@@ -18,8 +19,7 @@ signed main() {
  for (int i= 0; i < 2; ++i)
   for (int j= 0; j < 2; ++j) cin >> B[i][j];
  auto g= [](Mat a, Mat b) { return a * b; };
- DiscreteLogarithm log1(
-     g, g, [](Mat x) { return x[0][0].val(); }, 2ll * p + 1);
+ DiscreteLogarithm log1(g, g, [](Mat x) { return x[0][0].val(); }, 2ll * p + 1);
  Mint detA= A[0][0] * A[1][1] - A[0][1] * A[1][0];
  if (detA == Mint()) {
   int ans= log1(A, A, B) + 1;
@@ -28,8 +28,7 @@ signed main() {
  }
  Mint detB= B[0][0] * B[1][1] - B[0][1] * B[1][0];
  auto f= [](Mint a, Mint b) { return a * b; };
- DiscreteLogarithm log2(
-     f, f, [](Mint x) { return x.val(); }, p);
+ DiscreteLogarithm log2(f, f, [](Mint x) { return x.val(); }, p);
  int m= log2(detA, detA, 1) + 1, r= log2(detA, detA, detB) + 1;
  if (m == 0 || r == 0) {
   cout << -1 << '\n';

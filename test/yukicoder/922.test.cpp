@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/922
+// competitive-verifier: TLE 0.5
 // 森
 #include <iostream>
 #include <array>

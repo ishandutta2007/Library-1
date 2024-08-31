@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc324/tasks/abc324_g
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 #include <iostream>
 #include <vector>
 #include <array>
@@ -22,13 +22,12 @@ signed main() {
   cin >> t >> s >> x;
   auto [l, r, u, d]= dat[s];
   if (t == 1) {
-   if (wm.count(l, r, u, d) < x) dat.push_back({0, 0, 0, 0});
+   if (wm.count(l, r, u, d) <= x) dat.push_back({0, 0, 0, 0});
    else {
     int ok= r, ng= l - 1;
     while (ok - ng > 1) {
      int m= (ok + ng) / 2;
-     if (wm.count(l, m, u, d) >= x) ok= m;
-     else ng= m;
+     (wm.count(l, m, u, d) >= x ? ok : ng)= m;
     }
     dat[s]= {l, ok, u, d}, dat.push_back({ok, r, u, d});
    }

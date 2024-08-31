@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc228/tasks/abc228_f
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1.5
 
 // kdt は TLE
 

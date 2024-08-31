@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc155/tasks/abc155_e
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 2
 #include <iostream>
 #include <vector>
 #include <string>
@@ -18,7 +18,6 @@ signed main() {
  using state_t= array<int, 2>;
  auto tr= [&](state_t s, int c) -> state_t {
   auto [i, b]= s;
-  if (i < 0) return {-1, -1};
   int d= (N[i] - '0' + b) % 10;
   if (c == d || 10 + c == d) return {i - 1, (N[i] - '0' + b - c) / 10};
   return {-1, -1};

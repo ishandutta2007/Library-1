@@ -1,7 +1,7 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2893
 // competitive-verifier: TLE 2.5
 // 非想定解 MLがギリギリ
-// aojへの提出だとTLの2sに間に合ったので許して
+// 本来のTLは2s(aojへの提出だと間に合ったので許して)
 #include <iostream>
 #include "src/DataStructure/OnlineDynamicConnectivity.hpp"
 using namespace std;

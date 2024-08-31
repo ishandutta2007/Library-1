@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/assignment
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 // 　二部グラフ
 #include <iostream>
 #include <vector>

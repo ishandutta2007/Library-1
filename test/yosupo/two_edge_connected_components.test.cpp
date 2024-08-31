@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/two_edge_connected_components
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Graph/IncrementalBridgeConnectivity.hpp"

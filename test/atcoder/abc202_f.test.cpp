@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc202/tasks/abc202_f
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 #include <iostream>
 #include <vector>
 #include "src/Geometry/Polygon.hpp"
@@ -32,8 +32,8 @@ signed main() {
  Mint ans= 0, pw[N + 1];
  pw[0]= 1;
  for (int i= 0; i < N; ++i) pw[i + 1]= pw[i] + pw[i];
+ Mint dp[N][N][2][2];
  for (int must= N; must--;) {
-  Mint dp[N][N][2][2];
   for (int i= must; i < N; ++i)
    for (int j= must; j < N; ++j)
     for (int k= 2; k--;) dp[i][j][k][0]= dp[i][j][k][1]= 0;

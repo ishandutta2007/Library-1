@@ -5,7 +5,7 @@
 #include <cassert>
 template <class T> class WaveletMatrix {
  struct SuccinctIndexableDictionary {
-  int len, blocks, zeros;
+  int len, blocks, zeros= 0;
   std::vector<unsigned> bit, sum;
   SuccinctIndexableDictionary(int len): len(len), blocks((len >> 5) + 1), bit(blocks, 0), sum(blocks, 0) {}
   void set(int k) { bit[k >> 5]|= 1U << (k & 31); }
@@ -46,7 +46,7 @@ public:
  T kth_largest(int l, int r, int k) const { return kth_smallest(l, r, r - l - k - 1); }
  // count i s.t. (l <= i < r) && (v[i] < ub)
  int count(int l, int r, T ub) const {
-  int x= std::lower_bound(vec.begin(), vec.end(), ub) - vec.begin();
+  unsigned x= std::lower_bound(vec.begin(), vec.end(), ub) - vec.begin();
   if (x >= 1u << lg) return r - l;
   if (x == 0) return 0;
   int ret= 0;

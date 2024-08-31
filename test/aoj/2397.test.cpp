@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Spring/2397
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 2
 // 行列累乗
 #include <iostream>
 #include <algorithm>

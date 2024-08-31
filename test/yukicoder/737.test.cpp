@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/737
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <array>
@@ -19,8 +20,7 @@ signed main() {
   if (c > d) return -2;
   return s - 1;
  };
- Automaton dfa(
-     alp, 59, tr, [&](int s) { return s == -1; }, -2);
+ Automaton dfa(alp, 59, tr, [&](int s) { return s == -1; }, -2);
  using T= array<Mint, 4>;
  auto op= [&](const T &l, const T &r) {
   T ret;

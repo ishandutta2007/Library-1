@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/362
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <array>

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/685
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <array>
@@ -14,8 +15,7 @@ signed main() {
  int64_t N;
  cin >> N;
  auto tr_le= [&](int64_t s, symbol_t c) { return (s - c[1] + 2) / 2 - 1; };
- Automaton dfa_le(
-     alp, N, tr_le, [](int64_t) { return true; }, int64_t(-1));
+ Automaton dfa_le(alp, N, tr_le, [](int64_t) { return true; }, int64_t(-1));
  auto tr_xy= [&](bool s, symbol_t c) {
   if (c[0] < c[1]) s= 1;
   else if (c[0] > c[1]) s= 0;

@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/184
+// competitive-verifier: TLE 0.5
 // 行列(F_2)のrankのverify
 #include <iostream>
 #include "src/LinearAlgebra/LU_Decomposition.hpp"

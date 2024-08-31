@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/649
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Misc/compress.hpp"
 #include "src/DataStructure/SegmentTree.hpp"

@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/650
+// competitive-verifier: TLE 0.5
 #include <iostream>
-
 #include "src/Math/ModInt.hpp"
 #include "src/LinearAlgebra/Matrix.hpp"
 #include "src/Graph/Graph.hpp"

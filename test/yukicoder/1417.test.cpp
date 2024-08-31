@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1417
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <string>
@@ -20,15 +21,13 @@ signed main() {
   if (c > d) return n + 1;
   return s + 1;
  };
- Automaton dfa_le(
-     alp, 0, tr_le, [&](int) { return true; }, n + 1);
+ Automaton dfa_le(alp, 0, tr_le, [&](int) { return true; }, n + 1);
  auto tr_prod= [](int s, int c) {
   if (s == -1) return c ? c : -1;
   if (!c) return -2;
   return s * c % 100;
  };
- Automaton dfa_prod(
-     alp, -1, tr_prod, [](int s) { return s == 0; }, -2);
+ Automaton dfa_prod(alp, -1, tr_prod, [](int s) { return s == 0; }, -2);
  auto dfa= dfa_le & dfa_prod;
  cout << dfa.num<Mint>(n) << '\n';
  return 0;

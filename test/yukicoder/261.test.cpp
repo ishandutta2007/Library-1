@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/261
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include <numeric>
@@ -15,8 +16,7 @@ signed main() {
   for (int i= 0; i < n; ++i) ret[i]= r[l[i]];
   return ret;
  };
- DiscreteLogarithm log(
-     f, f, [](const vector<int> &x) { return x[0]; }, 1e9);
+ DiscreteLogarithm log(f, f, [](const vector<int> &x) { return x[0]; }, 1e9);
  vector<int> p(N);
  iota(p.begin(), p.end(), 0);
  int K;

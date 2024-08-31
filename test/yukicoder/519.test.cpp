@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/519
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Optimization/WeightedMatching.hpp"
 using namespace std;

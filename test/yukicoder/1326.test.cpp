@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1326
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/block_cut_tree.hpp"

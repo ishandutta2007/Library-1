@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1907
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/LinearAlgebra/characteristic_polynomial.hpp"

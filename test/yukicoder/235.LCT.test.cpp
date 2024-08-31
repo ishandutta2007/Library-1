@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/235
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/DataStructure/LinkCutTree.hpp"
 #include "src/Math/ModInt.hpp"

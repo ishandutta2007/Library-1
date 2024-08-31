@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/703
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <algorithm>
 #include "src/Optimization/LiChaoTree.hpp"

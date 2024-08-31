@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1867
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 // anti monge
 #include <iostream>
 #include <algorithm>

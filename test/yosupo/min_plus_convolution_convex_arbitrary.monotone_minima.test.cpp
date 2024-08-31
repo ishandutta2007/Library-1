@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/min_plus_convolution_convex_arbitrary
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include "src/Optimization/monotone_minima.hpp"
 using namespace std;

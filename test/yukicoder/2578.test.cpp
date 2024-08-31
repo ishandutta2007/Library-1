@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2578
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 2
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/NumberTheory/ArrayOnDivisors.hpp"

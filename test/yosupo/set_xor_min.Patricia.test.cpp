@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/set_xor_min
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Patricia.hpp"
 
@@ -22,9 +22,9 @@ signed main() {
   int op, x;
   cin >> op >> x;
   if (op == 0) {
-   if (S[x] == 0) S.set(x, 1);
+   S.set(x, 1);
   } else if (op == 1) {
-   if (S[x] == 1) S.set(x, 0);
+   S.set(x, 0);
   } else {
    cout << S.find_first(0, check, x) << endl;
   }

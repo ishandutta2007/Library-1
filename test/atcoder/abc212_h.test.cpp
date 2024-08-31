@@ -1,4 +1,4 @@
-// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc212/tasks/abc212_h]
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc212/tasks/abc212_h
 // competitive-verifier: TLE 0.5
 // アダマール変換
 #include <iostream>

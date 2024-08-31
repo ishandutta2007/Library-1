@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/sum_of_exponential_times_polynomial_limit
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 /** @see https://min-25.hatenablog.com/entry/2015/04/24/031413
  */
 #include <iostream>

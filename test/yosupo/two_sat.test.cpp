@@ -1,4 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/two_sat
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <string>
 #include "src/Math/TwoSatisfiability.hpp"

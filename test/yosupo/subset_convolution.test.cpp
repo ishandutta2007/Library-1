@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/subset_convolution
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

@@ -4,58 +4,10 @@
 #include "src/LinearAlgebra/Vector.hpp"
 namespace _la_internal {
 template <class R, class D> struct Mat {
- static D identity_matrix(int n) {
-  D ret(n, n);
-  for (; n--;) ret[n][n]= R(true);
-  return ret;
- }
- D submatrix(const vector<int> &rows, const vector<int> &cols) const {
-  D ret(rows.size(), cols.size());
-  for (int i= rows.size(); i--;)
-   for (int j= cols.size(); j--;) ret[i][j]= D(*((D *)this))[rows[i]][cols[j]];
-  return ret;
- }
- D submatrix_rm(vector<int> rows, vector<int> cols) const {
-  sort(begin(rows), end(rows)), sort(begin(cols), end(cols)), rows.erase(unique(begin(rows), end(rows)), end(rows)), cols.erase(unique(begin(cols), end(cols)), end(cols));
-  const size_t H= ((D *)this)->height(), W= ((D *)this)->width(), n= rows.size(), m= cols.size();
-  vector<int> rs(H - n), cs(W - m);
-  for (size_t i= 0, j= 0, k= 0; i < H; ++i)
-   if (j < n && rows[j] == i) ++j;
-   else rs[k++]= i;
-  for (size_t i= 0, j= 0, k= 0; i < W; ++i)
-   if (j < m && cols[j] == i) ++j;
-   else cs[k++]= i;
-  return submatrix(rs, cs);
- }
- bool operator==(const D &r) const {
-  if (((D *)this)->width() != r.width() || ((D *)this)->height() != r.height()) return false;
-  for (int i= ((D *)this)->dat.size(); i--;)
-   if (((D *)this)->dat[i] != r.dat[i]) return false;
-  return true;
- }
- bool operator!=(const D &r) const { return !(*this == r); }
- D operator+(const D &r) const { return D(*((D *)this))+= r; }
- template <class T> D operator*(T r) const {
-  static_assert(is_convertible_v<T, R>);
-  return D(*((D *)this))*= r;
- }
- D pow(uint64_t k) const {
-  size_t W= ((D *)this)->width();
-  assert(W == ((D *)this)->height());
-  for (D ret= identity_matrix(W), b= *((D *)this);; b*= b)
-   if (k & 1 ? ret*= b, !(k>>= 1) : !(k>>= 1)) return ret;
- }
-};
-template <class R> class Matrix: public Mat<R, Matrix<R>> {
- size_t W;
- valarray<R> dat;
- friend struct Mat<R, Matrix<R>>;
-public:
- using Mat<R, Matrix<R>>::operator*;
- Matrix(): W(0) {}
- Matrix(size_t h, size_t w): W(w), dat(h * w) {}
- Matrix(size_t h, size_t w, R v): W(w), dat(v, h * w) {}
- Matrix(initializer_list<initializer_list<R>> v): W(v.size() ? v.begin()->size() : 0), dat(v.size() * W) {
+ Mat(): W(0) {}
+ Mat(size_t h, size_t w): W(w), dat(h * w) {}
+ Mat(size_t h, size_t w, R v): W(w), dat(v, h * w) {}
+ Mat(initializer_list<initializer_list<R>> v): W(v.size() ? v.begin()->size() : 0), dat(v.size() * W) {
   auto it= begin(dat);
   for (const auto &r: v) {
    assert(r.size() == W);
@@ -64,14 +16,16 @@ public:
  }
  size_t width() const { return W; }
  size_t height() const { return W ? dat.size() / W : 0; }
- explicit operator bool() const { return W; }
  auto operator[](int i) { return next(begin(dat), i * W); }
  auto operator[](int i) const { return next(begin(dat), i * W); }
- Matrix &operator+=(const Matrix &r) { return assert(dat.size() == r.dat.size()), assert(W == r.W), dat+= r.dat, *this; }
- Matrix operator*(const Matrix &r) const {
+protected:
+ size_t W;
+ valarray<R> dat;
+ void add(const Mat &r) { assert(dat.size() == r.dat.size()), assert(W == r.W), dat+= r.dat; }
+ D mul(const Mat &r) const {
   const size_t h= height(), w= r.W, l= W;
   assert(l == r.height());
-  Matrix ret(h, w);
+  D ret(h, w);
   auto a= begin(dat);
   auto c= begin(ret.dat);
   for (int i= h; i--; advance(c, w)) {
@@ -84,9 +38,7 @@ public:
   }
   return ret;
  }
- Matrix &operator*=(const Matrix &r) { return *this= *this * r; }
- Matrix &operator*=(R r) { return dat*= r, *this; }
- Vector<R> operator*(const Vector<R> &r) const {
+ Vector<R> mul(const Vector<R> &r) const {
   assert(W == r.size());
   const size_t h= height();
   Vector<R> ret(h);
@@ -95,12 +47,8 @@ public:
    for (size_t k= 0; k < W; ++k, ++a) ret[i]+= *a * r[k];
   return ret;
  }
- Vector<R> operator()(const Vector<R> &r) const { return *this * r; }
 };
-template <> class Matrix<bool>: public Mat<bool, Matrix<bool>> {
- size_t H, W, m;
- valarray<u128> dat;
- friend struct Mat<bool, Matrix<bool>>;
+template <class D> struct Mat<bool, D> {
  struct Array {
   u128 *bg;
   Array(u128 *it): bg(it) {}
@@ -112,15 +60,13 @@ template <> class Matrix<bool>: public Mat<bool, Matrix<bool>> {
   ConstArray(const u128 *it): bg(it) {}
   bool operator[](int i) const { return (bg[i >> 7] >> (i & 127)) & 1; }
  };
-public:
- using Mat<bool, Matrix<bool>>::operator*;
- Matrix(): H(0), W(0), m(0) {}
- Matrix(size_t h, size_t w): H(h), W(w), m((w + 127) >> 7), dat(h * m) {}
- Matrix(size_t h, size_t w, bool b): H(h), W(w), m((w + 127) >> 7), dat(-u128(b), h * m) {
+ Mat(): H(0), W(0), m(0) {}
+ Mat(size_t h, size_t w): H(h), W(w), m((w + 127) >> 7), dat(h * m) {}
+ Mat(size_t h, size_t w, bool b): H(h), W(w), m((w + 127) >> 7), dat(-u128(b), h * m) {
   if (size_t i= h, k= w & 127; k)
    for (u128 s= (u128(1) << k) - 1; i--;) dat[i * m]&= s;
  }
- Matrix(const initializer_list<initializer_list<bool>> &v): H(v.size()), W(H ? v.begin()->size() : 0), m((W + 127) >> 7), dat(H * m) {
+ Mat(const initializer_list<initializer_list<bool>> &v): H(v.size()), W(H ? v.begin()->size() : 0), m((W + 127) >> 7), dat(H * m) {
   auto it= begin(dat);
   for (const auto &r: v) {
    assert(r.size() == W);
@@ -131,14 +77,16 @@ public:
  }
  size_t width() const { return W; }
  size_t height() const { return H; }
- explicit operator bool() const { return W; }
  Array operator[](int i) { return {next(begin(dat), i * m)}; }
  ConstArray operator[](int i) const { return {next(begin(dat), i * m)}; }
  ConstArray get(int i) const { return {next(begin(dat), i * m)}; }
- Matrix &operator+=(const Matrix &r) { return assert(H == r.H), assert(W == r.W), dat^= r.dat, *this; }
- Matrix operator*(const Matrix &r) const {
+protected:
+ size_t H, W, m;
+ valarray<u128> dat;
+ void add(const Mat &r) { assert(H == r.H), assert(W == r.W), dat^= r.dat; }
+ D mul(const Mat &r) const {
   assert(W == r.H);
-  Matrix ret(H, r.W);
+  D ret(H, r.W);
   u128 *c= begin(ret.dat);
   for (size_t i= 0; i < H; ++i, advance(c, r.m)) {
    ConstArray a= this->operator[](i);
@@ -149,9 +97,7 @@ public:
   }
   return ret;
  }
- Matrix &operator*=(const Matrix &r) { return *this= *this * r; }
- Matrix &operator*=(bool r) { return dat*= r, *this; }
- Vector<bool> operator*(const Vector<bool> &r) const {
+ Vector<bool> mul(const Vector<bool> &r) const {
   assert(W == r.size());
   Vector<bool> ret(H);
   auto a= begin(dat);
@@ -162,7 +108,57 @@ public:
   }
   return ret;
  }
- Vector<bool> operator()(const Vector<bool> &r) const { return *this * r; }
+};
+template <class R> struct Matrix: public Mat<R, Matrix<R>> {
+ using Mat<R, Matrix<R>>::Mat;
+ explicit operator bool() const { return this->W; }
+ static Matrix identity_matrix(int n) {
+  Matrix ret(n, n);
+  for (; n--;) ret[n][n]= R(true);
+  return ret;
+ }
+ Matrix submatrix(const vector<int> &rows, const vector<int> &cols) const {
+  Matrix ret(rows.size(), cols.size());
+  for (int i= rows.size(); i--;)
+   for (int j= cols.size(); j--;) ret[i][j]= (*this)[rows[i]][cols[j]];
+  return ret;
+ }
+ Matrix submatrix_rm(vector<int> rows, vector<int> cols) const {
+  sort(begin(rows), end(rows)), sort(begin(cols), end(cols)), rows.erase(unique(begin(rows), end(rows)), end(rows)), cols.erase(unique(begin(cols), end(cols)), end(cols));
+  const int H= this->height(), W= this->width(), n= rows.size(), m= cols.size();
+  vector<int> rs(H - n), cs(W - m);
+  for (int i= 0, j= 0, k= 0; i < H; ++i)
+   if (j < n && rows[j] == i) ++j;
+   else rs[k++]= i;
+  for (int i= 0, j= 0, k= 0; i < W; ++i)
+   if (j < m && cols[j] == i) ++j;
+   else cs[k++]= i;
+  return submatrix(rs, cs);
+ }
+ bool operator==(const Matrix &r) const {
+  if (this->width() != r.width() || this->height() != r.height()) return false;
+  for (int i= this->dat.size(); i--;)
+   if (this->dat[i] != r.dat[i]) return false;
+  return true;
+ }
+ bool operator!=(const Matrix &r) const { return !(*this == r); }
+ Matrix &operator*=(const Matrix &r) { return *this= this->mul(r); }
+ Matrix operator*(const Matrix &r) const { return this->mul(r); }
+ Matrix &operator*=(R r) { return this->dat*= r, *this; }
+ template <class T> Matrix operator*(T r) const {
+  static_assert(is_convertible_v<T, R>);
+  return Matrix(*this)*= r;
+ }
+ Matrix &operator+=(const Matrix &r) { return this->add(r), *this; }
+ Matrix operator+(const Matrix &r) const { return Matrix(*this)+= r; }
+ Vector<R> operator*(const Vector<R> &r) const { return this->mul(r); }
+ Vector<R> operator()(const Vector<R> &r) const { return this->mul(r); }
+ Matrix pow(uint64_t k) const {
+  size_t W= this->width();
+  assert(W == this->height());
+  for (Matrix ret= identity_matrix(W), b= *this;; b*= b)
+   if (k & 1 ? ret*= b, !(k>>= 1) : !(k>>= 1)) return ret;
+ }
 };
 template <class R, class T> Matrix<R> operator*(const T &r, const Matrix<R> &m) { return m * r; }
 template <class R> ostream &operator<<(ostream &os, const Matrix<R> &m) {

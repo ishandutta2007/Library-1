@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/261
-// competitive-verifier: TLE 2
+// competitive-verifier: TLE 3
 #include <iostream>
 #include <vector>
 #include <numeric>

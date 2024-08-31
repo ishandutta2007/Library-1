@@ -4,7 +4,6 @@
 #include <array>
 #include <cassert>
 template <class K, class Int= int> class RollingHash {
-public:
  static inline std::vector<K> pw, hsh;
  static inline K bs;
  static inline std::vector<Int> str;

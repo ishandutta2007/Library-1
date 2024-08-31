@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   setup:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -76,7 +76,7 @@ jobs:
 
 
   verify:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: [setup]
     env:
       SPLIT_SIZE: "20"
@@ -147,7 +147,7 @@ jobs:
           rm -rf ${{ github.workspace }}/*.json
 
   docs-and-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     needs: [verify]
     outputs:
       upload-pages: ${{steps.upload-pages.outcome == 'success'}}
@@ -226,7 +226,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Deploy to GitHub Pages
         id: deployment

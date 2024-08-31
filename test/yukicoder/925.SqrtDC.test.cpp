@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/925
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 7
 #include <iostream>
 #include <vector>
 #include <ext/pb_ds/assoc_container.hpp>

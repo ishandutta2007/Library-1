@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1211
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 2
 #include <iostream>
 #include "src/Misc/Period.hpp"
 using namespace std;

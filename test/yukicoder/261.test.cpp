@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/261
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 2
 #include <iostream>
 #include <vector>
 #include <numeric>
@@ -10,13 +10,6 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- auto f= [](const vector<int> &l, const vector<int> &r) {
-  const int n= l.size();
-  vector<int> ret(n);
-  for (int i= 0; i < n; ++i) ret[i]= r[l[i]];
-  return ret;
- };
- DiscreteLogarithm log(f, f, [](const vector<int> &x) { return x[0]; }, 1e9);
  vector<int> p(N);
  iota(p.begin(), p.end(), 0);
  int K;
@@ -26,6 +19,13 @@ signed main() {
   cin >> X >> Y;
   swap(p[--X], p[--Y]);
  }
+ auto f= [](const vector<int> &l, const vector<int> &r) {
+  const int n= l.size();
+  vector<int> ret(n);
+  for (int i= 0; i < n; ++i) ret[i]= r[l[i]];
+  return ret;
+ };
+ DiscreteLogarithm log(f, f, [](const vector<int> &x) { return x[0]; }, 1e9);
  int Q;
  cin >> Q;
  while (Q--) {

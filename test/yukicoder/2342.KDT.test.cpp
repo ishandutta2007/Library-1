@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2342
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 3
 // 双対のverify
 
 #include <iostream>

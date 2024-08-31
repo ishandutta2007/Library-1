@@ -19,7 +19,7 @@ template <class K, class Int= int> class RollingHash {
  }
  template <size_t I> static K concat(const std::array<RollingHash, I> &v) {
   K ret= 0;
-  for (int i= 0; i < I; ++i) ret= ret * pw[v[i].n] + v[i].hash();
+  for (size_t i= 0; i < I; ++i) ret= ret * pw[v[i].n] + v[i].hash();
   return ret;
  }
 public:

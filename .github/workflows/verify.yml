@@ -27,13 +27,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: free disk space
-        run: |
-          sudo swapoff -a
-          sudo rm -f /swapfile
-          sudo apt clean
-          docker rmi $(docker image ls -aq)
-          df -h
+      # - name: free disk space
+      #   run: |
+      #     sudo swapoff -a
+      #     sudo rm -f /swapfile
+      #     sudo apt clean
+      #     docker rmi $(docker image ls -aq)
+      #     df -h
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -91,13 +91,13 @@ jobs:
         with:
           fetch-depth: 2147483647
 
-      - name: free disk space
-        run: |
-          sudo swapoff -a
-          sudo rm -f /swapfile
-          sudo apt clean
-          docker rmi $(docker image ls -aq)
-          df -h
+      # - name: free disk space
+      #   run: |
+      #     sudo swapoff -a
+      #     sudo rm -f /swapfile
+      #     sudo apt clean
+      #     docker rmi $(docker image ls -aq)
+      #     df -h
 
       - name: Restore cached results
         if: ${{ ! inputs.ignore_prev_result }}

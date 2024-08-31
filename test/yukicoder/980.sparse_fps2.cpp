@@ -1,9 +1,9 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/980
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 0.5
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
-#include "src/FFT/convolve.hpp"
+#include "src/Math/sparse_fps.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,12 +11,7 @@ signed main() {
  using Mint= ModInt<int(1e9 + 7)>;
  Mint p;
  cin >> p;
- const int q_max= 2000000;
- vector<Mint> a(q_max);
- a[0]= 0, a[1]= 1;
- for (int i= 2; i < q_max; i++) a[i]= p * a[i - 1] + a[i - 2];
- auto b= convolve(a, a);
- b.resize(q_max + 1);
+ auto b= sfps::pow_of_div<Mint>({0, 1}, {1, -p, -1}, 2, 2000000);
  int Q;
  cin >> Q;
  while (Q--) {

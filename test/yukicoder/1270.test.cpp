@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1270
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1.5
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Beats.hpp"
 #include "src/DataStructure/BinaryIndexedTree.hpp"

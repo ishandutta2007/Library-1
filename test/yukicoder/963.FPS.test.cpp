@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/963
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/FormalPowerSeries.hpp"

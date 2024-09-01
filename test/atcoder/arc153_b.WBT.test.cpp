@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/arc153/tasks/arc153_b
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // reverse の verify
 
 #include <iostream>

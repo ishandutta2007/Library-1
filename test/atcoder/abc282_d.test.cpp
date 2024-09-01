@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc282/tasks/abc282_d
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 2色塗り分けの verify
 
 #include <iostream>

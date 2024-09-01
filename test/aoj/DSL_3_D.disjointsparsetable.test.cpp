@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/3/DSL_3_D
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/DisjointSparseTable.hpp"

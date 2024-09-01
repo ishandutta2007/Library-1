@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc327/tasks/abc327_d
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/BipartiteGraph.hpp"

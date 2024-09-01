@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc337/tasks/abc337_g
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/WaveletMatrix.hpp"

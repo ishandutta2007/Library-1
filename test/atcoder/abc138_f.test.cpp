@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc138/tasks/abc138_f
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
 #include <array>

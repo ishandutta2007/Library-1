@@ -1,6 +1,7 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc279/tasks/abc279_d
 // competitive-verifier: ERROR 0.00000001
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
 #include <cmath>

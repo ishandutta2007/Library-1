@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/5/GRL/2/GRL_2_B
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 重み付き
 // 最小全域有向木(グラフ+分割)
 #include <iostream>

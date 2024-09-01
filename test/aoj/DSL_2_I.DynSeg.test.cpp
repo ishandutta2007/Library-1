@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_I
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 遅延伝搬のverify
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"

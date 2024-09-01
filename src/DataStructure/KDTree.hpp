@@ -5,6 +5,7 @@
 #include <map>
 #include <set>
 #include <cassert>
+#include <cstdint>
 #include "src/Internal/HAS_CHECK.hpp"
 #include "src/Internal/tuple_traits.hpp"
 #include "src/Internal/long_traits.hpp"

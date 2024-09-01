@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc199/tasks/abc199_d
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 #include <iostream>
 #include "src/Math/set_power_series.hpp"
 #include "src/Graph/UndirectedGraphSetPowerSeries.hpp"

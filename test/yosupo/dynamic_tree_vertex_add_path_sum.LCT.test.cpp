@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/dynamic_tree_vertex_add_path_sum
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include "src/DataStructure/LinkCutTree.hpp"
 using namespace std;

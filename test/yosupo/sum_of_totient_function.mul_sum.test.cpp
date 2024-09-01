@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/sum_of_totient_function
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // O(N^(3/4)/log N)
 #include <iostream>
 #include "src/Math/ModInt.hpp"

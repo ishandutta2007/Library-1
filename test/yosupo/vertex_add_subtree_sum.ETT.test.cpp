@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/vertex_add_subtree_sum
 // competitive-verifier: TLE 2
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/EulerTourTree.hpp"

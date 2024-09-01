@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://www.hackerrank.com/contests/101hack50/challenges/cutting-the-string
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // c++14 までだった
 
 #include <iostream>

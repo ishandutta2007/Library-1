@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc172/tasks/abc172_d
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 // O(N)
 #include <iostream>
 #include "src/NumberTheory/tables.hpp"

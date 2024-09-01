@@ -4,6 +4,7 @@
 #include <numeric>
 #include <cmath>
 #include <cassert>
+#include <cstdint>
 #include "src/Optimization/MinMaxEnum.hpp"
 template <typename flow_t, typename cost_t, MinMaxEnum obj= MINIMIZE> class NetworkSimplex {
  struct Node {
@@ -15,7 +16,7 @@ template <typename flow_t, typename cost_t, MinMaxEnum obj= MINIMIZE> class Netw
   int u, v;
   flow_t low, up, flow;
   cost_t cost;
-  int_least8_t state= 1;
+  int8_t state= 1;
  };
  int n, m= 0;
  std::vector<Node> ns;

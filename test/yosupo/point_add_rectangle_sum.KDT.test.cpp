@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/point_add_rectangle_sum
 // competitive-verifier: TLE 2
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <map>
 #include <array>

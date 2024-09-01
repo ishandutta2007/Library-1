@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <cstddef>
+#include <utility>
 #include <cassert>
 #include "src/Internal/detection_idiom.hpp"
 template <class M= void> class LinkCutTree {

@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/matrix_det_arbitrary_mod
 // competitive-verifier: TLE 2
+// competitive-verifier: MLE 64
 #include <iostream>
 #include "src/Math/ModInt_Runtime.hpp"
 #include "src/LinearAlgebra/characteristic_polynomial.hpp"

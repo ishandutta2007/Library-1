@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/0355
 // competitive-verifier: TLE 1.5
-
+// competitive-verifier: MLE 64
 // ロリハをセグ木で表現
 
 #include <iostream>

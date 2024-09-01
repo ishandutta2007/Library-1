@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2530
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // F_2 の線形方程式・カーネル
 #include <iostream>
 #include "src/LinearAlgebra/LU_Decomposition.hpp"

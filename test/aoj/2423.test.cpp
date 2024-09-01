@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2423
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 辞書順マッチングのverify
 #include <iostream>
 #include <vector>

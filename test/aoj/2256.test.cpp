@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2256
 // competitive-verifier: TLE 2
+// competitive-verifier: MLE 64
 // Rational だと WA か TLE
 // competitive-verifier: ERROR 0.000000001
 #include <iostream>

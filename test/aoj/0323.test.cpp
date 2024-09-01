@@ -1,6 +1,7 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Prelim/0323
 // competitive-verifier: ERROR 0.00001
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
 #include "src/Optimization/golden_search.hpp"

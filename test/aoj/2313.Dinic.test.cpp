@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Summer/2313
 // competitive-verifier: TLE 1
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
 #include "src/Optimization/MaxFlow.hpp"

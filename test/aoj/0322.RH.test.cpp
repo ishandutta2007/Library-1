@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/0322
 // competitive-verifier: TLE 1
-
+// competitive-verifier: MLE 64
 // multiset 使ったら MLE になった
 
 #include <iostream>

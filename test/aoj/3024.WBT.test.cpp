@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/3024
 // competitive-verifier: TLE 1
+// competitive-verifier: MLE 64
 // 永続性のverify
 
 #include <iostream>

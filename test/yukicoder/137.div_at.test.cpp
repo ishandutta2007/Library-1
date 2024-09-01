@@ -20,6 +20,6 @@ signed main() {
   std::vector<Mint> g(A + 1);
   g[0]= 1, g[A]= -1, f= convolve(f, g);
  }
- cout << div_at<Mint>({1}, f, M) << '\n';
+ cout << div_at<Mint, 1 << 20>({1}, f, M) << '\n';
  return 0;
 }

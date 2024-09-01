@@ -15,7 +15,7 @@ signed main() {
  Mint p= Mint(P) / 100, q= Mint(1) - p;
  vector<Mint> f(N + 1, -p * p / N);
  f[0]= p, f.resize(K);
- auto g= inv(f);
+ auto g= inv<Mint, 1 << 20>(f);
  Mint ans= 1;
  for (int i= 1; i < K; i++) ans-= g[i] * q;
  cout << ans << '\n';

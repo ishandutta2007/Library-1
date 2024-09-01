@@ -31,31 +31,33 @@ template <class pos_t, class M> class SegmentTree_2D {
   else return std::get<k>(p.first);
  }
  template <bool z, class XYW> inline void build(const XYW *xyw, int n, const T &v= M::ti()) {
-  xs.resize(n), yxs.resize(n);
+  xs.resize(n);
   for (int i= n; i--;) xs[i]= get_<z, 0>(xyw[i]);
-  std::sort(xs.begin(), xs.end()), xs.erase(std::unique(xs.begin(), xs.end()), xs.end()), id.resize((sz= 1 << (32 - __builtin_clz(xs.size()))) * 2 + 1);
-  std::vector<int> ix(n), ord(n);
-  for (int i= n; i--;) ix[i]= x2i(get_<z, 0>(xyw[i]));
-  for (int i: ix)
-   for (i+= sz; i; i>>= 1) ++id[i + 1];
-  for (int i= 1, e= sz * 2; i < e; ++i) id[i + 1]+= id[i];
+  std::sort(xs.begin(), xs.end()), xs.erase(std::unique(xs.begin(), xs.end()), xs.end()), id.resize((sz= 1 << (32 - __builtin_clz(xs.size()))) + xs.size() + 1);
+  std::vector<int> ord(n);
+  for (int j= n; j--;)
+   for (int i= x2i(get_<z, 0>(xyw[j])) + sz; i; i>>= 1) ++id[i + 1];
+  for (int i= 1, e= sz + xs.size(); i < e; ++i) id[i + 1]+= id[i];
   val.assign(id.back() * 2, M::ti()), tol.resize(id[sz] + 1), std::iota(ord.begin(), ord.end(), 0), std::sort(ord.begin(), ord.end(), [&](int i, int j) { return get_<z, 1>(xyw[i]) == get_<z, 1>(xyw[j]) ? get_<z, 0>(xyw[i]) < get_<z, 0>(xyw[j]) : get_<z, 1>(xyw[i]) < get_<z, 1>(xyw[j]); });
-  for (int i= n; i--;) yxs[i]= {get_<z, 1>(xyw[ord[i]]), get_<z, 0>(xyw[ord[i]])};
-  std::vector<int> ptr= id;
-  for (int r: ord)
-   for (int i= ix[r] + sz, j= -1; i; j= i, i>>= 1) {
-    int p= ptr[i]++;
-    if constexpr (z) {
-     if constexpr (std::tuple_size_v<XYW> == 3) val[id[i + 1] + p]= std::get<2>(xyw[r]);
-     else val[id[i + 1] + p]= v;
-    } else val[id[i + 1] + p]= xyw[r].second;
-    if (j != -1) tol[p + 1]= !(j & 1);
+  {
+   std::vector<int> ptr= id;
+   for (int r: ord)
+    for (int i= x2i(get_<z, 0>(xyw[r])) + sz, j= -1; i; j= i, i>>= 1) {
+     int p= ptr[i]++;
+     if constexpr (z) {
+      if constexpr (std::tuple_size_v<XYW> == 3) val[id[i + 1] + p]= std::get<2>(xyw[r]);
+      else val[id[i + 1] + p]= v;
+     } else val[id[i + 1] + p]= xyw[r].second;
+     if (j != -1) tol[p + 1]= !(j & 1);
+    }
+   for (int i= 1, e= id[sz]; i < e; ++i) tol[i + 1]+= tol[i];
+   for (int i= 0, e= sz + xs.size(); i < e; ++i) {
+    auto dat= val.begin() + id[i] * 2;
+    for (int j= id[i + 1] - id[i]; --j > 0;) dat[j]= M::op(dat[j * 2], dat[j * 2 + 1]);
    }
-  for (int i= 1, e= id[sz]; i < e; ++i) tol[i + 1]+= tol[i];
-  for (int i= 0, e= sz * 2; i < e; ++i) {
-   auto dat= val.begin() + id[i] * 2;
-   for (int j= id[i + 1] - id[i]; --j > 0;) dat[j]= M::op(dat[j * 2], dat[j * 2 + 1]);
   }
+  yxs.resize(n);
+  for (int i= n; i--;) yxs[i]= {get_<z, 1>(xyw[ord[i]]), get_<z, 0>(xyw[ord[i]])};
  }
  inline T prod(int i, int a, int b) const {
   int n= id[i + 1] - id[i];

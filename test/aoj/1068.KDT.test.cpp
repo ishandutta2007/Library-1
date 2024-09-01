@@ -1,12 +1,13 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1068
 // competitive-verifier: TLE 1.5
 // competitive-verifier: MLE 128
+
+// minクエリ
+// seg2d は MLE
 #include <iostream>
 #include <vector>
 #include <array>
 #include "src/DataStructure/KDTree.hpp"
-
-// minクエリ
 using namespace std;
 struct RminQ {
  using T= int;

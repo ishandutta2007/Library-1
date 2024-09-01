@@ -11,7 +11,7 @@ signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  using Mint= ModInt<int(1e9 + 7)>;
- using Poly= Polynomial<Mint>;
+ using Poly= Polynomial<Mint, 1 << 19>;
  auto x= Poly::x();
  long long N;
  int P, C;
@@ -23,6 +23,6 @@ signed main() {
  for (int v: {4, 6, 8, 9, 10, 12})
   for (int i= 1; i <= C; i++) b[i]+= b[i - 1] * (x ^ v);
  auto f= a[P] * b[C];
- cout << div_at((f(1) - f) / (x - 1), f - 1, N - 1) << '\n';
+ cout << div_at<Mint, 1 << 19>((f(1) - f) / (x - 1), f - 1, N - 1) << '\n';
  return 0;
 }

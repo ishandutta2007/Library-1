@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc248/tasks/abc248_g
 // competitive-verifier: TLE 3
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 2048
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc228/tasks/abc228_f
 // competitive-verifier: TLE 1.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 512
 // kdt は TLE
 
 #include <iostream>

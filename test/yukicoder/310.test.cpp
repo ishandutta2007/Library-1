@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/310
 // competitive-verifier: TLE 1
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 #include <iostream>
 #include <algorithm>
 #include "src/Math/ModInt.hpp"

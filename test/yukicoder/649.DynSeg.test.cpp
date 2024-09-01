@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/649
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 256
 #include <iostream>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
 using namespace std;

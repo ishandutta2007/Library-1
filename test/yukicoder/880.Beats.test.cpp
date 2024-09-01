@@ -4,6 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <numeric>
+#include <cstdint>
 #include "src/DataStructure/SegmentTree_Beats.hpp"
 using namespace std;
 struct Mono {

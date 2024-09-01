@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/421
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 重みなし問題をあえて重み付きアルゴリズムで
 // 2部マッチング(分割+分割) (2500+2500 頂点)
 // |台集合|<=5000

@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1750
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 最小多項式を用いた行列累乗
 #include <iostream>
 #include "src/Math/ModInt.hpp"

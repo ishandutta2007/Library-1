@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/dynamic_sequence_range_affine_range_sum
 // competitive-verifier: TLE 2
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 // insert, erase, reverse, apply, prod の verify
 
 #include <iostream>

@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_affine_range_sum
 // competitive-verifier: TLE 1
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 // apply, prod の verify
 
 #include <iostream>

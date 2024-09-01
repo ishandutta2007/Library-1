@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/658
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <array>
 #include "src/Misc/Period.hpp"

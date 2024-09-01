@@ -5,11 +5,12 @@
 #include <map>
 #include <cassert>
 #include <cmath>
+#include <cstdint>
 class DyadicRational {
- static constexpr char FracLen= std::numeric_limits<std::uint64_t>::digits - 1;
- static constexpr std::uint64_t Denom= 1ULL << FracLen;
+ static constexpr char FracLen= std::numeric_limits<uint64_t>::digits - 1;
+ static constexpr uint64_t Denom= 1ULL << FracLen;
  int integ;
- std::uint64_t frac;
+ uint64_t frac;
  template <class l_t, class r_t>  // Conway's realization
  static DyadicRational reduce(const std::vector<l_t> &L, const std::vector<r_t> &R) {
   if (L.empty() && R.empty()) return DyadicRational();
@@ -26,9 +27,9 @@ class DyadicRational {
   if (l.integ < 0) return DyadicRational();
   if (DyadicRational(l.integ + 1) < r) return DyadicRational(l.integ + 1);
   DyadicRational ret;
-  std::uint64_t rfrac= r.frac == 0 ? Denom : r.frac;
-  std::uint64_t D= 1ULL << (FracLen - __builtin_clzll(l.frac ^ rfrac));
-  std::uint64_t f= (l.frac & (Denom - D)) | D;
+  uint64_t rfrac= r.frac == 0 ? Denom : r.frac;
+  uint64_t D= 1ULL << (FracLen - __builtin_clzll(l.frac ^ rfrac));
+  uint64_t f= (l.frac & (Denom - D)) | D;
   if (f < rfrac) return ret.integ= l.integ, ret.frac= f, ret;
   D= 1ULL << (FracLen - __builtin_clzll((l.frac & (D - 1)) ^ (D - 1)));
   f= (l.frac & (Denom - D)) | D;

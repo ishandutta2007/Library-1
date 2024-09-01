@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1745
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
 #include "src/Graph/DulmageMendelsohn.hpp"

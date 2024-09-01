@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/6/NTL/2/NTL_2_F
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include "src/FFT/BigInt.hpp"
 using namespace std;

@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/all/DSL_2_C
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 列挙のverify
 
 #include <iostream>

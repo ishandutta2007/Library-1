@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/lesson/1/ALDS1/9/ALDS1_9_C
 // competitive-verifier: TLE 1.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
 #include "src/DataStructure/SkewHeap.hpp"

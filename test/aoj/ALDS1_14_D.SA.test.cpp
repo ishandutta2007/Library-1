@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/lesson/1/ALDS1/14/ALDS1_14_D
 // competitive-verifier: TLE 1.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
 #include "src/String/SuffixArray.hpp"

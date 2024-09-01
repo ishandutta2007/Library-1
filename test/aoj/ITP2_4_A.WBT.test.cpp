@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/lesson/8/ITP2/all/ITP2_4_A
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // reverse の verify
 
 #include <iostream>

@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1740
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
 #include <string>

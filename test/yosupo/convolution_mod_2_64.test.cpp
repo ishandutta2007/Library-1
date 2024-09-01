@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/convolution_mod_2_64
 // competitive-verifier: TLE 1
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 1024
 #include <iostream>
 #include <vector>
 #include "src/FFT/convolve.hpp"

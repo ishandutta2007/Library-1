@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/665
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 512
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
@@ -18,6 +18,6 @@ signed main() {
  for (int i= 1; i <= k + 1; i++) {
   y[i]= y[i - 1] + Mint(i).pow(k);
  }
- cout << sample_points_shift<Mint>(y, n)[0] << endl;
+ cout << sample_points_shift<Mint>(y, n)[0] << '\n';
  return 0;
 }

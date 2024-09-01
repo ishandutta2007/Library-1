@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2627
 // competitive-verifier: TLE 2
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 #include <iostream>
 #include "src/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;

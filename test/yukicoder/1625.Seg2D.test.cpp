@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1625
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 // 区間を二次元の点に変換するテク maxクエリ
 
 #include <iostream>

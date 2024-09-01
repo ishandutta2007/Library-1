@@ -27,11 +27,11 @@ signed main() {
   for (int i= 0; i < C; i++)
    for (int j= 0; j + v < max_c; j++) dp2[i + 1][j + v]+= dp2[i][j];
  vector<Mint> p(dp1[P], dp1[P] + max_p), c(dp2[C], dp2[C] + max_c);
- auto f= convolve<Mint, 1 << 19>(p, c), g= f;
+ auto f= convolve<Mint, 1 << 17>(p, c), g= f;
  int d= f.size();
  for (int i= 0; i < d; i++) f[0]-= f[i];
  for (int i= 1; i < d; i++) f[i]+= f[i - 1];
  g[0]-= 1;
- cout << div_at<Mint, 1 << 19>(f, g, N - 1) << '\n';
+ cout << div_at<Mint, 1 << 17>(f, g, N - 1) << '\n';
  return 0;
 }

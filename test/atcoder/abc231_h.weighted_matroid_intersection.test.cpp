@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc231/tasks/abc231_h
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 重み付き
 // (分割 + 分割)
 #include <iostream>

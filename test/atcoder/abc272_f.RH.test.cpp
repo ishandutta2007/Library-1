@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc272/tasks/abc272_f
 // competitive-verifier: TLE 2
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
 #include <string>

@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc309/tasks/abc309_f
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 3次元
 // めっちゃ高速に通る
 

@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc330/tasks/abc330_f
 // competitive-verifier: TLE 2
-
+// competitive-verifier: MLE 64
 // 永続化, operator +, shift の verify
 #include <iostream>
 #include <vector>

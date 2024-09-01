@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc256/tasks/abc256_f
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 // 双対 の verify
 
 #include <iostream>

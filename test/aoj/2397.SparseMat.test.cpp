@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/JAG/Spring/2397
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // 疎行列の行列累乗
 #include <iostream>
 #include <algorithm>

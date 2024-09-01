@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2003
 // competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // long long だと WA
 #include <iostream>
 #include <algorithm>

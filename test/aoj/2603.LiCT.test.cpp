@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2603
 // competitive-verifier: TLE 1
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
 #include "src/Optimization/LiChaoTree.hpp"

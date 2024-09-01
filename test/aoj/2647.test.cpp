@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/2647
 // competitive-verifier: TLE 1.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
 #include <vector>

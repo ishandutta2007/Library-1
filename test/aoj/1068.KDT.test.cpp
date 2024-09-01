@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/UOA/UAPC/1068
 // competitive-verifier: TLE 1.5
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
 #include <array>

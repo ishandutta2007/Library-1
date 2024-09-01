@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/problems/1242
 // competitive-verifier: TLE 1
+// competitive-verifier: MLE 64
 // 浮動小数点数 + (std の ceil, floor) だと WA
 #include <iostream>
 #include <algorithm>

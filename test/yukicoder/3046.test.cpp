@@ -20,7 +20,7 @@ signed main() {
   cin >> x, f[x]= -1;
  }
  f[0]= 1, f.resize(K + 1);
- auto ans= inv(f);
- cout << ans[K] << endl;
+ auto ans= inv<Mint, 1 << 20>(f);
+ cout << ans[K] << '\n';
  return 0;
 }

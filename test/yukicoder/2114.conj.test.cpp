@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2114
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 128
+// competitive-verifier: MLE 256
 #include <iostream>
 #include <unordered_map>
 #include <array>

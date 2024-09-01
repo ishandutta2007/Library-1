@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/1901
 // competitive-verifier: TLE 3
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
 #include "src/Math/set_power_series.hpp"

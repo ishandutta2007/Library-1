@@ -1,5 +1,6 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2578
 // competitive-verifier: TLE 2
+// competitive-verifier: MLE 64
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/NumberTheory/ArrayOnDivisors.hpp"

@@ -4,9 +4,9 @@
 #include <utility>
 #include <cassert>
 class Nimber {
- using u64= uint64_t;
- using u32= uint32_t;
- using u16= uint16_t;
+ using u64= unsigned long long;
+ using u32= unsigned;
+ using u16= unsigned short;
  static inline std::array<u16, 65536> pw, ln;
  template <u16 h= 3> static inline u16 half(u16 A) { return A ? pw[(ln[A] + h) % 65535] : 0; }
  template <u16 h= 0> static inline u16 mul(u16 A, u16 B) { return A && B ? pw[(ln[A] + ln[B] + h) % 65535] : 0; }

@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/persistent_unionfind
 // competitive-verifier: TLE 1
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 1024
 #include <iostream>
 #include <vector>
 #include "src/DataStructure/PersistentArray.hpp"

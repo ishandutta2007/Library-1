@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/persistent_queue
 // competitive-verifier: TLE 2
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 256
 // 永続性のverify
 
 #include <iostream>

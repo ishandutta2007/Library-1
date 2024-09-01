@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/convolution_mod_large
 // competitive-verifier: TLE 10
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 2048
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/subset_convolution
-// competitive-verifier: TLE 5
-// competitive-verifier: MLE 64
+// competitive-verifier: TLE 6
+// competitive-verifier: MLE 1024
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"

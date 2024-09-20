@@ -41,7 +41,7 @@ public:
  using T= nullptr_or_T_t<M>;
  using E= nullptr_or_E_t<M>;
 private:
- static inline Node n[NODE_SIZE];
+ static inline Node *n= new Node[NODE_SIZE];
  static inline node_id ni= 1;
  node_id new_edge(int s, int d, bool hi) {
   int i= ni++, ri= ni++;

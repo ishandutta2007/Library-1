@@ -25,7 +25,7 @@ signed main() {
  for (auto q: query)
   if (q < 0) {
    if (int i= bit.find(K); i >= 0) cout << x[i] << '\n', bit.add(i, -1);
-   else cout << -1 << endl;
+   else cout << -1 << '\n';
   } else bit.add(id(q), 1);
  return 0;
 }

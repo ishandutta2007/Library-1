@@ -39,7 +39,7 @@ signed main() {
    Mint x;
    cin >> u >> v >> x;
    auto f= Mono::ti();
-   for (auto [s, t]: tree.path(u, v)) f= Mono::op(f, s < t ? seg1.fold(s, t + 1) : seg2.fold(N - s - 1, N - t));
+   for (auto [s, t]: tree.path(u, v)) f= Mono::op(f, s < t ? seg1.prod(s, t + 1) : seg2.prod(N - s - 1, N - t));
    cout << f[0] * x + f[1] << '\n';
   } else {
    int p;

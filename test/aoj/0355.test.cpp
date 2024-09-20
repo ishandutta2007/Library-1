@@ -64,7 +64,7 @@ signed main() {
    int ok= 0, ng= m + 1;
    while (ng - ok > 1) {
     int x= (ok + ng) / 2;
-    if (seg.fold(a, a + x).val == seg.fold(c, c + x).val) ok= x;
+    if (seg.prod(a, a + x).val == seg.prod(c, c + x).val) ok= x;
     else ng= x;
    }
    if (ok == m) {

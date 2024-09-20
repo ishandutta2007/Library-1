@@ -38,7 +38,7 @@ template <typename M> struct SegmentTree_Beats {
   for (k+= n; i; i--) eval(k >> i);
   for (dat[k]= x, i= 1; k >> i; i++) update(k >> i);
  }
- T fold(int a, int b) {  //[a,b)
+ T prod(int a, int b) {  //[a,b)
   a+= n, b+= n;
   for (int i= height; i; i--)
    if (((a >> i) << i) != a) eval(a >> i);
@@ -51,7 +51,7 @@ template <typename M> struct SegmentTree_Beats {
   }
   return M::op(vl, vr);
  }
- T operator[](const int k) { return fold(k, k + 1); }
+ T operator[](const int k) { return prod(k, k + 1); }
 private:
  const int n, height;
  struct Lazy {

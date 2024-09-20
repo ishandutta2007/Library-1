@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "src/Math/TwoSatisfiability.hpp"
+#include "src/Misc/TwoSatisfiability.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

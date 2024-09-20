@@ -12,7 +12,7 @@ public:
    for (dat[i + 1].resize(j= dat[i].size() - I); j--;) dat[i + 1][j]= f(dat[i][j], dat[i][j + I]);
  }
  // [l, r)
- T fold(int l, int r) const {
+ T prod(int l, int r) const {
   if (r == l + 1) return dat[0][l];
   int k= 31 - __builtin_clz(r - l - 1);
   return f(dat[k][l], dat[k][r - (1 << k)]);

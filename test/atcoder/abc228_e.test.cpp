@@ -10,6 +10,6 @@ signed main() {
  using Mint= ModInt_Exp<998244353>;
  Mint n, k, m;
  cin >> n >> k >> m;
- cout << m.pow(k.pow(n)) << endl;
+ cout << m.pow(k.pow(n)) << '\n';
  return 0;
 }

@@ -33,8 +33,8 @@ signed main() {
    int l, r;
    Mint x;
    cin >> l >> r >> x;
-   auto ans= seg.fold(l, r);
-   cout << ans.first * x + ans.second << endl;
+   auto ans= seg.prod(l, r);
+   cout << ans.first * x + ans.second << '\n';
   } else {
    int p;
    Mint c, d;

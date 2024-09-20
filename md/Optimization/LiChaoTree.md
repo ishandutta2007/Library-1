@@ -25,9 +25,9 @@ auto tree = lct.make_tree<MINIMIZE>();
 tree.insert(2, 3); // 2x+3
 tree.insert(1, 1, 0, 2); // x+1 (0<= x < 2)
 auto [val1, id1] = tree.query(1);
-cout << val1 << " "<< id1 << endl; // 2 1
+cout << val1 << " "<< id1 << '\n'; // 2 1
 auto [val2, id2] = tree.query(-1);
-cout << val2 << " "<< id2 << endl; // 1 0
+cout << val2 << " "<< id2 << '\n'; // 1 0
 ```
 
 ## `LiChaoTree` クラス

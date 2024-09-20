@@ -9,3 +9,6 @@ documentation_of: ../../src/DataStructure/OnlineDynamicConnectivity.hpp
 - `connected`: $O(\log N)$
 ## 参考
 [https://qiita.com/hotman78/items/78cd3aa50b05a57738d4](https://qiita.com/hotman78/items/78cd3aa50b05a57738d4)
+
+## 問題例
+[Educational Codeforces Round 62 F. Extending Set of Points](https://codeforces.com/contest/1140/problem/F) 

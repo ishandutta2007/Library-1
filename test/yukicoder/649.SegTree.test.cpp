@@ -34,10 +34,10 @@ signed main() {
    auto check= [&](int v) { return v >= K; };
    int i= seg.find<0>(check, 0);
    if (i != -1) {
-    cout << x[i] << endl;
+    cout << x[i] << '\n';
     seg.set(i, seg[i] - 1);
    } else {
-    cout << -1 << endl;
+    cout << -1 << '\n';
    }
   } else {
    int i= id(q);

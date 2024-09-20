@@ -68,8 +68,8 @@ KDTree<int,2,int> kdt(xyv);
 |---|---|
 |`enum_cuboid(x_1l,x_1r,...x_kl,x_kr)`| 直方体(長方形) 内部に位置する点についてその点に乗っている値が列挙される. <br> 引数は 2K 個 ( $\lbrack x^l_1,x^r_1\rbrack\times\cdots\times\lbrack x^l_K,x^r_K\rbrack$ ). |
 |`enum_ball(x_1,...x_k,r)`| 球(円) 内部に位置する点についてその点に乗っている値が列挙される.<br> 引数は K+1 個 ( 中心: $(x_1,\dots,x_K)$, 半径: $r$ ). |
-|`fold_cuboid(x_1l,x_1r,...x_kl,x_kr)`| 直方体(長方形) 内部に位置する点についてその点に乗っている値を集約した値を返す. <br> 引数は 2K 個 ( $\lbrack x^l_1,x^r_1\rbrack\times\cdots\times\lbrack x^l_K,x^r_K\rbrack$ ). |
-|`fold_ball(x_1,...x_k,r)`| 球(円) 内部に位置する点についてその点に乗っている値を集約した値を返す.<br> 引数は K+1 個 ( 中心: $(x_1,\dots,x_K)$, 半径: $r$ ). |
+|`prod_cuboid(x_1l,x_1r,...x_kl,x_kr)`| 直方体(長方形) 内部に位置する点についてその点に乗っている値を集約した値を返す. <br> 引数は 2K 個 ( $\lbrack x^l_1,x^r_1\rbrack\times\cdots\times\lbrack x^l_K,x^r_K\rbrack$ ). |
+|`prod_ball(x_1,...x_k,r)`| 球(円) 内部に位置する点についてその点に乗っている値を集約した値を返す.<br> 引数は K+1 個 ( 中心: $(x_1,\dots,x_K)$, 半径: $r$ ). |
 |`apply_cuboid(x_1l,x_1r,...x_kl,x_kr, a)`| 直方体(長方形) 内部に位置する点についてその点に乗っている値に `a` を作用させる. <br> 引数は 2K+1 個 ( $\lbrack x^l_1,x^r_1\rbrack\times\cdots\times\lbrack x^l_K,x^r_K\rbrack$ と 作用素 `a` ). |
 |`apply_ball(x_1,...x_k,r, a)`| 球(円) 内部に位置する点についてその点に乗っている値を集約した値に `a` を作用させる. <br> 引数は K+1+1 個 ( 中心: $(x_1,\dots,x_K)$, 半径: $r$ と 作用素 `a`). |
 |`set(x_1,...x_k, v)`|点 $(x_1,\dots,x_K)$ の値を `v` に変更する. <br> 点が存在しないとassertで落ちる.|

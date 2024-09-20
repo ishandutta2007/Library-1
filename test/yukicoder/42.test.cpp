@@ -21,7 +21,7 @@ signed main() {
   cin >> M;
   vector<Mint> y(6);
   for (int i= 0; i <= 5; i++) y[i]= dp[M % 500 + i * 500];
-  cout << sample_points_shift<Mint>(y, M / 500)[0] << endl;
+  cout << sample_points_shift<Mint>(y, M / 500)[0] << '\n';
  }
  return 0;
 }

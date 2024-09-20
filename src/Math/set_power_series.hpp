@@ -170,9 +170,7 @@ template <class T, class P> vector<T> self_relaxed_convolve(const P& phi, int n)
  for (int u= 1; i < e; l<<= 1, ++i)
   for (int s= 0; s < l; phi(u, f[u]), ++s, ++u)
    for (int t= s; t; --t&= s) f[u]+= f[u ^ t] * f[t];
- for (; i < n; l<<= 1, ++i)
-  phi(l, f[l]), oncnv_(
-                    f.data(), f.data() + l, [&](int s, T& x) { phi(s | l, x); }, i);
+ for (; i < n; l<<= 1, ++i) phi(l, f[l]), oncnv_(f.data(), f.data() + l, [&](int s, T& x) { phi(s | l, x); }, i);
  return f;
 }
 // exp(f) , "f[empty] = 0" is required,  O(n^2 2^n)
@@ -256,6 +254,22 @@ template <class T> vector<T> poly_comp(vector<T> P, vector<T> f) {
  }
  return f[0]= 0, egf_comp(F, f);
 }
+// f^k ,  O(n^2 2^n)
+template <class T> vector<T> pow(vector<T> f, uint64_t k) {
+ const unsigned N= f.size(), n= __builtin_ctz(N);
+ assert(!(N & (N - 1)));
+ vector<T> F;
+ unsigned i, m;
+ if (n < k) {
+  F.resize(n + 1), F[m= n]= 1;
+  T x= f[0];
+  for (uint64_t l= k - n;; x*= x)
+   if (l & 1 ? F[n]*= x : 0; !(l>>= 1)) break;
+ } else F.resize(k + 1), F[m= k]= 1;
+ for (i= m; i--;) F[i]= F[i + 1] * f[0];
+ for (T t= 1; ++i < m;) F[i + 1]*= (t*= k - i);
+ return f[0]= 0, egf_comp(F, f);
+}
 template <class T> vector<T> _egfT(const T* b, T* h, int M, int n) {
  T *a, *d;
  vector<T> c(n + 1);
@@ -289,5 +303,5 @@ template <class T> vector<T> egf_T(const vector<T>& f, vector<T> g) {
  return _egfT(f.data() + (N >> 1), g.data(), N >> 1, n);
 }
 }
-using _sps_internal::subset_zeta, _sps_internal::subset_mobius, _sps_internal::supset_zeta, _sps_internal::supset_mobius, _sps_internal::hadamard, _sps_internal::or_convolve, _sps_internal::and_convolve, _sps_internal::xor_convolve, _sps_internal::convolve, _sps_internal::semi_relaxed_convolve, _sps_internal::self_relaxed_convolve, _sps_internal::inv, _sps_internal::div, _sps_internal::exp, _sps_internal::log, _sps_internal::egf_comp, _sps_internal::poly_comp, _sps_internal::egf_T;
+using _sps_internal::subset_zeta, _sps_internal::subset_mobius, _sps_internal::supset_zeta, _sps_internal::supset_mobius, _sps_internal::hadamard, _sps_internal::or_convolve, _sps_internal::and_convolve, _sps_internal::xor_convolve, _sps_internal::convolve, _sps_internal::semi_relaxed_convolve, _sps_internal::self_relaxed_convolve, _sps_internal::inv, _sps_internal::div, _sps_internal::exp, _sps_internal::log, _sps_internal::egf_comp, _sps_internal::poly_comp, _sps_internal::pow, _sps_internal::egf_T;
 }

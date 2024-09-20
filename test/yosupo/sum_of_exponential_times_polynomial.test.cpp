@@ -18,7 +18,7 @@ signed main() {
  long long r, d, n;
  cin >> r >> d >> n;
  if (--n < 0) {
-  cout << 0 << endl;
+  cout << 0 << '\n';
   return 0;
  }
  if (r == 0) {

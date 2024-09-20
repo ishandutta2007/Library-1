@@ -20,7 +20,7 @@ signed main() {
  vector<long long> a(N);
  for (int i= 0; i < N; ++i) cin >> a[i];
  SegmentTree<RMQ> seg(a);
- auto w= [&](int i, int j, long long d) { return d + seg.fold(j, i); };
+ auto w= [&](int i, int j, long long d) { return d + seg.prod(j, i); };
  LiChaoTree lct(w, 1, N + 1);
  auto tree= lct.make_tree<MAXIMIZE>();
  tree.insert(0, 0, L);

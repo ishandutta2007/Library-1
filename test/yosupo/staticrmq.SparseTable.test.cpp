@@ -16,7 +16,7 @@ signed main() {
  while (Q--) {
   int l, r;
   cin >> l >> r;
-  cout << st.fold(l, r) << '\n';
+  cout << st.prod(l, r) << '\n';
  }
  return 0;
 }

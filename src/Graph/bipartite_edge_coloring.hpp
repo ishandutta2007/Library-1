@@ -26,11 +26,11 @@ std::vector<int> bipartite_edge_coloring(BipartiteGraph bg) {
   }
   int i= 0, cl= 0, cr= 0;
   for (; i < L; ++i)
-   if (uf.root(i) == i) id[i]= cl++;
+   if (uf.leader(i) == i) id[i]= cl++;
   for (; i < n; ++i)
-   if (uf.root(i) == i) id[i]= cr++;
+   if (uf.leader(i) == i) id[i]= cr++;
   L= std::max(cl, cr), deg.assign(n= L + L, 0), bg.reserve(L * D);
-  for (auto &[l, r]: bg) ++deg[l= id[uf.root(l)]], ++deg[r= id[uf.root(r)] + L];
+  for (auto &[l, r]: bg) ++deg[l= id[uf.leader(l)]], ++deg[r= id[uf.leader(r)] + L];
   for (int l= 0, r= L; l < L; ++l)
    while (deg[l] < D) {
     while (r < n && deg[r] == D) ++r;

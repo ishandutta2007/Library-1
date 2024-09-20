@@ -73,7 +73,7 @@ signed main() {
   int op, l, r;
   cin >> op >> l >> r;
   if (op == 3) {
-   cout << seg.fold(l, r).sum << '\n';
+   cout << seg.prod(l, r).sum << '\n';
   } else {
    long long b;
    cin >> b;

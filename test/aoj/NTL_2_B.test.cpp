@@ -9,6 +9,6 @@ signed main() {
  ios::sync_with_stdio(false);
  BigInt A, B;
  cin >> A >> B;
- cout << A - B << endl;
+ cout << A - B << '\n';
  return 0;
 }

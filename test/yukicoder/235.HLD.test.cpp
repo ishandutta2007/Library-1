@@ -42,7 +42,7 @@ signed main() {
   cin >> op >> X >> Y, --X, --Y;
   if (op) {
    Mint ans= 0;
-   for (auto [x, y]: tree.path(X, Y)) ans+= x < y ? seg.fold(x, y + 1).S : seg.fold(y, x + 1).S;
+   for (auto [x, y]: tree.path(X, Y)) ans+= x < y ? seg.prod(x, y + 1).S : seg.prod(y, x + 1).S;
    cout << ans << '\n';
   } else {
    Mint Z;

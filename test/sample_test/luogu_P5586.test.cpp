@@ -1,7 +1,7 @@
 // competitive-verifier: STANDALONE
 
 // https://www.luogu.com.cn/problem/P5586
-// 融合永続, split3, apply, fold, reverse, 強制オンラインクエリ
+// 融合永続, split3, apply, prod, reverse, 強制オンラインクエリ
 #include <sstream>
 #include <string>
 #include <cassert>

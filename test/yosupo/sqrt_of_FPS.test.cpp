@@ -16,7 +16,7 @@ signed main() {
  for (int i= 0; i < N; i++) cin >> a[i];
  auto b= sqrt(a);
  if (b.size() == 0) {
-  cout << -1 << endl;
+  cout << -1 << '\n';
  } else {
   for (int i= 0; i < N; i++) cout << b[i] << " \n"[i == N - 1];
  }

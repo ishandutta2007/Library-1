@@ -27,7 +27,7 @@ signed main() {
   }
  }
  graph.b_flow();
- cout << graph.get_result_value() << endl;
+ cout << graph.get_result_value() << '\n';
  for (int i= 0; i < N; i++)
   for (int j= 0; j < N; j++)
    if (edges[i][j].flow()) cout << j << " \n"[i == N - 1];

@@ -37,7 +37,7 @@ template <class T, size_t B= 700> class SortedPerBucket {
  };
  const size_t n;
  std::vector<Dat> dat;
- template <class U, class All, class One> inline U fold(size_t l, size_t r, const All &all, const One &one) const {
+ template <class U, class All, class One> inline U prod(size_t l, size_t r, const All &all, const One &one) const {
   U ret= 0;
   if (size_t i= l / B, j= r / B, k= l % B, m= r % B; i < j) {
    if (k) {
@@ -75,17 +75,17 @@ public:
  }
  // count i s.t. (l <= i < r) && (a[i] < ub)
  size_t count(size_t l, size_t r, T ub) const {
-  return fold<size_t>(l, r, [&](const Dat &d) { return d.count(ub); }, [&](T x) { return x < ub; });
+  return prod<size_t>(l, r, [&](const Dat &d) { return d.count(ub); }, [&](T x) { return x < ub; });
  }
  // count i s.t. (l <= i < r) && (lb <= a[i] < ub)
  size_t count(size_t l, size_t r, T lb, T ub) const { return count(l, r, ub) - count(l, r, lb); }
  // sum a[i] s.t. (l <= i < r)
  T sum(size_t l, size_t r) const {
-  return fold<T>(l, r, [&](const Dat &d) { return d.sum(); }, [&](T x) { return x; });
+  return prod<T>(l, r, [&](const Dat &d) { return d.sum(); }, [&](T x) { return x; });
  }
  // sum a[i] s.t. (l <= i < r) && (a[i] < ub)
  T sum(size_t l, size_t r, T ub) const {
-  return fold<T>(l, r, [&](const Dat &d) { return d.sum(ub); }, [&](T x) { return x < ub ? x : 0; });
+  return prod<T>(l, r, [&](const Dat &d) { return d.sum(ub); }, [&](T x) { return x < ub ? x : 0; });
  }
  // sum a[i] s.t. (l <= i < r)  && (lb <= a[i] < ub)
  T sum(size_t l, size_t r, T lb, T ub) const { return sum(l, r, ub) - sum(l, r, lb); }

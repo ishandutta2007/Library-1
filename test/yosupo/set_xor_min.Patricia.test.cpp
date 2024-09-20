@@ -27,7 +27,7 @@ signed main() {
   } else if (op == 1) {
    S.set(x, 0);
   } else {
-   cout << S.find_first(0, check, x) << endl;
+   cout << S.find_first(0, check, x) << '\n';
   }
  }
  return 0;

@@ -1,7 +1,7 @@
 // competitive-verifier: STANDALONE
 
 // https://www.luogu.com.cn/problem/P5055
-// 全永続, insert, erase, fold, reverse, 強制オンラインクエリ
+// 全永続, insert, erase, prod, reverse, 強制オンラインクエリ
 #include <sstream>
 #include <string>
 #include <cassert>

@@ -11,7 +11,7 @@ using namespace std;
 
 using Mint= ModInt<int(1e9) + 7>;
 using Mat= Matrix<Mint>;
-Mat I= Mat::identity_matrix(2);
+Mat I= Mat::identity(2);
 struct Monoid {
  using T= Mat;
  static T ti() { return I; }
@@ -45,7 +45,7 @@ int main() {
    int u, v;
    cin >> u >> v;
    Mat ans= I;
-   for (auto [l, r]: hld.path(u, v, true)) ans*= seg.fold(l, r + 1);
+   for (auto [l, r]: hld.path(u, v, true)) ans*= seg.prod(l, r + 1);
    cout << ans[0][0] << " " << ans[0][1] << " " << ans[1][0] << " " << ans[1][1] << '\n';
   }
  }

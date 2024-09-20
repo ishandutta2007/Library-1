@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>
 #include "src/Graph/Graph.hpp"
-template <class T> std::vector<T> incidence_linear_system(const Graph &g, std::vector<T> b) {
+template <class T> std::vector<T> incidence_matrix_equation(const Graph &g, std::vector<T> b) {
  const int n= g.vertex_size();
  assert((int)b.size() == n);
  std::vector<T> x(g.edge_size());

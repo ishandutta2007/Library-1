@@ -24,7 +24,7 @@ signed main() {
   auto [ly, ry]= sa.pattern_matching(y);
   if (rx == lx || ry == ly) cout << 0 << '\n';
   else {
-   int X= mn.fold(lx, rx), Y= mx.fold(ly, ry);
+   int X= mn.prod(lx, rx), Y= mx.prod(ly, ry);
    if (X + x.length() > Y + y.length()) cout << 0 << '\n';
    else cout << Y - X + y.length() << '\n';
   }

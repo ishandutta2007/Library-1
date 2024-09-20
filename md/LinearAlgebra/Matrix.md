@@ -20,7 +20,7 @@ documentation_of: ../../src/LinearAlgebra/Matrix.hpp
 
 | static メンバ関数 | 概要  |
 | ---| --- |
-|`identity_matrix(n)`| $n\times n$ 単位行列を返す |
+|`identity(n)`| $n\times n$ 単位行列を返す |
 
 |  メンバ関数 | 概要  | 計算量  |
 | ---| --- | --- |
@@ -47,4 +47,8 @@ documentation_of: ../../src/LinearAlgebra/Matrix.hpp
 
 
 ## 問題例
-[AtCoder Regular Contest 027 D - ぴょんぴょんトレーニング](https://atcoder.jp/contests/arc027/tasks/arc027_4) セグ木に乗せる(MLギリギリ)
+[AtCoder Beginner Contest 009 D - 漸化式](https://atcoder.jp/contests/abc009/tasks/abc009_4) (bitwise xor and 半環) \
+[AtCoder Regular Contest 027 D - ぴょんぴょんトレーニング](https://atcoder.jp/contests/arc027/tasks/arc027_4) (セグ木(MLギリギリ))\
+[「みんなのプロコン 2019」決勝 D - Dangerous Hopscotch](https://atcoder.jp/contests/yahoo-procon2019-final/tasks/yahoo_procon2019_final_d) \
+[DISCO presents ディスカバリーチャンネル コードコンテスト2019 本戦 D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d) \
+[DISCO presents ディスカバリーチャンネル コードコンテスト2020 本戦 B - Hawker on Graph](https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_b) (max+の一次関数の加法合成の半環)

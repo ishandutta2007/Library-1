@@ -22,12 +22,12 @@ while(Q--){
  if(t == 1){ // path query
   int u,v; cin>>u>>v;
   int ans = 0;
-  for(auto [a,b]: hld.path(u,v)) ans += a<b? seg1.fold(a,b+1) : seg2.fold(b,a+1);
+  for(auto [a,b]: hld.path(u,v)) ans += a<b? seg1.prod(a,b+1) : seg2.prod(b,a+1);
   cout<< ans <<'\n';
  }else if(t == 2){ // subtree query
   int v; cin>>v;
   auto [l,r] = hld.subtree(v);
-  cout << seg3.fold(l,r)<<'\n';
+  cout << seg3.prod(l,r)<<'\n';
  }
 }
 ```

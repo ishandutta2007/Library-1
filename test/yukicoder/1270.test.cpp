@@ -67,7 +67,7 @@ signed main() {
   --sz;
  };
  vector<int> ans(Q);
- auto out= [&](int q) { ans[q]= sum + seg.fold(0, N) * sz; };
+ auto out= [&](int q) { ans[q]= sum + seg.prod(0, N) * sz; };
  mo.run(addl, addr, erasel, eraser, out);
  for (auto x: ans) cout << x << '\n';
  return 0;

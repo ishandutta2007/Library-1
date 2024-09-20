@@ -1,7 +1,7 @@
 // competitive-verifier: STANDALONE
 
 // https://atcoder.jp/contests/arc030/tasks/arc030_4
-// 融合永続, split3, apply, fold
+// 融合永続, split3, apply, prod
 #include <sstream>
 #include <string>
 #include <cassert>

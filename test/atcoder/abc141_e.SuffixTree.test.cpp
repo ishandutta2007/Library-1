@@ -20,7 +20,7 @@ signed main() {
  SparseTable sa_mx(sa.sa, [&](int i, int j) { return max(i, j); });
  int ans= 0;
  for (auto [l, r, h, hh]: st) {
-  int i= sa_mn.fold(l, r), j= sa_mx.fold(l, r);
+  int i= sa_mn.prod(l, r), j= sa_mx.prod(l, r);
   ans= max(ans, min(j - i, hh));
  }
  cout << ans << '\n';

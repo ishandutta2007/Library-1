@@ -40,7 +40,7 @@ signed main() {
  while (Q--) {
   int q, L, R;
   cin >> q >> L >> R, L--;
-  if (q == 3) cout << seg.fold(L, R).sum << '\n';
+  if (q == 3) cout << seg.prod(L, R).sum << '\n';
   else {
    long long x;
    cin >> x;

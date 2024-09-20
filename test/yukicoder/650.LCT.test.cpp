@@ -18,7 +18,7 @@ int main() {
  ios::sync_with_stdio(false);
  int n;
  cin >> n;
- LinkCutTree<Monoid> lct(n + n - 1, Mat::identity_matrix(2));
+ LinkCutTree<Monoid> lct(n + n - 1, Mat::identity(2));
  for (int i= 0; i < n - 1; i++) {
   int a, b;
   cin >> a >> b;

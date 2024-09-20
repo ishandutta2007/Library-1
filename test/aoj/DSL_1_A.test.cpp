@@ -13,7 +13,7 @@ signed main() {
  for (int i= 0; i < q; i++) {
   int c, x, y;
   cin >> c >> x >> y;
-  if (c) cout << uf.same(x, y) << "\n";
+  if (c) cout << uf.connected(x, y) << "\n";
   else uf.unite(x, y);
  }
  return 0;

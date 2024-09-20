@@ -27,7 +27,7 @@ signed main() {
  for (int i= 0; i < R; ++i) {
   int s, t;
   cin >> s >> t;
-  if (!uf.same(--s, --t)) ss.emplace_back(ps[s], ps[t]);
+  if (!uf.connected(--s, --t)) ss.emplace_back(ps[s], ps[t]);
  }
  sort(ss.begin(), ss.end(), [](const auto &a, const auto &b) { return a.length() < b.length(); });
  for (const auto &e: ss)

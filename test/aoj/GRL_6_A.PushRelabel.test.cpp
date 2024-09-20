@@ -16,6 +16,6 @@ signed main() {
   cin >> u >> v >> c;
   graph.add_edge(u, v, c);
  }
- cout << graph.maxflow(0, N - 1) << endl;
+ cout << graph.maxflow(0, N - 1) << '\n';
  return 0;
 }

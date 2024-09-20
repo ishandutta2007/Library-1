@@ -22,7 +22,7 @@ signed main() {
  SegmentTree<RMQ> seg(a);
  auto w= [&](int i, int j) -> long long {
   if (i - j < L) return 1e18;
-  return seg.fold(j, i);
+  return seg.prod(j, i);
  };
  cout << -simplified_larsch_dp(N, w)[N] << '\n';
  return 0;

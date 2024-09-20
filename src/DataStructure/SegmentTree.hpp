@@ -21,7 +21,7 @@ template <typename M> struct SegmentTree {
   for (int i= n; --i;) dat[i]= M::op(dat[i << 1 | 0], dat[i << 1 | 1]);
  }
  void clear() { fill(dat.begin(), dat.end(), M::ti()); }
- inline T fold(int l, int r) const {  //[l,r)
+ inline T prod(int l, int r) const {  //[l,r)
   T vl= M::ti(), vr= M::ti();
   for (int a= l + n, b= r + n; a < b; a>>= 1, b>>= 1) {
    if (a & 1) vl= M::op(vl, dat[a++]);
@@ -34,8 +34,8 @@ template <typename M> struct SegmentTree {
   if constexpr (last) return M::op(d, v);
   else return M::op(v, d);
  }
- // Case 0. find i s.t check(fold(k,i)) == False, check(fold(k,i+1)) == True
- // Case 1. find i s.t check(fold(i+1,b)) == False, check(fold(i,b)) == True
+ // Case 0. find i s.t check(prod(k,i)) == False, check(prod(k,i+1)) == True
+ // Case 1. find i s.t check(prod(i+1,b)) == False, check(prod(i,b)) == True
  // return -1 if not found
  template <bool last, class C> int find(const C &check, int k) const {
   assert(!check(M::ti()));

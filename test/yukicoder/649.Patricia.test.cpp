@@ -24,7 +24,7 @@ signed main() {
   } else {
    auto check= [&](int x) { return x >= K; };
    v= seg.find_first(0, check);
-   cout << v << endl;
+   cout << v << '\n';
    if (v >= 0) seg.set(v, seg[v] - 1);
   }
  }

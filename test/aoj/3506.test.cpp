@@ -32,7 +32,7 @@ signed main() {
  fill_n(lx, N, N + 1), fill_n(ly, N, N + 1);
  fill_n(rx, N, -1), fill_n(ry, N, -1);
  for (int i= 0; i < N; ++i) {
-  int r= uf.root(i);
+  int r= uf.leader(i);
   lx[r]= min(lx[r], x[i]);
   rx[r]= max(rx[r], x[i]);
   ly[r]= min(ly[r], y[i]);
@@ -49,7 +49,7 @@ signed main() {
  int n= r2r.graph.vertex_size();
  auto adj= r2r.graph.adjacency_edge(1);
  deque<int> dq;
- int s= uf.root(0), g= uf.root(N - 1);
+ int s= uf.leader(0), g= uf.leader(N - 1);
  int dist[n], used[n];
  static constexpr int INF= 1 << 30;
  fill_n(dist, n, INF);

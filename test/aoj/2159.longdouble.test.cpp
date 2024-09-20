@@ -34,6 +34,6 @@ signed main() {
  };
  bool isok= false;
  for (auto &l: ls) isok|= check(l);
- cout << (isok ? "Yes" : "No") << endl;
+ cout << (isok ? "Yes" : "No") << '\n';
  return 0;
 }

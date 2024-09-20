@@ -1,7 +1,7 @@
 // competitive-verifier: STANDALONE
 
 // https://atcoder.jp/contests/code-festival-2014-exhibition/tasks/code_festival_exhibition_b
-// split3, fold
+// split3, prod
 #include <sstream>
 #include <string>
 #include <cassert>

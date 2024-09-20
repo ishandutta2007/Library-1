@@ -14,7 +14,7 @@ signed main() {
  vector<int> a(N);
  for (int i= 0; i < N; i++) cin >> a[i];
  DisjointSparseTable<int> dst(a, [](int a, int b) { return min(a, b); });
- for (int i= 0; i + L <= N; i++) cout << (i ? " " : "") << dst.fold(i, i + L);
+ for (int i= 0; i + L <= N; i++) cout << (i ? " " : "") << dst.prod(i, i + L);
  cout << '\n';
  return 0;
 }

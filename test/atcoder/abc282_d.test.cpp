@@ -21,7 +21,7 @@ signed main() {
  auto col= paint_two_colors(g);
  if (col.empty()) return cout << 0 << '\n', 0;
  vector cnt(2, vector(N, 0));
- for (int v= N; v--;) ++cnt[col[v]][uf.root(v)];
+ for (int v= N; v--;) ++cnt[col[v]][uf.leader(v)];
  long long ans= 0;
  for (int s= 2; s--;)
   for (int v= N; v--;) ans+= (long long)cnt[s][v] * (N - cnt[s][v]);

@@ -61,7 +61,7 @@ signed main() {
    long long ans= -1;
    int w;
    for (auto [l, r]: hld.path(u, v)) {
-    auto [a, b]= l < r ? seg.fold(l, r + 1) : seg.fold(r, l + 1);
+    auto [a, b]= l < r ? seg.prod(l, r + 1) : seg.prod(r, l + 1);
     if (ans < a) ans= a, w= b;
    }
    cout << ans << '\n';

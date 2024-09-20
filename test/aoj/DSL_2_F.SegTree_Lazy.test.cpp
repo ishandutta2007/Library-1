@@ -22,7 +22,7 @@ signed main() {
   int com, s, t;
   cin >> com >> s >> t;
   if (com) {
-   cout << seg.fold(s, t + 1) << '\n';
+   cout << seg.prod(s, t + 1) << '\n';
   } else {
    int x;
    cin >> x;

@@ -22,7 +22,7 @@ signed main() {
   if (com) {
    int i;
    cin >> i;
-   cout << seg[i] << endl;
+   cout << seg[i] << '\n';
   } else {
    int s, t, x;
    cin >> s >> t >> x;

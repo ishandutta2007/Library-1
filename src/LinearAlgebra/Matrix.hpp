@@ -112,7 +112,7 @@ protected:
 template <class R> struct Matrix: public Mat<R, Matrix<R>> {
  using Mat<R, Matrix<R>>::Mat;
  explicit operator bool() const { return this->W; }
- static Matrix identity_matrix(int n) {
+ static Matrix identity(int n) {
   Matrix ret(n, n);
   for (; n--;) ret[n][n]= R(true);
   return ret;
@@ -156,7 +156,7 @@ template <class R> struct Matrix: public Mat<R, Matrix<R>> {
  Matrix pow(uint64_t k) const {
   size_t W= this->width();
   assert(W == this->height());
-  for (Matrix ret= identity_matrix(W), b= *this;; b*= b)
+  for (Matrix ret= identity(W), b= *this;; b*= b)
    if (k & 1 ? ret*= b, !(k>>= 1) : !(k>>= 1)) return ret;
  }
 };

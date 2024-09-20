@@ -56,7 +56,7 @@ signed main() {
     else seg1.apply(y, x + 1, c), seg2.apply(N - x - 1, N - y, c);
   } else {
    typename M::T ans= M::ti();
-   for (auto [x, y]: hld.path(a, b)) ans= M::op(ans, x < y ? seg1.fold(x, y + 1) : seg2.fold(N - x - 1, N - y));
+   for (auto [x, y]: hld.path(a, b)) ans= M::op(ans, x < y ? seg1.prod(x, y + 1) : seg2.prod(N - x - 1, N - y));
    cout << ans.max << '\n';
   }
  }

@@ -13,6 +13,6 @@ signed main() {
  vector<int> a(N);
  for (int i= 0; i < N; i++) cin >> a[i];
  SparseTable st(a, [](int l, int r) { return min(l, r); });
- for (int i= 0; i + L <= N; i++) cout << st.fold(i, i + L) << " \n"[i + L == N];
+ for (int i= 0; i + L <= N; i++) cout << st.prod(i, i + L) << " \n"[i + L == N];
  return 0;
 }

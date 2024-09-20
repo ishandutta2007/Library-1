@@ -1,7 +1,7 @@
 // competitive-verifier: STANDALONE
 
 // https://atcoder.jp/contests/soundhound2018-summer-final-open/tasks/soundhound2018_summer_final_e
-// split3, fold
+// split3, prod
 #include <sstream>
 #include <string>
 #include <cassert>

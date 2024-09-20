@@ -19,7 +19,7 @@ signed main() {
   int com, x, y;
   cin >> com >> x >> y;
   if (com) {
-   cout << seg.fold(x, y + 1) << endl;
+   cout << seg.prod(x, y + 1) << '\n';
   } else {
    seg.set(x, y);
   }

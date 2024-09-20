@@ -1,7 +1,7 @@
 // competitive-verifier: STANDALONE
 
 // https://www.luogu.com.cn/problem/P5350
-// 融合永続, split3, apply, fold, reverse, ML厳しめ
+// 融合永続, split3, apply, prod, reverse, ML厳しめ
 #include <sstream>
 #include <string>
 #include <cassert>

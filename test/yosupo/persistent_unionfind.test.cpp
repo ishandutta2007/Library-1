@@ -18,7 +18,7 @@ signed main() {
   cin >> t >> k >> u >> v;
   k++;
   if (t) {
-   cout << uf[k].same(u, v) << endl;
+   cout << uf[k].connected(u, v) << '\n';
   } else {
    uf[i]= uf[k];
    uf[i].unite(u, v);

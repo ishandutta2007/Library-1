@@ -49,8 +49,8 @@ signed main() {
    if (op == 1) seg.apply(l, r, {x, 0});
    if (op == 2) seg.apply(l, r, {0, x});
   } else {
-   if (op == 3) cout << seg.fold(l, r).max << '\n';
-   if (op == 4) cout << seg.fold(l, r).sum << '\n';
+   if (op == 3) cout << seg.prod(l, r).max << '\n';
+   if (op == 4) cout << seg.prod(l, r).sum << '\n';
   }
  }
  return 0;

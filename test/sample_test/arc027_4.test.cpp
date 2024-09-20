@@ -19,7 +19,7 @@ using Mint= ModInt<int(1e9 + 7)>;
 using Mat= Matrix<Mint>;
 struct Mono {
  using T= Mat;
- static T ti() { return Mat::identity_matrix(10); }
+ static T ti() { return Mat::identity(10); }
  static T op(const T& l, const T& r) { return l * r; }
 };
 signed main(stringstream& scin, stringstream& scout) {
@@ -42,7 +42,7 @@ signed main(stringstream& scin, stringstream& scout) {
   int s, t;
   scin >> s >> t;
   s--, t--;
-  scout << seg.fold(s, t)[0][0] << '\n';
+  scout << seg.prod(s, t)[0][0] << '\n';
  }
  return 0;
 }

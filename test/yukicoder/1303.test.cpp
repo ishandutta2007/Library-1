@@ -30,16 +30,15 @@ signed main() {
  } else {  // unconnected
   int fuben= 0, cnt= 0, mx= 0;
   for (int i= N; i--;)
-   for (int j= N; j--;) fuben+= !uf.same(i, j);
-  for (int i= N; i--;)
    for (int j= i; j--;)
-    if (!uf.same(i, j)) {
+    if (!uf.connected(i, j)) {
+     ++fuben;
      if (int s= uf.size(i) * uf.size(j); mx < s) mx= s, cnt= 1;
      else if (mx == s) ++cnt;
     }
   cout << fuben - mx * 2 << '\n';
   vector<int> vs[N];
-  for (int i= 0; i < N; ++i) vs[uf.root(i)].push_back(i);
+  for (int i= 0; i < N; ++i) vs[uf.leader(i)].push_back(i);
   Mint ans= cnt;
   for (int i= 0; i < N; ++i)
    if (int n= vs[i].size(); n != 0) {

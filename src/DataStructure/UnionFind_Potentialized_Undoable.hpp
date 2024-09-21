@@ -12,12 +12,11 @@ public:
  int leader(int u) const { return par[u] < 0 ? u : leader(par[u]); }
  //  -p(v) + p(u) = w
  bool unite(int u, int v, weight_t w) {
-  int a= leader(u), b= leader(v);
-  if constexpr (std::is_same_v<weight_t, bool>) w^= val[u] ^ val[v];
-  else w= val[v] + w - val[u];
-  if (++cur; a == b) return ++std::get<3>(his.back()), w == weight_t();
-  if (par[b] > par[a]) std::swap(a, b), w= -w;
-  return his.emplace_back(a, par[a], val[a], 1), par[b]+= par[a], par[a]= b, val[a]= w, true;
+  if constexpr (std::is_same_v<weight_t, bool>) w^= potential(v) ^ potential(u);
+  else w= potential(v) + w - potential(u);
+  if (++cur; (u= leader(u)) == (v= leader(v))) return ++std::get<3>(his.back()), w == weight_t();
+  if (par[v] > par[u]) std::swap(u, v), w= -w;
+  return his.emplace_back(u, par[u], val[u], 1), par[v]+= par[u], par[u]= v, val[u]= w, true;
  }
  bool connected(int u, int v) { return leader(u) == leader(v); }
  int size(int u) { return -par[leader(u)]; }

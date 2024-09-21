@@ -22,10 +22,11 @@ signed main() {
   uf.unite(--u, --v, w);
  }
  Mint ans= 0;
- for (int k= 60; k--;) {
+ for (int i= N; i--;) {
   int cnt= 0;
-  for (int i= N; i--;) cnt+= (uf.potential(i).val() >> k) & 1;
-  ans+= Mint(cnt) * (N - cnt) * (1ll << k);
+  long long x= uf.potential(i).val();
+  for (int k= 60; k--;) cnt+= (x >> k) & 1;
+  ans+= Mint(cnt) * (N - cnt) * (1ll << i);
  }
  cout << ans << '\n';
  return 0;

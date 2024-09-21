@@ -9,8 +9,7 @@ template <class M> struct Algebra {
  T x;
  Algebra(): x(zero) {}
  Algebra(bool y): x(y ? one : zero) {}
- Algebra(T y): x(y) {}
- template <class U, typename= std::enable_if_t<std::is_convertible_v<U, T>, std::nullptr_t>> Algebra(U y): x((T)y) {}
+ template <class U, typename= std::enable_if_t<std::is_convertible_v<U, T>>> Algebra(U y): x(y) {}
  Algebra &operator+=(const Algebra &r) { return *this= *this + r; }
  Algebra &operator-=(const Algebra &r) { return *this= *this - r; }
  Algebra &operator*=(const Algebra &r) { return *this= *this * r; }

@@ -3,6 +3,7 @@
 // competitive-verifier: MLE 64
 // bitwise xor
 #include <iostream>
+#include <algorithm>
 #include "src/DataStructure/UnionFind_Potentialized.hpp"
 #include "src/Math/Nimber.hpp"
 #include "src/Math/ModInt.hpp"
@@ -22,12 +23,13 @@ signed main() {
   uf.unite(--u, --v, w);
  }
  Mint ans= 0;
+ int cnt[60];
+ fill_n(cnt, 60, 0);
  for (int i= N; i--;) {
-  int cnt= 0;
   long long x= uf.potential(i).val();
-  for (int k= 60; k--;) cnt+= (x >> k) & 1;
-  ans+= Mint(cnt) * (N - cnt) * (1ll << i);
+  for (int k= 60; k--;) cnt[k]+= (x >> k) & 1;
  }
+ for (int k= 60; k--;) ans+= Mint(cnt[k]) * (N - cnt[k]) * (1ll << k);
  cout << ans << '\n';
  return 0;
 }

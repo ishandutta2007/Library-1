@@ -19,9 +19,9 @@ bool test(int (*solve)(stringstream&, stringstream&), string in, string expected
  int A[M], B[M], Y[M];
  for (int i= 0; i < M; ++i) scin2 >> A[i] >> B[i] >> Y[i];
  int ans[N];
- for (int i= 0; i < N; i++) scout >> ans[i];
+ for (int i= 0; i < N; ++i) scout >> ans[i];
  for (int i= 0; i < M; ++i)
-  if (ans[A[i] - 1] ^ ans[B[i] - 1] != Y[i]) return false;
+  if ((ans[A[i] - 1] ^ ans[B[i] - 1]) != Y[i]) return false;
  return true;
 }
 namespace TEST {

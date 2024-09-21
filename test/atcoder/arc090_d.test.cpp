@@ -1,7 +1,7 @@
-// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc087/tasks/arc090_D
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc090/tasks/arc090_d
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
-// https://atcoder.jp/contests/abc087/tasks/arc090_b
+// https://atcoder.jp/contests/arc090/tasks/arc090_b
 #include <iostream>
 #include "src/DataStructure/UnionFind_Potentialized.hpp"
 using namespace std;

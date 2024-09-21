@@ -27,9 +27,13 @@ signed main() {
   } else {
    int u, v;
    cin >> u >> v, --u, --v;
-   if (!uf.connected(u, v)) --n;
-   if (t == 1) uf.unite(u, v), uf.unite(u + N, v + N);
-   else uf.unite(u, v + N), uf.unite(u + N, v);
+   if (t == 1) {
+    n-= uf.unite(u, v);
+    uf.unite(u + N, v + N);
+   } else {
+    n-= uf.unite(u, v + N);
+    uf.unite(u + N, v);
+   }
    ok&= !uf.connected(u, u + N);
   }
   cout << (ok ? pw[n] : 0) << '\n';

@@ -5,8 +5,8 @@ template <class T, size_t M= 8> class PersistentArray {
   T val;
   Node *ch[M];
  } *root;
- T get(Node *&t, size_t k) const { return t ? (k ? get(t->ch[(k - 1) % M], (k - 1) / M) : t->val) : T(); }
- bool is_null(Node *&t, size_t k) const { return t ? (k ? is_null(t->ch[(k - 1) % M], (k - 1) / M) : false) : true; }
+ T get(Node *t, size_t k) const { return t ? (k ? get(t->ch[(k - 1) % M], (k - 1) / M) : t->val) : T(); }
+ bool is_null(Node *t, size_t k) const { return t ? (k ? is_null(t->ch[(k - 1) % M], (k - 1) / M) : false) : true; }
  template <bool persistent= true> T &at(Node *&t, size_t k) {
   if (!t) t= new Node();
   else if constexpr (persistent) t= new Node(*t);

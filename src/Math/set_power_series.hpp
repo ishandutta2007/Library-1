@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <cassert>
+#include <cstdint>
 namespace sps {
 namespace _sps_internal {
 using namespace std;

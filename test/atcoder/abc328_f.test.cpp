@@ -17,6 +17,7 @@ signed main() {
   cin >> a >> b >> d, --a, --b;
   if (uf.unite(a, b, d)) S.push_back(i + 1);
  }
- for (int i= 0, m= S.size(); i < m; ++i) cout << S[i] << " \n"[i + 1 == m];
+ for (int i= 0, m= S.size(); i < m; ++i) cout << (i ? " " : "") << S[i];
+ cout << '\n';
  return 0;
 }

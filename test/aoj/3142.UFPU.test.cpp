@@ -8,7 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include "src/Graph/incidence_matrix_equation.hpp"
-#include "src/DataStructure/UnionFind_Potentialized.hpp"
+#include "src/DataStructure/UnionFind_Potentialized_Undoable.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -21,7 +21,7 @@ signed main() {
  for (int i= 0; i < N; ++i) cin >> c[i];
  for (int i= 0, b; i < N; ++i) cin >> b, c[i]-= b;
  auto sol= incidence_matrix_equation(g, c);
- UnionFind_Potentialized<long long> uf(N);
+ UnionFind_Potentialized_Undoable<long long> uf(N);
  for (int i= 0; i < N - 1; ++i) {
   auto [u, v]= g[i];
   uf.unite(v, u, sol[i]);

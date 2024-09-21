@@ -32,7 +32,7 @@ signed main() {
   for (int i= N; i--;)
    for (int j= i; j--;)
     if (!uf.connected(i, j)) {
-     ++fuben;
+     fuben+= 2;
      if (int s= uf.size(i) * uf.size(j); mx < s) mx= s, cnt= 1;
      else if (mx == s) ++cnt;
     }

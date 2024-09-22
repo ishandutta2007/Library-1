@@ -91,7 +91,7 @@ protected:
   auto y= begin(r.dat);
   for (size_t l= 0; l < W; l+= 8) {
    int n= min<size_t>(8u, W - l);
-   auto t= begin(tmp);
+   auto t= next(begin(tmp));
    for (int i= 0; i < n; ++i, advance(y, r.m)) {
     auto u= begin(tmp);
     for (int s= 1 << i; s--;) {

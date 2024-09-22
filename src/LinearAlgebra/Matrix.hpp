@@ -16,8 +16,8 @@ template <class R, class D> struct Mat {
  }
  size_t width() const { return W; }
  size_t height() const { return W ? dat.size() / W : 0; }
- auto operator[](int i) { return next(begin(dat), i * W); }
- auto operator[](int i) const { return next(begin(dat), i * W); }
+ auto operator[](int i) { return begin(dat) + i * W; }
+ auto operator[](int i) const { return begin(dat) + i * W; }
 protected:
  size_t W;
  valarray<R> dat;
@@ -28,7 +28,7 @@ protected:
   D ret(h, w);
   auto a= begin(dat);
   auto c= begin(ret.dat);
-  for (int i= h; i--; advance(c, w)) {
+  for (int i= h; i--; c+= w) {
    auto b= begin(r.dat);
    for (int k= l; k--; ++a) {
     auto d= c;
@@ -72,14 +72,14 @@ template <class D> struct Mat<bool, D> {
    assert(r.size() == W);
    int i= 0;
    for (bool b: r) it[i >> 7]|= u128(b) << (i & 127), ++i;
-   advance(it, m);
+   it+= m;
   }
  }
  size_t width() const { return W; }
  size_t height() const { return H; }
- Array operator[](int i) { return {next(begin(dat), i * m)}; }
- ConstArray operator[](int i) const { return {next(begin(dat), i * m)}; }
- ConstArray get(int i) const { return {next(begin(dat), i * m)}; }
+ Array operator[](int i) { return {begin(dat) + i * m}; }
+ ConstArray operator[](int i) const { return {begin(dat) + i * m}; }
+ ConstArray get(int i) const { return {begin(dat) + i * m}; }
 protected:
  size_t H, W, m;
  valarray<u128> dat;
@@ -90,19 +90,18 @@ protected:
   valarray<u128> tmp(r.m << 8);
   auto y= begin(r.dat);
   for (size_t l= 0; l < W; l+= 8) {
-   int n= min<size_t>(8u, W - l);
-   auto t= next(begin(tmp));
-   for (int i= 0; i < n; ++i, advance(y, r.m)) {
+   auto t= begin(tmp) + r.m;
+   for (int i= 0, n= min<size_t>(8, W - l); i < n; ++i, y+= r.m) {
     auto u= begin(tmp);
     for (int s= 1 << i; s--;) {
      auto z= y;
      for (int j= r.m; j--; ++u, ++t, ++z) *t= *u ^ *z;
     }
    }
-   auto a= next(begin(dat), l >> 7);
+   auto a= begin(dat) + (l >> 7);
    auto c= begin(ret.dat);
-   for (int i= H; i--; advance(a, m)) {
-    auto u= next(begin(tmp), (*a >> (l & 127)) & 255);
+   for (int i= H; i--; a+= m) {
+    auto u= begin(tmp) + ((*a >> (l & 127)) & 255);
     for (int j= r.m; j--; ++c, ++u) *c^= *u;
    }
   }

@@ -87,13 +87,24 @@ protected:
  D mul(const Mat &r) const {
   assert(W == r.H);
   D ret(H, r.W);
-  u128 *c= begin(ret.dat);
-  for (size_t i= 0; i < H; ++i, advance(c, r.m)) {
-   ConstArray a= this->operator[](i);
-   const u128 *b= begin(r.dat);
-   for (size_t k= 0; k < W; ++k, advance(b, r.m))
-    if (a[k])
-     for (size_t j= 0; j < r.m; ++j) c[j]^= b[j];
+  valarray<u128> tmp(r.m << 8);
+  auto y= begin(r.dat);
+  for (size_t l= 0; l < W; l+= 8) {
+   int n= min<size_t>(8u, W - l);
+   auto t= begin(tmp);
+   for (int i= 0; i < n; ++i, advance(y, r.m)) {
+    auto u= begin(tmp);
+    for (int s= 1 << i; s--;) {
+     auto z= y;
+     for (int j= r.m; j--; ++u, ++t, ++z) *t= *u ^ *z;
+    }
+   }
+   auto a= next(begin(dat), l >> 7);
+   auto c= begin(ret.dat);
+   for (int i= H; i--; advance(a, m)) {
+    auto u= next(begin(tmp), (*a >> (l & 127)) & 255);
+    for (int j= r.m; j--; ++c, ++u) *c^= *u;
+   }
   }
   return ret;
  }

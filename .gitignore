@@ -11,12 +11,8 @@ test/aoj/0204*.test.cpp
 test/aoj/0214*.test.cpp
 test/aoj/2429*.test.cpp
 test/atcoder/arc055_*.test.cpp
-# test/atcoder/arc066_*.test.cpp
-# test/atcoder/arc070_*.test.cpp
-# test/atcoder/arc080_*.test.cpp
-# test/atcoder/arc085_*.test.cpp
-# test/atcoder/arc097_*.test.cpp
-# test/atcoder/abc*_ex.*.cpp
+# ↓ダウンロードがうまくできない 2024/09/22 (トークンを変えたら動くかも)
+test/atcoder/arc085_*.test.cpp
 test/hackerrank/minimum-history-query.DynSeg.test.cpp
 test/hackerrank/drawing-rectangles.test.cpp
 test/hackerrank/range-counting-query.Mo.test.cpp

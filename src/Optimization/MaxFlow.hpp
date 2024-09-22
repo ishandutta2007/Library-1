@@ -16,8 +16,8 @@ template <typename FlowAlgo> struct MaxFlow: public FlowAlgo {
   std::iota(ret.begin(), ret.end(), this->n);
   return this->adj.resize(this->n+= size), ret;
  }
- struct EdgePtr {
-  friend class MaxFlow;
+ class EdgePtr {
+  friend struct MaxFlow;
   MaxFlow *ins;
   int v, e;
   bool bd;
@@ -84,7 +84,7 @@ public:
   std::vector<int> ret(size);
   return std::iota(ret.begin(), ret.end(), this->n - 2), this->adj.resize(this->n+= size), in.resize(this->n - 2, 0), ret;
  }
- struct EdgePtr {
+ class EdgePtr {
   friend class MaxFlowLowerBound;
   MaxFlowLowerBound *ins;
   int v, e;

@@ -1,4 +1,4 @@
-// competitive-verifier: PROBLEM https://atcoder.jp/contests/abc090/tasks/arc090_d
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/arc090/tasks/arc090_d
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/arc090/tasks/arc090_b

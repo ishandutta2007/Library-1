@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 3
 // competitive-verifier: MLE 256
 // 非想定解 MLがギリギリ
-// cpuのクロック数，actions が 2.6GHz で AOJ が 4GHz らしいので TL を 4/2.6 倍している
+// cpuのクロック数，GHA が 2.6GHz で AOJ が 4GHz らしいので TL を 4/2.6 倍している
 #include <iostream>
 #include "src/DataStructure/OnlineDynamicConnectivity.hpp"
 using namespace std;

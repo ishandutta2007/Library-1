@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/matrix_product_mod_2
-// competitive-verifier: TLE 3
+// competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>

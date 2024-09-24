@@ -76,8 +76,6 @@ SegmentTree_2D<int,RMQ> seg(xyv);
 |`mul(x,y,v)`|点 $(x,y)$ の値に `v` を (モノイド演算で) かける. <br> 点が存在しないとassertで落ちる.|$O(\log n)$|
 
 ## 問題例
-[AtCoder Beginner Contest 266 Ex - Snuke Panic (2D)](https://atcoder.jp/contests/abc266/tasks/abc266_h) (2次元 max) \
 [技術室奥プログラミングコンテスト#6 Day1 N - Jump and Walk](https://atcoder.jp/contests/tkppc6-1/tasks/tkppc6_1_n) (2次元 min, kdtだとTLE)\
 [JOI 2018/2019 春合宿 過去問 A - 試験 (Examination)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_a)(2次元 sum + 走査)\
-[H - 3人の昼食 (The Lunch)](https://atcoder.jp/contests/s8pc-1/tasks/s8pc_1_h)\
 [Happy Query Contest 2019 Grid Xor Query](https://www.hackerrank.com/contests/happy-query-contest/challenges/grid-xor-query) (2次元 xor)

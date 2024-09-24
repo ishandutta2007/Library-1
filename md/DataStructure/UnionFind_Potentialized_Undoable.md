@@ -28,10 +28,3 @@ undo可能な重み(ポテンシャル)付きUnion-Find．\
 |`time()`|この関数を読んだ時点でのタイムスタンプを返す．最初は0．|$O(1)$|
 |`undo()`|直近の `unite` 操作を無かったことにする．|$O(1)$|
 |`rollback(t)`| タイムスタンプ $t$ のときに戻す． |最悪`unite`をした回数|
-
-## 問題例
-[yukicoder No.1420 国勢調査 (Easy)](https://yukicoder.me/problems/no/1420) (ポテンシャル, xor, sp judge)\
-[AtCoder Regular Contest 090 D - People on a Line](https://atcoder.jp/contests/arc090/tasks/arc090_b) (ポテンシャル) \
-[AtCoder Regular Contest 099 E - Independence](https://atcoder.jp/contests/arc099/tasks/arc099_c) (2色,連結)\
-[第10回 アルゴリズム実技検定 過去問 O - 3-順列](https://atcoder.jp/contests/past202203-open/tasks/past202203_o) (2色,連結)\
-[競プロ典型 90 問　068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp) (affine, 非可換群)

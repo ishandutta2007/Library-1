@@ -21,8 +21,8 @@ bool test(int (*solve)(stringstream&, stringstream&), string in, string expected
  int N, Q;
  scin2 >> N >> Q;
  vector X(N, vector<int>(N));
- for (int i= N; i--;)
-  for (int j= N; j--;) scout >> X[i][j];
+ for (int i= 0; i < N; ++i)
+  for (int j= 0; j < N; ++j) scout >> X[i][j];
  while (Q--) {
   int a, b, c, d, e;
   scin2 >> a >> b >> c >> d >> e;

@@ -1,29 +1,22 @@
-// competitive-verifier: STANDALONE
-
-// https://atcoder.jp/contests/past202203-open/tasks/past202203_o
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/past202203-open/tasks/past202203_o
+// competitive-verifier: TLE 0.5
+// competitive-verifier: MLE 64
 // ポテンシャルUF (2色塗り分け+連結成分)
-
-#include <sstream>
-#include <string>
-#include <cassert>
+#include <iostream>
 #include <algorithm>
 #include "src/DataStructure/UnionFind_Potentialized.hpp"
 using namespace std;
-bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
- stringstream scin(in), scout;
- solve(scin, scout);
- return scout.str() == expected;
-}
-namespace TEST {
-signed main(stringstream& scin, stringstream& scout) {
+signed main() {
+ cin.tie(0);
+ ios::sync_with_stdio(0);
  int N, M;
- scin >> N >> M;
+ cin >> N >> M;
  UnionFind_Potentialized<bool> uf(N);
  bool odd[N];
  fill_n(odd, N, 0);
  for (int i= 0; i < M; ++i) {
   int A, B;
-  scin >> A >> B, --A, --B;
+  cin >> A >> B, --A, --B;
   int x= uf.leader(A), y= uf.leader(B);
   odd[x]= odd[y]= odd[x] | odd[y];
   if (!uf.unite(A, B, 1)) odd[uf.leader(A)]= 1;
@@ -41,7 +34,7 @@ signed main(stringstream& scin, stringstream& scout) {
   if (uf.leader(i) != i) continue;
   if (odd[i]) {
    Z-= uf.size(i);
-   if (Z < 0) return scout << "No" << '\n', 0;
+   if (Z < 0) return cout << "No" << '\n', 0;
    continue;
   }
   int a= cnt[i], b= uf.size(i) - cnt[i];
@@ -51,12 +44,6 @@ signed main(stringstream& scin, stringstream& scout) {
     if (j >= b && k >= a) dp[j][k]|= dp[j - b][k - a];
    }
  }
- scout << (dp[X][Y] ? "Yes" : "No") << '\n';
- return 0;
-}
-}
-signed main() {
- assert(test(TEST::main, "5 2\n1 2\n2 3\n", "Yes\n"));
- assert(test(TEST::main, "3 2\n1 2\n2 3\n", "No\n"));
+ cout << (dp[X][Y] ? "Yes" : "No") << '\n';
  return 0;
 }

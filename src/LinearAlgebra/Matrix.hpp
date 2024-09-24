@@ -101,7 +101,7 @@ protected:
    auto a= begin(dat) + (l >> 7);
    auto c= begin(ret.dat);
    for (int i= H; i--; a+= m) {
-    auto u= begin(tmp) + ((*a >> (l & 127)) & 255);
+    auto u= begin(tmp) + ((*a >> (l & 127)) & 255) * r.m;
     for (int j= r.m; j--; ++c, ++u) *c^= *u;
    }
   }

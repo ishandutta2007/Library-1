@@ -1,4 +1,4 @@
-// competitive-verifier: PROBLEM https://atcoder.jp/contests/s8pc_4/tasks/s8pc_4_g
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/s8pc_4/tasks/s8pc_4/s8pc_4_g
 // competitive-verifier: TLE 4.5
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/s8pc-4/tasks/s8pc_4_g
@@ -54,13 +54,13 @@ signed main() {
   }
  }
  int in[M], out[M], dep[M];
- auto dfs= [&adj, &in, &out, &dep](auto self, int v, int p, int d) -> void {
+ auto dfs= [&adj, &in, &out, &dep](auto self, int v, int d) -> void {
   static int t= 0;
   dep[v]= d, in[v]= t++;
-  for (int u: adj[v]) self(self, u, v, d + 1);
+  for (int u: adj[v]) self(self, u, d + 1);
   out[v]= t;
  };
- dfs(dfs, 0, -1, 0);
+ dfs(dfs, 0, 0);
  vector<tuple<int, int, typename RaddsumQ::T>> vec(M);
  for (int i= 0; i < N; i++) vec[i]= {in[i], dep[i], {a[i], 1}};
  for (int i= N; i < M; i++) vec[i]= {in[i], dep[i], {0, 0}};

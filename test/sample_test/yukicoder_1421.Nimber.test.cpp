@@ -12,7 +12,7 @@ using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
  solve(scin, scout);
- if (scout.str() == "-1\n") return scout.str() == expected;
+ if (expected == "-1\n") return scout.str() == expected;
  stringstream scin2(in);
  int N, M;
  scin2 >> N >> M;

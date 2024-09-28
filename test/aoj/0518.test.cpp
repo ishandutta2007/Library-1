@@ -19,8 +19,8 @@ signed main() {
   for (int i= n; i--;)
    for (int j= i; j--;) {
     auto p1= ps[i], p2= ps[j], v= !(p2 - p1);
-    if (S.count(p1 + v) && S.count(p2 + v)) ans= max(ans, dist2(p1, p2));
-    if (S.count(p1 - v) && S.count(p2 - v)) ans= max(ans, dist2(p1, p2));
+    if (S.count(p1 + v) && S.count(p2 + v)) ans= max<int>(ans, dist2(p1, p2));
+    if (S.count(p1 - v) && S.count(p2 - v)) ans= max<int>(ans, dist2(p1, p2));
    }
   cout << ans << '\n';
  }

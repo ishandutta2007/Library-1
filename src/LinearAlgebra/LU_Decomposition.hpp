@@ -77,7 +77,7 @@ public:
   for (size_t i= 0; i < n; ++i) {
    Vector<K> y(n);
    for (size_t c= 0; c < n; ++c)
-    if (y[c]+= perm[c] == i; c < n && !is_zero(y[c]))
+    if (y[c]+= perm[c] == i; !is_zero(y[c]))
      for (size_t r= c + 1; r < n; ++r) y[r]-= y[c] * dat[perm[r]][c];
    for (size_t j= n; j--;) {
     K m= ret[j][i]= y[j] / dat[perm[j]][j];
@@ -95,13 +95,11 @@ void add_upper(u128 *a, const u128 *b, size_t bg, size_t ed) {  //[bg,ed)
 }
 void add_lower(u128 *a, const u128 *b, size_t ed) {  //[0,ed)
  size_t s= ed >> 7;
- a[s]^= b[s] & ((u128(1) << (ed & 127)) - 1);
- for (size_t i= s; i--;) a[i]^= b[i];
+ for (a[s]^= b[s] & ((u128(1) << (ed & 127)) - 1); s--;) a[s]^= b[s];
 }
 void subst_lower(u128 *a, const u128 *b, size_t ed) {  //[0,ed)
  size_t s= ed >> 7;
- a[s]= b[s] & ((u128(1) << (ed & 127)) - 1);
- for (size_t i= s; i--;) a[i]= b[i];
+ for (a[s]= b[s] & ((u128(1) << (ed & 127)) - 1); s--;) a[s]= b[s];
 }
 bool any1_upper(const u128 *a, size_t bg, size_t ed) {  //[bg,ed)
  if (bg >= ed) return false;
@@ -171,7 +169,7 @@ public:
   for (size_t i= 0; i < n; ++i) {
    Vector<bool> y(n);
    for (size_t c= 0; c < n; ++c)
-    if (y[c]^= perm[c] == i; c < n && y[c]) add_upper(begin(y.dat), dat[c].bg, c, n);
+    if (y[c]^= perm[c] == i; y[c]) add_upper(begin(y.dat), dat[c].bg, c + 1, n);
    for (size_t j= n; j--;)
     if ((ret[j][i]= y[j])) add_lower(begin(y.dat), dat[j].bg, j);
   }

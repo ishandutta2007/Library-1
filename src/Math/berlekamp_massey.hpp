@@ -7,7 +7,7 @@ template <class K> std::vector<K> berlekamp_massey(const std::vector<K> &a) {
  if (n == 0) return {};
  std::vector<K> c(n), b(n), tmp;
  K x= 1, y, coef;
- for (c[0]= b[0]= 1, i= 0, j; i < n; ++i) {
+ for (c[0]= b[0]= 1, i= 0; i < n; ++i) {
   for (++m, y= a[i], j= 1; j <= d; ++j) y+= c[j] * a[i - j];
   if (y == K()) continue;
   for (tmp= c, coef= y / x, j= m; j < n; ++j) c[j]-= coef * b[j - m];

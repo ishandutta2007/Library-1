@@ -1,4 +1,4 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/matrix_det_mod_2
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/inverse_matrix_mod_2
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
@@ -16,6 +16,12 @@ signed main() {
   cin >> a;
   for (int j= 0; j < N; ++j) A[i][j]= a[j] - '0';
  }
- cout << LU_Decomposition(A).det() << '\n';
+ auto B= LU_Decomposition(A).inverse_matrix();
+ if (!B) return cout << -1 << '\n', 0;
+ cout << N << '\n';
+ for (int i= 0; i < N; ++i) {
+  for (int j= 0; j < N; ++j) cout << B[i][j];
+  cout << '\n';
+ }
  return 0;
 }

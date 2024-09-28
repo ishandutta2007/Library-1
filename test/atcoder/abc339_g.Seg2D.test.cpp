@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc339/tasks/abc339_g
 // competitive-verifier: TLE 1
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 // N=2*10^5, Q=2*10^5, KDTはTLE
 #include <iostream>
 #include <vector>

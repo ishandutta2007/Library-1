@@ -59,7 +59,7 @@ template <class pos_t, class M> class SegmentTree_2D {
   yxs.resize(n);
   for (int i= n; i--;) yxs[i]= {get_<z, 1>(xyw[ord[i]]), get_<z, 0>(xyw[ord[i]])};
  }
- inline T prod(int i, int a, int b) const {
+ inline T prdi(int i, int a, int b) const {
   int n= id[i + 1] - id[i];
   T ret= M::ti();
   auto dat= val.begin() + id[i] * 2;
@@ -99,7 +99,7 @@ public:
   int L= x2i(l), R= x2i(r);
   auto dfs= [&](auto &dfs, int i, int a, int b, int c, int d) -> void {
    if (c == d || R <= a || b <= L) return;
-   if (L <= a && b <= R) return ret= M::op(ret, prod(i, c, d)), void();
+   if (L <= a && b <= R) return ret= M::op(ret, prdi(i, c, d)), void();
    int m= (a + b) / 2, ac= tol[id[i] + c] - tol[id[i]], bc= c - ac, ad= tol[id[i] + d] - tol[id[i]], bd= d - ad;
    dfs(dfs, i * 2, a, m, ac, ad), dfs(dfs, i * 2 + 1, m, b, bc, bd);
   };

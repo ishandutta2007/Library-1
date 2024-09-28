@@ -4,7 +4,7 @@ namespace geo {
 // build counterclockwise
 template <class K> class Polygon {
  using P= Point<K>;
- K a2= 0;
+ make_long_t<K> a2= 0;
 protected:
  vector<P> dat;
  void build() {
@@ -47,9 +47,9 @@ public:
    if (P a= dat[i], b= a - dat[prev(i)], c= dat[next(i)] - a; sgn(cross(b, c)) < 0) return false;
   return true;
  }
- K area() const { return a2 / 2; }
+ make_long_t<K> area() const { return a2 / 2; }
  // for integer
- K area2() const { return a2; }
+ make_long_t<K> area2() const { return a2; }
  // 1: in, 0: on, -1: out
  int where(const P &p) const {
   assert(dat.size());
@@ -75,28 +75,28 @@ public:
   return vis.ofs << "..." << '\n', vis;
  }
 };
-template <class K> K dist2(const Polygon<K> &g, const Point<K> &p) {
+template <class K> make_long_t<K> dist2(const Polygon<K> &g, const Point<K> &p) {
  if (g.where(p) != -1) return 0;
- K ret= numeric_limits<K>::max();
+ make_long_t<K> ret= numeric_limits<make_long_t<K>>::max();
  for (const auto &e: g.edges()) ret= min(ret, dist2(e, p));
  return ret;
 }
-template <class K> K dist2(const Point<K> &p, const Polygon<K> &g) { return dist2(g, p); }
-template <class K> K dist2(const Polygon<K> &g, const Line<K> &l) {
- K ret= numeric_limits<K>::max();
+template <class K> make_long_t<K> dist2(const Point<K> &p, const Polygon<K> &g) { return dist2(g, p); }
+template <class K> make_long_t<K> dist2(const Polygon<K> &g, const Line<K> &l) {
+ make_long_t<K> ret= numeric_limits<make_long_t<K>>::max();
  for (const auto &e: g.edges()) ret= min(ret, dist2(e, l));
  return ret;
 }
-template <class K> K dist2(const Line<K> &l, const Polygon<K> &g) { return dist2(g, l); }
-template <class K> K dist2(const Polygon<K> &g, const Segment<K> &s) {
+template <class K> make_long_t<K> dist2(const Line<K> &l, const Polygon<K> &g) { return dist2(g, l); }
+template <class K> make_long_t<K> dist2(const Polygon<K> &g, const Segment<K> &s) {
  if (g.where(s.p) != -1 || g.where(s.q) != -1) return 0;
- K ret= numeric_limits<K>::max();
+ make_long_t<K> ret= numeric_limits<make_long_t<K>>::max();
  for (const auto &e: g.edges()) ret= min(ret, dist2(e, s));
  return ret;
 }
-template <class K> K dist2(const Segment<K> &s, const Polygon<K> &g) { return dist2(g, s); }
-template <class K> K dist2(const Polygon<K> &g, const Polygon<K> &h) {
- K ret= numeric_limits<K>::max();
+template <class K> make_long_t<K> dist2(const Segment<K> &s, const Polygon<K> &g) { return dist2(g, s); }
+template <class K> make_long_t<K> dist2(const Polygon<K> &g, const Polygon<K> &h) {
+ make_long_t<K> ret= numeric_limits<make_long_t<K>>::max();
  for (const auto &e: g.edges()) ret= min(ret, dist2(h, e));
  return ret;
 }

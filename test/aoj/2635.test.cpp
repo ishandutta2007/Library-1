@@ -11,15 +11,15 @@ signed main() {
  using namespace geo;
  int n;
  cin >> n;
- vector<Point<long long>> ps(n);
+ vector<Point<int>> ps(n);
  for (int i= 0; i < n; ++i) cin >> ps[i];
  bool isok= true;
  {
-  IncrementalConvexHull<long long> ch;
+  IncrementalConvexHull<int> ch;
   for (int i= 0; i < n; ++i) isok&= ch.where(ps[i]) == -1, ch.insert(ps[i]);
  }
  {
-  IncrementalConvexHull<long long> ch;
+  IncrementalConvexHull<int> ch;
   for (int i= n; i--;) isok&= ch.where(ps[i]) == -1, ch.insert(ps[i]);
  }
  cout << (isok ? "Possible" : "Impossible") << '\n';

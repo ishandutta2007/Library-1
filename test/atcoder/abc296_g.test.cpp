@@ -10,16 +10,16 @@ signed main() {
  using namespace geo;
  int N;
  cin >> N;
- IncrementalConvexHull<long long> ch;
+ IncrementalConvexHull<int> ch;
  for (int i= 0; i < N; ++i) {
-  Point<long long> p;
+  Point<int> p;
   cin >> p;
   ch.insert(p);
  }
  int Q;
  cin >> Q;
  while (Q--) {
-  Point<long long> p;
+  Point<int> p;
   cin >> p;
   int ans= ch.where(p);
   cout << (ans > 0 ? "IN" : ans < 0 ? "OUT" : "ON") << '\n';

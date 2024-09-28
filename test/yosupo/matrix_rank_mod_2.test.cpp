@@ -10,12 +10,22 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, M;
  cin >> N >> M;
- Matrix<bool> A(N, M);
- for (int i= 0; i < N; ++i) {
-  string a;
-  cin >> a;
-  for (int j= 0; j < M; ++j) A[i][j]= a[j] - '0';
+ if (N <= M) {
+  Matrix<bool> A(N, M);
+  for (int i= 0; i < N; ++i) {
+   string a;
+   cin >> a;
+   for (int j= 0; j < M; ++j) A[i][j]= a[j] - '0';
+  }
+  cout << LU_Decomposition(A).rank() << '\n';
+ } else {
+  Matrix<bool> A(M, N);
+  for (int i= 0; i < N; ++i) {
+   string a;
+   cin >> a;
+   for (int j= 0; j < M; ++j) A[j][i]= a[j] - '0';
+  }
+  cout << LU_Decomposition(A).rank() << '\n';
  }
- cout << LU_Decomposition(A).rank() << '\n';
  return 0;
 }

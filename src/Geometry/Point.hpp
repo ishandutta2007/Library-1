@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <cmath>
 #include <cassert>
+#include "src/Internal/long_traits.hpp"
 namespace geo {
 using namespace std;
 struct Visualizer {
@@ -56,12 +57,12 @@ template <class K> struct Point {
  friend ostream &operator<<(ostream &os, const Point &p) { return os << "(" << p.x << ", " << p.y << ")"; }
  friend Visualizer &operator<<(Visualizer &vis, const Point &p) { return vis.ofs << p.x << " " << p.y << "\n", vis; }
 };
-template <class K> K dot(const Point<K> &p, const Point<K> &q) { return p.x * q.x + p.y * q.y; }
+template <class K> make_long_t<K> dot(const Point<K> &p, const Point<K> &q) { return make_long_t<K>(p.x) * q.x + make_long_t<K>(p.y) * q.y; }
 // left turn: > 0, right turn: < 0
-template <class K> K cross(const Point<K> &p, const Point<K> &q) { return p.x * q.y - p.y * q.x; }
-template <class K> K norm2(const Point<K> &p) { return dot(p, p); }
+template <class K> make_long_t<K> cross(const Point<K> &p, const Point<K> &q) { return make_long_t<K>(p.x) * q.y - make_long_t<K>(p.y) * q.x; }
+template <class K> make_long_t<K> norm2(const Point<K> &p) { return dot(p, p); }
 template <class K> long double norm(const Point<K> &p) { return sqrt(norm2(p)); }
-template <class K> K dist2(const Point<K> &p, const Point<K> &q) { return norm2(p - q); }
+template <class K> make_long_t<K> dist2(const Point<K> &p, const Point<K> &q) { return norm2(p - q); }
 template <class T, class U> long double dist(const T &a, const U &b) { return sqrt(dist2(a, b)); }
 enum CCW { COUNTER_CLOCKWISE, CLOCKWISE, ONLINE_BACK, ONLINE_FRONT, ON_SEGMENT };
 ostream &operator<<(ostream &os, CCW c) { return os << (c == COUNTER_CLOCKWISE ? "COUNTER_CLOCKWISE" : c == CLOCKWISE ? "CLOCKWISE" : c == ONLINE_BACK ? "ONLINE_BACK" : c == ONLINE_FRONT ? "ONLINE_FRONT" : "ON_SEGMENT"); }

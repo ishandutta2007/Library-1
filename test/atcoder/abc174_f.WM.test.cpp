@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/DQuery.hpp"
+#include "src/DataStructure/RangeCountDistinct.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,11 +12,11 @@ signed main() {
  cin >> N >> Q;
  vector<int> c(N);
  for (int i= 0; i < N; i++) cin >> c[i];
- DQuery dq(c);
+ RangeCountDistinct dq(c);
  while (Q--) {
   int l, r;
   cin >> l >> r, l--;
-  cout << dq.number_of_types(l, r) << '\n';
+  cout << dq.count(l, r) << '\n';
  }
  return 0;
 }

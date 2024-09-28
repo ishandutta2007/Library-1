@@ -14,12 +14,12 @@ signed main() {
  for (int i= 0; i < N; ++i) {
   string a;
   cin >> a;
-  for (int j= 0; j < M; ++j) A[i][j]= a[j] == '1';
+  for (int j= 0; j < M; ++j) A[i][j]= a[j] - '0';
  }
  for (int i= 0; i < M; ++i) {
   string b;
   cin >> b;
-  for (int j= 0; j < K; ++j) B[i][j]= b[j] == '1';
+  for (int j= 0; j < K; ++j) B[i][j]= b[j] - '0';
  }
  auto C= A * B;
  for (int i= 0; i < N; ++i) {

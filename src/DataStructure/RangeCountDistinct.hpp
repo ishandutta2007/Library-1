@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include "src/DataStructure/WaveletMatrix.hpp"
-class DQuery {
+class RangeCountDistinct {
  WaveletMatrix<int> wm;
  template <class T> std::vector<int> build(const std::vector<T> &v) {
   std::vector<int> next(v.size(), -1);
@@ -11,6 +11,6 @@ class DQuery {
   return next;
  }
 public:
- template <class T> DQuery(const std::vector<T> &v): wm(build(v)) {}
- std::size_t number_of_types(int l, int r) const { return wm.count(l, r, l); }
+ template <class T> RangeCountDistinct(const std::vector<T> &v): wm(build(v)) {}
+ size_t count(int l, int r) const { return wm.count(l, r, l); }
 };

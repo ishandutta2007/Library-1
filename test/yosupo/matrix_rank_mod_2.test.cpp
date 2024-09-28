@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/matrix_rank_mod_2
-// competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: TLE 1
+// competitive-verifier: MLE 512
 #include <iostream>
 #include <string>
 #include "src/LinearAlgebra/LU_Decomposition.hpp"

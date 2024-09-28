@@ -43,13 +43,13 @@ template <class K> class IncrementalConvexHull {
   }
  } L, U;
  size_t m;
- K a;
+ make_long_t<K> a;
 public:
  IncrementalConvexHull(): m(0), a(0) {}
  size_t edge_size() const { return m; }
- K area() const { return a / 2; }
+ make_long_t<K> area() const { return a / 2; }
  // for integer
- K area2() const { return a; }
+ make_long_t<K> area2() const { return a; }
  // +1: in, 0: on, -1: out
  int where(const P &p) const {
   int l= L.where(p), u= U.where(-p);

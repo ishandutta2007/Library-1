@@ -23,7 +23,7 @@ signed main() {
   A[u][v]-= 1;
   A[v][v]+= 1;
   ++out[u];
-  ++in[u];
+  ++in[v];
   r= u;
  }
  vector<int> rm= {r};

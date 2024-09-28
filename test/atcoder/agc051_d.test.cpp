@@ -1,4 +1,4 @@
-// competitive-verifier: PROBLEM https://atcoder.jp/contests/GoodByeDay2/tasks/agc051_d
+// competitive-verifier: PROBLEM https://atcoder.jp/contests/goodbyeday2/tasks/agc051_d
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/agc051/tasks/agc051_d

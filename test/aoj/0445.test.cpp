@@ -13,9 +13,9 @@ signed main() {
  using namespace geo;
  int N;
  cin >> N;
- vector<Point<long long>> ps(N);
+ vector<Point<int>> ps(N);
  for (int i= 0; i < N; ++i) cin >> ps[i];
- auto area= [&](int i, int j, int k) { return Polygon<long long>({ps[i % N], ps[j % N], ps[k % N]}).area2(); };
+ auto area= [&](int i, int j, int k) { return Polygon<int>({ps[i % N], ps[j % N], ps[k % N]}).area2(); };
  Polygon g(ps);
  auto all= g.area2(), val= area(0, 1, 2), ans= abs(all - val * 2);
  for (int l= 0, r= 3; r < N * 2; ++r) {

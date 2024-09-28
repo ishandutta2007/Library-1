@@ -47,12 +47,12 @@ template <class K> vector<Line<K>> bisector(const Line<K> &l, const Line<K> &m) 
  auto d= l.d / norm(l.d) + m.d / norm(m.d);
  return {Line(cp[0], d), Line(cp[0], !d)};
 }
-template <class K> K dist2(const Line<K> &l, const Point<K> &p) {
- K a= cross(l.d, p - l.p);
+template <class K> make_long_t<K> dist2(const Line<K> &l, const Point<K> &p) {
+ make_long_t<K> a= cross(l.d, p - l.p);
  return a * a / norm2(l.d);
 }
-template <class K> K dist2(const Point<K> &p, const Line<K> &l) { return dist2(l, p); }
-template <class K> K dist2(const Line<K> &l, const Line<K> &m) { return is_parallel(l, m) ? dist2(l, m.p) : 0; }
+template <class K> make_long_t<K> dist2(const Point<K> &p, const Line<K> &l) { return dist2(l, p); }
+template <class K> make_long_t<K> dist2(const Line<K> &l, const Line<K> &m) { return is_parallel(l, m) ? dist2(l, m.p) : 0; }
 template <class K> Affine<K> reflect(const Line<K> &l) {
  K a= l.d.x * l.d.x, b= l.d.x * l.d.y * 2, c= l.d.y * l.d.y, d= a + c;
  a/= d, b/= d, c/= d, d= a - c;

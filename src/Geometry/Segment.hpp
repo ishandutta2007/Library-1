@@ -62,10 +62,10 @@ template <class K> INTERSECTION intersection(const Segment<K> &s, const Segment<
  auto cp= cross_points(s, t);
  return cp.size() == 0 ? DISJOINT : cp.size() == 2 ? OVERLAP : cp[0] == s.p || cp[0] == s.q || cp[0] == t.p || cp[0] == t.q ? TOUCHING : CROSSING;
 }
-template <class K> K dist2(const Segment<K> &s, const Point<K> &p) { return dist2(p, s.closest_point(p)); }
-template <class K> K dist2(const Point<K> &p, const Segment<K> &s) { return dist2(s, p); }
-template <class K> K dist2(const Segment<K> &s, const Line<K> &l) { return cross_points(s, l).size() ? 0 : min(dist2(s.p, l), dist2(s.q, l)); }
-template <class K> K dist2(const Line<K> &l, const Segment<K> &s) { return dist2(s, l); }
-template <class K> K dist2(const Segment<K> &s, const Segment<K> &t) { return cross_points(s, t).size() ? 0 : min({dist2(s, t.p), dist2(s, t.q), dist2(t, s.p), dist2(t, s.q)}); }
+template <class K> make_long_t<K> dist2(const Segment<K> &s, const Point<K> &p) { return dist2(p, s.closest_point(p)); }
+template <class K> make_long_t<K> dist2(const Point<K> &p, const Segment<K> &s) { return dist2(s, p); }
+template <class K> make_long_t<K> dist2(const Segment<K> &s, const Line<K> &l) { return cross_points(s, l).size() ? 0 : min(dist2(s.p, l), dist2(s.q, l)); }
+template <class K> make_long_t<K> dist2(const Line<K> &l, const Segment<K> &s) { return dist2(s, l); }
+template <class K> make_long_t<K> dist2(const Segment<K> &s, const Segment<K> &t) { return cross_points(s, t).size() ? 0 : min({dist2(s, t.p), dist2(s, t.q), dist2(t, s.p), dist2(t, s.q)}); }
 template <class K> Segment<K> Affine<K>::operator()(const Segment<K> &s) { return {(*this)(s.p), (*this)(s.q)}; }
 }

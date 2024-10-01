@@ -5,6 +5,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
+#include <cstdint>
 #include "src/Math/Nimber.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {

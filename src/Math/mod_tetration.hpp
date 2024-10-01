@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdint>
 #include "src/NumberTheory/Factors.hpp"
 namespace math_internal {
 constexpr u64 rec(u64 a, u64 b, u64 m) {
@@ -13,6 +14,5 @@ constexpr u64 rec(u64 a, u64 b, u64 m) {
  for (k= rec(a, b - 1, k), a= mod(a);; a= mod(u128(a) * a))
   if (k& 1 ? ret= mod(u128(ret) * a) : 0; !(k>>= 1)) return ret;
 }
-constexpr u64 mod_tetration(u64 a, u64 b, u64 m) { return (a= rec(a, b, m)) >= m ? a - m : a; }
-}  // namespace math_internal
-using math_internal::mod_tetration;
+}
+constexpr uint64_t mod_tetration(uint64_t a, uint64_t b, uint64_t m) { return (a= math_internal::rec(a, b, m)) >= m ? a - m : a; }

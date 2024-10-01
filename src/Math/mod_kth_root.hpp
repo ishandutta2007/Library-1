@@ -44,13 +44,11 @@ template <class Int, class MP> i64 inner_kth_root(Int a, u64 k, Int p) {
  for (auto [pi, ei]: Factors(g)) a= peth_root<Int>(a, pi, ei, md);
  return md.get(a);
 }
-i64 mod_kth_root(i64 a, u64 k, i64 p) {
+}
+long long mod_kth_root(long long a, unsigned long long k, long long p) {
  assert(p > 0), assert(a >= 0), assert(is_prime(p)), a%= p;
  if (k == 0) return a == 1 ? a : -1;
  if (a <= 1 || k <= 1) return a;
- if (p < (1 << 30)) return inner_kth_root<int, MP_Mo<u32, u64, 32, 31>>(a, k, p);
- if (p < (1ll << 62)) return inner_kth_root<i64, MP_Mo<u64, u128, 64, 63>>(a, k, p);
- return inner_kth_root<i64, MP_D2B1>(a, k, p);
+ if (p < (1ll << 62)) return math_internal::inner_kth_root<long long, math_internal::MP_Mo>(a, k, p);
+ return math_internal::inner_kth_root<long long, math_internal::MP_D2B1_1>(a, k, p);
 }
-}  // namespace math_internal
-using math_internal::mod_kth_root;

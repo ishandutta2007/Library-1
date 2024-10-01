@@ -1,19 +1,20 @@
 #pragma once
 #include "src/Math/ModInt.hpp"
+class Montgomery32 {};  // mod < 2^32 & mod is odd
+class Montgomery64 {};  // mod < 2^62 & mod is odd
+class Barrett {};       // 2^20 < mod <= 2^41
 namespace math_internal {
 struct r_b: m_b {};
-template <class mod_t> constexpr bool is_runtimemodint_v= is_base_of_v<r_b, mod_t>;
+}
+template <class mod_t> constexpr bool is_runtimemodint_v= std::is_base_of_v<math_internal::r_b, mod_t>;
+namespace math_internal {
 template <class MP, u64 M, int id> struct RB: r_b {
- static inline void set_mod(u64 m) { md= MP(m); }
+ static inline void set_mod(u64 m) { assert(m <= M), md= MP(m); }
  static inline u64 max() { return M; }
 protected:
  static inline MP md;
 };
-class Montgomery32 {};
-class Montgomery64 {};
-class Barrett {};
-class Barrett2 {};
-template <class Int, int id= -1> using ModInt_Runtime= conditional_t<is_same_v<Int, Montgomery32>, MInt<int, u32, RB<MP_Mo<u32, u64, 32, 31>, (1 << 30), id>>, conditional_t<is_same_v<Int, Montgomery64>, MInt<i64, u64, RB<MP_Mo<u64, u128, 64, 63>, (1ull << 62), id>>, conditional_t<is_same_v<Int, Barrett>, MInt<int, u32, RB<MP_Br, (1u << 31), id>>, conditional_t<is_same_v<Int, Barrett2>, MInt<i64, u64, RB<MP_Br2, (1ull << 41), id>>, conditional_t<disjunction_v<is_same<Int, i64>, is_same<Int, u64>>, MInt<i64, u64, RB<MP_D2B1, u64(-1), id>>, MInt<int, u32, RB<MP_Na, u32(-1), id>>>>>>>;
-template <class T, enable_if_t<is_runtimemodint_v<T>, nullptr_t> = nullptr> constexpr u64 mv() { return T::max(); }
+template <class T, typename= enable_if_t<is_runtimemodint_v<T>>> constexpr u64 mv() { return T::max(); }
+template <class Int, int id= -1> using ModInt_Runtime= conditional_t<is_same_v<Int, int>, MInt<unsigned, RB<MP_Na, 0xFFFFFFFF, id>>, conditional_t<is_same_v<Int, unsigned>, MInt<unsigned, RB<MP_Na, 0xFFFFFFFF, id>>, conditional_t<is_same_v<Int, long long>, MInt<u64, RB<MP_D2B1_1, (1ull << 63) - 1, id>>, conditional_t<is_same_v<Int, Montgomery32>, MInt<unsigned, RB<MP_Mo, 0xFFFFFFFF, id>>, conditional_t<is_same_v<Int, Montgomery64>, MInt<u64, RB<MP_Mo, (1ull << 62) - 1, id>>, conditional_t<is_same_v<Int, Barrett>, MInt<u64, RB<MP_Br, 1ull << 41, id>>, MInt<u64, RB<MP_D2B1_2, uint64_t(-1), id>>>>>>>>;
 }
-using math_internal::ModInt_Runtime, math_internal::Montgomery32, math_internal::Montgomery64, math_internal::Barrett, math_internal::Barrett2, math_internal::is_runtimemodint_v;
+using math_internal::ModInt_Runtime;

@@ -18,5 +18,4 @@ templateの第2引数が false なら **最大重みマッチング**, true な�
 
 
 ## 問題例
-[AtCoder Regular Contest 080 F - Prime Flip](https://atcoder.jp/contests/arc080/tasks/arc080_d) \
 [幾何コンテスト2013 B - 玉座の間](https://atcoder.jp/contests/geocon2013/tasks/geocon2013_b) (二部グラフ, コスト実数)

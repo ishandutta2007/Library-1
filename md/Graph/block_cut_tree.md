@@ -20,8 +20,6 @@ block-cut-tree (拡張) は頂点数が $N+C$ の森である.
 - $C$ 個の頂点 $N,N+1,\dots,N+C-1$ は $g$ の二点連結成分に対応.
   - 隣接頂点はその二点連結成分を構成する頂点を指す.
 
-## 問題例
-[AtCoder Regular Contest 062 F - AtCoDeerくんとグラフ色塗り](https://atcoder.jp/contests/arc062/tasks/arc062_d)
 ## 参考
 [https://twitter.com/noshi91/status/1529858538650374144?s=20&t=eznpFbuD9BDhfTb4PplFUg](https://twitter.com/noshi91/status/1529858538650374144?s=20&t=eznpFbuD9BDhfTb4PplFUg)\
 [https://nachiavivias.github.io/cp-library/column/2022/01.html](https://nachiavivias.github.io/cp-library/column/2022/01.html)

@@ -62,7 +62,6 @@ slope trick を weight balanced tree で実装したもの．一般の min-plus 
 [Kyoto University Programming Contest 2016 H - 壁壁壁壁壁壁壁](https://atcoder.jp/contests/kupc2016/tasks/kupc2016_h) \
 [東京大学プログラミングコンテスト2012 L - じょうしょうツリー](https://atcoder.jp/contests/utpc2012/tasks/utpc2012_12) (`operator+=`)\
 [第2回 ドワンゴからの挑戦状 予選 E - 花火](https://atcoder.jp/contests/dwango2016-prelims/tasks/dwango2016qual_e) \
-[AtCoder Regular Contest 070 E - NarrowRectangles](https://atcoder.jp/contests/arc070/tasks/arc070_c)\
 [CSES Increasing Array II](https://cses.fi/problemset/task/2132/) \
 [Codeforces Round 371 (Div. 1) C. Sonya and Problem Wihtout a Legend](https://codeforces.com/contest/713/problem/C)\
 [2020 Petrozavodsk Winter Camp, Jagiellonian U Contest C. Bookface](https://codeforces.com/gym/102576/problem/C)\

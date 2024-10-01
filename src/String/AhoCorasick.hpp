@@ -18,7 +18,7 @@ template <class String> struct AhoCorasick {
   for (size_t row= 0; row < n; row++)
    if (!ps[ord[row]].empty()) rows.push_back(row);
   rows.push_back(-1), bg.push_back(0), match.push_back({});
-  for (int i= 0; i < n && ps[ord[i]].empty(); i++) match[0].push_back(ord[i]);
+  for (size_t i= 0; i < n && ps[ord[i]].empty(); ++i) match[0].push_back(ord[i]);
   for (size_t col= 0; rows[0] != -1; col++) {
    int size= 0;
    for (int &r: rows) {
@@ -28,7 +28,7 @@ template <class String> struct AhoCorasick {
      if (size_t par= prev[row]; bg[par] == -1) bg[par]= es.size();
      es.push_back(ps[ord[row]][col]), bg.push_back(-1);
      if (match.push_back({}); col + 1 == ps[ord[row]].size())
-      for (int i= row; i < n && ps[ord[i]] == ps[ord[row]]; i++) match.back().push_back(ord[i]);
+      for (size_t i= row; i < n && ps[ord[i]] == ps[ord[row]]; ++i) match.back().push_back(ord[i]);
     }
     if (cur[row]= bg.size() - 1; col + 1 == ps[ord[row]].size()) r= -1;
    }

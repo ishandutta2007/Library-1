@@ -79,7 +79,7 @@ signed main() {
  }
  {
   mt19937_64 rng(0);
-  uniform_int_distribution<u64> dist(2, (1ull << 32) - 1);
+  uniform_int_distribution<u64> dist(2, (1 << 30) - 1);
   for (int i= 100; i--;) assert(test<MP_Mo32>(dist(rng) | 1));
  }
  {

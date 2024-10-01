@@ -34,18 +34,18 @@ class Factors: public ConstexprArray<pair<u64, uint16_t>, 16> {
   Uint x= 1, y= md.set(2), z= 1, q= md.set(1), g= 1;
   for (Uint r= 1, i= 0; g == 1; r<<= 1) {
    for (x= y, i= r; i--;) y= f(y);
-   for (Uint k= 0; k < r && g == 1; g= binary_gcd(md.get(q), n), k+= m)
+   for (Uint k= 0; k < r && g == 1; g= binary_gcd<Uint>(md.get(q), n), k+= m)
     for (z= y, i= min(m, r - k); i--;) y= f(y), q= md.mul(q, md.diff(y, x));
   }
   if (g == n) do {
-    z= f(z), g= binary_gcd(md.get(md.diff(z, x)), n);
+    z= f(z), g= binary_gcd<Uint>(md.get(md.diff(z, x)), n);
    } while (g == 1);
   return g;
  }
  static constexpr u64 find_prime_factor(u64 n) {
   if (is_prime(n)) return n;
   for (u64 i= 100; i--;)
-   if (n= n < (1 << 30) ? rho<u32, MP_Mo<u32, u64, 32, 31>>(n, i + 1) : n < (1ull << 62) ? rho<u64, MP_Mo<u64, u128, 64, 63>>(n, i + 1) : rho<u64, MP_D2B1>(n, i + 1); is_prime(n)) return n;
+   if (n= n < (1 << 30) ? rho<u32, MP_Mo>(n, i + 1) : n < (1ull << 62) ? rho<u64, MP_Mo>(n, i + 1) : n < (1ull << 62) ? rho<u64, MP_D2B1_1>(n, i + 1) : rho<u64, MP_D2B1_2>(n, i + 1); is_prime(n)) return n;
   return 0;
  }
  constexpr void init(u64 n) {
@@ -59,7 +59,7 @@ public:
  constexpr Factors()= default;
  constexpr Factors(u64 n) { init(n), bubble_sort(dat, dat + sz); }
 };
-}  // namespace math_internal
+}
 using math_internal::Factors;
 constexpr uint64_t totient(const Factors &f) {
  uint64_t ret= 1, i= 0;

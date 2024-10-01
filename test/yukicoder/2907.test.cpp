@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2907
-// competitive-verifier: TLE 2
+// competitive-verifier: TLE 1.5
 // competitive-verifier: MLE 64
 // Nimber inv
 #include <iostream>

@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/wtf19-open/tasks/wtf19_c2
-// nimber log
+// nimber pow log
 #include <iostream>
 #include <vector>
 #include "src/Math/Nimber.hpp"
@@ -28,8 +28,7 @@ int main() {
   return sum;
  };
  Mint u= a.log(f(a)), v= b.log(f(b));
- Mint Y= (u - v) / (s - t);
- Mint X= u - s * Y;
+ Mint Y= (u - v) / (s - t), X= u - s * Y;
  cout << (long long)X.val() - OFS << " " << (long long)Y.val() - OFS << '\n';
  return 0;
 }

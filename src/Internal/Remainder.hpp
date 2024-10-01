@@ -25,8 +25,8 @@ template <class u_t, class du_t, u8 B> struct MP_Mo {  // mod < 2^32, mod < 2^62
  constexpr inline u_t set(u_t n) const { return mul(n, r2); }
  constexpr inline u_t get(u_t n) const { return n= reduce(n), n >= mod ? n - mod : n; }
  constexpr inline u_t norm(u_t n) const { return n >= mod ? n - mod : n; }
- constexpr inline u64 plus(u64 l, u64 r) const { return l+= r, l < (mod << 1) ? l : l - (mod << 1); }
- constexpr inline u64 diff(u64 l, u64 r) const { return l-= r, l >> 63 ? l + (mod << 1) : l; }
+ constexpr inline u_t plus(u_t l, u_t r) const { return l+= r, l < (mod << 1) ? l : l - (mod << 1); }
+ constexpr inline u_t diff(u_t l, u_t r) const { return l-= r, l >> (B - 1) ? l + (mod << 1) : l; }
 private:
  u_t iv, r2;
  static constexpr u_t inv(u_t n, int e= 6, u_t x= 1) { return e ? inv(n, e - 1, x * (2 - x * n)) : x; }

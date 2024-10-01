@@ -45,7 +45,7 @@ class Factors: public ConstexprArray<pair<u64, uint16_t>, 16> {
  static constexpr u64 find_prime_factor(u64 n) {
   if (is_prime(n)) return n;
   for (u64 i= 100; i--;)
-   if (n= n < (1 << 30) ? rho<u32, MP_Mo>(n, i + 1) : n < (1ull << 62) ? rho<u64, MP_Mo>(n, i + 1) : n < (1ull << 62) ? rho<u64, MP_D2B1_1>(n, i + 1) : rho<u64, MP_D2B1_2>(n, i + 1); is_prime(n)) return n;
+   if (n= n < (1ull << 32) ? rho<u32, MP_Mo32>(n, i + 1) : n < (1ull << 62) ? rho<u64, MP_Mo64>(n, i + 1) : n < (1ull << 62) ? rho<u64, MP_D2B1_1>(n, i + 1) : rho<u64, MP_D2B1_2>(n, i + 1); is_prime(n)) return n;
   return 0;
  }
  constexpr void init(u64 n) {

@@ -49,6 +49,7 @@ long long mod_kth_root(long long a, unsigned long long k, long long p) {
  assert(p > 0), assert(a >= 0), assert(is_prime(p)), a%= p;
  if (k == 0) return a == 1 ? a : -1;
  if (a <= 1 || k <= 1) return a;
- if (p < (1ll << 62)) return math_internal::inner_kth_root<long long, math_internal::MP_Mo>(a, k, p);
+ if (p < (1ll << 32)) return math_internal::inner_kth_root<long long, math_internal::MP_Mo32>(a, k, p);
+ if (p < (1ll << 62)) return math_internal::inner_kth_root<long long, math_internal::MP_Mo64>(a, k, p);
  return math_internal::inner_kth_root<long long, math_internal::MP_D2B1_1>(a, k, p);
 }

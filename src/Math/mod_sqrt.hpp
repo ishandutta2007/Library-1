@@ -21,7 +21,7 @@ template <class Int, class MP> constexpr i64 inner_sqrt(Int a, Int p) {
 constexpr long long mod_sqrt(long long a, long long p) {
  assert(p > 0), assert(a >= 0), assert(is_prime(p)), a%= p;
  if (a <= 1 || p == 2) return a;
- if (p < (1ll << 32)) return math_internal::inner_sqrt<unsigned long long, math_internal::MP_Mo32>(a, p);
+ if (p < (1 << 30)) return math_internal::inner_sqrt<unsigned, math_internal::MP_Mo32>(a, p);
  if (p < (1ll << 62)) return math_internal::inner_sqrt<unsigned long long, math_internal::MP_Mo64>(a, p);
  return math_internal::inner_sqrt<unsigned long long, math_internal::MP_D2B1_1>(a, p);
 }

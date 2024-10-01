@@ -38,25 +38,25 @@ signed main() {
  using namespace math_internal;
  assert(test<MP_Na>(998244353));
  assert(test<MP_Br>(998244353));
- assert(test<MP_Mo>(998244353));
+ assert(test<MP_Mo32>(998244353));
 
  assert(test<MP_Na>(1'000'000'007));
  assert(test<MP_Br>(1'000'000'007));
- assert(test<MP_Mo>(1'000'000'007));
+ assert(test<MP_Mo32>(1'000'000'007));
 
  assert(test<MP_Na>(1'000'000'009));
  assert(test<MP_Br>(1'000'000'009));
- assert(test<MP_Mo>(1'000'000'009));
+ assert(test<MP_Mo32>(1'000'000'009));
 
  assert(test<MP_D2B1_1>((1ull << 61) - 1));
  assert(test<MP_D2B1_2>((1ull << 61) - 1));
- assert(test<MP_Mo>((1ull << 61) - 1));
+ assert(test<MP_Mo64>((1ull << 61) - 1));
 
  assert(test<MP_Na>(u32(-1)));
  assert(test<MP_Br>((1ull << 41) - 1));
  assert(test<MP_D2B1_1>((1ull << 63) - 1));
  assert(test<MP_D2B1_2>(u64(-1)));
- assert(test<MP_Mo>((1ull << 62) - 1));
+ assert(test<MP_Mo64>((1ull << 62) - 1));
  {
   mt19937 rng(0);
   uniform_int_distribution<u32> dist(2, u32(-1));
@@ -79,8 +79,13 @@ signed main() {
  }
  {
   mt19937_64 rng(0);
+  uniform_int_distribution<u64> dist(2, (1ull << 32) - 1);
+  for (int i= 100; i--;) assert(test<MP_Mo32>(dist(rng) | 1));
+ }
+ {
+  mt19937_64 rng(0);
   uniform_int_distribution<u64> dist(2, (1ull << 62) - 1);
-  for (int i= 100; i--;) assert(test<MP_Mo>(dist(rng) | 1));
+  for (int i= 100; i--;) assert(test<MP_Mo64>(dist(rng) | 1));
  }
  return 0;
 }

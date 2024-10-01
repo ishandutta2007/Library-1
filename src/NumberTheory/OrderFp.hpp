@@ -42,7 +42,7 @@ public:
  }
  constexpr u64 primitive_root() const {
   if (p == 2) return 1;
-  if (p < (1ull << 32)) return p_rt<u32, MP_Mo32>();
+  if (p < (1 << 30)) return p_rt<u32, MP_Mo32>();
   if (p < (1ull << 62)) return p_rt<u64, MP_Mo64>();
   if (p < (1ull << 63)) return p_rt<u64, MP_D2B1_1>();
   return p_rt<u64, MP_D2B1_2>();
@@ -50,7 +50,7 @@ public:
  constexpr u64 operator()(u64 x) const {
   if (x%= p; !x) return 0;
   if (x == 1) return 1;
-  if (p < (1ull << 32)) return ord<u32, MP_Mo32>(x);
+  if (p < (1 << 30)) return ord<u32, MP_Mo32>(x);
   if (p < (1ull << 62)) return ord<u64, MP_Mo64>(x);
   if (p < (1ull << 63)) return ord<u64, MP_D2B1_1>(x);
   return ord<u64, MP_D2B1_2>(x);

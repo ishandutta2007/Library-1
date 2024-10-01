@@ -17,21 +17,23 @@ struct MP_Na {  // mod < 2^32
  constexpr inline u32 plus(u64 l, u32 r) const { return l+= r, l < mod ? l : l - mod; }
  constexpr inline u32 diff(u64 l, u32 r) const { return l-= r, l >> 63 ? l + mod : l; }
 };
-struct MP_Mo {  // mod < 2^62
- u64 mod;
+template <class u_t, class du_t, u8 B> struct MP_Mo {  // mod < 2^32, mod < 2^62
+ u_t mod;
  constexpr MP_Mo(): mod(0), iv(0), r2(0) {}
- constexpr MP_Mo(u64 m): mod(m), iv(inv(m)), r2(-u128(mod) % mod) {}
- constexpr inline u64 mul(u64 l, u64 r) const { return reduce(u128(l) * r); }
- constexpr inline u64 set(u64 n) const { return mul(n, r2); }
- constexpr inline u64 get(u64 n) const { return n= reduce(n), n >= mod ? n - mod : n; }
- constexpr inline u64 norm(u64 n) const { return n >= mod ? n - mod : n; }
+ constexpr MP_Mo(u_t m): mod(m), iv(inv(m)), r2(-du_t(mod) % mod) {}
+ constexpr inline u_t mul(u_t l, u_t r) const { return reduce(du_t(l) * r); }
+ constexpr inline u_t set(u_t n) const { return mul(n, r2); }
+ constexpr inline u_t get(u_t n) const { return n= reduce(n), n >= mod ? n - mod : n; }
+ constexpr inline u_t norm(u_t n) const { return n >= mod ? n - mod : n; }
  constexpr inline u64 plus(u64 l, u64 r) const { return l+= r, l < (mod << 1) ? l : l - (mod << 1); }
  constexpr inline u64 diff(u64 l, u64 r) const { return l-= r, l >> 63 ? l + (mod << 1) : l; }
 private:
- u64 iv, r2;
- static constexpr u64 inv(u64 n, int e= 6, u64 x= 1) { return e ? inv(n, e - 1, x * (2 - x * n)) : x; }
- constexpr inline u64 reduce(const u128 &w) const { return u64(w >> 64) + mod - ((u128(u64(w) * iv) * mod) >> 64); }
+ u_t iv, r2;
+ static constexpr u_t inv(u_t n, int e= 6, u_t x= 1) { return e ? inv(n, e - 1, x * (2 - x * n)) : x; }
+ constexpr inline u_t reduce(const du_t &w) const { return u_t(w >> B) + mod - ((du_t(u_t(w) * iv) * mod) >> B); }
 };
+using MP_Mo32= MP_Mo<u32, u64, 32>;
+using MP_Mo64= MP_Mo<u64, u128, 64>;
 struct MP_Br {  // 2^20 < mod <= 2^41
  u64 mod;
  constexpr MP_Br(): mod(0), x(0) {}

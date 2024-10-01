@@ -43,7 +43,7 @@ template <class U, class B> struct MInt: public B {
 private:
  Uint x;
 };
-template <u64 MOD> using MP_B= conditional_t < (MOD < (1ull << 62)) & MOD, MP_Mo, conditional_t < MOD < (1ull << 32), MP_Na, conditional_t<MOD<(1ull << 41), MP_Br, conditional_t<MOD<(1ull << 63), MP_D2B1_1, MP_D2B1_2>>>>;
+template <u64 MOD> using MP_B= conditional_t < (MOD < (1ull << 32)) & MOD, MP_Mo32, conditional_t < (MOD < (1ull << 62)) & MOD, MP_Mo64, conditional_t < MOD<(1ull << 32), MP_Na, conditional_t<MOD<(1ull << 41), MP_Br, conditional_t<MOD<(1ull << 63), MP_D2B1_1, MP_D2B1_2>>>>>;
 template <u64 MOD> using ModInt= MInt < conditional_t<MOD<(1ull << 32), u32, u64>, SB<MP_B<MOD>, MOD>>;
 }
 using math_internal::ModInt;

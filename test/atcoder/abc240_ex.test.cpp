@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc240/tasks/abc240_Ex
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/abc240/tasks/abc240_h
 

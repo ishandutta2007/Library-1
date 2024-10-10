@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 #include <cassert>
+#include <vector>
+#include <algorithm>
 #include "src/Internal/detection_idiom.hpp"
 template <class M> class SegmentTree {
  _DETECT_BOOL(dual, typename T::T, typename T::E, decltype(&T::mp), decltype(&T::cp));
@@ -11,6 +13,9 @@ template <class M> class SegmentTree {
  std::unique_ptr<E[]> laz;
  std::unique_ptr<bool[]> flg;
  int n;
+ std::unique_ptr<T[]> dat;
+ std::unique_ptr<E[]> laz;
+ std::unique_ptr<bool[]> flg;
  inline void update(int k) { dat[k]= M::op(dat[k << 1], dat[k << 1 | 1]); }
  inline void prop(int k, E x, int sz) {
   if (k < n) {
@@ -29,8 +34,13 @@ template <class M> class SegmentTree {
  }
 public:
  SegmentTree() {}
- SegmentTree(int n): dat(std::make_unique<T[]>((this->n= n) << 1)) {
+ SegmentTree(int n): n(n), dat(std::make_unique<T[]>(n << 1)) {
   std::fill_n(dat.get(), n << 1, M::ti());
+  if constexpr (dual_v<M>) laz= std::make_unique<E[]>(n), flg= std::make_unique<bool[]>(n), std::fill_n(flg.get(), n, false);
+ }
+ template <class F> SegmentTree(int n, const F &init): n(n), dat(std::make_unique<T[]>(n << 1)) {
+  for (int i= 0; i < n; ++i) dat[i + n]= init(i);
+  build();
   if constexpr (dual_v<M>) laz= std::make_unique<E[]>(n), flg= std::make_unique<bool[]>(n), std::fill_n(flg.get(), n, false);
  }
  template <class F> SegmentTree(int n, const F &init): dat(std::make_unique<T[]>((this->n= n) << 1)) {
@@ -48,21 +58,19 @@ public:
  inline void set(int i, T x) {
   for (get(i), dat[i+= n]= x; i>>= 1;) update(i);
  }
- inline void mul(int i, T x) {
-  for (get(i), dat[i+= n]= M::op(dat[i], x); i>>= 1;) update(i);
- }
+ inline void mul(int i, T x) { set(i, M::op(get(i), x)); }
  inline T get(int i) {
   i+= n;
   if constexpr (dual_v<M>)
-   for (int j= 31 - __builtin_clz(i); j; j--) push(i >> j, 1 << j);
+   for (int j= 31 - __builtin_clz(i); j; --j) push(i >> j, 1 << j);
   return dat[i];
  }
  inline T operator[](int i) { return get(i); }
  inline T prod(int l, int r) {
   l+= n, r+= n;
   if constexpr (dual_v<M>) {
-   for (int j= 31 - __builtin_clz(l); ((l >> j) << j) != l; j--) push(l >> j, 1 << j);
-   for (int j= 31 - __builtin_clz(r); ((r >> j) << j) != r; j--) push(r >> j, 1 << j);
+   for (int j= 31 - __builtin_clz(l); ((l >> j) << j) != l; --j) push(l >> j, 1 << j);
+   for (int j= 31 - __builtin_clz(r); ((r >> j) << j) != r; --j) push(r >> j, 1 << j);
   }
   T s1= M::ti(), s2= M::ti();
   for (; l < r; l>>= 1, r>>= 1) {

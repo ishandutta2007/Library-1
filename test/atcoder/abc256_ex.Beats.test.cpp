@@ -2,23 +2,24 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/abc256/tasks/abc256_h
+// beats
 #include <iostream>
 #include "src/Math/ModInt.hpp"
-#include "src/DataStructure/SegmentTree_Beats.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct Mono {
  struct T {
-  long long sum, max, sz;
+  long long sum, max;
  };
  static T ti() { return T(); }
- static T op(const T &vl, const T &vr) { return {vl.sum + vr.sum, max(vl.max, vr.max), vl.sz + vr.sz}; }
+ static T op(const T &vl, const T &vr) { return {vl.sum + vr.sum, max(vl.max, vr.max)}; }
  struct E {
   long long upd, div;
  };
- static bool mp(T &v, const E &f) {
-  if (f.div == 0) return v.sum= (v.max= f.upd) * v.sz, true;
-  if (v.sum != v.max * v.sz) return false;
-  return v.sum= (v.max/= f.div) * v.sz, true;
+ static bool mp(T &v, const E &f, int sz) {
+  if (f.div == 0) return v.sum= (v.max= f.upd) * sz, true;
+  if (v.sum != v.max * sz) return false;
+  return v.sum= (v.max/= f.div) * sz, true;
  }
  static void cp(E &pre, const E &suf) {
   if (suf.div == 0) pre= suf;
@@ -30,13 +31,13 @@ signed main() {
  ios::sync_with_stdio(false);
  int N, Q;
  cin >> N >> Q;
- SegmentTree_Beats<Mono> seg(N);
+ SegmentTree<Mono> seg(N);
  for (int i= 0; i < N; i++) {
   long long a;
   cin >> a;
-  seg.unsafe_set(i, {a, a, 1});
+  seg.unsafe_set(i, {a, a});
  }
- seg.rebuild();
+ seg.build();
  while (Q--) {
   int q, L, R;
   cin >> q >> L >> R, L--;

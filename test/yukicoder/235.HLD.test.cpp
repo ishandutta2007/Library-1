@@ -4,7 +4,7 @@
 #include <iostream>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/SegmentTree_Beats.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 using Mint= ModInt<int(1e9 + 7)>;
@@ -15,10 +15,7 @@ struct Mono {
  using E= Mint;
  static T ti() { return {Mint(), Mint()}; }
  static T op(const T &l, const T &r) { return {l.S + r.S, l.C + r.C}; }
- static bool mp(T &v, E x) {
-  v.S+= x * v.C;
-  return true;
- }
+ static bool mp(T &v, E x, int) { return v.S+= x * v.C, true; }
  static void cp(E &p, E s) { p+= s; }
 };
 signed main() {
@@ -34,7 +31,7 @@ signed main() {
  HeavyLightDecomposition tree(g, 0);
  vector<typename Mono::T> vec(N);
  for (int v= 0; v < N; ++v) vec[tree.to_seq(v)]= {S[v], C[v]};
- SegmentTree_Beats<Mono> seg(vec);
+ SegmentTree<Mono> seg(vec);
  int Q;
  cin >> Q;
  while (Q--) {

@@ -1,27 +1,27 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/880
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
+// beats!
 #include <iostream>
 #include <algorithm>
 #include <numeric>
 #include <cstdint>
-#include "src/DataStructure/SegmentTree_Beats.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct Mono {
  struct T {
   uint64_t max, sum, lcm;
-  uint32_t sz;
  };
- static T ti() { return {0, 0, 1, 0}; }
- static T op(const T &vl, const T &vr) { return {max(vl.max, vr.max), vl.sum + vr.sum, min(1ull * lcm(vl.lcm, vr.lcm), 1ull << 60), vl.sz + vr.sz}; }
+ static T ti() { return {0, 0, 1}; }
+ static T op(const T &vl, const T &vr) { return {max(vl.max, vr.max), vl.sum + vr.sum, min(1ull * lcm(vl.lcm, vr.lcm), 1ull << 60)}; }
  struct E {
   uint32_t upd, gcd;
  };
- static bool mp(T &v, const E &f) {
-  if (f.gcd == 0) return v.sum= (v.lcm= v.max= f.upd) * v.sz, true;
+ static bool mp(T &v, const E &f, int sz) {
+  if (f.gcd == 0) return v.sum= (v.lcm= v.max= f.upd) * sz, true;
   if (f.gcd % v.lcm == 0) return true;
-  if (v.max * v.sz != v.sum) return false;
-  return v.sum= (v.lcm= v.max= gcd(v.max, f.gcd)) * v.sz, true;
+  if (v.max * sz != v.sum) return false;
+  return v.sum= (v.lcm= v.max= gcd(v.max, f.gcd)) * sz, true;
  }
  static void cp(E &pre, const E &suf) {
   if (pre.gcd != 0 && suf.gcd != 0) pre.gcd= gcd(pre.gcd, suf.gcd);
@@ -33,13 +33,13 @@ signed main() {
  ios::sync_with_stdio(false);
  int N, Q;
  cin >> N >> Q;
- SegmentTree_Beats<Mono> seg(N);
+ SegmentTree<Mono> seg(N);
  for (int i= 0; i < N; i++) {
   unsigned a;
   cin >> a;
-  seg.unsafe_set(i, {a, a, a, 1});
+  seg.unsafe_set(i, {a, a, a});
  }
- seg.rebuild();
+ seg.build();
  while (Q--) {
   int op, l, r;
   cin >> op >> l >> r, l--;

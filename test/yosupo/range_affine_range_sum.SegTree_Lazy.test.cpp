@@ -4,20 +4,17 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "src/DataStructure/SegmentTree_Beats.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 #include "src/Math/ModInt.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 // RsumQはモノイドでサイズを持っておく
 struct RaffineQ_RsumQ {
- struct T {
-  Mint val;
-  int sz;
- };
+ using T= Mint;
  using E= array<Mint, 2>;
- static T ti() { return {Mint(), 0}; }
- static T op(const T &l, const T &r) { return {l.val + r.val, l.sz + r.sz}; }
- static bool mp(T &v, const E &f) { return v.val= f[0] * v.val + f[1] * v.sz, true; }
+ static T ti() { return 0; }
+ static T op(const T &l, const T &r) { return l + r; }
+ static bool mp(T &v, const E &f, int sz) { return v= f[0] * v + f[1] * sz, true; }
  static void cp(E &pre, const E &suf) { pre[0]*= suf[0], pre[1]= suf[0] * pre[1] + suf[1]; }
 };
 signed main() {
@@ -25,19 +22,15 @@ signed main() {
  ios::sync_with_stdio(0);
  int N, Q;
  cin >> N >> Q;
- vector<RaffineQ_RsumQ::T> v(N);
- for (int i= 0; i < N; i++) {
-  Mint a;
-  cin >> a;
-  v[i]= {a, 1};
- }
- SegmentTree_Beats<RaffineQ_RsumQ> seg(v);
+ vector<Mint> v(N);
+ for (int i= 0; i < N; i++) cin >> v[i];
+ SegmentTree<RaffineQ_RsumQ> seg(v);
  while (Q--) {
   bool op;
   int l, r;
   cin >> op >> l >> r;
   if (op) {
-   cout << seg.prod(l, r).val << '\n';
+   cout << seg.prod(l, r) << '\n';
   } else {
    Mint b, c;
    cin >> b >> c;

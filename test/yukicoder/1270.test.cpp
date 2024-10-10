@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/SegmentTree_Beats.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 #include "src/DataStructure/BinaryIndexedTree.hpp"
 #include "src/Misc/Mo.hpp"
 using namespace std;
@@ -11,8 +11,8 @@ struct RmQRaQ {
  using E= int;
  static T ti() { return 1 << 30; }
  static T op(T l, T r) { return min(l, r); }
- static bool mp(T &v, E x) {
-  if (v != ti()) v+= x;
+ static bool mp(T &v, E x, int) {
+  if (v < ti()) v+= x;
   return true;
  }
  static void cp(E &p, E s) { p+= s; }
@@ -25,7 +25,7 @@ signed main() {
  vector<int> a(N);
  for (int i= 0; i < N; ++i) cin >> a[i], --a[i];
  BinaryIndexedTree<int> bitl(N), bitr(N);
- SegmentTree_Beats<RmQRaQ> seg(N, 0);
+ SegmentTree<RmQRaQ> seg(N, 0);
  int sum= 0, sz= 0;
  for (auto x: a) {
   sum+= bitr.sum(x + 1, N);

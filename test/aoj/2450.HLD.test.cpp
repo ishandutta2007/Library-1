@@ -6,27 +6,25 @@
 #include <algorithm>
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/SegmentTree_Beats.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct M {
  struct T {
   long long sum, max, lmax, rmax;
-  int size;
  };
  using E= long long;
  static inline long long INF= 1ll << 60;
- static T ti() { return {0, -INF, -INF, -INF, 0}; }
+ static T ti() { return {0, -INF, -INF, -INF}; }
  static T op(const T &a, const T &b) {
   T ret;
   ret.sum= a.sum + b.sum;
   ret.max= max({a.max, b.max, a.rmax + b.lmax});
   ret.lmax= max(a.lmax, a.sum + b.lmax);
   ret.rmax= max(a.rmax + b.sum, b.rmax);
-  ret.size= a.size + b.size;
   return ret;
  }
- static bool mp(T &v, const E &f) {
-  v.sum= f * v.size;
+ static bool mp(T &v, const E &f, int sz) {
+  v.sum= f * sz;
   v.max= v.lmax= v.rmax= max(v.sum, f);
   return true;
  }
@@ -43,10 +41,10 @@ signed main() {
  for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
  HeavyLightDecomposition hld(g);
  vector<typename M::T> ar(N);
- for (int u= N; u--;) ar[hld.to_seq(u)]= {w[u], w[u], w[u], w[u], 1};
- SegmentTree_Beats<M> seg1(ar);
+ for (int u= N; u--;) ar[hld.to_seq(u)]= {w[u], w[u], w[u], w[u]};
+ SegmentTree<M> seg1(ar);
  reverse(ar.begin(), ar.end());
- SegmentTree_Beats<M> seg2(ar);
+ SegmentTree<M> seg2(ar);
  while (Q--) {
   long long t, a, b, c;
   cin >> t >> a >> b >> c, --a, --b;

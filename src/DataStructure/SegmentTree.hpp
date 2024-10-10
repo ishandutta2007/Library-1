@@ -5,7 +5,6 @@
 #include <algorithm>
 #include "src/Internal/detection_idiom.hpp"
 template <class M> class SegmentTree {
-public:
  _DETECT_BOOL(monoid, typename M::T, decltype(&M::op), decltype(&M::ti));
  _DETECT_BOOL(dual, typename T::T, typename T::E, decltype(&T::mp), decltype(&T::cp));
  _DETECT_TYPE(nullptr_or_E, typename T::E, std::nullptr_t, typename T::E);
@@ -28,10 +27,10 @@ public:
    else laz[k]= x;
    flg[k]= true;
    if constexpr (monoid_v<M>)
-    if (!map(dat[k], x, sz)) push(k, sz), update(k);
+    if (!map(k, x, sz)) push(k, sz), update(k);
   } else {
-   if constexpr (monoid_v<M>) map(dat[k], x, 1);
-   else map(dat[k - n], x, 1);
+   if constexpr (monoid_v<M>) map(k, x, 1);
+   else map(k - n, x, 1);
   }
  }
  inline void push(int k, int sz) {

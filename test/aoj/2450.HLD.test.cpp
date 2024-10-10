@@ -23,10 +23,9 @@ struct M {
   ret.rmax= max(a.rmax + b.sum, b.rmax);
   return ret;
  }
- static bool mp(T &v, const E &f, int sz) {
+ static void mp(T &v, const E &f, int sz) {
   v.sum= f * sz;
   v.max= v.lmax= v.rmax= max(v.sum, f);
-  return true;
  }
  static void cp(E &pre, const E &suf) { pre= suf; }
 };

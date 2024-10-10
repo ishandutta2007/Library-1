@@ -11,9 +11,8 @@ struct RmQRaQ {
  using E= int;
  static T ti() { return 1 << 30; }
  static T op(T l, T r) { return min(l, r); }
- static bool mp(T &v, E x, int) {
+ static void mp(T &v, E x) {
   if (v < ti()) v+= x;
-  return true;
  }
  static void cp(E &p, E s) { p+= s; }
 };

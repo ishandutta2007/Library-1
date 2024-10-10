@@ -14,7 +14,7 @@ struct RaffineQ_RsumQ {
  using E= array<Mint, 2>;
  static T ti() { return 0; }
  static T op(const T &l, const T &r) { return l + r; }
- static bool mp(T &v, const E &f, int sz) { return v= f[0] * v + f[1] * sz, true; }
+ static void mp(T &v, const E &f, int sz) { v= f[0] * v + f[1] * sz; }
  static void cp(E &pre, const E &suf) { pre[0]*= suf[0], pre[1]= suf[0] * pre[1] + suf[1]; }
 };
 signed main() {

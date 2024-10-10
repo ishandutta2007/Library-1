@@ -8,7 +8,7 @@
 #include "src/DataStructure/UnionFind.hpp"
 #include "src/Graph/Graph.hpp"
 #include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/SegmentTree_Dual.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 
 using namespace std;
 struct RchminQ {
@@ -42,7 +42,7 @@ signed main() {
  }());
 
  static constexpr int INF= 1 << 30;
- SegmentTree_Dual<RchminQ> seg(n, INF);
+ SegmentTree<RchminQ> seg(n, INF);
 
  for (int i= m; i--;) {
   auto &[u, v]= g[i];

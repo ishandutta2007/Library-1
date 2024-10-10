@@ -4,7 +4,7 @@
 #include <iostream>
 #include <array>
 #include "src/Math/ModInt.hpp"
-#include "src/DataStructure/SegmentTree_Dual.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct Mono {
@@ -26,7 +26,7 @@ signed main() {
  for (int i= 0; i < N; i++) cin >> A[i], D[i]= A[i];
  for (int j= 0; j < 3; j++)
   for (int i= 1; i < N; i++) D[i]+= D[i - 1];
- SegmentTree_Dual<Mono> seg(N);
+ SegmentTree<Mono> seg(N);
  for (int i= 0; i < N; i++) seg.set(i, {i, D[i]});
  while (Q--) {
   int op, x;

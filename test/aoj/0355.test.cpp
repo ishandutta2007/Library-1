@@ -30,7 +30,7 @@ struct M {
  using E= char;
  static T ti() { return {0, 0}; }
  static T op(const T& l, const T& r) { return {l.val * pw[r.sz] + r.val, l.sz + r.sz}; }
- static bool mp(T& v, E c, int) { return v.val= (pw[v.sz] - 1) * iv * c, true; }
+ static void mp(T& v, E c) { v.val= (pw[v.sz] - 1) * iv * c; }
  static void cp(E& f, E g) { f= g; }
 };
 signed main() {

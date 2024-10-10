@@ -11,7 +11,7 @@ struct M {
  using E= long long;
  static T ti() { return 1ll << 60; }
  static T op(T l, T r) { return min(l, r); }
- static bool mp(T &v, E y, int) { return v+= y, true; }
+ static void mp(T &v, E y) { v+= y; }
  static void cp(E &x, E y) { x+= y; }
 };
 signed main() {

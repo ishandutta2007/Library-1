@@ -9,7 +9,7 @@ struct RupdQ_RminQ {
  using E= int;
  static T ti() { return 0x7fffffff; }
  static T op(T l, T r) { return min(l, r); }
- static bool mp(T& v, E f, int) { return v= f, true; }
+ static void mp(T& v, E f) { v= f; }
  static void cp(E& pre, E suf) { pre= suf; }
 };
 signed main() {

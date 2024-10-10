@@ -3,7 +3,7 @@ title: Union-Find (ポテンシャル)
 documentation_of: ../../src/DataStructure/UnionFind_Potentialized.hpp
 ---
  
-## `UnionFind_Potentialized`　クラス
+## `UnionFind_Potentialized<weight_t>`　クラス
 重み(ポテンシャル)付きUnion-Find．\
 各要素 $u$ にポテンシャル $p(u)$ ( `weight_t`型 )を持たせ，同じ集合に属する任意の2要素 $u,v$ についてポテンシャルの差分 $p(v)-p(u)$ を計算できるようにする．\
 `weight_t`型は `weight_t()`,`operator+(a,b)`,`operator-(a)`,`operator-(a,b)` によって群になれば使える．\

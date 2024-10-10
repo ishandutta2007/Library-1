@@ -10,7 +10,7 @@
 #include "src/Math/ModInt.hpp"
 #include "src/Misc/Pointwise.hpp"
 #include "src/Misc/rng.hpp"
-#include "src/DataStructure/SegmentTree_Beats.hpp"
+#include "src/DataStructure/SegmentTree.hpp"
 using namespace std;
 using Mint= ModInt<int(1e9) + 7>;
 using K= Pointwise<Mint, Mint>;
@@ -30,10 +30,7 @@ struct M {
  using E= char;
  static T ti() { return {0, 0}; }
  static T op(const T& l, const T& r) { return {l.val * pw[r.sz] + r.val, l.sz + r.sz}; }
- static bool mp(T& v, E c) {
-  v.val= (pw[v.sz] - 1) * iv * c;
-  return true;
- }
+ static bool mp(T& v, E c, int) { return v.val= (pw[v.sz] - 1) * iv * c, true; }
  static void cp(E& f, E g) { f= g; }
 };
 signed main() {
@@ -46,7 +43,7 @@ signed main() {
  cin >> U;
  vector<M::T> A(N);
  for (int i= 0; i < N; ++i) A[i]= {U[i], 1};
- SegmentTree_Beats<M> seg(A);
+ SegmentTree<M> seg(A);
  int Q;
  cin >> Q;
  while (Q--) {

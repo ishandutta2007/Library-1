@@ -13,6 +13,8 @@ test/aoj/2429*.test.cpp
 test/atcoder/arc055_*.test.cpp
 # ↓ダウンロードがうまくできない 2024/09/22 (トークンを変えたら動くかも)
 test/atcoder/arc085_*.test.cpp
+# ↓ダウンロードがうまくできない 2024/10/11 (トークンを変えたら動くかも)
+test/atcoder/agc005_b*.test.cpp
 test/hackerrank/minimum-history-query.DynSeg.test.cpp
 test/hackerrank/drawing-rectangles.test.cpp
 test/hackerrank/range-counting-query.Mo.test.cpp

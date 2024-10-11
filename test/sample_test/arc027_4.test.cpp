@@ -35,7 +35,7 @@ signed main(stringstream& scin, stringstream& scout) {
   for (int j= 0; j < h; j++) m[0][j]= 1;
   seg.unsafe_set(i, m);
  }
- seg.rebuild();
+ seg.build();
  int D;
  scin >> D;
  while (D--) {

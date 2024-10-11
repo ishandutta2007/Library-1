@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "src/Internal/detection_idiom.hpp"
 template <class M> class SegmentTree {
- _DETECT_BOOL(monoid, typename M::T, decltype(&M::op), decltype(&M::ti));
+ _DETECT_BOOL(monoid, typename T::T, decltype(&T::op), decltype(&T::ti));
  _DETECT_BOOL(dual, typename T::T, typename T::E, decltype(&T::mp), decltype(&T::cp));
  _DETECT_TYPE(nullptr_or_E, typename T::E, std::nullptr_t, typename T::E);
  using T= typename M::T;

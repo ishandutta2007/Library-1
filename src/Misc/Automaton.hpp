@@ -34,21 +34,21 @@ template <class symbol_t> class Automaton {
  }
  Automaton(const std::vector<symbol_t> &alphabet): alph(alphabet), m(alph.size()) {}
 public:
- template <class state_t, class F, class G, typename= std::enable_if_t<std::is_same_v<state_t, std::invoke_result_t<F, state_t, symbol_t>>>> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept): alph(alphabet), m(alph.size()) {
+ template <class state_t, class F, class G, typename= std::enable_if_t<std::is_invocable_r_v<state_t, F, state_t, symbol_t>>> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept): alph(alphabet), m(alph.size()) {
   std::sort(alph.begin(), alph.end());
   auto tr= [&](const state_t &s, int i) { return transition(s, alph[i]); };
   auto rej= [](const state_t &) { return false; };
   if constexpr (std::is_integral_v<state_t>) build<std::unordered_map<state_t, int>, state_t>(initial_state, tr, is_accept, rej);
   else build<std::map<state_t, int>, state_t>(initial_state, tr, is_accept, rej);
  }
- template <class state_t, class F, class G, typename= std::enable_if_t<std::is_same_v<state_t, std::invoke_result_t<F, state_t, symbol_t>>>> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept, const state_t &abs_rej_state): alph(alphabet), m(alph.size()) {
+ template <class state_t, class F, class G, typename= std::enable_if_t<std::is_invocable_r_v<state_t, F, state_t, symbol_t>>> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept, const state_t &abs_rej_state): alph(alphabet), m(alph.size()) {
   std::sort(alph.begin(), alph.end());
   auto tr= [&](const state_t &s, int i) { return transition(s, alph[i]); };
   auto rej= [abs_rej_state](const state_t &s) { return s == abs_rej_state; };
   if constexpr (std::is_integral_v<state_t>) build<std::unordered_map<state_t, int>, state_t>(initial_state, tr, is_accept, rej);
   else build<std::map<state_t, int>, state_t>(initial_state, tr, is_accept, rej);
  }
- template <class state_t, class F, class G, typename= std::enable_if_t<std::is_same_v<std::set<state_t>, std::invoke_result_t<F, state_t, symbol_t>>>> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept): alph(alphabet), m(alph.size()) {
+ template <class state_t, class F, class G, typename= std::enable_if_t<std::is_invocable_r_v<std::set<state_t>, F, state_t, symbol_t>>> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept): alph(alphabet), m(alph.size()) {
   static_assert(std::is_same_v<bool, std::invoke_result_t<G, state_t>>);
   std::sort(alph.begin(), alph.end());
   auto tr= [&](const std::set<state_t> &s, int i) {
@@ -63,7 +63,7 @@ public:
   auto rej= [](const std::set<state_t> &s) { return s == std::set<state_t>(); };
   build<std::map<std::set<state_t>, int>, std::set<state_t>>(std::set<state_t>({initial_state}), tr, ac, rej);
  }
- template <class state_t, class F, class G, class H, typename= std::enable_if_t<std::is_same_v<std::set<state_t>, std::invoke_result_t<F, state_t, symbol_t>>>> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept, const H &eps_trans): alph(alphabet), m(alph.size()) {
+ template <class state_t, class F, class G, class H, typename= std::enable_if_t<std::is_invocable_r_v<std::set<state_t>, F, state_t, symbol_t>>> Automaton(const std::vector<symbol_t> &alphabet, const state_t &initial_state, const F &transition, const G &is_accept, const H &eps_trans): alph(alphabet), m(alph.size()) {
   static_assert(std::is_same_v<bool, std::invoke_result_t<G, state_t>>);
   static_assert(std::is_same_v<std::set<state_t>, std::invoke_result_t<H, state_t>>);
   std::sort(alph.begin(), alph.end());

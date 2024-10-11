@@ -14,7 +14,7 @@ template <class T> struct DirichletSeries {
  DirichletSeries(uint64_t N, bool unit= false): N(N), K(N > 1 ? std::max(std::ceil(std::pow((double)N / std::log2(N), 2. / 3)), std::sqrt(N) + 1) : 1), L((N - 1 + K) / K), x(K + 1), X(K + L + 1) {
   if (assert(N > 0); unit) x[1]= 1, X= 1;
  }
- template <class F, typename= std::enable_if_t<std::is_convertible_v<std::invoke_result_t<F, uint64_t>, T>>> DirichletSeries(uint64_t N, const F &sum): DirichletSeries(N) {
+ template <class F, typename= std::enable_if_t<std::is_invocable_r_v<T, F, uint64_t>>> DirichletSeries(uint64_t N, const F &sum): DirichletSeries(N) {
   for (size_t i= 1; i <= K; ++i) X[i]= sum(i);
   for (size_t i= 1; i <= L; ++i) X[K + i]= sum(uint64_t((double)N / i));
   for (size_t i= K; i; --i) x[i]= X[i] - X[i - 1];

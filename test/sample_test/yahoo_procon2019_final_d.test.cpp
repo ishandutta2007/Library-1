@@ -48,10 +48,8 @@ signed main(stringstream& scin, stringstream& scout) {
  int n= x.size();
  bool f[n - 1];
  fill_n(f, n - 1, false);
- SegmentTree<M> seg(n - 1);
  Mat A= {{1, 1}, {1, 0}};
- for (int i= 0; i < n - 1; ++i) seg.unsafe_set(i, A.pow(x[i + 1] - x[i]));
- seg.rebuild();
+ SegmentTree<M> seg(n - 1, [&](int i) { return A.pow(x[i + 1] - x[i]); });
  for (int q= 0; q < Q; ++q) {
   auto [t, l, r]= query[q];
   if (t == 1) {

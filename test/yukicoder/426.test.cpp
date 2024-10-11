@@ -20,13 +20,11 @@ signed main() {
  ios::sync_with_stdio(false);
  int N;
  cin >> N;
- SegmentTree<Mono> seg(N + 1);
- for (int i= 0; i <= N; ++i) {
+ SegmentTree<Mono> seg(N + 1, [&](int i) -> Mono::T {
   Mint s= 6 * i;
   Mat S= {{s, s + 1, s + 2}, {s + 3, s + 4, s + 5}};
-  seg.unsafe_set(i, {Mat::identity(3), S, Mat::identity(2)});
- }
- seg.rebuild();
+  return {Mat::identity(3), S, Mat::identity(2)};
+ });
  Vector<Mint> a(3), b(2);
  cin >> a[0] >> a[1] >> a[2] >> b[0] >> b[1];
  int q;

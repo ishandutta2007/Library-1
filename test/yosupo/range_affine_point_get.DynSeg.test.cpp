@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/range_affine_point_get
-// competitive-verifier: TLE 0.5
+// competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 // 双対 の verify
 

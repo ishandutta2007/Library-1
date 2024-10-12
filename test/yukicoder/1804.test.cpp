@@ -18,7 +18,7 @@ signed main() {
   if (c.size() == 1) ans.push_back(P[c[0]]);
  int m= ans.size();
  cout << m << '\n';
- for (int i= 0; i < m; ++i) cout << (i ? " " : "") << ans[i];
- cout << '\n';
+ for (int i= 0; i < m; ++i) cout << ans[i] << " \n"[i + 1 == m];
+ if (!m) cout << " \n";
  return 0;
 }

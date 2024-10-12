@@ -41,12 +41,12 @@ template <class pos_t, size_t K, class M, class... PK, class... PK2> class KDTre
  };
  template <class D> struct Node_D<D, 0, 1>: Node_B<typename M::T> {
   typename M::E laz;
-  bool laz_flg= false;
+  bool flg= false;
  };
  template <class D> struct Node_D<D, 1, 1>: Node_B<typename M::T> {
   typename M::T sum;
   typename M::E laz;
-  bool laz_flg= false;
+  bool flg= false;
  };
  using Node= Node_D<M, monoid_v<M>, dual_v<M>>;
  using Iter= typename std::vector<int>::iterator;
@@ -72,13 +72,13 @@ template <class pos_t, size_t K, class M, class... PK, class... PK2> class KDTre
  }
  inline void propagate(int t, const E &x) {
   if (t == -1) return;
-  if (ns[t].laz_flg) M::cp(ns[t].laz, x);
-  else ns[t].laz= x, ns[t].laz_flg= true;
+  if (ns[t].flg) M::cp(ns[t].laz, x);
+  else ns[t].laz= x, ns[t].flg= true;
   M::mp(ns[t].val, x);
   if constexpr (monoid_v<M>) M::mp(ns[t].sum, x);
  }
  inline void push(int t) {
-  if (ns[t].laz_flg) ns[t].laz_flg= false, propagate(ns[t].ch[0], ns[t].laz), propagate(ns[t].ch[1], ns[t].laz);
+  if (ns[t].flg) ns[t].flg= false, propagate(ns[t].ch[0], ns[t].laz), propagate(ns[t].ch[1], ns[t].laz);
  }
  template <bool z, class P, size_t k> inline void set_range(int t, int m, Iter bg, Iter ed, const P *p) {
   auto [mn, mx]= std::minmax_element(bg, ed, [&](int a, int b) { return get_<z, k>(p[a]) < get_<z, k>(p[b]); });

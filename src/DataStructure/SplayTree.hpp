@@ -75,15 +75,19 @@ template <class M, bool reversible= false> class SplayTree {
    }
   }
  }
+ static inline void map(T &v, E x, int sz) {
+  if constexpr (std::is_invocable_r_v<void, decltype(M::mp), T &, E, int>) M::mp(v, x, sz);
+  else M::mp(v, x);
+ }
  static inline void propagate(np t, const E &x) {
   if (!t) return;
   if (t->sz >> 31) M::cp(t->laz, x);
   else t->laz= x;
   if constexpr (semigroup_v<M>) {
-   M::mp(t->sum, x, t->size());
-   if constexpr (reversible && !commute_v<M>) M::mp(t->rsum, x, t->size());
+   map(t->sum, x, t->size());
+   if constexpr (reversible && !commute_v<M>) map(t->rsum, x, t->size());
   }
-  M::mp(t->val, x, 1), t->sz|= 0x80000000;
+  map(t->val, x, 1), t->sz|= 0x80000000;
  }
  static inline void toggle(np t) {
   if (!t) return;

@@ -3,7 +3,7 @@ title: Segment-Tree
 documentation_of: ../../src/DataStructure/SegmentTree.hpp
 ---
 非2冪 <br>
-mp関数では引数としてsizeを渡すこともできる
+`M::mp`関数では引数としてsizeを渡すこともできる
 
 - `void mp(T&,E)` 
 - `void mp(T&,E,int)` : sizeを渡す

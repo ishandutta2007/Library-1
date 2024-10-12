@@ -62,15 +62,19 @@ template <class M, bool reversible= false> class RandomizedBinarySearchTree {
    }
   }
  }
+ static inline void map(T &v, E x, int sz) {
+  if constexpr (std::is_invocable_r_v<void, decltype(M::mp), T &, E, int>) M::mp(v, x, sz);
+  else M::mp(v, x);
+ }
  static inline void propagate(np t, const E &x) {
   if (!t) return;
   if (t->sz >> 31) M::cp(t->laz, x);
   else t->laz= x;
   if constexpr (semigroup_v<M>) {
-   M::mp(t->sum, x, t->size());
-   if constexpr (reversible && !commute_v<M>) M::mp(t->rsum, x, t->size());
+   map(t->sum, x, t->size());
+   if constexpr (reversible && !commute_v<M>) map(t->rsum, x, t->size());
   }
-  M::mp(t->val, x, 1), t->sz|= 0x80000000;
+  map(t->val, x, 1), t->sz|= 0x80000000;
  }
  static inline void toggle(np t) {
   if (!t) return;
@@ -157,7 +161,7 @@ template <class M, bool reversible= false> class RandomizedBinarySearchTree {
   if (b < k) apply(t->l, a, b, x);
   else if (a > l) apply(t->r, a - k, b - k, x);
   else {
-   M::mp(t->val, x, 1);
+   map(t->val, x, 1);
    if (a < l) apply(t->l, a, l, x);
    if (b > k) apply(t->r, 0, b - k, x);
   }

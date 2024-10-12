@@ -63,11 +63,15 @@ private:
    if constexpr (monoid_v<M>) n[i].sum= M::op(n[i].sum, n[n[i].ch[1]].sum);
   }
  }
+ static inline void map(T &v, E x, int sz) {
+  if constexpr (std::is_invocable_r_v<void, decltype(M::mp), T &, E, int>) M::mp(v, x, sz);
+  else M::mp(v, x);
+ }
  static inline void propagate(node_id i, const E &x) {
   if (n[i].laz_flg) M::cp(n[i].laz, x);
   else n[i].laz= x, n[i].laz_flg= true;
-  if ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) M::mp(n[i].val, x, 1);
-  if constexpr (monoid_v<M>) M::mp(n[i].sum, x, ((n[i].flag >> 4) & 0xfffff));
+  if ((n[i].flag >> 44) == ((n[i].flag >> 24) & 0xfffff)) map(n[i].val, x, 1);
+  if constexpr (monoid_v<M>) map(n[i].sum, x, ((n[i].flag >> 4) & 0xfffff));
  }
  static inline void push(node_id i) {
   if (!n[i].laz_flg) return;

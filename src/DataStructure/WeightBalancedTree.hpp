@@ -53,15 +53,19 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
    if constexpr (reversible && !commute_v<M>) t->rsum= M::op(rsum(r), rsum(l));
   }
  }
+ static inline void map(T &v, E x, int sz) {
+  if constexpr (std::is_invocable_r_v<void, decltype(M::mp), T &, E, int>) M::mp(v, x, sz);
+  else M::mp(v, x);
+ }
  static inline void propagate(int i, const E &x) {
   auto t= nm + i;
   if (t->sz >> 31) M::cp(t->laz, x);
   else t->laz= x;
-  if constexpr (semigroup_v<M>) {
-   M::mp(t->sum, x, t->sz & 0x3fffffff);
-   if constexpr (reversible && !commute_v<M>) M::mp(t->rsum, x, t->sz & 0x3fffffff);
-  }
   t->sz|= 0x80000000;
+  if constexpr (semigroup_v<M>) {
+   map(t->sum, x, t->sz & 0x3fffffff);
+   if constexpr (reversible && !commute_v<M>) map(t->rsum, x, t->sz & 0x3fffffff);
+  }
  }
  static inline void toggle(int i) {
   auto t= nm + i;
@@ -78,7 +82,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
   } else if constexpr (dual_v<M>)
    if (t->sz >> 31) {
     if constexpr (persistent) nl[nli]= nl[-c], c= -nli++;
-    M::mp(nl[-c], t->laz, 1);
+    map(nl[-c], t->laz, 1);
    }
  }
  static inline void push(int i) {
@@ -150,7 +154,7 @@ template <class M, bool reversible= false, bool persistent= false, size_t LEAF_S
  static inline void apply(int &i, size_t l, size_t r, const E &x) {
   if (i < 0) {
    if constexpr (persistent) nl[nli]= nl[-i], i= -nli++;
-   M::mp(nl[-i], x, 1);
+   map(nl[-i], x, 1);
    return;
   }
   if constexpr (persistent) nm[nmi]= nm[i], i= nmi++;

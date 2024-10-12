@@ -64,15 +64,19 @@ template <typename M, bool persistent= false, uint8_t HEIGHT= 31> class SegmentT
   if (t->ch[0]) t->val= M::op(t->ch[0]->val, t->val);
   if (t->ch[1]) t->val= M::op(t->val, t->ch[1]->val);
  }
+ static inline void map(T &v, E x, int sz) {
+  if constexpr (std::is_invocable_r_v<void, decltype(M::mp), T &, E, int>) M::mp(v, x, sz);
+  else M::mp(v, x);
+ }
  static inline T &reflect(np &t) {
   if constexpr (dual_v<M> && !monoid_v<M>)
-   if (t->lazy_flg) M::mp(t->val, t->lazy, 1), t->lazy_flg= false;
+   if (t->lazy_flg) map(t->val, t->lazy, 1), t->lazy_flg= false;
   return t->val;
  }
  static inline void propagate(np &t, const E &x, const id_t &sz) {
   t->lazy_flg ? (M::cp(t->lazy, x), x) : t->lazy= x;
   t->lazy_flg= true;
-  if constexpr (monoid_v<M>) M::mp(t->val, x, sz);
+  if constexpr (monoid_v<M>) map(t->val, x, sz);
  }
  static inline void cp_node(np &t) {
   if (!t) t= new Node{def_val()};

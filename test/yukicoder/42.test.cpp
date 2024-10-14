@@ -1,10 +1,10 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/42
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 512
+// competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
-#include "src/FFT/sample_points_shift.hpp"
+#include "src/Math/sample_points_shift.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -21,7 +21,7 @@ signed main() {
   cin >> M;
   vector<Mint> y(6);
   for (int i= 0; i <= 5; i++) y[i]= dp[M % 500 + i * 500];
-  cout << sample_points_shift<Mint>(y, M / 500)[0] << '\n';
+  cout << sample_points_shift<Mint>(y, M / 500) << '\n';
  }
  return 0;
 }

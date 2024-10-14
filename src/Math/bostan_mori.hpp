@@ -10,7 +10,7 @@ template <class K> K div_at(std::vector<K> p, std::vector<K> q, uint64_t k) {
   if (m < 0 || q[m] != K()) break;
  const int l= std::max(n, m) + 1;
  p.resize(l), q.resize(l);
- for (std::vector<K> np; k > m; q.swap(p), p.swap(np), k>>= 1) {
+ for (std::vector<K> np; k > (uint64_t)m; q.swap(p), p.swap(np), k>>= 1) {
   np.assign(l, K());
   if (k & 1) {
    for (int i= 0; i < l; i+= 2)
@@ -31,7 +31,7 @@ template <class K> K div_at(std::vector<K> p, std::vector<K> q, uint64_t k) {
   for (int i= 1; i < l; i+= 2) p[i]-= q[i] * q[i];
  }
  K iv= K(1) / q[0];
- for (int j= 0; j <= k; p[j++]*= iv)
+ for (unsigned j= 0; j <= k; p[j++]*= iv)
   for (int i= j; i; --i) p[j]-= p[j - i] * q[i];
  return p[k];
 }

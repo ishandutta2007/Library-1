@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc208/tasks/abc208_f
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 #include <iostream>
 #include "src/Math/ModInt.hpp"
 #include "src/Math/sample_points_shift.hpp"

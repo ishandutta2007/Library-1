@@ -11,7 +11,7 @@ public:
   assert(0 < n);
   if (int k= iv.size(); k <= n) {
    if (iv.resize(n + 1); !k) iv[1]= 1, k= 2;
-   for (uint64_t mod= mod_t::mod(), q; k <= n; ++k) q= (mod + k - 1) / k, iv[k]= iv[k * q - mod] * q;
+   for (unsigned long long mod= mod_t::mod(), q; k <= n; ++k) q= (mod + k - 1) / k, iv[k]= iv[k * q - mod] * q;
   }
   return iv[n];
  }

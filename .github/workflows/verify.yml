@@ -121,14 +121,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tc.zip
-          path: ${{ github.workspace }}/tc.zip
 
       - name: Unzip
         run: |
-          ls -l ${{ github.workspace }}
           mkdir -p .competitive-verifier/cache/problems
-          unzip ${{ github.workspace }}/tc.zip -d .competitive-verifier/cache/problems/
-          rm -f ${{ github.workspace }}/tc.zip
+          unzip tc.zip -d .competitive-verifier/cache/problems/
+          rm -f tc.zip
 
       - name: Set up Python
         uses: actions/setup-python@v5

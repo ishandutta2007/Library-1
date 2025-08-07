@@ -4,11 +4,6 @@ on:
     branches:
       - "master"
   pull_request:
-  workflow_dispatch:
-    inputs:
-      ignore_prev_result:
-        type: boolean
-        default: false
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -51,6 +46,7 @@ jobs:
         with:
           output-path: verify_files.json
           config: .competitive-verifier/config.toml
+
       - name: parse-doxygen
         uses: competitive-verifier/actions/parse-doxygen@v2
         with:
@@ -73,7 +69,22 @@ jobs:
           name: Bundled-${{ runner.os }}
           path: .competitive-verifier/bundled
           retention-days: 1
+      
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: .competitive-verifier/cache
+          key: verifier-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            verifier-${{ runner.os }}
 
+      - name: Download
+        run: |
+          mkdir -p .competitive-verifier/cache/problems
+          curl -L https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip
+          unzip -o tc.zip
+          rm -f tc.zip
+          mv tc/* .competitive-verifier/cache/problems/
 
   verify:
     runs-on: ubuntu-24.04
@@ -100,7 +111,6 @@ jobs:
       #     df -h
 
       - name: Restore cached results
-        if: ${{ ! inputs.ignore_prev_result }}
         uses: actions/cache/restore@v4
         id: restore-cached-results
         with:
@@ -140,6 +150,14 @@ jobs:
           name: Result-${{ runner.os }}-${{ matrix.index }}
           path: ${{runner.temp}}/result.json
           retention-days: 1
+
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: .competitive-verifier/cache
+          key: verifier-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            verifier-${{ runner.os }}
 
       - name: Cleanup
         run: |
@@ -191,12 +209,14 @@ jobs:
         with:
           result-files: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
           output-path: ${{github.workspace}}/merged-result.json
+
       - name: Docs
         uses: competitive-verifier/actions/docs@v2
         with:
           verify-result: ${{github.workspace}}/merged-result.json
           destination: _jekyll
           write-summary: true
+
       - name: Save result
         uses: actions/cache/save@v4
         with:
@@ -210,6 +230,7 @@ jobs:
         with:
           source: _jekyll
           destination: _site
+
       - name: Upload artifact
         id: upload-pages
         uses: actions/upload-pages-artifact@v3

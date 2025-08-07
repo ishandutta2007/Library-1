@@ -18,8 +18,8 @@ signed main(stringstream& scin, stringstream& scout) {
  using Mint= ModInt<int(1e9 + 7)>;
  int n, k;
  scin >> n >> k;
- auto y= pow_table<Mint>(k + 2, k);
- for (int i= 0; i < k + 2; ++i) y[i + 1]+= y[i];
+ auto y= pow_table<Mint>(k + 1, k);
+ for (int i= 0; i < k + 1; ++i) y[i + 1]+= y[i];
  scout << sample_points_shift<Mint>(y, n) - y[0] << '\n';
  return 0;
 }

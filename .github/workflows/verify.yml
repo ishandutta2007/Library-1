@@ -125,8 +125,10 @@ jobs:
       - name: Unzip
         run: |
           mkdir -p .competitive-verifier/cache/problems
-          unzip tc.zip -d .competitive-verifier/cache/problems/
+          unzip tc.zip
           rm -f tc.zip
+          cp -r tc/* .competitive-verifier/cache/problems/
+          rm -rf tc
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -156,14 +158,6 @@ jobs:
           name: Result-${{ runner.os }}-${{ matrix.index }}
           path: ${{runner.temp}}/result.json
           retention-days: 1
-
-      - name: Cache
-        uses: actions/cache@v4
-        with:
-          path: .competitive-verifier/cache
-          key: verifier-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            verifier-${{ runner.os }}
 
       - name: Cleanup
         run: |

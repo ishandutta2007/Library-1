@@ -81,7 +81,7 @@ jobs:
       - name: Download
         run: |
           mkdir -p .competitive-verifier/cache/problems
-          curl -L https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip
+          curl -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip
           unzip -o tc.zip
           rm -f tc.zip
           mv tc/* .competitive-verifier/cache/problems/

@@ -125,6 +125,7 @@ jobs:
 
       - name: Unzip
         run: |
+          ls -l ${{ github.workspace }}
           mkdir -p .competitive-verifier/cache/problems
           unzip ${{ github.workspace }}/tc.zip -d .competitive-verifier/cache/problems/
           rm -f ${{ github.workspace }}/tc.zip

@@ -78,7 +78,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: tc.zip
+          path: tc.zip
 
   verify:
     runs-on: ubuntu-24.04

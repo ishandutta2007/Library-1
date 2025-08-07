@@ -84,7 +84,8 @@ jobs:
           curl -L -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip
           unzip -o tc.zip
           rm -f tc.zip
-          mv tc/* .competitive-verifier/cache/problems/
+          cp -r tc/* .competitive-verifier/cache/problems/
+          rm -rf tc
 
   verify:
     runs-on: ubuntu-24.04

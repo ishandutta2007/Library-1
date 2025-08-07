@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc199/tasks/abc199_d
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 128

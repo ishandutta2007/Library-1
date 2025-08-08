@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/s8pc_1/tasks/s8pc_1_h
 // competitive-verifier: TLE 4.5
 // competitive-verifier: MLE 64

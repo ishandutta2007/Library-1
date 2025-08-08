@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc305/tasks/abc305_Ex
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64

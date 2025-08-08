@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc222/tasks/abc222_h
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 256

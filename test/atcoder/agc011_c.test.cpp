@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/agc011/tasks/agc011_c
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64

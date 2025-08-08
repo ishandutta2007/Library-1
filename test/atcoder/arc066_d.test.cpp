@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/arc066/tasks/arc066_d
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64

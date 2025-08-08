@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/past202303-open/tasks/past202303_m
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64

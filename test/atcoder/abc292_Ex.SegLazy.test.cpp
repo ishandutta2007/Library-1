@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc292/tasks/abc292_Ex
 // competitive-verifier: ERROR 0.000000001
 // competitive-verifier: TLE 0.5

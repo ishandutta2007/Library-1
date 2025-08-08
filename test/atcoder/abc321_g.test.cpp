@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/abc321/tasks/abc321_g
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64

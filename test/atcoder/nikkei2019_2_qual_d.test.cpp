@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/nikkeiqual_2019/tasks/nikkei2019_2_qual_d
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 256

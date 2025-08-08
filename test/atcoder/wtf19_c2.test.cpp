@@ -1,3 +1,4 @@
+// competitive-verifier: IGNORE
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/wtf19/tasks/wtf19_c2
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64

@@ -5,6 +5,7 @@
 // 永続化 の verify
 
 #include <iostream>
+#include <vector>
 #include "src/DataStructure/SegmentTree_Dynamic.hpp"
 using namespace std;
 struct RMQ {
@@ -17,12 +18,12 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- int A[N];
+ vector<int> A(N);
  for (int i= 0; i < N; i++) cin >> A[i];
  int Q1;
  cin >> Q1;
  using Seg= SegmentTree_Dynamic<RMQ, true>;
- Seg seg[Q1 + 1]= {Seg(A, A + N)};
+ Seg seg[Q1 + 1]= {Seg(A)};
  for (int i= 1; i <= Q1; i++) {
   int p, x;
   cin >> p >> x;

@@ -63,7 +63,6 @@ jobs:
 
       # 6. PR作成（改善が必要な場合のみ）
       - name: Create Pull Request
-        if: env.IMPROVEMENT_NEEDED == 'true'
         id: create_pr
         uses: peter-evans/create-pull-request@v6
         with:

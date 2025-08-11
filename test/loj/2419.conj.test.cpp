@@ -12,7 +12,6 @@ signed main() {
  int N, X, Y, Z;
  cin >> N >> X >> Y >> Z;
  PiecewiseLinearConvex<int> f;
- f.add_inf(), f.add_inf(true);
  for (int i= 0; i < N; ++i) {
   int A, B;
   cin >> A >> B;

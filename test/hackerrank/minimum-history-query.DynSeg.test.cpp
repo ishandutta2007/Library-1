@@ -23,7 +23,8 @@ signed main() {
  int Q1;
  cin >> Q1;
  using Seg= SegmentTree_Dynamic<RMQ, true>;
- Seg seg[Q1 + 1]= {Seg(A)};
+ vector<Seg> seg(Q1 + 1);
+ seg[0]= Seg(A);
  for (int i= 1; i <= Q1; i++) {
   int p, x;
   cin >> p >> x;

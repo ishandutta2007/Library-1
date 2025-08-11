@@ -21,7 +21,7 @@ jobs:
       # 2. 日付付きブランチ名を作成
       - name: Set branch name
         id: vars
-        run: echo "branch=ai/code-update-$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+        run: echo "branch=ai/code-update-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
 
       # 3. Gemini CLI でドキュメント分析と改善提案を実行
       - name: Run Gemini CLI for documentation analysis

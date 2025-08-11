@@ -70,17 +70,6 @@ jobs:
           path: .competitive-verifier/bundled
           retention-days: 1
 
-      - name: Download
-        run: |
-          mkdir -p .competitive-verifier/cache/problems
-          curl -L -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: tc.zip
-          path: tc.zip
-
   verify:
     runs-on: ubuntu-24.04
     needs: [setup]
@@ -116,15 +105,11 @@ jobs:
 
       - name: Download verify_files.json
         uses: competitive-verifier/actions/download-verify-artifact@v2
-
+      
       - name: Download
-        uses: actions/download-artifact@v4
-        with:
-          name: tc.zip
-
-      - name: Unzip
         run: |
           mkdir -p .competitive-verifier/cache/problems
+          curl -L -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip
           unzip tc.zip
           rm -f tc.zip
           cp -r tc/* .competitive-verifier/cache/problems/

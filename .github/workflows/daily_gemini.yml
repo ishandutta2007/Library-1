@@ -45,19 +45,22 @@ jobs:
             - **可読性**: マークダウン構文が適切で、説明が分かりやすいか
             - **一貫性**: 他の.mdファイルと書式・構成が統一されているか
 
-            ## 出力形式
-            改善が必要な場合のみ、以下の形式で出力してください：
+            ## 実行手順と出力
+            改善が必要な場合は以下のコマンドを実行してください：
 
-            ```
-            IMPROVEMENT_NEEDED=true
-            TARGET_FILE=[改善対象のmdファイルのパス]
-            IMPROVEMENT_SUMMARY=[改善内容の要約（1行）]
-            PATCH=[unified diff形式のパッチ]
+            ```bash
+            echo "IMPROVEMENT_NEEDED=true" >> $GITHUB_ENV
+            echo "TARGET_FILE=[改善対象のmdファイルのパス]" >> $GITHUB_ENV
+            echo "IMPROVEMENT_SUMMARY=[改善内容の要約（1行）]" >> $GITHUB_ENV
+            # パッチファイルを作成
+            cat > improvement.patch << 'EOF'
+            [unified diff形式のパッチ内容]
+            EOF
             ```
 
-            改善が不要な場合は以下を出力：
-            ```
-            IMPROVEMENT_NEEDED=false
+            改善が不要な場合は以下を実行：
+            ```bash
+            echo "IMPROVEMENT_NEEDED=false" >> $GITHUB_ENV
             ```
 
             ## 注意事項
@@ -65,56 +68,53 @@ jobs:
             - 既存の文書構造・書式に合わせること
             - 数式や図表が必要な場合は適切なマークダウン記法を使用
             - 1つのファイルの改善に焦点を当てること
+            - 必ず上記のbashコマンドを実行して環境変数を設定してください
 
-      # 4. Gemini出力の解析
-      - name: Parse Gemini output
-        id: parse
+      # 4. 環境変数から改善情報を確認
+      - name: Check improvement status
+        id: check
         run: |
-          echo "${{ steps.gemini.outputs.response }}" > gemini_output.txt
+          echo "IMPROVEMENT_NEEDED value: $IMPROVEMENT_NEEDED"
+          echo "TARGET_FILE value: $TARGET_FILE"
+          echo "IMPROVEMENT_SUMMARY value: $IMPROVEMENT_SUMMARY"
           
-          if grep -q "IMPROVEMENT_NEEDED=true" gemini_output.txt; then
+          if [ "$IMPROVEMENT_NEEDED" = "true" ]; then
             echo "needs_improvement=true" >> $GITHUB_OUTPUT
-            
-            # TARGET_FILEを抽出
-            target_file=$(grep "TARGET_FILE=" gemini_output.txt | cut -d'=' -f2)
-            echo "target_file=$target_file" >> $GITHUB_OUTPUT
-            
-            # IMPROVEMENT_SUMMARYを抽出
-            summary=$(grep "IMPROVEMENT_SUMMARY=" gemini_output.txt | cut -d'=' -f2-)
-            echo "summary=$summary" >> $GITHUB_OUTPUT
-            
-            # PATCHを抽出してファイルに保存
-            sed -n '/PATCH=/,/```/p' gemini_output.txt | sed '1d;$d' > improvement.patch
+            echo "target_file=$TARGET_FILE" >> $GITHUB_OUTPUT
+            echo "summary=$IMPROVEMENT_SUMMARY" >> $GITHUB_OUTPUT
           else
             echo "needs_improvement=false" >> $GITHUB_OUTPUT
           fi
 
       # 5. パッチの適用
       - name: Apply improvements
-        if: steps.parse.outputs.needs_improvement == 'true'
+        if: env.IMPROVEMENT_NEEDED == 'true'
         run: |
           if [ -f improvement.patch ] && [ -s improvement.patch ]; then
             echo "Applying patch..."
+            cat improvement.patch
             git apply improvement.patch || echo "Patch application failed, but continuing..."
+          else
+            echo "No patch file found or patch file is empty"
           fi
 
       # 6. PR作成（改善が必要な場合のみ）
       - name: Create Pull Request
-        if: steps.parse.outputs.needs_improvement == 'true'
+        if: env.IMPROVEMENT_NEEDED == 'true'
         id: create_pr
         uses: peter-evans/create-pull-request@v6
         with:
           branch: ${{ steps.vars.outputs.branch }}
-          commit-message: "🤖 AI: Improve documentation for ${{ steps.parse.outputs.target_file }}"
-          title: "🤖 AI: Improve documentation for ${{ steps.parse.outputs.target_file }}"
+          commit-message: "🤖 AI: Improve documentation for ${{ env.TARGET_FILE }}"
+          title: "🤖 AI: Improve documentation for ${{ env.TARGET_FILE }}"
           body: |
             ## 🤖 AI-Generated Documentation Improvement
 
             ### 改善対象
-            - `${{ steps.parse.outputs.target_file }}`
+            - `${{ env.TARGET_FILE }}`
 
             ### 改善内容
-            ${{ steps.parse.outputs.summary }}
+            ${{ env.IMPROVEMENT_SUMMARY }}
 
             ### 改善観点
             - ✅ 正確性: コード例と実装の一致性確認
@@ -123,12 +123,13 @@ jobs:
             - ✅ 一貫性: 他の文書との書式・構成の統一
 
             ### レビューポイント
+            - [ ] 技術的な正確性の確認
             - [ ] 説明の分かりやすさ
+            - [ ] コード例の動作確認
 
             ---
             *Generated by Gemini CLI on $(date +'%Y-%m-%d')*
             
-            @coderabbitai review
           delete-branch: true
           labels: |
             documentation

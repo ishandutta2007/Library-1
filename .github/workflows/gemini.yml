@@ -1,4 +1,4 @@
-name: AI Code Improvement PR (Daily New)
+name: Daily Gemini
 
 on:
   schedule:
@@ -21,18 +21,31 @@ jobs:
 
       # 3. Gemini CLI 実行
       - name: Run Gemini CLI for code improvement
-        uses: google-github-actions/run-gemini-cli@v1
+        uses: google-github-actions/run-gemini-cli@v0
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
           prompt: |
-            まず md/ ディレクトリ内の.mdファイルを一つ好き適当に選んでください。
-            そしてそのファイルに対応する src/ ディレクトリ内の .hpp ファイルを見てください。
-            以下のことを確認してくだい。
-            - 選んだ .md ファイルに書かれている内容に誤りがないか
-            - 選んだ .md ファイルの内容に不足分がないか
-            - 選んだ .md ファイルが読みやすいか
-            必要があれば、他の .md ファイルや .hpp ファイルを参照・参考にして構いません。
-            もし 選んだ .md に改善する余地があるならば、改善するパッチを unified diff 形式で出力してください。
+            競技プログラミングライブラリのドキュメント改善タスクを実行してください。
+
+            **手順:**
+            1. md/ ディレクトリから.mdファイルを1つ選択
+            2. 対応するsrc/内の.hppファイルの実装を確認
+            3. 以下の観点で評価・改善:
+
+            **評価項目:**
+            - **正確性**: コード例が実装と一致しているか
+            - **完全性**: 重要な機能・制約・計算量が記載されているか
+            - **可読性**: マークダウン構文が適切で、説明が分かりやすいか
+            - **一貫性**: 他の.mdファイルと書式・構成が統一されているか
+
+            **出力形式:**
+            改善が必要な場合のみ、unified diff形式でパッチを出力してください。
+            改善点がない場合は何も出力しないでください。
+
+            **注意:**
+            - 実装コードの動作を正確に理解してから文書化
+            - 具体的な使用例やエッジケースも考慮
+            - 数式や図表が必要な場合は適切に記述
           output_file: ./ai_update.patch
 
       # 4. パッチを適用

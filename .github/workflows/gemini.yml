@@ -21,6 +21,7 @@ jobs:
 
       # 3. Gemini CLI 実行
       - name: Run Gemini CLI for code improvement
+        id: gemini
         uses: google-github-actions/run-gemini-cli@v0
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
@@ -46,7 +47,11 @@ jobs:
             - 実装コードの動作を正確に理解してから文書化
             - 具体的な使用例やエッジケースも考慮
             - 数式や図表が必要な場合は適切に記述
-          output_file: ./ai_update.patch
+
+      # 3.5. Gemini出力をファイルに保存
+      - name: Save Gemini output to patch file
+        run: |
+          echo "${{ steps.gemini.outputs.response }}" > ai_update.patch
 
       # 4. パッチを適用
       - name: Apply AI patch

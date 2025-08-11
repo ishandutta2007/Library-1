@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/segment_add_get_min
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 1.5
 // competitive-verifier: MLE 512
 #include <iostream>
 #include "src/Optimization/LiChaoTree.hpp"

@@ -32,8 +32,10 @@ signed main() {
  int L= l.size(), R= r.size();
  cout << L + R << '\n';
  cout << L << '\n';
- for (int i= 0; i < L; ++i) cout << l[i] << " \n"[i + 1 == L];
+ for (int i= 0; i < L; ++i) cout << (i ? " " : "") << l[i];
+ cout << '\n';
  cout << R << '\n';
- for (int i= 0; i < R; ++i) cout << r[i] << " \n"[i + 1 == R];
+ for (int i= 0; i < R; ++i) cout << (i ? " " : "") << r[i];
+ cout << '\n';
  return 0;
 }

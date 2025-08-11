@@ -2,6 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
+#include <vector>
 #include "src/Misc/Mo.hpp"
 using namespace std;
 signed main() {
@@ -9,12 +10,12 @@ signed main() {
  ios::sync_with_stdio(0);
  int N;
  cin >> N;
- int A[N], cnt[N]= {}, sum[N + 2]= {};
+ vector<int> A(N), cnt(N), sum(N + 2);
  for (int i= 0; i < N; i++) cin >> A[i], A[i]--;
  Mo mo;
  int Q;
  cin >> Q;
- int x[Q], y[Q], ans[Q];
+ vector<int> x(Q), y(Q), ans(Q);
  for (int q= 0; q < Q; q++) {
   int l, r;
   cin >> l >> r >> x[q] >> y[q];

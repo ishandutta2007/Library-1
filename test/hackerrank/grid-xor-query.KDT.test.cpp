@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://www.hackerrank.com/contests/happy-query-contest/challenges/grid-xor-query
-// competitive-verifier: TLE 1
+// competitive-verifier: TLE 1.5
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>

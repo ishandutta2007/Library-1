@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://www.hackerrank.com/contests/university-codesprint-4/challenges/drawing-rectangles
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
 #include "src/Graph/BipartiteGraph.hpp"

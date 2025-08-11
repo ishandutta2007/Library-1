@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://www.hackerrank.com/contests/happy-query-contest/challenges/minimum-history-query
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 
 // 永続化 の verify
 

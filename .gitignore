@@ -15,12 +15,4 @@ test/atcoder/arc055_*.test.cpp
 test/atcoder/arc085_*.test.cpp
 # ↓ダウンロードがうまくできない 2024/10/11 (トークンを変えたら動くかも)
 test/atcoder/agc005_b*.test.cpp
-test/hackerrank/minimum-history-query.DynSeg.test.cpp
-test/hackerrank/drawing-rectangles.test.cpp
-test/hackerrank/range-counting-query.Mo.test.cpp
-test/hackerrank/grid-xor-query.KDT.test.cpp
-test/hackerrank/ashton-and-string.SuffixTree*.test.cpp
-test/hackerrank/morgan-and-a-string.RH*.test.cpp
-test/hackerrank/save-humanity.RH*.test.cpp
-test/hackerrank/string-function-calculation.SuffixTree*.test.cpp
 # test/yukicoder/2654*.test.cpp

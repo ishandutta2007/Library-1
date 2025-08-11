@@ -1,0 +1,136 @@
+name: Daily Gemini
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 毎日 0:00 UTC（JST 9:00）
+  workflow_dispatch: # 手動実行も可能
+
+jobs:
+  ai-code-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      # 1. リポジトリ取得
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. 日付付きブランチ名を作成
+      - name: Set branch name
+        id: vars
+        run: echo "branch=ai/code-update-$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+
+      # 3. Gemini CLI でドキュメント分析と改善提案を実行
+      - name: Run Gemini CLI for documentation analysis
+        id: gemini
+        uses: google-github-actions/run-gemini-cli@v0
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          prompt: |
+            あなたは競技プログラミングライブラリのドキュメント改善を行うAIアシスタントです。
+            以下のタスクを実行してください：
+
+            ## タスク概要
+            1. `find md/ -name "*.md" | shuf -n 1` でランダムに.mdファイルを1つ選択
+            2. 選択したファイルと対応するsrc/内の.hppファイルの実装を確認
+            3. test/ ディレクトリ内の関連テストファイルも参照
+            4. ドキュメントの改善提案を作成
+
+            ## 評価・改善観点
+            - **正確性**: コード例が実装と一致しているか
+            - **完全性**: 重要な機能・制約・計算量が記載されているか  
+            - **可読性**: マークダウン構文が適切で、説明が分かりやすいか
+            - **一貫性**: 他の.mdファイルと書式・構成が統一されているか
+
+            ## 出力形式
+            改善が必要な場合のみ、以下の形式で出力してください：
+
+            ```
+            IMPROVEMENT_NEEDED=true
+            TARGET_FILE=[改善対象のmdファイルのパス]
+            IMPROVEMENT_SUMMARY=[改善内容の要約（1行）]
+            PATCH=[unified diff形式のパッチ]
+            ```
+
+            改善が不要な場合は以下を出力：
+            ```
+            IMPROVEMENT_NEEDED=false
+            ```
+
+            ## 注意事項
+            - 実装コードを正確に理解してから文書化すること
+            - 既存の文書構造・書式に合わせること
+            - 数式や図表が必要な場合は適切なマークダウン記法を使用
+            - 1つのファイルの改善に焦点を当てること
+
+      # 4. Gemini出力の解析
+      - name: Parse Gemini output
+        id: parse
+        run: |
+          echo "${{ steps.gemini.outputs.response }}" > gemini_output.txt
+          
+          if grep -q "IMPROVEMENT_NEEDED=true" gemini_output.txt; then
+            echo "needs_improvement=true" >> $GITHUB_OUTPUT
+            
+            # TARGET_FILEを抽出
+            target_file=$(grep "TARGET_FILE=" gemini_output.txt | cut -d'=' -f2)
+            echo "target_file=$target_file" >> $GITHUB_OUTPUT
+            
+            # IMPROVEMENT_SUMMARYを抽出
+            summary=$(grep "IMPROVEMENT_SUMMARY=" gemini_output.txt | cut -d'=' -f2-)
+            echo "summary=$summary" >> $GITHUB_OUTPUT
+            
+            # PATCHを抽出してファイルに保存
+            sed -n '/PATCH=/,/```/p' gemini_output.txt | sed '1d;$d' > improvement.patch
+          else
+            echo "needs_improvement=false" >> $GITHUB_OUTPUT
+          fi
+
+      # 5. パッチの適用
+      - name: Apply improvements
+        if: steps.parse.outputs.needs_improvement == 'true'
+        run: |
+          if [ -f improvement.patch ] && [ -s improvement.patch ]; then
+            echo "Applying patch..."
+            git apply improvement.patch || echo "Patch application failed, but continuing..."
+          fi
+
+      # 6. PR作成（改善が必要な場合のみ）
+      - name: Create Pull Request
+        if: steps.parse.outputs.needs_improvement == 'true'
+        id: create_pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: ${{ steps.vars.outputs.branch }}
+          commit-message: "🤖 AI: Improve documentation for ${{ steps.parse.outputs.target_file }}"
+          title: "🤖 AI: Improve documentation for ${{ steps.parse.outputs.target_file }}"
+          body: |
+            ## 🤖 AI-Generated Documentation Improvement
+
+            ### 改善対象
+            - `${{ steps.parse.outputs.target_file }}`
+
+            ### 改善内容
+            ${{ steps.parse.outputs.summary }}
+
+            ### 改善観点
+            - ✅ 正確性: コード例と実装の一致性確認
+            - ✅ 完全性: 重要な機能・制約・計算量の記載
+            - ✅ 可読性: マークダウン構文と説明の分かりやすさ
+            - ✅ 一貫性: 他の文書との書式・構成の統一
+
+            ### レビューポイント
+            - [ ] 説明の分かりやすさ
+
+            ---
+            *Generated by Gemini CLI on $(date +'%Y-%m-%d')*
+            
+            @coderabbitai review
+          delete-branch: true
+          labels: |
+            documentation
+            ai-generated
+            enhancement

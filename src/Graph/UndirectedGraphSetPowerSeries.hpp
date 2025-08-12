@@ -221,7 +221,7 @@ public:
   if (e.back() == 0) return {0};
   Poly<T> ret(n + 1, 0);
   std::vector<T> tmp(n);
-  ret[0]= 1;
+  tmp[0]= 1;
   for (int i= 1, j; i < n; ++i)
    for (j= i; j--; tmp[j]*= -i) ret[j + 1]+= tmp[j] * e[i], tmp[j + 1]+= tmp[j];
   for (int j= n; j--;) ret[j + 1]+= tmp[j];

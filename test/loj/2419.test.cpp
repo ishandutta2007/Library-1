@@ -4,7 +4,7 @@
 
 // オリジナル: https://usaco.org/index.php?page=viewproblem2&cpid=650
 
-#include <cassert>
+#include <iostream>
 #include "src/Optimization/PiecewiseLinearConvex.hpp"
 #include "src/Optimization/fibonacci_search.hpp"
 using namespace std;

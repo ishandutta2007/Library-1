@@ -21,8 +21,6 @@ pattern と suffix がマッチする文字列を受理するDFA. \
 
 ## Verify
 
-
 - [天下一プログラマーコンテスト2016本戦（オープンコンテスト） C - たんごたくさん](https://atcoder.jp/contests/tenka1-2016-final-open/tasks/tenka1_2016_final_c)
-- [2010年 日本情報オリンピック春合宿OJ dna - DNAの合成](https://atcoder.jp/contests/joisc2010/tasks/joisc2010_dna)
 
 

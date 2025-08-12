@@ -21,8 +21,5 @@ documentation_of: ../../src/Optimization/MaxFlow.hpp
 #### `PushRelabel`
 - 計算量 $O(n^2 \sqrt{m})$
 
-## 問題例
-[LibreOJ #127. 最大流 加强版](https://loj.ac/p/127) (Dinicだと落ちる)
-
 ## 参考
 [https://misawa.github.io/others/flow/dinic_time_complexity.html](https://misawa.github.io/others/flow/dinic_time_complexity.html)

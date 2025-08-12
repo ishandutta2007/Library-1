@@ -16,6 +16,6 @@ signed main() {
  vector<Mint> f(1 << n, 0);
  for (int s; m--;) cin >> s, f[s]+= 1;
  vector<Mint> F(k + 1, 1);
- cout << sps::egf_comp(f, F)[(1 << n) - 1] << '\n';
+ cout << sps::egf_comp(F, f)[(1 << n) - 1] << '\n';
  return 0;
 }

@@ -7,6 +7,11 @@ documentation_of: ../../src/DataStructure/RandomizedBinarySearchTree.hpp
 ## 計算量
 $O(\log N)$
 
-## 問題例
-[CODE FESTIVAL 2014 エキシビション B - カッコつけ](https://atcoder.jp/contests/code-festival-2014-exhibition/tasks/code_festival_exhibition_b) (insert, erase, prod)\
-[SoundHound Programming Contest 2018 Masters Tournament 本戦 (Open) E - Hash Swapping](https://atcoder.jp/contests/soundhound2018-summer-final-open/tasks/soundhound2018_summer_final_e) (split3, prod)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+- [ ] [CODE FESTIVAL 2014 エキシビション B - カッコつけ](https://atcoder.jp/contests/code-festival-2014-exhibition/tasks/code_festival_exhibition_b) (insert, erase, prod)
+- [ ] [SoundHound Programming Contest 2018 Masters Tournament 本戦 (Open) E - Hash Swapping](https://atcoder.jp/contests/soundhound2018-summer-final-open/tasks/soundhound2018_summer_final_e) (split3, prod)
+
+</details>

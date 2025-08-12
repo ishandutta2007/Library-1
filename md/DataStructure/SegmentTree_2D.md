@@ -79,5 +79,4 @@ SegmentTree_2D<int,RMQ> seg(xyv);
 
 
 - [技術室奥プログラミングコンテスト#6 Day1 N - Jump and Walk](https://atcoder.jp/contests/tkppc6-1/tasks/tkppc6_1_n) (2次元 min, kdtだとTLE)
-- [JOI 2018/2019 春合宿 過去問 A - 試験 (Examination)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_a)(2次元 sum + 走査)
 

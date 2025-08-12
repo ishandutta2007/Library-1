@@ -61,15 +61,12 @@ slope trick を weight balanced tree で実装したもの．一般の min-plus 
 
 ## Verify
 - [Kyoto University Programming Contest 2016 H - 壁壁壁壁壁壁壁](https://atcoder.jp/contests/kupc2016/tasks/kupc2016_h) 
-- [東京大学プログラミングコンテスト2012 L - じょうしょうツリー](https://atcoder.jp/contests/utpc2012/tasks/utpc2012_12) (`operator+=`)
 - [第2回 ドワンゴからの挑戦状 予選 E - 花火](https://atcoder.jp/contests/dwango2016-prelims/tasks/dwango2016qual_e) 
-- [CSES Increasing Array II](https://cses.fi/problemset/task/2132/) 
 - [Codeforces Round 371 (Div. 1) C. Sonya and Problem Wihtout a Legend](https://codeforces.com/contest/713/problem/C)
 - [2020 Petrozavodsk Winter Camp, Jagiellonian U Contest C. Bookface](https://codeforces.com/gym/102576/problem/C)
 - [MemSQL Start[c]UP 3.0 - Round 2 and Codeforces Round 437 (Div. 1) D. Buy Low Sell High](https://codeforces.com/contest/866/problem/D)
 - [Helvetic Coding Contest 2017 N. April Fools' Problem (medium)](https://codeforces.com/contest/802/problem/N) (hard は TLE) 
 - [Codeforces Round 584 - Dasha Code Championship - Elimination Round (rated, open for everyone, Div. 1 + Div. 2)](https://codeforces.com/contest/1209/problem/H) (`long double`)
-- [LibreOJ #2419. 「USACO 2016 US Open, Platinum」Landscaping](https://loj.ac/p/2419)
 - [Singapore NOI 2018 safety](https://oj.uz/problem/view/NOI18_safety) 
 - [LMIO 2019 Potatoes and fertilizers](https://oj.uz/problem/view/LMIO19_bulves) 
 - [APIO 2016 P2 — Fireworks](https://oj.uz/problem/view/APIO16_fireworks) (`operator+=`)

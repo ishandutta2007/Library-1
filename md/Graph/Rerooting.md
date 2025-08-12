@@ -37,21 +37,17 @@ Rerooting<T>::Rerooting<U,F1,F2,F3>(Graph g, CSRArray<int> adje,  HeavyLightDeco
 
 ## Verify
 
-
-- [AtCoder Regular Contest 022 C - ロミオとジュリエット](https://atcoder.jp/contests/arc022/tasks/arc022_3)\
-- [AtCoder Regular Contest 028 C - 高橋王国の分割統治](https://atcoder.jp/contests/arc028/tasks/arc028_3)\
-- [AtCoder Regular Contest 097 F - Monochrome Cat](https://atcoder.jp/contests/arc097/tasks/arc097_d)\
-- [Educational DP Contest V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)\
-- [Typical DP Contest N - 木](https://atcoder.jp/contests/tdpc/tasks/tdpc_tree)\
-- [square869120Contest #4 D - Driving on a Tree](https://atcoder.jp/contests/s8pc-4/tasks/s8pc_4_d)\
-- [NJPC2017 E - 限界集落](https://atcoder.jp/contests/njpc2017/tasks/njpc2017_e)\
-- [第二回全国統一プログラミング王決定戦本戦 D - 木、](https://atcoder.jp/contests/nikkei2019-2-final/tasks/nikkei2019_2_final_d) (根付き木ハッシュ, 二つの全方位木DP, `operator()(root,v)`)\
-- [東京工業大学プログラミングコンテスト2019 M - Inversion Numbers of Tree](https://atcoder.jp/contests/ttpc2019/tasks/ttpc2019_m)\
-- [JOI 2018/2019 春合宿 過去問 G - 指定都市 (Designated Cities)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_g) (全方位木DPでない部分が難しい)\
-- [yukicoder No.1153 ねこちゃんゲーム](https://yukicoder.me/problems/no/1153) (`operator()(root,v)`, sp judge)\
+- [AtCoder Regular Contest 022 C - ロミオとジュリエット](https://atcoder.jp/contests/arc022/tasks/arc022_3)
+- [AtCoder Regular Contest 028 C - 高橋王国の分割統治](https://atcoder.jp/contests/arc028/tasks/arc028_3)
+- [AtCoder Regular Contest 097 F - Monochrome Cat](https://atcoder.jp/contests/arc097/tasks/arc097_d)
+- [Educational DP Contest V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
+- [Typical DP Contest N - 木](https://atcoder.jp/contests/tdpc/tasks/tdpc_tree)
+- [square869120Contest #4 D - Driving on a Tree](https://atcoder.jp/contests/s8pc-4/tasks/s8pc_4_d)
+- [NJPC2017 E - 限界集落](https://atcoder.jp/contests/njpc2017/tasks/njpc2017_e)
+- [第二回全国統一プログラミング王決定戦本戦 D - 木、](https://atcoder.jp/contests/nikkei2019-2-final/tasks/nikkei2019_2_final_d) (根付き木ハッシュ, 二つの全方位木DP, `operator()(root,v)`)
+- [東京工業大学プログラミングコンテスト2019 M - Inversion Numbers of Tree](https://atcoder.jp/contests/ttpc2019/tasks/ttpc2019_m)
+- [yukicoder No.1153 ねこちゃんゲーム](https://yukicoder.me/problems/no/1153) (`operator()(root,v)`, sp judge)
 - [Educational Codeforces Round 46 (Div. 2) G. Two-Paths](https://codeforces.com/contest/1000/problem/G) ( + LCA )
-
-
 
 ## 参考
 [https://trap.jp/post/1702/](https://trap.jp/post/1702/)

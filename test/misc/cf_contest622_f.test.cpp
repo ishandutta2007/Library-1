@@ -10,6 +10,8 @@
 #include "src/NumberTheory/enumerate_primes.hpp"
 using namespace std;
 signed main() {
+ cin.tie(0);
+ ios::sync_with_stdio(false);
  using Mint= ModInt<int(1e9 + 7)>;
  int n, k;
  cin >> n >> k;

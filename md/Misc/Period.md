@@ -33,7 +33,5 @@ $x_i$ として取りうる状態の数が有限であるときに周期性を�
 
 ## Verify
 
-
-- [AtCoder Beginner Contest 030 D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)\
-- [JOI 2010-2011 日本代表選手選考会 (春合宿代替措置) 過去問 report - 報告 (Report)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_report) (`path_upto_cycle`)
+- [AtCoder Beginner Contest 030 D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)
 

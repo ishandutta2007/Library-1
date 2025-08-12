@@ -21,6 +21,10 @@ K+1 個 の集合(0~K) に分割する．
 |`min_vertex_cover(ord={})`|最小頂点被覆を返す．<br> 引数は優先度で並んだ順列で，この順に貪欲に実行．<br> 引数を指定しない場合，頂点番号の低い順で実行．<br>（つまり左側の点が優先される）<br> 戻り値は `vector<int>` で最小頂点被覆に使う頂点の集合を表す．| $O(E+V)$|
 
 
-## 問題例
-[東京大学プログラミングコンテスト2013 K - 辞書順最小頂点被覆](https://atcoder.jp/contests/utpc2013/tasks/utpc2013_11) (辞書順最小頂点被覆のverify)\
-[HackerRank Drawing Rectangles](https://www.hackerrank.com/contests/university-codesprint-4/challenges/drawing-rectangles) (最小頂点被覆, 頂点:3e5+3e5, 辺:3e5)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+- [ ] [東京大学プログラミングコンテスト2013 K - 辞書順最小頂点被覆](https://atcoder.jp/contests/utpc2013/tasks/utpc2013_11) (辞書順最小頂点被覆のverify)
+
+</details>

@@ -31,12 +31,10 @@ $P(n)$ は[`CumSumQuotient<T>` クラス](CumSumQuotient.hpp) として扱う.
 |`additive_sum(P,f)`|加法的関数 $f$ について累積和 $F(N)$ を返す. <br> $\displaystyle P(n)=\sum_{\substack{p: \mathrm{prime} \\ p \leq n}} f(p)$ を表す `CumSumQuotient<T>` クラスの `P` と $f(p^e)$ を表す `f(p,e)`を渡す．|$\displaystyle O\left(\sqrt{N}\right)$|
 |`multiplicative_sum(P,f)`|乗法的関数 $f$ について累積和 $F(N)$ を返す. <br> $\displaystyle P(n)=\sum_{\substack{p: \mathrm{prime} \\ p \leq n}} f(p)$ を表す `CumSumQuotient<T>` クラスの `P` と $f(p^e)$ を表す `f(p,e)`を渡す．|$\displaystyle O\left(\frac{DN^{3/4}}{\log N}\right)$|
 
-## 問題例
-[Xmas Contest 2019 D - Sum of (-1)^f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d) \
-[Xmas Contest 2019 E - Sum of f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_e) (加法的関数) \
-[LibreOJ #572. 「LibreOJ Round #11」Misaka Network 与求和](https://loj.ac/p/572) \
-[LibreOJ #6686. Stupid GCD](https://loj.ac/p/6686) ($f(p)$ が2次多項式) \
-[LibreOJ #6053. 简单的函数](https://loj.ac/p/6053) ($f(p)$ が単純な多項式でない)\
-[洛谷 P5325 【模板】Min_25 筛](https://www.luogu.com.cn/problem/P5325) ($f(p)$ が2次多項式)
+## Verify
+- [Xmas Contest 2019 D - Sum of (-1)^f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d)
+- [Xmas Contest 2019 E - Sum of f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_e) (加法的関数)
+- [洛谷 P5325 【模板】Min_25 筛](https://www.luogu.com.cn/problem/P5325) ($f(p)$ が2次多項式)
+
 ## 参考
 [https://oi-wiki.org/math/number-theory/min-25/](https://oi-wiki.org/math/number-theory/min-25/)

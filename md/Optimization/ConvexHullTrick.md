@@ -23,11 +23,13 @@ templateの第二引数で最大最小を指定. デフォルトは最小値取�
 |`get_min(x,y)` | $(x,y)$ における最小値を返す.  |$O(\log n)$ | 
 |`get_max(x,y)` | $(x,y)$ における最大値を返す.  |$O(\log n)$ | 
 
-## 問題例
-[AtCoder Regular Contest 051 D - 長方形](https://atcoder.jp/contests/arc051/tasks/arc051_d) (ax+by) \
-[AtCoder Beginner Contest 244 Ex - Linear Maximization](https://atcoder.jp/contests/abc244/tasks/abc244_h) (ax+by)\
-[Yandex Contest Алгоритм 2022 K. Stepwise subsequence ](https://contest.yandex.com/contest/42710/problems/K) (有理数クラスでac)
+## Verify
+
+- [AtCoder Regular Contest 051 D - 長方形](https://atcoder.jp/contests/arc051/tasks/arc051_d) (ax+by)
+- [AtCoder Beginner Contest 244 Ex - Linear Maximization](https://atcoder.jp/contests/abc244/tasks/abc244_h) (ax+by)
+- [Yandex Contest Алгоритм 2022 K. Stepwise subsequence ](https://contest.yandex.com/contest/42710/problems/K) (有理数クラスでac)
 
 ## 参考
-[https://github.com/kth-competitive-programming/kactl/blob/main/content/data-structures/LineContainer.h](https://github.com/kth-competitive-programming/kactl/blob/main/content/data-structures/LineContainer.h) \
-[https://maspypy.github.io/library/convex/cht.hpp](https://maspypy.github.io/library/convex/cht.hpp)
+
+- [https://github.com/kth-competitive-programming/kactl/blob/main/content/data-structures/LineContainer.h](https://github.com/kth-competitive-programming/kactl/blob/main/content/data-structures/LineContainer.h)
+- [https://maspypy.github.io/library/convex/cht.hpp](https://maspypy.github.io/library/convex/cht.hpp)

@@ -18,9 +18,6 @@ documentation_of: ../../src/NumberTheory/tables.hpp
 |`gcd_convolve(a,b)`| $\displaystyle c(n)=\sum_{\gcd(i,j)=n}a(i)b(j)$ <br>となる $c$ を返す. |$O(N \log \log N)$|
 |`lcm_convolve(a,b)`| $\displaystyle c(n)=\sum_{\mathrm{lcm}(i,j)=n}a(i)b(j)$ <br>となる $c$ を返す. |$O(N \log \log N)$|
 
-## 問題例
-[LibreOj #6680. 「hyOI2019」henry_y 的函数](https://loj.ac/p/6680) (大きい乗法的テーブル)
-
 ## 参考
 [https://37zigen.com/linear-sieve/](https://37zigen.com/linear-sieve/)
 [https://qiita.com/convexineq/items/afc84dfb9ee4ec4a67d5](https://qiita.com/convexineq/items/afc84dfb9ee4ec4a67d5) 

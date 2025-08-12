@@ -7,11 +7,8 @@ documentation_of: ../../src/Math/AllPurposeEuclid.hpp
 [https://kewth.github.io/2020/07/19/%E4%B8%87%E8%83%BD%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97/](https://kewth.github.io/2020/07/19/%E4%B8%87%E8%83%BD%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97/) \
 [https://www.cnblogs.com/p-b-p-b/p/13070809.html](https://www.cnblogs.com/p-b-p-b/p/13070809.html)
 
-## 問題例
 ## Verify
 
-
-- [LibreOJ #138. 类欧几里得算法](https://loj.ac/p/138) <br>
-- [LibraOJ #6440. 万能欧几里得](https://loj.ac/p/6440) <br>
+- [LibraOJ #6440. 万能欧几里得](https://loj.ac/p/6440)
 
 

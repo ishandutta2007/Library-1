@@ -51,10 +51,10 @@ cout << val2 << " "<< id2 << '\n'; // 1 0
 |`query(x)` | { $x$ における最小値(最大値), それを達成する関数の番号 } を返す. <br>存在しない場合 { 未定義, -1 } を返す. |$O(\log n)$ | 
 |`parms(i)` | $i$ 番目の関数のパラメータを返す．|$O(1)$ | 
 
-## 問題例
+## Verify
 
-[Kyoto University Programming Contest 2019 L - タケノコ](https://atcoder.jp/contests/kupc2019/tasks/kupc2019_l) (永続) \
-[AtCoder Regular Contest 051 D - 長方形](https://atcoder.jp/contests/arc051/tasks/arc051_d) (doubleでac) \
-[Yandex Contest Алгоритм 2022 K. Stepwise subsequence ](https://contest.yandex.com/contest/42710/problems/K) (有理数クラス, doubleでac) \
-[COLOCON -Colopl programming contest 2018- Final C - スペースエクスプローラー高橋君](https://atcoder.jp/contests/colopl2018-final/tasks/colopl2018_final_c) \
-[技術室奥プログラミングコンテスト#2 F - NPCの家 (NPC's House)](https://atcoder.jp/contests/tkppc2/tasks/tkppc2016_f) 
+- [Kyoto University Programming Contest 2019 L - タケノコ](https://atcoder.jp/contests/kupc2019/tasks/kupc2019_l) (永続) 
+- [AtCoder Regular Contest 051 D - 長方形](https://atcoder.jp/contests/arc051/tasks/arc051_d) (doubleでac) 
+- [Yandex Contest Алгоритм 2022 K. Stepwise subsequence ](https://contest.yandex.com/contest/42710/problems/K) (有理数クラス, doubleでac) 
+- [COLOCON -Colopl programming contest 2018- Final C - スペースエクスプローラー高橋君](https://atcoder.jp/contests/colopl2018-final/tasks/colopl2018_final_c) 
+- [技術室奥プログラミングコンテスト#2 F - NPCの家 (NPC's House)](https://atcoder.jp/contests/tkppc2/tasks/tkppc2016_f) 

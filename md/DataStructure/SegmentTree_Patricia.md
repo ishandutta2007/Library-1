@@ -7,10 +7,15 @@ documentation_of: ../../src/DataStructure/SegmentTree_Patricia.hpp
 永続化可
 ## 計算量
 $O(\log N)$
-## 問題例
-[Codeforces Round #470 (rated, Div. 1, based on VK Cup 2018 Round 1) C. Perfect Security](https://codeforces.com/contest/947/problem/C) (find+xor) \
-[Codeforces Round #477 (rated, Div. 1, based on VK Cup 2018 Round 3) C. Big Secret](https://codeforces.com/contest/966/problem/C) (find+xor) \
-[Codeforces Round #179 (Div. 1) E. Yaroslav and Points](https://codeforces.com/contest/295/problem/E) (特殊モノイド+座圧サボり) \
-[Kyoto University Programming Contest 2018 M - 整数と根付き木](https://atcoder.jp/contests/kupc2018/tasks/kupc2018_m) (パトリシアの効力発揮) \
-[CodeChef Gotham PD](https://www.codechef.com/problems/GPD) (永続, xor)\
-[CodeChef Pishty and tree](https://www.codechef.com/problems/PSHTTR) (永続)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+<input disabled type="checkbox"> [Codeforces Round #470 (rated, Div. 1, based on VK Cup 2018 Round 1) C. Perfect Security](https://codeforces.com/contest/947/problem/C) (find+xor)<br>
+<input disabled type="checkbox"> [Codeforces Round #477 (rated, Div. 1, based on VK Cup 2018 Round 3) C. Big Secret](https://codeforces.com/contest/966/problem/C) (find+xor)<br>
+<input disabled type="checkbox"> [Codeforces Round #179 (Div. 1) E. Yaroslav and Points](https://codeforces.com/contest/295/problem/E) (特殊モノイド+座圧サボり)<br>
+<input disabled type="checkbox"> [Kyoto University Programming Contest 2018 M - 整数と根付き木](https://atcoder.jp/contests/kupc2018/tasks/kupc2018_m) (パトリシアの効力発揮)<br>
+<input disabled type="checkbox"> [CodeChef Gotham PD](https://www.codechef.com/problems/GPD) (永続, xor)<br>
+<input disabled type="checkbox"> [CodeChef Pishty and tree](https://www.codechef.com/problems/PSHTTR) (永続)
+
+</details>

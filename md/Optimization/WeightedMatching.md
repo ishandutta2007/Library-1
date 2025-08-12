@@ -17,5 +17,6 @@ templateの第2引数が false なら **最大重みマッチング**, true な�
 | `weighed_matching()` | マッチングに使う辺を返す <br> (最小重み完全マッチングの場合に)完全マッチングが存在しないのならば空集合を返す |                    |
 
 
-## 問題例
-[幾何コンテスト2013 B - 玉座の間](https://atcoder.jp/contests/geocon2013/tasks/geocon2013_b) (二部グラフ, コスト実数)
+## Verify
+
+- [幾何コンテスト2013 B - 玉座の間](https://atcoder.jp/contests/geocon2013/tasks/geocon2013_b) (二部グラフ, コスト実数)

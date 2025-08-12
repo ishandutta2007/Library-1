@@ -11,7 +11,9 @@ documentation_of: ../../src/Optimization/monotone_minima.hpp
 
 ## 参考
 [https://topcoder-g-hatena-ne-jp.jag-icpc.org/spaghetti_source/20120923/1348327542.html](https://topcoder-g-hatena-ne-jp.jag-icpc.org/spaghetti_source/20120923/1348327542.html)
-## 問題例
+
+## Verify
+
 - [COLOCON -Colopl programming contest 2018- Final C - スペースエクスプローラー高橋君](https://atcoder.jp/contests/colopl2018-final/tasks/colopl2018_final_c)
 - [技術室奥プログラミングコンテスト#2 F - NPCの家 (NPC's House)](https://atcoder.jp/contests/tkppc2/tasks/tkppc2016_f)
 - [COLOCON -Colopl programming contest 2018- D - すぬけそだて――トレーニング―― ](https://atcoder.jp/contests/colopl2018-qual/tasks/colopl2018_qual_d)

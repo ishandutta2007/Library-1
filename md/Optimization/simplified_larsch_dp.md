@@ -12,5 +12,6 @@ documentation_of: ../../src/Optimization/simplified_larsch_dp.hpp
 ## 参考
 [https://noshi91.hatenablog.com/entry/2023/02/18/005856](https://noshi91.hatenablog.com/entry/2023/02/18/005856)
 
-## 問題例
-[技術室奥プログラミングコンテスト#2 F - NPCの家 (NPC's House)](https://atcoder.jp/contests/tkppc2/tasks/tkppc2016_f) (Alien DP)
+## Verify
+
+- [技術室奥プログラミングコンテスト#2 F - NPCの家 (NPC's House)](https://atcoder.jp/contests/tkppc2/tasks/tkppc2016_f) (Alien DP)

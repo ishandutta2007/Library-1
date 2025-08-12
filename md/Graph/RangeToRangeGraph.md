@@ -20,7 +20,12 @@ documentation_of: ../../src/Graph/RangeToRangeGraph.hpp
 |`add_from_range_to_range(s_l,s_r,t_l,t_r,w=0)`|区間 $\lbrack s_l, s_r)$ から区間 $\lbrack t_l, t_r)$ へ重み $w$ の有向辺を張る．|$O(\log n)$|
 
 
-## 問題例
-[灘校文化祭コンテスト 2022 Day1 I - NPCA Kingdom](https://atcoder.jp/contests/nadafes2022_day1/tasks/nadafes2022_day1_i)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+<input disabled type="checkbox"> [灘校文化祭コンテスト 2022 Day1 I - NPCA Kingdom](https://atcoder.jp/contests/nadafes2022_day1/tasks/nadafes2022_day1_i)
+
+</details>
 ## 参考
 [https://lorent-kyopro.hatenablog.com/entry/2020/07/24/170656](https://lorent-kyopro.hatenablog.com/entry/2020/07/24/170656)

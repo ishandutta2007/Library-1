@@ -16,5 +16,10 @@ documentation_of: ../../src/LinearAlgebra/characteristic_polynomial.hpp
 [https://hitonanode.github.io/cplib-cpp/linear_algebra_matrix/hessenberg_reduction.hpp](https://hitonanode.github.io/cplib-cpp/linear_algebra_matrix/hessenberg_reduction.hpp)\
 [https://hitonanode.github.io/cplib-cpp/linear_algebra_matrix/determinant_of_first_degree_poly_mat.hpp](https://hitonanode.github.io/cplib-cpp/linear_algebra_matrix/determinant_of_first_degree_poly_mat.hpp)
 
-## 問題例
-[Codeforces Round 459 (Div. 1) D. Stranger Trees](https://codeforces.com/contest/917/problem/D) (`det_of_first_degree_poly_mat`)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+<input disabled="" type="checkbox"> [Codeforces Round 459 (Div. 1) D. Stranger Trees](https://codeforces.com/contest/917/problem/D) (`det_of_first_degree_poly_mat`)
+
+</details>

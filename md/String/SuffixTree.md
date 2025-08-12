@@ -27,7 +27,7 @@ documentation_of: ../../src/String/SuffixTree.hpp
 <details>
 <summary>ここをクリックすると開きます</summary>
 
-- [ ] [デンソークリエイトプログラミングコンテスト2022 Winter(AtCoder Beginner Contest 280) Ex - Substring Sort](https://atcoder.jp/contests/abc280/tasks/abc280_h) (sp judge)
+<input disabled="" type="checkbox"> [デンソークリエイトプログラミングコンテスト2022 Winter(AtCoder Beginner Contest 280) Ex - Substring Sort](https://atcoder.jp/contests/abc280/tasks/abc280_h) (sp judge)
 
 </details>
 

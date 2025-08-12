@@ -28,7 +28,7 @@ documentation_of: ../../src/DataStructure/UnionFind_Potentialized.hpp
 <details>
 <summary>ここをクリックすると開きます</summary>
 
-- [ ] [yukicoder No.1420 国勢調査 (Easy)](https://yukicoder.me/problems/no/1420) (ポテンシャル, xor, sp judge)
-- [ ] [競プロ典型 90 問　068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp) (affine, 非可換群)
+<input disabled="" type="checkbox"> [yukicoder No.1420 国勢調査 (Easy)](https://yukicoder.me/problems/no/1420) (ポテンシャル, xor, sp judge)\
+<input disabled="" type="checkbox"> [競プロ典型 90 問　068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp) (affine, 非可換群)
 
 </details>

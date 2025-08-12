@@ -11,6 +11,6 @@ documentation_of: ../../src/Math/sample_points_shift.hpp
 <details>
 <summary>ここをクリックすると開きます</summary>
 
-- [ ] [AtCoder Regular Contest 033 D - 見たことのない多項式](https://atcoder.jp/contests/arc033/tasks/arc033_4)
+<input disabled="" type="checkbox"> [AtCoder Regular Contest 033 D - 見たことのない多項式](https://atcoder.jp/contests/arc033/tasks/arc033_4)
 
 </details>

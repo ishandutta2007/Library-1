@@ -81,7 +81,7 @@ signed main() {
   ans[i - 1]= 0;
   for (auto x: S[i]) ans[i - 1]+= cost[x];
  }
- for (int i= 0; i < n - 1; ++i) cout << (i ? "" : " ") << ans[i];
+ for (int i= 0; i < n - 1; ++i) cout << (i ? " " : "") << ans[i];
  cout << '\n';
  return 0;
 }

@@ -53,14 +53,19 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 ## 参考
 [https://github.com/EntropyIncreaser/ioi2021-homework/blob/master/thesis/main.tex](https://github.com/EntropyIncreaser/ioi2021-homework/blob/master/thesis/main.tex)
 
-## 問題例
-[LibreOJ #155. Tutte 多项式](https://loj.ac/p/155) (Tutte 多項式) \
-[LibreOJ #3165. 「CEOI2019」游乐园](https://loj.ac/p/3165) (acyclic_orientations (Tutte 多項式, 彩色多項式)) \
-[LibreOJ #6673. EntropyIncreaser 与山林](https://loj.ac/p/6673) (オイラーグラフ) \
-[LibreOJ #6719. 「300iq Contest 2」数仙人掌 加强版](https://loj.ac/p/6719) (カクタスグラフ) \
-[LibreOJ #6729. 点双连通生成子图计数](https://loj.ac/p/6729) (二重点連結グラフ) \
-[LibreOJ #6730. 边双连通生成子图计数](https://loj.ac/p/6730) (二重辺連結グラフ) \
-[LibreOJ #6787. 色多项式](https://loj.ac/p/6787) (彩色多項式)\
-[LibraOJ #2340. 「WC2018」州区划分](https://loj.ac/p/2340) \
-[Xmas Contest 2022 F - Fast as Fast as Ryser](https://atcoder.jp/contests/xmascon22/tasks/xmascon22_f) (k-matchig) \
-[Yuhao Du Contest 7 F. Fast as Ryser](https://qoj.ac/contest/449/problem/2068) (k-mathcing)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+<input disabled type="checkbox"> [LibreOJ #155. Tutte 多项式](https://loj.ac/p/155) (Tutte 多項式)<br>
+<input disabled type="checkbox"> [LibreOJ #3165. 「CEOI2019」游乐园](https://loj.ac/p/3165) (acyclic_orientations (Tutte 多項式, 彩色多項式))<br>
+<input disabled type="checkbox"> [LibreOJ #6673. EntropyIncreaser 与山林](https://loj.ac/p/6673) (オイラーグラフ)<br>
+<input disabled type="checkbox"> [LibreOJ #6719. 「300iq Contest 2」数仙人掌 加强版](https://loj.ac/p/6719) (カクタスグラフ)<br>
+<input disabled type="checkbox"> [LibreOJ #6729. 点双连通生成子图计数](https://loj.ac/p/6729) (二重点連結グラフ)<br>
+<input disabled type="checkbox"> [LibreOJ #6730. 边双连通生成子图计数](https://loj.ac/p/6730) (二重辺連結グラフ)<br>
+<input disabled type="checkbox"> [LibreOJ #6787. 色多项式](https://loj.ac/p/6787) (彩色多項式)<br>
+<input disabled type="checkbox"> [LibraOJ #2340. 「WC2018」州区划分](https://loj.ac/p/2340)<br>
+<input disabled type="checkbox"> [Xmas Contest 2022 F - Fast as Fast as Ryser](https://atcoder.jp/contests/xmascon22/tasks/xmascon22_f) (k-matchig)<br>
+<input disabled type="checkbox"> [Yuhao Du Contest 7 F. Fast as Ryser](https://qoj.ac/contest/449/problem/2068) (k-mathcing)
+
+</details>

@@ -82,11 +82,7 @@ KDTree<int,2,int> kdt(xyv);
 
 
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled="" type="checkbox"> [square869120Contest #4 G - Get the Salary of Atcoder](https://atcoder.jp/contests/s8pc-4/tasks/s8pc_4_g) (遅延伝搬) \
-<input disabled="" type="checkbox"> [AtCoder Regular Contest 010 D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4) (最近傍探索) \
-<input disabled="" type="checkbox"> [JOI 2018/2019 春合宿 過去問 A - 試験 (Examination)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_a)(3次元 sum ← 通る, or 2次元 sum + 走査 )
-
-</details>
+- [ ] [square869120Contest #4 G - Get the Salary of Atcoder](https://atcoder.jp/contests/s8pc-4/tasks/s8pc_4_g) (遅延伝搬)
+- [ ] [AtCoder Regular Contest 010 D - 情報伝播](https://atcoder.jp/contests/arc010/tasks/arc010_4) (最近傍探索)
+- [ ] [JOI 2018/2019 春合宿 過去問 A - 試験 (Examination)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_a)(3次元 sum ← 通る, or 2次元 sum + 走査 )

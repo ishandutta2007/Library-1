@@ -14,5 +14,10 @@ documentation_of: ../../src/Optimization/Knapsack.hpp
 
 ## 参考
 [https://twitter.com/noshi91/status/1271857111903825920](https://twitter.com/noshi91/status/1271857111903825920) 
-## 問題例
-[東京海上日動 プログラミングコンテスト2020 D - Knapsack Queries on a tree](https://atcoder.jp/contests/tokiomarine2020/tasks/tokiomarine2020_d)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+<input disabled type="checkbox"> [東京海上日動 プログラミングコンテスト2020 D - Knapsack Queries on a tree](https://atcoder.jp/contests/tokiomarine2020/tasks/tokiomarine2020_d)
+
+</details>

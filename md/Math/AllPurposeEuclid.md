@@ -9,10 +9,9 @@ documentation_of: ../../src/Math/AllPurposeEuclid.hpp
 
 ## 問題例
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled type="checkbox"> [LibreOJ #138. 类欧几里得算法](https://loj.ac/p/138) <br>
-<input disabled type="checkbox"> [LibraOJ #6440. 万能欧几里得](https://loj.ac/p/6440) <br>
 
-</details>
+- [LibreOJ #138. 类欧几里得算法](https://loj.ac/p/138) <br>
+- [LibraOJ #6440. 万能欧几里得](https://loj.ac/p/6440) <br>
+
+

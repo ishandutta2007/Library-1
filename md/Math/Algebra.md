@@ -17,11 +17,10 @@ struct M{
 ```
 
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled type="checkbox"> [AtCoder Beginner Contest 009 D - 漸化式](https://atcoder.jp/contests/abc009/tasks/abc009_4) (bitwise xor and 半環)<br>
-<input disabled type="checkbox"> [DISCO presents ディスカバリーチャンネル コードコンテスト2020 本戦 B - Hawker on Graph](https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_b) (max+の一次関数の加法合成の半環)<br>
-<input disabled type="checkbox"> [競プロ典型 90 問　068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp) (affine, 非可換群)
 
-</details>
+- [AtCoder Beginner Contest 009 D - 漸化式](https://atcoder.jp/contests/abc009/tasks/abc009_4) (bitwise xor and 半環)<br>
+- [DISCO presents ディスカバリーチャンネル コードコンテスト2020 本戦 B - Hawker on Graph](https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_b) (max+の一次関数の加法合成の半環)<br>
+- [競プロ典型 90 問　068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp) (affine, 非可換群)
+
+

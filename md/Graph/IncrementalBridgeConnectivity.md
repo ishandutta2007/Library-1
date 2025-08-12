@@ -15,12 +15,11 @@ documentation_of: ../../src/Graph/IncrementalBridgeConnectivity.hpp
 |`connected(u,v)`|頂点 $u,v$ が連結なら `true`, それ以外なら `false` を返す．|
 
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled type="checkbox"> [AtCoder Regular Contest 039 D - 旅行会社高橋君](https://atcoder.jp/contests/arc039/tasks/arc039_d)
 
-</details>
+- [AtCoder Regular Contest 039 D - 旅行会社高橋君](https://atcoder.jp/contests/arc039/tasks/arc039_d)
+
+
 
 ## 参考
 [https://scrapbox.io/data-structures/Incremental_Bridge-Connectivity](https://scrapbox.io/data-structures/Incremental_Bridge-Connectivity)

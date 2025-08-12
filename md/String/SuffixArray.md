@@ -41,11 +41,9 @@ $\mathrm{LCP}_k:=$ $S_{\SA_k:}$ と $S_{\SA_{k+1}:}$ の共通接頭辞の長さ
 |`begin()`| $\mathrm{LCP}$ の `begin()` を返す.||
 |`end()`|$\mathrm{LCP}$ の `end()` を返す||
 |`lcp(i,j)`|$S_{\SA_i:}$ と $S_{\SA_j:}$ の共通接頭辞の長さを返す. |$O(1)$|
+
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled="" type="checkbox"> [DISCO presents ディスカバリーチャンネル プログラミングコンテスト2016 予選 C - アメージングな文字列は、きみが作る！](https://atcoder.jp/contests/discovery2016-qual/tasks/discovery_2016_qual_c)\
-<input disabled="" type="checkbox"> [DISCO presents ディスカバリーチャンネル コードコンテスト2020 本戦 C - Smaller-Suffix-Free Sequences](https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_c)
+- [DISCO presents ディスカバリーチャンネル プログラミングコンテスト2016 予選 C - アメージングな文字列は、きみが作る！](https://atcoder.jp/contests/discovery2016-qual/tasks/discovery_2016_qual_c)
+- [DISCO presents ディスカバリーチャンネル コードコンテスト2020 本戦 C - Smaller-Suffix-Free Sequences](https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_c)
 
-</details>

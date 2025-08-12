@@ -45,13 +45,10 @@ documentation_of: ../../src/String/RollingHash.hpp
 
 
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled="" type="checkbox"> [AtCoder Regular Contest 050 D - Suffix Concat](https://atcoder.jp/contests/arc050/tasks/arc050_d) (concat_cmp)\
-<input disabled="" type="checkbox"> [AtCoder Regular Contest 055 C - ABCAC](https://atcoder.jp/contests/arc055/tasks/arc055_c)\
-<input disabled="" type="checkbox"> [AtCoder Beginner Contest 284 F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f) (sp judge)\
-<input disabled="" type="checkbox"> [競プロ典型 90 問 047 - Monochromatic Diagonal（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_au)\
-<input disabled="" type="checkbox"> [早稲田大学プログラミングコンテスト2019 E - Artist](https://atcoder.jp/contests/wupc2019/tasks/wupc2019_e)
+- [AtCoder Regular Contest 050 D - Suffix Concat](https://atcoder.jp/contests/arc050/tasks/arc050_d) (concat_cmp)
+- [AtCoder Regular Contest 055 C - ABCAC](https://atcoder.jp/contests/arc055/tasks/arc055_c)
+- [AtCoder Beginner Contest 284 F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f) (sp judge)
+- [競プロ典型 90 問 047 - Monochromatic Diagonal（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_au)
+- [早稲田大学プログラミングコンテスト2019 E - Artist](https://atcoder.jp/contests/wupc2019/tasks/wupc2019_e)
 
-</details>

@@ -15,9 +15,8 @@ min_left, max_right は [ACL](https://github.com/atcoder/ac-library/blob/master/
 ## 計算量
 $O(\log N)$
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled="" type="checkbox"> [AtCoder Regular Contest 027 D - ぴょんぴょんトレーニング](https://atcoder.jp/contests/arc027/tasks/arc027_4) (メモリギリギリ)
 
-</details>
+- [AtCoder Regular Contest 027 D - ぴょんぴょんトレーニング](https://atcoder.jp/contests/arc027/tasks/arc027_4) (メモリギリギリ)
+
+

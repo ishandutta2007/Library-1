@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://loj.ac/p/2340
-// competitive-verifier: TLE 3
+// competitive-verifier: TLE 4
 // competitive-verifier: MLE 512
 
 #include <iostream>

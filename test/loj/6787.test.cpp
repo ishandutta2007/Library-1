@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://loj.ac/p/6787
 // competitive-verifier: TLE 1.0
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 
 #include <iostream>
 #include "src/Math/ModInt.hpp"

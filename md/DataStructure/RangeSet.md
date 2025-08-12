@@ -24,10 +24,7 @@ bool にキャストできて、valid (具体的には $l\gt r$) ならtrueを�
 
 
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled="" type="checkbox"> [HHKB プログラミングコンテスト 2020 C - Neq Min](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_c)\
-<input disabled="" type="checkbox"> [AtCoder Regular Contest 039 C - 幼稚園児高橋君](https://atcoder.jp/contests/arc039/tasks/arc039_c)
+- [HHKB プログラミングコンテスト 2020 C - Neq Min](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_c)
+- [AtCoder Regular Contest 039 C - 幼稚園児高橋君](https://atcoder.jp/contests/arc039/tasks/arc039_c)
 
-</details>

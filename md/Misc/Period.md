@@ -32,10 +32,8 @@ $x_i$ として取りうる状態の数が有限であるときに周期性を�
 | `path_upto_cycle(x)`          | 同じ値が出るまでの軌道を返す．<br> 軌道は `vector<pair<int,int>>` で表現する半開区間の列 $\lbrack a_0, b_0 ),\dots,\lbrack a_m, b_m )$ であり, `operator()` のラベルに対応している． | $O(\log n)$ |
 
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled="" type="checkbox"> [AtCoder Beginner Contest 030 D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)\
-<input disabled="" type="checkbox"> [JOI 2010-2011 日本代表選手選考会 (春合宿代替措置) 過去問 report - 報告 (Report)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_report) (`path_upto_cycle`)
 
-</details>
+- [AtCoder Beginner Contest 030 D - へんてこ辞書](https://atcoder.jp/contests/abc030/tasks/abc030_d)\
+- [JOI 2010-2011 日本代表選手選考会 (春合宿代替措置) 過去問 report - 報告 (Report)](https://atcoder.jp/contests/joisc2011/tasks/joisc2011_report) (`path_upto_cycle`)
+

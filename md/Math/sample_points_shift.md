@@ -8,9 +8,7 @@ documentation_of: ../../src/Math/sample_points_shift.hpp
 |`sample_points_shift(y,c)`| $n-1$ 次多項式 $f(x)$ について $n$ 個の評価点 $y=f(0), f(1), \dots, f(n-1)$ と $c$ を与えて $f(c)$ を返す． | $O(n)$|
 
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled="" type="checkbox"> [AtCoder Regular Contest 033 D - 見たことのない多項式](https://atcoder.jp/contests/arc033/tasks/arc033_4)
 
-</details>
+- [AtCoder Regular Contest 033 D - 見たことのない多項式](https://atcoder.jp/contests/arc033/tasks/arc033_4)
+

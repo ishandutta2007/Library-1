@@ -11,9 +11,6 @@ documentation_of: ../../src/DataStructure/OnlineDynamicConnectivity.hpp
 [https://qiita.com/hotman78/items/78cd3aa50b05a57738d4](https://qiita.com/hotman78/items/78cd3aa50b05a57738d4)
 
 ## Verify
-<details>
-<summary>ここをクリックすると開きます</summary>
 
-<input disabled="" type="checkbox"> [Educational Codeforces Round 62 F. Extending Set of Points](https://codeforces.com/contest/1140/problem/F) 
+- [Educational Codeforces Round 62 F. Extending Set of Points](https://codeforces.com/contest/1140/problem/F) 
 
-</details>

@@ -24,6 +24,11 @@ documentation_of: ../../src/DataStructure/UnionFind_Potentialized.hpp
 |`potential(u)`|要素 $u$ のポテンシャル $p(u)$ を返す． |$O(\alpha(n))$|
 |`diff(u,v)`| $-p(v)+p(u)$ を返す |$O(\alpha(n))$|
 
-## 問題例
-[yukicoder No.1420 国勢調査 (Easy)](https://yukicoder.me/problems/no/1420) (ポテンシャル, xor, sp judge)\
-[競プロ典型 90 問　068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp) (affine, 非可換群)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+- [ ] [yukicoder No.1420 国勢調査 (Easy)](https://yukicoder.me/problems/no/1420) (ポテンシャル, xor, sp judge)
+- [ ] [競プロ典型 90 問　068 - Paired Information（★5）](https://atcoder.jp/contests/typical90/tasks/typical90_bp) (affine, 非可換群)
+
+</details>

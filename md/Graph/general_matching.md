@@ -13,11 +13,11 @@ GabowのEdmonds' Algorithm
 <details>
 <summary>ここをクリックすると開きます</summary>
 
-- [ ] [Chokudai SpeedRun 002 K - 種類数 β](https://atcoder.jp/contests/chokudai_S002/tasks/chokudai_S002_k) (二部マッチング, 頂点:2e5+4e5?, 辺:4e5?)
-- [ ] [JOI春合宿2016 マッチングコンテスト A - 一般最大マッチング](https://atcoder.jp/contests/joisc2016matching/tasks/joisc2016matching_a)
-- [ ] [Universal Online Judge #79. 一般图最大匹配](https://uoj.ac/problem/79)
-- [ ] [Universal Online Judge #171. 【WC2016】挑战NPC](https://uoj.ac/problem/171) (マッチング相手の調整が必要)
-- [ ] [The 2021 ICPC Asia Shanghai Regional Programming Contest L. Three,Three,Three](https://codeforces.com/gym/103446/problem/L)
-- [ ] [ICPC 2018-2019, NEERC B Bimatching](https://codeforces.com/contest/1089)
+<input disabled="" type="checkbox"> [Chokudai SpeedRun 002 K - 種類数 β](https://atcoder.jp/contests/chokudai_S002/tasks/chokudai_S002_k) (二部マッチング, 頂点:2e5+4e5?, 辺:4e5?)\
+<input disabled="" type="checkbox"> [JOI春合宿2016 マッチングコンテスト A - 一般最大マッチング](https://atcoder.jp/contests/joisc2016matching/tasks/joisc2016matching_a)\
+<input disabled="" type="checkbox"> [Universal Online Judge #79. 一般图最大匹配](https://uoj.ac/problem/79)\
+<input disabled="" type="checkbox"> [Universal Online Judge #171. 【WC2016】挑战NPC](https://uoj.ac/problem/171) (マッチング相手の調整が必要)\
+<input disabled="" type="checkbox"> [The 2021 ICPC Asia Shanghai Regional Programming Contest L. Three,Three,Three](https://codeforces.com/gym/103446/problem/L)\
+<input disabled="" type="checkbox"> [ICPC 2018-2019, NEERC B Bimatching](https://codeforces.com/contest/1089)
 
 </details>

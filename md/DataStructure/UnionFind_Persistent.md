@@ -9,6 +9,6 @@ $O(\log N)$
 <details>
 <summary>ここをクリックすると開きます</summary>
 
-- [ ] [CODE THANKS FESTIVAL 2017 H - Union Sets](https://atcoder.jp/contests/code-thanks-festival-2017/tasks/code_thanks_festival_2017_h)
+<input disabled="" type="checkbox"> [CODE THANKS FESTIVAL 2017 H - Union Sets](https://atcoder.jp/contests/code-thanks-festival-2017/tasks/code_thanks_festival_2017_h)
 
 </details>

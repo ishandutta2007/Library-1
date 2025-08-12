@@ -14,6 +14,6 @@ documentation_of: ../../src/DataStructure/OnlineDynamicConnectivity.hpp
 <details>
 <summary>ここをクリックすると開きます</summary>
 
-- [ ] [Educational Codeforces Round 62 F. Extending Set of Points](https://codeforces.com/contest/1140/problem/F) 
+<input disabled="" type="checkbox"> [Educational Codeforces Round 62 F. Extending Set of Points](https://codeforces.com/contest/1140/problem/F) 
 
 </details>

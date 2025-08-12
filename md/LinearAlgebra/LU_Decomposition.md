@@ -19,6 +19,11 @@ documentation_of: ../../src/LinearAlgebra/LU_Decomposition.hpp
 | `linear_equations(b)` | 線形方程式 $A\boldsymbol{x}=\boldsymbol{b}$ の解の一つ ( `Vector` クラス ) を返す. 存在しないならサイズ0のものを返す                                        | $O(n^2)$ |
 | `inverse_matrix()`    | 逆行列 $A^{-1}$ を返す. 存在しないなら高さ・幅 0の `Matrix` を返す                                                                                          | $O(n^3)$ |
 
-## 問題例
-[yukicoder No.1421 国勢調査 (Hard)](https://yukicoder.me/problems/no/1421) (sp judge)\
-[AtCoder Beginner Contest 276 Ex - Construct a Matrix](https://atcoder.jp/contests/abc276/tasks/abc276_h) (sp judge)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+<input disabled="" type="checkbox"> [yukicoder No.1421 国勢調査 (Hard)](https://yukicoder.me/problems/no/1421) (sp judge)\
+<input disabled="" type="checkbox"> [AtCoder Beginner Contest 276 Ex - Construct a Matrix](https://atcoder.jp/contests/abc276/tasks/abc276_h) (sp judge)
+
+</details>

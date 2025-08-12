@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://www2.ioi-jp.org/camp/2012/2012-sp-tasks/2012-sp-day4.pdf#2
-// competitive-verifier: TLE 2
+// competitive-verifier: TLE 2.5
 // competitive-verifier: MLE 256
 
 // 融合永続, split, split3

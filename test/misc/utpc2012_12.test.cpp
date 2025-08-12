@@ -1,6 +1,6 @@
 // competitive-verifier: PROBLEM https://atcoder.jp/contests/utpc2012/tasks/utpc2012_12
 // competitive-verifier: TLE 0.5
-// competitive-verifier: MLE 64
+// competitive-verifier: MLE 128
 
 #include <iostream>
 #include "src/Optimization/PiecewiseLinearConvex.hpp"

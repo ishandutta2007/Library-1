@@ -11,8 +11,8 @@ signed main() {
  ios::sync_with_stdio(0);
  int n, m;
  cin >> n >> m;
- vector<int> ord(n + n);
- for (int i= 0; i < n + n; ++i) ord[i]= i & 1 ? n + i / 2 : i / 2;
+ vector<int> ord(n + n), dro(n + n);
+ for (int i= 0; i < n + n; ++i) ord[i]= i & 1 ? n + i / 2 : i / 2, dro[ord[i]]= i;
  BipartiteGraph bg(n, n);
  for (int i= 0; i < m; ++i) {
   int a, b, f;
@@ -22,6 +22,6 @@ signed main() {
  DulmageMendelsohn dm(bg);
  auto ans= dm.min_vertex_cover(ord);
  cout << ans.size() << '\n';
- for (int x: ans) cout << x + 1 << '\n';
+ for (int x: ans) cout << dro[x] + 1 << '\n';
  return 0;
 }

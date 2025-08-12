@@ -95,9 +95,7 @@ $N$ を与えて, 具体的な数論的関数についての `DirichletSeries` �
 
 ## 参考
 [https://maspypy.com/dirichlet-積と、数論関数の累積和](https://maspypy.com/dirichlet-%E7%A9%8D%E3%81%A8%E3%80%81%E6%95%B0%E8%AB%96%E9%96%A2%E6%95%B0%E3%81%AE%E7%B4%AF%E7%A9%8D%E5%92%8C)
-## 問題例
-[Xmas Contest 2019 D - Sum of (-1)^f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d) (Liouville)\
-[LibreOJ #6491. 「XXOI 2018」简单的最大公约数](https://loj.ac/p/6491) \
-[LibreOJ #6686. Stupid GCD](https://loj.ac/p/6686) \
-[LibreOJ #6714. Stupid Product](https://loj.ac/p/6714)\
-[LibreOJ #572. 「LibreOJ Round #11」Misaka Network 与求和](https://loj.ac/p/572) ([prime count](src/NumberTheory/ExtendedEratosthenesSieve.hpp) もいる)
+
+## Verify
+
+- [Xmas Contest 2019 D - Sum of (-1)^f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d) (Liouville)

@@ -51,6 +51,5 @@ $K$は乗法の逆元は必要としない. (各演算は定義できる)
 ## Verify
 
 - [Xmas Contest 2020 H - Hierarchical Phylogeny](https://atcoder.jp/contests/xmascon20/tasks/xmascon20_h) (self relax or 合成 1-√(1-2f))<br>
-- [LibraOJ #2340. 「WC2018」州区划分](https://loj.ac/p/2340) (semi relax)
 
 

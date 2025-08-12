@@ -17,7 +17,7 @@ documentation_of: ../../src/Graph/CliqueProblem.hpp
 | `enumerate_cliques(out)`    | すべてのクリークcに対してout(c) を実行する. | $O(n2^{\sqrt{2m}})$ <br> $m$ は辺の数 |
 
 
-## 問題例
-[CODE THANKS FESTIVAL 2017(Parallel) G - Mixture Drug](https://atcoder.jp/contests/code-thanks-festival-2017-open/tasks/code_thanks_festival_2017_g) (最大クリーク, 40頂点) \
-[yukicoder No.382 シャイな人たち (2)](https://yukicoder.me/problems/no/382) (最大独立集合, 120頂点) \
-[Maximum-Cup 2018 H - Maxmin Tour](https://atcoder.jp/contests/maximum-cup-2018/tasks/maximum_cup_2018_h) (二部グラフ マッチング, 600頂点)
+## Verify
+- [CODE THANKS FESTIVAL 2017(Parallel) G - Mixture Drug](https://atcoder.jp/contests/code-thanks-festival-2017-open/tasks/code_thanks_festival_2017_g) (最大クリーク, 40頂点)
+- [yukicoder No.382 シャイな人たち (2)](https://yukicoder.me/problems/no/382) (最大独立集合, 120頂点, sp judge)
+- [Maximum-Cup 2018 H - Maxmin Tour](https://atcoder.jp/contests/maximum-cup-2018/tasks/maximum_cup_2018_h) (二部グラフ マッチング, 600頂点)

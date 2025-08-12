@@ -16,5 +16,5 @@ documentation_of: ../../src/Misc/CartesianTree.hpp
 | `children(int i)`                      | Cartesian-Treeの頂点 $i$ の子を返す. <br> 二分木なので`array<int,2>` で返す. いない場合 $-1$.|<img src="https://github.com/hashiryo/Library/blob/master/img/cartesiantree_children.svg?raw=true" width="100%">|
 
 
-## 問題例
-[AtCoder Beginner Contest 275 Ex - Monster](https://atcoder.jp/contests/abc275/tasks/abc275_h)(木上をdfs)
+## Verify
+- [AtCoder Beginner Contest 275 Ex - Monster](https://atcoder.jp/contests/abc275/tasks/abc275_h)(木上をdfs)

@@ -36,7 +36,12 @@ documentation_of: ../../src/Graph/BipartiteGraph.hpp
 ※ 各頂点の（最大マッチングとは限らない）マッチング相手が記録されている `vector<int>`　( 返り値の二つ目の形式と同じ ) を渡す. マッチングとして矛盾している場合の挙動は未定義．一度この関数を実行した後，（辺を一本追加あるいは削除などの）少しだけ変化させた場合の再計算を効率よくするためのもの．
 
 
-## 問題例
-[CODE FESTIVAL 2017 qual B C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c) (二部グラフ塗り分け)\
-[アルゴリズムと数学　演習問題集 047 - Bipartite Graph](https://atcoder.jp/contests/math-and-algorithm/tasks/math_and_algorithm_ao) (二部グラフ判定)\
-[Chokudai SpeedRun 002 K - 種類数 β](https://atcoder.jp/contests/chokudai_S002/tasks/chokudai_S002_k) (二部マッチング, 頂点:2e5+4e5?, 辺:4e5?)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+<input disabled type="checkbox"> [CODE FESTIVAL 2017 qual B C - 3 Steps](https://atcoder.jp/contests/code-festival-2017-qualb/tasks/code_festival_2017_qualb_c) (二部グラフ塗り分け)<br>
+<input disabled type="checkbox"> [アルゴリズムと数学　演習問題集 047 - Bipartite Graph](https://atcoder.jp/contests/math-and-algorithm/tasks/math_and_algorithm_ao) (二部グラフ判定)<br>
+<input disabled type="checkbox"> [Chokudai SpeedRun 002 K - 種類数 β](https://atcoder.jp/contests/chokudai_S002/tasks/chokudai_S002_k) (二部マッチング, 頂点:2e5+4e5?, 辺:4e5?)
+
+</details>

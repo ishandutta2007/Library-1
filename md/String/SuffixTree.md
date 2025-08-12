@@ -23,8 +23,13 @@ documentation_of: ../../src/String/SuffixTree.hpp
 |`substr(l)`|接尾辞 $S_{l:}$ を構成する頂点列（根から葉へのパス）のうちの最も子孫な頂点（葉）を返す.|$O(1)$|
 |`substr(l,n)`|部分文字列 $S_{l:l+n}$ を構成する頂点列（根からのパス）のうちの最も子孫な頂点を返す. |$O(\log n)$|
 
-## 問題例
-[デンソークリエイトプログラミングコンテスト2022 Winter(AtCoder Beginner Contest 280) Ex - Substring Sort](https://atcoder.jp/contests/abc280/tasks/abc280_h) (sp judge)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+- [ ] [デンソークリエイトプログラミングコンテスト2022 Winter(AtCoder Beginner Contest 280) Ex - Substring Sort](https://atcoder.jp/contests/abc280/tasks/abc280_h) (sp judge)
+
+</details>
 
 ## 参考
 [https://twitter.com/maspy_stars/status/1565901414236205057?s=20&t=S2Tu6ayozHcakxai8dmh4g](https://twitter.com/maspy_stars/status/1565901414236205057?s=20&t=S2Tu6ayozHcakxai8dmh4g)

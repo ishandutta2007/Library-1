@@ -23,7 +23,11 @@ bool にキャストできて、valid (具体的には $l\gt r$) ならtrueを�
 | `mex(x)`                                                                          | 管理してる閉区間に属さない x 以上の 最小の整数を返す                                                                                                                                    |
 
 
-## 問題例
-[HHKB プログラミングコンテスト 2020 C - Neq Min](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_c) \
-[AtCoder Regular Contest 039 C - 幼稚園児高橋君](https://atcoder.jp/contests/arc039/tasks/arc039_c) \
-[HackerRank Drawing Rectangles](https://www.hackerrank.com/contests/university-codesprint-4/challenges/drawing-rectangles)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+- [ ] [HHKB プログラミングコンテスト 2020 C - Neq Min](https://atcoder.jp/contests/hhkb2020/tasks/hhkb2020_c)
+- [ ] [AtCoder Regular Contest 039 C - 幼稚園児高橋君](https://atcoder.jp/contests/arc039/tasks/arc039_c)
+
+</details>

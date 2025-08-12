@@ -75,6 +75,11 @@ SegmentTree_2D<int,RMQ> seg(xyv);
 |`get(x,y)`|点 $(x,y)$ の値を返す.　<br> 点が存在しないとassertで落ちる.|$O(\log n)$|
 |`mul(x,y,v)`|点 $(x,y)$ の値に `v` を (モノイド演算で) かける. <br> 点が存在しないとassertで落ちる.|$O(\log n)$|
 
-## 問題例
-[技術室奥プログラミングコンテスト#6 Day1 N - Jump and Walk](https://atcoder.jp/contests/tkppc6-1/tasks/tkppc6_1_n) (2次元 min, kdtだとTLE)\
-[JOI 2018/2019 春合宿 過去問 A - 試験 (Examination)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_a)(2次元 sum + 走査)
+## Verify
+<details>
+<summary>ここをクリックすると開きます</summary>
+
+- [ ] [技術室奥プログラミングコンテスト#6 Day1 N - Jump and Walk](https://atcoder.jp/contests/tkppc6-1/tasks/tkppc6_1_n) (2次元 min, kdtだとTLE)
+- [ ] [JOI 2018/2019 春合宿 過去問 A - 試験 (Examination)](https://atcoder.jp/contests/joisc2019/tasks/joisc2019_a)(2次元 sum + 走査)
+
+</details>

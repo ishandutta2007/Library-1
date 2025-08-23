@@ -5,97 +5,87 @@ documentation_of: ../../src/NumberTheory/DirichletSeries.hpp
 
 $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$
 
-ディリクレ級数の四則演算で作り上げた数論的関数の累積和を計算するためのもの.
+数論的関数の累積和 $\sum_{i=1}^N f(i)$ を高速に求めるためのライブラリです。
+ディリクレ積で表現できる数論的関数 $f(n) = (g*h)(n) = \sum_{d|n} g(d)h(n/d)$ の累積和を、$g, h$ の累積和が高速に求まる場合に高速に計算できます。
 ## `DirichletSeries<T>` クラス
-正の整数 $N$ が与えられるとする. <br>
-ある数論的関数 $f$ と $k\in \lbrace a\in \mathbb{N}\; \vert\; \exists m \in \mathbb{N}, a=\floor{\frac{N}{m}}\rbrace$ について
+ある数論的関数 $f$ について、$F(k) = \sum_{n=1}^k f(n)$ の値を $\lfloor N/m \rfloor$ の形で表せる全ての $k$ について保持するデータ構造です。
 
-$\displaystyle
-F(k) = \sum_{n=1}^k f(n)
-$
+内部では、$f(n)$ の値を $n \le K$ まで、また $F(k)$ の値を $k \le K$ と $k=\lfloor N/m \rfloor$ ($m \le L$) について保持します。ここで、$K, L$ は $KL \ge N$ を満たすパラメータで、デフォルトでは $K \approx N^{2/3}, L \approx N^{1/3}$ となるように設定されます。これにより、多くの操作が $O(N^{2/3})$ 程度の計算量で実現されます。
 
-の値を格納する (と思うことにする) データ構造. \
-$f$ や $F$ そのものは保持しない. \
-またディリクレ級数として四則演算をサポート. \
-以下 $K,L$ は 
-
-$\displaystyle
-K \simeq (N/\log N)^{2/3}, L\simeq N^{1/3}(\log N)^{2/3}
-$
-
-ぐらいの $N \leq KL$ を満たす正の整数を表す.
-
-$O(K\log K+\sqrt{NL})=O(N^{2/3}(\log N)^{1/3})$
-
-またディリクレ級数の単元として次の表記を導入.
-
+ディリクレ級数の単位元 $\varepsilon(n)$ は以下のように定義されます。
 $\displaystyle 
-\varepsilon(n) \equiv \lbrack n=1
-\rbrack 
+\varepsilon(n) \equiv \lbrack n=1 \rbrack 
 \equiv 
 \begin{cases}
-1& n=1, \newline
-0& n \gt 1.
-\end{cases}
-$
+1 & (n=1) \\
+0 & (n > 1)
+\end{cases}$
 
+### メンバ変数
 
 |メンバ変数|概要|
 |---|---|
-|`N`|$N$|
-|`K`|$K$|
-|`x`| $f(1),\dots,f(K)$ の値を保存している配列. <br> サイズは$K+1$. 0番目の値は未定義.|
-|`Xs`|$F(1),\dots,F(K)$ の値を保存している配列. <br> サイズは$K+1$. 0番目の値は未定義.|
-|`Xl`|$F(\floor{N/1}),\dots,F(\floor{N/L})$ の値を保存している配列. <br> サイズは$L+1$. 0番目の値は未定義.|
+|`N`|累積和を計算する上限 $N$ です。|
+|`K`, `L`|内部で利用するテーブルサイズです。$KL \ge N$ を満たします。|
+|`x`| $f(1), \dots, f(K)$ の値を保持する配列です。|
+|`X`| $F(1), \dots, F(K)$ および $F(\lfloor N/1 \rfloor), \dots, F(\lfloor N/L \rfloor)$ の値を保持する配列です。|
 
-|演算子オーバーロード|概要 ( $f,g$ から $h$ を返すイメージ )|計算量|
+### 演算子オーバーロード
+
+$f, g$ に対応する `DirichletSeries` オブジェクトから $h$ に対応するオブジェクトを計算します。
+
+|演算子|概要|計算量|
 |---|---|---|
-|`operator-(f)`|$h(n)=-f(n)$|$O(K+L)$|
-|`operator+(f,g)`|$h(n)=f(n)+g(n)$|$O(K+L)$|
-|`operator+(f,a)` |$h(n)=f(n)+a\cdot\varepsilon(n)$|$O(K+L)$|
-|`operator+(a,f)` |$h(n)=a\cdot\varepsilon(n) + f(n)$　(上と同じ)|$O(K+L)$|
-|`operator-(f,g)`|$h(n)=f(n)-g(n)$|$O(K+L)$|
-|`operator-(f,a)`|$h(n)=f(n)-a\cdot\varepsilon(n)$|$O(K+L)$|
-|`operator-(a,f)`|$h(n)=a\cdot\varepsilon(n)-f(n)$|$O(K+L)$|
-|`operator*(f,g)`|$\displaystyle h(n)=\sum_{ij=n}f(i)g(j)$|$O(K\log K+\sqrt{NL})$|
-|`operator*(f,a)`|$h(n)= f(n)\cdot a$|$O(K+L)$|
-|`operator*(a,f)`|$h(n)=a\cdot f(n)$ (上と同じ)|$O(K+L)$|
-|`operator/(f,g)`|$\displaystyle f(n) = \sum_{ij=n}h(i)g(j)$ を満たす $h$.|$O(K\log K+\sqrt{NL})$|
-|`operator/(f,a)`|$h(n)=f(n) /a$|$O(K+L)$|
-|`operator/(a,f)`|$\displaystyle a\cdot \varepsilon(n) = \sum_{ij=n}h(i)f(j)$ を満たす $h$.|$O(K\log K+\sqrt{NL})$|
+|`-f`|$h(n)=-f(n)$|$O(K+L)$|
+|`f+g`|$h(n)=f(n)+g(n)$|$O(K+L)$|
+|`f+a` |$h(n)=f(n)+a\cdot\varepsilon(n)$|$O(1)$|
+|`f-g`|$h(n)=f(n)-g(n)$|$O(K+L)$|
+|`f-a`|$h(n)=f(n)-a\cdot\varepsilon(n)$|$O(1)$|
+|`f*g` (ディリクレ積)|$\displaystyle h(n)=\sum_{d|n}f(d)g(n/d)$|$O(K\log K+\sqrt{NL})$|
+|`f*a`|$h(n)= f(n)\cdot a$|$O(K+L)$|
+|`f/g` (ディリクレ逆数)|$\displaystyle f(n) = \sum_{d|n}h(d)g(n/d)$ を満たす $h$|$O(K\log K+\sqrt{NL})$|
+|`f/a`|$h(n)=f(n) /a$|$O(K+L)$|
+|`a/f`|$\displaystyle a\cdot \varepsilon(n) = \sum_{d|n}h(d)f(n/d)$ を満たす $h$|$O(K\log K+\sqrt{NL})$|
+
+### メンバ関数
 
 |メンバ関数|概要|計算量|
 |---|---|---|
-|`DirichletSeries(N, x, Xs, Xl)`|コンストラクタ. $N$ と配列を直接渡して構築.||
-|`DirichletSeries(N, unit=false)`|コンストラクタ. $N$ を渡して構築. <br> `unit` が `false` なら $f(n)\equiv0$, `true` なら $f(n)\equiv \varepsilon(n)$ のケースとして構築. <br> それぞれディリクレ級数の零元, 単元を意味する. ||
-|`DirichletSeries(N, sum)`|コンストラクタ. $N$ と関数 $F$ を渡して構築. ||
-|`sum(k)`| $F(k)$ を返す. <br>ただし <br> $\displaystyle k\in\left \lbrace a\in \mathbb{N}\; \vert\; \exists m \in \mathbb{N}, a=\floor{\frac{N}{m}}\right\rbrace$ <br>のケースのみ想定.|$O(1)$|
-|`sum()`|$\displaystyle F(N)=\sum_{n=1}^N f(n)$ を返す.|$O(1)$
-|`square()`|$\displaystyle h(n)=\sum_{ij=n}f(i)f(j)$ についての `DirichletSeries` クラスのオブジェクトを返す. <br> `operator*(f,f)` と同じ結果 (定数倍速い).|$O(K\log K+\sqrt{NL})$|
-|`pow(M)`|$\displaystyle h(n)=\sum_{i_1\cdots i_M=n}f(i_1)\cdots f(i_M)$ についての `DirichletSeries` クラスのオブジェクトを返す. <br> つまりディリクレ積の $M$ 乗.|$O(R(N)\log N)$<br> ただし $R(N)=O(K\log K+\sqrt{NL})$|
+|`DirichletSeries(N, unit=false)`|コンストラクタ。`unit`が`false`なら零元 ($f(n)=0$)、`true`なら単位元 ($f(n)=\varepsilon(n)$) で初期化します。| $O(K+L)$ |
+|`DirichletSeries(N, sum)`|コンストラクタ。累積和を返す関数 `sum` を用いて初期化します。| $O(K+L)$ |
+|`sum(k)`| $F(k) = \sum_{n=1}^k f(n)$ を返します。$k$ は $\lfloor N/m \rfloor$ の形で表せる必要があります。|$O(1)$|
+|`sum()`|$\displaystyle F(N)=\sum_{n=1}^N f(n)$ を返します。|$O(1)$|
+|`square()`|$f*f$ を計算します。`f*f`より高速です。|$O(K\log K+\sqrt{NL})$|
+|`pow(M)`|ディリクレ積の $M$ 乗を計算します。|$O((K\log K+\sqrt{NL})\log M)$|
 
 
-## 具体的な数論的関数の　`DirichletSeries<T>`
 
-$N$ を与えて, 具体的な数論的関数についての `DirichletSeries` クラスのオブジェクトを返す.
+## 具体的な数論的関数の `DirichletSeries<T>`
 
-|関数|数論的関数|計算量|
+一般的な数論的関数に対応する `DirichletSeries` オブジェクトを生成するヘルパー関数です。
+
+|関数|数論的関数 $f(n)$|計算量|
 |---|---|---|
-|`get_1(N)`|$f(n)\equiv 1$| $O(K+L)$|
-|`get_mu(N)`|$f(n)\equiv\mu(n)$ <br> メビウス関数| $O(K\log K+\sqrt{NL})$|
-|`get_Id(N)`|$f(n)\equiv n$| $O(K+L)$|
-|`get_Id2(N)`|$f(n)\equiv n^2$| $O(K+L)$|
-|`get_d(N)`|$f(n)\equiv d(n)$ <br> 約数の個数関数| $O(K\log K+\sqrt{NL})$|
-|`get_sigma(N)`|$f(n)\equiv \sigma(n)$ <br> 約数の和関数| $O(K\log K+\sqrt{NL})$|
-|`get_phi(N)`|$f(n)\equiv \phi(n)$ <br> オイラーのトーシェント関数| $O(K\log K+\sqrt{NL})$|
-|`get_1sq(N)`|$f(n)\equiv \lbrack n \text{ is a square} \rbrack$ <br> $n$ が平方数の時のみ $1$, それ以外 $0$| $O(K\log K+\sqrt{NL})$|
-|`get_lambda(N)`|$f(n)\equiv\lambda(n)$ <br> Liouville のラムダ関数| $O(K\log K+\sqrt{NL})$|
-|`get_absmu(N)`|$f(n)\equiv\lvert\mu(n)\rvert$ <br> メビウス関数の絶対値. square-free| $O(K\log K+\sqrt{NL})$|
+|`get_1(N)`|$f(n) = 1$ (定数関数)| $O(K+L)$|
+|`get_mu(N)`|$f(n) = \mu(n)$ (メビウス関数)| $O(K\log K+\sqrt{NL})$|
+|`get_Id(N)`|$f(n) = n$ (恒等写像)| $O(K+L)$|
+|`get_Id2(N)`|$f(n) = n^2$| $O(K+L)$|
+|`get_d(N)`|$f(n) = d(n)$ (約数関数)| $O(K\log K+\sqrt{NL})$|
+|`get_sigma(N)`|$f(n) = \sigma(n)$ (約数和関数)| $O(K\log K+\sqrt{NL})$|
+|`get_phi(N)`|$f(n) = \phi(n)$ (オイラーのトーシェント関数)| $O(K\log K+\sqrt{NL})$|
+|`get_1sq(N)`|$f(n) = [n \text{ is a perfect square}]$| $O(K+L)$|
+|`get_lambda(N)`|$f(n) = \lambda(n)$ (リウヴィル関数)| $O(K\log K+\sqrt{NL})$|
+|`get_absmu(N)`|$f(n) = |\mu(n)|$ (平方因子を持たないなら1)| $O(K\log K+\sqrt{NL})$|
 
 
 ## 参考
 [https://maspypy.com/dirichlet-積と、数論関数の累積和](https://maspypy.com/dirichlet-%E7%A9%8D%E3%81%A8%E3%80%81%E6%95%B0%E8%AB%96%E9%96%A2%E6%95%B0%E3%81%AE%E7%B4%AF%E7%A9%8D%E5%92%8C)
 
-## Verify
+## 使用例
 
-- [Xmas Contest 2019 D - Sum of (-1)^f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d) (Liouville)
+- [Sum of Totient Function (yosupo)](../../test/yosupo/math/sum_of_totient_function.test.cpp)
+  - $\sum_{i=1}^N \phi(i)$ を求めます。
+- [Sum of Divisors (yosupo)](../../test/yosupo/math/sum_of_powers_of_divisors.test.cpp)
+  - $\sum_{i=1}^N \sigma(i)$ を求めます。
+- [Xmas Contest 2019 D - Sum of (-1)^f(n)](https://atcoder.jp/contests/xmascon19/tasks/xmascon19_d)
+  - リウヴィル関数の累積和を求めます。

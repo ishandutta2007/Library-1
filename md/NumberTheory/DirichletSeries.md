@@ -6,7 +6,7 @@ documentation_of: ../../src/NumberTheory/DirichletSeries.hpp
 $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$
 
 数論的関数の累積和 $\sum_{i=1}^N f(i)$ を高速に求めるためのライブラリです。
-ディリクレ積で表現できる数論的関数 $f(n) = (g*h)(n) = \sum_{d|n} g(d)h(n/d)$ の累積和を、　$g, h$ の累積和が高速に求まる場合に高速に計算できます。
+ディリクレ積で表現できる数論的関数 $f(n) = (g*h)(n) = \sum_{d|n} g(d)h(n/d)$ の累積和を、 $g, h$ の累積和が高速に求まる場合に高速に計算できます。
 ## `DirichletSeries<T>` クラス
 ある数論的関数 $f$ について、$F(k) = \sum_{n=1}^k f(n)$ の値を $\lfloor N/m \rfloor$ の形で表せる全ての $k$ について保持するデータ構造です。
 

@@ -75,7 +75,7 @@ $f, g$ に対応する `DirichletSeries` オブジェクトから $h$ に対応�
 |`get_phi(N)`|$f(n) = \phi(n)$ (オイラーのトーシェント関数)| $O(K\log K+\sqrt{NL})$|
 |`get_1sq(N)`|$f(n) = [n \text{ is a perfect square}]$| $O(K+L)$|
 |`get_lambda(N)`|$f(n) = \lambda(n)$ (リウヴィル関数)| $O(K\log K+\sqrt{NL})$|
-|`get_absmu(N)`|$f(n) = |\mu(n)|$ (平方因子を持たないなら1)| $O(K\log K+\sqrt{NL})$|
+|`get_absmu(N)`|$f(n) = \lvert\mu(n)\rvert$ (平方因子を持たないなら1)| $O(K\log K+\sqrt{NL})$|
 
 
 ## 参考

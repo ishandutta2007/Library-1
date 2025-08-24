@@ -45,7 +45,7 @@ $f, g$ に対応する `DirichletSeries` オブジェクトから $h$ に対応�
 |`f*a`|$h(n)= f(n)\cdot a$|$O(K+L)$|
 |`f/g` (ディリクレ逆数)|$\displaystyle f(n) = \sum_{d|n}h(d)g(n/d)$ を満たす $h$|$O(K\log K+\sqrt{NL})$|
 |`f/a`|$h(n)=f(n) /a$|$O(K+L)$|
-|`a/f`|$\displaystyle a\cdot \varepsilon(n) = \sum_{d|n}h(d)f(n/d)$ を満たす $h$|$O(K\log K+\sqrt{NL})$|
+|`a/f`|$\displaystyle a\cdot \varepsilon(n) = \sum_{d\vert n}h(d)f(n/d)$ を満たす $h$|$O(K\log K+\sqrt{NL})$|
 
 ### メンバ関数
 

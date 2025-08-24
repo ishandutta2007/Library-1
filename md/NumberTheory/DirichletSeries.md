@@ -41,7 +41,7 @@ $f, g$ に対応する `DirichletSeries` オブジェクトから $h$ に対応�
 |`f+a` |$h(n)=f(n)+a\cdot\varepsilon(n)$|$O(1)$|
 |`f-g`|$h(n)=f(n)-g(n)$|$O(K+L)$|
 |`f-a`|$h(n)=f(n)-a\cdot\varepsilon(n)$|$O(1)$|
-|`f*g` (ディリクレ積)|$\displaystyle h(n)=\sum_{d|n}f(d)g(n/d)$|$O(K\log K+\sqrt{NL})$|
+|`f*g` (ディリクレ積)|$\displaystyle h(n)=\sum_{d\vert n}f(d)g(n/d)$|$O(K\log K+\sqrt{NL})$|
 |`f*a`|$h(n)= f(n)\cdot a$|$O(K+L)$|
 |`f/g` (ディリクレ逆数)|$\displaystyle f(n) = \sum_{d|n}h(d)g(n/d)$ を満たす $h$|$O(K\log K+\sqrt{NL})$|
 |`f/a`|$h(n)=f(n) /a$|$O(K+L)$|

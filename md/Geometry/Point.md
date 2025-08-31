@@ -32,22 +32,12 @@ documentation_of: ../../src/Geometry/Point.hpp
 |名前|概要|戻り値の型|
 |---|---|---|
 |`dot(p,q)`| 内積 $\boldsymbol{p}\cdot \boldsymbol{q}$ | `make_long_t<K>` |
-|`cross(p,q)`| 外積 $\boldsymbol{p}\times \boldsymbol{q}$ 
- $\boldsymbol{p}$ から $\boldsymbol{q}$ へ反時計回りなら正。| `make_long_t<K>` |
+|`cross(p,q)`| 外積 $\boldsymbol{p}\times \boldsymbol{q}$  <br>$\boldsymbol{p}$ から $\boldsymbol{q}$ へ反時計回りなら正。| `make_long_t<K>` |
 |`norm2(p)`| ノルムの2乗 $\lVert \boldsymbol{p}\rVert^2$ | `make_long_t<K>` |
-|`norm(p)`| ノルム $\lVert \boldsymbol{p}\rVert$ 
- (`sqrt` を用いるため `Rational` などでは使用不可) | `long double` |
+|`norm(p)`| ノルム $\lVert \boldsymbol{p}\rVert$  <br>(`sqrt` を用いるため `Rational` などでは使用不可) | `long double` |
 |`dist2(p,q)`| 2点 $\boldsymbol{p}$, $\boldsymbol{q}$ 間のユークリッド距離の2乗。| `make_long_t<K>` |
-|`dist(a,b)`| 2つのオブジェクト $a$, $b$ 間のユークリッド距離。 
-(`sqrt` を用いるため `Rational` などでは使用不可) 
- `dist2` の結果を `sqrt` したもの。 
- 直線・線分・多角形なども `dist2` を定義することで自動的にこれも定義される。| `long double` |
-|`ccw(p0,p1,p2)`| $\boldsymbol{p}_0\rightarrow \boldsymbol{p}_1\rightarrow \boldsymbol{p}_2$ の位置関係を判定。 
- `COUNTER_CLOCKWISE`: 反時計回り (左折) 
- `CLOCKWISE`: 時計回り (右折) 
- `ONLINE_BACK`: $\boldsymbol{p}_2, \boldsymbol{p}_0, \boldsymbol{p}_1$ の順で同一直線上 (後退) 
- `ONLINE_FRONT`: $\boldsymbol{p}_0, \boldsymbol{p}_1, \boldsymbol{p}_2$ の順で同一直線上 (前進) 
- `ON_SEGMENT`: $\boldsymbol{p}_0, \boldsymbol{p}_2, \boldsymbol{p}_1$ の順で同一直線上 (線上) | `enum CCW` |
+|`dist(a,b)`| 2つのオブジェクト $a$, $b$ 間のユークリッド距離。 <br>(`sqrt` を用いるため `Rational` などでは使用不可)  `dist2` の結果を `sqrt` したもの。 <br>直線・線分・多角形なども `dist2` を定義することで自動的にこれも定義される。| `long double` |
+|`ccw(p0,p1,p2)`| $\boldsymbol{p}_0\rightarrow \boldsymbol{p}_1\rightarrow \boldsymbol{p}_2$ の位置関係を判定。  <br>`COUNTER_CLOCKWISE`: 反時計回り (左折) <br>`CLOCKWISE`: 時計回り (右折)  <br>`ONLINE_BACK`: $\boldsymbol{p}_2, \boldsymbol{p}_0, \boldsymbol{p}_1$ の順で同一直線上 (後退)  <br>`ONLINE_FRONT`: $\boldsymbol{p}_0, \boldsymbol{p}_1, \boldsymbol{p}_2$ の順で同一直線上 (前進)  <br>`ON_SEGMENT`: $\boldsymbol{p}_0, \boldsymbol{p}_2, \boldsymbol{p}_1$ の順で同一直線上 (線上) | `enum CCW` |
 
 ## `Affine<K>` クラス
 アフィン変換を表現するクラス。

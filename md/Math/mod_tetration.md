@@ -21,7 +21,7 @@ uint64_t mod_tetration(uint64_t a, uint64_t b, uint64_t m);
 
 ## アルゴリズム
 オイラーの定理を拡張した $x^y \equiv x^{y \pmod{\phi(m)} + \phi(m)} \pmod m$ (ただし $y \ge \phi(m)$ ) を利用する。
-指数部分である $a \upuparrows (b-1)$ について、$\pmod{\phi(m)}$ での値を再帰的に計算することで、全体の値を求める。
+指数部分である $a \upuparrows (b-1)$ について、 $\pmod{\phi(m)}$ での値を再帰的に計算することで、全体の値を求める。
 法である $m$ は $\phi(m), \phi(\phi(m)), \dots$ と小さくなっていき、最終的に 1 になることを利用している。
 
 ## 計算量

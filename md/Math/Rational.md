@@ -35,7 +35,7 @@ documentation_of: ../../src/Math/Rational.hpp
 |`to_fp()`|`long double` 型に変換する。`explicit operator` が定義されているため `(double)r` のようにキャスト可能。| $O(1)$ |
 |`floor()`|床関数 $\lfloor r \rfloor$ を計算する。| $O(1)$ |
 |`ceil()`|天井関数 $\lceil r \rceil$ を計算する。| $O(1)$ |
-|`abs()`|絶対値 $|r|$ を計算する。| $O(1)$ |
+|`abs()`|絶対値 $\lvert r\rvert$ を計算する。| $O(1)$ |
 |`to_string()`|`"num/den"` 形式の文字列に変換する。| $O(\log(\text{num}) + \log(\text{den}))$ |
 
 ---

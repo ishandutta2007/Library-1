@@ -127,5 +127,3 @@ int main() {
 - [Minimum Cost b-flow (Yosupo Judge)](https://judge.yosupo.jp/problem/min_cost_b_flow)
 - [Assignment Problem (Yosupo Judge)](https://judge.yosupo.jp/problem/assignment)
 - [GRL_6_B - Minimum Cost Flow (AOJ)](https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_B)
-
-```

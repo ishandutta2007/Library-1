@@ -5,7 +5,7 @@ documentation_of: ../../src/Graph/bipartite_edge_coloring.hpp
 
 |関数名|概要|計算量|
 |---|---|---|
-|`bipartite_edge_coloring(bg)`|二部グラフの辺彩色を構築する．<br> 引数は [`BipartiteGraph` クラス](BipartiteGraph.hpp)．<br> 戻り値は辺のサイズの `vector<int>` で各辺への色の割り当てを表す．| <br>$O(E\sqrt{V}\log \Delta)$ <br> ただし頂点の次数のうち最大のものを $\Delta$ とおいた． |
+|`bipartite_edge_coloring(bg)`|二部グラフの辺彩色を構築する．<br> 引数は [`BipartiteGraph` クラス](BipartiteGraph.hpp)．<br> 戻り値は辺数と同じサイズの `vector<int>` で，各辺への色の割り当てを表す．頂点の最大次数を $\Delta$ とすると， $\Delta$ 色で彩色され，色は $0, 1, \dots, \Delta-1$ で表現される．| <br>$O(E\sqrt{V}\log \Delta)$ <br> ただし $\Delta$ は頂点の最大次数． |
 
 
 ## Verify

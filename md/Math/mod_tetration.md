@@ -5,7 +5,7 @@ documentation_of: ../../src/Math/mod_tetration.hpp
 
 ## 概要
 $a$ の $b$ 回のテトレーションを $m$ で割った余りを計算する。
-$$ a \upuparrows b = \underbrace{a^{a^{\dots^a}}}_{b個} \pmod m $$
+$\display a \upuparrows b = \underbrace{a^{a^{\dots^a}}}_{b個} \pmod m $$
 
 `mod_tetration(a, b, m)` はこの値を返す。
 

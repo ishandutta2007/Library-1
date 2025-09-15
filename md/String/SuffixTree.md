@@ -16,7 +16,7 @@ documentation_of: ../../src/String/SuffixTree.hpp
 |メンバ関数|概要|計算量|
 |---|---|---|
 |`SuffixTree(sa, lcp)`|コンストラクタ. <br> 引数は [`SuffixArray` と `LCPArray`](src/String/SuffixArray.hpp) .|$O(n)$ |
-|`operator[](v)`| 接尾辞木上の頂点 v が指す矩形の情報を返す. <br> (suffix array の添字方向) $\times$ ( 高さ/ lcp 方向 )の矩形 $\lbrack l, r) \times \lbrack d, u)$ を意味する4つの整数 {l,r,d,u} を返す. ||
+|`operator[](v)`| 接尾辞木上の頂点 `v` の情報を `std::tuple<int, int, int, int>` 型で返す。タプルの各要素は `{l, r, d, u}` であり、これは Suffix Array 上の区間 `[l, r)` と文字列の深さの区間 `[d, u)` を表す。|
 |`begin()`| 矩形情報配列の `begin()` を返す.||
 |`end()`| 矩形情報配列の `end()` を返す||
 |`size()`|接尾辞木の頂点数を返す.||

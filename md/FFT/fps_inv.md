@@ -7,12 +7,18 @@ documentation_of: ../../src/FFT/fps_inv.hpp
 形式的冪級数 $A(x) = \sum_{i=0}^{N-1} a_i x^i$ の逆元 $B(x) = A(x)^{-1}$ を $\pmod{x^N}$ で求める。
 すなわち、$A(x)B(x) \equiv 1 \pmod{x^N}$ となる $B(x) = \sum_{i=0}^{N-1} b_i x^i$ を計算する。
 
-$A(x)$ の定数項 $a_0$ は $0$ であってはならない。
+係数の型 `mod_t` は、体が想定されている（例: `ModInt`）。
 
 計算量: $O(N \log N)$
 
+## 制約
+- $p$ は空でない (`p.size() > 0`)
+- $p$ の定数項 `p[0]` は逆元を持つ必要がある
+
 ## 使用方法
 ```cpp
+#include <vector>
+#include "src/Math/ModInt.hpp" // ModIntなど
 #include "src/FFT/fps_inv.hpp"
 ```
 

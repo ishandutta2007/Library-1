@@ -50,9 +50,9 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 |`colorings_using_exactly_k_colors_num<T>()`|グラフ全体 $G(V,E)$ について、ちょうど $k$ 色を用いる頂点彩色の数を `a[k]` に格納した配列 `a` を返す。|$O(n^22^n)$|
 |`chromatic_polynomial<T>()`|グラフ全体 $G(V,E)$ の[彩色多項式](https://en.wikipedia.org/wiki/Chromatic_polynomial) $P(G,x)=\sum_{i=0}^n a_i x^i$ の係数配列を返す。|$O(n^22^n)$|
 |`tutte_polynomial<T>(x,y)`|グラフ全体 $G(V,E)$ の[Tutte多項式](https://en.wikipedia.org/wiki/Tutte_polynomial) $T_G(x,y)$ の値を返す。|$O(n^22^n)$|
-|`perfect_matching<T>()`|グラフ全体 $G(V,E)$ の完全マッチングの個数（重み付き）を返す。※1|$O(n^22^{n/2})$|
-|`all_matching<T>()`|グラフ全体 $G(V,E)$ のマッチング（完全とは限らない）の個数（重み付き）を返す。※1|$O(n^22^{n/2})$|
-|`k_matching<T>()`|グラフ全体 $G(V,E)$ について、サイズ $k$ のマッチングの個数（重み付き）を `a[k]` に格納した配列 `a` を返す。※1|$O(n^22^{n/2})$|
+|`perfect_matching<T>()`|グラフ全体 $G(V,E)$ の完全マッチングの個数（重み付き）を返す。|$O(n^22^{n/2})$※1|
+|`all_matching<T>()`|グラフ全体 $G(V,E)$ のマッチング（完全とは限らない）の個数（重み付き）を返す。|$O(n^22^{n/2})$※1|
+|`k_matching<T>()`|グラフ全体 $G(V,E)$ について、サイズ $k$ のマッチングの個数（重み付き）を `a[k]` に格納した配列 `a` を返す。|$O(n^22^{n/2})$※1|
 
 ※1: マッチング系の関数の計算量は、分割統治的なアルゴリズムにより、頂点数を約半分にした $\lceil n/2 \rceil$ 個の頂点に関する問題に帰着させているため、$2^n$ ではなく $2^{n/2}$ に比例する時間となります。
 

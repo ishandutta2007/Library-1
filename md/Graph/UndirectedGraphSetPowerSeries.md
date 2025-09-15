@@ -57,7 +57,7 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 ※1: マッチング系の関数の計算量は、分割統治的なアルゴリズムにより、頂点数を約半分にした $\lceil n/2 \rceil$ 個の頂点に関する問題に帰着させているため、$2^n$ ではなく $2^{n/2}$ に比例する時間となります。
 
 ## 参考
-- [Enumerating Induced Subgraphs by Set Power Series](https://github.com/EntropyIncreaser/ioi2021-homework/blob/master/thesis/main.tex) (元論文)
+- [https://github.com/EntropyIncreaser/ioi2021-homework/blob/master/thesis/main.tex](https://github.com/EntropyIncreaser/ioi2021-homework/blob/master/thesis/main.tex)
 
 ## Verify
 

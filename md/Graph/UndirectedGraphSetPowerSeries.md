@@ -29,7 +29,7 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 |`articulation_union(f)`|2頂点連結グラフのSPS $f$ から、それらを関節点で結合して得られるグラフのSPSを返す。$f$ は各頂点 $v$ について $f_{\{v\}}=0$ を満たす必要がある。|$O(n^32^n)$|
 |`only_2edge_connected(f)`|連結グラフのSPS $f$ から、2辺連結なものだけを数えるSPSを返す。|$O(n^32^n)$|
 |`bridge_union(f)`|2辺連結グラフのSPS $f$ から、それらを橋で結合して得られるグラフのSPSを返す。|$O(n^32^n)$|
-|`edge_num()`|各頂点集合 $S$ について、その誘導部分グラフの辺数 $|E_S|$ を係数に持つSPSを返す。|$O(n2^n)$|
+|`edge_num()`|各頂点集合 $S$ について、その誘導部分グラフの辺数 $\lvert E_S \rvert$ を係数に持つSPSを返す。|$O(n2^n)$|
 |`connected_component_num()`|各頂点集合 $S$ について、その誘導部分グラフの連結成分数を係数に持つSPSを返す。|$O(n2^n)$|
 |`cycle_space_rank()`|各頂点集合 $S$ について、その誘導部分グラフの[サイクル基底](https://en.wikipedia.org/wiki/Cycle_basis)の次元 (辺数 - 頂点数 + 連結成分数) を係数に持つSPSを返す。|$O(n2^n)$|
 |`selfloop_num()`|各頂点集合 $S$ について、その誘導部分グラフの自己ループの総数を係数に持つSPSを返す。|$O(2^n)$|

@@ -247,7 +247,7 @@ public:
   for (int s= cyc.size(); s--;) cyc[s]+= pth[s];
   return sps::exp(cyc).back();
  }
- template <class T> std::vector<T> k_mathcing() const {
+ template <class T> std::vector<T> k_matching() const {
   auto [cyc, pth]= cyc_pth<T>();
   auto ret= sps::egf_T(pth, sps::exp(cyc));
   return std::reverse(ret.begin(), ret.end()), ret.resize(n / 2 + 1), ret;

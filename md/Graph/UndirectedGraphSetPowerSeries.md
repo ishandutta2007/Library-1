@@ -25,8 +25,8 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 |`operator[](u)`|隣接行列の第 $u$ 行への読み取り専用アクセス。||
 |`only_connected(f)`| ある性質を持つ誘導部分グラフの個数を表すSPS $f$ から、そのうち連結なものだけを数えるSPS $g$ を計算する (e.g. 森 → 木)。これは $g = \log(f)$ に対応する。入力 $f$ は $f_{\varnothing}=1$ を満たす必要がある。 |$O(n^22^n)$|
 |`disjoint_union(f)`|連結な誘導部分グラフの個数を表すSPS $f$ から、それらの非交和として構成されるグラフ (e.g. 木 → 森) の個数を表すSPS $g$ を計算する。これは $g = \exp(f)$ に対応する。入力 $f$ は $f_{\varnothing}=0$ を満たす必要がある。|$O(n^22^n)$|
-|`only_biconnected(f)`|連結グラフのSPS $f$ から、2頂点連結なものだけを数えるSPSを返す。$f$ は各頂点 $v$ について $f_{\{v\}}=1$ を満たす必要がある。|$O(n^32^n)$|
-|`articulation_union(f)`|2頂点連結グラフのSPS $f$ から、それらを関節点で結合して得られるグラフのSPSを返す。$f$ は各頂点 $v$ について $f_{\{v\}}=0$ を満たす必要がある。|$O(n^32^n)$|
+|`only_biconnected(f)`|連結グラフのSPS $f$ から、2頂点連結なものだけを数えるSPSを返す。 $f$ は各頂点 $v$ について $f_{\{v\}}=1$ を満たす必要がある。|$O(n^32^n)$|
+|`articulation_union(f)`|2頂点連結グラフのSPS $f$ から、それらを関節点で結合して得られるグラフのSPSを返す。 $f$ は各頂点 $v$ について $f_{\{v\}}=0$ を満たす必要がある。|$O(n^32^n)$|
 |`only_2edge_connected(f)`|連結グラフのSPS $f$ から、2辺連結なものだけを数えるSPSを返す。|$O(n^32^n)$|
 |`bridge_union(f)`|2辺連結グラフのSPS $f$ から、それらを橋で結合して得られるグラフのSPSを返す。|$O(n^32^n)$|
 |`edge_num()`|各頂点集合 $S$ について、その誘導部分グラフの辺数 $\lvert E_S \rvert$ を係数に持つSPSを返す。|$O(n2^n)$|

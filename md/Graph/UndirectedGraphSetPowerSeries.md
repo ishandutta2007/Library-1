@@ -35,7 +35,7 @@ documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
 |`selfloop_num()`|各頂点集合 $S$ について、その誘導部分グラフの自己ループの総数を係数に持つSPSを返す。|$O(2^n)$|
 |`odd_deg_num()`|各頂点集合 $S$ について、その誘導部分グラフ内で奇数次数を持つ頂点の数を係数に持つSPSを返す。|$O(n^22^n)$|
 |`space_size<T>(rank)`|$\\mathbb{F}_2$ ベクトル空間の次元を表すSPS `rank` から、その空間の元の個数 ($2^{\text{rank}}$) を表すSPSを返す。|$O(2^n)$|
-|`graph<T>()`|各頂点集合 $S$ について、その誘導部分グラフの総数 ($2^{|E_S|}$) を係数に持つSPSを返す。|$O(n2^n)$|
+|`graph<T>()`|各頂点集合 $S$ について、その誘導部分グラフの総数 ($2^{\lvert E_S \rvert}$) を係数に持つSPSを返す。|$O(n2^n)$|
 |`cycle_space_size<T>()`|各頂点集合 $S$ について、その誘導部分グラフのうち全ての頂点次数が偶数であるものの数 ($2^{\text{cycle\_rank}}$) を係数に持つSPSを返す。|$O(n2^n)$|
 |`connected_graph<T>()`|連結な誘導部分グラフの数を表すSPSを返す。|$O(n^22^n)$|
 |`eulerian_graph<T>()`|[オイラーグラフ](https://ja.wikipedia.org/wiki/%E3%82%AA%E3%82%A4%E3%83%A9%E3%83%BC%E8%B7%AF) (連結かつ全頂点が偶数次数) である誘導部分グラフの数を表すSPSを返す。|$O(n^22^n)$|

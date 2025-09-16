@@ -13,9 +13,9 @@ documentation_of: ../../src/NumberTheory/is_prime.hpp
 
 ## 説明
 
-ミラーラビン素数判定法に基づいている。
-`unsigned long long` の範囲の整数 `n` に対して、決定的に正しい結果を返す。
-`constexpr` なのでコンパイル時にも使用可能。
+Miller-Rabin素数判定法に基づいています。
+`unsigned long long` 型の整数 `n` ($0 \le n < 2^{64}$) に対して、決定的に正しい結果を返します。
+`constexpr` なのでコンパイル時にも使用可能です。
 
 ## 使用例
 

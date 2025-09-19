@@ -80,7 +80,7 @@ int main() {
 
 ### 機能
 
-$\\sum_{i=0}^{n} A^i B^{\lfloor \frac{ai+b}{c} \rfloor}$ の形の和を計算します。　$A, B$ は環の元です。
+$\\sum_{i=0}^{n} A^i B^{\lfloor \frac{ai+b}{c} \rfloor}$ の形の和を計算します。 $A, B$ は環の元です。
 
 ### テンプレートパラメータ
 

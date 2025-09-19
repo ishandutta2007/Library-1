@@ -92,7 +92,7 @@ $\\sum_{i=0}^{n} A^i B^{\lfloor \frac{ai+b}{c} \rfloor}$ の形の和を計算�
 
 #### `static R_t solve(u64 n, u64 a, u64 b, u64 c, const R_t &A, const R_t &B)`
 - **引数**:
-    - `n, a, b, c`: 和を計算する対象のパラメータ。$i=0, \dots, n$ の $n+1$ 項について計算します。
+    - `n, a, b, c`: 和を計算する対象のパラメータ。 $i=0, \dots, n$ の $n+1$ 項について計算します。
     - `A, B`: `R_t` 型の基数。
 - **戻り値**:
     - 計算結果の `R_t` 型の値。

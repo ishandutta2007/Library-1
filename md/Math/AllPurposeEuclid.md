@@ -133,6 +133,6 @@ int main() {
 - [LOJ #138. 数列の和](https://loj.ac/p/138) (`FloorSumTable`)
 
 ## 参考
-- [万能すごい！万能欧幾里得](https://kewth.github.io/2020/07/19/%E4%B8%87%E8%83%BD%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97/)
-- [[Tutorial] 万能欧几里得算法](https://www.luogu.com.cn/blog/ix-35/solution-p5170)
-- [「万能欧几里得」を雰囲気で理解する](https://www.cnblogs.com/p-b-p-b/p/13070809.html)
+[https://www.luogu.com.cn/blog/ix-35/solution-p5170](https://www.luogu.com.cn/blog/ix-35/solution-p5170) \
+[https://kewth.github.io/2020/07/19/%E4%B8%87%E8%83%BD%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97/](https://kewth.github.io/2020/07/19/%E4%B8%87%E8%83%BD%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97/) \
+[https://www.cnblogs.com/p-b-p-b/p/13070809.html](https://www.cnblogs.com/p-b-p-b/p/13070809.html)

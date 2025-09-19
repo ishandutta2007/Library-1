@@ -35,7 +35,7 @@ $\\sum_{i=0}^{n} i^{k_1} \lfloor \frac{ai+b}{c} \rfloor^{k_2}$ の形の和を�
 
 #### `static auto solve(u64 n, u64 a, u64 b, u64 c, int k1, int k2)`
 - **引数**:
-    - `n, a, b, c`: 和を計算する対象のパラメータ。$i=0, \dots, n$ の $n+1$ 項について計算します。
+    - `n, a, b, c`: 和を計算する対象のパラメータ。 $i=0, \dots, n$ の $n+1$ 項について計算します。
     - `k1, k2`: 計算したい次数の上限。`k1 <= MXK1`, `k2 <= MXK2` を満たす必要があります。
 - **戻り値**:
     - `std::array<std::array<int_t, MXK2 + 1>, MXK1 + 1>>` 型の2次元配列 `ret`。

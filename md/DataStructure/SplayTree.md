@@ -35,7 +35,7 @@ Splay Tree は、列（Sequence）を管理するための平衡二分探索木�
 | `using E = ...` | ノードに作用させる作用素の型                                                                     |                                              |
 | `mp(T&, E)`     | `T` 型の値に `E` 型の作用素を適用する関数。`mp(val, act, size)` のように部分木のサイズも引数に取れます。 | `apply` (区間作用)                           |
 | `cp(E&, E)`     | `E` 型の作用素同士を合成する関数                                                                 | `apply` (区間作用)                           |
-| `using commute` | `op` と `mp` が可換であることを示す型エイリアス                                                  | `mul` (特定の要素への `op` 適用)             |
+| `using commute` | `op` が可換であることを示す型エイリアス                                                  | `mul` (特定の要素への `op` 適用)             |
 
 #### 使用例：区間アフィン変換・区間和
 `yosupo/dynamic_sequence_range_affine_range_sum` での使用例です。

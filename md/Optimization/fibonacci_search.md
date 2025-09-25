@@ -3,15 +3,56 @@ title: フィボナッチ探索
 documentation_of: ../../src/Optimization/fibonacci_search.hpp
 ---
 
-引数の型が整数な単峰関数を対象. \
-引数の型が `long double` の単峰関数を対象にする場合は[黄金分割探索](src/Optimization/golden_search.hppd) を使う.
+## 概要
 
-## 関数
+整数区間 `[l, r]` 上で単峰性を示す関数の最小値または最大値を求める。
 
-| 名前         | 概要                                                 | 計算量                         |
-| ------------ | ---------------------------------------------------- | ------------------------------ |
-| `fibonacci_search<sgn>(f,l,r)`   | $\lbrack l, r\rbrack \cap\mathbb{Z}$ 上で単峰となる関数 $f(x)$ の最適値とその最適解を返す. <br> 返り値は { 最適解 $x^\ast$, 最適値 $f(x^\ast)$ } <br> templateの引数で最大最小を指定.           | $n=r-l$ とおき, $f(x)$ の評価が$O(A)$ かかるとしたとき<br>                  $O(A\log n)$    |
+引数の型が整数な単峰関数を対象とする。浮動小数点数を対象とする場合は[黄金分割探索](golden_search.md) を使う。
 
+## 使い方
+
+```cpp
+#include "src/Optimization/fibonacci_search.hpp"
+#include "src/Optimization/MinMaxEnum.hpp"
+
+// pair{最適解, 最適値} fibonacci_search<obj>(f, l, r);
+```
+
+- `obj`: `MINIMIZE` (最小化) または `MAXIMIZE` (最大化) を指定する。
+- `f`: `int64_t` を引数とし、比較可能な値を返す単峰関数オブジェクト。
+- `l`, `r`: 探索範囲の閉区間 `[l, r]` (`int64_t`)。
+- **返り値**: `{最適解, 最適値}` の `std::pair`。
+
+### 使用例
+
+$f(x) = (x-5)^2$ の最小値を求める。
+
+```cpp
+#include <iostream>
+#include "src/Optimization/fibonacci_search.hpp"
+#include "src/Optimization/MinMaxEnum.hpp"
+
+int main() {
+    auto f = [](long long x) {
+        return (x - 5) * (x - 5);
+    };
+    // 探索範囲 [0, 10] で最小値を求める
+    auto result = fibonacci_search<MINIMIZE>(f, 0, 10);
+    // 最適解: 5, 最適値: 0
+    std::cout << "x = " << result.first << ", min_val = " << result.second << std::endl;
+    return 0;
+}
+```
+
+## 制約
+
+- `l <= r`
+- 関数 `f` は探索区間 `[l, r]` で単峰性を持つ必要がある。
+
+## 計算量
+
+$N = r - l + 1$ とし、関数 `f` の評価に $O(A)$ の計算量がかかるとする。
+- $O(A \log N)$
 
 ## Verify
 
@@ -19,4 +60,4 @@ documentation_of: ../../src/Optimization/fibonacci_search.hpp
 - [技術室奥プログラミングコンテスト#2 F - NPCの家 (NPC's House)](https://atcoder.jp/contests/tkppc2/tasks/tkppc2016_f) (Alien DP)
 
 ## 参考
-[https://qiita.com/tanaka-a/items/f380257328da421c6584](https://qiita.com/tanaka-a/items/f380257328da421c6584) 
+- [フィボナッチ探索と黄金分割探索 - Qiita](https://qiita.com/tanaka-a/items/f380257328da421c6584)

@@ -24,7 +24,7 @@ documentation_of: ../../src/Geometry/Point.hpp
 | `!p` | 原点を中心に $\pi/2$ (90度) 反時計回りに回転 |
 | `p == q`, `p != q` | 座標が（誤差を考慮して）等しいかどうかの比較 |
 | `p < q`, `p > q`, `p <= q`, `p >= q` | 辞書順による比較 (`set` や `map` のキーとして使用可能) |
-| `cin >> p`, `cout << p` | `x y` 形式での入出力 |
+| `cin >> p`, `cout << p` | `x y` 形式での入力、`(x, y)` 形式での出力 |
 
 ## `Point<K>` を引数に取る関数
 点やベクトルに関する基本的な幾何計算を行う関数。
@@ -37,7 +37,7 @@ documentation_of: ../../src/Geometry/Point.hpp
 |`norm(p)`| ノルム $\lVert \boldsymbol{p}\rVert$  <br>(`sqrt` を用いるため `Rational` などでは使用不可) | `long double` |
 |`dist2(p,q)`| 2点 $\boldsymbol{p}$, $\boldsymbol{q}$ 間のユークリッド距離の2乗。| `make_long_t<K>` |
 |`dist(a,b)`| 2つのオブジェクト $a$, $b$ 間のユークリッド距離。 <br>(`sqrt` を用いるため `Rational` などでは使用不可)  `dist2` の結果を `sqrt` したもの。 <br>直線・線分・多角形なども `dist2` を定義することで自動的にこれも定義される。| `long double` |
-|`ccw(p0,p1,p2)`| $\boldsymbol{p}_0\rightarrow \boldsymbol{p}_1\rightarrow \boldsymbol{p}_2$ の位置関係を判定。  <br>`COUNTER_CLOCKWISE`: 反時計回り (左折) <br>`CLOCKWISE`: 時計回り (右折)  <br>`ONLINE_BACK`: $\boldsymbol{p}_2, \boldsymbol{p}_0, \boldsymbol{p}_1$ の順で同一直線上 (後退)  <br>`ONLINE_FRONT`: $\boldsymbol{p}_0, \boldsymbol{p}_1, \boldsymbol{p}_2$ の順で同一直線上 (前進)  <br>`ON_SEGMENT`: $\boldsymbol{p}_0, \boldsymbol{p}_2, \boldsymbol{p}_1$ の順で同一直線上 (線上) | `enum CCW` |
+|`ccw(p0,p1,p2)`| $\overrightarrow{p_0 p_1}$ に対する $\overrightarrow{p_0 p_2}$ の位置関係を判定。<br>浮動小数点数型 `K` の場合、誤差を考慮して正規化された外積で判定する。<br>`COUNTER_CLOCKWISE`: 反時計回り (左折)<br>`CLOCKWISE`: 時計回り (右折)<br>`ONLINE_BACK`: $p_2, p_0, p_1$ の順で同一直線上<br>`ONLINE_FRONT`: $p_0, p_1, p_2$ の順で同一直線上<br>`ON_SEGMENT`: $p_0, p_2, p_1$ の順で同一直線上（線分 $p_0 p_1$ 上） | `enum CCW` |
 
 ## `Affine<K>` クラス
 アフィン変換を表現するクラス。

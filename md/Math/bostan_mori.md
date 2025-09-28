@@ -32,7 +32,7 @@ K div_at(std::vector<K> p, std::vector<K> q, uint64_t k);
 
 ### 計算量
 
-$d = \max(\deg(P), \deg(Q))$ として、$O(d^2 \log k)$。
+$d = \max(\deg(P), \deg(Q))$ として、 $O(d^2 \log k)$。
 
 ---
 

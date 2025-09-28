@@ -60,4 +60,4 @@ $N = r - l + 1$ とし、関数 `f` の評価に $O(A)$ の計算量がかかる
 - [技術室奥プログラミングコンテスト#2 F - NPCの家 (NPC's House)](https://atcoder.jp/contests/tkppc2/tasks/tkppc2016_f) (Alien DP)
 
 ## 参考
-- [フィボナッチ探索と黄金分割探索 - Qiita](https://qiita.com/tanaka-a/items/f380257328da421c6584)
+- [https://qiita.com/tanaka-a/items/f380257328da421c6584](https://qiita.com/tanaka-a/items/f380257328da421c6584)

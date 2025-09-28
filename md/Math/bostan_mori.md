@@ -68,4 +68,3 @@ $d = \text{c.size()}$ として、$O(d^2 \log k)$。
 
 ## 参考
 - [線形漸化的数列のN項目の計算](https://qiita.com/ryuhe1/items/da5acbcce4ac1911f47a)
-- [Bostan–Mori algorithm - Wikipedia](https://en.wikipedia.org/wiki/Bostan%E2%80%93Mori_algorithm)

@@ -52,7 +52,6 @@ K linear_recurrence(std::vector<K> c, const std::vector<K> &a, uint64_t k);
 
 $\displaystyle b_n = \begin{cases} a_n & n < d \ \sum_{i=0}^{d-1} c_i b_{n-1-i} & n \geq d \end{cases}$
 
-これは $b_n = c_0 b_{n-1} + c_1 b_{n-2} + \dots + c_{d-1} b_{n-d}$ と同義です。
 
 -   `c`: 漸化式の係数 $c_0, c_1, \dots, c_{d-1}$ を格納した `std::vector`。ここで $d = \text{c.size()}$ です。
 -   `a`: 数列の初項 $b_0, b_1, \dots, b_{d-1}$ を格納した `std::vector`。

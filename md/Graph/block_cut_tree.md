@@ -54,5 +54,5 @@ for (int i = 0; i < num_blocks; ++i) {
 ```
 
 ## 参考
-- [noshi91さんのツイート](https://twitter.com/noshi91/status/1529858538650374144)
-- [二点連結成分分解 - なちあの学習帳](https://nachiavivias.github.io/cp-library/column/2022/01.html)
+[https://twitter.com/noshi91/status/1529858538650374144?s=20&t=eznpFbuD9BDhfTb4PplFUg](https://twitter.com/noshi91/status/1529858538650374144?s=20&t=eznpFbuD9BDhfTb4PplFUg)\
+[https://nachiavivias.github.io/cp-library/column/2022/01.html](https://nachiavivias.github.io/cp-library/column/2022/01.html)

@@ -9,7 +9,9 @@ documentation_of: ../../src/Misc/TwoSatisfiability.hpp
 
 各節が高々2つのリテラルの論理和 (OR) で構成される論理式 (2-CNF) が与えられたとき、その論理式を真 (TRUE) にするような変数の割り当てが存在するかどうかを判定し、存在するならばその一例を求める。
 
-強連結成分分解 (SCC) を用いて、変数の数 $N$、節の数 $M$ に対して $O(N+M)$ で解くことができる。
+変数の数を $N$、節の数を $M$ とする。変数 $i \ (0 \le i < N)$ に対応するリテラルを $i$、その否定リテラルを `neg(i)` で表現する。
+
+強連結成分分解 (SCC) を用いて、$O(N+M)$ で解くことができる。
 
 ## API
 
@@ -19,7 +21,8 @@ documentation_of: ../../src/Misc/TwoSatisfiability.hpp
 
 ### `neg(int x)`
 
-変数 `x` の否定リテラルを表す整数を返す。
+リテラル `x` の否定リテラルを表す整数を返す。
+内部的には、リテラル `x` が `0, ..., n-1` のとき `x+n` を、`n, ..., 2n-1` のとき `x-n` を返す。
 
 ### `add_if(int u, int v)`
 
@@ -45,7 +48,7 @@ documentation_of: ../../src/Misc/TwoSatisfiability.hpp
 
 論理式を充足する割り当てが存在するかを判定する。
 
-- 存在する場合: 各変数の真偽値を格納した `std::vector<bool>` を返す。`ret[i]` が `true` ならば変数 `i` は真、`false` ならば偽。
+- 存在する場合: `std::vector<bool>` を返す。返り値を `ret` とすると、`ret[i]` が変数 `i` の真偽値に対応する (`true` なら真、`false` なら偽)。
 - 存在しない場合: 空の `std::vector` を返す。
 
 ## 使用例

@@ -104,7 +104,8 @@ void solve() {
 
 ## 参考
 - [https://kuretchi.github.io/blog/entries/automaton-dp/](https://kuretchi.github.io/blog/entries/automaton-dp/)
-- [https://qiita.com/hotman78/items/74c2d5d246ba3b6b3836](https://qiita.com/ryuhe1/items/185e1a283f13ac638a53)
+- [https://qiita.com/hotman78/items/74c2d5d246ba3b6b3836](https://qiita.com/hotman78/items/74c2d5d246ba3b6b3836)
+- [https://qiita.com/ryuhe1/items/185e1a283f13ac638a53](https://qiita.com/ryuhe1/items/185e1a283f13ac638a53)
 - [https://blog.knshnb.com/posts/aoj2587/](https://blog.knshnb.com/posts/aoj2587/)
 
 ## Verify

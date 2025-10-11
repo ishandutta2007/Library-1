@@ -1,5 +1,5 @@
 ---
-title: RangeSet
+title: 区間をsetで管理するやつ
 documentation_of: ../../src/DataStructure/RangeSet.hpp
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "Mo's Algorithm"
+title: Mo's Algorithm
 documentation_of: ../../src/Misc/Mo.hpp
 ---
 

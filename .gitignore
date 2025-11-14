@@ -16,3 +16,5 @@ test/atcoder/arc085_*.test.cpp
 # ↓ダウンロードがうまくできない 2024/10/11 (トークンを変えたら動くかも)
 test/atcoder/agc005_b*.test.cpp
 # test/yukicoder/2654*.test.cpp
+
+gemini-artifacts/

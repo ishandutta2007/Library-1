@@ -1,7 +1,0 @@
-[[languages.cpp.environments]]
-CXX = "g++-13"
-CXXFLAGS = ["-std=c++17", "-Wall", "-Wextra", "-O2", "-mtune=native", "-march=native", "-fconstexpr-depth=2147483647", "-fconstexpr-loop-limit=2147483647", "-fconstexpr-ops-limit=21474836"]
-
-[[languages.cpp.environments]]
-CXX = "clang++-18"
-CXXFLAGS = ["-std=c++17", "-m64", "-Wall", "-Wextra", "-O2", "-mtune=native", "-march=native"]

@@ -32,20 +32,23 @@ $N$ 個の点 $x_0, x_1, \dots, x_{N-1}$ が与えられたとき、
 ここで $N$ は点の数。
 
 ## コード例
+
+### 多点評価の例
 ```cpp
 #include <iostream>
 #include <vector>
 #include "src/Math/ModInt.hpp"
 #include "src/FFT/SubProductTree.hpp"
 
-void multipoint_evaluation_example() {
+int main() {
+    using namespace std;
     using Mint = ModInt<998244353>;
     
     // 多項式 f(x) = 1 + 2x + 3x^2
-    std::vector<Mint> f = {1, 2, 3};
+    vector<Mint> f = {1, 2, 3};
     
     // 評価点 x = 0, 1, 2, 3, 4
-    std::vector<Mint> xs = {0, 1, 2, 3, 4};
+    vector<Mint> xs = {0, 1, 2, 3, 4};
     
     SubProductTree<Mint> spt(xs);
     auto ys = spt.multi_eval(f);
@@ -56,25 +59,37 @@ void multipoint_evaluation_example() {
     // f(3) = 34
     // f(4) = 57
     for (size_t i = 0; i < ys.size(); ++i) {
-        std::cout << "f(" << xs[i] << ") = " << ys[i] << std::endl;
+        cout << "f(" << xs[i] << ") = " << ys[i] << endl;
     }
+    return 0;
 }
+```
 
-void polynomial_interpolation_example() {
+### 多項式補間の例
+```cpp
+#include <iostream>
+#include <vector>
+#include "src/Math/ModInt.hpp"
+#include "src/FFT/SubProductTree.hpp"
+
+int main() {
+    using namespace std;
     using Mint = ModInt<998244353>;
 
     // 点 (0, 1), (1, 6), (2, 17) を通る多項式を求める
     // 答えは f(x) = 1 + 2x + 3x^2 のはず
-    std::vector<Mint> xs = {0, 1, 2};
-    std::vector<Mint> ys = {1, 6, 17};
+    vector<Mint> xs = {0, 1, 2};
+    vector<Mint> ys = {1, 6, 17};
 
     SubProductTree<Mint> spt(xs);
     auto f = spt.interpolate(ys);
 
     // f = {1, 2, 3}
+    cout << "Interpolated polynomial coefficients:" << endl;
     for (size_t i = 0; i < f.size(); ++i) {
-        std::cout << "f[" << i << "] = " << f[i] << std::endl;
+        cout << "f[" << i << "] = " << f[i] << endl;
     }
+    return 0;
 }
 ```
 

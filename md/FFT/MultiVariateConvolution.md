@@ -87,4 +87,4 @@ int main() {
 - `convolve` のテンプレート引数 `mod_t` は、NTTが可能な法を持つ `ModInt` である必要があります。
 
 ## 参考
-- [Truncated Multivariate Convolution (多変数乗算)](https://37zigen.com/truncated-multivariate-convolution/)
+- [https://37zigen.com/truncated-multivariate-convolution/](https://37zigen.com/truncated-multivariate-convolution/)

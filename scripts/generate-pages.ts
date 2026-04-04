@@ -7,12 +7,23 @@
  */
 import fs from 'fs'
 import path from 'path'
+import { buildDependencyGraph, buildTestMap } from '../docs/.vitepress/build-data'
 
 const ROOT = path.resolve(__dirname, '..')
 const SRC_DIR = path.join(ROOT, 'src')
 const TEST_DIR = path.join(ROOT, 'test')
 const MD_DIR = path.join(ROOT, 'md')
 const TEST_OUT_DIR = path.join(MD_DIR, 'test')
+
+// 依存グラフとテストマップを構築
+const depGraph = buildDependencyGraph()
+const testMap = buildTestMap(depGraph)
+
+function hppStatusIcon(hpp: string): string {
+  const tests = testMap[hpp]
+  if (!tests || tests.length === 0) return '❓'
+  return '✅'
+}
 
 // ============================================================
 // 1. テストファイルページの生成
@@ -71,7 +82,8 @@ function generateTestMarkdown(info: TestInfo): string {
     for (const hpp of info.depends) {
       const link = '/' + hpp.replace(/^src\//, '').replace(/\.hpp$/, '')
       const name = hpp.split('/').pop()?.replace(/\.hpp$/, '') || hpp
-      md += `- [${name}](${link}) (${hpp})\n`
+      const icon = hppStatusIcon(hpp)
+      md += `- ${icon} [${name}](${link}) (${hpp})\n`
     }
     md += '\n'
   }

@@ -73,15 +73,11 @@ export default defineConfig({
           const docOf = docOfMatch[1].trim()
           const hppPath = docOf.replace(/^(\.\.\/)+/, '')
 
-          // Verified with セクション
+          // Verified with セクション (マトリクス表コンポーネント)
           const tests = testMap[hppPath] || []
           let verifiedSection = ''
           if (tests.length > 0) {
-            verifiedSection = '\n## Verified with\n\n'
-            for (const test of tests) {
-              const link = '/' + test.replace(/\.cpp$/, '')
-              verifiedSection += `- ✅ [${test}](${link})\n`
-            }
+            verifiedSection = '\n## Verified with\n\n<VerifyMatrix />\n'
           }
 
           // Code セクション
@@ -96,11 +92,8 @@ export default defineConfig({
 
           if (!verifiedSection && !codeSection) return null
 
-          // Verify Results セクション (Vue コンポーネント)
-          const resultsSection = '\n## Verify Results\n\n<VerifyResults />\n'
-
-          // Markdown の末尾に追加: Verified with → Verify Results → Code
-          return code + verifiedSection + resultsSection + codeSection
+          // Markdown の末尾に追加: Verified with → Code
+          return code + verifiedSection + codeSection
         }
       }
     ]

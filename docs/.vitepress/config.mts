@@ -99,44 +99,56 @@ export default defineConfig({
           const docOf = docOfMatch[1].trim()
           const hppPath = docOf.replace(/^(\.\.\/)+/, '')
 
-          let extra = ''
+          // --- md の前に挿入するセクション ---
+          let before = ''
+
+          // タイトル
+          const title = hppToTitle(hppPath)
+          before += `\n# ${title}\n`
+
+          // Code セクション
+          const source = readSourceCode(hppPath)
+          if (source) {
+            const githubUrl = `https://github.com/hashiryo/Library/blob/master/${hppPath}`
+            before += '\n## Code\n\n'
+            before += `[${hppPath}](${githubUrl})\n\n`
+            before += '```cpp\n' + source + '\n```\n'
+          }
+
+          // Verified with セクション (マトリクス表コンポーネント)
+          const tests = testMap[hppPath] || []
+          if (tests.length > 0) {
+            before += '\n## Verified with\n\n<VerifyMatrix />\n'
+          }
+
+          // --- md の後に挿入するセクション ---
+          let after = ''
 
           // Depends on セクション (この hpp が依存している hpp)
           const deps = depGraph.dependsOn[hppPath] || []
           if (deps.length > 0) {
-            extra += '\n## Depends on\n\n'
+            after += '\n## Depends on\n\n'
             for (const dep of deps) {
-              extra += `- [${hppToTitle(dep)}](${hppToLink(dep)}) (${dep})\n`
+              after += `- [${hppToTitle(dep)}](${hppToLink(dep)}) (${dep})\n`
             }
           }
 
           // Required by セクション (この hpp に依存している hpp)
           const reqBy = depGraph.requiredBy[hppPath] || []
           if (reqBy.length > 0) {
-            extra += '\n## Required by\n\n'
+            after += '\n## Required by\n\n'
             for (const req of reqBy) {
-              extra += `- [${hppToTitle(req)}](${hppToLink(req)}) (${req})\n`
+              after += `- [${hppToTitle(req)}](${hppToLink(req)}) (${req})\n`
             }
           }
 
-          // Verified with セクション (マトリクス表コンポーネント)
-          const tests = testMap[hppPath] || []
-          if (tests.length > 0) {
-            extra += '\n## Verified with\n\n<VerifyMatrix />\n'
-          }
+          if (!before && !after) return null
 
-          // Code セクション
-          const source = readSourceCode(hppPath)
-          if (source) {
-            const githubUrl = `https://github.com/hashiryo/Library/blob/master/${hppPath}`
-            extra += `\n## Code\n\n`
-            extra += `[${hppPath}](${githubUrl})\n\n`
-            extra += '```cpp\n' + source + '\n```\n'
-          }
-
-          if (!extra) return null
-
-          return code + extra
+          // frontmatter の直後に before を挿入、末尾に after を追加
+          const fmEnd = code.indexOf('---', code.indexOf('---') + 3)
+          if (fmEnd === -1) return before + code + after
+          const insertPos = fmEnd + 3
+          return code.slice(0, insertPos) + '\n' + before + code.slice(insertPos) + after
         }
       }
     ]

@@ -68,6 +68,23 @@ function hppToTitle(hpp: string) {
   return hpp.split('/').pop()?.replace(/\.hpp$/, '') || hpp
 }
 
+// hpp の verify ステータスアイコン
+function hppStatusIcon(hpp: string): string {
+  const tests = testMap[hpp]
+  if (!tests || tests.length === 0) return '❓'
+  // TODO: Phase 2 で results.json を読んで AC/WA/TLE を判定
+  // 今はテストがあれば ✅ とする
+  return '✅'
+}
+
+// ステータスアイコン付きのリンクを生成
+function hppLinkWithStatus(hpp: string): string {
+  const icon = hppStatusIcon(hpp)
+  const title = hppToTitle(hpp)
+  const link = hppToLink(hpp)
+  return `${icon} [${title}](${link})`
+}
+
 export default defineConfig({
   title: "Hashiryo's Library",
   description: '競技プログラミング用C++ライブラリ',
@@ -105,9 +122,10 @@ export default defineConfig({
           // --- md の前に挿入するセクション ---
           let before = ''
 
-          // タイトル
+          // タイトル (ステータスアイコン付き)
+          const icon = hppStatusIcon(hppPath)
           const title = hppToTitle(hppPath)
-          before += `\n# ${title}\n`
+          before += `\n# ${icon} ${title}\n`
 
           // Code セクション
           const source = readSourceCode(hppPath)
@@ -118,21 +136,21 @@ export default defineConfig({
             before += '```cpp\n' + source + '\n```\n'
           }
 
+          // --- md の後に挿入するセクション ---
+          let after = ''
+
           // Verified with セクション (マトリクス表コンポーネント)
           const tests = testMap[hppPath] || []
           if (tests.length > 0) {
-            before += '\n## Verified with\n\n<VerifyMatrix />\n'
+            after += '\n## Verified with\n\n<VerifyMatrix />\n'
           }
-
-          // --- md の後に挿入するセクション ---
-          let after = ''
 
           // Depends on セクション (この hpp が依存している hpp)
           const deps = depGraph.dependsOn[hppPath] || []
           if (deps.length > 0) {
             after += '\n## Depends on\n\n'
             for (const dep of deps) {
-              after += `- [${hppToTitle(dep)}](${hppToLink(dep)}) (${dep})\n`
+              after += `- ${hppLinkWithStatus(dep)} (${dep})\n`
             }
           }
 
@@ -141,7 +159,7 @@ export default defineConfig({
           if (reqBy.length > 0) {
             after += '\n## Required by\n\n'
             for (const req of reqBy) {
-              after += `- [${hppToTitle(req)}](${hppToLink(req)}) (${req})\n`
+              after += `- ${hppLinkWithStatus(req)} (${req})\n`
             }
           }
 

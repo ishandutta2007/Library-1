@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 import fs from 'fs'
 import path from 'path'
 import { buildTestMap, buildDependencyGraph, readSourceCode } from './build-data'
+import { katex } from '@mdit/plugin-katex'
 
 const ROOT = path.resolve(__dirname, '../..')
 
@@ -77,9 +78,11 @@ export default defineConfig({
   // 既存 md 内の .hpp 等へのリンクは無視
   ignoreDeadLinks: true,
 
-  // 数式サポート
+  // 数式サポート (KaTeX)
   markdown: {
-    math: true
+    config: (md) => {
+      md.use(katex)
+    }
   },
 
   // Vite プラグインで Markdown ソースを変換

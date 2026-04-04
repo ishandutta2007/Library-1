@@ -1,16 +1,17 @@
 import { defineConfig } from 'vitepress'
 import fs from 'fs'
 import path from 'path'
-import { buildTestMap, readSourceCode } from './build-data'
+import { buildTestMap, buildDependencyGraph, readSourceCode } from './build-data'
 
 const ROOT = path.resolve(__dirname, '../..')
 
 // md/ ディレクトリからサイドバーを自動生成
 function generateSidebar() {
   const mdDir = path.join(ROOT, 'md')
-  const categories = fs.readdirSync(mdDir).filter(f =>
-    fs.statSync(path.join(mdDir, f)).isDirectory()
-  ).sort()
+  const categories = fs.readdirSync(mdDir).filter(f => {
+    const full = path.join(mdDir, f)
+    return fs.statSync(full).isDirectory() && f !== 'test' && f !== 'public'
+  }).sort()
 
   return categories.map(category => {
     const categoryDir = path.join(mdDir, category)
@@ -38,8 +39,26 @@ function generateSidebar() {
   })
 }
 
-// ビルド時にテストマッピングを一度だけ構築
-const testMap = buildTestMap()
+// ビルド時に依存グラフとテストマッピングを構築
+const depGraph = buildDependencyGraph()
+const testMap = buildTestMap(depGraph)
+
+// hpp パスから md ページへのリンクとタイトルを生成するヘルパー
+// "src/DataStructure/BinaryIndexedTree.hpp" → link: "/DataStructure/BinaryIndexedTree", title: "BinaryIndexedTree"
+function hppToLink(hpp: string) {
+  return '/' + hpp.replace(/^src\//, '').replace(/\.hpp$/, '')
+}
+
+function hppToTitle(hpp: string) {
+  // 対応する md があればそのタイトルを使う
+  const mdPath = path.join(ROOT, 'md', hpp.replace(/^src\//, '').replace(/\.hpp$/, '.md'))
+  if (fs.existsSync(mdPath)) {
+    const content = fs.readFileSync(mdPath, 'utf-8')
+    const titleMatch = content.match(/^---\s*\n[\s\S]*?title:\s*(.+)\n[\s\S]*?---/)
+    if (titleMatch) return titleMatch[1].trim()
+  }
+  return hpp.split('/').pop()?.replace(/\.hpp$/, '') || hpp
+}
 
 export default defineConfig({
   title: "Hashiryo's Library",
@@ -73,27 +92,44 @@ export default defineConfig({
           const docOf = docOfMatch[1].trim()
           const hppPath = docOf.replace(/^(\.\.\/)+/, '')
 
+          let extra = ''
+
+          // Depends on セクション (この hpp が依存している hpp)
+          const deps = depGraph.dependsOn[hppPath] || []
+          if (deps.length > 0) {
+            extra += '\n## Depends on\n\n'
+            for (const dep of deps) {
+              extra += `- [${hppToTitle(dep)}](${hppToLink(dep)}) (${dep})\n`
+            }
+          }
+
+          // Required by セクション (この hpp に依存している hpp)
+          const reqBy = depGraph.requiredBy[hppPath] || []
+          if (reqBy.length > 0) {
+            extra += '\n## Required by\n\n'
+            for (const req of reqBy) {
+              extra += `- [${hppToTitle(req)}](${hppToLink(req)}) (${req})\n`
+            }
+          }
+
           // Verified with セクション (マトリクス表コンポーネント)
           const tests = testMap[hppPath] || []
-          let verifiedSection = ''
           if (tests.length > 0) {
-            verifiedSection = '\n## Verified with\n\n<VerifyMatrix />\n'
+            extra += '\n## Verified with\n\n<VerifyMatrix />\n'
           }
 
           // Code セクション
           const source = readSourceCode(hppPath)
-          let codeSection = ''
           if (source) {
             const githubUrl = `https://github.com/hashiryo/Library/blob/master/${hppPath}`
-            codeSection = `\n## Code\n\n`
-            codeSection += `[${hppPath}](${githubUrl})\n\n`
-            codeSection += '```cpp\n' + source + '\n```\n'
+            extra += `\n## Code\n\n`
+            extra += `[${hppPath}](${githubUrl})\n\n`
+            extra += '```cpp\n' + source + '\n```\n'
           }
 
-          if (!verifiedSection && !codeSection) return null
+          if (!extra) return null
 
-          // Markdown の末尾に追加: Verified with → Code
-          return code + verifiedSection + codeSection
+          return code + extra
         }
       }
     ]

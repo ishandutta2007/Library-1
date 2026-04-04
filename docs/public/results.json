@@ -1,0 +1,63 @@
+{
+  "src/DataStructure/BinaryIndexedTree.hpp": [
+    {
+      "problem": "https://judge.yosupo.jp/problem/point_add_range_sum",
+      "file": "test/yosupo/point_add_range_sum.test.cpp",
+      "time_limit_ms": 5000,
+      "environments": {
+        "ubuntu-g++": {
+          "status": "AC",
+          "summary": { "time_max_ms": 120, "time_total_ms": 450, "memory_max_kb": 3840 },
+          "cases": [
+            { "name": "example_00", "status": "AC", "time_ms": 1, "memory_kb": 3200 },
+            { "name": "max_random_00", "status": "AC", "time_ms": 120, "memory_kb": 3840 },
+            { "name": "max_random_01", "status": "AC", "time_ms": 115, "memory_kb": 3800 },
+            { "name": "random_00", "status": "AC", "time_ms": 98, "memory_kb": 3600 },
+            { "name": "random_01", "status": "AC", "time_ms": 85, "memory_kb": 3500 },
+            { "name": "small_00", "status": "AC", "time_ms": 5, "memory_kb": 3200 },
+            { "name": "small_01", "status": "AC", "time_ms": 5, "memory_kb": 3200 }
+          ]
+        },
+        "ubuntu-clang++": {
+          "status": "AC",
+          "summary": { "time_max_ms": 105, "time_total_ms": 410, "memory_max_kb": 3520 },
+          "cases": [
+            { "name": "example_00", "status": "AC", "time_ms": 1, "memory_kb": 3000 },
+            { "name": "max_random_00", "status": "AC", "time_ms": 105, "memory_kb": 3520 },
+            { "name": "max_random_01", "status": "AC", "time_ms": 100, "memory_kb": 3500 },
+            { "name": "random_00", "status": "AC", "time_ms": 85, "memory_kb": 3300 },
+            { "name": "random_01", "status": "AC", "time_ms": 80, "memory_kb": 3200 },
+            { "name": "small_00", "status": "AC", "time_ms": 4, "memory_kb": 3000 },
+            { "name": "small_01", "status": "AC", "time_ms": 4, "memory_kb": 3000 }
+          ]
+        },
+        "macos-g++": {
+          "status": "AC",
+          "summary": { "time_max_ms": 98, "time_total_ms": 380, "memory_max_kb": 4096 },
+          "cases": [
+            { "name": "example_00", "status": "AC", "time_ms": 1, "memory_kb": 3400 },
+            { "name": "max_random_00", "status": "AC", "time_ms": 98, "memory_kb": 4096 },
+            { "name": "max_random_01", "status": "AC", "time_ms": 95, "memory_kb": 4000 },
+            { "name": "random_00", "status": "AC", "time_ms": 78, "memory_kb": 3800 },
+            { "name": "random_01", "status": "AC", "time_ms": 72, "memory_kb": 3700 },
+            { "name": "small_00", "status": "AC", "time_ms": 3, "memory_kb": 3400 },
+            { "name": "small_01", "status": "AC", "time_ms": 3, "memory_kb": 3400 }
+          ]
+        },
+        "macos-clang++": {
+          "status": "AC",
+          "summary": { "time_max_ms": 102, "time_total_ms": 390, "memory_max_kb": 3712 },
+          "cases": [
+            { "name": "example_00", "status": "AC", "time_ms": 1, "memory_kb": 3100 },
+            { "name": "max_random_00", "status": "AC", "time_ms": 102, "memory_kb": 3712 },
+            { "name": "max_random_01", "status": "AC", "time_ms": 98, "memory_kb": 3700 },
+            { "name": "random_00", "status": "AC", "time_ms": 80, "memory_kb": 3500 },
+            { "name": "random_01", "status": "AC", "time_ms": 75, "memory_kb": 3400 },
+            { "name": "small_00", "status": "AC", "time_ms": 4, "memory_kb": 3100 },
+            { "name": "small_01", "status": "AC", "time_ms": 4, "memory_kb": 3100 }
+          ]
+        }
+      }
+    }
+  ]
+}

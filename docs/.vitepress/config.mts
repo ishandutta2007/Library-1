@@ -6,45 +6,89 @@ import { katex } from '@mdit/plugin-katex'
 
 const ROOT = path.resolve(__dirname, '../..')
 
-// src/ の hpp 構造からサイドバーを自動生成（md のタイトルがあれば使う）
+// md ファイルからフロントマターを読む
+function readFrontmatter(mdPath: string): { title?: string; order?: number } {
+  if (!fs.existsSync(mdPath)) return {}
+  const content = fs.readFileSync(mdPath, 'utf-8')
+  const titleMatch = content.match(/^---\s*\n[\s\S]*?title:\s*(.+)\n[\s\S]*?---/)
+  const orderMatch = content.match(/^---\s*\n[\s\S]*?order:\s*(\d+)\n[\s\S]*?---/)
+  return {
+    title: titleMatch ? titleMatch[1].trim() : undefined,
+    order: orderMatch ? parseInt(orderMatch[1]) : undefined,
+  }
+}
+
+// src/ の hpp 構造から再帰的にサイドバーを自動生成
 function generateSidebar() {
   const srcDir = path.join(ROOT, 'src')
   const mdDir = path.join(ROOT, 'md')
 
-  const categories = fs.readdirSync(srcDir).filter(f =>
-    fs.statSync(path.join(srcDir, f)).isDirectory()
-  ).sort()
+  function buildItems(srcPath: string, mdPath: string, linkPrefix: string): any[] {
+    const entries = fs.readdirSync(srcPath, { withFileTypes: true })
 
-  return categories.map(category => {
-    const categoryDir = path.join(srcDir, category)
-    const hppFiles = fs.readdirSync(categoryDir)
-      .filter(f => f.endsWith('.hpp'))
-      .sort()
+    const items: { text: string; link?: string; collapsed?: boolean; items?: any[]; order: number }[] = []
 
-    const items = hppFiles.map(file => {
-      const name = file.replace(/\.hpp$/, '')
+    // hpp ファイル
+    for (const entry of entries) {
+      if (!entry.isFile() || !entry.name.endsWith('.hpp')) continue
+      const name = entry.name.replace(/\.hpp$/, '')
+      const fm = readFrontmatter(path.join(mdPath, name + '.md'))
 
-      // 対応する md があればタイトルを取得
-      const mdPath = path.join(mdDir, category, name + '.md')
-      let title = name
-      if (fs.existsSync(mdPath)) {
-        const content = fs.readFileSync(mdPath, 'utf-8')
-        const titleMatch = content.match(/^---\s*\n[\s\S]*?title:\s*(.+)\n[\s\S]*?---/)
-        if (titleMatch) title = titleMatch[1].trim()
-      }
-
-      return {
-        text: title,
-        link: `/${category}/${name}`
-      }
-    })
-
-    return {
-      text: category,
-      collapsed: true,
-      items
+      items.push({
+        text: fm.title || name,
+        link: `${linkPrefix}/${name}`,
+        order: fm.order ?? 999,
+      })
     }
-  })
+
+    // サブディレクトリ（再帰）
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue
+      const subSrcPath = path.join(srcPath, entry.name)
+      const subMdPath = path.join(mdPath, entry.name)
+      const subItems = buildItems(subSrcPath, subMdPath, `${linkPrefix}/${entry.name}`)
+
+      if (subItems.length > 0) {
+        // ディレクトリ自体の order を _index.md や最初のアイテムから推測
+        const indexFm = readFrontmatter(path.join(subMdPath, '_index.md'))
+        items.push({
+          text: indexFm.title || entry.name,
+          collapsed: true,
+          items: subItems,
+          order: indexFm.order ?? 999,
+        })
+      }
+    }
+
+    // order → テキスト名でソート
+    items.sort((a, b) => a.order !== b.order ? a.order - b.order : a.text.localeCompare(b.text))
+
+    return items
+  }
+
+  // トップレベルのカテゴリ
+  const categories = fs.readdirSync(srcDir, { withFileTypes: true })
+    .filter((e: fs.Dirent) => e.isDirectory())
+
+  const sidebar: any[] = []
+  for (const cat of categories) {
+    const srcPath = path.join(srcDir, cat.name)
+    const mdPath = path.join(mdDir, cat.name)
+    const items = buildItems(srcPath, mdPath, `/${cat.name}`)
+
+    if (items.length > 0) {
+      const indexFm = readFrontmatter(path.join(mdPath, '_index.md'))
+      sidebar.push({
+        text: indexFm.title || cat.name,
+        collapsed: true,
+        items,
+        order: indexFm.order ?? 999,
+      })
+    }
+  }
+
+  sidebar.sort((a, b) => a.order !== b.order ? a.order - b.order : a.text.localeCompare(b.text))
+  return sidebar
 }
 
 // ビルド時に依存グラフとテストマッピングを構築

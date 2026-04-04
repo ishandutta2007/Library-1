@@ -21,7 +21,7 @@ gemini-artifacts/
 
 # VitePress / Node.js
 node_modules/
-.vitepress/
+/.vitepress/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
 md/test/

@@ -5,29 +5,36 @@ import { buildTestMap, buildDependencyGraph, readSourceCode } from './build-data
 
 const ROOT = path.resolve(__dirname, '../..')
 
-// md/ ディレクトリからサイドバーを自動生成
+// src/ の hpp 構造からサイドバーを自動生成（md のタイトルがあれば使う）
 function generateSidebar() {
+  const srcDir = path.join(ROOT, 'src')
   const mdDir = path.join(ROOT, 'md')
-  const categories = fs.readdirSync(mdDir).filter(f => {
-    const full = path.join(mdDir, f)
-    return fs.statSync(full).isDirectory() && f !== 'test' && f !== 'public'
-  }).sort()
+
+  const categories = fs.readdirSync(srcDir).filter(f =>
+    fs.statSync(path.join(srcDir, f)).isDirectory()
+  ).sort()
 
   return categories.map(category => {
-    const categoryDir = path.join(mdDir, category)
-    const files = fs.readdirSync(categoryDir)
-      .filter(f => f.endsWith('.md'))
+    const categoryDir = path.join(srcDir, category)
+    const hppFiles = fs.readdirSync(categoryDir)
+      .filter(f => f.endsWith('.hpp'))
       .sort()
 
-    const items = files.map(file => {
-      const filePath = path.join(categoryDir, file)
-      const content = fs.readFileSync(filePath, 'utf-8')
-      const titleMatch = content.match(/^---\s*\n[\s\S]*?title:\s*(.+)\n[\s\S]*?---/)
-      const title = titleMatch ? titleMatch[1].trim() : file.replace('.md', '')
+    const items = hppFiles.map(file => {
+      const name = file.replace(/\.hpp$/, '')
+
+      // 対応する md があればタイトルを取得
+      const mdPath = path.join(mdDir, category, name + '.md')
+      let title = name
+      if (fs.existsSync(mdPath)) {
+        const content = fs.readFileSync(mdPath, 'utf-8')
+        const titleMatch = content.match(/^---\s*\n[\s\S]*?title:\s*(.+)\n[\s\S]*?---/)
+        if (titleMatch) title = titleMatch[1].trim()
+      }
 
       return {
         text: title,
-        link: `/${category}/${file.replace('.md', '')}`
+        link: `/${category}/${name}`
       }
     })
 

@@ -1,10 +1,13 @@
 import { defineConfig } from 'vitepress'
 import fs from 'fs'
 import path from 'path'
+import { buildTestMap, readSourceCode } from './build-data'
+
+const ROOT = path.resolve(__dirname, '../..')
 
 // md/ ディレクトリからサイドバーを自動生成
 function generateSidebar() {
-  const mdDir = path.resolve(__dirname, '../../md')
+  const mdDir = path.join(ROOT, 'md')
   const categories = fs.readdirSync(mdDir).filter(f =>
     fs.statSync(path.join(mdDir, f)).isDirectory()
   ).sort()
@@ -35,6 +38,9 @@ function generateSidebar() {
   })
 }
 
+// ビルド時にテストマッピングを一度だけ構築
+const testMap = buildTestMap()
+
 export default defineConfig({
   title: "Hashiryo's Library",
   description: '競技プログラミング用C++ライブラリ',
@@ -48,6 +54,53 @@ export default defineConfig({
   // 数式サポート
   markdown: {
     math: true
+  },
+
+  // Vite プラグインで Markdown ソースを変換
+  vite: {
+    plugins: [
+      {
+        name: 'inject-library-sections',
+        enforce: 'pre',
+        transform(code, id) {
+          // md ファイルのみ対象
+          if (!id.endsWith('.md')) return null
+
+          // frontmatter から documentation_of を取得
+          const docOfMatch = code.match(/^---\s*\n[\s\S]*?documentation_of:\s*(.+)\n[\s\S]*?---/)
+          if (!docOfMatch) return null
+
+          const docOf = docOfMatch[1].trim()
+          const hppPath = docOf.replace(/^(\.\.\/)+/, '')
+
+          // Verified with セクション
+          const tests = testMap[hppPath] || []
+          let verifiedSection = ''
+          if (tests.length > 0) {
+            verifiedSection = '\n## Verified with\n\n'
+            for (const test of tests) {
+              const link = '/' + test.replace(/\.cpp$/, '')
+              verifiedSection += `- ✅ [${test}](${link})\n`
+            }
+          }
+
+          // Code セクション
+          const source = readSourceCode(hppPath)
+          let codeSection = ''
+          if (source) {
+            const githubUrl = `https://github.com/hashiryo/Library/blob/master/${hppPath}`
+            codeSection = `\n## Code\n\n`
+            codeSection += `[${hppPath}](${githubUrl})\n\n`
+            codeSection += '```cpp\n' + source + '\n```\n'
+          }
+
+          if (!verifiedSection && !codeSection) return null
+
+          // Markdown の末尾に追加
+          return code + verifiedSection + codeSection
+        }
+      }
+    ]
   },
 
   themeConfig: {

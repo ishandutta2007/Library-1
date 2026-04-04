@@ -1,17 +1,12 @@
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
 import VerifyResults from '../components/VerifyResults.vue'
-import TestFilePage from '../components/TestFilePage.vue'
-import { h } from 'vue'
+import TestFileResults from '../components/TestFileResults.vue'
 
 export default {
   extends: DefaultTheme,
-  Layout() {
-    return h(DefaultTheme.Layout, null, {
-      'doc-after': () => h(VerifyResults)
-    })
-  },
   enhanceApp({ app }) {
-    app.component('TestFilePage', TestFilePage)
+    app.component('VerifyResults', VerifyResults)
+    app.component('TestFileResults', TestFileResults)
   }
 } satisfies Theme

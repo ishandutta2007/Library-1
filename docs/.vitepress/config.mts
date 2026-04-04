@@ -96,8 +96,11 @@ export default defineConfig({
 
           if (!verifiedSection && !codeSection) return null
 
-          // Markdown の末尾に追加
-          return code + verifiedSection + codeSection
+          // Verify Results セクション (Vue コンポーネント)
+          const resultsSection = '\n## Verify Results\n\n<VerifyResults />\n'
+
+          // Markdown の末尾に追加: Verified with → Verify Results → Code
+          return code + verifiedSection + resultsSection + codeSection
         }
       }
     ]

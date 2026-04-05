@@ -43,52 +43,36 @@ mkdir -p "${TC_DIR}" "${RESULT_DIR}"
 # =============================================================================
 # テストケースのダウンロード
 # =============================================================================
-download_testcases() {
+get_testcase_dir() {
   local problem_url="$1"
-  local cache_dir="$2"
 
-  if [[ -d "${cache_dir}" ]] && [[ "$(ls -A "${cache_dir}" 2>/dev/null)" ]]; then
-    return 0  # キャッシュあり
-  fi
-
-  mkdir -p "${cache_dir}"
-
-  # tc.zip からのコピーを試みる (competitive-verifier 形式: URL の MD5 ハッシュ)
-  local tc_zip_dir="${ROOT}/.cache/tc"
+  # URL の MD5 ハッシュでキャッシュディレクトリを検索
   local url_md5
   url_md5=$(echo -n "${problem_url}" | md5sum 2>/dev/null | cut -c1-32 || echo -n "${problem_url}" | md5 -q 2>/dev/null)
-  if [[ -n "${url_md5}" ]] && [[ -d "${tc_zip_dir}/tc/${url_md5}/test" ]]; then
-    cp -r "${tc_zip_dir}/tc/${url_md5}/test/." "${cache_dir}/"
-    return 0
-  fi
-  # tc/ プレフィックスなしも試す
-  if [[ -n "${url_md5}" ]] && [[ -d "${tc_zip_dir}/${url_md5}/test" ]]; then
-    cp -r "${tc_zip_dir}/${url_md5}/test/." "${cache_dir}/"
+
+  # setup ジョブでダウンロード済みのテストケースを参照
+  local cache_dir="${TC_DIR}/${url_md5}"
+  if [[ -d "${cache_dir}" ]] && [[ "$(ls -A "${cache_dir}" 2>/dev/null)" ]]; then
+    echo "${cache_dir}"
     return 0
   fi
 
-  # oj download
+  # ローカル実行用: oj download でフォールバック
   if command -v oj &>/dev/null; then
-    local oj_args="--system -d ${cache_dir}"
-    # yukicoder のトークン
+    mkdir -p "${cache_dir}"
+    local oj_args="--system -d ${cache_dir} -y"
     if [[ -n "${YUKICODER_TOKEN:-}" ]] && [[ "${problem_url}" == *yukicoder* ]]; then
       oj_args="${oj_args} --yukicoder-token ${YUKICODER_TOKEN}"
     fi
-    # Dropbox トークン (AtCoder system tests)
-    if [[ -n "${DROPBOX_TOKEN:-}" ]] && [[ "${problem_url}" == *atcoder* ]]; then
-      oj_args="${oj_args} --dropbox-token ${DROPBOX_TOKEN}"
+    oj download ${oj_args} "${problem_url}" 2>/dev/null || true
+    if [[ -n "$(find "${cache_dir}" -name '*.in' -o -name 'in.txt' 2>/dev/null | head -1)" ]]; then
+      echo "${cache_dir}"
+      return 0
     fi
-    oj download ${oj_args} "${problem_url}" 2>&1 | tail -5 || true
-    # ダウンロード成功チェック（テストケースが1つ以上あるか）
-    if [[ -z "$(find "${cache_dir}" -name '*.in' -o -name 'in.txt' 2>/dev/null | head -1)" ]]; then
-      echo "  [WARN] Failed to download: ${problem_url}"
-      rm -rf "${cache_dir}"
-      return 1
-    fi
-  else
-    echo "  [WARN] oj not found, skipping download: ${problem_url}"
-    return 1
+    rm -rf "${cache_dir}"
   fi
+
+  return 1
 }
 
 # =============================================================================
@@ -273,18 +257,16 @@ JSONEOF
     return
   fi
 
-  # テストケースダウンロード
+  # テストケース取得
   if [[ -z "${PROBLEM_URL}" ]]; then
     echo "  [SKIP] ${rel_path} (no PROBLEM URL)"
     rm -f "${binary}"
     return
   fi
 
-  local url_hash
-  url_hash=$(echo -n "${PROBLEM_URL}" | shasum -a 256 | cut -c1-16)
-  local tc_cache="${TC_DIR}/${url_hash}"
-
-  if ! download_testcases "${PROBLEM_URL}" "${tc_cache}"; then
+  local tc_cache
+  tc_cache=$(get_testcase_dir "${PROBLEM_URL}")
+  if [[ -z "${tc_cache}" ]]; then
     echo "  [SKIP] ${rel_path} (testcases unavailable)"
     rm -f "${binary}"
     return

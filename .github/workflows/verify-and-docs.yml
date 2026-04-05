@@ -25,10 +25,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-
-      - name: Install oj
-        run: pip install online-judge-tools
+          python-version: "3.12"
 
       - name: Restore testcase cache
         uses: actions/cache/restore@v4

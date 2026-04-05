@@ -50,26 +50,11 @@ get_testcase_dir() {
   local url_md5
   url_md5=$(echo -n "${problem_url}" | md5sum 2>/dev/null | cut -c1-32 || echo -n "${problem_url}" | md5 -q 2>/dev/null)
 
-  # setup ジョブでダウンロード済みのテストケースを参照
+  # setup ジョブ (download-testcases.py) でダウンロード済みのテストケースを参照
   local cache_dir="${TC_DIR}/${url_md5}"
   if [[ -d "${cache_dir}" ]] && [[ "$(ls -A "${cache_dir}" 2>/dev/null)" ]]; then
     echo "${cache_dir}"
     return 0
-  fi
-
-  # ローカル実行用: oj download でフォールバック
-  if command -v oj &>/dev/null; then
-    mkdir -p "${cache_dir}"
-    local oj_args="--system -d ${cache_dir} -y"
-    if [[ -n "${YUKICODER_TOKEN:-}" ]] && [[ "${problem_url}" == *yukicoder* ]]; then
-      oj_args="${oj_args} --yukicoder-token ${YUKICODER_TOKEN}"
-    fi
-    oj download ${oj_args} "${problem_url}" 2>/dev/null || true
-    if [[ -n "$(find "${cache_dir}" -name '*.in' -o -name 'in.txt' 2>/dev/null | head -1)" ]]; then
-      echo "${cache_dir}"
-      return 0
-    fi
-    rm -rf "${cache_dir}"
   fi
 
   return 1

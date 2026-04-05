@@ -119,14 +119,18 @@ def download_aoj(url: str) -> bool:
     except Exception:
         return False
 
-    cache_dir.mkdir(parents=True, exist_ok=True)
+    # 一時ディレクトリで作業し、全ケース成功したらキャッシュにリネーム
+    tmp_dir = Path(str(cache_dir) + ".tmp")
+    if tmp_dir.exists():
+        shutil.rmtree(tmp_dir)
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+
+    expected = [tc for tc in headers.get("headers", []) if tc.get("serial") is not None]
     count = 0
 
-    for tc in headers.get("headers", []):
-        serial = tc.get("serial")
+    for tc in expected:
+        serial = tc["serial"]
         name = tc.get("name", f"case{serial}")
-        if serial is None:
-            continue
         try:
             in_url = f"https://judgedat.u-aizu.ac.jp/testcases/{problem_id}/{serial}/in"
             with urllib.request.urlopen(in_url, timeout=30) as resp:
@@ -134,15 +138,22 @@ def download_aoj(url: str) -> bool:
             out_url = f"https://judgedat.u-aizu.ac.jp/testcases/{problem_id}/{serial}/out"
             with urllib.request.urlopen(out_url, timeout=30) as resp:
                 out_data = resp.read()
-            (cache_dir / f"{name}.in").write_bytes(in_data)
-            (cache_dir / f"{name}.out").write_bytes(out_data)
+            (tmp_dir / f"{name}.in").write_bytes(in_data)
+            (tmp_dir / f"{name}.out").write_bytes(out_data)
             count += 1
         except Exception:
-            continue
+            # 1ケースでも失敗したら全部破棄
+            shutil.rmtree(tmp_dir)
+            return False
 
-    if count == 0 and cache_dir.exists():
-        shutil.rmtree(cache_dir)
-    return count > 0
+    if count > 0:
+        if cache_dir.exists():
+            shutil.rmtree(cache_dir)
+        tmp_dir.rename(cache_dir)
+        return True
+    else:
+        shutil.rmtree(tmp_dir)
+        return False
 
 
 # ============================================================
@@ -207,30 +218,41 @@ def download_yosupo(url: str) -> bool:
         print(f"    yosupo generate failed for {problem_id}: {e}", file=sys.stderr)
         return False
 
-    # 生成されたテストケースをコピー
+    # 生成されたテストケースを一時ディレクトリにコピー
     in_dir = problem_dir / "in"
     out_dir = problem_dir / "out"
     if not in_dir.exists():
         return False
 
-    cache_dir.mkdir(parents=True, exist_ok=True)
+    tmp_dir = Path(str(cache_dir) + ".tmp")
+    if tmp_dir.exists():
+        shutil.rmtree(tmp_dir)
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+
     count = 0
     for in_file in sorted(in_dir.glob("*.in")):
         out_file = out_dir / in_file.name.replace(".in", ".out")
         if out_file.exists():
-            shutil.copy2(in_file, cache_dir / in_file.name)
-            shutil.copy2(out_file, cache_dir / out_file.name)
+            shutil.copy2(in_file, tmp_dir / in_file.name)
+            shutil.copy2(out_file, tmp_dir / out_file.name)
             count += 1
 
     # checker のソースをコピー
     checker_cpp = problem_dir / "checker.cpp"
     if checker_cpp.exists():
-        shutil.copy2(checker_cpp, cache_dir / "checker.cpp")
+        shutil.copy2(checker_cpp, tmp_dir / "checker.cpp")
         testlib_h = LIBRARY_CHECKER_DIR / "common" / "testlib.h"
         if testlib_h.exists():
-            shutil.copy2(testlib_h, cache_dir / "testlib.h")
+            shutil.copy2(testlib_h, tmp_dir / "testlib.h")
 
-    return count > 0
+    if count > 0:
+        if cache_dir.exists():
+            shutil.rmtree(cache_dir)
+        tmp_dir.rename(cache_dir)
+        return True
+    else:
+        shutil.rmtree(tmp_dir)
+        return False
 
 
 # ============================================================
@@ -257,9 +279,13 @@ def download_yukicoder(url: str) -> bool:
     except Exception:
         return False
 
-    cache_dir.mkdir(parents=True, exist_ok=True)
-    count = 0
+    # 一時ディレクトリで作業
+    tmp_dir = Path(str(cache_dir) + ".tmp")
+    if tmp_dir.exists():
+        shutil.rmtree(tmp_dir)
+    tmp_dir.mkdir(parents=True, exist_ok=True)
 
+    count = 0
     for name in in_names:
         name = name.strip()
         if not name:
@@ -278,16 +304,22 @@ def download_yukicoder(url: str) -> bool:
                 out_data = resp.read()
 
             base = Path(name).stem
-            (cache_dir / f"{base}.in").write_bytes(in_data)
-            (cache_dir / f"{base}.out").write_bytes(out_data)
+            (tmp_dir / f"{base}.in").write_bytes(in_data)
+            (tmp_dir / f"{base}.out").write_bytes(out_data)
             count += 1
         except Exception:
-            continue
+            shutil.rmtree(tmp_dir)
+            return False
         time.sleep(0.1)  # レートリミット対策
 
-    if count == 0 and cache_dir.exists():
-        shutil.rmtree(cache_dir)
-    return count > 0
+    if count > 0:
+        if cache_dir.exists():
+            shutil.rmtree(cache_dir)
+        tmp_dir.rename(cache_dir)
+        return True
+    else:
+        shutil.rmtree(tmp_dir)
+        return False
 
 
 # ============================================================

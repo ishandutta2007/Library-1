@@ -84,8 +84,26 @@ def main():
     if args.prev_result and os.path.exists(args.prev_result):
         with open(args.prev_result) as f:
             data = json.load(f)
-        for entry in data:
-            prev_results[entry["file"]] = entry
+
+        if isinstance(data, list):
+            # フラット配列形式 (環境ごとの結果)
+            for entry in data:
+                prev_results[entry["file"]] = entry
+        elif isinstance(data, dict):
+            # マージ済み形式 (hpp → [{file, environments: {env: {status, ...}}}])
+            for problems in data.values():
+                for problem in problems:
+                    file_key = problem["file"]
+                    # 指定環境の結果を取り出す
+                    envs = problem.get("environments", {})
+                    env_result = envs.get(args.env, {})
+                    if env_result:
+                        prev_results[file_key] = {
+                            "file": file_key,
+                            "status": env_result.get("status", ""),
+                            "last_execution_time": problem.get("last_execution_time",
+                                env_result.get("last_execution_time", "")),
+                        }
 
     # テストファイル一覧
     if args.all:

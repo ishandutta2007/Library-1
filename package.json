@@ -8,8 +8,9 @@
   },
   "scripts": {
     "generate": "npx tsx scripts/generate-pages.ts",
-    "docs:dev": "npm run generate && vitepress dev docs",
-    "docs:build": "npm run generate && vitepress build docs",
+    "prepare-results": "mkdir -p md/public && cp .verify-results/results.json md/public/results.json 2>/dev/null || true",
+    "docs:dev": "npm run generate && npm run prepare-results && vitepress dev docs",
+    "docs:build": "npm run generate && npm run prepare-results && vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "repository": {

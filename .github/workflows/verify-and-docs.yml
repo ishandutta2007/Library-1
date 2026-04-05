@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - '.verify-results/**'
   pull_request:
   workflow_dispatch:
 
@@ -20,23 +22,60 @@ jobs:
   setup:
     runs-on: ubuntu-24.04
     outputs:
-      split-size: "5"
+      has-tests: ${{ steps.split.outputs.has-tests }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Generate test list per split
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Determine tests to run
+        id: split
         run: |
-          find test -name '*.test.cpp' | sort > all_tests.txt
-          total=$(wc -l < all_tests.txt)
-          split_size=5
-          chunk=$(( (total + split_size - 1) / split_size ))
-          echo "Total tests: ${total}, chunk size: ${chunk}"
-          for i in $(seq 0 $((split_size - 1))); do
-            start=$((i * chunk + 1))
-            end=$(( (i + 1) * chunk ))
-            sed -n "${start},${end}p" all_tests.txt > "split-${i}.txt"
-            echo "Split ${i}: $(wc -l < split-${i}.txt) tests"
-          done
+          # マージ済み results.json から全環境分の差分判定
+          prev=".verify-results/results.json"
+          need_rerun_all=""
+          if [ -f "${prev}" ]; then
+            for env in x64-g++ x64-clang++ arm-g++ arm-clang++; do
+              tests=$(python3 scripts/check-need-rerun.py \
+                --prev-result "${prev}" \
+                --env "${env}" \
+                --all 2>/dev/null | grep -v '^#')
+              need_rerun_all=$(printf "%s\n%s" "${need_rerun_all}" "${tests}")
+            done
+          else
+            # 前回結果なし → 全テスト
+            need_rerun_all=$(find test -name '*.test.cpp' | sort)
+          fi
+
+          # 重複排除してソート
+          echo "${need_rerun_all}" | grep -v '^$' | sort -u > need_rerun.txt
+          total=$(wc -l < need_rerun.txt | tr -d ' ')
+          echo "Tests needing re-run: ${total}"
+
+          if [ "${total}" -eq 0 ]; then
+            echo "has-tests=false" >> "$GITHUB_OUTPUT"
+            # 空の split ファイルを作成
+            for i in $(seq 0 4); do
+              touch "split-${i}.txt"
+            done
+          else
+            echo "has-tests=true" >> "$GITHUB_OUTPUT"
+            # 5分割
+            split_size=5
+            chunk=$(( (total + split_size - 1) / split_size ))
+            for i in $(seq 0 $((split_size - 1))); do
+              start=$((i * chunk + 1))
+              end=$(( (i + 1) * chunk ))
+              sed -n "${start},${end}p" need_rerun.txt > "split-${i}.txt"
+              count=$(wc -l < "split-${i}.txt" | tr -d ' ')
+              echo "  Split ${i}: ${count} tests"
+            done
+          fi
 
       - name: Upload split lists
         uses: actions/upload-artifact@v4
@@ -47,6 +86,7 @@ jobs:
 
   download:
     needs: setup
+    if: needs.setup.outputs.has-tests == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -67,7 +107,6 @@ jobs:
 
       - name: Restore testcase cache
         uses: actions/cache/restore@v4
-        id: restore-tc
         with:
           path: .cache/testcases
           key: testcases-split-${{ matrix.split }}-v1
@@ -81,7 +120,7 @@ jobs:
           path: .cache/library-checker-problems
           key: library-checker-v1
 
-      - name: Download tc.zip (manual testcases)
+      - name: Download tc.zip
         run: |
           mkdir -p .cache/tc
           curl -L -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip || true
@@ -130,7 +169,8 @@ jobs:
           compression-level: 1
 
   verify:
-    needs: download
+    needs: [setup, download]
+    if: needs.setup.outputs.has-tests == 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -162,30 +202,18 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Restore previous results
-        uses: actions/cache/restore@v4
-        id: restore-prev
-        with:
-          path: .cache/results/result-${{ matrix.env.name }}-${{ matrix.split }}.json
-          key: verify-${{ matrix.env.name }}-${{ matrix.split }}-${{ github.sha }}
-          restore-keys: |
-            verify-${{ matrix.env.name }}-${{ matrix.split }}-
-
       - name: Run tests
         env:
           CXX: ${{ matrix.env.cxx }}
           CXXFLAGS: "-std=c++17 -Wall -Wextra -O2"
           ENV_NAME: ${{ matrix.env.name }}
-          PREV_RESULT: ${{ steps.restore-prev.outputs.cache-hit && format('.cache/results/result-{0}-{1}.json', matrix.env.name, matrix.split) || '' }}
+          PREV_RESULT: .verify-results/results.json
         run: |
+          if [ ! -f "${PREV_RESULT}" ]; then
+            unset PREV_RESULT
+          fi
           bash scripts/run-tests.sh \
             --split-file split-${{ matrix.split }}.txt
-
-      - name: Save results cache
-        uses: actions/cache/save@v4
-        with:
-          path: .cache/results/result-${{ matrix.env.name }}-${{ matrix.split }}.json
-          key: verify-${{ matrix.env.name }}-${{ matrix.split }}-${{ github.sha }}
 
       - name: Upload results
         uses: actions/upload-artifact@v4
@@ -195,10 +223,13 @@ jobs:
           retention-days: 7
 
   docs:
-    needs: verify
+    needs: [setup, verify]
+    if: always() && needs.setup.result == 'success'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -210,6 +241,7 @@ jobs:
         run: npm ci
 
       - name: Download all results
+        if: needs.setup.outputs.has-tests == 'true'
         uses: actions/download-artifact@v4
         with:
           pattern: result-*
@@ -217,7 +249,39 @@ jobs:
           merge-multiple: true
 
       - name: Merge results
-        run: npx tsx scripts/merge-results.ts
+        run: |
+          mkdir -p .verify-results md/public
+
+          if [ -d ".cache/results" ] && ls .cache/results/result-*.json 1>/dev/null 2>&1; then
+            # 今回の結果と前回結果をマージして1ファイルに
+            npx tsx scripts/merge-results.ts --prev .verify-results/results.json
+          fi
+
+          # VitePress 用にコピー
+          if [ -f ".verify-results/results.json" ]; then
+            cp .verify-results/results.json md/public/results.json
+          fi
+
+      - name: Commit results
+        if: github.ref == 'refs/heads/master' && needs.setup.outputs.has-tests == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add .verify-results/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "[skip ci] Update verify results"
+            git push
+            echo "Results committed"
+          fi
+
+      - name: Save testcases to Releases
+        if: github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/save-downloaded-testcases.sh || true
 
       - name: Write summary
         run: npx tsx scripts/write-summary.ts >> "$GITHUB_STEP_SUMMARY"

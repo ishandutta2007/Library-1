@@ -17,7 +17,58 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  setup:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install oj
+        run: pip install online-judge-tools
+
+      - name: Restore testcase cache
+        uses: actions/cache/restore@v4
+        id: restore-tc
+        with:
+          path: .cache/testcases
+          key: testcases-v2
+          restore-keys: |
+            testcases-
+
+      - name: Download tc.zip
+        run: |
+          mkdir -p .cache/tc
+          curl -L -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip || true
+          if [ -f tc.zip ]; then
+            unzip -q tc.zip -d .cache/tc
+            rm tc.zip
+          fi
+
+      - name: Download all testcases
+        env:
+          YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+          DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
+        run: python3 scripts/download-testcases.py
+
+      - name: Save testcase cache
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/testcases
+          key: testcases-v2
+
+      - name: Upload testcases
+        uses: actions/upload-artifact@v4
+        with:
+          name: testcases
+          path: .cache/testcases
+          retention-days: 1
+
   verify:
+    needs: setup
     strategy:
       fail-fast: false
       matrix:
@@ -33,13 +84,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Download testcases
+        uses: actions/download-artifact@v4
         with:
-          python-version: "3.12"
-
-      - name: Install oj
-        run: pip install online-judge-tools
+          name: testcases
+          path: .cache/testcases
 
       - name: Restore previous results
         uses: actions/cache/restore@v4
@@ -50,32 +99,12 @@ jobs:
           restore-keys: |
             verify-${{ matrix.env.name }}-${{ matrix.split }}-
 
-      - name: Restore testcase cache
-        uses: actions/cache/restore@v4
-        id: restore-tc
-        with:
-          path: .cache/testcases
-          key: testcases-${{ matrix.env.os }}-v1
-          restore-keys: |
-            testcases-${{ matrix.env.os }}-
-
-      - name: Download tc.zip
-        run: |
-          mkdir -p .cache/tc
-          curl -L -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip || true
-          if [ -f tc.zip ]; then
-            unzip -q tc.zip -d .cache/tc
-            rm tc.zip
-          fi
-
       - name: Run tests
         env:
           CXX: ${{ matrix.env.cxx }}
           CXXFLAGS: "-std=c++17 -Wall -Wextra -O2"
           ENV_NAME: ${{ matrix.env.name }}
           PREV_RESULT: ${{ steps.restore-prev.outputs.cache-hit && format('.cache/results/result-{0}-{1}.json', matrix.env.name, matrix.split) || '' }}
-          YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
-          DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
         run: bash scripts/run-tests.sh --split-index ${{ matrix.split }} --split-size 5
 
       - name: Save results cache
@@ -83,13 +112,6 @@ jobs:
         with:
           path: .cache/results/result-${{ matrix.env.name }}.json
           key: verify-${{ matrix.env.name }}-${{ matrix.split }}-${{ github.sha }}
-
-      - name: Save testcase cache
-        uses: actions/cache/save@v4
-        if: steps.restore-tc.outputs.cache-hit != 'true'
-        with:
-          path: .cache/testcases
-          key: testcases-${{ matrix.env.os }}-v1
 
       - name: Upload results
         uses: actions/upload-artifact@v4

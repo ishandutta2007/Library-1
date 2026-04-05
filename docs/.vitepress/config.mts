@@ -133,6 +133,9 @@ export default defineConfig({
   title: "Hashiryo's Library",
   description: '競技プログラミング用C++ライブラリ',
 
+  // GitHub Pages のベースパス
+  base: '/Library/',
+
   // md/ ディレクトリをソースとして使う
   srcDir: '../md',
 

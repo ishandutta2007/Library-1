@@ -19,6 +19,39 @@ concurrency:
 jobs:
   setup:
     runs-on: ubuntu-24.04
+    outputs:
+      split-size: "5"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate test list per split
+        run: |
+          find test -name '*.test.cpp' | sort > all_tests.txt
+          total=$(wc -l < all_tests.txt)
+          split_size=5
+          chunk=$(( (total + split_size - 1) / split_size ))
+          echo "Total tests: ${total}, chunk size: ${chunk}"
+          for i in $(seq 0 $((split_size - 1))); do
+            start=$((i * chunk + 1))
+            end=$(( (i + 1) * chunk ))
+            sed -n "${start},${end}p" all_tests.txt > "split-${i}.txt"
+            echo "Split ${i}: $(wc -l < split-${i}.txt) tests"
+          done
+
+      - name: Upload split lists
+        uses: actions/upload-artifact@v4
+        with:
+          name: split-lists
+          path: split-*.txt
+          retention-days: 1
+
+  download:
+    needs: setup
+    strategy:
+      fail-fast: false
+      matrix:
+        split: [0, 1, 2, 3, 4]
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -27,23 +60,26 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Download split list
+        uses: actions/download-artifact@v4
+        with:
+          name: split-lists
+
       - name: Restore testcase cache
         uses: actions/cache/restore@v4
         id: restore-tc
         with:
           path: .cache/testcases
-          key: testcases-v3
+          key: testcases-split-${{ matrix.split }}-v1
           restore-keys: |
-            testcases-
+            testcases-split-${{ matrix.split }}-
 
-      - name: Restore library-checker-problems cache
+      - name: Restore library-checker-problems
         uses: actions/cache/restore@v4
         id: restore-lc
         with:
           path: .cache/library-checker-problems
           key: library-checker-v1
-          restore-keys: |
-            library-checker-
 
       - name: Download tc.zip (manual testcases)
         run: |
@@ -57,7 +93,7 @@ jobs:
       - name: Download cached testcases from Releases
         run: |
           mkdir -p .cache/tc-downloaded
-          for service in aoj yukicoder hackerrank other; do
+          for service in aoj yukicoder hackerrank; do
             url="https://github.com/${{ github.repository }}/releases/download/testcases/tc-${service}.zip"
             if curl -fsSL -o "tc-${service}.zip" "${url}" 2>/dev/null; then
               unzip -q "tc-${service}.zip" -d ".cache/tc-downloaded/${service}"
@@ -66,49 +102,43 @@ jobs:
             fi
           done
 
-      - name: Download all testcases
+      - name: Download testcases for this split
         env:
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
           PYTHONUNBUFFERED: "1"
-        run: python3 scripts/download-testcases.py
+        run: python3 scripts/download-testcases.py --split split-${{ matrix.split }}.txt
 
       - name: Save testcase cache
         uses: actions/cache/save@v4
         with:
           path: .cache/testcases
-          key: testcases-v3
+          key: testcases-split-${{ matrix.split }}-v1
 
       - name: Save library-checker-problems cache
         uses: actions/cache/save@v4
-        if: steps.restore-lc.outputs.cache-hit != 'true'
+        if: steps.restore-lc.outputs.cache-hit != 'true' && matrix.split == 0
         with:
           path: .cache/library-checker-problems
           key: library-checker-v1
 
-      - name: Save downloaded testcases to Releases
-        if: github.ref == 'refs/heads/master'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: bash scripts/save-downloaded-testcases.sh
-
-      - name: Upload testcases artifact
+      - name: Upload testcases
         uses: actions/upload-artifact@v4
         with:
-          name: testcases
+          name: testcases-${{ matrix.split }}
           path: .cache/testcases
           retention-days: 1
           compression-level: 1
 
   verify:
-    needs: setup
+    needs: download
     strategy:
       fail-fast: false
       matrix:
         env:
-          - { os: ubuntu-24.04,     cxx: g++-13,    name: x64-g++ }
-          - { os: ubuntu-24.04,     cxx: clang++-18, name: x64-clang++ }
-          - { os: ubuntu-24.04-arm, cxx: g++-13,    name: arm-g++ }
-          - { os: ubuntu-24.04-arm, cxx: clang++-18, name: arm-clang++ }
+          - { os: ubuntu-24.04,     cxx: g++-13,     name: x64-g++ }
+          - { os: ubuntu-24.04,     cxx: clang++-18,  name: x64-clang++ }
+          - { os: ubuntu-24.04-arm, cxx: g++-13,     name: arm-g++ }
+          - { os: ubuntu-24.04-arm, cxx: clang++-18,  name: arm-clang++ }
         split: [0, 1, 2, 3, 4]
     runs-on: ${{ matrix.env.os }}
     steps:
@@ -116,11 +146,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download split list
+        uses: actions/download-artifact@v4
+        with:
+          name: split-lists
+
       - name: Download testcases
         uses: actions/download-artifact@v4
         with:
-          name: testcases
+          name: testcases-${{ matrix.split }}
           path: .cache/testcases
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
       - name: Restore previous results
         uses: actions/cache/restore@v4
@@ -131,23 +171,20 @@ jobs:
           restore-keys: |
             verify-${{ matrix.env.name }}-${{ matrix.split }}-
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
       - name: Run tests
         env:
           CXX: ${{ matrix.env.cxx }}
           CXXFLAGS: "-std=c++17 -Wall -Wextra -O2"
           ENV_NAME: ${{ matrix.env.name }}
           PREV_RESULT: ${{ steps.restore-prev.outputs.cache-hit && format('.cache/results/result-{0}-{1}.json', matrix.env.name, matrix.split) || '' }}
-        run: bash scripts/run-tests.sh --split-index ${{ matrix.split }} --split-size 5
+        run: |
+          bash scripts/run-tests.sh \
+            --split-file split-${{ matrix.split }}.txt
 
       - name: Save results cache
         uses: actions/cache/save@v4
         with:
-          path: .cache/results/result-${{ matrix.env.name }}.json
+          path: .cache/results/result-${{ matrix.env.name }}-${{ matrix.split }}.json
           key: verify-${{ matrix.env.name }}-${{ matrix.split }}-${{ github.sha }}
 
       - name: Upload results

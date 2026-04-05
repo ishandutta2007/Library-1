@@ -1,10 +1,10 @@
 /**
- * 各環境の結果 JSON をマージして、VitePress 用の results.json を生成する
+ * テスト結果をマージして results.json を生成する
  *
- * 入力: .cache/results/result-{env}.json (各環境の結果)
- * 出力: md/public/results.json (VitePress 用)
- *
- * 使い方: npx tsx scripts/merge-results.ts [結果ファイル...]
+ * 使い方:
+ *   npx tsx scripts/merge-results.ts                          # .cache/results/ からマージ
+ *   npx tsx scripts/merge-results.ts --prev .verify-results/results.json  # 前回結果とマージ
+ *   npx tsx scripts/merge-results.ts --from-committed         # .verify-results/results.json をそのまま md/public/ にコピー
  */
 import fs from 'fs'
 import path from 'path'
@@ -23,6 +23,7 @@ interface TestResult {
   problem: string
   environment: string
   status: string
+  last_execution_time?: string
   cases: CaseResult[]
 }
 
@@ -39,7 +40,7 @@ interface MergedProblem {
   environments: Record<string, EnvSummary>
 }
 
-// hpp → テストファイル のマッピングを構築
+// hpp → テストファイル のマッピング
 function buildHppMap(): Record<string, string[]> {
   const testDir = path.join(ROOT, 'test')
   const map: Record<string, string[]> = {}
@@ -47,9 +48,8 @@ function buildHppMap(): Record<string, string[]> {
   function scan(dir: string) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
       const full = path.join(dir, entry.name)
-      if (entry.isDirectory()) {
-        scan(full)
-      } else if (entry.name.endsWith('.test.cpp')) {
+      if (entry.isDirectory()) scan(full)
+      else if (entry.name.endsWith('.test.cpp')) {
         const content = fs.readFileSync(full, 'utf-8')
         const rel = path.relative(ROOT, full)
         for (const m of content.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) {
@@ -64,80 +64,101 @@ function buildHppMap(): Record<string, string[]> {
   return map
 }
 
-// 結果ファイルの読み込み
-const resultFiles = process.argv.slice(2)
-if (resultFiles.length === 0) {
-  // デフォルト: .cache/results/ から全て読む
-  const resultDir = path.join(ROOT, '.cache/results')
-  if (fs.existsSync(resultDir)) {
-    for (const f of fs.readdirSync(resultDir)) {
-      if (f.startsWith('result-') && f.endsWith('.json')) {
-        resultFiles.push(path.join(resultDir, f))
-      }
-    }
-  }
-}
+// 引数パース
+const args = process.argv.slice(2)
+const fromCommitted = args.includes('--from-committed')
+const prevIdx = args.indexOf('--prev')
+const prevFile = prevIdx >= 0 ? args[prevIdx + 1] : null
 
-if (resultFiles.length === 0) {
-  console.log('No result files found')
+const OUTPUT = path.join(ROOT, '.verify-results', 'results.json')
+const PUBLIC_OUTPUT = path.join(ROOT, 'md', 'public', 'results.json')
+
+// --from-committed: 既存の results.json を md/public/ にコピーするだけ
+if (fromCommitted) {
+  if (fs.existsSync(OUTPUT)) {
+    fs.mkdirSync(path.dirname(PUBLIC_OUTPUT), { recursive: true })
+    fs.copyFileSync(OUTPUT, PUBLIC_OUTPUT)
+    console.log(`Copied ${OUTPUT} to ${PUBLIC_OUTPUT}`)
+  } else {
+    console.log('No committed results found')
+  }
   process.exit(0)
 }
 
-// 全環境の結果を読み込み
-const allResults: TestResult[] = []
-for (const file of resultFiles) {
-  const data: TestResult[] = JSON.parse(fs.readFileSync(file, 'utf-8'))
-  allResults.push(...data)
-  console.log(`Loaded ${data.length} results from ${path.basename(file)}`)
-}
-
-// file + problem をキーにしてマージ
-const mergedMap: Record<string, MergedProblem> = {}
-
-for (const result of allResults) {
-  const key = result.file
-  if (!mergedMap[key]) {
-    // TLE をアノテーションから読む
-    const testFilePath = path.join(ROOT, result.file)
-    let tlMs = 0
-    if (fs.existsSync(testFilePath)) {
-      const content = fs.readFileSync(testFilePath, 'utf-8')
-      const tleMatch = content.match(/competitive-verifier:\s*TLE\s+([0-9.]+)/)
-      if (tleMatch) tlMs = Math.round(parseFloat(tleMatch[1]) * 1000)
-    }
-
-    mergedMap[key] = {
-      problem: result.problem,
-      file: result.file,
-      time_limit_ms: tlMs,
-      environments: {},
+// 新しい結果ファイルの読み込み
+const resultDir = path.join(ROOT, '.cache/results')
+const newResults: TestResult[] = []
+if (fs.existsSync(resultDir)) {
+  for (const f of fs.readdirSync(resultDir)) {
+    if (f.startsWith('result-') && f.endsWith('.json')) {
+      const data: TestResult[] = JSON.parse(fs.readFileSync(path.join(resultDir, f), 'utf-8'))
+      newResults.push(...data)
+      console.log(`Loaded ${data.length} results from ${f}`)
     }
   }
+}
 
-  const merged = mergedMap[key]
+// 前回結果の読み込み（--prev で指定 or デフォルト）
+let prevData: Record<string, MergedProblem[]> = {}
+const prevPath = prevFile || OUTPUT
+if (fs.existsSync(prevPath)) {
+  prevData = JSON.parse(fs.readFileSync(prevPath, 'utf-8'))
+  console.log(`Loaded previous results from ${prevPath}`)
+}
 
-  // サマリ計算
+// 前回結果をフラットなマップに変換: file → { env → EnvSummary }
+const prevMap: Record<string, Record<string, EnvSummary>> = {}
+for (const problems of Object.values(prevData)) {
+  for (const problem of problems) {
+    prevMap[problem.file] = { ...(prevMap[problem.file] || {}), ...problem.environments }
+  }
+}
+
+// 新しい結果をマージ
+for (const result of newResults) {
+  const key = result.file
+  if (!prevMap[key]) prevMap[key] = {}
+
   const cases = result.cases
   const timeMax = cases.length > 0 ? Math.max(...cases.map(c => c.time_ms)) : 0
   const timeTotal = cases.reduce((sum, c) => sum + c.time_ms, 0)
   const memMax = cases.length > 0 ? Math.max(...cases.map(c => c.memory_kb)) : 0
 
-  merged.environments[result.environment] = {
+  prevMap[key][result.environment] = {
     status: result.status,
     summary: { time_max_ms: timeMax, time_total_ms: timeTotal, memory_max_kb: memMax },
     cases,
   }
 }
 
-// hpp ごとにグループ化
+// hpp ごとにグループ化して出力形式に変換
 const hppMap = buildHppMap()
 const output: Record<string, MergedProblem[]> = {}
+
+// テストファイルの問題URLとTLを取得するヘルパー
+function getTestMeta(testFile: string): { problem: string; tlMs: number } {
+  const full = path.join(ROOT, testFile)
+  if (!fs.existsSync(full)) return { problem: '', tlMs: 0 }
+  const content = fs.readFileSync(full, 'utf-8')
+  const problemMatch = content.match(/competitive-verifier:\s*PROBLEM\s+(\S+)/)
+  const tleMatch = content.match(/competitive-verifier:\s*TLE\s+([0-9.]+)/)
+  return {
+    problem: problemMatch ? problemMatch[1] : '',
+    tlMs: tleMatch ? Math.round(parseFloat(tleMatch[1]) * 1000) : 0,
+  }
+}
 
 for (const [hpp, testFiles] of Object.entries(hppMap)) {
   const problems: MergedProblem[] = []
   for (const tf of testFiles) {
-    if (mergedMap[tf]) {
-      problems.push(mergedMap[tf])
+    if (prevMap[tf]) {
+      const meta = getTestMeta(tf)
+      problems.push({
+        problem: meta.problem,
+        file: tf,
+        time_limit_ms: meta.tlMs,
+        environments: prevMap[tf],
+      })
     }
   }
   if (problems.length > 0) {
@@ -146,8 +167,13 @@ for (const [hpp, testFiles] of Object.entries(hppMap)) {
 }
 
 // 出力
-const outPath = path.join(ROOT, 'md/public/results.json')
-fs.mkdirSync(path.dirname(outPath), { recursive: true })
-fs.writeFileSync(outPath, JSON.stringify(output, null, 2))
-console.log(`\nMerged results written to ${outPath}`)
-console.log(`  ${Object.keys(output).length} hpp files, ${Object.keys(mergedMap).length} test files`)
+fs.mkdirSync(path.dirname(OUTPUT), { recursive: true })
+fs.writeFileSync(OUTPUT, JSON.stringify(output, null, 2))
+
+fs.mkdirSync(path.dirname(PUBLIC_OUTPUT), { recursive: true })
+fs.copyFileSync(OUTPUT, PUBLIC_OUTPUT)
+
+const testCount = Object.values(prevMap).length
+const hppCount = Object.keys(output).length
+console.log(`\nResults: ${testCount} test files, ${hppCount} hpp files`)
+console.log(`Written to ${OUTPUT} and ${PUBLIC_OUTPUT}`)

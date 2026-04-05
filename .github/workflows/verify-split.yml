@@ -154,10 +154,18 @@ jobs:
             --split-file split-${{ inputs.split }}.txt \
             ${prev_arg}
 
+      - name: Rename result file
+        if: steps.check.outputs.has-tests == 'true'
+        run: |
+          if [ -f ".cache/results/result-${{ matrix.env.name }}.json" ]; then
+            mv ".cache/results/result-${{ matrix.env.name }}.json" \
+               ".cache/results/result-${{ matrix.env.name }}-${{ inputs.split }}.json"
+          fi
+
       - name: Upload results
         if: steps.check.outputs.has-tests == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: result-${{ matrix.env.name }}-${{ inputs.split }}
-          path: .cache/results/result-${{ matrix.env.name }}.json
+          path: .cache/results/result-${{ matrix.env.name }}-${{ inputs.split }}.json
           retention-days: 7

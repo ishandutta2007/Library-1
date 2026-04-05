@@ -21,7 +21,7 @@ import sys
 import time
 import urllib.request
 import urllib.error
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor, as_completed
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -501,19 +501,26 @@ def main():
                     failed += 1
                     print(f"  [NG]  {url}")
 
-    # yosupo は順次実行（リポジトリ内ファイル操作があるため）
+    # yosupo はプロセス並列で生成（問題ごとに独立したディレクトリに出力するので安全）
     if yosupo_urls:
-        print(f"  Generating {len(yosupo_urls)} yosupo problems...")
-        for url in yosupo_urls:
-            m = re.search(r"/problem/(\w+)", url)
-            name = m.group(1) if m else url
-            print(f"  [GEN] {name} ...", end="", flush=True)
-            if download_one(url):
-                downloaded += 1
-                print(" OK")
-            else:
-                failed += 1
-                print(" FAILED")
+        # 先にリポジトリのクローン/更新と依存インストールを済ませる
+        if not ensure_library_checker_repo():
+            print("  Failed to prepare library-checker-problems, skipping yosupo")
+            failed += len(yosupo_urls)
+        else:
+            print(f"  Generating {len(yosupo_urls)} yosupo problems (parallel)...")
+            with ProcessPoolExecutor(max_workers=3) as executor:
+                futures = {executor.submit(download_one_safe, url): url for url in yosupo_urls}
+                for future in as_completed(futures):
+                    url, success = future.result()
+                    m = re.search(r"/problem/(\w+)", url)
+                    name = m.group(1) if m else url
+                    if success:
+                        downloaded += 1
+                        print(f"  [GEN] {name} ... OK", flush=True)
+                    else:
+                        failed += 1
+                        print(f"  [GEN] {name} ... FAILED", flush=True)
 
     print(f"\nTestcase download summary:")
     print(f"  Cached:          {cached}")

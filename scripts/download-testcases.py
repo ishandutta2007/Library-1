@@ -130,7 +130,7 @@ LIBRARY_CHECKER_DIR = ROOT / ".cache" / "library-checker-problems"
 
 
 def download_yosupo(url: str, cache_dir: Path) -> bool:
-    """yosupo judge のテストケースを生成"""
+    """yosupo judge のテストケースを生成し、checker もコンパイル"""
     # https://judge.yosupo.jp/problem/point_add_range_sum → point_add_range_sum
     m = re.search(r"/problem/(\w+)", url)
     if not m:
@@ -182,6 +182,15 @@ def download_yosupo(url: str, cache_dir: Path) -> bool:
             shutil.copy2(in_file, cache_dir / in_file.name)
             shutil.copy2(out_file, cache_dir / out_file.name)
             count += 1
+
+    # checker のソースをキャッシュにコピー（verify ジョブ側でアーキテクチャに合わせてコンパイル）
+    checker_cpp = problem_dir / "checker.cpp"
+    if checker_cpp.exists():
+        shutil.copy2(checker_cpp, cache_dir / "checker.cpp")
+        # testlib.h も必要
+        testlib_h = LIBRARY_CHECKER_DIR / "common" / "testlib.h"
+        if testlib_h.exists():
+            shutil.copy2(testlib_h, cache_dir / "testlib.h")
 
     return count > 0
 

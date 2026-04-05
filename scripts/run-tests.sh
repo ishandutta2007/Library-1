@@ -25,6 +25,7 @@ RESULT_DIR="${RESULT_DIR:-${ROOT}/.cache/results}"
 ENV_NAME="${ENV_NAME:-local}"
 SPLIT_INDEX=""
 SPLIT_SIZE=""
+SPLIT_FILE=""
 PREV_RESULT=""
 
 # 引数パース
@@ -33,6 +34,7 @@ while [[ $# -gt 0 ]]; do
     --env) ENV_NAME="$2"; shift 2 ;;
     --split-index) SPLIT_INDEX="$2"; shift 2 ;;
     --split-size) SPLIT_SIZE="$2"; shift 2 ;;
+    --split-file) SPLIT_FILE="$2"; shift 2 ;;
     --prev-result) PREV_RESULT="$2"; shift 2 ;;
     *) echo "Unknown option: $1"; exit 1 ;;
   esac
@@ -342,14 +344,21 @@ JSONEOF
 # =============================================================================
 
 # テストファイル一覧を作成
-ALL_TESTS=()
-while IFS= read -r line; do
-  ALL_TESTS+=("$line")
-done < <(find "${TEST_DIR}" -name '*.test.cpp' | sort)
-TOTAL=${#ALL_TESTS[@]}
+TESTS=()
 
-# 分割実行
-if [[ -n "${SPLIT_INDEX}" ]] && [[ -n "${SPLIT_SIZE}" ]]; then
+if [[ -n "${SPLIT_FILE}" ]] && [[ -f "${SPLIT_FILE}" ]]; then
+  # split ファイルから読み込み (各行が test/... の相対パス)
+  while IFS= read -r line; do
+    [[ -n "${line}" ]] && TESTS+=("${ROOT}/${line}")
+  done < "${SPLIT_FILE}"
+  echo "Running ${#TESTS[@]} tests from ${SPLIT_FILE}"
+elif [[ -n "${SPLIT_INDEX}" ]] && [[ -n "${SPLIT_SIZE}" ]]; then
+  # インデックスベースの分割
+  ALL_TESTS=()
+  while IFS= read -r line; do
+    ALL_TESTS+=("$line")
+  done < <(find "${TEST_DIR}" -name '*.test.cpp' | sort)
+  TOTAL=${#ALL_TESTS[@]}
   CHUNK_SIZE=$(( (TOTAL + SPLIT_SIZE - 1) / SPLIT_SIZE ))
   START=$(( SPLIT_INDEX * CHUNK_SIZE ))
   END=$(( START + CHUNK_SIZE ))
@@ -357,8 +366,10 @@ if [[ -n "${SPLIT_INDEX}" ]] && [[ -n "${SPLIT_SIZE}" ]]; then
   TESTS=("${ALL_TESTS[@]:${START}:$((END - START))}")
   echo "Split ${SPLIT_INDEX}/${SPLIT_SIZE}: tests ${START}-$((END-1)) of ${TOTAL}"
 else
-  TESTS=("${ALL_TESTS[@]}")
-  echo "Running all ${TOTAL} tests"
+  while IFS= read -r line; do
+    TESTS+=("$line")
+  done < <(find "${TEST_DIR}" -name '*.test.cpp' | sort)
+  echo "Running all ${#TESTS[@]} tests"
 fi
 
 # 差分実行: 前回結果がある場合、変更がないテストはスキップ

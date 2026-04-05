@@ -41,10 +41,24 @@ def url_to_cache_dir(url: str) -> Path:
     return TC_CACHE_DIR / url_to_md5(url)
 
 
-def get_problem_urls() -> dict[str, list[str]]:
-    """全テストファイルから PROBLEM URL を収集して重複排除。URL → サービス名のヒント"""
+def get_problem_urls(split_file: str | None = None) -> dict[str, list[str]]:
+    """テストファイルから PROBLEM URL を収集して重複排除。
+    split_file が指定されていれば、そのファイルに列挙されたテストのみ対象。"""
+    # 対象テストファイルの決定
+    if split_file:
+        test_files = []
+        with open(split_file) as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    test_files.append(ROOT / line)
+    else:
+        test_files = sorted(TEST_DIR.rglob("*.test.cpp"))
+
     urls: dict[str, list[str]] = {}
-    for test_file in sorted(TEST_DIR.rglob("*.test.cpp")):
+    for test_file in test_files:
+        if not test_file.exists():
+            continue
         content = test_file.read_text()
         if re.search(r"competitive-verifier:\s*IGNORE", content):
             continue
@@ -452,7 +466,12 @@ def download_one_safe(url: str) -> tuple[str, bool]:
 # ============================================================
 
 def main():
-    urls = get_problem_urls()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--split", help="対象テストファイル一覧のファイルパス")
+    args = parser.parse_args()
+
+    urls = get_problem_urls(split_file=args.split)
     print(f"Found {len(urls)} unique problem URLs")
 
     cached = 0

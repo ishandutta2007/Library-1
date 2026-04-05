@@ -39,10 +39,10 @@ const envNames = computed(() => {
 })
 
 const envLabels: Record<string, string> = {
-  'ubuntu-g++': 'Ubuntu g++',
-  'ubuntu-clang++': 'Ubuntu clang++',
-  'macos-g++': 'macOS g++',
-  'macos-clang++': 'macOS clang++',
+  'x64-g++': 'x64 g++',
+  'x64-clang++': 'x64 clang++',
+  'arm-g++': 'ARM g++',
+  'arm-clang++': 'ARM clang++',
 }
 
 function statusIcon(status: string) {

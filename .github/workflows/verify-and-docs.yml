@@ -24,23 +24,21 @@ jobs:
         include:
           - os: ubuntu-24.04
             cxx: g++-13
-            env_name: ubuntu-g++
+            env_name: x64-g++
             cxxflags: "-std=c++17 -Wall -Wextra -O2"
           - os: ubuntu-24.04
             cxx: clang++-18
-            env_name: ubuntu-clang++
+            env_name: x64-clang++
             cxxflags: "-std=c++17 -Wall -Wextra -O2"
-          - os: macos-14
-            cxx: g++-14
-            env_name: macos-g++
+          - os: ubuntu-24.04-arm
+            cxx: g++-13
+            env_name: arm-g++
             cxxflags: "-std=c++17 -Wall -Wextra -O2"
-          - os: macos-14
-            cxx: clang++
-            env_name: macos-clang++
+          - os: ubuntu-24.04-arm
+            cxx: clang++-18
+            env_name: arm-clang++
             cxxflags: "-std=c++17 -Wall -Wextra -O2"
     runs-on: ${{ matrix.os }}
-    env:
-      SPLIT_SIZE: "20"
     steps:
       - uses: actions/checkout@v4
 
@@ -51,10 +49,6 @@ jobs:
 
       - name: Install oj
         run: pip install online-judge-tools
-
-      - name: Install gtime (macOS)
-        if: runner.os == 'macOS'
-        run: brew install gnu-time
 
       - name: Download tc.zip
         run: |

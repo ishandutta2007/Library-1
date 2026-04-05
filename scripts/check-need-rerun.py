@@ -110,6 +110,13 @@ def main():
         test_files = []
         test_dir = ROOT / "test"
         for p in sorted(test_dir.rglob("*.test.cpp")):
+            # IGNORE / STANDALONE はスキップ
+            content = p.read_text()
+            if re.search(r"competitive-verifier:\s*IGNORE", content):
+                continue
+            if re.search(r"competitive-verifier:\s*STANDALONE", content):
+                # STANDALONE は実行対象だが、テストケース不要
+                pass
             test_files.append(str(p.relative_to(ROOT)))
     else:
         test_files = args.test_files or []

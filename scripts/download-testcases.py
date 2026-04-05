@@ -116,7 +116,11 @@ def download_aoj(url: str) -> bool:
         header_url = f"https://judgedat.u-aizu.ac.jp/testcases/{problem_id}/header"
         with urllib.request.urlopen(header_url, timeout=30) as resp:
             headers = json.loads(resp.read())
-    except Exception:
+    except urllib.error.HTTPError as e:
+        print(f"    AOJ {problem_id}: HTTP {e.code} {e.reason}", flush=True)
+        return False
+    except Exception as e:
+        print(f"    AOJ {problem_id}: {e}", flush=True)
         return False
 
     # 一時ディレクトリで作業し、全ケース成功したらキャッシュにリネーム
@@ -283,10 +287,12 @@ def download_yukicoder(url: str) -> bool:
     """yukicoder のテストケースをダウンロード"""
     cache_dir = url_to_cache_dir(url)
     if not YUKICODER_TOKEN:
+        print(f"    yukicoder: no token set", flush=True)
         return False
 
     m = re.search(r"/problems/no/(\d+)", url)
     if not m:
+        print(f"    yukicoder: cannot parse problem number from {url}", flush=True)
         return False
     problem_no = m.group(1)
 
@@ -296,7 +302,11 @@ def download_yukicoder(url: str) -> bool:
         req.add_header("Authorization", f"Bearer {YUKICODER_TOKEN}")
         with urllib.request.urlopen(req, timeout=30) as resp:
             in_names = resp.read().decode().strip().split("\n")
-    except Exception:
+    except urllib.error.HTTPError as e:
+        print(f"    yukicoder #{problem_no}: HTTP {e.code} {e.reason}", flush=True)
+        return False
+    except Exception as e:
+        print(f"    yukicoder #{problem_no}: {e}", flush=True)
         return False
 
     # 一時ディレクトリで作業
@@ -327,7 +337,12 @@ def download_yukicoder(url: str) -> bool:
             (tmp_dir / f"{base}.in").write_bytes(in_data)
             (tmp_dir / f"{base}.out").write_bytes(out_data)
             count += 1
-        except Exception:
+        except urllib.error.HTTPError as e:
+            print(f"    yukicoder #{problem_no} case {name}: HTTP {e.code} {e.reason}", flush=True)
+            shutil.rmtree(tmp_dir)
+            return False
+        except Exception as e:
+            print(f"    yukicoder #{problem_no} case {name}: {e}", flush=True)
             shutil.rmtree(tmp_dir)
             return False
         time.sleep(0.1)  # レートリミット対策
@@ -372,7 +387,11 @@ def download_hackerrank(url: str) -> bool:
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
             zip_data = resp.read()
-    except Exception:
+    except urllib.error.HTTPError as e:
+        print(f"    HackerRank {challenge}: HTTP {e.code} {e.reason}", flush=True)
+        return False
+    except Exception as e:
+        print(f"    HackerRank {challenge}: {e}", flush=True)
         return False
 
     tmp_dir = Path(str(cache_dir) + ".tmp")

@@ -69,6 +69,7 @@ jobs:
       - name: Download all testcases
         env:
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+          PYTHONUNBUFFERED: "1"
         run: python3 scripts/download-testcases.py
 
       - name: Save testcase cache

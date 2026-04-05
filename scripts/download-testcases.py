@@ -164,26 +164,45 @@ LIBRARY_CHECKER_DIR = ROOT / ".cache" / "library-checker-problems"
 
 
 def ensure_library_checker_repo():
-    """library-checker-problems リポジトリをクローン（未クローンの場合のみ）"""
+    """library-checker-problems リポジトリをクローンまたは更新"""
     if LIBRARY_CHECKER_DIR.exists():
-        return True
-    print("  Cloning library-checker-problems...", flush=True)
-    try:
-        subprocess.run(
-            ["git", "clone", "--depth=1",
-             "https://github.com/yosupo06/library-checker-problems.git",
-             str(LIBRARY_CHECKER_DIR)],
-            check=True, capture_output=True, timeout=120,
-        )
-        # generate.py の依存をインストール
-        subprocess.run(
-            [sys.executable, "-m", "pip", "install", "-q", "pyyaml", "toml"],
-            capture_output=True,
-        )
-        return True
-    except Exception as e:
-        print(f"  Clone failed: {e}", file=sys.stderr)
-        return False
+        # 既にあれば最新に更新
+        print("  Updating library-checker-problems...", flush=True)
+        try:
+            subprocess.run(
+                ["git", "fetch", "--depth=1", "origin", "master"],
+                check=True, capture_output=True, timeout=60,
+                cwd=LIBRARY_CHECKER_DIR,
+            )
+            subprocess.run(
+                ["git", "reset", "--hard", "origin/master"],
+                check=True, capture_output=True, timeout=30,
+                cwd=LIBRARY_CHECKER_DIR,
+            )
+            return True
+        except Exception as e:
+            print(f"  Update failed: {e}", flush=True)
+            # 更新失敗しても既存のリポジトリで続行
+            return True
+    else:
+        print("  Cloning library-checker-problems...", flush=True)
+        try:
+            subprocess.run(
+                ["git", "clone", "--depth=1",
+                 "https://github.com/yosupo06/library-checker-problems.git",
+                 str(LIBRARY_CHECKER_DIR)],
+                check=True, capture_output=True, timeout=120,
+            )
+        except Exception as e:
+            print(f"  Clone failed: {e}", flush=True)
+            return False
+
+    # generate.py の依存をインストール
+    subprocess.run(
+        [sys.executable, "-m", "pip", "install", "-q", "pyyaml", "toml"],
+        capture_output=True,
+    )
+    return True
 
 
 def download_yosupo(url: str) -> bool:
@@ -211,11 +230,11 @@ def download_yosupo(url: str) -> bool:
     try:
         subprocess.run(
             [sys.executable, str(LIBRARY_CHECKER_DIR / "generate.py"), str(problem_dir)],
-            check=True, capture_output=True, timeout=300,
+            check=True, timeout=300,
             cwd=LIBRARY_CHECKER_DIR,
         )
     except Exception as e:
-        print(f"    yosupo generate failed for {problem_id}: {e}", file=sys.stderr)
+        print(f"    yosupo generate failed for {problem_id}: {e}", flush=True)
         return False
 
     # 生成されたテストケースを一時ディレクトリにコピー

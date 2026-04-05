@@ -78,7 +78,7 @@ jobs:
           key: testcases-split-${{ inputs.split }}-v2
 
       - name: Save library-checker-problems cache
-        if: steps.check.outputs.has-tests == 'true'
+        if: steps.check.outputs.has-tests == 'true' && inputs.split == 0
         uses: actions/cache/save@v4
         with:
           path: .cache/library-checker-problems

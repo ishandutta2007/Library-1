@@ -36,7 +36,6 @@ jobs:
       - name: Determine tests to run
         id: split
         run: |
-          # マージ済み results.json から全環境分の差分判定
           prev=".verify-results/results.json"
           need_rerun_all=""
           if [ -f "${prev}" ]; then
@@ -48,24 +47,18 @@ jobs:
               need_rerun_all=$(printf "%s\n%s" "${need_rerun_all}" "${tests}")
             done
           else
-            # 前回結果なし → 全テスト
             need_rerun_all=$(find test -name '*.test.cpp' | sort)
           fi
 
-          # 重複排除してソート
           echo "${need_rerun_all}" | grep -v '^$' | sort -u > need_rerun.txt
           total=$(wc -l < need_rerun.txt | tr -d ' ')
           echo "Tests needing re-run: ${total}"
 
           if [ "${total}" -eq 0 ]; then
             echo "has-tests=false" >> "$GITHUB_OUTPUT"
-            # 空の split ファイルを作成
-            for i in $(seq 0 4); do
-              touch "split-${i}.txt"
-            done
+            for i in $(seq 0 4); do touch "split-${i}.txt"; done
           else
             echo "has-tests=true" >> "$GITHUB_OUTPUT"
-            # 5分割
             split_size=5
             chunk=$(( (total + split_size - 1) / split_size ))
             for i in $(seq 0 $((split_size - 1))); do
@@ -84,146 +77,53 @@ jobs:
           path: split-*.txt
           retention-days: 1
 
-  download:
+  split-0:
     needs: setup
     if: needs.setup.outputs.has-tests == 'true'
-    strategy:
-      fail-fast: false
-      matrix:
-        split: [0, 1, 2, 3, 4]
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 0
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Download split list
-        uses: actions/download-artifact@v4
-        with:
-          name: split-lists
-
-      - name: Restore testcase cache
-        uses: actions/cache/restore@v4
-        with:
-          path: .cache/testcases
-          key: testcases-split-${{ matrix.split }}-v1
-          restore-keys: |
-            testcases-split-${{ matrix.split }}-
-
-      - name: Restore library-checker-problems
-        uses: actions/cache/restore@v4
-        id: restore-lc
-        with:
-          path: .cache/library-checker-problems
-          key: library-checker-v1
-
-      - name: Download tc.zip
-        run: |
-          mkdir -p .cache/tc
-          curl -L -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip || true
-          if [ -f tc.zip ]; then
-            unzip -q tc.zip -d .cache/tc
-            rm tc.zip
-          fi
-
-      - name: Download cached testcases from Releases
-        run: |
-          mkdir -p .cache/tc-downloaded
-          for service in aoj yukicoder hackerrank; do
-            url="https://github.com/${{ github.repository }}/releases/download/testcases/tc-${service}.zip"
-            if curl -fsSL -o "tc-${service}.zip" "${url}" 2>/dev/null; then
-              unzip -q "tc-${service}.zip" -d ".cache/tc-downloaded/${service}"
-              rm "tc-${service}.zip"
-              echo "Restored tc-${service}.zip"
-            fi
-          done
-
-      - name: Download testcases for this split
-        env:
-          YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
-          PYTHONUNBUFFERED: "1"
-        run: python3 scripts/download-testcases.py --split split-${{ matrix.split }}.txt
-
-      - name: Save testcase cache
-        uses: actions/cache/save@v4
-        with:
-          path: .cache/testcases
-          key: testcases-split-${{ matrix.split }}-v1
-
-      - name: Save library-checker-problems cache
-        uses: actions/cache/save@v4
-        if: steps.restore-lc.outputs.cache-hit != 'true' && matrix.split == 0
-        with:
-          path: .cache/library-checker-problems
-          key: library-checker-v1
-
-      - name: Upload testcases
-        uses: actions/upload-artifact@v4
-        with:
-          name: testcases-${{ matrix.split }}
-          path: .cache/testcases
-          retention-days: 1
-          compression-level: 1
-
-  verify:
-    needs: [setup, download]
+  split-1:
+    needs: setup
     if: needs.setup.outputs.has-tests == 'true'
-    strategy:
-      fail-fast: false
-      matrix:
-        env:
-          - { os: ubuntu-24.04,     cxx: g++-13,     name: x64-g++ }
-          - { os: ubuntu-24.04,     cxx: clang++-18,  name: x64-clang++ }
-          - { os: ubuntu-24.04-arm, cxx: g++-13,     name: arm-g++ }
-          - { os: ubuntu-24.04-arm, cxx: clang++-18,  name: arm-clang++ }
-        split: [0, 1, 2, 3, 4]
-    runs-on: ${{ matrix.env.os }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 1
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
 
-      - name: Download split list
-        uses: actions/download-artifact@v4
-        with:
-          name: split-lists
+  split-2:
+    needs: setup
+    if: needs.setup.outputs.has-tests == 'true'
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 2
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
 
-      - name: Download testcases
-        uses: actions/download-artifact@v4
-        with:
-          name: testcases-${{ matrix.split }}
-          path: .cache/testcases
+  split-3:
+    needs: setup
+    if: needs.setup.outputs.has-tests == 'true'
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 3
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Run tests
-        env:
-          CXX: ${{ matrix.env.cxx }}
-          CXXFLAGS: "-std=c++17 -Wall -Wextra -O2"
-          ENV_NAME: ${{ matrix.env.name }}
-          PREV_RESULT: .verify-results/results.json
-        run: |
-          if [ ! -f "${PREV_RESULT}" ]; then
-            unset PREV_RESULT
-          fi
-          bash scripts/run-tests.sh \
-            --split-file split-${{ matrix.split }}.txt
-
-      - name: Upload results
-        uses: actions/upload-artifact@v4
-        with:
-          name: result-${{ matrix.env.name }}-${{ matrix.split }}
-          path: .cache/results/result-${{ matrix.env.name }}.json
-          retention-days: 7
+  split-4:
+    needs: setup
+    if: needs.setup.outputs.has-tests == 'true'
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 4
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
 
   docs:
-    needs: [setup, verify]
+    needs: [setup, split-0, split-1, split-2, split-3, split-4]
     if: always() && needs.setup.result == 'success'
     runs-on: ubuntu-24.04
     steps:
@@ -251,14 +151,9 @@ jobs:
       - name: Merge results
         run: |
           mkdir -p .verify-results md/public
-
           if [ -d ".cache/results" ] && ls .cache/results/result-*.json 1>/dev/null 2>&1; then
-            # 今回の結果と前回結果をマージして1ファイルに
             npx tsx scripts/merge-results.ts --prev .verify-results/results.json
-          fi
-
-          # VitePress 用にコピー
-          if [ -f ".verify-results/results.json" ]; then
+          elif [ -f ".verify-results/results.json" ]; then
             cp .verify-results/results.json md/public/results.json
           fi
 
@@ -284,7 +179,7 @@ jobs:
         run: bash scripts/save-downloaded-testcases.sh || true
 
       - name: Write summary
-        run: npx tsx scripts/write-summary.ts >> "$GITHUB_STEP_SUMMARY"
+        run: npx tsx scripts/write-summary.ts >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Build VitePress site
         run: npm run docs:build

@@ -18,3 +18,12 @@ test/atcoder/agc005_b*.test.cpp
 # test/yukicoder/2654*.test.cpp
 
 gemini-artifacts/
+
+# VitePress / Node.js
+node_modules/
+/.vitepress/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+md/test/
+md/public/results.json
+.cache/

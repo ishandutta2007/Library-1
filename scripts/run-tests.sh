@@ -69,6 +69,7 @@ run_single_case() {
   local expected_file="$3"
   local tle_sec="$4"
   local error_tolerance="$5"
+  local checker_bin="${6:-}"
   local output_file
   output_file=$(mktemp)
 
@@ -119,7 +120,13 @@ run_single_case() {
 
   # 判定 (TLE/RE でなければ出力を比較)
   if [[ "${status}" == "AC" ]]; then
-    if [[ -n "${error_tolerance}" ]] && [[ "${error_tolerance}" != "0" ]]; then
+    if [[ -n "${checker_bin}" ]] && [[ -x "${checker_bin}" ]]; then
+      # カスタムチェッカーで判定 (yosupo judge 等)
+      # checker <input> <actual_output> <expected_output> → exit 0 なら AC
+      if ! "${checker_bin}" "${input_file}" "${output_file}" "${expected_file}" &>/dev/null; then
+        status="WA"
+      fi
+    elif [[ -n "${error_tolerance}" ]] && [[ "${error_tolerance}" != "0" ]]; then
       # 浮動小数点比較
       if ! python3 -c "
 import sys
@@ -263,6 +270,18 @@ JSONEOF
   local cases_json=""
   local case_count=0
 
+  # checker の検出・コンパイル (yosupo judge 等)
+  local checker_bin=""
+  if [[ -f "${tc_cache}/checker.cpp" ]]; then
+    checker_bin="${tc_cache}/checker"
+    if [[ ! -x "${checker_bin}" ]]; then
+      # アーキテクチャに合わせてコンパイル
+      local checker_args=(-std=c++17 -O2)
+      [[ -f "${tc_cache}/testlib.h" ]] && checker_args+=("-I${tc_cache}")
+      g++ "${checker_args[@]}" -o "${checker_bin}" "${tc_cache}/checker.cpp" 2>/dev/null || checker_bin=""
+    fi
+  fi
+
   shopt -s nullglob
   for input_file in "${tc_cache}"/*/in.txt "${tc_cache}"/*.in; do
     [[ -f "${input_file}" ]] || continue
@@ -285,7 +304,7 @@ JSONEOF
     fi
 
     local result
-    result=$(run_single_case "${binary}" "${input_file}" "${expected_file}" "${TLE_SEC}" "${ERROR_TOL}")
+    result=$(run_single_case "${binary}" "${input_file}" "${expected_file}" "${TLE_SEC}" "${ERROR_TOL}" "${checker_bin}")
     local case_status
     case_status=$(echo "${result}" | awk '{print $1}')
     local case_time

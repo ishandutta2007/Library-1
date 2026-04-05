@@ -145,13 +145,14 @@ jobs:
           CXX: ${{ matrix.env.cxx }}
           CXXFLAGS: ${{ matrix.env.cxxflags }}
           ENV_NAME: ${{ matrix.env.name }}
-          PREV_RESULT: .verify-results/results.json
         run: |
-          if [ ! -f "${PREV_RESULT}" ]; then
-            unset PREV_RESULT
+          prev_arg=""
+          if [ -f ".verify-results/results.json" ]; then
+            prev_arg="--prev-result .verify-results/results.json"
           fi
           bash scripts/run-tests.sh \
-            --split-file split-${{ inputs.split }}.txt
+            --split-file split-${{ inputs.split }}.txt \
+            ${prev_arg}
 
       - name: Upload results
         if: steps.check.outputs.has-tests == 'true'

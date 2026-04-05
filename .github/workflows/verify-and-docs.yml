@@ -1,0 +1,132 @@
+name: verify-and-docs
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            cxx: g++-13
+            env_name: ubuntu-g++
+            cxxflags: "-std=c++17 -Wall -Wextra -O2"
+          - os: ubuntu-24.04
+            cxx: clang++-18
+            env_name: ubuntu-clang++
+            cxxflags: "-std=c++17 -Wall -Wextra -O2"
+          - os: macos-14
+            cxx: g++-14
+            env_name: macos-g++
+            cxxflags: "-std=c++17 -Wall -Wextra -O2"
+          - os: macos-14
+            cxx: clang++
+            env_name: macos-clang++
+            cxxflags: "-std=c++17 -Wall -Wextra -O2"
+    runs-on: ${{ matrix.os }}
+    env:
+      SPLIT_SIZE: "20"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install oj
+        run: pip install online-judge-tools
+
+      - name: Install gtime (macOS)
+        if: runner.os == 'macOS'
+        run: brew install gnu-time
+
+      - name: Download tc.zip
+        run: |
+          mkdir -p .cache/tc
+          curl -L -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip || true
+          if [ -f tc.zip ]; then
+            unzip -q tc.zip -d .cache/tc
+            rm tc.zip
+          fi
+
+      - name: Run tests
+        env:
+          CXX: ${{ matrix.cxx }}
+          CXXFLAGS: ${{ matrix.cxxflags }}
+          ENV_NAME: ${{ matrix.env_name }}
+          YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+          DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
+        run: bash scripts/run-tests.sh
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ matrix.env_name }}
+          path: .cache/results/result-${{ matrix.env_name }}.json
+          retention-days: 7
+
+  docs:
+    needs: verify
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download all results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: result-*
+          path: .cache/results/
+          merge-multiple: true
+
+      - name: Merge results
+        run: npx tsx scripts/merge-results.ts
+
+      - name: Build VitePress site
+        run: npm run docs:build
+
+      - name: Setup Pages
+        if: github.ref == 'refs/heads/master'
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/.vitepress/dist
+
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    needs: docs
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

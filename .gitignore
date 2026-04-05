@@ -25,3 +25,4 @@ node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
 md/test/
+.cache/

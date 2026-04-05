@@ -3,16 +3,13 @@
 全テストファイルで必要なテストケースを一括ダウンロードする
 oj コマンドに依存せず、各サービスの API を直接叩く
 
-対応サービス:
-- AOJ (onlinejudge.u-aizu.ac.jp) — 公開 API
-- yosupo judge (judge.yosupo.jp) — library-checker-problems リポジトリからテストケース生成
-- yukicoder — API + Bearer トークン
-- HackerRank — 公開 API
+テストケースの取得優先順位:
+1. .cache/testcases/<md5>/ にキャッシュ済み (actions/cache)
+2. tc.zip (手動で用意したもの、oj 非対応サイト用)
+3. tc-downloaded.zip (前回 CI でダウンロードしたもの、Releases に保存)
+4. 各サービスの API からダウンロード
 
-テストケースの取得元:
-1. キャッシュ済み (.cache/testcases/<md5>/)
-2. tc.zip (oj 非対応サイト用、.cache/tc/ に展開済み前提)
-3. 各サービスの API からダウンロード
+yosupo judge は library-checker-problems リポジトリから生成する方式。
 """
 import hashlib
 import json
@@ -24,11 +21,13 @@ import sys
 import time
 import urllib.request
 import urllib.error
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 TEST_DIR = ROOT / "test"
 TC_ZIP_DIR = ROOT / ".cache" / "tc"
+TC_DOWNLOADED_DIR = ROOT / ".cache" / "tc-downloaded"
 TC_CACHE_DIR = ROOT / ".cache" / "testcases"
 
 YUKICODER_TOKEN = os.environ.get("YUKICODER_TOKEN", "")
@@ -42,9 +41,9 @@ def url_to_cache_dir(url: str) -> Path:
     return TC_CACHE_DIR / url_to_md5(url)
 
 
-def get_problem_urls() -> dict[str, str]:
-    """全テストファイルから PROBLEM URL を収集して重複排除"""
-    urls = {}
+def get_problem_urls() -> dict[str, list[str]]:
+    """全テストファイルから PROBLEM URL を収集して重複排除。URL → サービス名のヒント"""
+    urls: dict[str, list[str]] = {}
     for test_file in sorted(TEST_DIR.rglob("*.test.cpp")):
         content = test_file.read_text()
         if re.search(r"competitive-verifier:\s*IGNORE", content):
@@ -55,20 +54,25 @@ def get_problem_urls() -> dict[str, str]:
         if m:
             url = m.group(1)
             if url not in urls:
-                urls[url] = str(test_file.relative_to(ROOT))
+                urls[url] = []
+            urls[url].append(str(test_file.relative_to(ROOT)))
     return urls
 
 
-def try_tc_zip(url: str, cache_dir: Path) -> bool:
+def is_cached(url: str) -> bool:
+    cache_dir = url_to_cache_dir(url)
+    return cache_dir.exists() and any(cache_dir.iterdir())
+
+
+def try_tc_zip(url: str) -> bool:
     """tc.zip からテストケースをコピー（checker.cpp があればそれも）"""
     md5 = url_to_md5(url)
+    cache_dir = url_to_cache_dir(url)
     for problem_dir in [TC_ZIP_DIR / "tc" / md5, TC_ZIP_DIR / md5]:
         test_dir = problem_dir / "test"
         if test_dir.exists() and any(test_dir.iterdir()):
             cache_dir.mkdir(parents=True, exist_ok=True)
-            # テストケースをコピー
             subprocess.run(["cp", "-r", f"{test_dir}/.", str(cache_dir)], check=True)
-            # checker.cpp があればコピー
             checker = problem_dir / "checker.cpp"
             if checker.exists():
                 shutil.copy2(checker, cache_dir / "checker.cpp")
@@ -76,28 +80,43 @@ def try_tc_zip(url: str, cache_dir: Path) -> bool:
     return False
 
 
+def try_downloaded_zip(url: str) -> bool:
+    """前回 CI でダウンロードした tc-{service}.zip からコピー"""
+    md5 = url_to_md5(url)
+    cache_dir = url_to_cache_dir(url)
+    # サービスごとの zip が展開されたディレクトリを探す
+    for sub in TC_DOWNLOADED_DIR.iterdir() if TC_DOWNLOADED_DIR.exists() else []:
+        candidate = sub / md5 if sub.is_dir() else None
+        if candidate and candidate.exists() and any(candidate.iterdir()):
+            cache_dir.mkdir(parents=True, exist_ok=True)
+            subprocess.run(["cp", "-r", f"{candidate}/.", str(cache_dir)], check=True)
+            return True
+    # フラットな構造も試す
+    flat = TC_DOWNLOADED_DIR / md5
+    if flat.exists() and any(flat.iterdir()):
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["cp", "-r", f"{flat}/.", str(cache_dir)], check=True)
+        return True
+    return False
+
+
 # ============================================================
 # AOJ
 # ============================================================
 
-def download_aoj(url: str, cache_dir: Path) -> bool:
+def download_aoj(url: str) -> bool:
     """AOJ のテストケースをダウンロード"""
-    # URL から problem_id を抽出
-    # https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_A → DSL_2_A
-    # https://onlinejudge.u-aizu.ac.jp/problems/0355 → 0355
+    cache_dir = url_to_cache_dir(url)
     m = re.search(r"/problems/(\w+)", url) or re.search(r"/(\w+)$", url)
     if not m:
         return False
     problem_id = m.group(1)
 
     try:
-        # ヘッダー取得 (テストケース一覧)
         header_url = f"https://judgedat.u-aizu.ac.jp/testcases/{problem_id}/header"
-        req = urllib.request.Request(header_url)
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(header_url, timeout=30) as resp:
             headers = json.loads(resp.read())
-    except Exception as e:
-        print(f"    AOJ header failed: {e}", file=sys.stderr)
+    except Exception:
         return False
 
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -108,23 +127,21 @@ def download_aoj(url: str, cache_dir: Path) -> bool:
         name = tc.get("name", f"case{serial}")
         if serial is None:
             continue
-
         try:
-            # 入力
             in_url = f"https://judgedat.u-aizu.ac.jp/testcases/{problem_id}/{serial}/in"
             with urllib.request.urlopen(in_url, timeout=30) as resp:
                 in_data = resp.read()
-            # 出力
             out_url = f"https://judgedat.u-aizu.ac.jp/testcases/{problem_id}/{serial}/out"
             with urllib.request.urlopen(out_url, timeout=30) as resp:
                 out_data = resp.read()
-
             (cache_dir / f"{name}.in").write_bytes(in_data)
             (cache_dir / f"{name}.out").write_bytes(out_data)
             count += 1
         except Exception:
             continue
 
+    if count == 0 and cache_dir.exists():
+        shutil.rmtree(cache_dir)
     return count > 0
 
 
@@ -135,23 +152,39 @@ def download_aoj(url: str, cache_dir: Path) -> bool:
 LIBRARY_CHECKER_DIR = ROOT / ".cache" / "library-checker-problems"
 
 
-def download_yosupo(url: str, cache_dir: Path) -> bool:
-    """yosupo judge のテストケースを生成し、checker もコンパイル"""
-    # https://judge.yosupo.jp/problem/point_add_range_sum → point_add_range_sum
+def ensure_library_checker_repo():
+    """library-checker-problems リポジトリをクローン（未クローンの場合のみ）"""
+    if LIBRARY_CHECKER_DIR.exists():
+        return True
+    print("  Cloning library-checker-problems...", flush=True)
+    try:
+        subprocess.run(
+            ["git", "clone", "--depth=1",
+             "https://github.com/yosupo06/library-checker-problems.git",
+             str(LIBRARY_CHECKER_DIR)],
+            check=True, capture_output=True, timeout=120,
+        )
+        # generate.py の依存をインストール
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "-q", "pyyaml", "toml"],
+            capture_output=True,
+        )
+        return True
+    except Exception as e:
+        print(f"  Clone failed: {e}", file=sys.stderr)
+        return False
+
+
+def download_yosupo(url: str) -> bool:
+    """yosupo judge のテストケースを生成し、checker もコピー"""
+    cache_dir = url_to_cache_dir(url)
     m = re.search(r"/problem/(\w+)", url)
     if not m:
         return False
     problem_id = m.group(1)
 
-    # library-checker-problems リポジトリをクローン/更新
-    if not LIBRARY_CHECKER_DIR.exists():
-        print("    Cloning library-checker-problems...", file=sys.stderr)
-        subprocess.run(
-            ["git", "clone", "--depth=1",
-             "https://github.com/yosupo06/library-checker-problems.git",
-             str(LIBRARY_CHECKER_DIR)],
-            check=True, capture_output=True
-        )
+    if not ensure_library_checker_repo():
+        return False
 
     # 問題ディレクトリを探す
     problem_dir = None
@@ -171,7 +204,7 @@ def download_yosupo(url: str, cache_dir: Path) -> bool:
             cwd=LIBRARY_CHECKER_DIR,
         )
     except Exception as e:
-        print(f"    yosupo generate failed: {e}", file=sys.stderr)
+        print(f"    yosupo generate failed for {problem_id}: {e}", file=sys.stderr)
         return False
 
     # 生成されたテストケースをコピー
@@ -189,11 +222,10 @@ def download_yosupo(url: str, cache_dir: Path) -> bool:
             shutil.copy2(out_file, cache_dir / out_file.name)
             count += 1
 
-    # checker のソースをキャッシュにコピー（verify ジョブ側でアーキテクチャに合わせてコンパイル）
+    # checker のソースをコピー
     checker_cpp = problem_dir / "checker.cpp"
     if checker_cpp.exists():
         shutil.copy2(checker_cpp, cache_dir / "checker.cpp")
-        # testlib.h も必要
         testlib_h = LIBRARY_CHECKER_DIR / "common" / "testlib.h"
         if testlib_h.exists():
             shutil.copy2(testlib_h, cache_dir / "testlib.h")
@@ -205,26 +237,24 @@ def download_yosupo(url: str, cache_dir: Path) -> bool:
 # yukicoder
 # ============================================================
 
-def download_yukicoder(url: str, cache_dir: Path) -> bool:
+def download_yukicoder(url: str) -> bool:
     """yukicoder のテストケースをダウンロード"""
+    cache_dir = url_to_cache_dir(url)
     if not YUKICODER_TOKEN:
         return False
 
-    # https://yukicoder.me/problems/no/1006 → 1006
     m = re.search(r"/problems/no/(\d+)", url)
     if not m:
         return False
     problem_no = m.group(1)
 
     try:
-        # テストケース一覧取得
         api_url = f"https://yukicoder.me/api/v1/problems/no/{problem_no}/file/in"
         req = urllib.request.Request(api_url)
         req.add_header("Authorization", f"Bearer {YUKICODER_TOKEN}")
         with urllib.request.urlopen(req, timeout=30) as resp:
             in_names = resp.read().decode().strip().split("\n")
-    except Exception as e:
-        print(f"    yukicoder list failed: {e}", file=sys.stderr)
+    except Exception:
         return False
 
     cache_dir.mkdir(parents=True, exist_ok=True)
@@ -235,16 +265,13 @@ def download_yukicoder(url: str, cache_dir: Path) -> bool:
         if not name:
             continue
         try:
-            # 入力
             in_url = f"https://yukicoder.me/api/v1/problems/no/{problem_no}/file/in/{name}"
             req = urllib.request.Request(in_url)
             req.add_header("Authorization", f"Bearer {YUKICODER_TOKEN}")
             with urllib.request.urlopen(req, timeout=30) as resp:
                 in_data = resp.read()
 
-            # 出力
-            out_name = name  # yukicoder は in/out のファイル名が同じ
-            out_url = f"https://yukicoder.me/api/v1/problems/no/{problem_no}/file/out/{out_name}"
+            out_url = f"https://yukicoder.me/api/v1/problems/no/{problem_no}/file/out/{name}"
             req = urllib.request.Request(out_url)
             req.add_header("Authorization", f"Bearer {YUKICODER_TOKEN}")
             with urllib.request.urlopen(req, timeout=30) as resp:
@@ -258,117 +285,81 @@ def download_yukicoder(url: str, cache_dir: Path) -> bool:
             continue
         time.sleep(0.1)  # レートリミット対策
 
+    if count == 0 and cache_dir.exists():
+        shutil.rmtree(cache_dir)
     return count > 0
 
 
 # ============================================================
-# HackerRank
+# ディスパッチ
 # ============================================================
 
-def download_hackerrank(url: str, cache_dir: Path) -> bool:
-    """HackerRank のテストケースをダウンロード"""
-    # HackerRank はシステムテストケースの公開 API がないので oj に依存していた
-    # oj なしでは対応困難 → tc.zip に含まれている分だけで対応
-    return False
+def download_one(url: str) -> bool:
+    """URL に応じたダウンロード関数を呼ぶ"""
+    if "onlinejudge.u-aizu.ac.jp" in url:
+        return download_aoj(url)
+    elif "judge.yosupo.jp" in url:
+        return download_yosupo(url)
+    elif "yukicoder.me" in url:
+        return download_yukicoder(url)
+    else:
+        return False
+
+
+def download_one_safe(url: str) -> tuple[str, bool]:
+    """並列実行用ラッパー"""
+    try:
+        return (url, download_one(url))
+    except Exception as e:
+        print(f"    Error: {url}: {e}", file=sys.stderr)
+        return (url, False)
 
 
 # ============================================================
 # メイン
 # ============================================================
 
-def download_one(url: str) -> bool:
-    """URL に応じたダウンロード関数を呼ぶ"""
-    cache_dir = url_to_cache_dir(url)
-
-    if "onlinejudge.u-aizu.ac.jp" in url:
-        return download_aoj(url, cache_dir)
-    elif "judge.yosupo.jp" in url:
-        return download_yosupo(url, cache_dir)
-    elif "yukicoder.me" in url:
-        return download_yukicoder(url, cache_dir)
-    elif "hackerrank.com" in url:
-        return download_hackerrank(url, cache_dir)
-    elif "codeforces.com" in url:
-        return False  # 非対応
-    elif "cses.fi" in url:
-        return False  # 非対応
-    else:
-        return False
-
-
-def download_one_with_url(url: str) -> tuple[str, bool]:
-    """並列実行用ラッパー。(url, 成功したか) を返す"""
-    try:
-        return (url, download_one(url))
-    except Exception as e:
-        print(f"    Error downloading {url}: {e}", file=sys.stderr)
-        return (url, False)
-
-
 def main():
-    from concurrent.futures import ThreadPoolExecutor, as_completed
-
     urls = get_problem_urls()
     print(f"Found {len(urls)} unique problem URLs")
 
     cached = 0
     from_zip = 0
-    downloaded = 0
-    failed = 0
-
-    # キャッシュ済み・tc.zip の処理（順次、高速）
+    from_downloaded = 0
     to_download: list[str] = []
 
+    # 1. キャッシュ済み / tc.zip / tc-downloaded.zip から取得
     for url in urls:
-        cache_dir = url_to_cache_dir(url)
-
-        if cache_dir.exists() and any(cache_dir.iterdir()):
+        if is_cached(url):
             cached += 1
             continue
-
-        if try_tc_zip(url, cache_dir):
+        if try_tc_zip(url):
             from_zip += 1
-            print(f"  [ZIP] {url}")
             continue
-
+        if try_downloaded_zip(url):
+            from_downloaded += 1
+            continue
         to_download.append(url)
 
+    print(f"  Cached: {cached}, From tc.zip: {from_zip}, From tc-downloaded: {from_downloaded}")
+    print(f"  Need download: {len(to_download)}")
+
     if not to_download:
-        print(f"\nTestcase download summary:")
-        print(f"  Cached:     {cached}")
-        print(f"  From zip:   {from_zip}")
-        print(f"  Downloaded: 0")
-        print(f"  Failed:     0")
-        print(f"  Total:      {len(urls)}")
+        print("All testcases available!")
         return
 
-    # yosupo judge はリポジトリクローンが必要なので先に1回だけ実行
+    # 2. API からダウンロード
     yosupo_urls = [u for u in to_download if "judge.yosupo.jp" in u]
     other_urls = [u for u in to_download if "judge.yosupo.jp" not in u]
 
-    # yosupo: リポジトリクローンは1回だけ、テストケース生成は並列化
-    if yosupo_urls:
-        # 先にクローンだけ実行
-        if not LIBRARY_CHECKER_DIR.exists():
-            print("  Cloning library-checker-problems...")
-            subprocess.run(
-                ["git", "clone", "--depth=1",
-                 "https://github.com/yosupo06/library-checker-problems.git",
-                 str(LIBRARY_CHECKER_DIR)],
-                check=True, capture_output=True
-            )
-            # generate.py の依存をインストール
-            subprocess.run(
-                [sys.executable, "-m", "pip", "install", "-q", "pyyaml", "toml"],
-                capture_output=True
-            )
+    downloaded = 0
+    failed = 0
 
-    print(f"  Downloading {len(to_download)} problems ({len(yosupo_urls)} yosupo, {len(other_urls)} other)...")
-
-    # AOJ, yukicoder 等は I/O バウンドなので並列ダウンロード
+    # AOJ, yukicoder 等は並列ダウンロード
     if other_urls:
+        print(f"  Downloading {len(other_urls)} problems (parallel)...")
         with ThreadPoolExecutor(max_workers=8) as executor:
-            futures = {executor.submit(download_one_with_url, url): url for url in other_urls}
+            futures = {executor.submit(download_one_safe, url): url for url in other_urls}
             for future in as_completed(futures):
                 url, success = future.result()
                 if success:
@@ -378,22 +369,27 @@ def main():
                     failed += 1
                     print(f"  [NG]  {url}")
 
-    # yosupo judge はリポジトリ内のファイルを操作するので順次実行
-    for url in yosupo_urls:
-        print(f"  [GEN] {url} ...", end="", flush=True)
-        if download_one(url):
-            downloaded += 1
-            print(" OK")
-        else:
-            failed += 1
-            print(" FAILED")
+    # yosupo は順次実行（リポジトリ内ファイル操作があるため）
+    if yosupo_urls:
+        print(f"  Generating {len(yosupo_urls)} yosupo problems...")
+        for url in yosupo_urls:
+            m = re.search(r"/problem/(\w+)", url)
+            name = m.group(1) if m else url
+            print(f"  [GEN] {name} ...", end="", flush=True)
+            if download_one(url):
+                downloaded += 1
+                print(" OK")
+            else:
+                failed += 1
+                print(" FAILED")
 
     print(f"\nTestcase download summary:")
-    print(f"  Cached:     {cached}")
-    print(f"  From zip:   {from_zip}")
-    print(f"  Downloaded: {downloaded}")
-    print(f"  Failed:     {failed}")
-    print(f"  Total:      {len(urls)}")
+    print(f"  Cached:          {cached}")
+    print(f"  From tc.zip:     {from_zip}")
+    print(f"  From downloaded: {from_downloaded}")
+    print(f"  Downloaded:      {downloaded}")
+    print(f"  Failed:          {failed}")
+    print(f"  Total:           {len(urls)}")
 
 
 if __name__ == "__main__":

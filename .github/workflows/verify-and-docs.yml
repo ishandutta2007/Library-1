@@ -60,12 +60,15 @@ jobs:
             for i in $(seq 0 9); do touch "split-${i}.txt"; done
           else
             echo "has-tests=true" >> "$GITHUB_OUTPUT"
+            # ラウンドロビンで分割（yosupo 等の重い問題が各 split に均等に散らばる）
             split_size=10
-            chunk=$(( (total + split_size - 1) / split_size ))
+            for i in $(seq 0 $((split_size - 1))); do touch "split-${i}.txt"; done
+            i=0
+            while IFS= read -r line; do
+              echo "${line}" >> "split-${i}.txt"
+              i=$(( (i + 1) % split_size ))
+            done < need_rerun.txt
             for i in $(seq 0 $((split_size - 1))); do
-              start=$((i * chunk + 1))
-              end=$(( (i + 1) * chunk ))
-              sed -n "${start},${end}p" need_rerun.txt > "split-${i}.txt"
               count=$(wc -l < "split-${i}.txt" | tr -d ' ')
               echo "  Split ${i}: ${count} tests"
             done

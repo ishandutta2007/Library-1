@@ -1,0 +1,171 @@
+name: verify-split
+
+on:
+  workflow_call:
+    inputs:
+      split:
+        type: number
+        required: true
+    secrets:
+      YUKICODER_TOKEN:
+        required: false
+
+jobs:
+  download:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download split list
+        uses: actions/download-artifact@v4
+        with:
+          name: split-lists
+
+      - name: Check if split has tests
+        id: check
+        run: |
+          if [ -s "split-${{ inputs.split }}.txt" ]; then
+            echo "has-tests=true" >> "$GITHUB_OUTPUT"
+            echo "Split ${{ inputs.split }}: $(wc -l < split-${{ inputs.split }}.txt) tests"
+          else
+            echo "has-tests=false" >> "$GITHUB_OUTPUT"
+            echo "Split ${{ inputs.split }}: empty"
+          fi
+
+      - name: Restore testcase cache
+        if: steps.check.outputs.has-tests == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/testcases
+          key: testcases-split-${{ inputs.split }}-v2
+          restore-keys: |
+            testcases-split-${{ inputs.split }}-
+
+      - name: Restore library-checker-problems
+        if: steps.check.outputs.has-tests == 'true'
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/library-checker-problems
+          key: library-checker-v2
+
+      - name: Download tc.zip
+        if: steps.check.outputs.has-tests == 'true'
+        run: |
+          mkdir -p .cache/tc
+          curl -L -o tc.zip https://github.com/${{ github.repository }}/releases/download/v0.0.0/tc.zip || true
+          if [ -f tc.zip ]; then
+            unzip -q tc.zip -d .cache/tc
+            rm tc.zip
+          fi
+
+      - name: Download testcases
+        if: steps.check.outputs.has-tests == 'true'
+        env:
+          YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+          PYTHONUNBUFFERED: "1"
+        run: python3 scripts/download-testcases.py --split split-${{ inputs.split }}.txt
+
+      - name: Save testcase cache
+        if: steps.check.outputs.has-tests == 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/testcases
+          key: testcases-split-${{ inputs.split }}-v2
+
+      - name: Save library-checker-problems cache
+        if: steps.check.outputs.has-tests == 'true' && inputs.split == 0
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/library-checker-problems
+          key: library-checker-v2
+        continue-on-error: true
+
+      - name: Upload testcases
+        if: steps.check.outputs.has-tests == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: testcases-${{ inputs.split }}
+          path: |
+            .cache/testcases
+            .cache/tc-resolved
+          retention-days: 1
+          compression-level: 1
+
+  verify:
+    needs: download
+    strategy:
+      fail-fast: false
+      matrix:
+        env:
+          - { os: ubuntu-24.04,     cxx: g++-13,     name: x64-g++,      cxxflags: "-std=c++17 -Wall -Wextra -O2 -mtune=native -march=native -fconstexpr-depth=2147483647 -fconstexpr-loop-limit=2147483647 -fconstexpr-ops-limit=21474836" }
+          - { os: ubuntu-24.04,     cxx: clang++-18,  name: x64-clang++,  cxxflags: "-std=c++17 -m64 -Wall -Wextra -O2 -mtune=native -march=native" }
+          - { os: ubuntu-24.04-arm, cxx: g++-13,     name: arm-g++,      cxxflags: "-std=c++17 -Wall -Wextra -O2 -mtune=native -march=native -fconstexpr-depth=2147483647 -fconstexpr-loop-limit=2147483647 -fconstexpr-ops-limit=21474836" }
+          - { os: ubuntu-24.04-arm, cxx: clang++-18,  name: arm-clang++,  cxxflags: "-std=c++17 -Wall -Wextra -O2 -mtune=native -march=native" }
+    runs-on: ${{ matrix.env.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download split list
+        uses: actions/download-artifact@v4
+        with:
+          name: split-lists
+
+      - name: Check if split has tests
+        id: check
+        run: |
+          if [ -s "split-${{ inputs.split }}.txt" ]; then
+            echo "has-tests=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has-tests=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download testcases
+        if: steps.check.outputs.has-tests == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: testcases-${{ inputs.split }}
+          path: .cache
+
+      - name: Set up Python
+        if: steps.check.outputs.has-tests == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run tests
+        if: steps.check.outputs.has-tests == 'true'
+        env:
+          CXX: ${{ matrix.env.cxx }}
+          CXXFLAGS: ${{ matrix.env.cxxflags }}
+          ENV_NAME: ${{ matrix.env.name }}
+        run: |
+          prev_arg=""
+          if [ -f ".verify-results/results.json" ]; then
+            prev_arg="--prev-result .verify-results/results.json"
+          fi
+          bash scripts/run-tests.sh \
+            --split-file split-${{ inputs.split }}.txt \
+            ${prev_arg}
+
+      - name: Rename result file
+        if: steps.check.outputs.has-tests == 'true'
+        run: |
+          if [ -f ".cache/results/result-${{ matrix.env.name }}.json" ]; then
+            mv ".cache/results/result-${{ matrix.env.name }}.json" \
+               ".cache/results/result-${{ matrix.env.name }}-${{ inputs.split }}.json"
+          fi
+
+      - name: Upload results
+        if: steps.check.outputs.has-tests == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: result-${{ matrix.env.name }}-${{ inputs.split }}
+          path: .cache/results/result-${{ matrix.env.name }}-${{ inputs.split }}.json
+          retention-days: 7

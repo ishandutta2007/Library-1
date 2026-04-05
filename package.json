@@ -1,0 +1,31 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/hashiryo/Library/workflows/verify/badge.svg)](https://github.com/hashiryo/Library/actions) [![GitHub Pages](https://img.shields.io/static/v1?label=GitHub+Pages&message=+Library&color=brightgreen&logo=github)](https://hashiryo.github.io/Library/)  [![hashiryo](https://img.shields.io/endpoint?url=https%3A%2F%2Fatcoder-badges.now.sh%2Fapi%2Fatcoder%2Fjson%2Fhashiryo)](https://atcoder.jp/users/hashiryo) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/hashiryo/library?style=flat-square) ![C++](https://img.shields.io/badge/C++-17-green)",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "generate": "npx tsx scripts/generate-pages.ts",
+    "prepare-results": "mkdir -p md/public && cp .verify-results/results.json md/public/results.json 2>/dev/null || true",
+    "docs:dev": "npm run generate && npm run prepare-results && vitepress dev docs",
+    "docs:build": "npm run generate && npm run prepare-results && vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com.hashiryo:hashiryo/Library.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@mdit/plugin-katex": "^0.25.2",
+    "katex": "^0.16.44",
+    "markdown-it-katex": "^2.0.3",
+    "markdown-it-mathjax3": "^4.3.2",
+    "vitepress": "^1.6.4",
+    "vue": "^3.5.32"
+  }
+}

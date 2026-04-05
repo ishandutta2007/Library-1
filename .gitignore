@@ -25,4 +25,5 @@ node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
 md/test/
+md/public/results.json
 .cache/

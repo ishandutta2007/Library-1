@@ -284,7 +284,10 @@ def download_yosupo(url: str) -> bool:
 # ============================================================
 
 def download_yukicoder(url: str) -> bool:
-    """yukicoder のテストケースをダウンロード"""
+    """yukicoder のテストケースをダウンロード（testcase.zip 一括取得）"""
+    import zipfile
+    import io
+
     cache_dir = url_to_cache_dir(url)
     if not YUKICODER_TOKEN:
         print(f"    yukicoder: no token set", flush=True)
@@ -296,12 +299,14 @@ def download_yukicoder(url: str) -> bool:
         return False
     problem_no = m.group(1)
 
+    # testcase.zip を一括ダウンロード
+    zip_url = f"https://yukicoder.me/problems/no/{problem_no}/testcase.zip"
+    req = urllib.request.Request(zip_url)
+    req.add_header("Authorization", f"Bearer {YUKICODER_TOKEN}")
+
     try:
-        api_url = f"https://yukicoder.me/api/v1/problems/no/{problem_no}/file/in"
-        req = urllib.request.Request(api_url)
-        req.add_header("Authorization", f"Bearer {YUKICODER_TOKEN}")
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            in_names = resp.read().decode().strip().split("\n")
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            zip_data = resp.read()
     except urllib.error.HTTPError as e:
         print(f"    yukicoder #{problem_no}: HTTP {e.code} {e.reason}", flush=True)
         return False
@@ -309,43 +314,35 @@ def download_yukicoder(url: str) -> bool:
         print(f"    yukicoder #{problem_no}: {e}", flush=True)
         return False
 
-    # 一時ディレクトリで作業
+    # zip を展開
     tmp_dir = Path(str(cache_dir) + ".tmp")
     if tmp_dir.exists():
         shutil.rmtree(tmp_dir)
     tmp_dir.mkdir(parents=True, exist_ok=True)
 
-    count = 0
-    for name in in_names:
-        name = name.strip()
-        if not name:
-            continue
-        try:
-            in_url = f"https://yukicoder.me/api/v1/problems/no/{problem_no}/file/in/{name}"
-            req = urllib.request.Request(in_url)
-            req.add_header("Authorization", f"Bearer {YUKICODER_TOKEN}")
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                in_data = resp.read()
+    try:
+        with zipfile.ZipFile(io.BytesIO(zip_data)) as zf:
+            # test_in/xxx.txt, test_out/xxx.txt の構造
+            inputs = {}
+            outputs = {}
+            for name in zf.namelist():
+                if name.startswith("test_in/") and not name.endswith("/"):
+                    case_name = Path(name).stem
+                    inputs[case_name] = zf.read(name)
+                elif name.startswith("test_out/") and not name.endswith("/"):
+                    case_name = Path(name).stem
+                    outputs[case_name] = zf.read(name)
 
-            out_url = f"https://yukicoder.me/api/v1/problems/no/{problem_no}/file/out/{name}"
-            req = urllib.request.Request(out_url)
-            req.add_header("Authorization", f"Bearer {YUKICODER_TOKEN}")
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                out_data = resp.read()
-
-            base = Path(name).stem
-            (tmp_dir / f"{base}.in").write_bytes(in_data)
-            (tmp_dir / f"{base}.out").write_bytes(out_data)
-            count += 1
-        except urllib.error.HTTPError as e:
-            print(f"    yukicoder #{problem_no} case {name}: HTTP {e.code} {e.reason}", flush=True)
-            shutil.rmtree(tmp_dir)
-            return False
-        except Exception as e:
-            print(f"    yukicoder #{problem_no} case {name}: {e}", flush=True)
-            shutil.rmtree(tmp_dir)
-            return False
-        time.sleep(0.1)  # レートリミット対策
+            count = 0
+            for case_name in inputs:
+                if case_name in outputs:
+                    (tmp_dir / f"{case_name}.in").write_bytes(inputs[case_name])
+                    (tmp_dir / f"{case_name}.out").write_bytes(outputs[case_name])
+                    count += 1
+    except Exception as e:
+        print(f"    yukicoder #{problem_no}: zip extract failed: {e}", flush=True)
+        shutil.rmtree(tmp_dir)
+        return False
 
     if count > 0:
         if cache_dir.exists():

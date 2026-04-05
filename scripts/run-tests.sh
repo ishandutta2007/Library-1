@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eo pipefail
+set -euo pipefail
 
 # =============================================================================
 # テスト実行スクリプト
@@ -266,7 +266,7 @@ JSONEOF
   fi
 
   local tc_cache
-  tc_cache=$(get_testcase_dir "${PROBLEM_URL}")
+  tc_cache=$(get_testcase_dir "${PROBLEM_URL}" || true)
   if [[ -z "${tc_cache}" ]]; then
     echo "  [SKIP] ${rel_path} (testcases unavailable)"
     rm -f "${binary}"

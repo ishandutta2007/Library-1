@@ -216,6 +216,7 @@ run_test_file() {
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
   "status": "CE",
+  "last_execution_time": "${EXECUTION_TIME}",
   "cases": []
 }
 JSONEOF
@@ -248,6 +249,7 @@ JSONEOF
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
   "status": "${case_status}",
+  "last_execution_time": "${EXECUTION_TIME}",
   "cases": [{"name": "standalone", "status": "${case_status}", "time_ms": ${case_time}, "memory_kb": ${case_mem}}]
 }
 JSONEOF
@@ -325,6 +327,7 @@ JSONEOF
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
   "status": "${overall_status}",
+  "last_execution_time": "${EXECUTION_TIME}",
   "cases": [${cases_json}]
 }
 JSONEOF
@@ -356,17 +359,70 @@ else
   echo "Running all ${TOTAL} tests"
 fi
 
-# TODO: 差分実行は Phase 2 の後半で実装
+# 差分実行: 前回結果がある場合、変更がないテストはスキップ
+NEED_RERUN_FILE=$(mktemp)
+if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
+  echo "Checking for changes against previous result..."
+  # テストファイル一覧を一時ファイルに書き出し
+  TESTS_LIST=$(mktemp)
+  for t in "${TESTS[@]}"; do
+    echo "${t#${ROOT}/}" >> "${TESTS_LIST}"
+  done
+  python3 "${ROOT}/scripts/check-need-rerun.py" \
+    --prev-result "${PREV_RESULT}" \
+    --env "${ENV_NAME}" \
+    --test-files $(cat "${TESTS_LIST}") \
+    > "${NEED_RERUN_FILE}" 2>&1
+  rm -f "${TESTS_LIST}"
+  echo "$(grep -c -v '^#' "${NEED_RERUN_FILE}" || echo 0) tests need re-running"
+else
+  # 前回結果なし → 全テスト実行
+  for t in "${TESTS[@]}"; do
+    echo "${t#${ROOT}/}" >> "${NEED_RERUN_FILE}"
+  done
+fi
 
 RESULT_FILE="${RESULT_DIR}/result-${ENV_NAME}.json"
 echo "[null" > "${RESULT_FILE}"
 
+# 前回結果からスキップしたテストの結果をコピー
+if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
+  python3 -c "
+import json, sys
+need_rerun = set()
+with open('${NEED_RERUN_FILE}') as f:
+    for line in f:
+        line = line.strip()
+        if line and not line.startswith('#'):
+            need_rerun.add(line)
+with open('${PREV_RESULT}') as f:
+    prev = json.load(f)
+carried = 0
+with open('${RESULT_FILE}', 'a') as out:
+    for entry in prev:
+        if entry['file'] not in need_rerun:
+            out.write(',' + json.dumps(entry) + '\n')
+            carried += 1
+print(f'Carried over {carried} results from previous run', file=sys.stderr)
+" 2>&1
+fi
+
 echo "Environment: ${ENV_NAME} (${CXX})"
 echo "---"
 
+EXECUTION_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S+00:00")
+
 for test_file in "${TESTS[@]}"; do
+  local_rel="${test_file#${ROOT}/}"
+  # 差分実行: need_rerun に含まれていなければスキップ
+  if ! grep -q "^${local_rel}$" "${NEED_RERUN_FILE}" 2>/dev/null; then
+    echo "  [CACHED] ${local_rel}"
+    continue
+  fi
   run_test_file "${test_file}"
 done
+
+rm -f "${NEED_RERUN_FILE}"
 
 # JSON の先頭の null を削除して配列を閉じる
 echo "]" >> "${RESULT_FILE}"

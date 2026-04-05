@@ -41,6 +41,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -49,6 +51,15 @@ jobs:
 
       - name: Install oj
         run: pip install online-judge-tools
+
+      - name: Restore previous results
+        uses: actions/cache/restore@v4
+        id: restore-prev
+        with:
+          path: .cache/results/result-${{ matrix.env_name }}.json
+          key: verify-${{ matrix.env_name }}-${{ github.sha }}
+          restore-keys: |
+            verify-${{ matrix.env_name }}-
 
       - name: Download tc.zip
         run: |
@@ -64,9 +75,16 @@ jobs:
           CXX: ${{ matrix.cxx }}
           CXXFLAGS: ${{ matrix.cxxflags }}
           ENV_NAME: ${{ matrix.env_name }}
+          PREV_RESULT: ${{ steps.restore-prev.outputs.cache-hit && format('.cache/results/result-{0}.json', matrix.env_name) || '' }}
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
           DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
         run: bash scripts/run-tests.sh
+
+      - name: Save results cache
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/results/result-${{ matrix.env_name }}.json
+          key: verify-${{ matrix.env_name }}-${{ github.sha }}
 
       - name: Upload results
         uses: actions/upload-artifact@v4

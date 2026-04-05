@@ -21,24 +21,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: ubuntu-24.04
-            cxx: g++-13
-            env_name: x64-g++
-            cxxflags: "-std=c++17 -Wall -Wextra -O2"
-          - os: ubuntu-24.04
-            cxx: clang++-18
-            env_name: x64-clang++
-            cxxflags: "-std=c++17 -Wall -Wextra -O2"
-          - os: ubuntu-24.04-arm
-            cxx: g++-13
-            env_name: arm-g++
-            cxxflags: "-std=c++17 -Wall -Wextra -O2"
-          - os: ubuntu-24.04-arm
-            cxx: clang++-18
-            env_name: arm-clang++
-            cxxflags: "-std=c++17 -Wall -Wextra -O2"
-    runs-on: ${{ matrix.os }}
+        env:
+          - { os: ubuntu-24.04,     cxx: g++-13,    name: x64-g++ }
+          - { os: ubuntu-24.04,     cxx: clang++-18, name: x64-clang++ }
+          - { os: ubuntu-24.04-arm, cxx: g++-13,    name: arm-g++ }
+          - { os: ubuntu-24.04-arm, cxx: clang++-18, name: arm-clang++ }
+        split: [0, 1, 2, 3, 4]
+    runs-on: ${{ matrix.env.os }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -56,10 +45,10 @@ jobs:
         uses: actions/cache/restore@v4
         id: restore-prev
         with:
-          path: .cache/results/result-${{ matrix.env_name }}.json
-          key: verify-${{ matrix.env_name }}-${{ github.sha }}
+          path: .cache/results/result-${{ matrix.env.name }}-${{ matrix.split }}.json
+          key: verify-${{ matrix.env.name }}-${{ matrix.split }}-${{ github.sha }}
           restore-keys: |
-            verify-${{ matrix.env_name }}-
+            verify-${{ matrix.env.name }}-${{ matrix.split }}-
 
       - name: Download tc.zip
         run: |
@@ -72,25 +61,25 @@ jobs:
 
       - name: Run tests
         env:
-          CXX: ${{ matrix.cxx }}
-          CXXFLAGS: ${{ matrix.cxxflags }}
-          ENV_NAME: ${{ matrix.env_name }}
-          PREV_RESULT: ${{ steps.restore-prev.outputs.cache-hit && format('.cache/results/result-{0}.json', matrix.env_name) || '' }}
+          CXX: ${{ matrix.env.cxx }}
+          CXXFLAGS: "-std=c++17 -Wall -Wextra -O2"
+          ENV_NAME: ${{ matrix.env.name }}
+          PREV_RESULT: ${{ steps.restore-prev.outputs.cache-hit && format('.cache/results/result-{0}-{1}.json', matrix.env.name, matrix.split) || '' }}
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
           DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
-        run: bash scripts/run-tests.sh
+        run: bash scripts/run-tests.sh --split-index ${{ matrix.split }} --split-size 5
 
       - name: Save results cache
         uses: actions/cache/save@v4
         with:
-          path: .cache/results/result-${{ matrix.env_name }}.json
-          key: verify-${{ matrix.env_name }}-${{ github.sha }}
+          path: .cache/results/result-${{ matrix.env.name }}.json
+          key: verify-${{ matrix.env.name }}-${{ matrix.split }}-${{ github.sha }}
 
       - name: Upload results
         uses: actions/upload-artifact@v4
         with:
-          name: result-${{ matrix.env_name }}
-          path: .cache/results/result-${{ matrix.env_name }}.json
+          name: result-${{ matrix.env.name }}-${{ matrix.split }}
+          path: .cache/results/result-${{ matrix.env.name }}.json
           retention-days: 7
 
   docs:
@@ -117,6 +106,9 @@ jobs:
 
       - name: Merge results
         run: npx tsx scripts/merge-results.ts
+
+      - name: Write summary
+        run: npx tsx scripts/write-summary.ts >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build VitePress site
         run: npm run docs:build

@@ -69,7 +69,16 @@ download_testcases() {
 
   # oj download
   if command -v oj &>/dev/null; then
-    oj download --system -d "${cache_dir}" "${problem_url}" 2>&1 | tail -3 || true
+    local oj_args="--system -d ${cache_dir}"
+    # yukicoder のトークン
+    if [[ -n "${YUKICODER_TOKEN:-}" ]] && [[ "${problem_url}" == *yukicoder* ]]; then
+      oj_args="${oj_args} --yukicoder-token ${YUKICODER_TOKEN}"
+    fi
+    # Dropbox トークン (AtCoder system tests)
+    if [[ -n "${DROPBOX_TOKEN:-}" ]] && [[ "${problem_url}" == *atcoder* ]]; then
+      oj_args="${oj_args} --dropbox-token ${DROPBOX_TOKEN}"
+    fi
+    oj download ${oj_args} "${problem_url}" 2>&1 | tail -5 || true
     # ダウンロード成功チェック（テストケースが1つ以上あるか）
     if [[ -z "$(find "${cache_dir}" -name '*.in' -o -name 'in.txt' 2>/dev/null | head -1)" ]]; then
       echo "  [WARN] Failed to download: ${problem_url}"

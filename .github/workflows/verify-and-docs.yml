@@ -50,6 +50,15 @@ jobs:
           restore-keys: |
             verify-${{ matrix.env.name }}-${{ matrix.split }}-
 
+      - name: Restore testcase cache
+        uses: actions/cache/restore@v4
+        id: restore-tc
+        with:
+          path: .cache/testcases
+          key: testcases-${{ matrix.env.os }}-v1
+          restore-keys: |
+            testcases-${{ matrix.env.os }}-
+
       - name: Download tc.zip
         run: |
           mkdir -p .cache/tc
@@ -74,6 +83,13 @@ jobs:
         with:
           path: .cache/results/result-${{ matrix.env.name }}.json
           key: verify-${{ matrix.env.name }}-${{ matrix.split }}-${{ github.sha }}
+
+      - name: Save testcase cache
+        uses: actions/cache/save@v4
+        if: steps.restore-tc.outputs.cache-hit != 'true'
+        with:
+          path: .cache/testcases
+          key: testcases-${{ matrix.env.os }}-v1
 
       - name: Upload results
         uses: actions/upload-artifact@v4

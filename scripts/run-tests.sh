@@ -26,7 +26,7 @@ ENV_NAME="${ENV_NAME:-local}"
 SPLIT_INDEX=""
 SPLIT_SIZE=""
 SPLIT_FILE=""
-PREV_RESULT=""
+PREV_RESULT="${PREV_RESULT:-}"
 
 # 引数パース
 while [[ $# -gt 0 ]]; do

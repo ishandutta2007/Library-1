@@ -60,12 +60,18 @@ def get_problem_urls() -> dict[str, str]:
 
 
 def try_tc_zip(url: str, cache_dir: Path) -> bool:
-    """tc.zip からテストケースをコピー"""
+    """tc.zip からテストケースをコピー（checker.cpp があればそれも）"""
     md5 = url_to_md5(url)
-    for prefix in [TC_ZIP_DIR / "tc" / md5 / "test", TC_ZIP_DIR / md5 / "test"]:
-        if prefix.exists() and any(prefix.iterdir()):
+    for problem_dir in [TC_ZIP_DIR / "tc" / md5, TC_ZIP_DIR / md5]:
+        test_dir = problem_dir / "test"
+        if test_dir.exists() and any(test_dir.iterdir()):
             cache_dir.mkdir(parents=True, exist_ok=True)
-            subprocess.run(["cp", "-r", f"{prefix}/.", str(cache_dir)], check=True)
+            # テストケースをコピー
+            subprocess.run(["cp", "-r", f"{test_dir}/.", str(cache_dir)], check=True)
+            # checker.cpp があればコピー
+            checker = problem_dir / "checker.cpp"
+            if checker.exists():
+                shutil.copy2(checker, cache_dir / "checker.cpp")
             return True
     return False
 
@@ -290,7 +296,18 @@ def download_one(url: str) -> bool:
         return False
 
 
+def download_one_with_url(url: str) -> tuple[str, bool]:
+    """並列実行用ラッパー。(url, 成功したか) を返す"""
+    try:
+        return (url, download_one(url))
+    except Exception as e:
+        print(f"    Error downloading {url}: {e}", file=sys.stderr)
+        return (url, False)
+
+
 def main():
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
     urls = get_problem_urls()
     print(f"Found {len(urls)} unique problem URLs")
 
@@ -299,22 +316,71 @@ def main():
     downloaded = 0
     failed = 0
 
-    for url, example_file in urls.items():
+    # キャッシュ済み・tc.zip の処理（順次、高速）
+    to_download: list[str] = []
+
+    for url in urls:
         cache_dir = url_to_cache_dir(url)
 
-        # 既にキャッシュがある
         if cache_dir.exists() and any(cache_dir.iterdir()):
             cached += 1
             continue
 
-        # tc.zip から取得
         if try_tc_zip(url, cache_dir):
             from_zip += 1
             print(f"  [ZIP] {url}")
             continue
 
-        # 各サービスの API からダウンロード
-        print(f"  [DL]  {url} ...", end="", flush=True)
+        to_download.append(url)
+
+    if not to_download:
+        print(f"\nTestcase download summary:")
+        print(f"  Cached:     {cached}")
+        print(f"  From zip:   {from_zip}")
+        print(f"  Downloaded: 0")
+        print(f"  Failed:     0")
+        print(f"  Total:      {len(urls)}")
+        return
+
+    # yosupo judge はリポジトリクローンが必要なので先に1回だけ実行
+    yosupo_urls = [u for u in to_download if "judge.yosupo.jp" in u]
+    other_urls = [u for u in to_download if "judge.yosupo.jp" not in u]
+
+    # yosupo: リポジトリクローンは1回だけ、テストケース生成は並列化
+    if yosupo_urls:
+        # 先にクローンだけ実行
+        if not LIBRARY_CHECKER_DIR.exists():
+            print("  Cloning library-checker-problems...")
+            subprocess.run(
+                ["git", "clone", "--depth=1",
+                 "https://github.com/yosupo06/library-checker-problems.git",
+                 str(LIBRARY_CHECKER_DIR)],
+                check=True, capture_output=True
+            )
+            # generate.py の依存をインストール
+            subprocess.run(
+                [sys.executable, "-m", "pip", "install", "-q", "pyyaml", "toml"],
+                capture_output=True
+            )
+
+    print(f"  Downloading {len(to_download)} problems ({len(yosupo_urls)} yosupo, {len(other_urls)} other)...")
+
+    # AOJ, yukicoder 等は I/O バウンドなので並列ダウンロード
+    if other_urls:
+        with ThreadPoolExecutor(max_workers=8) as executor:
+            futures = {executor.submit(download_one_with_url, url): url for url in other_urls}
+            for future in as_completed(futures):
+                url, success = future.result()
+                if success:
+                    downloaded += 1
+                    print(f"  [OK]  {url}")
+                else:
+                    failed += 1
+                    print(f"  [NG]  {url}")
+
+    # yosupo judge はリポジトリ内のファイルを操作するので順次実行
+    for url in yosupo_urls:
+        print(f"  [GEN] {url} ...", end="", flush=True)
         if download_one(url):
             downloaded += 1
             print(" OK")

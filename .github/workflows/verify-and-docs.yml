@@ -170,7 +170,7 @@ jobs:
 
   docs:
     needs: [setup, split-0, split-1, split-2, split-3, split-4, split-5, split-6, split-7, split-8, split-9]
-    if: always() && needs.setup.result == 'success'
+    if: "!cancelled() && needs.setup.result == 'success'"
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4

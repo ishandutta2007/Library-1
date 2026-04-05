@@ -6,8 +6,7 @@ oj コマンドに依存せず、各サービスの API を直接叩く
 テストケースの取得優先順位:
 1. .cache/testcases/<md5>/ にキャッシュ済み (actions/cache)
 2. tc.zip (手動で用意したもの、oj 非対応サイト用)
-3. tc-downloaded.zip (前回 CI でダウンロードしたもの、Releases に保存)
-4. 各サービスの API からダウンロード
+3. 各サービスの API からダウンロード
 
 yosupo judge は library-checker-problems リポジトリから生成する方式。
 """
@@ -27,7 +26,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TEST_DIR = ROOT / "test"
 TC_ZIP_DIR = ROOT / ".cache" / "tc"
-TC_DOWNLOADED_DIR = ROOT / ".cache" / "tc-downloaded"
 TC_CACHE_DIR = ROOT / ".cache" / "testcases"
 
 YUKICODER_TOKEN = os.environ.get("YUKICODER_TOKEN", "")
@@ -91,26 +89,6 @@ def try_tc_zip(url: str) -> bool:
             if checker.exists():
                 shutil.copy2(checker, cache_dir / "checker.cpp")
             return True
-    return False
-
-
-def try_downloaded_zip(url: str) -> bool:
-    """前回 CI でダウンロードした tc-{service}.zip からコピー"""
-    md5 = url_to_md5(url)
-    cache_dir = url_to_cache_dir(url)
-    # サービスごとの zip が展開されたディレクトリを探す
-    for sub in TC_DOWNLOADED_DIR.iterdir() if TC_DOWNLOADED_DIR.exists() else []:
-        candidate = sub / md5 if sub.is_dir() else None
-        if candidate and candidate.exists() and any(candidate.iterdir()):
-            cache_dir.mkdir(parents=True, exist_ok=True)
-            subprocess.run(["cp", "-r", f"{candidate}/.", str(cache_dir)], check=True)
-            return True
-    # フラットな構造も試す
-    flat = TC_DOWNLOADED_DIR / md5
-    if flat.exists() and any(flat.iterdir()):
-        cache_dir.mkdir(parents=True, exist_ok=True)
-        subprocess.run(["cp", "-r", f"{flat}/.", str(cache_dir)], check=True)
-        return True
     return False
 
 
@@ -476,10 +454,9 @@ def main():
 
     cached = 0
     from_zip = 0
-    from_downloaded = 0
     to_download: list[str] = []
 
-    # 1. キャッシュ済み / tc.zip / tc-downloaded.zip から取得
+    # 1. キャッシュ済み / tc.zip から取得
     for url in urls:
         if is_cached(url):
             cached += 1
@@ -487,12 +464,9 @@ def main():
         if try_tc_zip(url):
             from_zip += 1
             continue
-        if try_downloaded_zip(url):
-            from_downloaded += 1
-            continue
         to_download.append(url)
 
-    print(f"  Cached: {cached}, From tc.zip: {from_zip}, From tc-downloaded: {from_downloaded}")
+    print(f"  Cached: {cached}, From tc.zip: {from_zip}")
     print(f"  Need download: {len(to_download)}")
 
     if not to_download:
@@ -542,12 +516,11 @@ def main():
                         print(f"  [GEN] {name} ... FAILED", flush=True)
 
     print(f"\nTestcase download summary:")
-    print(f"  Cached:          {cached}")
-    print(f"  From tc.zip:     {from_zip}")
-    print(f"  From downloaded: {from_downloaded}")
-    print(f"  Downloaded:      {downloaded}")
-    print(f"  Failed:          {failed}")
-    print(f"  Total:           {len(urls)}")
+    print(f"  Cached:      {cached}")
+    print(f"  From tc.zip: {from_zip}")
+    print(f"  Downloaded:  {downloaded}")
+    print(f"  Failed:      {failed}")
+    print(f"  Total:       {len(urls)}")
 
 
 if __name__ == "__main__":

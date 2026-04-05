@@ -56,10 +56,10 @@ jobs:
 
           if [ "${total}" -eq 0 ]; then
             echo "has-tests=false" >> "$GITHUB_OUTPUT"
-            for i in $(seq 0 4); do touch "split-${i}.txt"; done
+            for i in $(seq 0 9); do touch "split-${i}.txt"; done
           else
             echo "has-tests=true" >> "$GITHUB_OUTPUT"
-            split_size=5
+            split_size=10
             chunk=$(( (total + split_size - 1) / split_size ))
             for i in $(seq 0 $((split_size - 1))); do
               start=$((i * chunk + 1))
@@ -122,8 +122,53 @@ jobs:
     secrets:
       YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
 
+  split-5:
+    needs: setup
+    if: needs.setup.outputs.has-tests == 'true'
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 5
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+
+  split-6:
+    needs: setup
+    if: needs.setup.outputs.has-tests == 'true'
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 6
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+
+  split-7:
+    needs: setup
+    if: needs.setup.outputs.has-tests == 'true'
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 7
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+
+  split-8:
+    needs: setup
+    if: needs.setup.outputs.has-tests == 'true'
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 8
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+
+  split-9:
+    needs: setup
+    if: needs.setup.outputs.has-tests == 'true'
+    uses: ./.github/workflows/verify-split.yml
+    with:
+      split: 9
+    secrets:
+      YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+
   docs:
-    needs: [setup, split-0, split-1, split-2, split-3, split-4]
+    needs: [setup, split-0, split-1, split-2, split-3, split-4, split-5, split-6, split-7, split-8, split-9]
     if: always() && needs.setup.result == 'success'
     runs-on: ubuntu-24.04
     steps:
@@ -171,12 +216,6 @@ jobs:
             git push
             echo "Results committed"
           fi
-
-      - name: Save testcases to Releases
-        if: github.ref == 'refs/heads/master'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: bash scripts/save-downloaded-testcases.sh || true
 
       - name: Write summary
         run: npx tsx scripts/write-summary.ts >> "$GITHUB_STEP_SUMMARY" || true

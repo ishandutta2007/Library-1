@@ -63,19 +63,6 @@ jobs:
             rm tc.zip
           fi
 
-      - name: Download cached testcases from Releases
-        if: steps.check.outputs.has-tests == 'true'
-        run: |
-          mkdir -p .cache/tc-downloaded
-          for service in aoj yukicoder hackerrank; do
-            url="https://github.com/${{ github.repository }}/releases/download/testcases/tc-${service}.zip"
-            if curl -fsSL -o "tc-${service}.zip" "${url}" 2>/dev/null; then
-              unzip -q "tc-${service}.zip" -d ".cache/tc-downloaded/${service}"
-              rm "tc-${service}.zip"
-              echo "Restored tc-${service}.zip"
-            fi
-          done
-
       - name: Download testcases
         if: steps.check.outputs.has-tests == 'true'
         env:

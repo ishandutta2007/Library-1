@@ -226,10 +226,11 @@ def download_yosupo(url: str) -> bool:
     if not problem_dir:
         return False
 
-    # テストケース生成
+    # テストケース生成 (generate.py には info.toml のパスを渡す)
     try:
         subprocess.run(
-            [sys.executable, str(LIBRARY_CHECKER_DIR / "generate.py"), str(problem_dir)],
+            [sys.executable, str(LIBRARY_CHECKER_DIR / "generate.py"),
+             str(problem_dir / "info.toml")],
             check=True, timeout=300,
             cwd=LIBRARY_CHECKER_DIR,
         )
@@ -345,6 +346,68 @@ def download_yukicoder(url: str) -> bool:
 # ディスパッチ
 # ============================================================
 
+def download_hackerrank(url: str) -> bool:
+    """HackerRank のテストケースをダウンロード（zip 形式）"""
+    import zipfile
+    import io
+
+    cache_dir = url_to_cache_dir(url)
+
+    # URL からコンテストとチャレンジを抽出
+    # https://www.hackerrank.com/contests/w33/challenges/bonnie-and-clyde → w33, bonnie-and-clyde
+    # https://www.hackerrank.com/challenges/morgan-and-a-string → master, morgan-and-a-string
+    m = re.search(r"hackerrank\.com/contests/([^/]+)/challenges/([^/]+)", url)
+    if m:
+        contest, challenge = m.group(1), m.group(2)
+    else:
+        m = re.search(r"hackerrank\.com/challenges/([^/]+)", url)
+        if not m:
+            return False
+        contest, challenge = "master", m.group(1)
+
+    api_url = f"https://www.hackerrank.com/rest/contests/{contest}/challenges/{challenge}/download_testcases"
+    req = urllib.request.Request(api_url)
+    req.add_header("User-Agent", "Mozilla/5.0")
+
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            zip_data = resp.read()
+    except Exception:
+        return False
+
+    tmp_dir = Path(str(cache_dir) + ".tmp")
+    if tmp_dir.exists():
+        shutil.rmtree(tmp_dir)
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        with zipfile.ZipFile(io.BytesIO(zip_data)) as zf:
+            count = 0
+            for name in zf.namelist():
+                # input/input00.txt, output/output00.txt の形式
+                if name.startswith("input/") and name.endswith(".txt"):
+                    case_name = Path(name).stem  # input00
+                    in_data = zf.read(name)
+                    out_name = name.replace("input/", "output/").replace("input", "output")
+                    if out_name in zf.namelist():
+                        out_data = zf.read(out_name)
+                        (tmp_dir / f"{case_name}.in").write_bytes(in_data)
+                        (tmp_dir / f"{case_name}.out").write_bytes(out_data)
+                        count += 1
+    except Exception:
+        shutil.rmtree(tmp_dir)
+        return False
+
+    if count > 0:
+        if cache_dir.exists():
+            shutil.rmtree(cache_dir)
+        tmp_dir.rename(cache_dir)
+        return True
+    else:
+        shutil.rmtree(tmp_dir)
+        return False
+
+
 def download_one(url: str) -> bool:
     """URL に応じたダウンロード関数を呼ぶ"""
     if "onlinejudge.u-aizu.ac.jp" in url:
@@ -353,6 +416,8 @@ def download_one(url: str) -> bool:
         return download_yosupo(url)
     elif "yukicoder.me" in url:
         return download_yukicoder(url)
+    elif "hackerrank.com" in url:
+        return download_hackerrank(url)
     else:
         return False
 

@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -32,11 +32,20 @@ jobs:
         id: restore-tc
         with:
           path: .cache/testcases
-          key: testcases-v2
+          key: testcases-v3
           restore-keys: |
             testcases-
 
-      - name: Download tc.zip
+      - name: Restore library-checker-problems cache
+        uses: actions/cache/restore@v4
+        id: restore-lc
+        with:
+          path: .cache/library-checker-problems
+          key: library-checker-v1
+          restore-keys: |
+            library-checker-
+
+      - name: Download tc.zip (manual testcases)
         run: |
           mkdir -p .cache/tc
           curl -L -o tc.zip https://github.com/hashiryo/Library/releases/download/v0.0.0/tc.zip || true
@@ -45,24 +54,49 @@ jobs:
             rm tc.zip
           fi
 
+      - name: Download cached testcases from Releases
+        run: |
+          mkdir -p .cache/tc-downloaded
+          for service in aoj yukicoder hackerrank other; do
+            url="https://github.com/${{ github.repository }}/releases/download/testcases/tc-${service}.zip"
+            if curl -fsSL -o "tc-${service}.zip" "${url}" 2>/dev/null; then
+              unzip -q "tc-${service}.zip" -d ".cache/tc-downloaded/${service}"
+              rm "tc-${service}.zip"
+              echo "Restored tc-${service}.zip"
+            fi
+          done
+
       - name: Download all testcases
         env:
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
-          DROPBOX_TOKEN: ${{ secrets.DROPBOX_TOKEN }}
         run: python3 scripts/download-testcases.py
 
       - name: Save testcase cache
         uses: actions/cache/save@v4
         with:
           path: .cache/testcases
-          key: testcases-v2
+          key: testcases-v3
 
-      - name: Upload testcases
+      - name: Save library-checker-problems cache
+        uses: actions/cache/save@v4
+        if: steps.restore-lc.outputs.cache-hit != 'true'
+        with:
+          path: .cache/library-checker-problems
+          key: library-checker-v1
+
+      - name: Save downloaded testcases to Releases
+        if: github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/save-downloaded-testcases.sh
+
+      - name: Upload testcases artifact
         uses: actions/upload-artifact@v4
         with:
           name: testcases
           path: .cache/testcases
           retention-days: 1
+          compression-level: 1
 
   verify:
     needs: setup
@@ -95,6 +129,11 @@ jobs:
           key: verify-${{ matrix.env.name }}-${{ matrix.split }}-${{ github.sha }}
           restore-keys: |
             verify-${{ matrix.env.name }}-${{ matrix.split }}-
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
       - name: Run tests
         env:

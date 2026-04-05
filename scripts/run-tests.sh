@@ -53,22 +53,29 @@ download_testcases() {
 
   mkdir -p "${cache_dir}"
 
-  # tc.zip からのコピーを試みる
+  # tc.zip からのコピーを試みる (competitive-verifier 形式: URL の MD5 ハッシュ)
   local tc_zip_dir="${ROOT}/.cache/tc"
-  local url_hash
-  url_hash=$(echo -n "${problem_url}" | shasum -a 256 | cut -c1-16)
-  if [[ -d "${tc_zip_dir}/${url_hash}" ]]; then
-    cp -r "${tc_zip_dir}/${url_hash}/." "${cache_dir}/"
+  local url_md5
+  url_md5=$(echo -n "${problem_url}" | md5sum 2>/dev/null | cut -c1-32 || echo -n "${problem_url}" | md5 -q 2>/dev/null)
+  if [[ -n "${url_md5}" ]] && [[ -d "${tc_zip_dir}/tc/${url_md5}/test" ]]; then
+    cp -r "${tc_zip_dir}/tc/${url_md5}/test/." "${cache_dir}/"
+    return 0
+  fi
+  # tc/ プレフィックスなしも試す
+  if [[ -n "${url_md5}" ]] && [[ -d "${tc_zip_dir}/${url_md5}/test" ]]; then
+    cp -r "${tc_zip_dir}/${url_md5}/test/." "${cache_dir}/"
     return 0
   fi
 
   # oj download
   if command -v oj &>/dev/null; then
-    oj download -d "${cache_dir}" "${problem_url}" 2>/dev/null || {
+    oj download --system -d "${cache_dir}" "${problem_url}" 2>&1 | tail -3 || true
+    # ダウンロード成功チェック（テストケースが1つ以上あるか）
+    if [[ -z "$(find "${cache_dir}" -name '*.in' -o -name 'in.txt' 2>/dev/null | head -1)" ]]; then
       echo "  [WARN] Failed to download: ${problem_url}"
       rm -rf "${cache_dir}"
       return 1
-    }
+    fi
   else
     echo "  [WARN] oj not found, skipping download: ${problem_url}"
     return 1

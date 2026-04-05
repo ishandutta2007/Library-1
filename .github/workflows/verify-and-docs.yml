@@ -47,7 +47,8 @@ jobs:
               need_rerun_all=$(printf "%s\n%s" "${need_rerun_all}" "${tests}")
             done
           else
-            need_rerun_all=$(find test -name '*.test.cpp' | sort)
+            # 前回結果なし → IGNORE 以外の全テスト
+            need_rerun_all=$(grep -rL 'competitive-verifier:.*IGNORE' test --include='*.test.cpp' | sort)
           fi
 
           echo "${need_rerun_all}" | grep -v '^$' | sort -u > need_rerun.txt

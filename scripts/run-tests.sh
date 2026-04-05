@@ -408,23 +408,36 @@ echo "[null" > "${RESULT_FILE}"
 # 前回結果からスキップしたテストの結果をコピー
 if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
   python3 -c "
-import json, sys
+import json, sys, os
 need_rerun = set()
 with open('${NEED_RERUN_FILE}') as f:
     for line in f:
         line = line.strip()
         if line and not line.startswith('#'):
             need_rerun.add(line)
-with open('${PREV_RESULT}') as f:
-    prev = json.load(f)
+prev_file = '${PREV_RESULT}'
+if not os.path.exists(prev_file):
+    sys.exit(0)
+try:
+    with open(prev_file) as f:
+        prev = json.load(f)
+except (json.JSONDecodeError, ValueError):
+    sys.exit(0)
+# マージ済み形式の場合はフラットに展開
+if isinstance(prev, dict):
+    flat = []
+    for problems in prev.values():
+        for p in problems:
+            flat.append(p)
+    prev = flat
 carried = 0
 with open('${RESULT_FILE}', 'a') as out:
     for entry in prev:
-        if entry['file'] not in need_rerun:
+        if isinstance(entry, dict) and entry.get('file') not in need_rerun:
             out.write(',' + json.dumps(entry) + '\n')
             carried += 1
 print(f'Carried over {carried} results from previous run', file=sys.stderr)
-" 2>&1
+" 2>&1 || true
 fi
 
 echo "Environment: ${ENV_NAME} (${CXX})"

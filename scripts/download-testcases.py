@@ -26,7 +26,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TEST_DIR = ROOT / "test"
 TC_ZIP_DIR = ROOT / ".cache" / "tc"
-TC_CACHE_DIR = ROOT / ".cache" / "testcases"
+TC_CACHE_DIR = ROOT / ".cache" / "testcases"       # API ダウンロード分 (キャッシュ対象)
+TC_RESOLVED_DIR = ROOT / ".cache" / "tc-resolved"  # tc.zip から展開した分 (キャッシュ対象外)
 
 YUKICODER_TOKEN = os.environ.get("YUKICODER_TOKEN", "")
 
@@ -73,21 +74,29 @@ def get_problem_urls(split_file: str | None = None) -> dict[str, list[str]]:
 
 def is_cached(url: str) -> bool:
     cache_dir = url_to_cache_dir(url)
-    return cache_dir.exists() and any(cache_dir.iterdir())
+    if cache_dir.exists() and any(cache_dir.iterdir()):
+        return True
+    resolved_dir = TC_RESOLVED_DIR / url_to_md5(url)
+    if resolved_dir.exists() and any(resolved_dir.iterdir()):
+        return True
+    return False
 
 
 def try_tc_zip(url: str) -> bool:
-    """tc.zip からテストケースをコピー（checker.cpp があればそれも）"""
+    """tc.zip からテストケースをコピー（キャッシュ対象外の別ディレクトリに置く）"""
     md5 = url_to_md5(url)
-    cache_dir = url_to_cache_dir(url)
+    resolved_dir = TC_RESOLVED_DIR / md5
+    # 既に展開済み
+    if resolved_dir.exists() and any(resolved_dir.iterdir()):
+        return True
     for problem_dir in [TC_ZIP_DIR / "tc" / md5, TC_ZIP_DIR / md5]:
         test_dir = problem_dir / "test"
         if test_dir.exists() and any(test_dir.iterdir()):
-            cache_dir.mkdir(parents=True, exist_ok=True)
-            subprocess.run(["cp", "-r", f"{test_dir}/.", str(cache_dir)], check=True)
+            resolved_dir.mkdir(parents=True, exist_ok=True)
+            subprocess.run(["cp", "-r", f"{test_dir}/.", str(resolved_dir)], check=True)
             checker = problem_dir / "checker.cpp"
             if checker.exists():
-                shutil.copy2(checker, cache_dir / "checker.cpp")
+                shutil.copy2(checker, resolved_dir / "checker.cpp")
             return True
     return False
 

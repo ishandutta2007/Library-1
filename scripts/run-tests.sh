@@ -52,10 +52,17 @@ get_testcase_dir() {
   local url_md5
   url_md5=$(echo -n "${problem_url}" | md5sum 2>/dev/null | cut -c1-32 || echo -n "${problem_url}" | md5 -q 2>/dev/null)
 
-  # setup ジョブ (download-testcases.py) でダウンロード済みのテストケースを参照
+  # API ダウンロード分 (.cache/testcases/)
   local cache_dir="${TC_DIR}/${url_md5}"
   if [[ -d "${cache_dir}" ]] && [[ "$(ls -A "${cache_dir}" 2>/dev/null)" ]]; then
     echo "${cache_dir}"
+    return 0
+  fi
+
+  # tc.zip 展開分 (.cache/tc-resolved/)
+  local resolved_dir="${ROOT}/.cache/tc-resolved/${url_md5}"
+  if [[ -d "${resolved_dir}" ]] && [[ "$(ls -A "${resolved_dir}" 2>/dev/null)" ]]; then
+    echo "${resolved_dir}"
     return 0
   fi
 

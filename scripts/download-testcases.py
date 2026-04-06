@@ -234,8 +234,8 @@ def download_yosupo(url: str) -> bool:
     # テストケース生成 (generate.py には info.toml のパスを渡す)
     try:
         subprocess.run(
-            [sys.executable, str(LIBRARY_CHECKER_DIR / "generate.py"),
-             str(problem_dir / "info.toml")],
+            ["bash", "-c",
+             f"ulimit -s unlimited && {sys.executable} {LIBRARY_CHECKER_DIR / 'generate.py'} {problem_dir / 'info.toml'}"],
             check=True, timeout=300,
             cwd=LIBRARY_CHECKER_DIR,
         )

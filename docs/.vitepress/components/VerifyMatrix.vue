@@ -45,15 +45,8 @@ const envLabels: Record<string, string> = {
   'arm-clang++': 'ARM clang++',
 }
 
-function statusIcon(status: string) {
-  switch (status) {
-    case 'AC': return '✅'
-    case 'WA': return '❌'
-    case 'TLE': return '⏰'
-    case 'MLE': return '💾'
-    case 'RE': return '💥'
-    default: return '❓'
-  }
+function statusLabel(status: string) {
+  return status || '?'
 }
 
 function formatMemory(kb: number) {
@@ -86,35 +79,44 @@ onMounted(async () => {
 
 <template>
   <div v-if="results.length > 0" class="verify-matrix">
-    <div class="matrix-wrapper">
-      <table class="matrix-table">
-        <thead>
-          <tr>
-            <th class="test-col">Test</th>
-            <th v-for="env in envNames" :key="env" class="env-col" colspan="1">
-              {{ envLabels[env] || env }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="problem in results" :key="problem.file">
-            <td class="test-name">
-              <a :href="testPageLink(problem.file)">{{ testName(problem) }}</a>
-            </td>
+    <details :open="results.length <= 20">
+      <summary class="matrix-summary">
+        {{ results.length }} tests ({{ results.filter(r => Object.values(r.environments).every(e => e.status === 'AC')).length }} AC)
+      </summary>
+      <div class="matrix-wrapper">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th class="test-col">Test</th>
+              <th v-for="env in envNames" :key="env" class="env-col" colspan="1">
+                {{ envLabels[env] || env }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="problem in results" :key="problem.file">
+              <td class="test-name" :title="problem.file">
+                <a :href="testPageLink(problem.file)">{{ testName(problem) }}</a>
+              </td>
             <td v-for="env in envNames" :key="env" class="env-cell">
               <template v-if="problem.environments[env]">
-                <span class="status">{{ statusIcon(problem.environments[env].status) }}</span>
-                <span class="time">{{ problem.environments[env].summary.time_max_ms }}ms</span>
-                <span class="memory">{{ formatMemory(problem.environments[env].summary.memory_max_kb) }}</span>
+                <div class="env-line1">
+                  <span class="status-label" :class="'status-' + problem.environments[env].status">{{ statusLabel(problem.environments[env].status) }}</span>
+                  <span class="time">{{ problem.environments[env].summary.time_max_ms }}ms</span>
+                </div>
+                <div class="env-line2">
+                  <span class="memory">{{ formatMemory(problem.environments[env].summary.memory_max_kb) }}</span>
+                </div>
               </template>
               <template v-else>
-                <span class="status">❓</span>
+                <span class="status-label status-unknown">?</span>
               </template>
             </td>
           </tr>
         </tbody>
-      </table>
-    </div>
+        </table>
+      </div>
+    </details>
   </div>
 </template>
 
@@ -123,14 +125,26 @@ onMounted(async () => {
   margin: 0.5rem 0;
 }
 
+.matrix-summary {
+  cursor: pointer;
+  color: var(--vp-c-text-2);
+  font-size: 0.9rem;
+  padding: 0.3rem 0;
+}
+
+.matrix-summary:hover {
+  color: var(--vp-c-brand-1);
+}
+
 .matrix-wrapper {
   overflow-x: auto;
 }
 
 .matrix-table {
-  width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
   font-size: 0.85rem;
+  table-layout: fixed;
 }
 
 .matrix-table th,
@@ -139,6 +153,8 @@ onMounted(async () => {
   padding: 0.35rem 0.5rem;
   text-align: left;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .matrix-table thead {
@@ -146,7 +162,8 @@ onMounted(async () => {
 }
 
 .test-col {
-  min-width: 160px;
+  width: 20%;
+  max-width: 180px;
 }
 
 .env-col {
@@ -157,6 +174,11 @@ onMounted(async () => {
 .test-name {
   font-family: var(--vp-font-family-mono);
   font-size: 0.8rem;
+  max-width: 180px;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  text-overflow: clip !important;
+  white-space: nowrap;
 }
 
 .test-name a {
@@ -171,25 +193,42 @@ onMounted(async () => {
 .env-cell {
   font-variant-numeric: tabular-nums;
   text-align: right !important;
+  white-space: normal !important;
 }
 
-.env-cell .status {
-  float: left;
+.env-line1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.env-line2 {
+  text-align: right;
+}
+
+.status-label {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+}
+
+.status-AC { color: #22863a; }
+.status-WA { color: #cb2431; }
+.status-TLE { color: #b08800; }
+.status-MLE { color: #b08800; }
+.status-RE { color: #cb2431; }
+.status-CE { color: #6a737d; }
+.status-IGNORE { color: #6a737d; }
+.status-unknown { color: #6a737d; }
 
 .env-cell .time {
   color: var(--vp-c-text-1);
-  margin-right: 0.4rem;
-  display: inline-block;
-  min-width: 3.5em;
-  text-align: right;
 }
 
 .env-cell .memory {
   color: var(--vp-c-text-2);
   font-size: 0.75rem;
-  display: inline-block;
-  min-width: 4em;
-  text-align: right;
 }
 </style>

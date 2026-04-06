@@ -112,13 +112,43 @@ function hppToTitle(hpp: string) {
   return hpp.split('/').pop()?.replace(/\.hpp$/, '') || hpp
 }
 
+// results.json をビルド時に読み込み（存在すれば）
+let resultsData: Record<string, any[]> = {}
+const resultsPath = path.join(ROOT, '.verify-results', 'results.json')
+if (fs.existsSync(resultsPath)) {
+  try {
+    resultsData = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
+  } catch {}
+}
+
 // hpp の verify ステータスアイコン
 function hppStatusIcon(hpp: string): string {
   const tests = testMap[hpp]
-  if (!tests || tests.length === 0) return '❓'
-  // TODO: Phase 2 で results.json を読んで AC/WA/TLE を判定
-  // 今はテストがあれば ✅ とする
-  return '✅'
+  if (!tests || tests.length === 0) return '⚠'
+
+  // results.json から実際の結果を確認
+  const problems = resultsData[hpp]
+  if (!problems || problems.length === 0) return '⚠'
+
+  let hasAC = false
+  let hasFail = false
+
+  for (const problem of problems) {
+    const envs = problem.environments || {}
+    for (const [envName, envResult] of Object.entries(envs) as [string, any][]) {
+      const status = envResult.status
+      if (status === 'AC' || status === 'IGNORE') {
+        hasAC = true
+      } else if (status && status !== 'IGNORE') {
+        hasFail = true
+      }
+    }
+  }
+
+  if (hasAC && !hasFail) return '✅'
+  if (hasFail && !hasAC) return '❌'
+  if (hasAC && hasFail) return '❓'
+  return '⚠'
 }
 
 // ステータスアイコン付きのリンクを生成

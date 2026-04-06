@@ -41,10 +41,55 @@ interface MergedProblem {
   environments: Record<string, EnvSummary>
 }
 
-// hpp → テストファイル のマッピング
+// hpp 間の依存グラフ構築
+function buildDependsOn(): Record<string, string[]> {
+  const srcDir = path.join(ROOT, 'src')
+  const dependsOn: Record<string, string[]> = {}
+
+  function scan(dir: string) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) scan(full)
+      else if (entry.name.endsWith('.hpp')) {
+        const content = fs.readFileSync(full, 'utf-8')
+        const rel = path.relative(ROOT, full)
+        const deps: string[] = []
+        for (const m of content.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) {
+          deps.push(m[1])
+        }
+        dependsOn[rel] = deps
+      }
+    }
+  }
+
+  scan(srcDir)
+  return dependsOn
+}
+
+// 推移閉包
+function getTransitiveDeps(hpp: string, dependsOn: Record<string, string[]>, cache: Record<string, Set<string>>): Set<string> {
+  if (cache[hpp]) return cache[hpp]
+  cache[hpp] = new Set()
+  for (const dep of (dependsOn[hpp] || [])) {
+    cache[hpp].add(dep)
+    for (const transDep of getTransitiveDeps(dep, dependsOn, cache)) {
+      cache[hpp].add(transDep)
+    }
+  }
+  return cache[hpp]
+}
+
+// hpp → テストファイル のマッピング（推移的依存を考慮）
 function buildHppMap(): Record<string, string[]> {
   const testDir = path.join(ROOT, 'test')
-  const map: Record<string, string[]> = {}
+  const dependsOn = buildDependsOn()
+  const transCache: Record<string, Set<string>> = {}
+  const map: Record<string, Set<string>> = {}
+
+  function addTest(hpp: string, testFile: string) {
+    if (!map[hpp]) map[hpp] = new Set()
+    map[hpp].add(testFile)
+  }
 
   function scan(dir: string) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -53,16 +98,28 @@ function buildHppMap(): Record<string, string[]> {
       else if (entry.name.endsWith('.test.cpp')) {
         const content = fs.readFileSync(full, 'utf-8')
         const rel = path.relative(ROOT, full)
+        const directIncludes: string[] = []
         for (const m of content.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) {
-          if (!map[m[1]]) map[m[1]] = []
-          map[m[1]].push(rel)
+          directIncludes.push(m[1])
+        }
+        // 直接 include + 推移的依存すべてにテストを紐付け
+        for (const hpp of directIncludes) {
+          addTest(hpp, rel)
+          for (const dep of getTransitiveDeps(hpp, dependsOn, transCache)) {
+            addTest(dep, rel)
+          }
         }
       }
     }
   }
 
   scan(testDir)
-  return map
+  // Set → sorted array
+  const result: Record<string, string[]> = {}
+  for (const [key, set] of Object.entries(map)) {
+    result[key] = [...set].sort()
+  }
+  return result
 }
 
 // 引数パース

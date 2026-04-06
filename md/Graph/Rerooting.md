@@ -3,7 +3,7 @@ title: 全方位木DP
 documentation_of: ../../src/Graph/Rerooting.hpp
 ---
 
-![image of tree dp](https://github.com/hashiryo/Library/blob/master/img/rerooting.drawio.svg?raw=true)
+![image of tree dp](/img/rerooting.drawio.svg)
 
 ## `Rerooting<T>` クラス
 全方位木DPの値(型 : `T` )が入っている配列だと思って使う. (`operator[](int v)`, `begin()`, `end()` がある. )

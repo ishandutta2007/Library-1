@@ -253,14 +253,31 @@ for (const [hpp, testFiles] of Object.entries(hppMap)) {
   }
 }
 
+// cases を除外した軽量版を作成 (git commit 用)
+function stripCases(data: Record<string, MergedProblem[]>): Record<string, MergedProblem[]> {
+  const stripped: Record<string, MergedProblem[]> = {}
+  for (const [hpp, problems] of Object.entries(data)) {
+    stripped[hpp] = problems.map(p => ({
+      ...p,
+      environments: Object.fromEntries(
+        Object.entries(p.environments).map(([env, summary]) => [
+          env,
+          { ...summary, cases: [] },
+        ])
+      ),
+    }))
+  }
+  return stripped
+}
+
 // 出力
 fs.mkdirSync(path.dirname(OUTPUT), { recursive: true })
-fs.writeFileSync(OUTPUT, JSON.stringify(output, null, 2))
+fs.writeFileSync(OUTPUT, JSON.stringify(stripCases(output), null, 2))
 
 fs.mkdirSync(path.dirname(PUBLIC_OUTPUT), { recursive: true })
-fs.copyFileSync(OUTPUT, PUBLIC_OUTPUT)
+fs.writeFileSync(PUBLIC_OUTPUT, JSON.stringify(output, null, 2))
 
 const testCount = Object.values(prevMap).length
 const hppCount = Object.keys(output).length
 console.log(`\nResults: ${testCount} test files, ${hppCount} hpp files`)
-console.log(`Written to ${OUTPUT} and ${PUBLIC_OUTPUT}`)
+console.log(`Written to ${OUTPUT} (without cases) and ${PUBLIC_OUTPUT} (full)`)

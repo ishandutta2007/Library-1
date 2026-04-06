@@ -119,7 +119,7 @@ for (const result of newResults) {
   const key = result.file
   if (!prevMap[key]) prevMap[key] = {}
 
-  const cases = result.cases
+  const cases = result.cases || []
   const timeMax = cases.length > 0 ? Math.max(...cases.map(c => c.time_ms)) : 0
   const timeTotal = cases.reduce((sum, c) => sum + c.time_ms, 0)
   const memMax = cases.length > 0 ? Math.max(...cases.map(c => c.memory_kb)) : 0

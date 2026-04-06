@@ -1,6 +1,5 @@
 /**
  * GitHub Actions の Job Summary に検証結果のサマリーを出力する
- * merge-results.ts の後に実行する
  */
 import fs from 'fs'
 import path from 'path'
@@ -15,16 +14,21 @@ if (!fs.existsSync(resultsPath)) {
 
 const data = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
 
-// 全テスト結果を集計
 let passed = 0
 let failed = 0
 let skipped = 0
 let ce = 0
 const envSet = new Set<string>()
 
+interface EnvInfo {
+  status: string
+  timeMax: number
+  memMax: number
+}
+
 interface FileRow {
   file: string
-  envResults: Record<string, string>
+  envResults: Record<string, EnvInfo>
 }
 
 const rows: FileRow[] = []
@@ -34,11 +38,15 @@ for (const problems of Object.values(data) as any[]) {
     const row: FileRow = { file: problem.file, envResults: {} }
     for (const [env, result] of Object.entries(problem.environments) as [string, any][]) {
       envSet.add(env)
-      row.envResults[env] = result.status
-      switch (result.status) {
+      const status = result.status
+      const timeMax = result.summary?.time_max_ms ?? 0
+      const memMax = result.summary?.memory_max_kb ?? 0
+      row.envResults[env] = { status, timeMax, memMax }
+      switch (status) {
         case 'AC': passed++; break
         case 'CE': ce++; break
         case 'WA': case 'TLE': case 'MLE': case 'RE': failed++; break
+        case 'IGNORE': skipped++; break
         default: skipped++; break
       }
     }
@@ -69,20 +77,25 @@ console.log()
 
 // 失敗したテストの詳細
 const failedRows = rows.filter(r =>
-  Object.values(r.envResults).some(s => s !== 'AC')
+  Object.values(r.envResults).some(info => info.status !== 'AC')
 )
+
+function formatMem(kb: number): string {
+  if (kb >= 1024) return `${(kb / 1024).toFixed(1)}MB`
+  return `${kb}KB`
+}
 
 if (failedRows.length > 0) {
   console.log('### Failed / Non-AC Tests\n')
-  console.log(`| File | ${envs.join(' | ')} |`)
+  console.log(`| File | ${envs.map(e => `${e}`).join(' | ')} |`)
   console.log(`|:---|${envs.map(() => ':---:').join('|')}|`)
   for (const row of failedRows.slice(0, 50)) {
     const cells = envs.map(env => {
-      const s = row.envResults[env]
-      if (!s) return '-'
-      if (s === 'AC') return '✅'
-      if (s === 'CE') return '🔨'
-      return `❌ ${s}`
+      const info = row.envResults[env]
+      if (!info) return '-'
+      if (info.status === 'AC') return `✅ ${info.timeMax}ms ${formatMem(info.memMax)}`
+      if (info.status === 'CE') return '🔨 CE'
+      return `❌ ${info.status} ${info.timeMax}ms ${formatMem(info.memMax)}`
     })
     console.log(`| ${row.file} | ${cells.join(' | ')} |`)
   }

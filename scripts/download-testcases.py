@@ -511,7 +511,7 @@ def main():
             failed += len(yosupo_urls)
         else:
             print(f"  Generating {len(yosupo_urls)} yosupo problems (parallel)...")
-            with ProcessPoolExecutor(max_workers=3) as executor:
+            with ProcessPoolExecutor(max_workers=1) as executor:
                 futures = {executor.submit(download_one_safe, url): url for url in yosupo_urls}
                 for future in as_completed(futures):
                     url, success = future.result()

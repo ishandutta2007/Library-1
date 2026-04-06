@@ -148,11 +148,39 @@ function getTestMeta(testFile: string): { problem: string; tlMs: number } {
   }
 }
 
+// IGNORE / STANDALONE の判定
+function getTestStatus(testFile: string): 'normal' | 'ignore' | 'standalone' {
+  const full = path.join(ROOT, testFile)
+  if (!fs.existsSync(full)) return 'normal'
+  const content = fs.readFileSync(full, 'utf-8')
+  if (/competitive-verifier:\s*IGNORE/.test(content)) return 'ignore'
+  if (/competitive-verifier:\s*STANDALONE/.test(content)) return 'standalone'
+  return 'normal'
+}
+
 for (const [hpp, testFiles] of Object.entries(hppMap)) {
   const problems: MergedProblem[] = []
   for (const tf of testFiles) {
-    if (prevMap[tf]) {
-      const meta = getTestMeta(tf)
+    const meta = getTestMeta(tf)
+    const testStatus = getTestStatus(tf)
+
+    if (testStatus === 'ignore') {
+      // IGNORE テストは全環境 IGNORE ステータスで記録
+      const ignoreEnvs: Record<string, EnvSummary> = {}
+      for (const env of ['x64-g++', 'x64-clang++', 'arm-g++', 'arm-clang++']) {
+        ignoreEnvs[env] = {
+          status: 'IGNORE',
+          summary: { time_max_ms: 0, time_total_ms: 0, memory_max_kb: 0 },
+          cases: [],
+        }
+      }
+      problems.push({
+        problem: meta.problem,
+        file: tf,
+        time_limit_ms: meta.tlMs,
+        environments: ignoreEnvs,
+      })
+    } else if (prevMap[tf]) {
       problems.push({
         problem: meta.problem,
         file: tf,

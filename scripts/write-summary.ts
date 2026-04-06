@@ -77,7 +77,7 @@ console.log()
 
 // 失敗したテストの詳細
 const failedRows = rows.filter(r =>
-  Object.values(r.envResults).some(info => info.status !== 'AC')
+  Object.values(r.envResults).some(info => info.status !== 'AC' && info.status !== 'IGNORE')
 )
 
 function formatMem(kb: number): string {
@@ -95,6 +95,7 @@ if (failedRows.length > 0) {
       if (!info) return '-'
       if (info.status === 'AC') return `✅ ${info.timeMax}ms ${formatMem(info.memMax)}`
       if (info.status === 'CE') return '🔨 CE'
+      if (info.status === 'IGNORE') return '⏭️'
       return `❌ ${info.status} ${info.timeMax}ms ${formatMem(info.memMax)}`
     })
     console.log(`| ${row.file} | ${cells.join(' | ')} |`)

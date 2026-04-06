@@ -423,17 +423,27 @@ try:
         prev = json.load(f)
 except (json.JSONDecodeError, ValueError):
     sys.exit(0)
-# マージ済み形式の場合はフラットに展開
+# マージ済み形式の場合はフラットに展開（環境ごとに分解）
 if isinstance(prev, dict):
     flat = []
     for problems in prev.values():
         for p in problems:
-            flat.append(p)
+            envs = p.get('environments', {})
+            for env_name, env_data in envs.items():
+                flat.append({
+                    'file': p.get('file', ''),
+                    'problem': p.get('problem', ''),
+                    'environment': env_name,
+                    'status': env_data.get('status', ''),
+                    'last_execution_time': env_data.get('last_execution_time', ''),
+                    'cases': env_data.get('cases', []),
+                })
     prev = flat
 carried = 0
+env = '${ENV_NAME}'
 with open('${RESULT_FILE}', 'a') as out:
     for entry in prev:
-        if isinstance(entry, dict) and entry.get('file') not in need_rerun:
+        if isinstance(entry, dict) and entry.get('file') not in need_rerun and entry.get('environment') == env:
             out.write(',' + json.dumps(entry) + '\n')
             carried += 1
 print(f'Carried over {carried} results from previous run', file=sys.stderr)

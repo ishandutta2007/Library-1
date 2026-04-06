@@ -30,6 +30,7 @@ interface TestResult {
 interface EnvSummary {
   status: string
   summary: { time_max_ms: number; time_total_ms: number; memory_max_kb: number }
+  last_execution_time?: string
   cases: CaseResult[]
 }
 
@@ -127,6 +128,7 @@ for (const result of newResults) {
   prevMap[key][result.environment] = {
     status: result.status,
     summary: { time_max_ms: timeMax, time_total_ms: timeTotal, memory_max_kb: memMax },
+    last_execution_time: result.last_execution_time || new Date().toISOString(),
     cases,
   }
 }

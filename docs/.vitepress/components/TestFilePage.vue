@@ -28,7 +28,8 @@ function hppTitle(hpp: string) {
 onMounted(async () => {
   // results.json からこのテストファイルの結果を検索
   try {
-    const res = await fetch('/results.json')
+    const base = import.meta.env.BASE_URL || '/'
+    const res = await fetch(`${base}results.json`)
     const data: Record<string, any[]> = await res.json()
     for (const problems of Object.values(data)) {
       for (const p of problems) {

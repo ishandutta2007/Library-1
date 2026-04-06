@@ -24,7 +24,8 @@ const hppPath = computed(() => {
 onMounted(async () => {
   if (!hppPath.value) return
   try {
-    const res = await fetch('/results.json')
+    const base = import.meta.env.BASE_URL || '/'
+    const res = await fetch(`${base}results.json`)
     const data: Results = await res.json()
     results.value = data[hppPath.value] || []
   } catch {

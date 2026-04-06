@@ -62,13 +62,13 @@ function formatMemory(kb: number) {
 }
 
 function testPageLink(file: string) {
-  return '/' + file.replace(/\.cpp$/, '')
+  const base = import.meta.env.BASE_URL || '/'
+  return base + file.replace(/\.cpp$/, '').replace(/^\//, '')
 }
 
 function testName(problem: ProblemResult) {
-  // ファイル名からテスト名を抽出
-  const name = problem.file.split('/').pop()?.replace(/\.test\.cpp$/, '') || problem.file
-  return name
+  // test/ を除いたパス（ディレクトリ付き）
+  return problem.file.replace(/^test\//, '').replace(/\.test\.cpp$/, '')
 }
 
 onMounted(async () => {
@@ -169,21 +169,27 @@ onMounted(async () => {
 }
 
 .env-cell {
-  text-align: center !important;
   font-variant-numeric: tabular-nums;
+  text-align: right !important;
 }
 
 .env-cell .status {
-  margin-right: 0.2rem;
+  float: left;
 }
 
 .env-cell .time {
   color: var(--vp-c-text-1);
-  margin-right: 0.3rem;
+  margin-right: 0.4rem;
+  display: inline-block;
+  min-width: 3.5em;
+  text-align: right;
 }
 
 .env-cell .memory {
   color: var(--vp-c-text-2);
   font-size: 0.75rem;
+  display: inline-block;
+  min-width: 4em;
+  text-align: right;
 }
 </style>

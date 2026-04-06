@@ -5,7 +5,7 @@ documentation_of: ../../src/Graph/block_cut_tree.hpp
 
 無向グラフを二点連結成分分解し、その構造を木で表現する Block-Cut Tree を構築する。
 
-![bct.svg](https://github.com/hashiryo/Library/blob/master/img/bct.drawio.svg?raw=true)
+![bct.svg](/img/bct.drawio.svg)
 <center>図：左が元グラフ、右が構築されたBlock-Cut Tree。丸が元頂点、四角が二点連結成分（ブロック）を表す頂点。</center>
 
 |関数名|概要|計算量|

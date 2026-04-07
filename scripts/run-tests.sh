@@ -133,7 +133,10 @@ run_single_case() {
     if [[ -n "${checker_bin}" ]] && [[ -x "${checker_bin}" ]]; then
       if ! "${checker_bin}" "${input_file}" "${output_file}" "${expected_file}" &>/dev/null; then
         status="WA"
-        detail=$(diff <(sed 's/[[:space:]]*$//' "${output_file}" | head -5) <(sed 's/[[:space:]]*$//' "${expected_file}" | head -5) 2>/dev/null | head -10 || true)
+        local actual_head expected_head
+        actual_head=$(head -1 "${output_file}" | cut -c1-50)
+        expected_head=$(head -1 "${expected_file}" | cut -c1-50)
+        detail="expected:[${expected_head}] actual:[${actual_head}]"
       fi
     elif [[ -n "${error_tolerance}" ]] && [[ "${error_tolerance}" != "0" ]]; then
       if ! python3 -c "
@@ -150,7 +153,10 @@ for a, e in zip(actual, expected):
     else
       if ! diff <(sed 's/[[:space:]]*$//' "${output_file}") <(sed 's/[[:space:]]*$//' "${expected_file}") &>/dev/null; then
         status="WA"
-        detail=$(diff <(sed 's/[[:space:]]*$//' "${output_file}" | head -5) <(sed 's/[[:space:]]*$//' "${expected_file}" | head -5) 2>/dev/null | head -10 || true)
+        local actual_head expected_head
+        actual_head=$(head -1 "${output_file}" | cut -c1-50)
+        expected_head=$(head -1 "${expected_file}" | cut -c1-50)
+        detail="expected:[${expected_head}] actual:[${actual_head}]"
       fi
     fi
   fi
@@ -176,9 +182,12 @@ for a, e in zip(actual, expected):
   rm -f "${output_file}"
 
   # detail 内の改行や特殊文字をエスケープ
-  detail=$(echo "${detail}" | head -3 | tr '\n' ' ' | sed 's/"/\\"/g' | cut -c1-200)
-
-  echo "${status} ${elapsed_ms} ${memory_kb} ${detail}"
+  if [[ -n "${detail}" ]]; then
+    detail=$(echo "${detail}" | head -3 | tr '\n' ' ' | sed 's/"/\\"/g' | cut -c1-200)
+    echo "${status} ${elapsed_ms} ${memory_kb} ${detail}"
+  else
+    echo "${status} ${elapsed_ms} ${memory_kb}"
+  fi
 }
 
 # =============================================================================

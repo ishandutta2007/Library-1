@@ -81,9 +81,17 @@ function generateTestMarkdown(info: TestInfo): string {
     md += '## Depends on\n\n'
     for (const hpp of info.depends) {
       const link = '/' + hpp.replace(/^src\//, '').replace(/\.hpp$/, '')
-      const name = hpp.split('/').pop()?.replace(/\.hpp$/, '') || hpp
       const icon = hppStatusIcon(hpp)
-      md += `- ${icon} [${name}](${link}) (${hpp})\n`
+      // md のタイトルがあればそれを使う
+      const mdRelPath = hpp.replace(/^src\//, '').replace(/\.hpp$/, '.md')
+      const mdPath = path.join(MD_DIR, mdRelPath)
+      let title = hpp.split('/').pop()?.replace(/\.hpp$/, '') || hpp
+      if (fs.existsSync(mdPath)) {
+        const content = fs.readFileSync(mdPath, 'utf-8')
+        const titleMatch = content.match(/^---\s*\n[\s\S]*?title:\s*(.+)\n[\s\S]*?---/)
+        if (titleMatch) title = titleMatch[1].trim()
+      }
+      md += `- ${icon} [${title}](${link}) (${hpp})\n`
     }
     md += '\n'
   }

@@ -423,21 +423,36 @@ try:
         prev = json.load(f)
 except (json.JSONDecodeError, ValueError):
     sys.exit(0)
-# マージ済み形式の場合はフラットに展開（環境ごとに分解）
+# コンパクト形式 or 従来形式をフラットに展開
 if isinstance(prev, dict):
     flat = []
-    for problems in prev.values():
-        for p in problems:
-            envs = p.get('environments', {})
+    if 'tests' in prev and 'hpp_map' in prev:
+        # コンパクト形式
+        for file_key, test_data in prev['tests'].items():
+            envs = test_data.get('environments', {})
             for env_name, env_data in envs.items():
                 flat.append({
-                    'file': p.get('file', ''),
-                    'problem': p.get('problem', ''),
+                    'file': file_key,
+                    'problem': test_data.get('problem', ''),
                     'environment': env_name,
                     'status': env_data.get('status', ''),
                     'last_execution_time': env_data.get('last_execution_time', ''),
                     'cases': env_data.get('cases', []),
                 })
+    else:
+        # 従来のマージ済み形式
+        for problems in prev.values():
+            for p in problems:
+                envs = p.get('environments', {})
+                for env_name, env_data in envs.items():
+                    flat.append({
+                        'file': p.get('file', ''),
+                        'problem': p.get('problem', ''),
+                        'environment': env_name,
+                        'status': env_data.get('status', ''),
+                        'last_execution_time': env_data.get('last_execution_time', ''),
+                        'cases': env_data.get('cases', []),
+                    })
     prev = flat
 carried = 0
 env = '${ENV_NAME}'

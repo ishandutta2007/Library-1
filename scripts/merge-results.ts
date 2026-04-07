@@ -157,18 +157,24 @@ if (fs.existsSync(resultDir)) {
 }
 
 // 前回結果の読み込み（--prev で指定 or デフォルト）
-let prevData: Record<string, MergedProblem[]> = {}
+const prevMap: Record<string, Record<string, EnvSummary>> = {}
 const prevPath = prevFile || OUTPUT
 if (fs.existsSync(prevPath)) {
-  prevData = JSON.parse(fs.readFileSync(prevPath, 'utf-8'))
+  const raw = JSON.parse(fs.readFileSync(prevPath, 'utf-8'))
   console.log(`Loaded previous results from ${prevPath}`)
-}
 
-// 前回結果をフラットなマップに変換: file → { env → EnvSummary }
-const prevMap: Record<string, Record<string, EnvSummary>> = {}
-for (const problems of Object.values(prevData)) {
-  for (const problem of problems) {
-    prevMap[problem.file] = { ...(prevMap[problem.file] || {}), ...problem.environments }
+  if (raw.tests && raw.hpp_map) {
+    // コンパクト形式
+    for (const [file, data] of Object.entries(raw.tests) as [string, any][]) {
+      prevMap[file] = data.environments || {}
+    }
+  } else {
+    // 従来形式 (hpp → MergedProblem[])
+    for (const problems of Object.values(raw) as any[]) {
+      for (const problem of problems) {
+        prevMap[problem.file] = { ...(prevMap[problem.file] || {}), ...problem.environments }
+      }
+    }
   }
 }
 
@@ -253,31 +259,55 @@ for (const [hpp, testFiles] of Object.entries(hppMap)) {
   }
 }
 
-// cases を除外した軽量版を作成 (git commit 用)
-function stripCases(data: Record<string, MergedProblem[]>): Record<string, MergedProblem[]> {
-  const stripped: Record<string, MergedProblem[]> = {}
-  for (const [hpp, problems] of Object.entries(data)) {
-    stripped[hpp] = problems.map(p => ({
-      ...p,
-      environments: Object.fromEntries(
-        Object.entries(p.environments).map(([env, summary]) => [
-          env,
-          { ...summary, cases: [] },
-        ])
-      ),
-    }))
-  }
-  return stripped
+// git commit 用: テスト結果を重複なしで格納 + hpp マッピング
+interface CompactResults {
+  // テストファイルごとの結果（重複なし）
+  tests: Record<string, {
+    problem: string
+    time_limit_ms: number
+    environments: Record<string, EnvSummary>
+  }>
+  // hpp → テストファイル一覧のマッピング
+  hpp_map: Record<string, string[]>
 }
 
-// 出力
+function buildCompactResults(): CompactResults {
+  const tests: CompactResults['tests'] = {}
+
+  // テストごとに1回だけ格納
+  for (const problems of Object.values(output)) {
+    for (const p of problems) {
+      if (!tests[p.file]) {
+        tests[p.file] = {
+          problem: p.problem,
+          time_limit_ms: p.time_limit_ms,
+          environments: p.environments,
+        }
+      }
+    }
+  }
+
+  // hpp → テストファイル一覧
+  const hpp_map: Record<string, string[]> = {}
+  for (const [hpp, problems] of Object.entries(output)) {
+    hpp_map[hpp] = problems.map(p => p.file)
+  }
+
+  return { tests, hpp_map }
+}
+
+// VitePress 用: 従来形式（hpp ごとにグループ化、重複あり）
+// git commit 用: コンパクト形式（重複なし）
+
+const compact = buildCompactResults()
+
 fs.mkdirSync(path.dirname(OUTPUT), { recursive: true })
-fs.writeFileSync(OUTPUT, JSON.stringify(stripCases(output), null, 2))
+fs.writeFileSync(OUTPUT, JSON.stringify(compact, null, 2))
 
 fs.mkdirSync(path.dirname(PUBLIC_OUTPUT), { recursive: true })
 fs.writeFileSync(PUBLIC_OUTPUT, JSON.stringify(output, null, 2))
 
-const testCount = Object.values(prevMap).length
-const hppCount = Object.keys(output).length
+const testCount = Object.keys(compact.tests).length
+const hppCount = Object.keys(compact.hpp_map).length
 console.log(`\nResults: ${testCount} test files, ${hppCount} hpp files`)
-console.log(`Written to ${OUTPUT} (without cases) and ${PUBLIC_OUTPUT} (full)`)
+console.log(`Written to ${OUTPUT} (compact) and ${PUBLIC_OUTPUT} (full)`)

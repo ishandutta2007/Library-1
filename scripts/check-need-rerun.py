@@ -85,24 +85,33 @@ def main():
         with open(args.prev_result) as f:
             data = json.load(f)
 
-        if isinstance(data, list):
+        if isinstance(data, dict) and "tests" in data and "hpp_map" in data:
+            # コンパクト形式 { tests: {file: {environments: ...}}, hpp_map: ... }
+            for file_key, test_data in data["tests"].items():
+                envs = test_data.get("environments", {})
+                env_result = envs.get(args.env, {})
+                if env_result:
+                    prev_results[file_key] = {
+                        "file": file_key,
+                        "status": env_result.get("status", ""),
+                        "last_execution_time": env_result.get("last_execution_time", ""),
+                    }
+        elif isinstance(data, list):
             # フラット配列形式 (環境ごとの結果)
             for entry in data:
                 prev_results[entry["file"]] = entry
         elif isinstance(data, dict):
-            # マージ済み形式 (hpp → [{file, environments: {env: {status, ...}}}])
+            # 従来のマージ済み形式 (hpp → [{file, environments: ...}])
             for problems in data.values():
                 for problem in problems:
                     file_key = problem["file"]
-                    # 指定環境の結果を取り出す
                     envs = problem.get("environments", {})
                     env_result = envs.get(args.env, {})
                     if env_result:
                         prev_results[file_key] = {
                             "file": file_key,
                             "status": env_result.get("status", ""),
-                            "last_execution_time": problem.get("last_execution_time",
-                                env_result.get("last_execution_time", "")),
+                            "last_execution_time": env_result.get("last_execution_time", ""),
                         }
 
     # テストファイル一覧

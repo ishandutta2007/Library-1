@@ -216,10 +216,12 @@ export default defineConfig({
           // --- md の後に挿入するセクション ---
           let after = ''
 
-          // Verified with セクション (マトリクス表コンポーネント)
+          // Verified with セクション (マトリクス表コンポーネント、データ埋め込み)
           const tests = testMap[hppPath] || []
           if (tests.length > 0) {
-            after += '\n## Verified with\n\n<VerifyMatrix />\n'
+            const hppResults = resultsData[hppPath] || []
+            const jsonStr = JSON.stringify(hppResults).replace(/'/g, '&#39;')
+            after += `\n## Verified with\n\n<VerifyMatrix :data='${jsonStr}' />\n`
           }
 
           // Depends on セクション (この hpp が依存している hpp)

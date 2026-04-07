@@ -19,6 +19,42 @@ const TEST_OUT_DIR = path.join(MD_DIR, 'test')
 const depGraph = buildDependencyGraph()
 const testMap = buildTestMap(depGraph)
 
+// results.json を読み込み (VitePress 用のフル版があればそれを、なければ git 用)
+let resultsData: Record<string, any[]> = {}
+const publicResultsPath = path.join(MD_DIR, 'public', 'results.json')
+const gitResultsPath = path.join(ROOT, '.verify-results', 'results.json')
+if (fs.existsSync(publicResultsPath)) {
+  try { resultsData = JSON.parse(fs.readFileSync(publicResultsPath, 'utf-8')) } catch {}
+} else if (fs.existsSync(gitResultsPath)) {
+  // コンパクト形式から従来形式に変換
+  try {
+    const raw = JSON.parse(fs.readFileSync(gitResultsPath, 'utf-8'))
+    if (raw.tests && raw.hpp_map) {
+      // コンパクト → 従来形式に変換（テストファイルで引けるようにフラット化）
+      for (const [hpp, files] of Object.entries(raw.hpp_map) as [string, string[]][]) {
+        resultsData[hpp] = files.map(f => ({
+          file: f,
+          problem: raw.tests[f]?.problem || '',
+          time_limit_ms: raw.tests[f]?.time_limit_ms || 0,
+          environments: raw.tests[f]?.environments || {},
+        }))
+      }
+    } else {
+      resultsData = raw
+    }
+  } catch {}
+}
+
+// テストファイルから結果を検索
+function getTestResult(testFile: string): any | null {
+  for (const problems of Object.values(resultsData)) {
+    for (const p of problems) {
+      if (p.file === testFile) return p
+    }
+  }
+  return null
+}
+
 function hppStatusIcon(hpp: string): string {
   const tests = testMap[hpp]
   if (!tests || tests.length === 0) return '❓'
@@ -97,7 +133,13 @@ function generateTestMarkdown(info: TestInfo): string {
   }
 
   md += '## Test Results\n\n'
-  md += `<TestFileResults test-file="${info.path}" />\n\n`
+  const testResult = getTestResult(info.path)
+  if (testResult) {
+    const jsonStr = JSON.stringify(testResult).replace(/'/g, '&#39;')
+    md += `<TestFileResults :data='${jsonStr}' />\n\n`
+  } else {
+    md += `<TestFileResults />\n\n`
+  }
 
   md += '## Code\n\n'
   md += '```cpp\n' + info.source + '\n```\n'

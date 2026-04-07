@@ -1,18 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import { useData } from 'vitepress'
-
-interface TestCase {
-  name: string
-  status: string
-  time_ms: number
-  memory_kb: number
-}
+import { computed } from 'vue'
 
 interface EnvResult {
   status: string
   summary: { time_max_ms: number; time_total_ms: number; memory_max_kb: number }
-  cases: TestCase[]
+  cases: any[]
 }
 
 interface ProblemResult {
@@ -22,20 +14,19 @@ interface ProblemResult {
   environments: Record<string, EnvResult>
 }
 
-type Results = Record<string, ProblemResult[]>
+const props = defineProps<{
+  data: ProblemResult[]
+}>()
 
-const { frontmatter } = useData()
-const results = ref<ProblemResult[]>([])
-
-const hppPath = computed(() => {
-  const docOf = frontmatter.value.documentation_of
-  if (!docOf) return null
-  return docOf.replace(/^(\.\.\/)+/, '')
-})
+const results = computed(() => props.data || [])
 
 const envNames = computed(() => {
   if (results.value.length === 0) return []
-  return Object.keys(results.value[0].environments)
+  const envs = new Set<string>()
+  for (const r of results.value) {
+    for (const env of Object.keys(r.environments)) envs.add(env)
+  }
+  return [...envs].sort()
 })
 
 const envLabels: Record<string, string> = {
@@ -60,21 +51,8 @@ function testPageLink(file: string) {
 }
 
 function testName(problem: ProblemResult) {
-  // test/ を除いたパス（ディレクトリ付き）
   return problem.file.replace(/^test\//, '').replace(/\.test\.cpp$/, '')
 }
-
-onMounted(async () => {
-  if (!hppPath.value) return
-  try {
-    const base = import.meta.env.BASE_URL || '/'
-    const res = await fetch(`${base}results.json`)
-    const data: Results = await res.json()
-    results.value = data[hppPath.value] || []
-  } catch {
-    // results.json がない場合は何も表示しない
-  }
-})
 </script>
 
 <template>

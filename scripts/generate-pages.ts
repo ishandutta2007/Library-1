@@ -19,13 +19,10 @@ const TEST_OUT_DIR = path.join(MD_DIR, 'test')
 const depGraph = buildDependencyGraph()
 const testMap = buildTestMap(depGraph)
 
-// results.json を読み込み (VitePress 用のフル版があればそれを、なければ git 用)
+// results.json を読み込み（コンパクト形式）
 let resultsData: Record<string, any[]> = {}
-const publicResultsPath = path.join(MD_DIR, 'public', 'results.json')
 const gitResultsPath = path.join(ROOT, '.verify-results', 'results.json')
-if (fs.existsSync(publicResultsPath)) {
-  try { resultsData = JSON.parse(fs.readFileSync(publicResultsPath, 'utf-8')) } catch {}
-} else if (fs.existsSync(gitResultsPath)) {
+if (fs.existsSync(gitResultsPath)) {
   // コンパクト形式から従来形式に変換
   try {
     const raw = JSON.parse(fs.readFileSync(gitResultsPath, 'utf-8'))
@@ -57,8 +54,30 @@ function getTestResult(testFile: string): any | null {
 
 function hppStatusIcon(hpp: string): string {
   const tests = testMap[hpp]
-  if (!tests || tests.length === 0) return '❓'
-  return '✅'
+  if (!tests || tests.length === 0) return '⚠'
+
+  const problems = resultsData[hpp]
+  if (!problems || problems.length === 0) return '⚠'
+
+  let hasAC = false
+  let hasFail = false
+
+  for (const problem of problems) {
+    const envs = problem.environments || {}
+    for (const [, envResult] of Object.entries(envs) as [string, any][]) {
+      const status = envResult.status
+      if (status === 'AC' || status === 'IGNORE') {
+        hasAC = true
+      } else if (status) {
+        hasFail = true
+      }
+    }
+  }
+
+  if (hasAC && !hasFail) return '✅'
+  if (hasFail && !hasAC) return '❌'
+  if (hasAC && hasFail) return '❓'
+  return '⚠'
 }
 
 // ============================================================

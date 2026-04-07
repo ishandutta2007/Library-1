@@ -100,11 +100,12 @@ const caseNames = computed(() => {
           <thead>
             <tr>
               <th>Case</th>
-              <th v-for="env in envNames" :key="env" colspan="2">{{ envLabels[env] || env }}</th>
+              <th v-for="env in envNames" :key="env" colspan="3">{{ envLabels[env] || env }}</th>
             </tr>
             <tr>
               <th></th>
               <template v-for="env in envNames" :key="env">
+                <th class="sub-header">Status</th>
                 <th class="sub-header">Time</th>
                 <th class="sub-header">Mem</th>
               </template>
@@ -114,11 +115,14 @@ const caseNames = computed(() => {
             <tr v-for="caseName in caseNames" :key="caseName">
               <td class="case-name">{{ caseName }}</td>
               <template v-for="env in envNames" :key="env">
-                <td class="time" :class="{ 'is-max': result.environments[env]?.cases.find(c => c.name === caseName)?.time_ms === result.environments[env]?.summary.time_max_ms }">
-                  {{ result.environments[env]?.cases.find(c => c.name === caseName)?.time_ms }} ms
+                <td class="case-status" :class="'case-status-' + (result.environments[env]?.cases?.find(c => c.name === caseName)?.status || '')">
+                  {{ result.environments[env]?.cases?.find(c => c.name === caseName)?.status || '' }}
+                </td>
+                <td class="time" :class="{ 'is-max': result.environments[env]?.cases?.find(c => c.name === caseName)?.time_ms === result.environments[env]?.summary.time_max_ms }">
+                  {{ result.environments[env]?.cases?.find(c => c.name === caseName)?.time_ms }} ms
                 </td>
                 <td class="memory">
-                  {{ formatMemory(result.environments[env]?.cases.find(c => c.name === caseName)?.memory_kb || 0) }}
+                  {{ formatMemory(result.environments[env]?.cases?.find(c => c.name === caseName)?.memory_kb || 0) }}
                 </td>
               </template>
             </tr>
@@ -229,4 +233,16 @@ const caseNames = computed(() => {
   overflow-x: auto;
   margin-top: 0.5rem;
 }
+
+.case-status {
+  font-weight: 700;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.case-status-AC { color: #22863a; }
+.case-status-WA { color: #cb2431; }
+.case-status-TLE { color: #b08800; }
+.case-status-MLE { color: #b08800; }
+.case-status-RE { color: #cb2431; }
 </style>

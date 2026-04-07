@@ -169,3 +169,12 @@ jobs:
           name: result-${{ matrix.env.name }}-${{ inputs.split }}
           path: .cache/results/result-${{ matrix.env.name }}-${{ inputs.split }}.json
           retention-days: 7
+
+      - name: Upload error logs
+        if: steps.check.outputs.has-tests == 'true' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-${{ matrix.env.name }}-${{ inputs.split }}
+          path: .cache/logs/${{ matrix.env.name }}/
+          retention-days: 30
+          if-no-files-found: ignore

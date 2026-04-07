@@ -115,7 +115,9 @@ const caseNames = computed(() => {
             <tr v-for="caseName in caseNames" :key="caseName">
               <td class="case-name">{{ caseName }}</td>
               <template v-for="env in envNames" :key="env">
-                <td class="case-status" :class="'case-status-' + (result.environments[env]?.cases?.find(c => c.name === caseName)?.status || '')">
+                <td class="case-status"
+                    :class="'case-status-' + (result.environments[env]?.cases?.find(c => c.name === caseName)?.status || '')"
+                    :title="result.environments[env]?.cases?.find(c => c.name === caseName)?.detail || ''">
                   {{ result.environments[env]?.cases?.find(c => c.name === caseName)?.status || '' }}
                 </td>
                 <td class="time" :class="{ 'is-max': result.environments[env]?.cases?.find(c => c.name === caseName)?.time_ms === result.environments[env]?.summary.time_max_ms }">

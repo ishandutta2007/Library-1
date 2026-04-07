@@ -85,13 +85,15 @@ run_single_case() {
   local status="AC"
   local elapsed_ms=0
   local memory_kb=0
+  local detail=""
 
   local time_output
   time_output=$(mktemp)
+  local stderr_file
+  stderr_file=$(mktemp)
 
   # 実行 + 計測
   if [[ "$(uname)" == "Darwin" ]]; then
-    # macOS: /usr/bin/time -l (メモリはバイト単位)
     /usr/bin/time -l timeout "${tle_sec}" "${binary}" < "${input_file}" > "${output_file}" 2>"${time_output}" && true
     local exit_code=$?
 
@@ -99,14 +101,13 @@ run_single_case() {
       status="TLE"
     elif [[ ${exit_code} -ne 0 ]]; then
       status="RE"
+      detail="exit code ${exit_code}"
     fi
 
-    # "0.01 real 0.00 user 0.00 sys" の形式
     elapsed_ms=$(awk '/real/{printf "%.0f", $1 * 1000}' "${time_output}" 2>/dev/null || echo "0")
-    # メモリはバイト単位 → KB
     memory_kb=$(awk '/maximum resident set size/{printf "%.0f", $1 / 1024}' "${time_output}" 2>/dev/null || echo "0")
   else
-    # Linux: /usr/bin/time -v
+    # Linux: stderr を別途キャプチャ
     /usr/bin/time -v timeout "${tle_sec}" "${binary}" < "${input_file}" > "${output_file}" 2>"${time_output}" && true
     local exit_code=$?
 
@@ -114,14 +115,14 @@ run_single_case() {
       status="TLE"
     elif [[ ${exit_code} -ne 0 ]]; then
       status="RE"
+      detail="exit code ${exit_code}"
     fi
 
     elapsed_ms=$(grep "Elapsed (wall clock)" "${time_output}" | sed 's/.*: //' | awk -F: '{if (NF==2) printf "%.0f", ($1*60+$2)*1000; else printf "%.0f", $1*1000}' 2>/dev/null || echo "0")
-    # Linux の time -v は KB 単位
     memory_kb=$(grep "Maximum resident set size" "${time_output}" | awk '{print $NF}' 2>/dev/null || echo "0")
   fi
 
-  rm -f "${time_output}"
+  rm -f "${time_output}" "${stderr_file}"
 
   # 空値のガード
   [[ -z "${elapsed_ms}" ]] && elapsed_ms=0
@@ -130,13 +131,11 @@ run_single_case() {
   # 判定 (TLE/RE でなければ出力を比較)
   if [[ "${status}" == "AC" ]]; then
     if [[ -n "${checker_bin}" ]] && [[ -x "${checker_bin}" ]]; then
-      # カスタムチェッカーで判定 (yosupo judge 等)
-      # checker <input> <actual_output> <expected_output> → exit 0 なら AC
       if ! "${checker_bin}" "${input_file}" "${output_file}" "${expected_file}" &>/dev/null; then
         status="WA"
+        detail=$(diff <(sed 's/[[:space:]]*$//' "${output_file}" | head -5) <(sed 's/[[:space:]]*$//' "${expected_file}" | head -5) 2>/dev/null | head -10 || true)
       fi
     elif [[ -n "${error_tolerance}" ]] && [[ "${error_tolerance}" != "0" ]]; then
-      # 浮動小数点比較
       if ! python3 -c "
 import sys
 with open('${output_file}') as f: actual = f.read().split()
@@ -146,18 +145,40 @@ for a, e in zip(actual, expected):
     if abs(float(a) - float(e)) > ${error_tolerance}: sys.exit(1)
 " 2>/dev/null; then
         status="WA"
+        detail="float compare failed (tolerance=${error_tolerance})"
       fi
     else
-      # 完全一致比較 (末尾空白・改行は無視)
       if ! diff <(sed 's/[[:space:]]*$//' "${output_file}") <(sed 's/[[:space:]]*$//' "${expected_file}") &>/dev/null; then
         status="WA"
+        detail=$(diff <(sed 's/[[:space:]]*$//' "${output_file}" | head -5) <(sed 's/[[:space:]]*$//' "${expected_file}" | head -5) 2>/dev/null | head -10 || true)
       fi
     fi
   fi
 
+  # WA/RE の詳細をログディレクトリに保存
+  if [[ "${status}" != "AC" ]] && [[ -n "${DETAIL_LOG_DIR:-}" ]]; then
+    local log_file="${DETAIL_LOG_DIR}/${case_name:-unknown}.${status}.log"
+    {
+      echo "Status: ${status}"
+      echo "Time: ${elapsed_ms}ms"
+      echo "Memory: ${memory_kb}KB"
+      if [[ "${status}" == "WA" ]] && [[ -f "${output_file}" ]]; then
+        echo "--- actual output (first 20 lines) ---"
+        head -20 "${output_file}"
+        echo "--- expected output (first 20 lines) ---"
+        head -20 "${expected_file}"
+      fi
+      echo "--- detail ---"
+      echo "${detail}"
+    } > "${log_file}" 2>/dev/null
+  fi
+
   rm -f "${output_file}"
 
-  echo "${status} ${elapsed_ms} ${memory_kb}"
+  # detail 内の改行や特殊文字をエスケープ
+  detail=$(echo "${detail}" | head -3 | tr '\n' ' ' | sed 's/"/\\"/g' | cut -c1-200)
+
+  echo "${status} ${elapsed_ms} ${memory_kb} ${detail}"
 }
 
 # =============================================================================
@@ -312,21 +333,31 @@ JSONEOF
       case_name=$(basename "${input_file}" .in)
     fi
 
+    # DETAIL_LOG_DIR をエクスポートしておく
+    export DETAIL_LOG_DIR="${ROOT}/.cache/logs/${ENV_NAME}/${rel_path}"
+    mkdir -p "${DETAIL_LOG_DIR}" 2>/dev/null || true
+
     local result
-    result=$(run_single_case "${binary}" "${input_file}" "${expected_file}" "${TLE_SEC}" "${ERROR_TOL}" "${checker_bin}")
+    result=$(case_name="${case_name}" run_single_case "${binary}" "${input_file}" "${expected_file}" "${TLE_SEC}" "${ERROR_TOL}" "${checker_bin}")
     local case_status
     case_status=$(echo "${result}" | awk '{print $1}')
     local case_time
     case_time=$(echo "${result}" | awk '{print $2}')
     local case_mem
     case_mem=$(echo "${result}" | awk '{print $3}')
+    local case_detail
+    case_detail=$(echo "${result}" | cut -d' ' -f4- | sed 's/"/\\"/g')
 
     if [[ "${case_status}" != "AC" ]]; then
       overall_status="${case_status}"
     fi
 
     [[ -n "${cases_json}" ]] && cases_json+=","
-    cases_json+="{\"name\":\"${case_name}\",\"status\":\"${case_status}\",\"time_ms\":${case_time},\"memory_kb\":${case_mem}}"
+    if [[ -n "${case_detail}" ]]; then
+      cases_json+="{\"name\":\"${case_name}\",\"status\":\"${case_status}\",\"time_ms\":${case_time},\"memory_kb\":${case_mem},\"detail\":\"${case_detail}\"}"
+    else
+      cases_json+="{\"name\":\"${case_name}\",\"status\":\"${case_status}\",\"time_ms\":${case_time},\"memory_kb\":${case_mem}}"
+    fi
     case_count=$((case_count + 1))
   done
 

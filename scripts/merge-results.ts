@@ -129,14 +129,11 @@ const prevIdx = args.indexOf('--prev')
 const prevFile = prevIdx >= 0 ? args[prevIdx + 1] : null
 
 const OUTPUT = path.join(ROOT, '.verify-results', 'results.json')
-const PUBLIC_OUTPUT = path.join(ROOT, 'md', 'public', 'results.json')
 
-// --from-committed: 既存の results.json を md/public/ にコピーするだけ
+// --from-committed: 何もしない（ビルド時に直接 .verify-results/results.json を読む）
 if (fromCommitted) {
   if (fs.existsSync(OUTPUT)) {
-    fs.mkdirSync(path.dirname(PUBLIC_OUTPUT), { recursive: true })
-    fs.copyFileSync(OUTPUT, PUBLIC_OUTPUT)
-    console.log(`Copied ${OUTPUT} to ${PUBLIC_OUTPUT}`)
+    console.log(`Results available at ${OUTPUT}`)
   } else {
     console.log('No committed results found')
   }
@@ -304,10 +301,7 @@ const compact = buildCompactResults()
 fs.mkdirSync(path.dirname(OUTPUT), { recursive: true })
 fs.writeFileSync(OUTPUT, JSON.stringify(compact, null, 2))
 
-fs.mkdirSync(path.dirname(PUBLIC_OUTPUT), { recursive: true })
-fs.writeFileSync(PUBLIC_OUTPUT, JSON.stringify(output, null, 2))
-
 const testCount = Object.keys(compact.tests).length
 const hppCount = Object.keys(compact.hpp_map).length
 console.log(`\nResults: ${testCount} test files, ${hppCount} hpp files`)
-console.log(`Written to ${OUTPUT} (compact) and ${PUBLIC_OUTPUT} (full)`)
+console.log(`Written to ${OUTPUT}`)

@@ -113,11 +113,25 @@ function hppToTitle(hpp: string) {
 }
 
 // results.json をビルド時に読み込み（存在すれば）
+// results.json を読み込み（コンパクト形式 or 従来形式）
 let resultsData: Record<string, any[]> = {}
 const resultsPath = path.join(ROOT, '.verify-results', 'results.json')
 if (fs.existsSync(resultsPath)) {
   try {
-    resultsData = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
+    const raw = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
+    if (raw.tests && raw.hpp_map) {
+      // コンパクト形式 → 従来形式に変換
+      for (const [hpp, files] of Object.entries(raw.hpp_map) as [string, string[]][]) {
+        resultsData[hpp] = files.map((f: string) => ({
+          file: f,
+          problem: raw.tests[f]?.problem || '',
+          time_limit_ms: raw.tests[f]?.time_limit_ms || 0,
+          environments: raw.tests[f]?.environments || {},
+        }))
+      }
+    } else {
+      resultsData = raw
+    }
   } catch {}
 }
 

@@ -199,11 +199,9 @@ jobs:
 
       - name: Merge results
         run: |
-          mkdir -p .verify-results md/public
+          mkdir -p .verify-results
           if [ -d ".cache/results" ] && ls .cache/results/result-*.json 1>/dev/null 2>&1; then
             npx tsx scripts/merge-results.ts --prev .verify-results/results.json
-          elif [ -f ".verify-results/results.json" ]; then
-            cp .verify-results/results.json md/public/results.json
           fi
 
       - name: Commit results

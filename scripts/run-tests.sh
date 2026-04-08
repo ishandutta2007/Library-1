@@ -128,7 +128,16 @@ run_single_case() {
   [[ -z "${elapsed_ms}" ]] && elapsed_ms=0
   [[ -z "${memory_kb}" ]] && memory_kb=0
 
-  # 判定 (TLE/RE でなければ出力を比較)
+  # MLE 判定
+  if [[ "${status}" == "AC" ]] && [[ -n "${MLE_MB:-}" ]]; then
+    local mle_kb=$(( MLE_MB * 1024 ))
+    if [[ ${memory_kb} -gt ${mle_kb} ]]; then
+      status="MLE"
+      detail="used ${memory_kb}KB > limit ${mle_kb}KB"
+    fi
+  fi
+
+  # 判定 (TLE/RE/MLE でなければ出力を比較)
   if [[ "${status}" == "AC" ]]; then
     if [[ -n "${checker_bin}" ]] && [[ -x "${checker_bin}" ]]; then
       if ! "${checker_bin}" "${input_file}" "${output_file}" "${expected_file}" &>/dev/null; then

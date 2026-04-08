@@ -9,7 +9,7 @@
   "scripts": {
     "generate": "npx tsx scripts/generate-pages.ts",
     "docs:dev": "npm run generate && vitepress dev docs",
-    "docs:build": "npm run generate && vitepress build docs",
+    "docs:build": "npm run generate && NODE_OPTIONS='--max-old-space-size=6144' vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "repository": {

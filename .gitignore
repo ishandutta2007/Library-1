@@ -24,5 +24,11 @@ node_modules/
 /.vitepress/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
-md/test/
+# md/test/ 内の Dynamic Route ファイルは管理する
+md/test/*
+!md/test/\[id\].md
+!md/test/\[id\].paths.ts
+
+# Dynamic Routes が生成する静的データ
+md/public/test-data/
 .cache/

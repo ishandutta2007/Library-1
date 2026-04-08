@@ -1,13 +1,13 @@
 import fs from 'fs'
 import path from 'path'
-import { createHighlighter, type Highlighter } from 'shiki'
 
 const ROOT = path.resolve(__dirname, '../..')
 
-let highlighter: Highlighter | null = null
+let highlighter: any = null
 
-export async function getHighlighter(): Promise<Highlighter> {
+export async function getHighlighter() {
   if (!highlighter) {
+    const { createHighlighter } = await import('shiki')
     highlighter = await createHighlighter({
       themes: ['github-light', 'github-dark'],
       langs: ['cpp']

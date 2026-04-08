@@ -1,9 +1,6 @@
 /**
  * VitePress Dynamic Routes: テストファイルページのデータローダー
  * 842個の .md を生成する代わりに、テンプレート1つ + このデータで動的にページを生成
- *
- * 重いデータ（テスト結果・ソースコード）は静的JSONファイルとして出力し、
- * クライアント側で読み込む
  */
 import fs from 'fs'
 import path from 'path'
@@ -11,8 +8,6 @@ import { buildDependencyGraph, buildTestMap } from '../../docs/.vitepress/build-
 
 const ROOT = path.resolve(__dirname, '../..')
 const MD_DIR = path.join(ROOT, 'md')
-const PUBLIC_DIR = path.join(ROOT, 'md', 'public')
-const TEST_DATA_DIR = path.join(PUBLIC_DIR, 'test-data')
 
 // 依存グラフとテストマップを構築
 const depGraph = buildDependencyGraph()
@@ -98,11 +93,6 @@ export default {
     const testDir = path.join(ROOT, 'test')
     const results: { params: Record<string, any> }[] = []
 
-    // 静的JSONファイルの出力先を準備
-    if (fs.existsSync(TEST_DATA_DIR)) {
-      fs.rmSync(TEST_DATA_DIR, { recursive: true })
-    }
-
     function scan(dir: string) {
       for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
         const full = path.join(dir, entry.name)
@@ -134,15 +124,6 @@ export default {
           // URL パス: test/misc/foo.test.cpp → misc/foo.test
           const urlPath = rel.replace(/^test\//, '').replace(/\.cpp$/, '')
 
-          // 重いデータを静的JSONファイルとして書き出す
-          const jsonPath = path.join(TEST_DATA_DIR, urlPath + '.json')
-          fs.mkdirSync(path.dirname(jsonPath), { recursive: true })
-          fs.writeFileSync(jsonPath, JSON.stringify({
-            testResult,
-            source,
-          }))
-
-          // params には軽量データのみ
           results.push({
             params: {
               id: urlPath,
@@ -150,6 +131,8 @@ export default {
               githubUrl: `https://github.com/hashiryo/Library/blob/master/${rel}`,
               problem,
               depends,
+              testResult,
+              source,
             }
           })
         }
@@ -158,7 +141,7 @@ export default {
 
     scan(testDir)
     results.sort((a, b) => a.params.title.localeCompare(b.params.title))
-    console.log(`Dynamic routes: ${results.length} test pages, data written to docs/public/test-data/`)
+    console.log(`Dynamic routes: ${results.length} test pages`)
     return results
   }
 }

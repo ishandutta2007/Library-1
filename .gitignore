@@ -28,7 +28,4 @@ docs/.vitepress/cache/
 md/test/*
 !md/test/\[id\].md
 !md/test/\[id\].paths.ts
-
-# Dynamic Routes が生成する静的データ
-md/public/test-data/
 .cache/

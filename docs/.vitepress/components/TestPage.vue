@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useData, withBase } from 'vitepress'
 import TestFileResults from './TestFileResults.vue'
 
 interface DependInfo {
@@ -16,29 +14,16 @@ const props = withDefaults(defineProps<{
   githubUrl?: string
   problem?: string | null
   depends?: DependInfo[]
+  testResult?: any
+  source?: string
 }>(), {
   id: '',
   title: '',
   githubUrl: '',
   problem: null,
   depends: () => [],
-})
-
-const testResult = ref<any>(null)
-const source = ref<string>('')
-const loading = ref(true)
-
-onMounted(async () => {
-  if (!props.id) return
-  try {
-    const res = await fetch(withBase(`/test-data/${props.id}.json`))
-    if (res.ok) {
-      const data = await res.json()
-      testResult.value = data.testResult
-      source.value = data.source
-    }
-  } catch {}
-  loading.value = false
+  testResult: null,
+  source: '',
 })
 </script>
 
@@ -60,13 +45,11 @@ onMounted(async () => {
   </div>
 
   <h2>Test Results</h2>
-  <div v-if="loading" class="loading">読み込み中...</div>
-  <TestFileResults v-else-if="testResult" :data="testResult" />
+  <TestFileResults v-if="testResult" :data="testResult" />
   <p v-else class="no-results">結果データがありません</p>
 
   <h2>Code</h2>
-  <div v-if="loading" class="loading">読み込み中...</div>
-  <div v-else class="language-cpp vp-adaptive-theme">
+  <div class="language-cpp vp-adaptive-theme">
     <button title="Copy Code" class="copy"></button>
     <span class="lang">cpp</span>
     <pre><code>{{ source }}</code></pre>
@@ -74,8 +57,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.no-results,
-.loading {
+.no-results {
   color: var(--vp-c-text-2);
   font-size: 0.9rem;
 }

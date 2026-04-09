@@ -177,10 +177,10 @@ function hppStatusIcon(hpp: string, testMap: Record<string, string[]>, resultsDa
       else if (env.status) hasFail = true
     }
   }
-  if (hasAC && !hasFail) return '✅'
-  if (hasFail && !hasAC) return '❌'
-  if (hasAC && hasFail) return '❓'
-  return '⚠'
+  if (hasAC && !hasFail) return '<span class="dot dot-ac">●</span>'
+  if (hasFail && !hasAC) return '<span class="dot dot-fail">●</span>'
+  if (hasAC && hasFail) return '<span class="dot dot-warn">●</span>'
+  return '<span class="dot dot-gray">●</span>'
 }
 
 // ============================================================
@@ -810,6 +810,12 @@ details .result-table td, details .result-table th { padding: 0.25rem 0.5rem; }
 .status-fail { color: var(--c-fail); }
 .status-warn { color: var(--c-warn); }
 .status-gray { color: var(--c-gray); }
+
+.dot { font-size: 0.6em; vertical-align: middle; }
+.dot-ac { color: var(--c-ac); }
+.dot-fail { color: var(--c-fail); }
+.dot-warn { color: var(--c-warn); }
+.dot-gray { color: var(--c-gray); }
 
 .no-results { color: var(--c-text-2); font-size: 0.9rem; }
 

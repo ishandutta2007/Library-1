@@ -814,7 +814,14 @@ summary { cursor: pointer; }
   opacity: 0; transition: opacity 0.2s;
 }
 .shiki-wrapper:hover .copy-btn { opacity: 1; }
-.shiki { padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; background: #f6f8fa !important; border: 1px solid var(--c-divider); }
+.shiki { padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; background: #f6f8fa !important; border: 1px solid var(--c-divider); counter-reset: line; }
+.shiki .line { display: inline-block; width: 100%; }
+.shiki .line::before {
+  content: counter(line); counter-increment: line;
+  display: inline-block; width: 2.5em; margin-right: 1em;
+  text-align: right; color: var(--c-text-2); opacity: 0.5;
+  font-size: 0.8em; user-select: none;
+}
 @media (prefers-color-scheme: dark) {
   .shiki { background: #24292e !important; border-color: var(--c-divider); }
   .shiki, .shiki span { color: var(--shiki-dark) !important; }

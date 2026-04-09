@@ -191,10 +191,10 @@ function escapeHtml(s: string): string {
 }
 
 function statusClass(status: string): string {
-  if (status === 'AC' || status === 'IGNORE') return 'status-ac'
+  if (status === 'AC') return 'status-ac'
   if (status === 'WA' || status === 'RE') return 'status-fail'
   if (status === 'TLE' || status === 'MLE') return 'status-warn'
-  if (status === 'CE') return 'status-gray'
+  if (status === 'CE' || status === 'IGNORE') return 'status-gray'
   return ''
 }
 
@@ -233,14 +233,13 @@ function renderVerifyMatrix(hppResults: any[]): string {
   for (const r of hppResults) {
     const testName = r.file.replace(/^test\//, '').replace(/\.cpp$/, '')
     const testLink = `${BASE_PATH}/test/${testName}.html`
-    html += `<tr><td><a href="${testLink}">${escapeHtml(r.file)}</a></td>`
+    html += `<tr><td class="test-name-cell"><div class="test-name-scroll"><a href="${testLink}">${escapeHtml(r.file)}</a></div></td>`
     for (const env of envList) {
       const e = r.environments?.[env]
       if (e) {
-        const icon = statusIcon(e.status)
         const time = e.summary?.time_max_ms != null ? `${e.summary.time_max_ms} ms` : ''
         const mem = e.summary?.memory_max_kb ? formatMemory(e.summary.memory_max_kb) : ''
-        html += `<td class="${statusClass(e.status)}">${icon} ${escapeHtml(e.status)}<br><small>${time} / ${mem}</small></td>`
+        html += `<td class="${statusClass(e.status)}">${escapeHtml(e.status)}<br><small>${time} / ${mem}</small></td>`
       } else {
         html += '<td>-</td>'
       }
@@ -781,8 +780,11 @@ a:hover { text-decoration: underline; }
 
 .table-wrapper { overflow-x: auto; margin: 0.5rem 0; }
 
-.verify-matrix { font-size: 0.85rem; }
+.verify-matrix { font-size: 0.8rem; }
 .verify-matrix td, .verify-matrix th { white-space: nowrap; }
+.verify-matrix .test-name-cell { max-width: 280px; padding: 0; }
+.verify-matrix .test-name-scroll { overflow-x: auto; padding: 0.4rem 0.75rem; white-space: nowrap; scrollbar-width: none; }
+.verify-matrix .test-name-scroll::-webkit-scrollbar { display: none; }
 .result-table { font-size: 0.85rem; }
 .result-table td { font-variant-numeric: tabular-nums; }
 

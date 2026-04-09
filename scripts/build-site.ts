@@ -268,13 +268,13 @@ function renderResultTable(result: any): string {
   }
 
   // Summary table
-  html += '<div class="table-wrapper"><table class="result-table"><thead><tr><th>Environment</th><th>Status</th><th>Time (max / total)</th><th>Memory (max)</th></tr></thead><tbody>\n'
+  html += '<div class="table-wrapper"><table class="result-table"><thead><tr><th>Environment</th><th>Status</th><th>Time (max)</th><th>Time (total)</th><th>Memory (max)</th></tr></thead><tbody>\n'
   for (const env of envList) {
     const e = envs[env]
     const timeMax = e.summary?.time_max_ms ?? '-'
     const timeTotal = e.summary?.time_total_ms ?? '-'
     const memMax = e.summary?.memory_max_kb ? formatMemory(e.summary.memory_max_kb) : '-'
-    html += `<tr class="${statusClass(e.status)}"><td>${escapeHtml(env)}</td><td>${statusIcon(e.status)} ${escapeHtml(e.status)}</td><td>${timeMax} ms / ${timeTotal} ms</td><td>${memMax}</td></tr>\n`
+    html += `<tr class="${statusClass(e.status)}"><td>${escapeHtml(env)}</td><td>${statusIcon(e.status)} ${escapeHtml(e.status)}</td><td>${timeMax} ms</td><td>${timeTotal} ms</td><td>${memMax}</td></tr>\n`
   }
   html += '</tbody></table></div>\n'
 
@@ -283,7 +283,9 @@ function renderResultTable(result: any): string {
   if (firstEnv?.cases?.length) {
     html += '<details><summary>テストケース詳細</summary>\n'
     html += '<div class="table-wrapper"><table class="result-table"><thead><tr><th>Case</th>'
-    for (const env of envList) html += `<th>${escapeHtml(env)}</th>`
+    for (const env of envList) html += `<th colspan="3">${escapeHtml(env)}</th>`
+    html += '</tr><tr><th></th>'
+    for (const _ of envList) html += '<th>Status</th><th>Time</th><th>Memory</th>'
     html += '</tr></thead><tbody>\n'
 
     for (const c of firstEnv.cases) {
@@ -292,9 +294,9 @@ function renderResultTable(result: any): string {
         const eCase = envs[env]?.cases?.find((x: any) => x.name === c.name)
         if (eCase) {
           const mem = eCase.memory_kb ? formatMemory(eCase.memory_kb) : '-'
-          html += `<td class="${statusClass(eCase.status)}">${statusIcon(eCase.status)} ${eCase.time_ms} ms / ${mem}</td>`
+          html += `<td class="${statusClass(eCase.status)}">${escapeHtml(eCase.status)}</td><td>${eCase.time_ms} ms</td><td>${mem}</td>`
         } else {
-          html += '<td>-</td>'
+          html += '<td>-</td><td>-</td><td>-</td>'
         }
       }
       html += '</tr>\n'
@@ -764,7 +766,6 @@ a:hover { text-decoration: underline; }
   flex: 1;
   min-width: 0;
   padding: 2rem;
-  max-width: 900px;
 }
 
 .content h1 { font-size: 1.8rem; margin-bottom: 1rem; border-bottom: 1px solid var(--c-divider); padding-bottom: 0.5rem; }
@@ -786,7 +787,10 @@ a:hover { text-decoration: underline; }
 .verify-matrix .test-name-scroll { overflow-x: auto; padding: 0.4rem 0.75rem; white-space: nowrap; scrollbar-width: none; }
 .verify-matrix .test-name-scroll::-webkit-scrollbar { display: none; }
 .result-table { font-size: 0.85rem; }
+.result-table td, .result-table th { white-space: nowrap; }
 .result-table td { font-variant-numeric: tabular-nums; }
+details .result-table { font-size: 0.75rem; }
+details .result-table td, details .result-table th { padding: 0.25rem 0.5rem; }
 
 .status-ac { color: var(--c-ac); }
 .status-fail { color: var(--c-fail); }

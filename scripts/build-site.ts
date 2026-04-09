@@ -190,6 +190,11 @@ function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 }
 
+function statusLabel(status: string): string {
+  if (status === 'IGNORE') return '-'
+  return status
+}
+
 function statusClass(status: string): string {
   if (status === 'AC') return 'status-ac'
   if (status === 'WA' || status === 'RE') return 'status-fail'
@@ -218,7 +223,9 @@ function renderVerifyMatrix(hppResults: any[]): string {
   const collapsed = hppResults.length > 20
   let html = `<details${collapsed ? '' : ' open'}><summary>Verification Results (${hppResults.length} tests)</summary>\n`
   html += '<div class="table-wrapper"><table class="verify-matrix"><thead><tr><th>Test</th>'
-  for (const env of envList) html += `<th>${escapeHtml(env)}</th>`
+  for (const env of envList) html += `<th colspan="3">${escapeHtml(env)}</th>`
+  html += '</tr><tr><th></th>'
+  for (const _ of envList) html += '<th>Status</th><th>Time</th><th>Memory</th>'
   html += '</tr></thead><tbody>\n'
 
   for (const r of hppResults) {
@@ -230,9 +237,9 @@ function renderVerifyMatrix(hppResults: any[]): string {
       if (e) {
         const time = e.summary?.time_max_ms != null ? `${e.summary.time_max_ms} ms` : ''
         const mem = e.summary?.memory_max_kb ? formatMemory(e.summary.memory_max_kb) : ''
-        html += `<td class="${statusClass(e.status)}">${escapeHtml(e.status)}<br><small>${time} / ${mem}</small></td>`
+        html += `<td class="${statusClass(e.status)}">${statusLabel(e.status)}</td><td>${time}</td><td>${mem}</td>`
       } else {
-        html += '<td>-</td>'
+        html += '<td>-</td><td>-</td><td>-</td>'
       }
     }
     html += '</tr>\n'
@@ -265,7 +272,7 @@ function renderResultTable(result: any): string {
     const timeMax = e.summary?.time_max_ms ?? '-'
     const timeTotal = e.summary?.time_total_ms ?? '-'
     const memMax = e.summary?.memory_max_kb ? formatMemory(e.summary.memory_max_kb) : '-'
-    html += `<tr><td>${escapeHtml(env)}</td><td class="${statusClass(e.status)}">${escapeHtml(e.status)}</td><td>${timeMax} ms</td><td>${timeTotal} ms</td><td>${memMax}</td></tr>\n`
+    html += `<tr><td>${escapeHtml(env)}</td><td class="${statusClass(e.status)}">${statusLabel(e.status)}</td><td>${timeMax} ms</td><td>${timeTotal} ms</td><td>${memMax}</td></tr>\n`
   }
   html += '</tbody></table></div>\n'
 
@@ -285,7 +292,7 @@ function renderResultTable(result: any): string {
         const eCase = envs[env]?.cases?.find((x: any) => x.name === c.name)
         if (eCase) {
           const mem = eCase.memory_kb ? formatMemory(eCase.memory_kb) : '-'
-          html += `<td class="${statusClass(eCase.status)}">${escapeHtml(eCase.status)}</td><td>${eCase.time_ms} ms</td><td>${mem}</td>`
+          html += `<td class="${statusClass(eCase.status)}">${statusLabel(eCase.status)}</td><td>${eCase.time_ms} ms</td><td>${mem}</td>`
         } else {
           html += '<td>-</td><td>-</td><td>-</td>'
         }
@@ -772,10 +779,10 @@ a:hover { text-decoration: underline; }
 
 .table-wrapper { overflow-x: auto; margin: 0.5rem 0; }
 
-.verify-matrix { font-size: 0.8rem; }
-.verify-matrix td, .verify-matrix th { white-space: nowrap; }
+.verify-matrix { font-size: 0.75rem; }
+.verify-matrix td, .verify-matrix th { white-space: nowrap; padding: 0.25rem 0.5rem; }
 .verify-matrix .test-name-cell { max-width: 280px; padding: 0; }
-.verify-matrix .test-name-scroll { overflow-x: auto; padding: 0.4rem 0.75rem; white-space: nowrap; scrollbar-width: none; }
+.verify-matrix .test-name-scroll { overflow-x: auto; padding: 0.25rem 0.5rem; white-space: nowrap; scrollbar-width: none; }
 .verify-matrix .test-name-scroll::-webkit-scrollbar { display: none; }
 .result-table { font-size: 0.85rem; }
 .result-table td, .result-table th { white-space: nowrap; }

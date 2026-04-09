@@ -333,6 +333,24 @@ function renderPage(title: string, content: string, sidebar: string): string {
       ${content}
     </main>
   </div>
+  <script>
+    document.querySelectorAll('pre.shiki').forEach(pre => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'shiki-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      wrapper.appendChild(pre);
+      const btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(pre.textContent).then(() => {
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = 'Copy', 2000);
+        });
+      });
+      wrapper.appendChild(btn);
+    });
+  </script>
 </body>
 </html>`
 }
@@ -788,9 +806,18 @@ summary { cursor: pointer; }
 /* shiki dual theme
    ライト: インラインの color/background-color をそのまま使う
    ダーク: CSS変数 --shiki-dark で上書き */
-.shiki { padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+.shiki-wrapper { position: relative; }
+.shiki-wrapper .copy-btn {
+  position: absolute; top: 0.5rem; right: 0.5rem;
+  padding: 0.25rem 0.5rem; border: 1px solid var(--c-divider); border-radius: 4px;
+  background: var(--c-bg); color: var(--c-text-2); cursor: pointer; font-size: 0.75rem;
+  opacity: 0; transition: opacity 0.2s;
+}
+.shiki-wrapper:hover .copy-btn { opacity: 1; }
+.shiki { padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; background: #f6f8fa !important; border: 1px solid var(--c-divider); }
 @media (prefers-color-scheme: dark) {
-  .shiki, .shiki span { color: var(--shiki-dark) !important; background-color: var(--shiki-dark-bg) !important; }
+  .shiki { background: #24292e !important; border-color: var(--c-divider); }
+  .shiki, .shiki span { color: var(--shiki-dark) !important; }
 }
 
 @media (max-width: 768px) {

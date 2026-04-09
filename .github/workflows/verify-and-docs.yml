@@ -222,8 +222,8 @@ jobs:
       - name: Write summary
         run: npx tsx scripts/write-summary.ts >> "$GITHUB_STEP_SUMMARY" || true
 
-      - name: Build VitePress site
-        run: npm run docs:build
+      - name: Build site
+        run: npx tsx scripts/build-site.ts
 
       - name: Setup Pages
         if: github.ref == 'refs/heads/master'
@@ -233,7 +233,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: docs/.vitepress/dist
+          path: site
 
   deploy:
     if: github.ref == 'refs/heads/master'

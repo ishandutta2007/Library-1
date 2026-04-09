@@ -177,10 +177,10 @@ function hppStatusIcon(hpp: string, testMap: Record<string, string[]>, resultsDa
       else if (env.status) hasFail = true
     }
   }
-  if (hasAC && !hasFail) return '<span class="dot dot-ac">●</span>'
-  if (hasFail && !hasAC) return '<span class="dot dot-fail">●</span>'
-  if (hasAC && hasFail) return '<span class="dot dot-warn">●</span>'
-  return '<span class="dot dot-gray">●</span>'
+  if (hasAC && !hasFail) return '<span data-pagefind-ignore class="dot dot-ac">●</span>'
+  if (hasFail && !hasAC) return '<span data-pagefind-ignore class="dot dot-fail">●</span>'
+  if (hasAC && hasFail) return '<span data-pagefind-ignore class="dot dot-warn">●</span>'
+  return '<span data-pagefind-ignore class="dot dot-gray">●</span>'
 }
 
 // ============================================================
@@ -330,21 +330,25 @@ function renderPage(title: string, content: string, sidebar: string): string {
   <title>${escapeHtml(title)} | Hashiryo's Library</title>
   <link rel="stylesheet" href="${BASE_PATH}/assets/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="${BASE_PATH}/pagefind/pagefind-ui.css">
 </head>
 <body>
   <nav class="top-nav">
     <a href="${BASE_PATH}/" class="site-title">Hashiryo's Library</a>
+    <div id="search"></div>
     <a href="https://github.com/hashiryo/Library">GitHub</a>
   </nav>
   <div class="layout">
     <aside class="sidebar">
       ${sidebar}
     </aside>
-    <main class="content">
+    <main class="content" data-pagefind-body>
       ${content}
     </main>
   </div>
+  <script src="${BASE_PATH}/pagefind/pagefind-ui.js"></script>
   <script>
+    new PagefindUI({ element: "#search", showSubResults: true, showImages: false });
     document.querySelectorAll('pre.shiki').forEach(pre => {
       const wrapper = document.createElement('div');
       wrapper.className = 'shiki-wrapper';
@@ -750,7 +754,20 @@ a:hover { text-decoration: underline; }
   z-index: 10;
 }
 
-.site-title { font-weight: 700; font-size: 1.1rem; }
+.site-title { font-weight: 700; font-size: 1.1rem; white-space: nowrap; }
+
+#search { flex: 1; max-width: 400px; position: relative; }
+#search .pagefind-ui__form { position: relative; }
+#search .pagefind-ui__drawer {
+  position: absolute; top: 100%; left: 0; z-index: 100;
+  background: var(--c-bg); border: 1px solid var(--c-divider); border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15); max-height: 70vh; overflow-y: auto;
+  margin-top: 0.25rem; width: max(100%, 500px);
+}
+#search .pagefind-ui__message, #search .pagefind-ui__results { padding: 0.5rem; font-size: 0.85rem; }
+#search .pagefind-ui__result { padding: 0.5rem 0; border-bottom: 1px solid var(--c-divider); }
+#search .pagefind-ui__result-title { font-size: 0.9rem; }
+#search .pagefind-ui__result-excerpt { font-size: 0.8rem; color: var(--c-text-2); }
 
 .layout {
   display: flex;

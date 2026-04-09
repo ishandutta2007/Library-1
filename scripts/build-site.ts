@@ -198,15 +198,6 @@ function statusClass(status: string): string {
   return ''
 }
 
-function statusIcon(status: string): string {
-  if (status === 'AC') return '✅'
-  if (status === 'WA' || status === 'RE') return '❌'
-  if (status === 'TLE') return '⏰'
-  if (status === 'MLE') return '💾'
-  if (status === 'CE') return '🔧'
-  if (status === 'IGNORE') return '⏭️'
-  return '❓'
-}
 
 function formatMemory(kb: number): string {
   if (kb >= 1024) return (kb / 1024).toFixed(1) + ' MB'
@@ -274,7 +265,7 @@ function renderResultTable(result: any): string {
     const timeMax = e.summary?.time_max_ms ?? '-'
     const timeTotal = e.summary?.time_total_ms ?? '-'
     const memMax = e.summary?.memory_max_kb ? formatMemory(e.summary.memory_max_kb) : '-'
-    html += `<tr class="${statusClass(e.status)}"><td>${escapeHtml(env)}</td><td>${statusIcon(e.status)} ${escapeHtml(e.status)}</td><td>${timeMax} ms</td><td>${timeTotal} ms</td><td>${memMax}</td></tr>\n`
+    html += `<tr><td>${escapeHtml(env)}</td><td class="${statusClass(e.status)}">${escapeHtml(e.status)}</td><td>${timeMax} ms</td><td>${timeTotal} ms</td><td>${memMax}</td></tr>\n`
   }
   html += '</tbody></table></div>\n'
 

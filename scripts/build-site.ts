@@ -381,18 +381,19 @@ function readFrontmatter(mdPath: string): { title?: string; order?: number } {
   }
 }
 
-function generateSidebar(): string {
+function generateSidebar(testMap: Record<string, string[]>, resultsData: Record<string, any[]>): string {
   const categories = fs.readdirSync(SRC_DIR, { withFileTypes: true })
     .filter(e => e.isDirectory())
 
   interface SidebarItem {
     text: string
+    icon?: string
     link?: string
     items?: SidebarItem[]
     order: number
   }
 
-  function buildItems(srcPath: string, mdPath: string, linkPrefix: string): SidebarItem[] {
+  function buildItems(srcPath: string, mdPath: string, linkPrefix: string, hppPrefix: string): SidebarItem[] {
     const entries = fs.readdirSync(srcPath, { withFileTypes: true })
     const items: SidebarItem[] = []
 
@@ -400,12 +401,14 @@ function generateSidebar(): string {
       if (!entry.isFile() || !entry.name.endsWith('.hpp')) continue
       const name = entry.name.replace(/\.hpp$/, '')
       const fm = readFrontmatter(path.join(mdPath, name + '.md'))
-      items.push({ text: fm.title || name, link: `${BASE_PATH}${linkPrefix}/${name}.html`, order: fm.order ?? 999 })
+      const hppPath = `src/${hppPrefix}${entry.name}`
+      const icon = hppStatusIcon(hppPath, testMap, resultsData)
+      items.push({ text: fm.title || name, icon, link: `${BASE_PATH}${linkPrefix}/${name}.html`, order: fm.order ?? 999 })
     }
 
     for (const entry of entries) {
       if (!entry.isDirectory()) continue
-      const subItems = buildItems(path.join(srcPath, entry.name), path.join(mdPath, entry.name), `${linkPrefix}/${entry.name}`)
+      const subItems = buildItems(path.join(srcPath, entry.name), path.join(mdPath, entry.name), `${linkPrefix}/${entry.name}`, `${hppPrefix}${entry.name}/`)
       if (subItems.length > 0) {
         const indexFm = readFrontmatter(path.join(mdPath, entry.name, '_index.md'))
         items.push({ text: indexFm.title || entry.name, items: subItems, order: indexFm.order ?? 999 })
@@ -420,7 +423,8 @@ function generateSidebar(): string {
     let html = '<ul>'
     for (const item of items) {
       if (item.link) {
-        html += `<li><a href="${item.link}">${renderInlineKatex(escapeHtml(item.text))}</a></li>`
+        const icon = item.icon ? `${item.icon} ` : ''
+        html += `<li><a href="${item.link}">${icon}${renderInlineKatex(escapeHtml(item.text))}</a></li>`
       } else if (item.items) {
         html += `<li><details><summary>${renderInlineKatex(escapeHtml(item.text))}</summary>${renderItems(item.items)}</details></li>`
       }
@@ -431,7 +435,7 @@ function generateSidebar(): string {
 
   const allItems: SidebarItem[] = []
   for (const cat of categories) {
-    const items = buildItems(path.join(SRC_DIR, cat.name), path.join(MD_DIR, cat.name), `/${cat.name}`)
+    const items = buildItems(path.join(SRC_DIR, cat.name), path.join(MD_DIR, cat.name), `/${cat.name}`, `${cat.name}/`)
     if (items.length > 0) {
       const indexFm = readFrontmatter(path.join(MD_DIR, cat.name, '_index.md'))
       allItems.push({ text: indexFm.title || cat.name, items, order: indexFm.order ?? 999 })
@@ -613,7 +617,7 @@ async function main() {
   const depGraph = buildDependencyGraph()
   const testMap = buildTestMap(depGraph)
   const resultsData = loadResults()
-  const sidebar = generateSidebar()
+  const sidebar = generateSidebar(testMap, resultsData)
 
   // 出力ディレクトリを準備
   if (fs.existsSync(SITE_DIR)) fs.rmSync(SITE_DIR, { recursive: true })

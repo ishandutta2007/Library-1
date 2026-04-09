@@ -10,6 +10,7 @@ import MarkdownIt from 'markdown-it'
 import { katex } from '@mdit/plugin-katex'
 import matter from 'gray-matter'
 import { createHighlighter, type Highlighter } from 'shiki'
+import katexLib from 'katex'
 
 // ============================================================
 // 定数
@@ -185,6 +186,17 @@ function hppStatusIcon(hpp: string, testMap: Record<string, string[]>, resultsDa
 // ============================================================
 // HTML テンプレート
 // ============================================================
+
+/** テキスト内の $...$ をKaTeX HTMLに変換 */
+function renderInlineKatex(text: string): string {
+  return text.replace(/\$([^$]+)\$/g, (_, expr) => {
+    try {
+      return katexLib.renderToString(expr, { throwOnError: false })
+    } catch {
+      return escapeHtml(expr)
+    }
+  })
+}
 
 function escapeHtml(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -408,9 +420,9 @@ function generateSidebar(): string {
     let html = '<ul>'
     for (const item of items) {
       if (item.link) {
-        html += `<li><a href="${item.link}">${escapeHtml(item.text)}</a></li>`
+        html += `<li><a href="${item.link}">${renderInlineKatex(escapeHtml(item.text))}</a></li>`
       } else if (item.items) {
-        html += `<li><details><summary>${escapeHtml(item.text)}</summary>${renderItems(item.items)}</details></li>`
+        html += `<li><details><summary>${renderInlineKatex(escapeHtml(item.text))}</summary>${renderItems(item.items)}</details></li>`
       }
     }
     html += '</ul>'

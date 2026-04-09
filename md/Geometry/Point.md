@@ -1,6 +1,7 @@
 ---
 title: 点
 documentation_of: ../../src/Geometry/Point.hpp
+order: 1
 ---
 
 二次元幾何ライブラリの基礎となる、点やベクトルを扱うためのコンポーネント。

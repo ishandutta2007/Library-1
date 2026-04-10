@@ -365,6 +365,22 @@ function renderPage(title: string, content: string, sidebar: string): string {
       });
       wrapper.appendChild(btn);
     });
+    // Bundle toggle
+    const toggle = document.querySelector('.code-toggle');
+    if (toggle) {
+      const original = document.getElementById('code-original');
+      const bundled = document.getElementById('code-bundled');
+      const bundleBtn = document.createElement('button');
+      bundleBtn.className = 'bundle-btn';
+      bundleBtn.textContent = 'Bundle';
+      bundleBtn.addEventListener('click', () => {
+        const showingOriginal = original.style.display !== 'none';
+        original.style.display = showingOriginal ? 'none' : '';
+        bundled.style.display = showingOriginal ? '' : 'none';
+        bundleBtn.textContent = showingOriginal ? 'Original' : 'Bundle';
+      });
+      toggle.insertBefore(bundleBtn, toggle.firstChild);
+    }
   </script>
 </body>
 </html>`
@@ -451,6 +467,53 @@ function generateSidebar(testMap: Record<string, string[]>, resultsData: Record<
 }
 
 // ============================================================
+// C++ #include 展開 (バンドル)
+// ============================================================
+
+/**
+ * C++ ソースの #include "src/..." を再帰的に展開して1ファイルにまとめる
+ * #pragma once や include guard による二重展開を防ぐ
+ */
+function bundleCpp(filePath: string): string {
+  const included = new Set<string>()
+
+  function expand(file: string): string {
+    const absPath = path.resolve(ROOT, file)
+    const realPath = fs.realpathSync(absPath)
+
+    // 二重展開防止
+    if (included.has(realPath)) return ''
+    included.add(realPath)
+
+    if (!fs.existsSync(absPath)) return `// [bundle error] file not found: ${file}\n`
+
+    const lines = fs.readFileSync(absPath, 'utf-8').split('\n')
+    const result: string[] = []
+
+    for (const line of lines) {
+      // #pragma once はスキップ（included セットで管理済み）
+      if (line.trim() === '#pragma once') continue
+
+      // #include "src/..." を展開
+      const m = line.match(/^(\s*)#include\s+"(src\/[^"]+\.hpp)"/)
+      if (m) {
+        const includePath = m[2]
+        result.push(`// --- ${includePath} ---`)
+        result.push(expand(includePath))
+        result.push(`// --- end ${includePath} ---`)
+        continue
+      }
+
+      result.push(line)
+    }
+
+    return result.join('\n')
+  }
+
+  return expand(filePath)
+}
+
+// ============================================================
 // hpp ドキュメントページ生成
 // ============================================================
 
@@ -472,13 +535,31 @@ function generateHppPage(
   // md コンテンツをレンダリング
   let body = `<h1>${icon} ${escapeHtml(title)}</h1>\n`
 
-  // ソースコード
+  // ソースコード (元 + バンドル切り替え)
   const sourcePath = path.join(ROOT, hppPath)
   if (fs.existsSync(sourcePath)) {
     const source = fs.readFileSync(sourcePath, 'utf-8')
     const githubUrl = `https://github.com/hashiryo/Library/blob/master/${hppPath}`
-    body += `<h2>Code</h2>\n<p><a href="${githubUrl}">${escapeHtml(hppPath)}</a></p>\n`
-    body += highlighter.codeToHtml(source, { lang: 'cpp', themes: { light: 'github-light', dark: 'github-dark' } })
+    body += `<h2>Code</h2>\n`
+    body += `<details><summary>${escapeHtml(hppPath)}</summary>\n`
+    body += `<p><a href="${githubUrl}">View on GitHub</a></p>\n`
+
+    // 依存がある場合のみバンドルボタンを表示
+    const hasDeps = (depGraph.dependsOn[hppPath] || []).length > 0
+    if (hasDeps) {
+      const bundled = bundleCpp(hppPath)
+      body += `<div class="code-toggle">`
+      body += `<div class="code-view active" id="code-original">`
+      body += highlighter.codeToHtml(source, { lang: 'cpp', themes: { light: 'github-light', dark: 'github-dark' } })
+      body += `</div>`
+      body += `<div class="code-view" id="code-bundled" style="display:none">`
+      body += highlighter.codeToHtml(bundled, { lang: 'cpp', themes: { light: 'github-light', dark: 'github-dark' } })
+      body += `</div>`
+      body += `</div>`
+    } else {
+      body += highlighter.codeToHtml(source, { lang: 'cpp', themes: { light: 'github-light', dark: 'github-dark' } })
+    }
+    body += `</details>\n`
   }
 
   // ユーザーの md コンテンツ
@@ -857,6 +938,12 @@ summary { cursor: pointer; }
   opacity: 0; transition: opacity 0.2s;
 }
 .shiki-wrapper:hover .copy-btn { opacity: 1; }
+.bundle-btn {
+  display: inline-block; margin-bottom: 0.5rem;
+  padding: 0.25rem 0.75rem; border: 1px solid var(--c-divider); border-radius: 4px;
+  background: var(--c-bg-soft); color: var(--c-text-2); cursor: pointer; font-size: 0.8rem;
+}
+.bundle-btn:hover { border-color: var(--c-brand); color: var(--c-brand); }
 .shiki { padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; background: #f6f8fa !important; border: 1px solid var(--c-divider); counter-reset: line; }
 .shiki .line { display: inline-block; width: 100%; }
 .shiki .line::before {

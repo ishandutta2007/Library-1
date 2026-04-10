@@ -494,7 +494,6 @@ function generateHppPage(
 // ============================================================
 
 function generateTestPage(
-  md: MarkdownIt,
   testFile: string,
   sidebar: string,
   testMap: Record<string, string[]>,
@@ -648,7 +647,7 @@ async function main() {
       if (!entry.name.endsWith('.test.cpp')) continue
 
       const testFile = path.relative(ROOT, full)
-      generateTestPage(md, testFile, sidebar, testMap, resultsData)
+      generateTestPage(testFile, sidebar, testMap, resultsData)
       testCount++
     }
   }

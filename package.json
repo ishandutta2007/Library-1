@@ -10,7 +10,8 @@
     "generate": "npx tsx scripts/generate-pages.ts",
     "docs:dev": "npm run generate && vitepress dev docs",
     "docs:build": "npm run generate && NODE_OPTIONS='--max-old-space-size=8192' vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "build": "npx tsx scripts/build-site.ts && npx pagefind --site site/Library --output-path site/Library/pagefind"
   },
   "repository": {
     "type": "git",
@@ -21,7 +22,11 @@
   "license": "ISC",
   "devDependencies": {
     "@mdit/plugin-katex": "^0.25.2",
+    "@types/markdown-it": "^14.1.2",
+    "gray-matter": "^4.0.3",
     "katex": "^0.16.44",
+    "markdown-it": "^14.1.1",
+    "pagefind": "^1.5.0",
     "vitepress": "^1.6.4",
     "vue": "^3.5.32"
   }

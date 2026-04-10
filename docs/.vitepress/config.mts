@@ -186,6 +186,9 @@ export default defineConfig({
   // 既存 md 内の .hpp 等へのリンクは無視
   ignoreDeadLinks: true,
 
+  // ビルド時のメモリ使用量を抑える (デフォルト: 64)
+  buildConcurrency: 4,
+
   // 数式サポート (KaTeX)
   markdown: {
     config: (md) => {

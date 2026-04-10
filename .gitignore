@@ -24,6 +24,7 @@ node_modules/
 /.vitepress/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+site/
 # md/test/ 内の Dynamic Route ファイルは管理する
 md/test/*
 !md/test/\[id\].md

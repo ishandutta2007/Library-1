@@ -104,13 +104,14 @@ jobs:
         env:
           - { os: ubuntu-24.04,     cxx: g++-13,     name: x64-g++,      cxxflags: "-std=c++17 -Wall -Wextra -O2 -mtune=native -march=native -fconstexpr-depth=2147483647 -fconstexpr-loop-limit=2147483647 -fconstexpr-ops-limit=21474836" }
           - { os: ubuntu-24.04,     cxx: clang++-18,  name: x64-clang++,  cxxflags: "-std=c++17 -m64 -Wall -Wextra -O2 -mtune=native -march=native" }
-          - { os: ubuntu-24.04-arm, cxx: g++-13,     name: arm-g++,      cxxflags: "-std=c++17 -Wall -Wextra -O2 -mtune=native -march=native -fconstexpr-depth=2147483647 -fconstexpr-loop-limit=2147483647 -fconstexpr-ops-limit=21474836" }
-          - { os: ubuntu-24.04-arm, cxx: clang++-18,  name: arm-clang++,  cxxflags: "-std=c++17 -Wall -Wextra -O2 -mtune=native -march=native" }
+          - { os: ubuntu-24.04-arm, cxx: g++-13,     name: arm-g++,      cxxflags: "-std=c++17 -Wall -Wextra -O2 -mtune=native -march=native -fconstexpr-depth=2147483647 -fconstexpr-loop-limit=2147483647 -fconstexpr-ops-limit=21474836 -DUSE_SIMDE -DSIMDE_ENABLE_NATIVE_ALIASES -Iinclude/simde" }
+          - { os: ubuntu-24.04-arm, cxx: clang++-18,  name: arm-clang++,  cxxflags: "-std=c++17 -Wall -Wextra -O2 -mtune=native -march=native -DUSE_SIMDE -DSIMDE_ENABLE_NATIVE_ALIASES -Iinclude/simde" }
     runs-on: ${{ matrix.env.os }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          submodules: true
 
       - name: Download split list
         uses: actions/download-artifact@v4

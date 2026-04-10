@@ -5,14 +5,30 @@ import fs from 'fs'
 import path from 'path'
 
 const ROOT = path.resolve(__dirname, '..')
-const resultsPath = path.join(ROOT, 'md/public/results.json')
+const resultsPath = path.join(ROOT, '.verify-results/results.json')
 
 if (!fs.existsSync(resultsPath)) {
   console.log('No results found.')
   process.exit(0)
 }
 
-const data = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
+const raw = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
+
+// コンパクト形式 → 従来形式に変換
+let data: Record<string, any[]>
+if (raw.tests && raw.hpp_map) {
+  data = {}
+  for (const [hpp, files] of Object.entries(raw.hpp_map) as [string, string[]][]) {
+    data[hpp] = files.map(f => ({
+      file: f,
+      problem: raw.tests[f]?.problem || '',
+      time_limit_ms: raw.tests[f]?.time_limit_ms || 0,
+      environments: raw.tests[f]?.environments || {},
+    }))
+  }
+} else {
+  data = raw
+}
 
 let passed = 0
 let failed = 0

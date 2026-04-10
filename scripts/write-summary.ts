@@ -1,33 +1,13 @@
 /**
  * GitHub Actions の Job Summary に検証結果のサマリーを出力する
  */
-import fs from 'fs'
-import path from 'path'
+import { loadResults } from './lib/results'
 
-const ROOT = path.resolve(__dirname, '..')
-const resultsPath = path.join(ROOT, '.verify-results/results.json')
+const data = loadResults()
 
-if (!fs.existsSync(resultsPath)) {
+if (Object.keys(data).length === 0) {
   console.log('No results found.')
   process.exit(0)
-}
-
-const raw = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
-
-// コンパクト形式 → 従来形式に変換
-let data: Record<string, any[]>
-if (raw.tests && raw.hpp_map) {
-  data = {}
-  for (const [hpp, files] of Object.entries(raw.hpp_map) as [string, string[]][]) {
-    data[hpp] = files.map(f => ({
-      file: f,
-      problem: raw.tests[f]?.problem || '',
-      time_limit_ms: raw.tests[f]?.time_limit_ms || 0,
-      environments: raw.tests[f]?.environments || {},
-    }))
-  }
-} else {
-  data = raw
 }
 
 let passed = 0

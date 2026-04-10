@@ -7,10 +7,6 @@
     "test": "test"
   },
   "scripts": {
-    "generate": "npx tsx scripts/generate-pages.ts",
-    "docs:dev": "npm run generate && vitepress dev docs",
-    "docs:build": "npm run generate && NODE_OPTIONS='--max-old-space-size=8192' vitepress build docs",
-    "docs:preview": "vitepress preview docs",
     "build": "npx tsx scripts/build-site.ts && npx pagefind --site site/Library --output-path site/Library/pagefind"
   },
   "repository": {

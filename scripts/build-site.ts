@@ -11,6 +11,9 @@ import { katex } from '@mdit/plugin-katex'
 import matter from 'gray-matter'
 import { createHighlighter, type Highlighter } from 'shiki'
 import katexLib from 'katex'
+import { loadResults } from './lib/results'
+import { buildDependencyGraph, buildTestMap, type DependencyGraph } from './lib/dependency-graph'
+import { hppStatusIcon } from './lib/status'
 
 // ============================================================
 // 定数
@@ -59,129 +62,6 @@ async function initMarkdown() {
 // ============================================================
 // 依存グラフ・テストマップ (build-data.ts と同等)
 // ============================================================
-
-interface DependencyGraph {
-  dependsOn: Record<string, string[]>
-  requiredBy: Record<string, string[]>
-  transitiveDeps: Record<string, Set<string>>
-}
-
-function buildDependencyGraph(): DependencyGraph {
-  const dependsOn: Record<string, string[]> = {}
-  const requiredBy: Record<string, string[]> = {}
-
-  function scan(dir: string) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const full = path.join(dir, entry.name)
-      if (entry.isDirectory()) scan(full)
-      else if (entry.name.endsWith('.hpp')) {
-        const content = fs.readFileSync(full, 'utf-8')
-        const rel = path.relative(ROOT, full)
-        const deps: string[] = []
-        for (const m of content.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) deps.push(m[1])
-        dependsOn[rel] = deps
-        for (const dep of deps) {
-          if (!requiredBy[dep]) requiredBy[dep] = []
-          requiredBy[dep].push(rel)
-        }
-      }
-    }
-  }
-  scan(SRC_DIR)
-  for (const key of Object.keys(dependsOn)) dependsOn[key].sort()
-  for (const key of Object.keys(requiredBy)) requiredBy[key].sort()
-
-  const transitiveDeps: Record<string, Set<string>> = {}
-  function getTransitive(hpp: string, visited: Set<string>): Set<string> {
-    if (transitiveDeps[hpp]) return transitiveDeps[hpp]
-    if (visited.has(hpp)) return new Set()
-    visited.add(hpp)
-    const result = new Set<string>()
-    for (const dep of dependsOn[hpp] || []) {
-      result.add(dep)
-      for (const t of getTransitive(dep, visited)) result.add(t)
-    }
-    transitiveDeps[hpp] = result
-    return result
-  }
-  for (const hpp of Object.keys(dependsOn)) getTransitive(hpp, new Set())
-
-  return { dependsOn, requiredBy, transitiveDeps }
-}
-
-function buildTestMap(graph: DependencyGraph): Record<string, string[]> {
-  const map: Record<string, Set<string>> = {}
-  function addTest(hpp: string, test: string) {
-    if (!map[hpp]) map[hpp] = new Set()
-    map[hpp].add(test)
-  }
-  function scan(dir: string) {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const full = path.join(dir, entry.name)
-      if (entry.isDirectory()) scan(full)
-      else if (entry.name.endsWith('.test.cpp')) {
-        const content = fs.readFileSync(full, 'utf-8')
-        const rel = path.relative(ROOT, full)
-        for (const m of content.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) {
-          addTest(m[1], rel)
-          const trans = graph.transitiveDeps[m[1]]
-          if (trans) for (const dep of trans) addTest(dep, rel)
-        }
-      }
-    }
-  }
-  scan(TEST_DIR)
-  const result: Record<string, string[]> = {}
-  for (const [k, v] of Object.entries(map)) result[k] = [...v].sort()
-  return result
-}
-
-// ============================================================
-// results.json 読み込み
-// ============================================================
-
-function loadResults(): Record<string, any[]> {
-  const resultsPath = path.join(ROOT, '.verify-results', 'results.json')
-  if (!fs.existsSync(resultsPath)) return {}
-  try {
-    const raw = JSON.parse(fs.readFileSync(resultsPath, 'utf-8'))
-    if (raw.tests && raw.hpp_map) {
-      const data: Record<string, any[]> = {}
-      for (const [hpp, files] of Object.entries(raw.hpp_map) as [string, string[]][]) {
-        data[hpp] = files.map(f => ({
-          file: f,
-          problem: raw.tests[f]?.problem || '',
-          time_limit_ms: raw.tests[f]?.time_limit_ms || 0,
-          environments: raw.tests[f]?.environments || {},
-        }))
-      }
-      return data
-    }
-    return raw
-  } catch { return {} }
-}
-
-// ============================================================
-// ステータスアイコン
-// ============================================================
-
-function hppStatusIcon(hpp: string, testMap: Record<string, string[]>, resultsData: Record<string, any[]>): string {
-  const tests = testMap[hpp]
-  if (!tests || tests.length === 0) return '⚠'
-  const problems = resultsData[hpp]
-  if (!problems || problems.length === 0) return '⚠'
-  let hasAC = false, hasFail = false
-  for (const p of problems) {
-    for (const [, env] of Object.entries(p.environments || {}) as [string, any][]) {
-      if (env.status === 'AC' || env.status === 'IGNORE') hasAC = true
-      else if (env.status) hasFail = true
-    }
-  }
-  if (hasAC && !hasFail) return '<span data-pagefind-ignore class="dot dot-ac">●</span>'
-  if (hasFail && !hasAC) return '<span data-pagefind-ignore class="dot dot-fail">●</span>'
-  if (hasAC && hasFail) return '<span data-pagefind-ignore class="dot dot-warn">●</span>'
-  return '<span data-pagefind-ignore class="dot dot-gray">●</span>'
-}
 
 // ============================================================
 // HTML テンプレート

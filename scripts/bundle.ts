@@ -7,13 +7,13 @@
  * Examples:
  *   npx tsx scripts/bundle.ts main.cpp
  *   npx tsx scripts/bundle.ts main.cpp -I ../Library
- *   npx tsx scripts/bundle.ts main.cpp --strip 'template.hpp'
+ *   npx tsx scripts/bundle.ts main.cpp --strip 'some_header.hpp'
  */
 import { bundleCpp } from './lib/bundle'
 
 function parseArgs(args: string[]) {
   const includeDirs: string[] = []
-  const stripPatterns: string[] = ['template.hpp']
+  const stripPatterns: string[] = ['debug.hpp']
   let inputFile = ''
 
   let i = 0

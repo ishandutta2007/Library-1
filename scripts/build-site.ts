@@ -14,6 +14,7 @@ import katexLib from 'katex'
 import { loadResults } from './lib/results'
 import { buildDependencyGraph, buildTestMap, type DependencyGraph } from './lib/dependency-graph'
 import { hppStatusIcon } from './lib/status'
+import { bundleCpp } from './lib/bundle'
 
 // ============================================================
 // 定数
@@ -347,53 +348,6 @@ function generateSidebar(testMap: Record<string, string[]>, resultsData: Record<
 }
 
 // ============================================================
-// C++ #include 展開 (バンドル)
-// ============================================================
-
-/**
- * C++ ソースの #include "mylib/..." を再帰的に展開して1ファイルにまとめる
- * #pragma once や include guard による二重展開を防ぐ
- */
-function bundleCpp(filePath: string): string {
-  const included = new Set<string>()
-
-  function expand(file: string): string {
-    const absPath = path.resolve(ROOT, file)
-    const realPath = fs.realpathSync(absPath)
-
-    // 二重展開防止
-    if (included.has(realPath)) return ''
-    included.add(realPath)
-
-    if (!fs.existsSync(absPath)) return `// [bundle error] file not found: ${file}\n`
-
-    const lines = fs.readFileSync(absPath, 'utf-8').split('\n')
-    const result: string[] = []
-
-    for (const line of lines) {
-      // #pragma once はスキップ（included セットで管理済み）
-      if (line.trim() === '#pragma once') continue
-
-      // #include "mylib/..." を展開
-      const m = line.match(/^(\s*)#include\s+"(mylib\/[^"]+\.hpp)"/)
-      if (m) {
-        const includePath = m[2]
-        result.push(`// --- ${includePath} ---`)
-        result.push(expand(includePath))
-        result.push(`// --- end ${includePath} ---`)
-        continue
-      }
-
-      result.push(line)
-    }
-
-    return result.join('\n')
-  }
-
-  return expand(filePath)
-}
-
-// ============================================================
 // hpp ドキュメントページ生成
 // ============================================================
 
@@ -427,7 +381,7 @@ function generateHppPage(
     // 依存がある場合のみバンドルボタンを表示
     const hasDeps = (depGraph.dependsOn[hppPath] || []).length > 0
     if (hasDeps) {
-      const bundled = bundleCpp(hppPath)
+      const bundled = bundleCpp(path.resolve(ROOT, hppPath), { includeDirs: [ROOT], commentMarkers: true })
       body += `<div class="code-toggle">`
       body += `<div class="code-view active" id="code-original">`
       body += highlighter.codeToHtml(source, { lang: 'cpp', themes: { light: 'github-light', dark: 'github-dark' } })

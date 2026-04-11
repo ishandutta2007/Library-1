@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "src/Graph/BipartiteGraph.hpp"
+#include "mylib/Graph/BipartiteGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

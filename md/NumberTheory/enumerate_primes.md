@@ -1,6 +1,6 @@
 ---
 title: 素数の列挙
-documentation_of: ../../src/NumberTheory/enumerate_primes.hpp
+documentation_of: ../../mylib/NumberTheory/enumerate_primes.hpp
 ---
 エラトステネス篩による素数列挙の前処理を自動でおこなう．
 

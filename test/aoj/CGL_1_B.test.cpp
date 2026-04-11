@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
-#include "src/Geometry/Line.hpp"
+#include "mylib/Geometry/Line.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -4,9 +4,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/String/RollingHash.hpp"
-#include "src/Misc/rng.hpp"
-#include "src/Math/Nimber.hpp"
+#include "mylib/String/RollingHash.hpp"
+#include "mylib/Misc/rng.hpp"
+#include "mylib/Math/Nimber.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

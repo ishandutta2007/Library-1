@@ -6,10 +6,10 @@
 #include <cassert>
 #include <vector>
 #include <array>
-#include "src/Math/ModInt.hpp"
-#include "src/LinearAlgebra/Matrix.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
-#include "src/Misc/compress.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/Misc/compress.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

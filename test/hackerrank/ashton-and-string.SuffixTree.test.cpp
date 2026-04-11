@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "src/String/SuffixTree.hpp"
+#include "mylib/String/SuffixTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

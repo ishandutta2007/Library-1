@@ -5,7 +5,7 @@
 #include <vector>
 #include <set>
 #include <array>
-#include "src/Misc/Automaton.hpp"
+#include "mylib/Misc/Automaton.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

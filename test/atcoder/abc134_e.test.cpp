@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Misc/longest_increasing_subsequence.hpp"
+#include "mylib/Misc/longest_increasing_subsequence.hpp"
 // 広義単調
 using namespace std;
 signed main() {

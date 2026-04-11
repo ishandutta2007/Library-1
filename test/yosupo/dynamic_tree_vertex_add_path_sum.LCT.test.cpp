@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/LinkCutTree.hpp"
+#include "mylib/DataStructure/LinkCutTree.hpp"
 using namespace std;
 struct RsumQ {
  using T= long long;

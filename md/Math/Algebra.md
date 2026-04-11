@@ -1,6 +1,6 @@
 ---
 title: 代数的構造ラッパー (Algebra)
-documentation_of: ../../src/Math/Algebra.hpp
+documentation_of: ../../mylib/Math/Algebra.hpp
 ---
 
 ## 概要
@@ -35,7 +35,7 @@ documentation_of: ../../src/Math/Algebra.hpp
 `int` の加法と減算のみを定義した例。
 
 ```cpp
-#include "src/Math/Algebra.hpp"
+#include "mylib/Math/Algebra.hpp"
 
 struct AdditiveGroup {
   using T = int;
@@ -56,7 +56,7 @@ using IntAdd = Algebra<AdditiveGroup>;
 `max` を加法、`+` を乗法とみなす半環。区間更新クエリなどで利用される。
 
 ```cpp
-#include "src/Math/Algebra.hpp"
+#include "mylib/Math/Algebra.hpp"
 #include <algorithm>
 
 struct MaxPlusSemiring {
@@ -79,7 +79,7 @@ using MaxPlus = Algebra<MaxPlusSemiring>;
 `x` を `ax+b` に変換するアフィン変換。演算は非可換である。ポテンシャル付きUnion-Findなどで利用される。
 
 ```cpp
-#include "src/Math/Algebra.hpp"
+#include "mylib/Math/Algebra.hpp"
 #include <utility>
 
 struct AffineGroup {

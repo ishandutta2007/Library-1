@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "src/DataStructure/UnionFind_Potentialized_Undoable.hpp"
-#include "src/Math/ModInt.hpp"
-#include "src/Math/Nimber.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/Nimber.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

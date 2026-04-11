@@ -5,8 +5,8 @@
 // 双対 の verify
 #include <iostream>
 #include <array>
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/SegmentTree_Dynamic.hpp"
 using namespace std;
 
 using Mint= ModInt<998244353>;

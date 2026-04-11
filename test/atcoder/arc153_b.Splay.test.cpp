@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include "src/DataStructure/SplayTree.hpp"
+#include "mylib/DataStructure/SplayTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

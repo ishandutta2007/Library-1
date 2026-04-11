@@ -4,9 +4,9 @@
 // 永続化 + find * 4 の verify
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/SegmentTree_Dynamic.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
 using namespace std;
 struct RsumQ {
  using T= int;

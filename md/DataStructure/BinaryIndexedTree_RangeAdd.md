@@ -1,6 +1,6 @@
 ---
 title: Binary-Indexed-Tree(区間加算)
-documentation_of: ../../src/DataStructure/BinaryIndexedTree_RangeAdd.hpp
+documentation_of: ../../mylib/DataStructure/BinaryIndexedTree_RangeAdd.hpp
 ---
 0-indexed
 ## 計算量

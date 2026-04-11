@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Graph/incidence_matrix_equation.hpp"
+#include "mylib/Graph/incidence_matrix_equation.hpp"
 using namespace std;
 // 解無しの判定のverify
 

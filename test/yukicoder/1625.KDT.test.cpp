@@ -8,7 +8,7 @@
 #include <array>
 #include <vector>
 #include <algorithm>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 struct RmaxQ {
  using T= long long;

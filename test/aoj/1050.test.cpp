@@ -6,8 +6,8 @@
 #include <iomanip>
 #include <vector>
 #include <queue>
-#include "src/Geometry/SegmentArrangement.hpp"
-#include "src/Geometry/Convex.hpp"
+#include "mylib/Geometry/SegmentArrangement.hpp"
+#include "mylib/Geometry/Convex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "src/Math/binary_gcd.hpp"
+#include "mylib/Math/binary_gcd.hpp"
 
 constexpr auto f= binary_gcd(2, 4);
 static_assert(f == 2);

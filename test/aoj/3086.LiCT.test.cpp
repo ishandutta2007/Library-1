@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/DataStructure/SegmentTree.hpp"
-#include "src/Optimization/LiChaoTree.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/Optimization/LiChaoTree.hpp"
 using namespace std;
 struct RMQ {
  using T= long long;

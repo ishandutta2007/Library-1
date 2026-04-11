@@ -4,10 +4,10 @@
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/s8pc-3/tasks/s8pc_3_g
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/sample_points_shift.hpp"
-#include "src/Math/bostan_mori.hpp"
-#include "src/Math/sparse_fps.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/sample_points_shift.hpp"
+#include "mylib/Math/bostan_mori.hpp"
+#include "mylib/Math/sparse_fps.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

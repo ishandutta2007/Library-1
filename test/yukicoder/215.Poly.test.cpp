@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/bostan_mori.hpp"
-#include "src/FFT/Polynomial.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/bostan_mori.hpp"
+#include "mylib/FFT/Polynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

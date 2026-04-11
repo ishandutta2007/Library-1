@@ -1,6 +1,6 @@
 ---
 title: 万能欧几里得 (All-Purpose Euclid)
-documentation_of: ../../src/Math/AllPurposeEuclid.hpp
+documentation_of: ../../mylib/Math/AllPurposeEuclid.hpp
 ---
 
 ## 概要
@@ -52,7 +52,7 @@ $O((K_1 \cdot K_2)^2 \log(n+a+b+c))$
 // Sum of Floor of Linear: sum_{i=0}^{N-1} floor((A*i + B)/M) を求める
 
 #include <iostream>
-#include "src/Math/AllPurposeEuclid.hpp"
+#include "mylib/Math/AllPurposeEuclid.hpp"
 
 int main() {
     // long longで計算, iの次数は最大0, floor()の次数は最大1
@@ -105,8 +105,8 @@ $O(\log(n+a+b+c))$
 
 ```cpp
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/AllPurposeEuclid.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/AllPurposeEuclid.hpp"
 
 using Mint = ModInt<998244353>;
 

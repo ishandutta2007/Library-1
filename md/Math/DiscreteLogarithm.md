@@ -1,6 +1,6 @@
 ---
 title: 離散対数
-documentation_of: ../../src/Math/DiscreteLogarithm.hpp
+documentation_of: ../../mylib/Math/DiscreteLogarithm.hpp
 ---
 
 半群 $E$ が 集合 $T$ に左作用するとする. \

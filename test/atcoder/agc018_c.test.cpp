@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "src/Optimization/min_Lconvex.hpp"
+#include "mylib/Optimization/min_Lconvex.hpp"
 using namespace std;
 // O(MAX_A log log MAX_A)
 signed main() {

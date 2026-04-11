@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 // パス総和、部分木加算
 #include <iostream>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

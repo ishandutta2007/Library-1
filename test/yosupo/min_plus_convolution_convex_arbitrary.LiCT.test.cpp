@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Optimization/LiChaoTree.hpp"
+#include "mylib/Optimization/LiChaoTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

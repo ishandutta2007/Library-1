@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // ポテンシャルUF(無向2SAT)
 #include <iostream>
-#include "src/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

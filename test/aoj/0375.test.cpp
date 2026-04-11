@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "src/Geometry/Polygon.hpp"
+#include "mylib/Geometry/Polygon.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

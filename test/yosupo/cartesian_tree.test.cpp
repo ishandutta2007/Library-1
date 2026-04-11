@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Misc/CartesianTree.hpp"
+#include "mylib/Misc/CartesianTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

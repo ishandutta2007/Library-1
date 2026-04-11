@@ -10,8 +10,8 @@
 // N=2*10^5, Q=2*10^5 で 2*4*Q回クエリあるみたいなもん
 // TL 3 sec (2500ms ぐらいで通る)
 
-#include "src/DataStructure/SegmentTree_2D.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct RSQ {

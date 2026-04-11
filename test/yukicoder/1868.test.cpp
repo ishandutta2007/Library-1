@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <deque>
-#include "src/Graph/RangeToRangeGraph.hpp"
+#include "mylib/Graph/RangeToRangeGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

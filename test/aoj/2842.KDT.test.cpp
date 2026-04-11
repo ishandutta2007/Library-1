@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <array>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 struct RSQ {
  using T= pair<int, int>;

@@ -1,6 +1,6 @@
 ---
 title: Euler-Tour-Tree
-documentation_of: ../../src/DataStructure/EulerTourTree.hpp
+documentation_of: ../../mylib/DataStructure/EulerTourTree.hpp
 ---
 
 ## 概要
@@ -56,7 +56,7 @@ Euler Tour Tree は、木を動的に管理するためのデータ構造であ�
 
 ```cpp
 #include <iostream>
-#include "src/DataStructure/EulerTourTree.hpp"
+#include "mylib/DataStructure/EulerTourTree.hpp"
 
 // モノイドを定義する構造体
 // 部分木の総和を求める

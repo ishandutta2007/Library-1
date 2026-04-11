@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

@@ -7,8 +7,8 @@
 
 // kdt だと TLE
 
-#include "src/DataStructure/SegmentTree_2D.hpp"
-#include "src/DataStructure/WaveletMatrix.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/DataStructure/WaveletMatrix.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;

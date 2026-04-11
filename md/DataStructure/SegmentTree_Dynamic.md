@@ -1,6 +1,6 @@
 ---
 title: Segment-Tree(動的構築)
-documentation_of: ../../src/DataStructure/SegmentTree_Dynamic.hpp
+documentation_of: ../../mylib/DataStructure/SegmentTree_Dynamic.hpp
 ---
 遅延伝搬可 \
 永続化可

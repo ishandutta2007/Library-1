@@ -4,7 +4,7 @@
 #include <iostream>
 #include <numeric>
 #include <algorithm>
-#include "src/Misc/Mo.hpp"
+#include "mylib/Misc/Mo.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

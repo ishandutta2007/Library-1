@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // beats!
 #include <iostream>
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct Mono {
  static constexpr long long INF= 1ll << 62;

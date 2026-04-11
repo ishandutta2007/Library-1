@@ -1,6 +1,6 @@
 ---
 title: 素数判定
-documentation_of: ../../src/NumberTheory/is_prime.hpp
+documentation_of: ../../mylib/NumberTheory/is_prime.hpp
 ---
 
 `unsigned long long` 型の整数が素数かどうかを判定する。

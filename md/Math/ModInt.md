@@ -1,4 +1,4 @@
 ---
 title: ModInt
-documentation_of: ../../src/Math/ModInt.hpp
+documentation_of: ../../mylib/Math/ModInt.hpp
 ---

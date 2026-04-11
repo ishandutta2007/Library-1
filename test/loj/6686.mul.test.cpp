@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/NumberTheory/ArrayOnDivisors.hpp"
-#include "src/NumberTheory/sum_on_primes.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/NumberTheory/ArrayOnDivisors.hpp"
+#include "mylib/NumberTheory/sum_on_primes.hpp"
 using namespace std;
 template <class Tp> void read(Tp &x) {
  static char ch;

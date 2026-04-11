@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Graph/UndirectedGraphSetPowerSeries.hpp"
+#include "mylib/Graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -5,11 +5,11 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#include "src/Math/ModInt.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/Rerooting.hpp"
-#include "src/Misc/Pointwise.hpp"
-#include "src/Misc/rng.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/Misc/Pointwise.hpp"
+#include "mylib/Misc/rng.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

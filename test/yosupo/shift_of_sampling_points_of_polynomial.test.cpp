@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/sample_points_shift.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/sample_points_shift.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

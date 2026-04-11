@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // ポテンシャルUF (2色塗り分け+連結成分)
 #include <iostream>
-#include "src/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

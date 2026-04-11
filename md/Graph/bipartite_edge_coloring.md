@@ -1,6 +1,6 @@
 ---
 title: 二部グラフの辺彩色
-documentation_of: ../../src/Graph/bipartite_edge_coloring.hpp
+documentation_of: ../../mylib/Graph/bipartite_edge_coloring.hpp
 ---
 
 |関数名|概要|計算量|

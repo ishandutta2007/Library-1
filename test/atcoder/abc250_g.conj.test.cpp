@@ -3,7 +3,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

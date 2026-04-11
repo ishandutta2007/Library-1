@@ -1,6 +1,6 @@
 ---
 title: Segment-Tree
-documentation_of: ../../src/DataStructure/SegmentTree.hpp
+documentation_of: ../../mylib/DataStructure/SegmentTree.hpp
 ---
 非2冪 <br>
 `M::mp`関数では引数としてsizeを渡すこともできる

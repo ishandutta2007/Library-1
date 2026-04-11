@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 // (min,max)半環
 #include <iostream>
-#include "src/Math/Algebra.hpp"
-#include "src/LinearAlgebra/Matrix.hpp"
+#include "mylib/Math/Algebra.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
 using namespace std;
 struct M {
  using T= int;

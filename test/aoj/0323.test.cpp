@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
-#include "src/Optimization/golden_search.hpp"
+#include "mylib/Optimization/golden_search.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

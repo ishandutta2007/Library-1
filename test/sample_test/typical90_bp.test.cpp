@@ -5,8 +5,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "src/DataStructure/UnionFind_Potentialized.hpp"
-#include "src/Math/Algebra.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/Math/Algebra.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream &, stringstream &), string in, string expected) {
  stringstream scin(in), scout;

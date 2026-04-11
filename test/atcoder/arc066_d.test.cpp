@@ -6,8 +6,8 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "src/Misc/Automaton.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/Misc/Automaton.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

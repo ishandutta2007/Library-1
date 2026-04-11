@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/DisjointSparseTable.hpp"
+#include "mylib/DataStructure/DisjointSparseTable.hpp"
 
 using namespace std;
 signed main() {

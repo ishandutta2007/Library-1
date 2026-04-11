@@ -6,7 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 
 //  円形クエリ
 using namespace std;

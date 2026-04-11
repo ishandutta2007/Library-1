@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "src/String/AhoCorasick.hpp"
+#include "mylib/String/AhoCorasick.hpp"
 using namespace std;
 int main() {
  cin.tie(0);

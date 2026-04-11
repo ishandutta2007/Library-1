@@ -4,9 +4,9 @@
 // 最小多項式を用いた行列累乗
 #include <iostream>
 #include <algorithm>
-#include "src/LinearAlgebra/Matrix.hpp"
-#include "src/LinearAlgebra/MinimalPolynomial.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/LinearAlgebra/MinimalPolynomial.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

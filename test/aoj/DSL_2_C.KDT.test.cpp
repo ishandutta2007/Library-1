@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

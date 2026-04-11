@@ -4,8 +4,8 @@
 // apply, prod の verify
 
 #include <iostream>
-#include "src/DataStructure/RandomizedBinarySearchTree.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/DataStructure/RandomizedBinarySearchTree.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 
 using Mint= ModInt<998244353>;

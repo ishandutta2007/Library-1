@@ -2,10 +2,10 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 using Mint= ModInt<int(1e9 + 7)>;
 struct Mono {

@@ -1,6 +1,6 @@
 ---
 title: 凸多角形
-documentation_of: ../../src/Geometry/Convex.hpp
+documentation_of: ../../mylib/Geometry/Convex.hpp
 ---
 
 ## `Convex<K>` クラス

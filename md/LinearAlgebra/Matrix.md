@@ -1,6 +1,6 @@
 ---
 title: 行列
-documentation_of: ../../src/LinearAlgebra/Matrix.hpp
+documentation_of: ../../mylib/LinearAlgebra/Matrix.hpp
 ---
 
 ## `Matrix<R>` クラス

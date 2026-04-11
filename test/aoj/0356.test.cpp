@@ -5,9 +5,9 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "src/Geometry/Circle.hpp"
-#include "src/Geometry/Polygon.hpp"
-#include "src/Geometry/intersection_area.hpp"
+#include "mylib/Geometry/Circle.hpp"
+#include "mylib/Geometry/Polygon.hpp"
+#include "mylib/Geometry/intersection_area.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

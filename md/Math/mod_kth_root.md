@@ -1,6 +1,6 @@
 ---
 title: k乗根 ($\mathbb{F}_p$)
-documentation_of: ../../src/Math/mod_kth_root.hpp
+documentation_of: ../../mylib/Math/mod_kth_root.hpp
 ---
 ## 計算量
 $O ( \min(k,p)^{1/4} )$

@@ -1,6 +1,6 @@
 ---
 title: 最小カット問題のk値への一般化
-documentation_of: ../../src/Optimization/monge_mincut.hpp
+documentation_of: ../../mylib/Optimization/monge_mincut.hpp
 ---
 phi関数等で ∞ を返すときはその大きさに注意 (大きすぎるとオーバーフロー)
 

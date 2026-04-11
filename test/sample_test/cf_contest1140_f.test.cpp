@@ -5,7 +5,7 @@
 #include <string>
 #include <cassert>
 #include <unordered_set>
-#include "src/DataStructure/OnlineDynamicConnectivity.hpp"
+#include "mylib/DataStructure/OnlineDynamicConnectivity.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

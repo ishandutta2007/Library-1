@@ -4,7 +4,7 @@
 // 重み付き二部マッチング(非想定解)
 // 制約が厳しい
 #include <iostream>
-#include "src/Optimization/NetworkSimplex.hpp"
+#include "mylib/Optimization/NetworkSimplex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

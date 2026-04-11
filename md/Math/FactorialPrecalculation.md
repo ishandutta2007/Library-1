@@ -1,4 +1,4 @@
 ---
 title: 二項係数 他 (階乗前計算) ($\mathbb{F}_p$)
-documentation_of: ../../src/Math/FactorialPrecalculation.hpp
+documentation_of: ../../mylib/Math/FactorialPrecalculation.hpp
 ---

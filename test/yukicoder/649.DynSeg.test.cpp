@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
+#include "mylib/DataStructure/SegmentTree_Dynamic.hpp"
 using namespace std;
 struct RsumQ {
  using T= int;

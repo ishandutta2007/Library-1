@@ -1,6 +1,6 @@
 ---
 title: Union-Find (ポテンシャル, undo可能)
-documentation_of: ../../src/DataStructure/UnionFind_Potentialized_Undoable.hpp
+documentation_of: ../../mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp
 ---
  
 ## `UnionFind_Potentialized_Undoable<weight_t>`　クラス

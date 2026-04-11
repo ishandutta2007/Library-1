@@ -1,6 +1,6 @@
 ---
 title: 関数型や関数オブジェクトに関するテンプレート
-documentation_of: ../../src/Internal/function_traits.hpp
+documentation_of: ../../mylib/Internal/function_traits.hpp
 ---
 
 | 名前                 | 概要                                                                                             |

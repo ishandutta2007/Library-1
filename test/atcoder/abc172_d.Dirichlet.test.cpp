@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // O(N^(2/3)log^(1/3)N))
 #include <iostream>
-#include "src/NumberTheory/DirichletSeries.hpp"
+#include "mylib/NumberTheory/DirichletSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

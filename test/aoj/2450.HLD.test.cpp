@@ -4,9 +4,9 @@
 // Do use segment tree
 #include <iostream>
 #include <algorithm>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct M {
  struct T {

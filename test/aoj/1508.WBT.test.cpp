@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
 struct RminQ {
  using T= int;

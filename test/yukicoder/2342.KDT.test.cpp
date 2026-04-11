@@ -6,10 +6,10 @@
 #include <iostream>
 #include <tuple>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct RaffineQ {

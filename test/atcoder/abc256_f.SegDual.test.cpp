@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <array>
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct Mono {

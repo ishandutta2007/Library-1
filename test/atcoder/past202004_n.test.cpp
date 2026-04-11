@@ -5,7 +5,7 @@
 // 双対
 #include <iostream>
 #include <algorithm>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 struct RAQ {
  using T= long long;

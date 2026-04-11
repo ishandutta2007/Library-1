@@ -7,7 +7,7 @@
 #include <vector>
 #include <array>
 #include <set>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 struct RSQ {
  using T= int;

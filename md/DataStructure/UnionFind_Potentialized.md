@@ -1,6 +1,6 @@
 ---
 title: Union-Find (ポテンシャル)
-documentation_of: ../../src/DataStructure/UnionFind_Potentialized.hpp
+documentation_of: ../../mylib/DataStructure/UnionFind_Potentialized.hpp
 ---
  
 ## `UnionFind_Potentialized<weight_t>`　クラス

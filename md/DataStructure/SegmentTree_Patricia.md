@@ -1,6 +1,6 @@
 ---
 title: Segment Tree (on Patricia Trie)
-documentation_of: ../../src/DataStructure/SegmentTree_Patricia.hpp
+documentation_of: ../../mylib/DataStructure/SegmentTree_Patricia.hpp
 ---
 
 ## 概要
@@ -77,7 +77,7 @@ cout << seg.prod(0, 100000) << endl; // 10
 
 ```cpp
 #include <iostream>
-#include "src/DataStructure/SegmentTree_Patricia.hpp"
+#include "mylib/DataStructure/SegmentTree_Patricia.hpp"
 
 struct RsumQ {
   using T = int;

@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // 200 (=100+100) 頂点
 #include <iostream>
-#include "src/Graph/CliqueProblem.hpp"
+#include "mylib/Graph/CliqueProblem.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

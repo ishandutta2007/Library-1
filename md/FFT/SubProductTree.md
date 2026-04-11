@@ -1,6 +1,6 @@
 ---
 title: 多点評価と多項式補間 (SubProductTree)
-documentation_of: ../../src/FFT/SubProductTree.hpp
+documentation_of: ../../mylib/FFT/SubProductTree.hpp
 ---
 
 ## 概要
@@ -37,8 +37,8 @@ $N$ 個の点 $x_0, x_1, \dots, x_{N-1}$ が与えられたとき、
 ```cpp
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/SubProductTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/SubProductTree.hpp"
 
 int main() {
     using namespace std;
@@ -69,8 +69,8 @@ int main() {
 ```cpp
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/SubProductTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/SubProductTree.hpp"
 
 int main() {
     using namespace std;

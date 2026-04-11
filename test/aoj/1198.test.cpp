@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Geometry/Polygon.hpp"
-#include "src/Geometry/Circle.hpp"
-#include "src/Geometry/SegmentArrangement.hpp"
+#include "mylib/Geometry/Polygon.hpp"
+#include "mylib/Geometry/Circle.hpp"
+#include "mylib/Geometry/SegmentArrangement.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

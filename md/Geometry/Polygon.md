@@ -1,6 +1,6 @@
 ---
 title: 多角形
-documentation_of: ../../src/Geometry/Polygon.hpp
+documentation_of: ../../mylib/Geometry/Polygon.hpp
 ---
 
 ## `Polygon<K>` クラス

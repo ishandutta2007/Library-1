@@ -1,6 +1,6 @@
 ---
 title: 無向グラフの数え上げ (集合冪級数)
-documentation_of: ../../src/Graph/UndirectedGraphSetPowerSeries.hpp
+documentation_of: ../../mylib/Graph/UndirectedGraphSetPowerSeries.hpp
 ---
 
 ## 概要

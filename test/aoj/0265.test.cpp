@@ -1,8 +1,8 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Prelim/0265
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
-#include "src/Misc/compress.hpp"
-#include "src/Geometry/Polygon.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/Geometry/Polygon.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

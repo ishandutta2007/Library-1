@@ -2,12 +2,12 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 128
 #include <iostream>
-#include "src/Misc/compress.hpp"
-#include "src/Math/ModInt.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/Rerooting.hpp"
-#include "src/Misc/rng.hpp"
-#include "src/Misc/Pointwise.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/Misc/rng.hpp"
+#include "mylib/Misc/Pointwise.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

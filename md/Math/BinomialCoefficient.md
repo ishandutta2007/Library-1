@@ -1,6 +1,6 @@
 ---
 title: 二項係数 ($\mathbb{Z}/m\mathbb{Z}$)
-documentation_of: ../../src/Math/BinomialCoefficient.hpp
+documentation_of: ../../mylib/Math/BinomialCoefficient.hpp
 ---
 
 ## 参考

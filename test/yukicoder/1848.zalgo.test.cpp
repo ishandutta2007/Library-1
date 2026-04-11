@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "src/String/z_algorithm.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/String/z_algorithm.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

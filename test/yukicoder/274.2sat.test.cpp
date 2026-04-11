@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "src/Misc/TwoSatisfiability.hpp"
+#include "mylib/Misc/TwoSatisfiability.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

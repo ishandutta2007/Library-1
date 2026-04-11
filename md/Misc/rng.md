@@ -1,6 +1,6 @@
 ---
 title: 疑似乱数生成器 (RNG)
-documentation_of: ../../src/Misc/rng.hpp
+documentation_of: ../../mylib/Misc/rng.hpp
 ---
 
 ## 概要
@@ -20,7 +20,7 @@ Xorshift アルゴリズムに基づいた疑似乱数生成器です。
 
 ```cpp
 #include <iostream>
-#include "src/Misc/rng.hpp"
+#include "mylib/Misc/rng.hpp"
 
 int main() {
     // 0 から 2^64-1 までの乱数を取得

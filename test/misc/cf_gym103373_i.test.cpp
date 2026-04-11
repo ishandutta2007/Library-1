@@ -5,8 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include "src/Graph/BipartiteGraph.hpp"
-#include "src/Optimization/matroid_intersection.hpp"
+#include "mylib/Graph/BipartiteGraph.hpp"
+#include "mylib/Optimization/matroid_intersection.hpp"
 
 using namespace std;
 class TransversalMatroid {

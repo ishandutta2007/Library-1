@@ -5,8 +5,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/SplayTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/SplayTree.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

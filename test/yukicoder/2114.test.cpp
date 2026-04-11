@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <array>
 #include <vector>
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
-#include "src/Misc/compress.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Misc/compress.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

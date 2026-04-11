@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/general_matching.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/general_matching.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

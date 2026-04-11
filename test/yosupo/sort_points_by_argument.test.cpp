@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Geometry/angle.hpp"
+#include "mylib/Geometry/angle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

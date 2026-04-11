@@ -5,9 +5,9 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "src/Misc/compress.hpp"
-#include "src/Geometry/Circle.hpp"
-#include "src/Geometry/angle.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/Geometry/Circle.hpp"
+#include "mylib/Geometry/angle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

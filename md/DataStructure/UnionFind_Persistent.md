@@ -1,6 +1,6 @@
 ---
 title: Union-Find(完全永続)
-documentation_of: ../../src/DataStructure/UnionFind_Persistent.hpp
+documentation_of: ../../mylib/DataStructure/UnionFind_Persistent.hpp
 ---
 経路圧縮なし
 ## 計算量

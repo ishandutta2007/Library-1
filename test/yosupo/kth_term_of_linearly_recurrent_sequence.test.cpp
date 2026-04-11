@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 1024
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/bostan_mori.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

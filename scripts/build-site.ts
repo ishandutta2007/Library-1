@@ -20,7 +20,7 @@ import { hppStatusIcon } from './lib/status'
 // ============================================================
 
 const ROOT = path.resolve(__dirname, '..')
-const SRC_DIR = path.join(ROOT, 'src')
+const SRC_DIR = path.join(ROOT, 'mylib')
 const TEST_DIR = path.join(ROOT, 'test')
 const MD_DIR = path.join(ROOT, 'md')
 const SITE_DIR = path.join(ROOT, 'site')
@@ -301,7 +301,7 @@ function generateSidebar(testMap: Record<string, string[]>, resultsData: Record<
       if (!entry.isFile() || !entry.name.endsWith('.hpp')) continue
       const name = entry.name.replace(/\.hpp$/, '')
       const fm = readFrontmatter(path.join(mdPath, name + '.md'))
-      const hppPath = `src/${hppPrefix}${entry.name}`
+      const hppPath = `mylib/${hppPrefix}${entry.name}`
       const icon = hppStatusIcon(hppPath, testMap, resultsData)
       items.push({ text: fm.title || name, icon, link: `${BASE_PATH}${linkPrefix}/${name}.html`, order: fm.order ?? 999 })
     }
@@ -351,7 +351,7 @@ function generateSidebar(testMap: Record<string, string[]>, resultsData: Record<
 // ============================================================
 
 /**
- * C++ ソースの #include "src/..." を再帰的に展開して1ファイルにまとめる
+ * C++ ソースの #include "mylib/..." を再帰的に展開して1ファイルにまとめる
  * #pragma once や include guard による二重展開を防ぐ
  */
 function bundleCpp(filePath: string): string {
@@ -374,8 +374,8 @@ function bundleCpp(filePath: string): string {
       // #pragma once はスキップ（included セットで管理済み）
       if (line.trim() === '#pragma once') continue
 
-      // #include "src/..." を展開
-      const m = line.match(/^(\s*)#include\s+"(src\/[^"]+\.hpp)"/)
+      // #include "mylib/..." を展開
+      const m = line.match(/^(\s*)#include\s+"(mylib\/[^"]+\.hpp)"/)
       if (m) {
         const includePath = m[2]
         result.push(`// --- ${includePath} ---`)
@@ -460,9 +460,9 @@ function generateHppPage(
     body += '<h2>Depends on</h2>\n<ul>\n'
     for (const dep of deps) {
       const depIcon = hppStatusIcon(dep, testMap, resultsData)
-      const depTitle = readFrontmatter(path.join(MD_DIR, dep.replace(/^src\//, '').replace(/\.hpp$/, '.md'))).title
+      const depTitle = readFrontmatter(path.join(MD_DIR, dep.replace(/^mylib\//, '').replace(/\.hpp$/, '.md'))).title
         || dep.split('/').pop()?.replace(/\.hpp$/, '') || dep
-      const depLink = `${BASE_PATH}/${dep.replace(/^src\//, '').replace(/\.hpp$/, '.html')}`
+      const depLink = `${BASE_PATH}/${dep.replace(/^mylib\//, '').replace(/\.hpp$/, '.html')}`
       body += `<li>${depIcon} <a href="${depLink}">${escapeHtml(depTitle)}</a> (${escapeHtml(dep)})</li>\n`
     }
     body += '</ul>\n'
@@ -474,16 +474,16 @@ function generateHppPage(
     body += '<h2>Required by</h2>\n<ul>\n'
     for (const req of reqBy) {
       const reqIcon = hppStatusIcon(req, testMap, resultsData)
-      const reqTitle = readFrontmatter(path.join(MD_DIR, req.replace(/^src\//, '').replace(/\.hpp$/, '.md'))).title
+      const reqTitle = readFrontmatter(path.join(MD_DIR, req.replace(/^mylib\//, '').replace(/\.hpp$/, '.md'))).title
         || req.split('/').pop()?.replace(/\.hpp$/, '') || req
-      const reqLink = `${BASE_PATH}/${req.replace(/^src\//, '').replace(/\.hpp$/, '.html')}`
+      const reqLink = `${BASE_PATH}/${req.replace(/^mylib\//, '').replace(/\.hpp$/, '.html')}`
       body += `<li>${reqIcon} <a href="${reqLink}">${escapeHtml(reqTitle)}</a> (${escapeHtml(req)})</li>\n`
     }
     body += '</ul>\n'
   }
 
   // 出力
-  const outRelPath = hppPath.replace(/^src\//, '').replace(/\.hpp$/, '.html')
+  const outRelPath = hppPath.replace(/^mylib\//, '').replace(/\.hpp$/, '.html')
   const outPath = path.join(OUT_DIR, outRelPath)
   fs.mkdirSync(path.dirname(outPath), { recursive: true })
   fs.writeFileSync(outPath, renderPage(title, body, sidebar))
@@ -505,7 +505,7 @@ function generateTestPage(
   const problem = problemMatch ? problemMatch[1] : null
 
   const directIncludes: string[] = []
-  for (const m of source.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) directIncludes.push(m[1])
+  for (const m of source.matchAll(/#include\s+"(mylib\/[^"]+\.hpp)"/g)) directIncludes.push(m[1])
 
   const githubUrl = `https://github.com/hashiryo/Library/blob/master/${testFile}`
 
@@ -520,9 +520,9 @@ function generateTestPage(
     body += '<h2>Depends on</h2>\n<ul>\n'
     for (const hpp of directIncludes) {
       const icon = hppStatusIcon(hpp, testMap, resultsData)
-      const title = readFrontmatter(path.join(MD_DIR, hpp.replace(/^src\//, '').replace(/\.hpp$/, '.md'))).title
+      const title = readFrontmatter(path.join(MD_DIR, hpp.replace(/^mylib\//, '').replace(/\.hpp$/, '.md'))).title
         || hpp.split('/').pop()?.replace(/\.hpp$/, '') || hpp
-      const link = `${BASE_PATH}/${hpp.replace(/^src\//, '').replace(/\.hpp$/, '.html')}`
+      const link = `${BASE_PATH}/${hpp.replace(/^mylib\//, '').replace(/\.hpp$/, '.html')}`
       body += `<li>${icon} <a href="${link}">${escapeHtml(title)}</a> (${escapeHtml(hpp)})</li>\n`
     }
     body += '</ul>\n'
@@ -618,8 +618,8 @@ async function main() {
       if (entry.isDirectory()) { scanHpp(full); continue }
       if (!entry.name.endsWith('.hpp')) continue
 
-      const hppPath = path.relative(ROOT, full) // "src/DataStructure/Foo.hpp"
-      const mdRelPath = hppPath.replace(/^src\//, '').replace(/\.hpp$/, '.md')
+      const hppPath = path.relative(ROOT, full) // "mylib/DataStructure/Foo.hpp"
+      const mdRelPath = hppPath.replace(/^mylib\//, '').replace(/\.hpp$/, '.md')
       const mdPath = path.join(MD_DIR, mdRelPath)
 
       // md がなければスタブとして生成

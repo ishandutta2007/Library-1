@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 512
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/sequences.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/sequences.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

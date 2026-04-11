@@ -4,7 +4,7 @@
 #include <iostream>
 #include <array>
 #include <algorithm>
-#include "src/DataStructure/RangeSet.hpp"
+#include "mylib/DataStructure/RangeSet.hpp"
 
 using namespace std;
 signed main() {

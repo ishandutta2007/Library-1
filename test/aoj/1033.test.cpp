@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <queue>
 #include <vector>
-#include "src/Geometry/SegmentArrangement.hpp"
+#include "mylib/Geometry/SegmentArrangement.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

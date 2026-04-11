@@ -6,8 +6,8 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-#include "src/DataStructure/UnionFind.hpp"
-#include "src/Geometry/Convex.hpp"
+#include "mylib/DataStructure/UnionFind.hpp"
+#include "mylib/Geometry/Convex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -5,7 +5,7 @@
 // https://atcoder.jp/contests/abc266/tasks/abc266_h
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 struct RMQ {
  using T= long long;

@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct RupdQ_RminQ {
  using T= int;

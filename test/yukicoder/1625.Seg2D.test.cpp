@@ -8,7 +8,7 @@
 #include <array>
 #include <vector>
 #include <algorithm>
-#include "src/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
 using namespace std;
 struct RmaxQ {
  using T= long long;

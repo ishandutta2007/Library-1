@@ -2,7 +2,7 @@
 #include <iostream>
 #include <random>
 #include <cassert>
-#include "src/Math/Nimber.hpp"
+#include "mylib/Math/Nimber.hpp"
 using namespace std;
 void test(int X) {
  mt19937 mt(X);

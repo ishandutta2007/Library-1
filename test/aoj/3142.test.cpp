@@ -7,8 +7,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Graph/incidence_matrix_equation.hpp"
-#include "src/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/Graph/incidence_matrix_equation.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

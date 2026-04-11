@@ -8,7 +8,7 @@
 #include <array>
 #include <tuple>
 #include <algorithm>
-#include "src/Graph/Rerooting.hpp"
+#include "mylib/Graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

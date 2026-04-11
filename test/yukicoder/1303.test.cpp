@@ -5,9 +5,9 @@
 #include <algorithm>
 #include <vector>
 #include <numeric>
-#include "src/Math/ModInt.hpp"
-#include "src/LinearAlgebra/characteristic_polynomial.hpp"
-#include "src/DataStructure/UnionFind.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/characteristic_polynomial.hpp"
+#include "mylib/DataStructure/UnionFind.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

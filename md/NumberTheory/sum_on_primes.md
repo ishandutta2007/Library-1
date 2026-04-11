@@ -1,6 +1,6 @@
 ---
 title: 素数上の累積和
-documentation_of: ../../src/NumberTheory/sum_on_primes.hpp
+documentation_of: ../../mylib/NumberTheory/sum_on_primes.hpp
 ---
 
 $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$

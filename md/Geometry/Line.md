@@ -1,6 +1,6 @@
 ---
 title: 直線
-documentation_of: ../../src/Geometry/Line.hpp
+documentation_of: ../../mylib/Geometry/Line.hpp
 ---
 
 ## `Line<K>` クラス

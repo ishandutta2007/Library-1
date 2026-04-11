@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // 行列(F_2)のrankのverify
 #include <iostream>
-#include "src/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

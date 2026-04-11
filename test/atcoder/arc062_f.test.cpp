@@ -6,9 +6,9 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FactorialPrecalculation.hpp"
-#include "src/Graph/block_cut_tree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/Graph/block_cut_tree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

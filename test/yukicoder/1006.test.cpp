@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/NumberTheory/tables.hpp"
+#include "mylib/NumberTheory/tables.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

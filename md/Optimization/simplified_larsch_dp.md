@@ -1,6 +1,6 @@
 ---
 title: 簡易版LARSCH
-documentation_of: ../../src/Optimization/simplified_larsch_dp.hpp
+documentation_of: ../../mylib/Optimization/simplified_larsch_dp.hpp
 ---
 
 ## 関数

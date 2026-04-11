@@ -5,9 +5,9 @@
 // https://atcoder.jp/contests/agc051/tasks/agc051_d
 #include <iostream>
 #include <vector>
-#include "src/LinearAlgebra/LU_Decomposition.hpp"
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FactorialPrecalculation.hpp"
+#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/FactorialPrecalculation.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

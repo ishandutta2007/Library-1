@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Geometry/angle.hpp"
+#include "mylib/Geometry/angle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

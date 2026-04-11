@@ -5,9 +5,9 @@
 // https://atcoder.jp/contests/abc236/tasks/abc236_h
 #include <iostream>
 #include <numeric>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FactorialPrecalculation.hpp"
-#include "src/Math/set_power_series.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/Math/set_power_series.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

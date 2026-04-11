@@ -1,6 +1,6 @@
 ---
 title: 黄金分割探索 (Golden-section search)
-documentation_of: ../../src/Optimization/golden_search.hpp
+documentation_of: ../../mylib/Optimization/golden_search.hpp
 ---
 
 ## 概要
@@ -17,7 +17,7 @@ documentation_of: ../../src/Optimization/golden_search.hpp
 ## インクルード
 
 ```cpp
-#include "src/Optimization/golden_search.hpp"
+#include "mylib/Optimization/golden_search.hpp"
 ```
 
 ## 関数
@@ -35,7 +35,7 @@ documentation_of: ../../src/Optimization/golden_search.hpp
 ```cpp
 #include <iostream>
 #include <iomanip>
-#include "src/Optimization/golden_search.hpp"
+#include "mylib/Optimization/golden_search.hpp"
 
 int main() {
     auto f = [](long double x) {

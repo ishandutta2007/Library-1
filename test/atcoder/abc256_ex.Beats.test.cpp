@@ -5,8 +5,8 @@
 // https://atcoder.jp/contests/abc256/tasks/abc256_h
 // beats
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct Mono {
  struct T {

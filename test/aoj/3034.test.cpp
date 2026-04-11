@@ -6,8 +6,8 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
-#include "src/Geometry/Circle.hpp"
-#include "src/Geometry/min_enclosing_circle.hpp"
+#include "mylib/Geometry/Circle.hpp"
+#include "mylib/Geometry/min_enclosing_circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

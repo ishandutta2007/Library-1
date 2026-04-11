@@ -2,7 +2,7 @@
 
 // 特に 型推論 auto で受け取っても正しく動作するかテストする。
 #include <cassert>
-#include "src/LinearAlgebra/Vector.hpp"
+#include "mylib/LinearAlgebra/Vector.hpp"
 
 using namespace std;
 void vec_int_test() {

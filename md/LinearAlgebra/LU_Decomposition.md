@@ -1,6 +1,6 @@
 ---
 title: LU分解
-documentation_of: ../../src/LinearAlgebra/LU_Decomposition.hpp
+documentation_of: ../../mylib/LinearAlgebra/LU_Decomposition.hpp
 ---
 
 

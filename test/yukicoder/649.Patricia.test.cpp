@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/SegmentTree_Patricia.hpp"
+#include "mylib/DataStructure/SegmentTree_Patricia.hpp"
 using namespace std;
 struct RsumQ {
  using T= int;

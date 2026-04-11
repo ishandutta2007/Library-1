@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/NumberTheory/tables.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/NumberTheory/tables.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

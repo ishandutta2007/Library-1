@@ -6,8 +6,8 @@
 #include <string>
 #include <cassert>
 #include <algorithm>
-#include "src/Math/Algebra.hpp"
-#include "src/LinearAlgebra/Matrix.hpp"
+#include "mylib/Math/Algebra.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

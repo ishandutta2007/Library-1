@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "src/Optimization/simplified_larsch_dp.hpp"
+#include "mylib/Optimization/simplified_larsch_dp.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

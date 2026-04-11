@@ -4,8 +4,8 @@
 // 疎行列の行列累乗
 #include <iostream>
 #include <algorithm>
-#include "src/LinearAlgebra/MinimalPolynomial.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/MinimalPolynomial.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -5,8 +5,8 @@
 #include <string>
 #include <cassert>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/sample_points_shift.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/sample_points_shift.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

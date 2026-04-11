@@ -4,10 +4,10 @@
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/abc274/tasks/abc274_h
 #include <iostream>
-#include "src/Math/Nimber.hpp"
-#include "src/Misc/Pointwise.hpp"
-#include "src/String/RollingHash.hpp"
-#include "src/Misc/rng.hpp"
+#include "mylib/Math/Nimber.hpp"
+#include "mylib/Misc/Pointwise.hpp"
+#include "mylib/String/RollingHash.hpp"
+#include "mylib/Misc/rng.hpp"
 using namespace std;
 int main() {
  cin.tie(0);

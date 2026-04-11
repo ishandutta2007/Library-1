@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "src/Misc/Period.hpp"
-#include "src/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
+#include "mylib/Misc/Period.hpp"
+#include "mylib/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

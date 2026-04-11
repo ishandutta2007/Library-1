@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
-#include "src/Geometry/intersection_area.hpp"
+#include "mylib/Geometry/intersection_area.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

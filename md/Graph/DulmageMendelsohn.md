@@ -1,6 +1,6 @@
 ---
 title: Dulmage-Mendelsohn 分解
-documentation_of: ../../src/Graph/DulmageMendelsohn.hpp
+documentation_of: ../../mylib/Graph/DulmageMendelsohn.hpp
 ---
 
 ## `DulmageMendelsohn` クラス

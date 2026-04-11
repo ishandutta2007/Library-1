@@ -8,9 +8,9 @@
 
 // 重みつき木
 
-#include "src/DataStructure/SegmentTree_2D.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
 using namespace std;
 struct RSQ {
  using T= int;

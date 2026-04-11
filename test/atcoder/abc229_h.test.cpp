@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "src/Game/PartisanGame.hpp"
+#include "mylib/Game/PartisanGame.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

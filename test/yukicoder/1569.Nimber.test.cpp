@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Math/Nimber.hpp"
-#include "src/Math/bostan_mori.hpp"
+#include "mylib/Math/Nimber.hpp"
+#include "mylib/Math/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <vector>
-#include "src/Geometry/Point.hpp"
+#include "mylib/Geometry/Point.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

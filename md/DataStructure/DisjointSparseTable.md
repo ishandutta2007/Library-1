@@ -1,4 +1,4 @@
 ---
 title: DisjointSparseTable
-documentation_of: ../../src/DataStructure/DisjointSparseTable.hpp
+documentation_of: ../../mylib/DataStructure/DisjointSparseTable.hpp
 ---

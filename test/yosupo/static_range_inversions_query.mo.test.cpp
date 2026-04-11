@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Misc/compress.hpp"
-#include "src/Misc/Mo.hpp"
-#include "src/DataStructure/BinaryIndexedTree.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/Misc/Mo.hpp"
+#include "mylib/DataStructure/BinaryIndexedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

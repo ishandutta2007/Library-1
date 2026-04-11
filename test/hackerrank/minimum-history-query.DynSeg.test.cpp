@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
+#include "mylib/DataStructure/SegmentTree_Dynamic.hpp"
 using namespace std;
 struct RMQ {
  using T= int;

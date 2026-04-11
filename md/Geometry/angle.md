@@ -1,6 +1,6 @@
 ---
 title: 角度・回転関連
-documentation_of: ../../src/Geometry/angle.hpp
+documentation_of: ../../mylib/Geometry/angle.hpp
 ---
 
 ## 関数

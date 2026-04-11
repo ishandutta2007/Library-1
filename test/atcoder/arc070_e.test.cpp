@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 128
 // https://atcoder.jp/contests/arc070/tasks/arc070_c
 #include <iostream>
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

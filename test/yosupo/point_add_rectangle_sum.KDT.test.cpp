@@ -5,7 +5,7 @@
 #include <map>
 #include <array>
 #include <vector>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;

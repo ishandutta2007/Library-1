@@ -1,6 +1,6 @@
 ---
 title: より大きい型に変換する型特性 (long_traits)
-documentation_of: ../../src/Internal/long_traits.hpp
+documentation_of: ../../mylib/Internal/long_traits.hpp
 ---
 
 ## 概要
@@ -29,7 +29,7 @@ documentation_of: ../../src/Internal/long_traits.hpp
 `int` 型の座標を持つ2つのベクトル `p`, `q` の外積 `cross(p, q)` を計算する。
 
 ```cpp
-#include "src/Geometry/Point.hpp"
+#include "mylib/Geometry/Point.hpp"
 
 // K=int の場合、make_long_t<K> は long long になる
 template <class K>

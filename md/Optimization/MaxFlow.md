@@ -1,6 +1,6 @@
 ---
 title: 最大流 (Max Flow)
-documentation_of: ../../src/Optimization/MaxFlow.hpp
+documentation_of: ../../mylib/Optimization/MaxFlow.hpp
 ---
 
 ## 概要
@@ -24,7 +24,7 @@ documentation_of: ../../src/Optimization/MaxFlow.hpp
 
 ```cpp
 #include <iostream>
-#include "src/Optimization/MaxFlow.hpp"
+#include "mylib/Optimization/MaxFlow.hpp"
 
 int main() {
     int N = 4, M = 5;

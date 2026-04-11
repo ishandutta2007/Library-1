@@ -1,6 +1,6 @@
 ---
 title: 不偏ゲーム (Grundy数)
-documentation_of: ../../src/Game/ImpartialGame.hpp
+documentation_of: ../../mylib/Game/ImpartialGame.hpp
 ---
 
 ## 概要
@@ -38,7 +38,7 @@ documentation_of: ../../src/Game/ImpartialGame.hpp
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include "src/Game/ImpartialGame.hpp"
+#include "mylib/Game/ImpartialGame.hpp"
 
 int main() {
     using Game = std::vector<int>;

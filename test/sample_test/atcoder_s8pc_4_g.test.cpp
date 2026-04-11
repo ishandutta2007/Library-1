@@ -9,7 +9,7 @@
 #include <vector>
 #include <array>
 #include <set>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream &, stringstream &), string in, string expected) {
  stringstream scin(in), scout;

@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
 
 // 2次元xor
 using namespace std;

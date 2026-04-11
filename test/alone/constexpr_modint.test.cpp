@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "src/Math/ModInt.hpp"
+#include "mylib/Math/ModInt.hpp"
 
 using Mint= ModInt<1000000007>;
 constexpr auto a= Mint(2) + 3;

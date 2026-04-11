@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 2
 // competitive-verifier: MLE 128
 #include <iostream>
-#include "src/Misc/compress.hpp"
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/block_cut_tree.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/block_cut_tree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

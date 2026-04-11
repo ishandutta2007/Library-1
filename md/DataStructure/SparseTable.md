@@ -1,6 +1,6 @@
 ---
 title: Sparse-Table
-documentation_of: ../../src/DataStructure/SparseTable.hpp
+documentation_of: ../../mylib/DataStructure/SparseTable.hpp
 ---
 
 結合則と冪等則を満たす二項演算子を渡して区間のまとめあげを高速に行うデータ構造.\

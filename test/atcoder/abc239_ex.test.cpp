@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/abc239/tasks/abc239_h
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/NumberTheory/DirichletSeries.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/NumberTheory/DirichletSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

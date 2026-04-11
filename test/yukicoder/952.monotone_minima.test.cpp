@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <numeric>
-#include "src/Optimization/monotone_minima.hpp"
+#include "mylib/Optimization/monotone_minima.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

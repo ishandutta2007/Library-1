@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Geometry/Polygon.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/Geometry/Polygon.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

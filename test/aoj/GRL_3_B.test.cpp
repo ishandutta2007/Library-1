@@ -5,8 +5,8 @@
 #include <vector>
 #include <array>
 #include <algorithm>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/IncrementalBridgeConnectivity.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/IncrementalBridgeConnectivity.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

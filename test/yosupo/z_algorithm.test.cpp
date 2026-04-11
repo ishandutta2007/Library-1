@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "src/String/z_algorithm.hpp"
+#include "mylib/String/z_algorithm.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

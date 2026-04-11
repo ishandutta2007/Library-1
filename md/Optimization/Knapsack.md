@@ -1,6 +1,6 @@
 ---
 title: 0-1 ナップサック問題 (半分全列挙)
-documentation_of: ../../src/Optimization/Knapsack.hpp
+documentation_of: ../../mylib/Optimization/Knapsack.hpp
 ---
 計算量が n 倍 改善されてるやつ \
 空間計算量的にも n は 50 ぐらいが限界か

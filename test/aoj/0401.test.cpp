@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Game/ImpartialGame.hpp"
+#include "mylib/Game/ImpartialGame.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

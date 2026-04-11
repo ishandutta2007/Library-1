@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "src/Math/ModInt_Runtime.hpp"
-#include "src/Math/FactorialPrecalculation.hpp"
+#include "mylib/Math/ModInt_Runtime.hpp"
+#include "mylib/Math/FactorialPrecalculation.hpp"
 using namespace std;
 int main() {
  cin.tie(0);

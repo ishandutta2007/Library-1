@@ -1,6 +1,6 @@
 ---
 title: Skew-Heap
-documentation_of: ../../src/DataStructure/SkewHeap.hpp
+documentation_of: ../../mylib/DataStructure/SkewHeap.hpp
 ---
 マージできるヒープ \
 apply(v): 全体に作用素vを適用

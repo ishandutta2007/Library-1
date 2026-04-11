@@ -1,6 +1,6 @@
 ---
 title: 周期性の利用 (Functionalグラフ)
-documentation_of: ../../src/Misc/Period.hpp
+documentation_of: ../../mylib/Misc/Period.hpp
 ---
 
 ## `Period<T>` クラス

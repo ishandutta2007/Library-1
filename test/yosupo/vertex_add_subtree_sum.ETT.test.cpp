@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/EulerTourTree.hpp"
+#include "mylib/DataStructure/EulerTourTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;

@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/LinearAlgebra/LU_Decomposition.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

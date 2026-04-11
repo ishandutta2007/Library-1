@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/bostan_mori.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

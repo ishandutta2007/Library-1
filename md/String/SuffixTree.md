@@ -1,6 +1,6 @@
 ---
 title: Suffix Tree (接尾辞木)
-documentation_of: ../../src/String/SuffixTree.hpp
+documentation_of: ../../mylib/String/SuffixTree.hpp
 ---
 ![suffixtree.svg](/img/suffixtree.svg)
 

@@ -5,11 +5,11 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
-#include "src/Misc/compress.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/IncrementalBridgeConnectivity.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/IncrementalBridgeConnectivity.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct RmaxQ {
  using T= pair<long long, int>;

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "src/Geometry/Segment.hpp"
+#include "mylib/Geometry/Segment.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

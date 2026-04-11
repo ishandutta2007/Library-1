@@ -1,6 +1,6 @@
 ---
 title: Union-Find (undo 可能)
-documentation_of: ../../src/DataStructure/UnionFind_Undoable.hpp
+documentation_of: ../../mylib/DataStructure/UnionFind_Undoable.hpp
 ---
 
 ## `UnionFind_Undoable`　クラス

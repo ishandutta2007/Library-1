@@ -4,8 +4,8 @@
 // F_2 の行列累乗
 // F_2 の線形方程式・カーネル
 #include <iostream>
-#include "src/LinearAlgebra/LU_Decomposition.hpp"
-#include "src/LinearAlgebra/Matrix.hpp"
+#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

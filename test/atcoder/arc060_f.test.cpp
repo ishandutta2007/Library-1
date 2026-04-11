@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include "src/String/z_algorithm.hpp"
+#include "mylib/String/z_algorithm.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -5,7 +5,7 @@
 #include <vector>
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
-#include "src/DataStructure/SortedPerBucket.hpp"
+#include "mylib/DataStructure/SortedPerBucket.hpp"
 using namespace __gnu_pbds;
 using namespace std;
 signed main() {

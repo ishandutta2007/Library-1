@@ -4,7 +4,7 @@
 // 永続性のverify
 
 #include <iostream>
-#include "src/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
 struct RMQ {
  using T= int;

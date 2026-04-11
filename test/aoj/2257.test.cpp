@@ -7,8 +7,8 @@
 #include <unordered_map>
 #include <string>
 #include <cstdint>
-#include "src/String/AhoCorasick.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/String/AhoCorasick.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 int main() {
  ios::sync_with_stdio(0);

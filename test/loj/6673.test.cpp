@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 128
 
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/Graph/UndirectedGraphSetPowerSeries.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Misc/Period.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Misc/Period.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

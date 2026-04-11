@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/SortedPerBucket.hpp"
+#include "mylib/DataStructure/SortedPerBucket.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

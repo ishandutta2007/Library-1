@@ -5,8 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#include "src/Math/Rational.hpp"
-#include "src/Geometry/Line.hpp"
+#include "mylib/Math/Rational.hpp"
+#include "mylib/Geometry/Line.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

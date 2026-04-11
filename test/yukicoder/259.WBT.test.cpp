@@ -4,7 +4,7 @@
 // reverse, split, + の verify
 
 #include <iostream>
-#include "src/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;

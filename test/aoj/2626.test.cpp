@@ -6,7 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include "src/Geometry/Convex.hpp"
+#include "mylib/Geometry/Convex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

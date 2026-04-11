@@ -4,7 +4,7 @@
 // min_left
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct M {
  using T= long long;

@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 // ポテンシャルUF(2SAT+連結成分)
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

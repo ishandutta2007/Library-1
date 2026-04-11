@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "src/Math/ModInt.hpp"
-#include "src/LinearAlgebra/Matrix.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 using Mint= ModInt<int(1e9 + 7)>;
 using Mat= Matrix<Mint>;

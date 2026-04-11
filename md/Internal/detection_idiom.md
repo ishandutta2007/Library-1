@@ -1,6 +1,6 @@
 ---
 title: detection idiom
-documentation_of: ../../src/Internal/detection_idiom.hpp
+documentation_of: ../../mylib/Internal/detection_idiom.hpp
 ---
 
 ## 概要

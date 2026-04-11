@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "src/Misc/Period.hpp"
-#include "src/Math/ModInt.hpp"
-#include "src/Math/bostan_mori.hpp"
+#include "mylib/Misc/Period.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

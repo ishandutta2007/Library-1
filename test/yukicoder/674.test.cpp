@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "src/DataStructure/RangeSet.hpp"
+#include "mylib/DataStructure/RangeSet.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

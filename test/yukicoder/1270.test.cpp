@@ -2,9 +2,9 @@
 // competitive-verifier: TLE 1.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/SegmentTree.hpp"
-#include "src/DataStructure/BinaryIndexedTree.hpp"
-#include "src/Misc/Mo.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/DataStructure/BinaryIndexedTree.hpp"
+#include "mylib/Misc/Mo.hpp"
 using namespace std;
 struct RmQRaQ {
  using T= int;

@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/AllPurposeEuclid.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/AllPurposeEuclid.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

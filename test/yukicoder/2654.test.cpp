@@ -1,7 +1,7 @@
 // competitive-verifier: PROBLEM https://yukicoder.me/problems/no/2654
 // competitive-verifier: TLE 1
 #include <iostream>
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

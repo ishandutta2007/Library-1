@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/RangeCountDistinct.hpp"
+#include "mylib/DataStructure/RangeCountDistinct.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

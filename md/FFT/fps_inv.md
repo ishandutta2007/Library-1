@@ -1,6 +1,6 @@
 ---
 title: 形式的冪級数の逆元
-documentation_of: ../../src/FFT/fps_inv.hpp
+documentation_of: ../../mylib/FFT/fps_inv.hpp
 ---
 
 ## 概要
@@ -18,8 +18,8 @@ documentation_of: ../../src/FFT/fps_inv.hpp
 ## 使用方法
 ```cpp
 #include <vector>
-#include "src/Math/ModInt.hpp" // ModIntなど
-#include "src/FFT/fps_inv.hpp"
+#include "mylib/Math/ModInt.hpp" // ModIntなど
+#include "mylib/FFT/fps_inv.hpp"
 ```
 
 ### inv(p)
@@ -31,8 +31,8 @@ documentation_of: ../../src/FFT/fps_inv.hpp
 ```cpp
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/fps_inv.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/fps_inv.hpp"
 
 // https://judge.yosupo.jp/problem/inv_of_formal_power_series
 int main() {

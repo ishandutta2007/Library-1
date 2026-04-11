@@ -1,6 +1,6 @@
 ---
 title: monotone minima
-documentation_of: ../../src/Optimization/monotone_minima.hpp
+documentation_of: ../../mylib/Optimization/monotone_minima.hpp
 ---
 
 ## 関数

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/minimum_spanning_aborescence.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/minimum_spanning_aborescence.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

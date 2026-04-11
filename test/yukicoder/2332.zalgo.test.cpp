@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/String/z_algorithm.hpp"
-#include "src/Optimization/LiChaoTree.hpp"
+#include "mylib/String/z_algorithm.hpp"
+#include "mylib/Optimization/LiChaoTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

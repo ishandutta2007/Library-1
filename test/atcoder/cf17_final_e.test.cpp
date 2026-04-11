@@ -7,8 +7,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Graph/incidence_matrix_equation.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Graph/incidence_matrix_equation.hpp"
 using namespace std;
 signed main() {
  ios::sync_with_stdio(0);

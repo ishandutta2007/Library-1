@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "src/Graph/BipartiteGraph.hpp"
-#include "src/Graph/DulmageMendelsohn.hpp"
-#include "src/DataStructure/RangeSet.hpp"
+#include "mylib/Graph/BipartiteGraph.hpp"
+#include "mylib/Graph/DulmageMendelsohn.hpp"
+#include "mylib/DataStructure/RangeSet.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

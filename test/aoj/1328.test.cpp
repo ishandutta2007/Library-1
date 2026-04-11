@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

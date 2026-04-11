@@ -1,6 +1,6 @@
 ---
 title: Pointwise
-documentation_of: ../../src/Misc/Pointwise.hpp
+documentation_of: ../../mylib/Misc/Pointwise.hpp
 ---
 
 ## 概要
@@ -16,9 +16,9 @@ documentation_of: ../../src/Misc/Pointwise.hpp
 2つの異なる法と基数でローリングハッシュを計算する例。
 
 ```cpp
-#include "src/Math/ModInt.hpp"
-#include "src/Misc/Pointwise.hpp"
-#include "src/String/RollingHash.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Misc/Pointwise.hpp"
+#include "mylib/String/RollingHash.hpp"
 
 // 2つのModIntを束ねる
 using Mint1 = ModInt<998244353>;

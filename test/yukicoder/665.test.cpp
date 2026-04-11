@@ -5,9 +5,9 @@
 // より厳しい制約: http://codeforces.com/contest/622/problem/F
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/NumberTheory/enumerate_primes.hpp"
-#include "src/Math/sample_points_shift.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/NumberTheory/enumerate_primes.hpp"
+#include "mylib/Math/sample_points_shift.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

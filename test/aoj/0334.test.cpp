@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // 辞書順マッチングのverify
 #include <iostream>
-#include "src/Graph/BipartiteGraph.hpp"
+#include "mylib/Graph/BipartiteGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

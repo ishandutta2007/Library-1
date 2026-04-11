@@ -4,9 +4,9 @@
 // 辞書順マッチングのverify
 #include <iostream>
 #include <vector>
-#include "src/Graph/BipartiteGraph.hpp"
-#include "src/Geometry/Circle.hpp"
-#include "src/Geometry/min_enclosing_circle.hpp"
+#include "mylib/Graph/BipartiteGraph.hpp"
+#include "mylib/Geometry/Circle.hpp"
+#include "mylib/Geometry/min_enclosing_circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

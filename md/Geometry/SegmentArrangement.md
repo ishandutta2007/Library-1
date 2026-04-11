@@ -1,6 +1,6 @@
 ---
 title: 線分アレンジメント
-documentation_of: ../../src/Geometry/SegmentArrangement.hpp
+documentation_of: ../../mylib/Geometry/SegmentArrangement.hpp
 ---
 
 ## 概要
@@ -41,7 +41,7 @@ documentation_of: ../../src/Geometry/SegmentArrangement.hpp
 ```cpp
 #include <iostream>
 #include <vector>
-#include "src/Geometry/SegmentArrangement.hpp"
+#include "mylib/Geometry/SegmentArrangement.hpp"
 
 int main() {
     // 2つの線分 {(0,0)-(2,2)}, {(0,2)-(2,0)} を定義

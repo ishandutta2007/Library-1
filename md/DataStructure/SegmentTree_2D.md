@@ -1,6 +1,6 @@
 ---
 title: Segment-Tree(2次元)
-documentation_of: ../../src/DataStructure/SegmentTree_2D.hpp
+documentation_of: ../../mylib/DataStructure/SegmentTree_2D.hpp
 ---
 
 半群は乗らない. モノイドの単位元 `M::ti` は明示的に与える必要あり. 

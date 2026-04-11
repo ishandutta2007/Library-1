@@ -4,8 +4,8 @@
 #include <iostream>
 #include <algorithm>
 #include <array>
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/LinkCutTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/LinkCutTree.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct Mono {

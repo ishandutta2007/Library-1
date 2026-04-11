@@ -7,7 +7,7 @@
 #include <cassert>
 #include <algorithm>
 #include <vector>
-#include "src/Graph/incidence_matrix_equation.hpp"
+#include "mylib/Graph/incidence_matrix_equation.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

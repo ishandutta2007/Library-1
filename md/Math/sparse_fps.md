@@ -1,6 +1,6 @@
 ---
 title: 疎な形式的冪級数
-documentation_of: ../../src/Math/sparse_fps.hpp
+documentation_of: ../../mylib/Math/sparse_fps.hpp
 ---
 
 ## 概要
@@ -40,8 +40,8 @@ $f(x) = 1 - x - x^2$ の逆数を $x^4$ まで求める。
 ```cpp
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/sparse_fps.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/sparse_fps.hpp"
 
 using Mint = ModInt<998244353>;
 

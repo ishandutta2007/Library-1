@@ -3,7 +3,7 @@
 #include <random>
 #include <cassert>
 #include <cstdint>
-#include "src/Internal/Remainder.hpp"
+#include "mylib/Internal/Remainder.hpp"
 using namespace std;
 template <class Rem> bool test(uint64_t mod) {
  Rem md(mod);

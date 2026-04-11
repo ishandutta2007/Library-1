@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // O(√N)
 #include <iostream>
-#include "src/NumberTheory/enumerate_quotients.hpp"
+#include "mylib/NumberTheory/enumerate_quotients.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

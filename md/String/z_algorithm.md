@@ -1,6 +1,6 @@
 ---
 title: Z-Algorithm
-documentation_of: ../../src/String/z_algorithm.hpp
+documentation_of: ../../mylib/String/z_algorithm.hpp
 ---
 
 文字列 $S$ に対して構築することにする. \

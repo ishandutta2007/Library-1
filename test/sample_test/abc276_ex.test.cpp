@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <vector>
 #include <unordered_map>
-#include "src/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

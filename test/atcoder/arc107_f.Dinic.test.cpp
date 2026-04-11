@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Optimization/MaxFlow.hpp"
-#include "src/Optimization/monge_mincut.hpp"
+#include "mylib/Optimization/MaxFlow.hpp"
+#include "mylib/Optimization/monge_mincut.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

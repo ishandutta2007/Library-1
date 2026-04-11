@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include "src/String/SuffixArray.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/String/SuffixArray.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct RMQ {
  using T= int;

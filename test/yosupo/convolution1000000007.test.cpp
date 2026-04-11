@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 512
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/convolve.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/convolve.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -4,7 +4,7 @@
 // reverse, split, + の verify
 
 #include <iostream>
-#include "src/DataStructure/SplayTree.hpp"
+#include "mylib/DataStructure/SplayTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;

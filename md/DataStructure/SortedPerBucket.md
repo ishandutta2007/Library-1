@@ -1,6 +1,6 @@
 ---
 title: 典型的な平方分割
-documentation_of: ../../src/DataStructure/SortedPerBucket.hpp
+documentation_of: ../../mylib/DataStructure/SortedPerBucket.hpp
 ---
 ## 計算量
  - set - $O(B)$

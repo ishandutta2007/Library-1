@@ -7,7 +7,7 @@
 
 // kdt, sqrtdc だと TLE
 
-#include "src/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
 using namespace std;
 struct RSQ {
  using T= pair<int, long long>;

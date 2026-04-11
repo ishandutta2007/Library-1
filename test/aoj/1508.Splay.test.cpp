@@ -4,7 +4,7 @@
 // split3, push_front, pop_back, operator+, prod, set の verify
 
 #include <iostream>
-#include "src/DataStructure/SplayTree.hpp"
+#include "mylib/DataStructure/SplayTree.hpp"
 using namespace std;
 struct RminQ {
  using T= int;

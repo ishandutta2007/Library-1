@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "src/DataStructure/WaveletMatrix.hpp"
+#include "mylib/DataStructure/WaveletMatrix.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

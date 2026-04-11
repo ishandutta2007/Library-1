@@ -1,6 +1,6 @@
 ---
 title: 最大最小を指定するための列挙型
-documentation_of: ../../src/Optimization/MinMaxEnum.hpp
+documentation_of: ../../mylib/Optimization/MinMaxEnum.hpp
 ---
 
 ## 概要
@@ -23,8 +23,8 @@ enum MinMaxEnum { MAXIMIZE = -1, MINIMIZE = 1 };
 `LiChaoTree` で最小値を求めるクエリに応答するインスタンスを作成する例。
 
 ```cpp
-#include "src/Optimization/LiChaoTree.hpp"
-#include "src/Optimization/MinMaxEnum.hpp"
+#include "mylib/Optimization/LiChaoTree.hpp"
+#include "mylib/Optimization/MinMaxEnum.hpp"
 
 // 最小値を求めるLi Chao Treeを構築
 auto cht = lct.make_tree<MINIMIZE>();

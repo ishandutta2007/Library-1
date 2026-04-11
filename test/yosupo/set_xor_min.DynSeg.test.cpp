@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
+#include "mylib/DataStructure/SegmentTree_Dynamic.hpp"
 // find + xor の verify
 using namespace std;
 struct RsumQ {

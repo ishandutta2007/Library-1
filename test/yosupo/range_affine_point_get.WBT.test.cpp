@@ -5,8 +5,8 @@
 
 #include <iostream>
 #include <array>
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct M {

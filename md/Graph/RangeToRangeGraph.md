@@ -1,6 +1,6 @@
 ---
 title: 区間に辺を張るテク
-documentation_of: ../../src/Graph/RangeToRangeGraph.hpp
+documentation_of: ../../mylib/Graph/RangeToRangeGraph.hpp
 ---
 
 ## `RangeToRangeGraph<cost_t=int>` クラス

@@ -5,8 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include "src/Math/ModInt.hpp"
-#include "src/LinearAlgebra/characteristic_polynomial.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/characteristic_polynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -1,6 +1,6 @@
 ---
 title: 有理数 (Rational)
-documentation_of: ../../src/Math/Rational.hpp
+documentation_of: ../../mylib/Math/Rational.hpp
 ---
 
 ## 概要

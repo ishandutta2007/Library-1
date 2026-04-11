@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <vector>
-#include "src/Graph/Graph.hpp"
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

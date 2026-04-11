@@ -1,6 +1,6 @@
 ---
 title: フィボナッチ探索
-documentation_of: ../../src/Optimization/fibonacci_search.hpp
+documentation_of: ../../mylib/Optimization/fibonacci_search.hpp
 ---
 
 ## 概要
@@ -12,8 +12,8 @@ documentation_of: ../../src/Optimization/fibonacci_search.hpp
 ## 使い方
 
 ```cpp
-#include "src/Optimization/fibonacci_search.hpp"
-#include "src/Optimization/MinMaxEnum.hpp"
+#include "mylib/Optimization/fibonacci_search.hpp"
+#include "mylib/Optimization/MinMaxEnum.hpp"
 
 // pair{最適解, 最適値} fibonacci_search<obj>(f, l, r);
 ```
@@ -29,8 +29,8 @@ $f(x) = (x-5)^2$ の最小値を求める。
 
 ```cpp
 #include <iostream>
-#include "src/Optimization/fibonacci_search.hpp"
-#include "src/Optimization/MinMaxEnum.hpp"
+#include "mylib/Optimization/fibonacci_search.hpp"
+#include "mylib/Optimization/MinMaxEnum.hpp"
 
 int main() {
     auto f = [](long long x) {

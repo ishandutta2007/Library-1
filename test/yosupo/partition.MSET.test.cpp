@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 128
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/FormalPowerSeries.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/FormalPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

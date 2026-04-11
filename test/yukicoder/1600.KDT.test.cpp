@@ -7,11 +7,11 @@
 #include <tuple>
 // Q=2*10^5 で 2*Q回クエリあるみたいなもんだけど 通る
 
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/UnionFind.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/UnionFind.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 using namespace std;
 struct RMQ {
  using T= int;

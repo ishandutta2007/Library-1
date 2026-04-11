@@ -1,6 +1,6 @@
 ---
 title: Online-Dynamic-Connectivity
-documentation_of: ../../src/DataStructure/OnlineDynamicConnectivity.hpp
+documentation_of: ../../mylib/DataStructure/OnlineDynamicConnectivity.hpp
 ---
 
 ## 概要

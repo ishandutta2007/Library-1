@@ -4,8 +4,8 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
-#include "src/String/AhoCorasick.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/String/AhoCorasick.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 int main() {
  cin.tie(0);

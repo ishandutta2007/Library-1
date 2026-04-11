@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/LinearAlgebra/Matrix.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/Rerooting.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

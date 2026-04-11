@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <vector>
 #include <array>
-#include "src/DataStructure/KDTree.hpp"
-#include "src/Graph/StronglyConnectedComponents.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
+#include "mylib/Graph/StronglyConnectedComponents.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

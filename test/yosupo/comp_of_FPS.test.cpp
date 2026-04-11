@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/Polynomial.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/Polynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

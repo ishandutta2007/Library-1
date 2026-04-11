@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <algorithm>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/FactorialPrecalculation.hpp"
-#include "src/LinearAlgebra/MinimalPolynomial.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/LinearAlgebra/MinimalPolynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

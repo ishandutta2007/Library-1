@@ -1,6 +1,6 @@
 ---
 title: 二部グラフ
-documentation_of: ../../src/Graph/BipartiteGraph.hpp
+documentation_of: ../../mylib/Graph/BipartiteGraph.hpp
 ---
 
 二部グラフの最小頂点被覆は [Dulmage-Mendelsohn 分解](DulmageMendelsohn.hpp) で実装．

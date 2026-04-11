@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/RandomizedBinarySearchTree.hpp"
+#include "mylib/DataStructure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 struct RminQ {
  using T= int;

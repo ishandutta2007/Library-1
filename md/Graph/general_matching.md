@@ -1,6 +1,6 @@
 ---
 title: 一般グラフの最大マッチング
-documentation_of: ../../src/Graph/general_matching.hpp
+documentation_of: ../../mylib/Graph/general_matching.hpp
 ---
 GabowのEdmonds' Algorithm
 

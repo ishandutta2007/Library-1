@@ -4,7 +4,7 @@
 #include <iostream>
 #include <array>
 #include <algorithm>
-#include "src/Optimization/LiChaoTree.hpp"
+#include "mylib/Optimization/LiChaoTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

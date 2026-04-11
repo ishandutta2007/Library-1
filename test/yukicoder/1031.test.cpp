@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Misc/CartesianTree.hpp"
+#include "mylib/Misc/CartesianTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

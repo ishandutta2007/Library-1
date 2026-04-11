@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Misc/Pointwise.hpp"
-#include "src/String/RollingHash.hpp"
-#include "src/Misc/rng.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Misc/Pointwise.hpp"
+#include "mylib/String/RollingHash.hpp"
+#include "mylib/Misc/rng.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

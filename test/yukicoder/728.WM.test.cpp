@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/WaveletMatrix.hpp"
+#include "mylib/DataStructure/WaveletMatrix.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

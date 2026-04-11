@@ -5,10 +5,10 @@
 #include <vector>
 #include <numeric>
 #include <algorithm>
-#include "src/DataStructure/UnionFind.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/DataStructure/UnionFind.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 
 using namespace std;
 struct RchminQ {

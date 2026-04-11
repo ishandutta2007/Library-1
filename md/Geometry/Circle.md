@@ -1,6 +1,6 @@
 ---
 title: 円
-documentation_of: ../../src/Geometry/Circle.hpp
+documentation_of: ../../mylib/Geometry/Circle.hpp
 ---
 
 ## `Circle<R>` クラス

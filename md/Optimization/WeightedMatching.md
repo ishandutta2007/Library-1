@@ -1,6 +1,6 @@
 ---
 title: 重み付きマッチング (一般グラフ)
-documentation_of: ../../src/Optimization/WeightedMatching.hpp
+documentation_of: ../../mylib/Optimization/WeightedMatching.hpp
 ---
 
 一般グラフにおける重み付きマッチングを求める。Blossom Algorithm に基づく実装。

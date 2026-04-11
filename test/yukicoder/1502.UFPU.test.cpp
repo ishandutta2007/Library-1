@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 // affine合成 非可換群
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/UnionFind_Potentialized_Undoable.hpp"
-#include "src/Math/Algebra.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/Math/Algebra.hpp"
 using namespace std;
 struct M {
  using T= pair<bool, long long>;

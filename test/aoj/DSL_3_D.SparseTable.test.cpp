@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/SparseTable.hpp"
+#include "mylib/DataStructure/SparseTable.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

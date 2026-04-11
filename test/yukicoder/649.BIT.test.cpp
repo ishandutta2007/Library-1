@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Misc/compress.hpp"
-#include "src/DataStructure/BinaryIndexedTree.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/DataStructure/BinaryIndexedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

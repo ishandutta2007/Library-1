@@ -5,9 +5,9 @@
  */
 #include <iostream>
 #include <vector>
-#include "src/Math/FactorialPrecalculation.hpp"
-#include "src/Math/ModInt.hpp"
-#include "src/NumberTheory/enumerate_primes.hpp"
+#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/NumberTheory/enumerate_primes.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

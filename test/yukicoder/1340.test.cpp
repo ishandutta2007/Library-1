@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/LinearAlgebra/Matrix.hpp"
-#include "src/Math/Algebra.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/Math/Algebra.hpp"
 using namespace std;
 struct Rig {
  using T= bool;

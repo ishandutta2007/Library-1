@@ -1,4 +1,4 @@
 ---
 title: RadixHeap
-documentation_of: ../../src/DataStructure/RadixHeap.hpp
+documentation_of: ../../mylib/DataStructure/RadixHeap.hpp
 ---

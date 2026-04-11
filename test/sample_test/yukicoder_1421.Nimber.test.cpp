@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "src/Math/Nimber.hpp"
-#include "src/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/Math/Nimber.hpp"
+#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

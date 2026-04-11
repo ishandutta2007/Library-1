@@ -1,6 +1,6 @@
 ---
 title: ベクトル
-documentation_of: ../../src/LinearAlgebra/Vector.hpp
+documentation_of: ../../mylib/LinearAlgebra/Vector.hpp
 ---
 
 ## `Vector<K>` クラス

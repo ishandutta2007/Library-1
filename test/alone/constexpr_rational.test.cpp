@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "src/Math/Rational.hpp"
+#include "mylib/Math/Rational.hpp"
 
 using Q= Rational<__int128_t>;
 constexpr auto x= Q(2, 3), y= Q(4, 3);

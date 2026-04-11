@@ -4,7 +4,7 @@
 // Do use segment tree
 #include <iostream>
 #include <algorithm>
-#include "src/DataStructure/LinkCutTree.hpp"
+#include "mylib/DataStructure/LinkCutTree.hpp"
 using namespace std;
 struct RupdQ_RmaxsumQ {
  struct T {

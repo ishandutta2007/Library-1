@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <algorithm>
-#include "src/Graph/RangeToRangeGraph.hpp"
-#include "src/Graph/StronglyConnectedComponents.hpp"
+#include "mylib/Graph/RangeToRangeGraph.hpp"
+#include "mylib/Graph/StronglyConnectedComponents.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

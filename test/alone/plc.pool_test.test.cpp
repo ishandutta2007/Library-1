@@ -6,7 +6,7 @@
 #include <cassert>
 #include <vector>
 #include <tuple>
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 namespace test1 {
 vector<long long> solve(const vector<pair<int, int>> &init, const vector<tuple<int, int, int>> &querys) {

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <numeric>
-#include "src/DataStructure/RangeSet.hpp"
+#include "mylib/DataStructure/RangeSet.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

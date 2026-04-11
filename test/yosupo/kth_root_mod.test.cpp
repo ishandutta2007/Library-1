@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Math/mod_kth_root.hpp"
+#include "mylib/Math/mod_kth_root.hpp"
 using namespace std;
 int main() {
  cin.tie(0);

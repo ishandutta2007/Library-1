@@ -1,6 +1,6 @@
 ---
 title: 重軽分解
-documentation_of: ../../src/Graph/HeavyLightDecomposition.hpp
+documentation_of: ../../mylib/Graph/HeavyLightDecomposition.hpp
 ---
 
 ## 使い方 イメージ

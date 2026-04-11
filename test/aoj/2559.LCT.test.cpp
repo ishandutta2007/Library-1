@@ -7,8 +7,8 @@
 #include <vector>
 #include <numeric>
 #include <algorithm>
-#include "src/DataStructure/LinkCutTree.hpp"
-#include "src/DataStructure/UnionFind.hpp"
+#include "mylib/DataStructure/LinkCutTree.hpp"
+#include "mylib/DataStructure/UnionFind.hpp"
 using namespace std;
 struct RchminQ {
  using T= int;

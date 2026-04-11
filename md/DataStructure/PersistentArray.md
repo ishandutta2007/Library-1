@@ -1,6 +1,6 @@
 ---
 title: 永続配列
-documentation_of: ../../src/DataStructure/PersistentArray.hpp
+documentation_of: ../../mylib/DataStructure/PersistentArray.hpp
 ---
 M分木
 ## 計算量

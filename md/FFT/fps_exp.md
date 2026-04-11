@@ -1,6 +1,6 @@
 ---
 title: exp, log, pow (形式的冪級数)
-documentation_of: ../../src/FFT/fps_exp.hpp
+documentation_of: ../../mylib/FFT/fps_exp.hpp
 ---
 
 ## 概要
@@ -77,8 +77,8 @@ $N$ を形式的冪級数の長さとする。
 ```cpp
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/fps_exp.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/fps_exp.hpp"
 
 int main() {
     using Mint = ModInt<998244353>;

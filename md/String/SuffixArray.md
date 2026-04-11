@@ -1,6 +1,6 @@
 ---
 title: Suffix Array (接尾辞配列)
-documentation_of: ../../src/String/SuffixArray.hpp
+documentation_of: ../../mylib/String/SuffixArray.hpp
 ---
 
 $\newcommand{\SA}{\mathrm{SA}}$

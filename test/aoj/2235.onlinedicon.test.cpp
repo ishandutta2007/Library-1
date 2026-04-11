@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/OnlineDynamicConnectivity.hpp"
+#include "mylib/DataStructure/OnlineDynamicConnectivity.hpp"
 using namespace std;
 int main() {
  std::cin.tie(nullptr);

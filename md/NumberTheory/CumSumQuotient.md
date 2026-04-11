@@ -1,6 +1,6 @@
 ---
 title: $\lfloor N/x \rfloor$ の配列
-documentation_of: ../../src/NumberTheory/CumSumQuotient.hpp
+documentation_of: ../../mylib/NumberTheory/CumSumQuotient.hpp
 ---
 
 $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$

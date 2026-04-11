@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include "src/NumberTheory/tables.hpp"
+#include "mylib/NumberTheory/tables.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

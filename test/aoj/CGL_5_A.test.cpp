@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "src/Geometry/closest_pair.hpp"
+#include "mylib/Geometry/closest_pair.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

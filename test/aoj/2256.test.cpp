@@ -7,8 +7,8 @@
 #include <iomanip>
 #include <vector>
 #include <algorithm>
-#include "src/Misc/compress.hpp"
-#include "src/Geometry/Segment.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/Geometry/Segment.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -1,6 +1,6 @@
 ---
 title: 多変数畳み込み
-documentation_of: ../../src/FFT/MultiVariateConvolution.hpp
+documentation_of: ../../mylib/FFT/MultiVariateConvolution.hpp
 ---
 
 ## 概要
@@ -49,8 +49,8 @@ $$
 ```cpp
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/MultiVariateConvolution.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/MultiVariateConvolution.hpp"
 
 using Mint = ModInt<998244353>;
 

@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "src/NumberTheory/OrderFp.hpp"
+#include "mylib/NumberTheory/OrderFp.hpp"
 
 constexpr auto ord998= OrderFp(998244353);
 constexpr int g= ord998.primitive_root();

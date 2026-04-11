@@ -1,6 +1,6 @@
 ---
 title: 形式的冪級数
-documentation_of: ../../src/FFT/FormalPowerSeries.hpp
+documentation_of: ../../mylib/FFT/FormalPowerSeries.hpp
 ---
 ## Verify
 

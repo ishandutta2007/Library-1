@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/BipartiteGraph.hpp"
-#include "src/Graph/DulmageMendelsohn.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/BipartiteGraph.hpp"
+#include "mylib/Graph/DulmageMendelsohn.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

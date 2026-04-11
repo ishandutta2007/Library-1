@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include "src/Math/DiscreteLogarithm.hpp"
+#include "mylib/Math/DiscreteLogarithm.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

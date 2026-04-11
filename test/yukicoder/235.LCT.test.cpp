@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/LinkCutTree.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/DataStructure/LinkCutTree.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 
 using Mint= ModInt<int(1e9 + 7)>;

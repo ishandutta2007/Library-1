@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Misc/longest_increasing_subsequence.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Misc/longest_increasing_subsequence.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

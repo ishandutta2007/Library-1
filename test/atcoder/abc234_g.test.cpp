@@ -4,9 +4,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Misc/CartesianTree.hpp"
-#include "src/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Misc/CartesianTree.hpp"
+#include "mylib/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

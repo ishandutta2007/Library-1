@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Misc/compress.hpp"
-#include "src/DataStructure/RangeSet.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/DataStructure/RangeSet.hpp"
 
 using namespace std;
 signed main() {

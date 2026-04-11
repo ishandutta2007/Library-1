@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Geometry/Convex.hpp"
+#include "mylib/Geometry/Convex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

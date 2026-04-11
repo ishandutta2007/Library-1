@@ -1,6 +1,6 @@
 ---
 title: 最小多項式 (Minimal Polynomial)
-documentation_of: ../../src/LinearAlgebra/MinimalPolynomial.hpp
+documentation_of: ../../mylib/LinearAlgebra/MinimalPolynomial.hpp
 ---
 
 ## 概要

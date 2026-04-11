@@ -1,6 +1,6 @@
 ---
 title: Link-Cut-Tree
-documentation_of: ../../src/DataStructure/LinkCutTree.hpp
+documentation_of: ../../mylib/DataStructure/LinkCutTree.hpp
 ---
 
 ## 概要
@@ -48,7 +48,7 @@ Link-Cut Tree は木の集合を管理するデータ構造。以下の操作を
 パス上のノードの値に一様加算し、パス上の合計値を求める例。
 
 ```cpp
-#include "src/DataStructure/LinkCutTree.hpp"
+#include "mylib/DataStructure/LinkCutTree.hpp"
 #include <iostream>
 
 // 区間加算・区間和の作用素モノイドを定義

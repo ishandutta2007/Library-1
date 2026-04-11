@@ -5,7 +5,7 @@
 #include <vector>
 #include <queue>
 #include <string>
-#include "src/String/AhoCorasick.hpp"
+#include "mylib/String/AhoCorasick.hpp"
 using namespace std;
 int main() {
  ios::sync_with_stdio(0);

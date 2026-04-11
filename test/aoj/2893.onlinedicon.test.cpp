@@ -4,7 +4,7 @@
 // 非想定解 MLがギリギリ
 // cpuのクロック数，GHA が 2.6GHz で AOJ が 4GHz らしいので TL を 4/2.6 倍している
 #include <iostream>
-#include "src/DataStructure/OnlineDynamicConnectivity.hpp"
+#include "mylib/DataStructure/OnlineDynamicConnectivity.hpp"
 using namespace std;
 struct Sum {
  using T= long long;

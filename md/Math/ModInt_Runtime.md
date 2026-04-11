@@ -1,6 +1,6 @@
 ---
 title: ModInt(実行時modセット)
-documentation_of: ../../src/Math/ModInt_Runtime.hpp
+documentation_of: ../../mylib/Math/ModInt_Runtime.hpp
 ---
 ## Verify
 

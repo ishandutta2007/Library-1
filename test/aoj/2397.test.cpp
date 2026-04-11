@@ -4,8 +4,8 @@
 // 行列累乗
 #include <iostream>
 #include <algorithm>
-#include "src/LinearAlgebra/Matrix.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

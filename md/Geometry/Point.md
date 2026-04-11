@@ -1,6 +1,6 @@
 ---
 title: 点
-documentation_of: ../../src/Geometry/Point.hpp
+documentation_of: ../../mylib/Geometry/Point.hpp
 order: 1
 ---
 

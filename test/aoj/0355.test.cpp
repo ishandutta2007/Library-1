@@ -7,10 +7,10 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include "src/Math/ModInt.hpp"
-#include "src/Misc/Pointwise.hpp"
-#include "src/Misc/rng.hpp"
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Misc/Pointwise.hpp"
+#include "mylib/Misc/rng.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 using Mint= ModInt<int(1e9) + 7>;
 using K= Pointwise<Mint, Mint>;

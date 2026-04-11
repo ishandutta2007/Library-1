@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 512
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/fps_inv.hpp"
-#include "src/FFT/fps_exp.hpp"
-#include "src/Math/mod_sqrt.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/fps_inv.hpp"
+#include "mylib/FFT/fps_exp.hpp"
+#include "mylib/Math/mod_sqrt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

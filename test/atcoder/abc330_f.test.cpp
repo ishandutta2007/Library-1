@@ -5,7 +5,7 @@
 // 永続化, operator +, shift の verify
 #include <iostream>
 #include <vector>
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

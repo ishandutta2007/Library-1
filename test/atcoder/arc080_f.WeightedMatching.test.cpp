@@ -5,8 +5,8 @@
 // https://atcoder.jp/contests/arc080/tasks/arc080_d
 #include <iostream>
 #include <vector>
-#include "src/NumberTheory/is_prime.hpp"
-#include "src/Optimization/WeightedMatching.hpp"
+#include "mylib/NumberTheory/is_prime.hpp"
+#include "mylib/Optimization/WeightedMatching.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -4,7 +4,7 @@
 // split, split3, operator+ の verify
 
 #include <iostream>
-#include "src/DataStructure/SplayTree.hpp"
+#include "mylib/DataStructure/SplayTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

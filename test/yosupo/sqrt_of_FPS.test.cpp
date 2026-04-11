@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/fps_sqrt.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/fps_sqrt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

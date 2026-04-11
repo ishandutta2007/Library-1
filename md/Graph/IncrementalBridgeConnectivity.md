@@ -1,6 +1,6 @@
 ---
 title: Incremental-Bridge-Connectivity (二辺連結成分)
-documentation_of: ../../src/Graph/IncrementalBridgeConnectivity.hpp
+documentation_of: ../../mylib/Graph/IncrementalBridgeConnectivity.hpp
 ---
 
 ## `IncrementalBridgeConnectivity` クラス

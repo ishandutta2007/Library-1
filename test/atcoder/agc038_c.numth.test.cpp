@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/NumberTheory/tables.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/NumberTheory/tables.hpp"
 using namespace std;
 // O(MAX_A log log MAX_A)
 

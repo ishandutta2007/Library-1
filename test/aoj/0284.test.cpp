@@ -5,7 +5,7 @@
 #include <vector>
 #include <numeric>
 #include <algorithm>
-#include "src/Geometry/Point.hpp"
+#include "mylib/Geometry/Point.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 // 遅延伝搬のverify
 #include <iostream>
-#include "src/DataStructure/SegmentTree_Dynamic.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/DataStructure/SegmentTree_Dynamic.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct RaffineQ_RsumQ {

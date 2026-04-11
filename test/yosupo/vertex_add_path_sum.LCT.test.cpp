@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/LinkCutTree.hpp"
+#include "mylib/DataStructure/LinkCutTree.hpp"
 using namespace std;
 struct Mono {
  using T= long long;

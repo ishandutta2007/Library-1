@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "src/DataStructure/SparseTable.hpp"
-#include "src/String/SuffixTree.hpp"
+#include "mylib/DataStructure/SparseTable.hpp"
+#include "mylib/String/SuffixTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

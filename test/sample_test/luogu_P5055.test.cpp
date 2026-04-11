@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "src/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

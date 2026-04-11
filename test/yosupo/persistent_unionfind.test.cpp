@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 1024
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/PersistentArray.hpp"
-#include "src/DataStructure/UnionFind_Persistent.hpp"
+#include "mylib/DataStructure/PersistentArray.hpp"
+#include "mylib/DataStructure/UnionFind_Persistent.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Optimization/fibonacci_search.hpp"
+#include "mylib/Optimization/fibonacci_search.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -1,6 +1,6 @@
 ---
 title: 集合冪級数
-documentation_of: ../../src/Math/set_power_series.hpp
+documentation_of: ../../mylib/Math/set_power_series.hpp
 ---
 
 集合 $S,T,U \in 2^{\lbrace0,1,\dots,n-1\rbrace}$ を2進数表記によって非負整数と同一視する.\

@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/StronglyConnectedComponents.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/StronglyConnectedComponents.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

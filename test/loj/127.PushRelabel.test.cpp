@@ -5,7 +5,7 @@
 // Dinic だと TLE する
 
 #include <iostream>
-#include "src/Optimization/MaxFlow.hpp"
+#include "mylib/Optimization/MaxFlow.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

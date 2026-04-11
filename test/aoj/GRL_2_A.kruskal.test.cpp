@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include <numeric>
-#include "src/DataStructure/UnionFind.hpp"
+#include "mylib/DataStructure/UnionFind.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -3,8 +3,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 128
 #include <iostream>
-#include "src/Math/set_power_series.hpp"
-#include "src/Graph/UndirectedGraphSetPowerSeries.hpp"
+#include "mylib/Math/set_power_series.hpp"
+#include "mylib/Graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

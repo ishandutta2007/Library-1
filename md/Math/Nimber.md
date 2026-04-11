@@ -1,6 +1,6 @@
 ---
 title: Nimber $\mathbb{F}_{2^{64}}$
-documentation_of: ../../src/Math/Nimber.hpp
+documentation_of: ../../mylib/Math/Nimber.hpp
 ---
 ## 参考
 [https://en.wikipedia.org/wiki/Nimber](https://en.wikipedia.org/wiki/Nimber) \

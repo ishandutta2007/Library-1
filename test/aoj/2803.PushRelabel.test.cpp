@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Optimization/MaxFlow.hpp"
+#include "mylib/Optimization/MaxFlow.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

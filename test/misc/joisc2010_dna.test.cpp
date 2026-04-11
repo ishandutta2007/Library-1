@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "src/String/AhoCorasick.hpp"
+#include "mylib/String/AhoCorasick.hpp"
 using namespace std;
 int main() {
  ios::sync_with_stdio(0);

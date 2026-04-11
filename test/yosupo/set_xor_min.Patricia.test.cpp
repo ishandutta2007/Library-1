@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/SegmentTree_Patricia.hpp"
+#include "mylib/DataStructure/SegmentTree_Patricia.hpp"
 
 // find + xor の verify
 

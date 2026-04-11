@@ -6,8 +6,8 @@
 // nimber pow log
 #include <iostream>
 #include <vector>
-#include "src/Math/Nimber.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/Math/Nimber.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 int main() {
  cin.tie(0);

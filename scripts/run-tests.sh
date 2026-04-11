@@ -16,7 +16,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TEST_DIR="${ROOT}/test"
-SRC_DIR="${ROOT}/src"
+SRC_DIR="${ROOT}/mylib"
 
 CXX="${CXX:-g++}"
 CXXFLAGS="${CXXFLAGS:--std=c++17 -O2}"

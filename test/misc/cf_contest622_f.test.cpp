@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/sample_points_shift.hpp"
-#include "src/NumberTheory/enumerate_primes.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/sample_points_shift.hpp"
+#include "mylib/NumberTheory/enumerate_primes.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

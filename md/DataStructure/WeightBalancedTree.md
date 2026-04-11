@@ -1,6 +1,6 @@
 ---
 title: Weight-Balanced-Tree
-documentation_of: ../../src/DataStructure/WeightBalancedTree.hpp
+documentation_of: ../../mylib/DataStructure/WeightBalancedTree.hpp
 ---
 
 永続化できる \

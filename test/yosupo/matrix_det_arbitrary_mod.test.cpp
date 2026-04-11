@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 2
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Math/ModInt_Runtime.hpp"
-#include "src/LinearAlgebra/characteristic_polynomial.hpp"
+#include "mylib/Math/ModInt_Runtime.hpp"
+#include "mylib/LinearAlgebra/characteristic_polynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

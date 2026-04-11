@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "src/Math/mod_inv.hpp"
+#include "mylib/Math/mod_inv.hpp"
 
 constexpr auto f= mod_inv(2, 1000000007);
 static_assert(f == 500000004);

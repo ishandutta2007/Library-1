@@ -5,7 +5,7 @@
 #include <cassert>
 #include <vector>
 #include <tuple>
-#include "src/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/DataStructure/WeightBalancedTree.hpp"
 using namespace std;
 namespace test1 {
 struct Mono {

@@ -1,6 +1,6 @@
 ---
 title: テトレーション $a\upuparrows b$ ($\mathbb{Z}/m\mathbb{Z}$)
-documentation_of: ../../src/Math/mod_tetration.hpp
+documentation_of: ../../mylib/Math/mod_tetration.hpp
 ---
 
 ## 概要
@@ -32,7 +32,7 @@ $O(m^{1/4})$
 
 ## 使用例
 ```cpp
-#include "src/Math/mod_tetration.hpp"
+#include "mylib/Math/mod_tetration.hpp"
 #include <iostream>
 
 int main() {

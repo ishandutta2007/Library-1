@@ -6,9 +6,9 @@
 #include <iomanip>
 #include <vector>
 #include <queue>
-#include "src/Geometry/angle.hpp"
-#include "src/Geometry/Circle.hpp"
-#include "src/Geometry/Polygon.hpp"
+#include "mylib/Geometry/angle.hpp"
+#include "mylib/Geometry/Circle.hpp"
+#include "mylib/Geometry/Polygon.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Math/ModInt.hpp"
-#include "src/LinearAlgebra/MinimalPolynomial.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/MinimalPolynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

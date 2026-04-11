@@ -5,7 +5,7 @@
 // Alien DP
 #include <iostream>
 #include <algorithm>
-#include "src/Optimization/fibonacci_search.hpp"
+#include "mylib/Optimization/fibonacci_search.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -5,9 +5,9 @@
 #include <deque>
 #include <vector>
 #include <algorithm>
-#include "src/Misc/compress.hpp"
-#include "src/DataStructure/UnionFind.hpp"
-#include "src/Graph/RangeToRangeGraph.hpp"
+#include "mylib/Misc/compress.hpp"
+#include "mylib/DataStructure/UnionFind.hpp"
+#include "mylib/Graph/RangeToRangeGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

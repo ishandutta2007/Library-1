@@ -5,7 +5,7 @@
 #include <set>
 #include <vector>
 #include <array>
-#include "src/DataStructure/KDTree.hpp"
+#include "mylib/DataStructure/KDTree.hpp"
 // 3次元
 using namespace std;
 struct RSQ {

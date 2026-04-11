@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/arc090/tasks/arc090_b
 #include <iostream>
-#include "src/DataStructure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

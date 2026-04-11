@@ -5,9 +5,9 @@
 // bitwise xor
 #include <iostream>
 #include <algorithm>
-#include "src/DataStructure/UnionFind_Potentialized.hpp"
-#include "src/Math/Nimber.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/Math/Nimber.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

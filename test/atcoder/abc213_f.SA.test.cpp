@@ -8,7 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <stack>
-#include "src/String/SuffixArray.hpp"
+#include "mylib/String/SuffixArray.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

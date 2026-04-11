@@ -5,7 +5,7 @@
 #include <vector>
 #include <array>
 #include <algorithm>
-#include "src/DataStructure/BinaryIndexedTree_2D.hpp"
+#include "mylib/DataStructure/BinaryIndexedTree_2D.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

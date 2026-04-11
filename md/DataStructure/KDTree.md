@@ -1,6 +1,6 @@
 ---
 title: kD-Tree
-documentation_of: ../../src/DataStructure/KDTree.hpp
+documentation_of: ../../mylib/DataStructure/KDTree.hpp
 ---
 
 $O(k\cdot N^{1-1/k})$　で動くと思っておく.\

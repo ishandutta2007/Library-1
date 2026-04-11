@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <utility>
-#include "src/DataStructure/SegmentTree.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 
 using Mint= ModInt<998244353>;

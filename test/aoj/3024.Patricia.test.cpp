@@ -4,7 +4,7 @@
 // 永続化のverify
 
 #include <iostream>
-#include "src/DataStructure/SegmentTree_Patricia.hpp"
+#include "mylib/DataStructure/SegmentTree_Patricia.hpp"
 using namespace std;
 struct RMQ {
  using T= int;

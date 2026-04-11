@@ -4,8 +4,8 @@
 // Nimber inv
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Math/Nimber.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Math/Nimber.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

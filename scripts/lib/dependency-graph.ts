@@ -1,11 +1,11 @@
 /**
- * src/ 内の hpp 間の依存グラフ構築とテストマッピング
+ * mylib/ 内の hpp 間の依存グラフ構築とテストマッピング
  */
 import fs from 'fs'
 import path from 'path'
 
 const ROOT = path.resolve(__dirname, '../..')
-const SRC_DIR = path.join(ROOT, 'src')
+const SRC_DIR = path.join(ROOT, 'mylib')
 const TEST_DIR = path.join(ROOT, 'test')
 
 export interface DependencyGraph {
@@ -26,7 +26,7 @@ export function buildDependencyGraph(): DependencyGraph {
         const content = fs.readFileSync(full, 'utf-8')
         const rel = path.relative(ROOT, full)
         const deps: string[] = []
-        for (const m of content.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) deps.push(m[1])
+        for (const m of content.matchAll(/#include\s+"(mylib\/[^"]+\.hpp)"/g)) deps.push(m[1])
         dependsOn[rel] = deps
         for (const dep of deps) {
           if (!requiredBy[dep]) requiredBy[dep] = []
@@ -70,7 +70,7 @@ export function buildTestMap(graph: DependencyGraph): Record<string, string[]> {
       else if (entry.name.endsWith('.test.cpp')) {
         const content = fs.readFileSync(full, 'utf-8')
         const rel = path.relative(ROOT, full)
-        for (const m of content.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) {
+        for (const m of content.matchAll(/#include\s+"(mylib\/[^"]+\.hpp)"/g)) {
           addTest(m[1], rel)
           const trans = graph.transitiveDeps[m[1]]
           if (trans) for (const dep of trans) addTest(dep, rel)

@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/MultiVariateConvolution.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/MultiVariateConvolution.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

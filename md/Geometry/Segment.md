@@ -1,6 +1,6 @@
 ---
 title: 線分
-documentation_of: ../../src/Geometry/Segment.hpp
+documentation_of: ../../mylib/Geometry/Segment.hpp
 ---
 
 ## `Segment<K>` クラス

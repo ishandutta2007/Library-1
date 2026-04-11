@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "src/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
 using namespace std;
 struct RSQ {
  using T= int;

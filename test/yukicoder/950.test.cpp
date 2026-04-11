@@ -2,9 +2,9 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/Math/ModInt_Runtime.hpp"
-#include "src/LinearAlgebra/Matrix.hpp"
-#include "src/Math/DiscreteLogarithm.hpp"
+#include "mylib/Math/ModInt_Runtime.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/Math/DiscreteLogarithm.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

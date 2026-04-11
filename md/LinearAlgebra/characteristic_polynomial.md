@@ -1,6 +1,6 @@
 ---
 title: 行列の特性多項式 他
-documentation_of: ../../src/LinearAlgebra/characteristic_polynomial.hpp
+documentation_of: ../../mylib/LinearAlgebra/characteristic_polynomial.hpp
 ---
 
 

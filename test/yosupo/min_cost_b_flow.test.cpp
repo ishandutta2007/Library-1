@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Optimization/NetworkSimplex.hpp"
+#include "mylib/Optimization/NetworkSimplex.hpp"
 using namespace std;
 ostream &operator<<(ostream &stream, const __int128_t &v) {
  if (v == 0) stream << "0";

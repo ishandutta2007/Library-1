@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
-#include "src/Optimization/fibonacci_search.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Optimization/fibonacci_search.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/bostan_mori.hpp"
-#include "src/FFT/convolve.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/bostan_mori.hpp"
+#include "mylib/FFT/convolve.hpp"
 using namespace std;
 
 using Mint= ModInt<int(1e9 + 7)>;

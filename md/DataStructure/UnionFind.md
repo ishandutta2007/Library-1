@@ -1,6 +1,6 @@
 ---
 title: Union-Find
-documentation_of: ../../src/DataStructure/UnionFind.hpp
+documentation_of: ../../mylib/DataStructure/UnionFind.hpp
 ---
 
 ## `UnionFind` クラス

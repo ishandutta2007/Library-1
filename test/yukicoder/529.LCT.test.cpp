@@ -5,9 +5,9 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/IncrementalBridgeConnectivity.hpp"
-#include "src/DataStructure/LinkCutTree.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/IncrementalBridgeConnectivity.hpp"
+#include "mylib/DataStructure/LinkCutTree.hpp"
 using namespace std;
 struct RmaxQ {
  using T= pair<long long, int>;

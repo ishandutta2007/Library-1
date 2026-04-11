@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <numeric>
 #include <cstdint>
-#include "src/DataStructure/SegmentTree.hpp"
+#include "mylib/DataStructure/SegmentTree.hpp"
 using namespace std;
 struct Mono {
  struct T {

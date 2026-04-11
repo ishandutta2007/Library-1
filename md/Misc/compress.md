@@ -1,4 +1,4 @@
 ---
 title: 座標圧縮
-documentation_of: ../../src/Misc/compress.hpp
+documentation_of: ../../mylib/Misc/compress.hpp
 ---

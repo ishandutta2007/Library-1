@@ -5,8 +5,8 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "src/Geometry/Circle.hpp"
-#include "src/Geometry/Polygon.hpp"
+#include "mylib/Geometry/Circle.hpp"
+#include "mylib/Geometry/Polygon.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

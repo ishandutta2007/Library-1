@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <vector>
 #include <array>
-#include "src/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

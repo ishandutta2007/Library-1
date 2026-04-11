@@ -4,7 +4,7 @@
 // reverse, split, + の verify
 
 #include <iostream>
-#include "src/DataStructure/RandomizedBinarySearchTree.hpp"
+#include "mylib/DataStructure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;

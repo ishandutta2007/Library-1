@@ -1,6 +1,6 @@
 ---
 title: Rolling-Hash
-documentation_of: ../../src/String/RollingHash.hpp
+documentation_of: ../../mylib/String/RollingHash.hpp
 ---
 ## `RollingHash<K, Int=int>` クラス
 

@@ -6,11 +6,11 @@
 #include <array>
 #include <tuple>
 
-#include "src/Math/ModInt.hpp"
-#include "src/DataStructure/UnionFind.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/HeavyLightDecomposition.hpp"
-#include "src/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/DataStructure/UnionFind.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
 using namespace std;
 struct RMQ {
  using T= int;

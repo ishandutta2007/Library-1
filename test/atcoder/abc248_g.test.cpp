@@ -4,10 +4,10 @@
 // competitive-verifier: MLE 2048
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/Graph/Graph.hpp"
-#include "src/Graph/Rerooting.hpp"
-#include "src/NumberTheory/ArrayOnDivisors.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/Graph/Graph.hpp"
+#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/NumberTheory/ArrayOnDivisors.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

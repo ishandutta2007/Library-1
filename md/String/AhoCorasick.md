@@ -1,6 +1,6 @@
 ---
 title: Aho-Corasick
-documentation_of: ../../src/String/AhoCorasick.hpp
+documentation_of: ../../mylib/String/AhoCorasick.hpp
 ---
 ## `AhoCorasick<String>` クラス
 pattern と suffix がマッチする文字列を受理するDFA. \

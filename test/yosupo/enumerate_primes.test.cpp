@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 2048
 #include <iostream>
 #include <vector>
-#include "src/NumberTheory/enumerate_primes.hpp"
+#include "mylib/NumberTheory/enumerate_primes.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

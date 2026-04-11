@@ -1,6 +1,6 @@
 ---
 title: 多項式の評価点シフト
-documentation_of: ../../src/FFT/sample_points_shift.hpp
+documentation_of: ../../mylib/FFT/sample_points_shift.hpp
 ---
 次数 $n-1$ 以下の多項式 $f(x)$ について、$y_i = f(i) \ (i=0, 1, \dots, n-1)$ が与えられたとき、$f(c), f(c+1), \dots, f(c+m-1)$ を計算する。
 
@@ -30,8 +30,8 @@ $O((n+m)\log(n+m))$
 ```cpp
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/sample_points_shift.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/sample_points_shift.hpp"
 
 int main() {
     using Mint = ModInt<998244353>;

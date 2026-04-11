@@ -1,6 +1,6 @@
 ---
 title: Li-Chao-Tree
-documentation_of: ../../src/Optimization/LiChaoTree.hpp
+documentation_of: ../../mylib/Optimization/LiChaoTree.hpp
 ---
 ( 例えば 一次関数などの ) 高々一点で交わる $x$ の関数の集合
 

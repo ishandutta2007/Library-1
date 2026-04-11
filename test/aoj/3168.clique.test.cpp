@@ -4,7 +4,7 @@
 // 300 頂点
 #include <iostream>
 #include <algorithm>
-#include "src/Graph/CliqueProblem.hpp"
+#include "mylib/Graph/CliqueProblem.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

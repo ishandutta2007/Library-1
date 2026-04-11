@@ -2,10 +2,10 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "src/DataStructure/UnionFind_Potentialized_Undoable.hpp"
-#include "src/Math/ModInt.hpp"
-#include "src/LinearAlgebra/Matrix.hpp"
-#include "src/Math/Algebra.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/Math/Algebra.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 using Mat= Matrix<Mint>;

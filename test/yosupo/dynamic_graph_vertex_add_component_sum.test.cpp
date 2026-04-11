@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 3
 // competitive-verifier: MLE 512
 #include <iostream>
-#include "src/DataStructure/OnlineDynamicConnectivity.hpp"
+#include "mylib/DataStructure/OnlineDynamicConnectivity.hpp"
 using namespace std;
 struct Monoid {
  using T= long long;

@@ -1,6 +1,6 @@
 ---
 title: Splay-Tree
-documentation_of: ../../src/DataStructure/SplayTree.hpp
+documentation_of: ../../mylib/DataStructure/SplayTree.hpp
 ---
 
 ## 概要

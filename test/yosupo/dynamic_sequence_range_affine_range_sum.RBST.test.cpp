@@ -5,8 +5,8 @@
 
 #include <iostream>
 #include <array>
-#include "src/DataStructure/RandomizedBinarySearchTree.hpp"
-#include "src/Math/ModInt.hpp"
+#include "mylib/DataStructure/RandomizedBinarySearchTree.hpp"
+#include "mylib/Math/ModInt.hpp"
 using namespace std;
 
 using Mint= ModInt<998244353>;

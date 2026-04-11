@@ -1,6 +1,6 @@
 ---
 title: 約数配列
-documentation_of: ../../src/NumberTheory/ArrayOnDivisors.hpp
+documentation_of: ../../mylib/NumberTheory/ArrayOnDivisors.hpp
 ---
 
 

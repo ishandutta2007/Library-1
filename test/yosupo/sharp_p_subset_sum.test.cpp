@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "src/Math/ModInt.hpp"
-#include "src/FFT/fps_exp.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/FFT/fps_exp.hpp"
 using namespace std;
 // log(1+x^s_1)(1+x^s_2)...(1+x^s_N)=log(1+x^s_1)+log(1+x^s_2)+...log(1+x^s_N)
 // log(1+x)=x-x^2/2+x^3/3-x^4/4...

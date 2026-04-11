@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "src/NumberTheory/CumSumQuotient.hpp"
-#include "src/NumberTheory/sum_on_primes.hpp"
-#include "src/NumberTheory/DirichletSeries.hpp"
-#include "src/NumberTheory/enumerate_quotients.hpp"
+#include "mylib/NumberTheory/CumSumQuotient.hpp"
+#include "mylib/NumberTheory/sum_on_primes.hpp"
+#include "mylib/NumberTheory/DirichletSeries.hpp"
+#include "mylib/NumberTheory/enumerate_quotients.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

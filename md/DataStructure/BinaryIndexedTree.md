@@ -1,6 +1,6 @@
 ---
 title: Binary Indexed Tree
-documentation_of: ../../src/DataStructure/BinaryIndexedTree.hpp
+documentation_of: ../../mylib/DataStructure/BinaryIndexedTree.hpp
 ---
 
 ## 概要 (Description)

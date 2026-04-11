@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "src/Math/Nimber.hpp"
-#include "src/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/Math/Nimber.hpp"
+#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

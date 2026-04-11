@@ -5,9 +5,9 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "src/Math/Rational.hpp"
-#include "src/Geometry/Polygon.hpp"
-#include "src/DataStructure/RangeSet.hpp"
+#include "mylib/Math/Rational.hpp"
+#include "mylib/Geometry/Polygon.hpp"
+#include "mylib/DataStructure/RangeSet.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

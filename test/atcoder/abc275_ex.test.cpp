@@ -5,8 +5,8 @@
 // https://atcoder.jp/contests/abc275/tasks/abc275_h
 #include <iostream>
 #include <vector>
-#include "src/Misc/CartesianTree.hpp"
-#include "src/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/Misc/CartesianTree.hpp"
+#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

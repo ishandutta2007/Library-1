@@ -5,7 +5,7 @@
 // https://atcoder.jp/contests/s8pc-2/tasks/s8pc_2_e
 #include <iostream>
 #include <string>
-#include "src/String/SuffixArray.hpp"
+#include "mylib/String/SuffixArray.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

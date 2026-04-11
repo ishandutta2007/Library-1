@@ -5,7 +5,7 @@
 // N=2*10^5, Q=2*10^5, KDTはTLE
 #include <iostream>
 #include <vector>
-#include "src/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/DataStructure/SegmentTree_2D.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;

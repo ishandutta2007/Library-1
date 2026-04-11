@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "src/Math/ModInt.hpp"
-#include "src/NumberTheory/ArrayOnDivisors.hpp"
-#include "src/Math/FactorialPrecalculation.hpp"
+#include "mylib/Math/ModInt.hpp"
+#include "mylib/NumberTheory/ArrayOnDivisors.hpp"
+#include "mylib/Math/FactorialPrecalculation.hpp"
 // 倍数メビウス
 using namespace std;
 signed main() {

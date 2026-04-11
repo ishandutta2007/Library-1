@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "src/Geometry/Segment.hpp"
+#include "mylib/Geometry/Segment.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

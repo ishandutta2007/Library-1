@@ -1,6 +1,6 @@
 ---
 title: スターリング数 (小さい素数 mod)
-documentation_of: ../../src/Math/StirlingNumber.hpp
+documentation_of: ../../mylib/Math/StirlingNumber.hpp
 ---
 
 ## 概要
@@ -34,7 +34,7 @@ Lucasの定理と同様の性質を利用して、$O(p^2)$ の前処理ののち
 ## コード
 ```cpp
 #include <iostream>
-#include "src/Math/StirlingNumber.hpp"
+#include "mylib/Math/StirlingNumber.hpp"
 
 int main() {
     long long n = 1000000000000000000;

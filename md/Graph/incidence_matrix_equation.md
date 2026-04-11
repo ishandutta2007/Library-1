@@ -1,6 +1,6 @@
 ---
 title: 接続行列の連立方程式
-documentation_of: ../../src/Graph/incidence_matrix_equation.hpp
+documentation_of: ../../mylib/Graph/incidence_matrix_equation.hpp
 ---
 
 |関数名|概要|計算量|

@@ -1,6 +1,6 @@
 /**
  * C++ バンドラー CLI
- * #include "src/..." を再帰的に展開して1ファイルにまとめる
+ * #include "mylib/..." を再帰的に展開して1ファイルにまとめる
  *
  * Usage: npx tsx scripts/bundle.ts <input.cpp> [-I <dir>] [--strip <pattern>...]
  *

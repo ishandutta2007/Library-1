@@ -4,7 +4,7 @@
 #include <iostream>
 #include <array>
 #include <algorithm>
-#include "src/Optimization/ConvexHullTrick.hpp"
+#include "mylib/Optimization/ConvexHullTrick.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

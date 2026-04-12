@@ -1,5 +1,3 @@
-.clang-format
-.vscode
 .DS_Store
 test/aoj/0016*.test.cpp
 test/aoj/0090*.test.cpp

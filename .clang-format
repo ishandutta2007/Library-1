@@ -1,0 +1,17 @@
+BasedOnStyle: Google
+IndentWidth: 1
+BreakStringLiterals: false
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AlwaysBreakTemplateDeclarations: MultiLine
+SeparateDefinitionBlocks: Never
+SpaceBeforeCtorInitializerColon: false
+SpaceBeforeInheritanceColon: false
+SpaceBeforeRangeBasedForLoopColon: false
+FixNamespaceComments: false
+EmptyLineBeforeAccessModifier: Never
+ColumnLimit: 1000
+AlignEscapedNewlines: DontAlign
+SpaceBeforeAssignmentOperators: false
+SortIncludes: false
+SpaceBeforeParens: Never
+AllowShortCaseLabelsOnASingleLine: true

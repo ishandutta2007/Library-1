@@ -43,7 +43,7 @@ interface MergedProblem {
 
 // hpp 間の依存グラフ構築
 function buildDependsOn(): Record<string, string[]> {
-  const srcDir = path.join(ROOT, 'src')
+  const srcDir = path.join(ROOT, 'mylib')
   const dependsOn: Record<string, string[]> = {}
 
   function scan(dir: string) {
@@ -54,7 +54,7 @@ function buildDependsOn(): Record<string, string[]> {
         const content = fs.readFileSync(full, 'utf-8')
         const rel = path.relative(ROOT, full)
         const deps: string[] = []
-        for (const m of content.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) {
+        for (const m of content.matchAll(/#include\s+"(mylib\/[^"]+\.hpp)"/g)) {
           deps.push(m[1])
         }
         dependsOn[rel] = deps
@@ -99,7 +99,7 @@ function buildHppMap(): Record<string, string[]> {
         const content = fs.readFileSync(full, 'utf-8')
         const rel = path.relative(ROOT, full)
         const directIncludes: string[] = []
-        for (const m of content.matchAll(/#include\s+"(src\/[^"]+\.hpp)"/g)) {
+        for (const m of content.matchAll(/#include\s+"(mylib\/[^"]+\.hpp)"/g)) {
           directIncludes.push(m[1])
         }
         // 直接 include + 推移的依存すべてにテストを紐付け

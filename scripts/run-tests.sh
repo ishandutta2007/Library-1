@@ -247,8 +247,11 @@ run_test_file() {
   # コンパイル
   local binary
   binary=$(mktemp)
-  if ! ${CXX} ${CXXFLAGS} -I"${ROOT}" -o "${binary}" "${test_file}" 2>/dev/null; then
+  local compile_err
+  compile_err=$(mktemp)
+  if ! ${CXX} ${CXXFLAGS} -I"${ROOT}" -o "${binary}" "${test_file}" 2>"${compile_err}"; then
     echo "  [CE] ${rel_path}"
+    head -20 "${compile_err}" | sed 's/^/    /'
     # CE の結果を記録
     cat <<JSONEOF >> "${RESULT_FILE}"
 ,{
@@ -260,9 +263,10 @@ run_test_file() {
   "cases": []
 }
 JSONEOF
-    rm -f "${binary}"
+    rm -f "${binary}" "${compile_err}"
     return
   fi
+  rm -f "${compile_err}"
 
   if [[ "${IS_STANDALONE}" == true ]]; then
     # STANDALONE: テストケース不要、プログラム自体がテストを実行

@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // O(N^(3/4)/logN))
 #include <iostream>
-#include "mylib/NumberTheory/sum_on_primes.hpp"
+#include "mylib/number_theory/sum_on_primes.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

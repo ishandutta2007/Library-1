@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -16,21 +16,21 @@ signed main(stringstream& scin, stringstream& scout) {
  int T;
  scin >> T;
  using PLC= PiecewiseLinearConvex<long long>;
- while (T--) {
+ while(T--) {
   int N;
   scin >> N;
   string S;
   scin >> S;
   vector<int> L;
-  for (int i= 0; i < N; ++i) {
-   if (S[i] == '0') continue;
+  for(int i= 0; i < N; ++i) {
+   if(S[i] == '0') continue;
    L.push_back(i);
   }
-  if (L.size() == 0) {
+  if(L.size() == 0) {
    scout << 0 << '\n';
    continue;
   }
-  if ((int)L.size() > (N + 1) / 2) {
+  if((int)L.size() > (N + 1) / 2) {
    scout << "impossible" << '\n';
    continue;
   }
@@ -38,7 +38,7 @@ signed main(stringstream& scin, stringstream& scout) {
   PLC f;
   f.add_inf();
   f.add_abs(1, L[0]);
-  for (int i= 1; i < n; ++i) {
+  for(int i= 1; i < n; ++i) {
    f.chmin_cum();
    f.shift(2);
    f.add_abs(1, L[i]);
@@ -55,21 +55,21 @@ signed main(stringstream& scin, stringstream& scout) {
  int T;
  scin >> T;
  using PLC= PiecewiseLinearConvex<long long>;
- while (T--) {
+ while(T--) {
   int N;
   scin >> N;
   string S;
   scin >> S;
   vector<int> L;
-  for (int i= 0; i < N; ++i) {
-   if (S[i] == '0') continue;
+  for(int i= 0; i < N; ++i) {
+   if(S[i] == '0') continue;
    L.push_back(i);
   }
-  if (L.size() == 0) {
+  if(L.size() == 0) {
    scout << 0 << '\n';
    continue;
   }
-  if ((int)L.size() > (N + 1) / 2) {
+  if((int)L.size() > (N + 1) / 2) {
    scout << "impossible" << '\n';
    continue;
   }
@@ -79,7 +79,7 @@ signed main(stringstream& scin, stringstream& scout) {
   f.add_linear(-L[0]);
   f.chmin_slide_win(-1, 1);
   f.add_linear(L[0]);
-  for (int i= 1; i < n; ++i) {
+  for(int i= 1; i < n; ++i) {
    f.add_inf(true);
    f.add_linear(2);
    f.add_linear(-L[i]);

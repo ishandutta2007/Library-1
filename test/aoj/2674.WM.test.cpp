@@ -4,7 +4,7 @@
 // range_freq
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/WaveletMatrix.hpp"
+#include "mylib/data_structure/WaveletMatrix.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,11 +12,11 @@ signed main() {
  int D;
  cin >> D;
  vector<int> x(D);
- for (int i= 0; i < D; i++) cin >> x[i];
+ for(int i= 0; i < D; i++) cin >> x[i];
  WaveletMatrix wm(x);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int l, r, e;
   cin >> l >> r >> e, l--, r--;
   int a= min(x[l], x[r]) - e, b= max(x[l], x[r]) + e + 1;

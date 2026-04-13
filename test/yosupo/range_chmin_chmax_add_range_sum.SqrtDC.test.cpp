@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/SortedPerBucket.hpp"
+#include "mylib/data_structure/SortedPerBucket.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,19 +11,19 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<long long> a(N);
- for (int i= 0; i < N; i++) cin >> a[i];
+ for(int i= 0; i < N; i++) cin >> a[i];
  SortedPerBucket<long long> sqrtdc(a);
- while (Q--) {
+ while(Q--) {
   int op, l, r;
   cin >> op >> l >> r;
-  if (op == 3) {
+  if(op == 3) {
    cout << sqrtdc.sum(l, r) << '\n';
   } else {
    long long b;
    cin >> b;
-   if (op == 0) sqrtdc.chmin(l, r, b);
-   if (op == 1) sqrtdc.chmax(l, r, b);
-   if (op == 2) sqrtdc.add(l, r, b);
+   if(op == 0) sqrtdc.chmin(l, r, b);
+   if(op == 1) sqrtdc.chmax(l, r, b);
+   if(op == 2) sqrtdc.add(l, r, b);
   }
  }
  return 0;

@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/berlekamp_massey.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/berlekamp_massey.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,10 +13,10 @@ signed main() {
  int N;
  cin >> N;
  vector<Mint> a(N);
- for (int i= 0; i < N; i++) cin >> a[i];
+ for(int i= 0; i < N; i++) cin >> a[i];
  vector<Mint> c= berlekamp_massey(a);
  int d= c.size();
  cout << d << '\n';
- for (int i= 0; i < d; i++) cout << c[i] << " \n"[i == d - 1];
+ for(int i= 0; i < d; i++) cout << c[i] << " \n"[i == d - 1];
  return 0;
 }

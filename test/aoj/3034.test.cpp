@@ -6,8 +6,8 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
-#include "mylib/Geometry/Circle.hpp"
-#include "mylib/Geometry/min_enclosing_circle.hpp"
+#include "mylib/geometry/Circle.hpp"
+#include "mylib/geometry/min_enclosing_circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,20 +17,20 @@ signed main() {
  int N, M;
  cin >> N >> M;
  vector<Point<R>> ps(N);
- for (int i= 0; i < N; ++i) cin >> ps[i];
+ for(int i= 0; i < N; ++i) cin >> ps[i];
  int all= 1 << N;
  R min_r[all];
- for (int S= all; --S;) {
+ for(int S= all; --S;) {
   vector<Point<R>> qs;
-  for (int i= N; i--;)
-   if ((S >> i) & 1) qs.push_back(ps[i]);
+  for(int i= N; i--;)
+   if((S >> i) & 1) qs.push_back(ps[i]);
   min_r[S]= min_enclosing_circle(qs).r;
  }
  R dp[all];
  fill_n(dp, all, 1e10), dp[0]= 0;
- for (int j= M; j--;)
-  for (int S= all; --S;)
-   for (int T= S; T; --T&= S) dp[S]= min(dp[S], max(dp[S ^ T], min_r[T]));
+ for(int j= M; j--;)
+  for(int S= all; --S;)
+   for(int T= S; T; --T&= S) dp[S]= min(dp[S], max(dp[S ^ T], min_r[T]));
  cout << fixed << setprecision(12) << dp[all - 1] << '\n';
  return 0;
 }

@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/WaveletMatrix.hpp"
+#include "mylib/data_structure/WaveletMatrix.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,13 +11,13 @@ signed main() {
  int N;
  cin >> N;
  int A[N], L[N], R[N];
- for (int i= 0; i < N; i++) cin >> A[i];
- for (int i= 0; i < N; i++) cin >> L[i] >> R[i];
+ for(int i= 0; i < N; i++) cin >> A[i];
+ for(int i= 0; i < N; i++) cin >> L[i] >> R[i];
  vector<int> r(N);
- for (int i= 0; i < N; i++) r[i]= A[i] + R[i];
+ for(int i= 0; i < N; i++) r[i]= A[i] + R[i];
  WaveletMatrix wm(r);
  long long ans= 0;
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   int left= lower_bound(A, A + N, A[i] - L[i]) - A;
   ans+= wm.count(left, i, A[i], 0x7fffffff);
  }

@@ -1,7 +1,8 @@
 ---
 title: 多項式の評価点シフト
-documentation_of: ../../mylib/FFT/sample_points_shift.hpp
+documentation_of: ../../mylib/fft/sample_points_shift.hpp
 ---
+
 次数 $n-1$ 以下の多項式 $f(x)$ について、$y_i = f(i) \ (i=0, 1, \dots, n-1)$ が与えられたとき、$f(c), f(c+1), \dots, f(c+m-1)$ を計算する。
 
 ## `sample_points_shift`
@@ -11,27 +12,30 @@ template <class mod_t, size_t LM= 1 << 23>
 std::vector<mod_t> sample_points_shift(const std::vector<mod_t>& y, mod_t c, int m);
 ```
 
-|引数・返り値|概要|
-|---|---|
-|`const std::vector<mod_t>& y`|多項式 $f(x)$ の $x=0, 1, \dots, n-1$ での評価値 $y_0, y_1, \dots, y_{n-1}$ を格納した `vector`。$n$ は `y.size()`。|
-|`mod_t c`|シフト先の開始点。|
-|`int m`|求める評価点の個数。|
-|`std::vector<mod_t>` (返り値)|$f(c), f(c+1), \dots, f(c+m-1)$ の値を格納した `vector`。|
+| 引数・返り値                  | 概要                                                                                                                 |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `const std::vector<mod_t>& y` | 多項式 $f(x)$ の $x=0, 1, \dots, n-1$ での評価値 $y_0, y_1, \dots, y_{n-1}$ を格納した `vector`。$n$ は `y.size()`。 |
+| `mod_t c`                     | シフト先の開始点。                                                                                                   |
+| `int m`                       | 求める評価点の個数。                                                                                                 |
+| `std::vector<mod_t>` (返り値) | $f(c), f(c+1), \dots, f(c+m-1)$ の値を格納した `vector`。                                                            |
 
 ### 制約
+
 - `y.size() <= mod`
 - `m <= mod`
 - `mod_t` は `ModInt` のような剰余環のクラスであること。
 
 ### 計算量
+
 $O((n+m)\log(n+m))$
 
 ### 使用例
+
 ```cpp
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/sample_points_shift.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/sample_points_shift.hpp"
 
 int main() {
     using Mint = ModInt<998244353>;

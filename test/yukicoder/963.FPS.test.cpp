@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/FormalPowerSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/FormalPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  int N;
  cin >> N;
  Mint ans= f[N] * 2;
- for (int i= N; i; i--) ans*= i;
+ for(int i= N; i; i--) ans*= i;
  cout << ans << '\n';
  return 0;
 }

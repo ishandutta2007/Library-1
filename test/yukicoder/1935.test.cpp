@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <array>
-#include "mylib/Misc/Period.hpp"
+#include "mylib/misc/Period.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  Dat V;
  long long N;
  cin >> V[0] >> V[1] >> V[2] >> V[3] >> N;
- auto f= [&](int &a, int &b, int v) {
+ auto f= [&](int& a, int& b, int v) {
   int x= min(a, v - b);
   a-= x, b+= x;
  };
@@ -27,7 +27,7 @@ signed main() {
  Period<Dat> p(g, {init});
  auto [q, r]= div(N, 4LL);
  auto v= p.jump(init, q);
- for (int i= 0; i < r; ++i) f(v[i], v[i + 1], V[i + 1]);
+ for(int i= 0; i < r; ++i) f(v[i], v[i + 1], V[i + 1]);
  cout << v[0] << ' ' << v[1] << ' ' << v[2] << ' ' << v[3] << '\n';
  return 0;
 }

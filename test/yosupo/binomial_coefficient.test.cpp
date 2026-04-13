@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/BinomialCoefficient.hpp"
+#include "mylib/algebra/BinomialCoefficient.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -10,7 +10,7 @@ int main() {
  int T, m;
  cin >> T >> m;
  const BinomialCoefficient binom(m);
- while (T--) {
+ while(T--) {
   long long n, k;
   cin >> n >> k;
   cout << binom.nCr(n, k) << '\n';

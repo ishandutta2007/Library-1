@@ -3,8 +3,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/sparse_fps.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/sparse_fps.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

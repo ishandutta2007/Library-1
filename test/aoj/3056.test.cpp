@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <vector>
-#include "mylib/Geometry/Point.hpp"
+#include "mylib/geometry/Point.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,12 +17,12 @@ signed main() {
  int N;
  cin >> N;
  vector<Point<R>> ps(N);
- for (int i= 0; i < N; i++) cin >> ps[i];
+ for(int i= 0; i < N; i++) cin >> ps[i];
  R ans= 1e12;
- for (int i= N; i--;) {
+ for(int i= N; i--;) {
   auto p= ps[i], q= ps[(i + 1) % N], v= q - p;
   R mx= 0, mn= 0;
-  for (const auto &r: ps) {
+  for(const auto& r: ps) {
    auto w= r - p;
    R y= cross(v, w), x= dot(v, w), yy= y / sq3;
    mx= max(mx, x + yy), mn= min(mn, x - yy);

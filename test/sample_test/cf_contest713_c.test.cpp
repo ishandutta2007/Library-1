@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -16,7 +16,7 @@ signed main(stringstream& scin, stringstream& scout) {
  int n;
  scin >> n;
  PiecewiseLinearConvex<int> f;
- for (int i= 0; i < n; ++i) {
+ for(int i= 0; i < n; ++i) {
   int a;
   scin >> a;
   f.chmin_cum();
@@ -33,7 +33,7 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> n;
  PiecewiseLinearConvex<int> f;
  f.add_inf();
- for (int i= 0; i < n; ++i) {
+ for(int i= 0; i < n; ++i) {
   int a;
   scin >> a;
   f.add_inf(true);

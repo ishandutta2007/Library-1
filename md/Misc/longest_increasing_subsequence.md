@@ -1,6 +1,6 @@
 ---
 title: 最長増加部分列
-documentation_of: ../../mylib/Misc/longest_increasing_subsequence.hpp
+documentation_of: ../../mylib/misc/longest_increasing_subsequence.hpp
 ---
 
 | 関数| 概要| 計算量 |

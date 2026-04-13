@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // 行列累乗
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
 using namespace std;
 signed main() {
@@ -13,7 +13,7 @@ signed main() {
  long long N, M, T;
  cin >> N >> M >> T;
  Matrix<Mint> mat(N, N);
- while (M--) {
+ while(M--) {
   int s, t;
   cin >> s >> t;
   mat[s][t]= mat[t][s]= 1;

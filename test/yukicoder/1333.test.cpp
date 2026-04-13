@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <tuple>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  cin >> N;
  Graph g(N, N - 1);
  vector<Mint> w(N - 1);
- for (int i= 0; i < N - 1; ++i) cin >> g[i] >> w[i], --g[i];
+ for(int i= 0; i < N - 1; ++i) cin >> g[i] >> w[i], --g[i];
  using Data= tuple<int, Mint, Mint>;
  auto put_edge= [&](int, int e, const Data& d) {
   auto [d0, d1, d2]= d;
@@ -28,7 +28,7 @@ signed main() {
  };
  auto put_vertex= [&](int, const Data& d) { return d; };
  Mint ans= 0;
- for (auto [_, __, x]: Rerooting<Data>(g, put_edge, op, Data{0, 0, 0}, put_vertex)) ans+= x;
+ for(auto [_, __, x]: Rerooting<Data>(g, put_edge, op, Data{0, 0, 0}, put_vertex)) ans+= x;
  cout << ans / 2 << '\n';
  return 0;
 }

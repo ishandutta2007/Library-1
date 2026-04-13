@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/arc090/tasks/arc090_b
 #include <iostream>
-#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  cin >> N >> M;
  UnionFind_Potentialized<long long> uf(N);
  bool isok= true;
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   int L, R, D;
   cin >> L >> R >> D, --L, --R;
   isok&= uf.unite(L, R, D);

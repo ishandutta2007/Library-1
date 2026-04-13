@@ -7,7 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <queue>
-#include "mylib/Graph/RangeToRangeGraph.hpp"
+#include "mylib/graph/RangeToRangeGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  int N, M;
  cin >> N >> M;
  RangeToRangeGraph<int> r2r(N);
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   int L, R, C;
   cin >> L >> R >> C;
   --L;
@@ -29,15 +29,15 @@ signed main() {
  priority_queue<pair<long long, int>> pq;
  pq.emplace(0, 0);
  dist[0]= 0;
- while (!pq.empty()) {
+ while(!pq.empty()) {
   auto [d, v]= pq.top();
   pq.pop();
-  if (-d != dist[v]) continue;
-  for (auto e: adj[v]) {
+  if(-d != dist[v]) continue;
+  for(auto e: adj[v]) {
    int u= r2r.graph[e].to(v);
    int w= r2r.weight[e];
    long long cost= dist[v] + w;
-   if (dist[u] > cost) {
+   if(dist[u] > cost) {
     dist[u]= cost;
     pq.emplace(-cost, u);
    }

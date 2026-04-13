@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "mylib/String/z_algorithm.hpp"
+#include "mylib/string/z_algorithm.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,6 +13,6 @@ signed main() {
  cin >> s;
  vector<int> ans= z_algorithm(s);
  int N= s.length();
- for (int i= 0; i < N; i++) cout << ans[i] << " \n"[i == N - 1];
+ for(int i= 0; i < N; i++) cout << ans[i] << " \n"[i == N - 1];
  return 0;
 }

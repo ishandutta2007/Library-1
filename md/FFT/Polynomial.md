@@ -1,4 +1,4 @@
 ---
 title: 多項式
-documentation_of: ../../mylib/FFT/Polynomial.hpp
+documentation_of: ../../mylib/fft/Polynomial.hpp
 ---

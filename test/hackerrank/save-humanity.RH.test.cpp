@@ -4,10 +4,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/String/RollingHash.hpp"
-#include "mylib/Misc/rng.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/string/RollingHash.hpp"
+#include "mylib/misc/rng.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -22,17 +22,17 @@ signed main() {
   int l= lcp(a, b);
   return l == b.length() || a.sub(l + 1) == b.sub(l + 1);
  };
- while (t--) {
+ while(t--) {
   string p, v;
   cin >> p >> v;
   RH rhp(p), rhv(v);
   int n= p.size(), m= v.size();
   vector<int> ans;
-  for (int i= 0; i + m <= n; ++i)
-   if (check(rhp.sub(i, m), rhv)) ans.push_back(i);
-  if (ans.empty()) cout << "No Match!" << '\n';
+  for(int i= 0; i + m <= n; ++i)
+   if(check(rhp.sub(i, m), rhv)) ans.push_back(i);
+  if(ans.empty()) cout << "No Match!" << '\n';
   else
-   for (int i= 0, e= ans.size(); i < e; ++i) cout << ans[i] << " \n"[i + 1 == e];
+   for(int i= 0, e= ans.size(); i < e; ++i) cout << ans[i] << " \n"[i + 1 == e];
  }
  return 0;
 }

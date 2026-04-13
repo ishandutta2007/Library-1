@@ -1,6 +1,6 @@
 ---
 title: 二点連結成分分解 (Block-Cut Tree)
-documentation_of: ../../mylib/Graph/block_cut_tree.hpp
+documentation_of: ../../mylib/graph/block_cut_tree.hpp
 ---
 
 無向グラフを二点連結成分分解し、その構造を木で表現する Block-Cut Tree を構築する。

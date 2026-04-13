@@ -4,7 +4,7 @@
 
 // 融合永続, split, split3
 #include <iostream>
-#include "mylib/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/data_structure/WeightBalancedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,21 +17,21 @@ signed main() {
  WBT wbt(str.data(), str.data() + str.length());
  int N;
  cin >> N;
- while (N--) {
+ while(N--) {
   int a, b, c;
   cin >> a >> b >> c;
   auto [x, y, z]= wbt.split3(a, b);
   tie(x, z)= wbt.split(c);
   wbt= x + y + z;
-  if ((int)wbt.size() > M) wbt= wbt.split(M).first;
-  if (WBT::pool_empty()) {
+  if((int)wbt.size() > M) wbt= wbt.split(M).first;
+  if(WBT::pool_empty()) {
    auto dump= wbt.dump();
    WBT::reset();
    wbt= WBT(dump);
   }
  }
  auto ans= wbt.dump();
- for (auto& a: ans) cout << a;
+ for(auto& a: ans) cout << a;
  cout << '\n';
  return 0;
 }

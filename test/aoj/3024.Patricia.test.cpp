@@ -4,7 +4,7 @@
 // 永続化のverify
 
 #include <iostream>
-#include "mylib/DataStructure/SegmentTree_Patricia.hpp"
+#include "mylib/data_structure/SegmentTree_Patricia.hpp"
 using namespace std;
 struct RMQ {
  using T= int;
@@ -17,18 +17,18 @@ signed main() {
  int N;
  cin >> N;
  int A[N], B[N];
- for (int i= 0; i < N; i++) cin >> A[i];
- for (int i= 0; i < N; i++) cin >> B[i];
+ for(int i= 0; i < N; i++) cin >> A[i];
+ for(int i= 0; i < N; i++) cin >> B[i];
  SegmentTree_Patricia<RMQ, true> seg[2]= {SegmentTree_Patricia<RMQ, true>(A, A + N), SegmentTree_Patricia<RMQ, true>(B, B + N)};
  int Q;
  cin >> Q;
- for (int i= 0; i < Q; i++) {
+ for(int i= 0; i < Q; i++) {
   int x, y, z;
   cin >> x >> y >> z;
-  if (x <= 2) {
+  if(x <= 2) {
    x--, y--;
    seg[x].set(y, z);
-  } else if (x <= 4) {
+  } else if(x <= 4) {
    x-= 3, y--;
    cout << seg[x].prod(y, z) << '\n';
   } else {

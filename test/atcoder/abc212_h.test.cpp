@@ -5,8 +5,8 @@
 // アダマール変換
 #include <iostream>
 #include <algorithm>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/set_power_series.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/set_power_series.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,9 +16,9 @@ signed main() {
  int N, K;
  cin >> N >> K;
  vector<Mint> a(n);
- for (int i= 0, A; i < K; ++i) cin >> A, a[A]+= 1;
+ for(int i= 0, A; i < K; ++i) cin >> A, a[A]+= 1;
  sps::hadamard(a);
- for (auto &x: a) x= x == 1 ? N : (x.pow(N) - 1) / (x - 1) * x;
+ for(auto& x: a) x= x == 1 ? N : (x.pow(N) - 1) / (x - 1) * x;
  sps::hadamard(a);
  Mint all= K == 1 ? N : (Mint(K).pow(N) - 1) / (K - 1) * K;
  cout << all - a[0] / n << '\n';

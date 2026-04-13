@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/tables.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/tables.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,10 +14,10 @@ signed main() {
  int N, K;
  cin >> N >> K;
  vector<Mint> a(K + 1);
- for (int i= 1; i <= K; ++i) a[i]= Mint(K / i).pow(N);
+ for(int i= 1; i <= K; ++i) a[i]= Mint(K / i).pow(N);
  multiple_mobius(a);
  Mint ans= 0;
- for (int i= 1; i <= K; ++i) ans+= a[i] * i;
+ for(int i= 1; i <= K; ++i) ans+= a[i] * i;
  cout << ans << '\n';
  return 0;
 }

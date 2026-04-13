@@ -1,6 +1,6 @@
 ---
 title: Convex-Hull-Trick
-documentation_of: ../../mylib/Optimization/ConvexHullTrick.hpp
+documentation_of: ../../mylib/optimization/ConvexHullTrick.hpp
 ---
 
 `ConvexHullTrick`は、直線の集合に対して、あるx座標での最小値（または最大値）を高速に求めるデータ構造です。

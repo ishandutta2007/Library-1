@@ -2,14 +2,14 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/mod_sqrt.hpp"
+#include "mylib/algebra/mod_sqrt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int T;
  cin >> T;
- while (T--) {
+ while(T--) {
   int Y, P;
   cin >> Y >> P;
   cout << mod_sqrt(Y, P) << '\n';

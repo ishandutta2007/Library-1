@@ -6,7 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-#include "mylib/Optimization/fibonacci_search.hpp"
+#include "mylib/optimization/fibonacci_search.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

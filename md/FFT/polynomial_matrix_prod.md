@@ -1,6 +1,8 @@
 ---
 title: 多項式行列の総積
-documentation_of: ../../mylib/FFT/polynomial_matrix_prod.hpp
+documentation_of: ../../mylib/fft/polynomial_matrix_prod.hpp
 ---
+
 ## 計算量
+
 $O( \sqrt{k}\log k \;\mathrm{poly}(d) )$

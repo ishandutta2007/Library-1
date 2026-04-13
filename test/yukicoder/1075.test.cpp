@@ -4,9 +4,9 @@
 #include <iostream>
 #include <array>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,32 +15,32 @@ signed main() {
  int N, K;
  cin >> N >> K;
  Graph g(N, N - 1);
- for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
+ for(int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
  HeavyLightDecomposition tree(g, 0);
  using Data= vector<Mint>;
- auto put_edge= [&](int, int, const Data &d) { return d; };
- auto op= [&](Data l, const Data &r) {
-  for (int i= K; i--;) l[i]*= r[i];
+ auto put_edge= [&](int, int, const Data& d) { return d; };
+ auto op= [&](Data l, const Data& r) {
+  for(int i= K; i--;) l[i]*= r[i];
   return l;
  };
  auto put_vertex= [&](int, Data d) {
-  for (int i= 1; i < K; ++i) d[i]+= d[i - 1];
+  for(int i= 1; i < K; ++i) d[i]+= d[i - 1];
   return d;
  };
  Rerooting<Data> dp(g, tree, put_edge, op, Data(K, 1), put_vertex);
  auto adj= g.adjacency_vertex(0);
  Mint ans= 0;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   Data a(K, 1);
-  for (int j: adj[i]) {
+  for(int j: adj[i]) {
    Data b= dp(i, j);
-   if (j == tree.parent(i)) {
-    for (int k= 1; k < K; ++k) a[k]*= b[k - 1];
+   if(j == tree.parent(i)) {
+    for(int k= 1; k < K; ++k) a[k]*= b[k - 1];
     a[0]= 0;
    } else
-    for (int k= 0; k < K; ++k) a[k]*= b[k];
+    for(int k= 0; k < K; ++k) a[k]*= b[k];
   }
-  for (int k= 1; k < K; ++k) a[k]+= a[k - 1];
+  for(int k= 1; k < K; ++k) a[k]+= a[k - 1];
   ans+= a[K - 1];
  }
  cout << ans << '\n';

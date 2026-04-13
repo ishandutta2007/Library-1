@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "mylib/Optimization/simplified_larsch_dp.hpp"
+#include "mylib/optimization/simplified_larsch_dp.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,9 +11,9 @@ signed main() {
  int n;
  cin >> n;
  long long a[n], x[n], y[n];
- for (int i= 0; i < n; ++i) cin >> a[i];
- for (int i= 0; i < n; ++i) cin >> x[i];
- for (int i= 0; i < n; ++i) cin >> y[i];
+ for(int i= 0; i < n; ++i) cin >> a[i];
+ for(int i= 0; i < n; ++i) cin >> x[i];
+ for(int i= 0; i < n; ++i) cin >> y[i];
  auto f= [](long long x) { return x * x; };
  auto w= [&](int i, int j) { return f(x[j] - a[i - 1]) + f(y[j]); };
  cout << simplified_larsch_dp(n, w)[n] << '\n';

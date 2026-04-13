@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
-#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
+#include "mylib/graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,10 +14,10 @@ signed main() {
  int n, q;
  cin >> n >> q;
  vector<int> a(n);
- for (int i= 0; i < n; ++i) cin >> a[i];
+ for(int i= 0; i < n; ++i) cin >> a[i];
  Graph g(n, n - 1);
  vector<long long> z1(n - 1), z2(n - 1);
- for (int i= 0; i < n - 1; ++i) cin >> g[i] >> z1[i] >> z2[i], --g[i];
+ for(int i= 0; i < n - 1; ++i) cin >> g[i] >> z1[i] >> z2[i], --g[i];
  HeavyLightDecomposition hld(g, 0);
  auto adje= g.adjacency_edge(0);
  auto put_edge= [&](int, int e, long long x) { return max(0ll, x - z1[e] - z2[e]); };
@@ -25,18 +25,18 @@ signed main() {
  auto put_vertex= [&](int v, long long x) { return x + a[v]; };
  Rerooting<long long> dp(g, adje, hld, put_edge, op, 0ll, put_vertex);
  vector<long long> d1(n), d2(n), f(n);
- for (int i= 0; i < n; ++i) {
+ for(int i= 0; i < n; ++i) {
   int v= hld.to_vertex(i), p= hld.parent(v);
-  for (int e: adje[v]) {
+  for(int e: adje[v]) {
    int u= g[e].to(v);
-   if (u == p) continue;
+   if(u == p) continue;
    d1[u]= d1[v], d2[u]= d2[v];
-   if (g[e].first == u) d1[u]+= z1[e], d2[u]+= z2[e];
+   if(g[e].first == u) d1[u]+= z1[e], d2[u]+= z2[e];
    else d2[u]+= z1[e], d1[u]+= z2[e];
    f[u]= f[v] + min(dp(0, u), z1[e] + z2[e]);
   }
  }
- while (q--) {
+ while(q--) {
   int u, v;
   cin >> u >> v, --u, --v;
   int l= hld.lca(u, v);

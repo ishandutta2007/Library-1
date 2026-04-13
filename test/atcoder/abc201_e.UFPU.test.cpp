@@ -5,9 +5,9 @@
 // bitwise xor
 #include <iostream>
 #include <algorithm>
-#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
-#include "mylib/Math/Nimber.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/algebra/Nimber.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,7 +17,7 @@ signed main() {
  int N;
  cin >> N;
  UnionFind_Potentialized_Undoable<Nimber> uf(N);
- for (int i= N - 1; i--;) {
+ for(int i= N - 1; i--;) {
   int u, v;
   Nimber w;
   cin >> u >> v >> w;
@@ -26,11 +26,11 @@ signed main() {
  Mint ans= 0;
  int cnt[60];
  fill_n(cnt, 60, 0);
- for (int i= N; i--;) {
+ for(int i= N; i--;) {
   long long x= uf.potential(i).val();
-  for (int k= 60; k--;) cnt[k]+= (x >> k) & 1;
+  for(int k= 60; k--;) cnt[k]+= (x >> k) & 1;
  }
- for (int k= 60; k--;) ans+= Mint(cnt[k]) * (N - cnt[k]) * (1ll << k);
+ for(int k= 60; k--;) ans+= Mint(cnt[k]) * (N - cnt[k]) * (1ll << k);
  cout << ans << '\n';
  return 0;
 }

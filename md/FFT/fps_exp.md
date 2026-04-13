@@ -1,9 +1,10 @@
 ---
 title: exp, log, pow (形式的冪級数)
-documentation_of: ../../mylib/FFT/fps_exp.hpp
+documentation_of: ../../mylib/fft/fps_exp.hpp
 ---
 
 ## 概要
+
 形式的冪級数 $f(x)$ に対して、以下の関数を計算する。
 
 - $\exp(f(x)) = \sum_{i=0}^{\infty} \frac{f(x)^i}{i!}$
@@ -15,60 +16,74 @@ documentation_of: ../../mylib/FFT/fps_exp.hpp
 ## 機能
 
 ### `exp(f)`
+
 `exp(f(x))` を計算する。
 
 #### シグネチャ
+
 ```cpp
 template <class mod_t, size_t LM= 1 << 22>
 vector<mod_t> exp(const vector<mod_t> &p);
 ```
 
 #### 制約
+
 - `f[0] == 0`
 
 ### `log(f)`
+
 `log(f(x))` を計算する。
 
 #### シグネチャ
+
 ```cpp
 template <class mod_t, size_t LM= 1 << 22>
 vector<mod_t> log(const vector<mod_t> &p);
 ```
 
 #### 制約
+
 - `f[0] == 1`
 
 ### `pow(f, k)`
+
 `f(x)^k` を計算する。
 
 $f(x) = c \cdot x^d \cdot g(x)$ (ただし $g(0)=1$) とすると、$f(x)^k = c^k \cdot x^{kd} \cdot g(x)^k = c^k \cdot x^{kd} \cdot \exp(k \log(g(x)))$ によって計算される。
 
 #### シグネチャ
+
 ```cpp
 template <class mod_t, size_t LM= 1 << 22>
 vector<mod_t> pow(const vector<mod_t> &p, uint64_t k);
 ```
 
 ### `deriv(f)`
+
 $f(x)$ の導関数 $f'(x)$ を計算する。
 
 #### シグネチャ
+
 ```cpp
 template <class mod_t>
 vector<mod_t> deriv(const vector<mod_t> &p);
 ```
 
 ### `integ(f)`
+
 $f(x)$ の不定積分 $\int f(x) dx$ を計算する。(積分定数は $0$)
 
 #### シグネチャ
+
 ```cpp
 template <class mod_t, size_t LM= 1 << 22>
 vector<mod_t> integ(const vector<mod_t> &p);
 ```
 
 ## 計算量
+
 $N$ を形式的冪級数の長さとする。
+
 - `exp(f)`, `log(f)`, `pow(f, k)`: $O(N \log N)$
 - `deriv(f)`, `integ(f)`: $O(N)$
 
@@ -77,8 +92,8 @@ $N$ を形式的冪級数の長さとする。
 ```cpp
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/fps_exp.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/fps_exp.hpp"
 
 int main() {
     using Mint = ModInt<998244353>;

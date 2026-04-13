@@ -5,7 +5,7 @@
 #include <string>
 #include <cassert>
 #include <unordered_set>
-#include "mylib/DataStructure/OnlineDynamicConnectivity.hpp"
+#include "mylib/data_structure/OnlineDynamicConnectivity.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -21,17 +21,17 @@ struct M {
 signed main(stringstream& scin, stringstream& scout) {
  int ofs= 3e5;
  OnlineDynamicConnectivity<M> dicon(ofs + ofs);
- for (int i= ofs + ofs; i-- > ofs;) dicon.set(i, {0, 1});
- for (int i= ofs; i--;) dicon.set(i, {1, 0});
+ for(int i= ofs + ofs; i-- > ofs;) dicon.set(i, {0, 1});
+ for(int i= ofs; i--;) dicon.set(i, {1, 0});
  int q;
  scin >> q;
  unordered_set<long long> S;
  long long ans= 0;
- while (q--) {
+ while(q--) {
   long long x, y;
   scin >> x >> y, --x, --y;
   auto it= S.find(x * ofs + y);
-  if (it != S.end()) {
+  if(it != S.end()) {
    S.erase(it);
    {
     auto [a, b]= dicon.prod(x);
@@ -42,7 +42,7 @@ signed main(stringstream& scin, stringstream& scout) {
     auto [a, b]= dicon.prod(x);
     ans+= (long long)a * b;
    }
-   if (!dicon.connected(x, y + ofs)) {
+   if(!dicon.connected(x, y + ofs)) {
     auto [a, b]= dicon.prod(y + ofs);
     ans+= (long long)a * b;
    }
@@ -52,7 +52,7 @@ signed main(stringstream& scin, stringstream& scout) {
     auto [a, b]= dicon.prod(x);
     ans-= (long long)a * b;
    }
-   if (!dicon.connected(x, y + ofs)) {
+   if(!dicon.connected(x, y + ofs)) {
     auto [a, b]= dicon.prod(y + ofs);
     ans-= (long long)a * b;
    }

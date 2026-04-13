@@ -1,6 +1,6 @@
 ---
 title: グラフ
-documentation_of: ../../mylib/Graph/Graph.hpp
+documentation_of: ../../mylib/graph/Graph.hpp
 ---
 
 ## 使い方

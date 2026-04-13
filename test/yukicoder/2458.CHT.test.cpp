@@ -4,7 +4,7 @@
 #include <iostream>
 #include <array>
 #include <algorithm>
-#include "mylib/Optimization/ConvexHullTrick.hpp"
+#include "mylib/optimization/ConvexHullTrick.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,12 +14,12 @@ signed main() {
  ConvexHullTrick<long long, MAXIMIZE> cht;
  long long ans= -1e18;
  cht.insert(0, 0);
- for (int i= 0;;) {
+ for(int i= 0;;) {
   long long Q;
   cin >> Q;
   long long dp= cht.query(Q);
   ans= max(ans, dp);
-  if (++i == N) break;
+  if(++i == N) break;
   cht.insert(Q, dp);
  }
  cout << ans << '\n';

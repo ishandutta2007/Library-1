@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt_Runtime.hpp"
-#include "mylib/Math/DiscreteLogarithm.hpp"
+#include "mylib/algebra/ModInt_Runtime.hpp"
+#include "mylib/algebra/DiscreteLogarithm.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  DiscreteLogarithm log(f, f, [](Mint x) { return x.val(); }, 1e9);
  int T;
  cin >> T;
- while (T--) {
+ while(T--) {
   int X, Y, M;
   cin >> X >> Y >> M;
   Mint::set_mod(M);

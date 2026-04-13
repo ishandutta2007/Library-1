@@ -6,9 +6,9 @@
 #include <iomanip>
 #include <vector>
 #include <queue>
-#include "mylib/Geometry/angle.hpp"
-#include "mylib/Geometry/Circle.hpp"
-#include "mylib/Geometry/Polygon.hpp"
+#include "mylib/geometry/angle.hpp"
+#include "mylib/geometry/Circle.hpp"
+#include "mylib/geometry/Polygon.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,23 +16,23 @@ signed main() {
  using namespace geo;
  using Real= long double;
  cout << fixed << setprecision(12);
- for (int N, R, Q; cin >> N >> R >> Q && N;) {
+ for(int N, R, Q; cin >> N >> R >> Q && N;) {
   vector<Point<Real>> ps(N);
-  for (int i= 0; i < N; ++i) cin >> ps[i];
+  for(int i= 0; i < N; ++i) cin >> ps[i];
   Polygon g(ps);
   int cur= -1;
-  for (int i= N; i--;)
-   if (!sgn(norm2(g[i]) - R * R)) cur= i;
+  for(int i= N; i--;)
+   if(!sgn(norm2(g[i]) - R * R)) cur= i;
   Circle<Real> c({0, 0}, R);
-  while (Q--) {
+  while(Q--) {
    Real mn= M_PI * 2;
    int nxt= -1;
-   for (int i= N; i--;) {
-    if (cur == i) continue;
+   for(int i= N; i--;) {
+    if(cur == i) continue;
     Circle<Real> d(g[cur], dist(g[cur], g[i]));
     auto cp= cross_points(c, d);
     auto th= angle(g[i] - g[cur], cp[0] - g[cur]);
-    if (mn > th) mn= th, nxt= i;
+    if(mn > th) mn= th, nxt= i;
    }
    g= rotate(g[cur], mn)(g);
    cur= nxt;

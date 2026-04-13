@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/SubProductTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/SubProductTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,9 +13,9 @@ signed main() {
  int N, M;
  cin >> N >> M;
  std::vector<Mint> c(N), p(M);
- for (int i= 0; i < N; i++) cin >> c[i];
- for (int i= 0; i < M; i++) cin >> p[i];
+ for(int i= 0; i < N; i++) cin >> c[i];
+ for(int i= 0; i < M; i++) cin >> p[i];
  auto ans= SubProductTree(p).multi_eval(c);
- for (int i= 0; i < M; i++) cout << ans[i] << " \n"[i == M - 1];
+ for(int i= 0; i < M; i++) cout << ans[i] << " \n"[i == M - 1];
  return 0;
 }

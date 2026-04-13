@@ -6,8 +6,8 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "mylib/Misc/Automaton.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/misc/Automaton.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -20,9 +20,9 @@ signed main() {
  auto tr= [&](int s, symbol_t c) {
   auto [u, v]= c;
   set<int> ret;
-  for (int a= 2; a--;)
-   for (int b= 2; b--;)
-    if ((a ^ b) == u && (a + b + s) % 2 == v) ret.insert((a + b + s) / 2);
+  for(int a= 2; a--;)
+   for(int b= 2; b--;)
+    if((a ^ b) == u && (a + b + s) % 2 == v) ret.insert((a + b + s) / 2);
   return ret;
  };
  auto ac= [&](int s) { return s == 0; };

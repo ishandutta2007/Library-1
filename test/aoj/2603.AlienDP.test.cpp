@@ -4,8 +4,8 @@
 // Alien DP
 #include <iostream>
 #include <algorithm>
-#include "mylib/Optimization/simplified_larsch_dp.hpp"
-#include "mylib/Optimization/fibonacci_search.hpp"
+#include "mylib/optimization/simplified_larsch_dp.hpp"
+#include "mylib/optimization/fibonacci_search.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,18 +13,18 @@ signed main() {
  int s, n, m;
  cin >> s >> n >> m;
  int x[s];
- for (int i= 0; i < s; ++i) cin >> x[i];
+ for(int i= 0; i < s; ++i) cin >> x[i];
  int a[n];
- for (int i= 0; i < n; ++i) {
+ for(int i= 0; i < n; ++i) {
   int t, p;
   cin >> t >> p;
   a[i]= t - x[p - 1];
  }
- if (n <= m) return cout << 0 << '\n', 0;
+ if(n <= m) return cout << 0 << '\n', 0;
  sort(a, a + n);
  int sum[n + 1];
  sum[0]= 0;
- for (int i= 0; i < n; ++i) sum[i + 1]= sum[i] + a[i];
+ for(int i= 0; i < n; ++i) sum[i + 1]= sum[i] + a[i];
  auto w= [&](int i, int j) { return (i - j) * a[i - 1] - (sum[i] - sum[j]); };
 
  auto f= [&](int p) {

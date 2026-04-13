@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 128
 
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/DirichletSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/DirichletSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,9 +13,9 @@ signed main() {
  cin >> n >> m;
  auto gsum= [&](uint64_t x) {
   uint64_t ret= 1;
-  for (uint64_t e= n;; x*= x) {
-   if (e & 1) ret*= x;
-   if (!(e>>= 1)) break;
+  for(uint64_t e= n;; x*= x) {
+   if(e & 1) ret*= x;
+   if(!(e>>= 1)) break;
   }
   return ret;
  };

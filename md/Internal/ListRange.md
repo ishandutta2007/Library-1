@@ -1,6 +1,6 @@
 ---
 title: CSR 表現を用いた二次元配列 他
-documentation_of: ../../mylib/Internal/ListRange.hpp
+documentation_of: ../../mylib/internal/ListRange.hpp
 ---
 
 ## `ListRange<T>` クラス

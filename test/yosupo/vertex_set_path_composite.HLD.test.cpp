@@ -5,16 +5,16 @@
 #include <vector>
 #include <algorithm>
 #include <array>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
-#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct Mono {
  using T= array<Mint, 2>;
  static T ti() { return {Mint(1), Mint()}; }
- static T op(const T &l, const T &r) { return {l[0] * r[0], l[1] * r[0] + r[1]}; }
+ static T op(const T& l, const T& r) { return {l[0] * r[0], l[1] * r[0] + r[1]}; }
 };
 signed main() {
  cin.tie(0);
@@ -22,24 +22,24 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  Mint a[N], b[N];
- for (int i= 0; i < N; ++i) cin >> a[i] >> b[i];
+ for(int i= 0; i < N; ++i) cin >> a[i] >> b[i];
  Graph g(N, N - 1);
- for (int i= 0; i < N - 1; ++i) cin >> g[i];
+ for(int i= 0; i < N - 1; ++i) cin >> g[i];
  HeavyLightDecomposition tree(g, 0);
  vector<typename Mono::T> vec(N);
- for (int v= 0; v < N; ++v) vec[tree.to_seq(v)]= {a[v], b[v]};
+ for(int v= 0; v < N; ++v) vec[tree.to_seq(v)]= {a[v], b[v]};
  SegmentTree<Mono> seg1(vec);
  reverse(vec.begin(), vec.end());
  SegmentTree<Mono> seg2(vec);
- while (Q--) {
+ while(Q--) {
   bool op;
   cin >> op;
-  if (op) {
+  if(op) {
    int u, v;
    Mint x;
    cin >> u >> v >> x;
    auto f= Mono::ti();
-   for (auto [s, t]: tree.path(u, v)) f= Mono::op(f, s < t ? seg1.prod(s, t + 1) : seg2.prod(N - s - 1, N - t));
+   for(auto [s, t]: tree.path(u, v)) f= Mono::op(f, s < t ? seg1.prod(s, t + 1) : seg2.prod(N - s - 1, N - t));
    cout << f[0] * x + f[1] << '\n';
   } else {
    int p;

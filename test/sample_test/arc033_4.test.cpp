@@ -5,8 +5,8 @@
 #include <string>
 #include <cassert>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/sample_points_shift.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/sample_points_shift.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -19,7 +19,7 @@ signed main(stringstream& scin, stringstream& scout) {
  int N;
  scin >> N;
  vector<Mint> A(N + 1);
- for (int i= 0; i <= N; ++i) scin >> A[i];
+ for(int i= 0; i <= N; ++i) scin >> A[i];
  int T;
  scin >> T;
  scout << sample_points_shift<Mint>(A, T) << '\n';

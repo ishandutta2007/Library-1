@@ -1,6 +1,6 @@
 ---
 title: クリーク問題
-documentation_of: ../../mylib/Graph/CliqueProblem.hpp
+documentation_of: ../../mylib/graph/CliqueProblem.hpp
 ---
 
 内部でグラフを隣接行列で表現してる. 

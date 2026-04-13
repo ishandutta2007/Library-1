@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/String/z_algorithm.hpp"
+#include "mylib/string/z_algorithm.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  int n= P.size(), m= T.size();
  P+= '$' + T;
  auto Z= z_algorithm(P);
- for (int i= n + 1; i <= m + n; ++i)
-  if (Z[i] == n) cout << i - n - 1 << '\n';
+ for(int i= n + 1; i <= m + n; ++i)
+  if(Z[i] == n) cout << i - n - 1 << '\n';
  return 0;
 }

@@ -5,8 +5,8 @@
 #include <vector>
 #include <string>
 #include <array>
-#include "mylib/Misc/Automaton.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/misc/Automaton.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -20,17 +20,17 @@ signed main() {
  A= string(n - A.length(), '0') + A;
  vector alp= {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
  auto tr_a= [&](int s, int c) {
-  if (s >= n) return s;
+  if(s >= n) return s;
   int d= A[s] - '0';
-  if (c < d) return n + 1;
-  if (c > d) return n;
+  if(c < d) return n + 1;
+  if(c > d) return n;
   return s + 1;
  };
  auto tr_b= [&](int s, int c) {
-  if (s >= n) return s;
+  if(s >= n) return s;
   int d= B[s] - '0';
-  if (c > d) return n + 1;
-  if (c < d) return n;
+  if(c > d) return n + 1;
+  if(c < d) return n;
   return s + 1;
  };
  auto ac= [&](int) { return true; };
@@ -40,17 +40,17 @@ signed main() {
  using state_t= array<int, 2>;
  auto tr_zz= [&](state_t s, int c) -> state_t {
   auto [d, t]= s;
-  if (d == -2) {
-   if (c == 0) return {-2, -2};
+  if(d == -2) {
+   if(c == 0) return {-2, -2};
    else return {c, -2};
   }
-  if (d == c) return {-1, -1};
-  if (t == -2) return {c, d < c};
-  if (d < c) {
-   if (t == 1) return {-1, -1};
+  if(d == c) return {-1, -1};
+  if(t == -2) return {c, d < c};
+  if(d < c) {
+   if(t == 1) return {-1, -1};
    else return {c, 1};
   } else {
-   if (t == 0) return {-1, -1};
+   if(t == 0) return {-1, -1};
    else return {c, 0};
   }
   return {-1, -1};

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include "mylib/LinearAlgebra/MinimalPolynomial.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,26 +13,26 @@ signed main() {
  using Mint= ModInt<int(1e9 + 9)>;
  using Vec= Vector<Mint>;
  long long W, H, N;
- for (int cnt= 0; cin >> W >> H >> N && W;) {
+ for(int cnt= 0; cin >> W >> H >> N && W;) {
   pair<long long, int> obst[N];
-  for (long long i= 0, x, y; i < N; i++) cin >> x >> y, obst[i]= make_pair(y - 1, x - 1);
+  for(long long i= 0, x, y; i < N; i++) cin >> x >> y, obst[i]= make_pair(y - 1, x - 1);
   sort(obst, obst + N);
   auto f= [&](const Vec& v) {
    Vec ret(W);
-   for (int i= 0; i < W; i++) {
+   for(int i= 0; i < W; i++) {
     ret[i]+= v[i];
-    if (i) ret[i]+= v[i - 1];
-    if (i + 1 < W) ret[i]+= v[i + 1];
+    if(i) ret[i]+= v[i - 1];
+    if(i + 1 < W) ret[i]+= v[i + 1];
    }
    return ret;
   };
   Vec b(W);
   b[0]= 1;
   long long y= 0;
-  for (int i= 0; i < N; i++) {
+  for(int i= 0; i < N; i++) {
    b= MinimalPolynomial(f, b).pow(obst[i].first - y);
    int j= i;
-   while (j < N && obst[i].first == obst[j].first) b[obst[j++].second]= 0;
+   while(j < N && obst[i].first == obst[j].first) b[obst[j++].second]= 0;
    i= j - 1;
    y= obst[i].first;
   }

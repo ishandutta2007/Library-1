@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/String/z_algorithm.hpp"
+#include "mylib/string/z_algorithm.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,6 +12,6 @@ signed main() {
  cin >> S;
  auto ans= run_enumerate(S);
  cout << ans.size() << '\n';
- for (auto [t, l, r]: ans) cout << t << " " << l << " " << r << '\n';
+ for(auto [t, l, r]: ans) cout << t << " " << l << " " << r << '\n';
  return 0;
 }

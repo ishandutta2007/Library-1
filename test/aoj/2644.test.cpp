@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "mylib/DataStructure/SparseTable.hpp"
-#include "mylib/String/SuffixArray.hpp"
+#include "mylib/data_structure/SparseTable.hpp"
+#include "mylib/string/SuffixArray.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,15 +17,15 @@ signed main() {
  SparseTable mx(sa.sa, [](int x, int y) { return max(x, y); });
  int m;
  cin >> m;
- while (m--) {
+ while(m--) {
   string x, y;
   cin >> x >> y;
   auto [lx, rx]= sa.pattern_matching(x);
   auto [ly, ry]= sa.pattern_matching(y);
-  if (rx == lx || ry == ly) cout << 0 << '\n';
+  if(rx == lx || ry == ly) cout << 0 << '\n';
   else {
    int X= mn.prod(lx, rx), Y= mx.prod(ly, ry);
-   if (X + x.length() > Y + y.length()) cout << 0 << '\n';
+   if(X + x.length() > Y + y.length()) cout << 0 << '\n';
    else cout << Y - X + y.length() << '\n';
   }
  }

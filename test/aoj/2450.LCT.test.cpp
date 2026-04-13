@@ -4,7 +4,7 @@
 // Do use segment tree
 #include <iostream>
 #include <algorithm>
-#include "mylib/DataStructure/LinkCutTree.hpp"
+#include "mylib/data_structure/LinkCutTree.hpp"
 using namespace std;
 struct RupdQ_RmaxsumQ {
  struct T {
@@ -12,7 +12,7 @@ struct RupdQ_RmaxsumQ {
   int size;
  };
  using E= long long;
- static T op(const T &a, const T &b) {
+ static T op(const T& a, const T& b) {
   T ret;
   ret.sum= a.sum + b.sum;
   ret.max= max({a.max, b.max, a.rmax + b.lmax});
@@ -21,11 +21,11 @@ struct RupdQ_RmaxsumQ {
   ret.size= a.size + b.size;
   return ret;
  }
- static void mp(T &v, const E &f) {
+ static void mp(T& v, const E& f) {
   v.sum= f * v.size;
   v.max= v.lmax= v.rmax= max(v.sum, f);
  }
- static void cp(E &pre, const E &suf) { pre= suf; }
+ static void cp(E& pre, const E& suf) { pre= suf; }
 };
 signed main() {
  cin.tie(0);
@@ -33,20 +33,20 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  LinkCutTree<RupdQ_RmaxsumQ> lct(N);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   long long w;
   cin >> w;
   lct.set(i, {w, w, w, w, 1});
  }
- for (int i= 0; i < N - 1; i++) {
+ for(int i= 0; i < N - 1; i++) {
   int u, v;
   cin >> u >> v;
   lct.link(--u, --v);
  }
- while (Q--) {
+ while(Q--) {
   long long t, a, b, c;
   cin >> t >> a >> b >> c, --a, --b;
-  if (t == 1) lct.apply(a, b, c);
+  if(t == 1) lct.apply(a, b, c);
   else cout << lct.prod(a, b).max << '\n';
  }
  return 0;

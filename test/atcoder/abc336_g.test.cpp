@@ -5,8 +5,8 @@
 #include <iostream>
 #include <vector>
 #include "mylib/LinearAlgebra/LU_Decomposition.hpp"
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/FactorialPrecalculation.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,7 +18,7 @@ signed main() {
  Mint ans= 1;
  int r= 0;
  int N= 0;
- for (int s= 0; s < 16; ++s) {
+ for(int s= 0; s < 16; ++s) {
   int u= s >> 1, v= s & 7, X;
   cin >> X;
   N+= X;
@@ -27,23 +27,23 @@ signed main() {
   out[u]+= X;
   in[v]+= X;
   ans*= F::finv(X);
-  if (X) r= u;
+  if(X) r= u;
  }
  int s= -1, t= -1;
- for (int i= 8; i--;) {
+ for(int i= 8; i--;) {
   int tmp= in[i] - out[i];
-  if (abs(tmp) > 1) {
+  if(abs(tmp) > 1) {
    s= -2;
-  } else if (tmp == 1) {
-   if (s == -1) s= i;
+  } else if(tmp == 1) {
+   if(s == -1) s= i;
    else s= -2;
-  } else if (tmp == -1) {
-   if (t == -1) t= i;
+  } else if(tmp == -1) {
+   if(t == -1) t= i;
    else s= -2;
   }
  }
- if (s == -2) return cout << 0 << '\n', 0;
- if (s != -1) {
+ if(s == -2) return cout << 0 << '\n', 0;
+ if(s != -1) {
   A[s][t]-= 1;
   A[t][t]+= 1;
   ++out[s];
@@ -52,8 +52,8 @@ signed main() {
   ans*= N;
  }
  vector<int> rm= {r};
- for (int i= 8; i--;)
-  if (out[i]) ans*= F::fact(out[i] - 1);
+ for(int i= 8; i--;)
+  if(out[i]) ans*= F::fact(out[i] - 1);
   else rm.push_back(i);
  ans*= LU_Decomposition(A.submatrix_rm(rm, rm)).det();
  cout << ans << '\n';

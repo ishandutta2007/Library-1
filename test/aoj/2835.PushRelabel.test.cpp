@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Optimization/MaxFlow.hpp"
+#include "mylib/optimization/MaxFlow.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,16 +13,16 @@ signed main() {
  using MF= MaxFlow<PushRelabel<long long>>;
  MF graph(V);
  vector<MF::EdgePtr> edges;
- for (int i= 0; i < E; i++) {
+ for(int i= 0; i < E; i++) {
   int s, t, c;
   cin >> s >> t >> c;
   edges.emplace_back(graph.add_edge(s, t, c, true));
  }
  long long ans= graph.maxflow(0, V - 1);
  auto S= graph.mincut(0);
- for (auto &e: edges)
-  if (e.cap() == 1) {
-   if (e.change_cap(0, 0, V - 1)) {
+ for(auto& e: edges)
+  if(e.cap() == 1) {
+   if(e.change_cap(0, 0, V - 1)) {
     ans--;
     break;
    }

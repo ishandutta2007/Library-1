@@ -4,10 +4,10 @@
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/s8pc-3/tasks/s8pc_3_g
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/sample_points_shift.hpp"
-#include "mylib/Math/bostan_mori.hpp"
-#include "mylib/Math/sparse_fps.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/sample_points_shift.hpp"
+#include "mylib/algebra/bostan_mori.hpp"
+#include "mylib/algebra/sparse_fps.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -23,7 +23,7 @@ signed main() {
  A*= D, B*= D;
  auto c= sfps::div<Mint>({A, B}, {1, -1, -1}, n);
  b= sfps::div(sfps::pow_of_div<Mint>({1}, {1, -1}, n, n), {1, -1, -1}, n);
- for (int i= 0; i <= n; ++i) b[i]-= c[i];
+ for(int i= 0; i <= n; ++i) b[i]-= c[i];
  cout << sample_points_shift<Mint>(b, m) + div_at<Mint>({A, B}, {1, -1, -1}, m) << '\n';
  return 0;
 }

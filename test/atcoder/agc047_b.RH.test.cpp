@@ -6,10 +6,10 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "mylib/String/RollingHash.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/rng.hpp"
+#include "mylib/string/RollingHash.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/rng.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -21,28 +21,28 @@ signed main() {
  int N;
  cin >> N;
  vector<string> S(N);
- for (int i= 0; i < N; ++i) cin >> S[i];
+ for(int i= 0; i < N; ++i) cin >> S[i];
  vector<RH> rh(N);
- for (int i= 0; i < N; ++i) rh[i]= RH(S[i]);
+ for(int i= 0; i < N; ++i) rh[i]= RH(S[i]);
  map<K, vector<int>> mp;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int c= S[i][0] - 'a';
   K h= rh[i].sub(1).hash();
-  auto &v= mp[h];
-  if (v.empty()) v.resize(26);
+  auto& v= mp[h];
+  if(v.empty()) v.resize(26);
   v[c]++;
  }
  long long ans= 0;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int n= S[i].length();
   bool used[26];
   fill_n(used, 26, false);
-  for (int j= 0; j < n; ++j) {
+  for(int j= 0; j < n; ++j) {
    used[S[i][j] - 'a']= true;
    K h= rh[i].sub(j + 1).hash();
-   for (int k= 0; k < 26; ++k)
-    if (used[k])
-     if (auto it= mp.find(h); it != mp.end()) ans+= it->second[k];
+   for(int k= 0; k < 26; ++k)
+    if(used[k])
+     if(auto it= mp.find(h); it != mp.end()) ans+= it->second[k];
   }
  }
  ans-= N;

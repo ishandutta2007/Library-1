@@ -4,7 +4,7 @@
 // 非想定解 MLがギリギリ
 // cpuのクロック数，GHA が 2.6GHz で AOJ が 4GHz らしいので TL を 4/2.6 倍している
 #include <iostream>
-#include "mylib/DataStructure/OnlineDynamicConnectivity.hpp"
+#include "mylib/data_structure/OnlineDynamicConnectivity.hpp"
 using namespace std;
 struct Sum {
  using T= long long;
@@ -19,7 +19,7 @@ signed main() {
  int u[M], v[M];
  long long w[M];
  OnlineDynamicConnectivity<Sum> dicon(N);
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   cin >> u[i] >> v[i] >> w[i];
   --u[i], --v[i];
   dicon.link(u[i], v[i]);
@@ -28,20 +28,20 @@ signed main() {
  }
  long long min_score= 1ll << 60;
  long long ans_u= 0, ans_v= 0;
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   dicon.cut(u[i], v[i]);
   long long score;
-  if (dicon.connected(u[i], v[i])) {
+  if(dicon.connected(u[i], v[i])) {
    score= dicon.prod(u[i]) / 2 - w[i];
   } else {
    long long WA= dicon.prod(u[i]);
    long long WB= dicon.prod(v[i]);
    score= abs(WA - WB) / 2;
   }
-  if (min_score > score) min_score= score, ans_u= u[i], ans_v= v[i];
-  else if (min_score == score) {
-   if (ans_u > u[i]) ans_u= u[i], ans_v= v[i];
-   else if (ans_u == u[i] && ans_v > v[i]) ans_v= v[i];
+  if(min_score > score) min_score= score, ans_u= u[i], ans_v= v[i];
+  else if(min_score == score) {
+   if(ans_u > u[i]) ans_u= u[i], ans_v= v[i];
+   else if(ans_u == u[i] && ans_v > v[i]) ans_v= v[i];
   }
   dicon.link(u[i], v[i]);
  }

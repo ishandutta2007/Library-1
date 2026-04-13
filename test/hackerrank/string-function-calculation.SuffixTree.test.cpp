@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/String/SuffixTree.hpp"
+#include "mylib/string/SuffixTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  LCPArray lcp(sa);
  SuffixTree st(sa, lcp);
  long long ans= 0;
- for (auto [l, r, h, hh]: st) {
+ for(auto [l, r, h, hh]: st) {
   ans= max(ans, (long long)(r - l) * hh);
  }
  cout << ans << '\n';

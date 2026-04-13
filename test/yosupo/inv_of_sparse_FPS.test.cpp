@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/sparse_fps.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/sparse_fps.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -13,8 +13,8 @@ int main() {
  long long N, K;
  cin >> N >> K;
  vector<Mint> a(N);
- for (int i; K--;) cin >> i >> a[i];
+ for(int i; K--;) cin >> i >> a[i];
  auto ans= sfps::inv(a, N - 1);
- for (int i= 0; i < N; i++) cout << ans[i] << " \n"[i == N - 1];
+ for(int i= 0; i < N; i++) cout << ans[i] << " \n"[i == N - 1];
  return 0;
 }

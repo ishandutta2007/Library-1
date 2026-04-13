@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
-#include "mylib/Geometry/intersection_area.hpp"
+#include "mylib/geometry/intersection_area.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,7 +14,7 @@ signed main() {
  int n;
  cin >> n >> c.r;
  vector<Point<long double>> ps(n);
- for (int i= 0; i < n; ++i) cin >> ps[i];
+ for(int i= 0; i < n; ++i) cin >> ps[i];
  cout << fixed << setprecision(12) << intersection_area(c, Polygon(ps)) << '\n';
  return 0;
 }

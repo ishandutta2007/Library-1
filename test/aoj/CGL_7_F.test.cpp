@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
-#include "mylib/Geometry/Circle.hpp"
+#include "mylib/geometry/Circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,7 +17,7 @@ signed main() {
  cin >> c.o >> c.r;
  auto ls= c.tangent(p);
  Point p1= cross_points(c, ls[0])[0], p2= cross_points(c, ls[1])[0];
- if (p2 < p1) swap(p1, p2);
+ if(p2 < p1) swap(p1, p2);
  cout << fixed << setprecision(12) << p1.x << " " << p1.y << '\n' << p2.x << " " << p2.y << '\n';
  return 0;
 }

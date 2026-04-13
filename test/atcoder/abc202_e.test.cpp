@@ -4,9 +4,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
-#include "mylib/DataStructure/WaveletMatrix.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
+#include "mylib/data_structure/WaveletMatrix.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,14 +14,14 @@ signed main() {
  int N;
  cin >> N;
  Graph g(N);
- for (int i= 1, p; i < N; ++i) cin >> p, g.add_edge(p - 1, i);
+ for(int i= 1, p; i < N; ++i) cin >> p, g.add_edge(p - 1, i);
  HeavyLightDecomposition tree(g, 0);
  vector<int> d(N);
- for (int v= N; v--;) d[tree.to_seq(v)]= tree.depth(v);
+ for(int v= N; v--;) d[tree.to_seq(v)]= tree.depth(v);
  WaveletMatrix wm(d);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int U, D;
   cin >> U >> D;
   auto [l, r]= tree.subtree(U - 1);

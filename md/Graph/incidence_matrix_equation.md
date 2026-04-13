@@ -1,6 +1,6 @@
 ---
 title: 接続行列の連立方程式
-documentation_of: ../../mylib/Graph/incidence_matrix_equation.hpp
+documentation_of: ../../mylib/graph/incidence_matrix_equation.hpp
 ---
 
 |関数名|概要|計算量|
@@ -12,4 +12,3 @@ documentation_of: ../../mylib/Graph/incidence_matrix_equation.hpp
 
 - [AtCoder Beginner Contest 155 F - Perils in Parallel](https://atcoder.jp/contests/abc155/tasks/abc155_f) (sp judge)<br>
 - [AtCoder Grand Contest 035 B - Even Degrees ](https://atcoder.jp/contests/agc035/tasks/agc035_b) (sp judge)
-

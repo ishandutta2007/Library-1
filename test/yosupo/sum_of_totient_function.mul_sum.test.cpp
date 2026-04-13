@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 // O(N^(3/4)/log N)
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/sum_on_primes.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/sum_on_primes.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

@@ -1,6 +1,6 @@
 ---
 title: 全方位木DP
-documentation_of: ../../mylib/Graph/Rerooting.hpp
+documentation_of: ../../mylib/graph/Rerooting.hpp
 ---
 
 ![image of tree dp](/img/rerooting.drawio.svg)

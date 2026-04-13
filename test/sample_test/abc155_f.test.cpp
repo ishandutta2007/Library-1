@@ -7,29 +7,29 @@
 #include <cassert>
 #include <algorithm>
 #include <vector>
-#include "mylib/Graph/incidence_matrix_equation.hpp"
+#include "mylib/graph/incidence_matrix_equation.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
  solve(scin, scout);
- if (expected == "-1\n") return scout.str() == expected;
+ if(expected == "-1\n") return scout.str() == expected;
  stringstream scin2(in);
  int N, M;
  scin2 >> N >> M;
  int A[N], B[N];
- for (int i= 0; i < N; ++i) scin2 >> A[i] >> B[i];
+ for(int i= 0; i < N; ++i) scin2 >> A[i] >> B[i];
  int L[M], R[M];
- for (int i= 0; i < M; ++i) scin2 >> L[i] >> R[i];
+ for(int i= 0; i < M; ++i) scin2 >> L[i] >> R[i];
  int k;
  scout >> k;
- for (int i= 0; i < k; ++i) {
+ for(int i= 0; i < k; ++i) {
   int j;
   scout >> j, --j;
-  for (int x= 0; x < N; ++x)
-   if (L[j] <= A[x] && A[x] <= R[j]) B[x]^= 1;
+  for(int x= 0; x < N; ++x)
+   if(L[j] <= A[x] && A[x] <= R[j]) B[x]^= 1;
  }
- for (int x= 0; x < N; ++x)
-  if (B[x]) return false;
+ for(int x= 0; x < N; ++x)
+  if(B[x]) return false;
  return true;
 }
 namespace TEST {
@@ -38,12 +38,12 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> N >> M;
  pair<int, bool> AB[N + 2];
  AB[0]= {0, 0}, AB[N + 1]= {1e9 + 10, 0};
- for (int i= 1; i <= N; i++) scin >> AB[i].first >> AB[i].second;
+ for(int i= 1; i <= N; i++) scin >> AB[i].first >> AB[i].second;
  sort(AB, AB + N + 2);
  vector<bool> b(N + 1);
- for (int i= 0; i <= N; i++) b[i]= AB[i + 1].second ^ AB[i].second;
+ for(int i= 0; i <= N; i++) b[i]= AB[i + 1].second ^ AB[i].second;
  Graph g(N + 1);
- for (int i= 0; i < M; i++) {
+ for(int i= 0; i < M; i++) {
   int L, R;
   scin >> L >> R;
   L= lower_bound(AB, AB + N + 2, pair(L, false)) - AB;
@@ -51,13 +51,13 @@ signed main(stringstream& scin, stringstream& scout) {
   g.add_edge(L - 1, R - 1);
  }
  auto sol= incidence_matrix_equation(g, b);
- if (sol.empty()) return scout << -1 << '\n', 0;
+ if(sol.empty()) return scout << -1 << '\n', 0;
  vector<int> ans;
- for (int i= 0; i < M; i++)
-  if (sol[i]) ans.emplace_back(i + 1);
+ for(int i= 0; i < M; i++)
+  if(sol[i]) ans.emplace_back(i + 1);
  int k= ans.size();
  scout << k << '\n';
- for (int i= 0; i < k; i++) scout << ans[i] << " \n"[i == k - 1];
+ for(int i= 0; i < k; i++) scout << ans[i] << " \n"[i == k - 1];
  return 0;
 }
 }

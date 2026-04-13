@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/BinaryIndexedTree.hpp"
+#include "mylib/data_structure/BinaryIndexedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,15 +10,15 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  BinaryIndexedTree<long long> bit(N);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   long long a;
   cin >> a;
   bit.add(i, a);
  }
- while (Q--) {
+ while(Q--) {
   int t, a, b;
   cin >> t >> a >> b;
-  if (t) cout << bit.sum(a, b) << '\n';
+  if(t) cout << bit.sum(a, b) << '\n';
   else bit.add(a, b);
  }
 }

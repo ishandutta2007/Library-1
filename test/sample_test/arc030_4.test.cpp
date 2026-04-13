@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/data_structure/WeightBalancedTree.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -25,17 +25,17 @@ signed main(stringstream& scin, stringstream& scout) {
  int N, Q;
  scin >> N >> Q;
  long long x[N];
- for (int i= 0; i < N; i++) scin >> x[i];
+ for(int i= 0; i < N; i++) scin >> x[i];
  WBT wbt(x, x + N);
- while (Q--) {
+ while(Q--) {
   int op, a, b;
   scin >> op >> a >> b;
   a--;
-  if (op == 1) {
+  if(op == 1) {
    long long v;
    scin >> v;
    wbt.apply(a, b, v);
-  } else if (op == 2) {
+  } else if(op == 2) {
    int c, d;
    scin >> c >> d;
    c--;
@@ -46,7 +46,7 @@ signed main(stringstream& scin, stringstream& scout) {
   } else {
    scout << wbt.prod(a, b) << '\n';
   }
-  if (WBT::pool_empty()) {
+  if(WBT::pool_empty()) {
    auto dmp= wbt.dump();
    WBT::reset();
    wbt= WBT(dmp);

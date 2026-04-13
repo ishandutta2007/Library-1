@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
-#include "mylib/Geometry/Line.hpp"
+#include "mylib/geometry/Line.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,7 +17,7 @@ signed main() {
  auto ref= reflect(line_through(p1, p2));
  int q;
  cin >> q;
- while (q--) {
+ while(q--) {
   P p;
   cin >> p;
   auto ans= ref(p);

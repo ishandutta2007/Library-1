@@ -3,7 +3,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,10 +11,10 @@ signed main() {
  int Q;
  cin >> Q;
  PiecewiseLinearConvex<int> f;
- while (Q--) {
+ while(Q--) {
   int op;
   cin >> op;
-  if (op == 1) {
+  if(op == 1) {
    int a, b;
    cin >> a >> b;
    f.add_abs(1, a);

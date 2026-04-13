@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/enumerate_quotients.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/enumerate_quotients.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,6 +13,6 @@ signed main() {
  auto ans= enumerate_quotients(N);
  int k= ans.size();
  cout << k << '\n';
- for (int i= 0; i < k; ++i) cout << get<0>(ans[i]) << " \n"[i == k - 1];
+ for(int i= 0; i < k; ++i) cout << get<0>(ans[i]) << " \n"[i == k - 1];
  return 0;
 }

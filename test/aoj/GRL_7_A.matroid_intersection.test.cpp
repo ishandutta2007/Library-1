@@ -4,7 +4,7 @@
 // 二部マッチング (分割+分割)
 #include <iostream>
 #include <vector>
-#include "mylib/Optimization/matroid_intersection.hpp"
+#include "mylib/optimization/matroid_intersection.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  int L, R, M;
  cin >> L >> R >> M;
  vector<vector<int>> partl(L), partr(R);
- for (int i= 0; i < M; i++) {
+ for(int i= 0; i < M; i++) {
   int a, b;
   cin >> a >> b;
   partl[a].push_back(i), partr[b].push_back(i);

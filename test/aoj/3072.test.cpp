@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/fps_inv.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/fps_inv.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,7 +17,7 @@ signed main() {
  f[0]= p, f.resize(K);
  auto g= inv<Mint, 1 << 20>(f);
  Mint ans= 1;
- for (int i= 1; i < K; i++) ans-= g[i] * q;
+ for(int i= 1; i < K; i++) ans-= g[i] * q;
  cout << ans << '\n';
  return 0;
 }

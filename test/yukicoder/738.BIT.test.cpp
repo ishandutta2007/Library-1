@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Misc/compress.hpp"
-#include "mylib/DataStructure/BinaryIndexedTree.hpp"
+#include "mylib/misc/compress.hpp"
+#include "mylib/data_structure/BinaryIndexedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  int N, K;
  cin >> N >> K;
  long long A[N];
- for (int i= 0; i < N; i++) cin >> A[i];
+ for(int i= 0; i < N; i++) cin >> A[i];
  vector<long long> vec(A, A + N);
  auto id= compress(vec);
  BinaryIndexedTree<long long> bit1(vec.size()), bit2(vec.size());
@@ -22,9 +22,9 @@ signed main() {
   bit1.add(idx, s), bit2.add(idx, s * A[i]), sum+= s * A[i];
  };
  long long ans= 1ll << 60;
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   add(i, 1);
-  if (i >= K - 1) {
+  if(i >= K - 1) {
    int med= bit1.find(K / 2);
    int lcnt= bit1.sum(med), hcnt= K - lcnt;
    long long lsum= bit2.sum(med), hsum= sum - lsum;

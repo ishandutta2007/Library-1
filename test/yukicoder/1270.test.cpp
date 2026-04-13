@@ -2,19 +2,19 @@
 // competitive-verifier: TLE 1.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/SegmentTree.hpp"
-#include "mylib/DataStructure/BinaryIndexedTree.hpp"
-#include "mylib/Misc/Mo.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
+#include "mylib/data_structure/BinaryIndexedTree.hpp"
+#include "mylib/misc/Mo.hpp"
 using namespace std;
 struct RmQRaQ {
  using T= int;
  using E= int;
  static T ti() { return 1 << 30; }
  static T op(T l, T r) { return min(l, r); }
- static void mp(T &v, E x) {
-  if (v < ti()) v+= x;
+ static void mp(T& v, E x) {
+  if(v < ti()) v+= x;
  }
- static void cp(E &p, E s) { p+= s; }
+ static void cp(E& p, E s) { p+= s; }
 };
 signed main() {
  cin.tie(0);
@@ -22,17 +22,17 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<int> a(N);
- for (int i= 0; i < N; ++i) cin >> a[i], --a[i];
+ for(int i= 0; i < N; ++i) cin >> a[i], --a[i];
  BinaryIndexedTree<int> bitl(N), bitr(N);
  SegmentTree<RmQRaQ> seg(N, 0);
  int sum= 0, sz= 0;
- for (auto x: a) {
+ for(auto x: a) {
   sum+= bitr.sum(x + 1, N);
   bitr.add(x, 1);
   seg.apply(x + 1, N, 1);
  }
  Mo mo;
- for (int q= 0; q < Q; ++q) {
+ for(int q= 0; q < Q; ++q) {
   int l, r;
   cin >> l >> r;
   mo.query(--l, r);
@@ -68,6 +68,6 @@ signed main() {
  vector<int> ans(Q);
  auto out= [&](int q) { ans[q]= sum + seg.prod(0, N) * sz; };
  mo.run(addl, addr, erasel, eraser, out);
- for (auto x: ans) cout << x << '\n';
+ for(auto x: ans) cout << x << '\n';
  return 0;
 }

@@ -6,9 +6,9 @@
 
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/UnionFind.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/BipartiteGraph.hpp"
+#include "mylib/data_structure/UnionFind.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/BipartiteGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,16 +16,16 @@ signed main() {
  int N, M;
  cin >> N >> M;
  Graph g(N, M);
- for (int i= 0; i < M; ++i) cin >> g[i], --g[i];
+ for(int i= 0; i < M; ++i) cin >> g[i], --g[i];
  UnionFind uf(N);
- for (auto [u, v]: g) uf.unite(u, v);
+ for(auto [u, v]: g) uf.unite(u, v);
  auto col= paint_two_colors(g);
- if (col.empty()) return cout << 0 << '\n', 0;
+ if(col.empty()) return cout << 0 << '\n', 0;
  vector cnt(2, vector(N, 0));
- for (int v= N; v--;) ++cnt[col[v]][uf.leader(v)];
+ for(int v= N; v--;) ++cnt[col[v]][uf.leader(v)];
  long long ans= 0;
- for (int s= 2; s--;)
-  for (int v= N; v--;) ans+= (long long)cnt[s][v] * (N - cnt[s][v]);
+ for(int s= 2; s--;)
+  for(int v= N; v--;) ans+= (long long)cnt[s][v] * (N - cnt[s][v]);
  ans/= 2, ans-= M;
  cout << ans << '\n';
  return 0;

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "mylib/String/AhoCorasick.hpp"
+#include "mylib/string/AhoCorasick.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -15,10 +15,10 @@ int main() {
  int M;
  cin >> M;
  vector<string> C(M);
- for (int i= 0; i < M; i++) cin >> C[i];
+ for(int i= 0; i < M; i++) cin >> C[i];
  AhoCorasick ac(C);
  int ans= 0;
- for (int i= 0, s= ac.initial_state(); i < n; i++) {
+ for(int i= 0, s= ac.initial_state(); i < n; i++) {
   int ns= ac.transition(s, S[i]);
   ans+= ac.matched_patterns(ns).size();
   s= ns;

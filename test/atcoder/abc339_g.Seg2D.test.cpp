@@ -5,7 +5,7 @@
 // N=2*10^5, Q=2*10^5, KDTはTLE
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/data_structure/SegmentTree_2D.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;
@@ -18,7 +18,7 @@ signed main() {
  int N;
  cin >> N;
  vector<tuple<int, int, long long>> ps(N);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int A;
   cin >> A;
   ps[i]= {i, A, A};
@@ -27,7 +27,7 @@ signed main() {
  long long B= 0;
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   long long a, b, c;
   cin >> a >> b >> c;
   int L= a ^ B, R= b ^ B, X= c ^ B;

@@ -4,10 +4,10 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/String/RollingHash.hpp"
-#include "mylib/Misc/rng.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/string/RollingHash.hpp"
+#include "mylib/misc/rng.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -23,19 +23,19 @@ signed main() {
  reverse(S.begin(), S.end());
  RH rhrv(S);
  int ans= 0;
- for (int i= 0; i < N + N - 1; ++i) {
+ for(int i= 0; i < N + N - 1; ++i) {
   int j= (i + 1) / 2, k= (N + N - i - 1) / 2;
   int n= lcp(rh.sub(j), rhrv.sub(k));
   int nn= n * 2 - !(i & 1);
-  if (nn == N) {
+  if(nn == N) {
    ans= N - 1;
    break;
   }
-  if (j + n + 1 <= N) {
+  if(j + n + 1 <= N) {
    int m= lcp(rh.sub(j + n + 1), rhrv.sub(k + n));
    ans= max(ans, nn + m * 2);
   }
-  if (k + n + 1 <= N) {
+  if(k + n + 1 <= N) {
    int m= lcp(rh.sub(j + n), rhrv.sub(k + n + 1));
    ans= max(ans, nn + m * 2);
   }

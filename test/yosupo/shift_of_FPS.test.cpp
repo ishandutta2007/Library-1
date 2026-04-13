@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/Polynomial.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/Polynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,10 +13,10 @@ signed main() {
  int N, c;
  cin >> N >> c;
  Poly a(N);
- for (int i= 0; i < N; i++) cin >> a[i];
+ for(int i= 0; i < N; i++) cin >> a[i];
  auto x= Poly::x();
  auto b= a(x + c);
  b.resize(N);
- for (int i= 0; i < N; i++) cout << b[i] << " \n"[i == N - 1];
+ for(int i= 0; i < N; i++) cout << b[i] << " \n"[i == N - 1];
  return 0;
 }

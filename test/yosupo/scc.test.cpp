@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/StronglyConnectedComponents.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/StronglyConnectedComponents.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,14 +11,14 @@ signed main() {
  int N, M;
  cin >> N >> M;
  Graph g(N, M);
- for (int i= 0; i < M; ++i) cin >> g[i];
+ for(int i= 0; i < M; ++i) cin >> g[i];
  StronglyConnectedComponents scc(g);
  int C= scc.size();
  cout << C << '\n';
- for (int i= 0; i < C; ++i) {
+ for(int i= 0; i < C; ++i) {
   auto blk= scc.block(i);
   cout << blk.size();
-  for (int v: blk) cout << " " << v;
+  for(int v: blk) cout << " " << v;
   cout << '\n';
  }
  return 0;

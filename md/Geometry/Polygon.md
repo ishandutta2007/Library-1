@@ -1,6 +1,6 @@
 ---
 title: 多角形
-documentation_of: ../../mylib/Geometry/Polygon.hpp
+documentation_of: ../../mylib/geometry/Polygon.hpp
 ---
 
 ## `Polygon<K>` クラス
@@ -35,4 +35,3 @@ documentation_of: ../../mylib/Geometry/Polygon.hpp
 |`dist2(g,l)` <br> `dist2(l,g)`| 多角形 $g$ と直線 $l$ との距離の二乗. ただし交わるときは 0.|
 |`dist2(g,s)` <br> `dist2(s,g)`| 多角形 $g$ と 線分 $s$ との距離の二乗. <br> ただし線分 $s$ が多角形 $g$ の内部にあるときや交わるときは 0.|
 |`dist2(g,h)`|多角形 $g,h$ の間の距離の二乗. <br>ただし一方がもう一方の内部にあるときや交わるときは 0.|
-

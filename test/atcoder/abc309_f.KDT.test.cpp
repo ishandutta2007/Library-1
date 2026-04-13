@@ -8,7 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "mylib/DataStructure/KDTree.hpp"
+#include "mylib/data_structure/KDTree.hpp"
 using namespace std;
 struct ROrQ {
  using T= bool;
@@ -22,7 +22,7 @@ signed main() {
  cin >> N;
  vector<array<int, 3>> query;
  vector<array<int, 2>> xy;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int a[3];
   cin >> a[0] >> a[1] >> a[2];
   sort(a, a + 3);
@@ -32,9 +32,9 @@ signed main() {
  KDTree<int, 2, ROrQ> kdt(xy);
  sort(query.begin(), query.end(), [](auto a, auto b) { return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0]; });
  bool isok= false;
- for (auto [h, w, d]: query) {
+ for(auto [h, w, d]: query) {
   isok= kdt.prod_cuboid(0, w - 1, 0, d - 1);
-  if (isok) break;
+  if(isok) break;
   kdt.set(w, d, 1);
  }
  cout << (isok ? "Yes" : "No") << '\n';

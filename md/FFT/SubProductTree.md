@@ -1,23 +1,28 @@
 ---
 title: 多点評価と多項式補間 (SubProductTree)
-documentation_of: ../../mylib/FFT/SubProductTree.hpp
+documentation_of: ../../mylib/fft/SubProductTree.hpp
 ---
 
 ## 概要
+
 多項式の多点評価 (Multipoint Evaluation) と、点の集合からの多項式補間 (Polynomial Interpolation) を高速に行う。
 
 $N$ 個の点 $x_0, x_1, \dots, x_{N-1}$ が与えられたとき、
+
 - **多点評価**: $N-1$ 次多項式 $f(X)$ に対し、$y_i = f(x_i)$ for $i=0, \dots, N-1$ をまとめて計算する。
 - **多項式補間**: $N$ 個の点の集合 $(x_0, y_0), \dots, (x_{N-1}, y_{N-1})$ をすべて通る唯一の $N-1$ 次多項式 $f(X)$ を求める。
 
 ## 使い方
+
 `SubProductTree<mod_t>` の形で使用する。
 
 ### コンストラクタ
+
 `SubProductTree(const std::vector<mod_t> &xs)`
 評価点または補間点の x 座標のリスト `xs` を渡して初期化する。
 
 ### メンバ関数
+
 `std::vector<mod_t> multi_eval(const poly &f) const`
 多項式 `f` (係数の `std::vector`) を、コンストラクタで指定した各点 $x_i$ で評価した値のリスト $\{f(x_0), f(x_1), \dots, f(x_{N-1})\}$ を返す。
 
@@ -25,6 +30,7 @@ $N$ 個の点 $x_0, x_1, \dots, x_{N-1}$ が与えられたとき、
 コンストラクタで指定した各点 $x_i$ と、それに対応する y 座標のリスト `ys` から、補間多項式の係数リストを返す。すなわち、すべての $i$ について $f(x_i) = y_i$ を満たす $N-1$ 次多項式 $f(X)$ を求める。
 
 ## 計算量
+
 - コンストラクタ (前計算): $O(N (\log N)^2)$
 - `multi_eval`: $O(N (\log N)^2)$
 - `interpolate`: $O(N (\log N)^2)$
@@ -34,25 +40,26 @@ $N$ 個の点 $x_0, x_1, \dots, x_{N-1}$ が与えられたとき、
 ## コード例
 
 ### 多点評価の例
+
 ```cpp
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/SubProductTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/SubProductTree.hpp"
 
 int main() {
     using namespace std;
     using Mint = ModInt<998244353>;
-    
+
     // 多項式 f(x) = 1 + 2x + 3x^2
     vector<Mint> f = {1, 2, 3};
-    
+
     // 評価点 x = 0, 1, 2, 3, 4
     vector<Mint> xs = {0, 1, 2, 3, 4};
-    
+
     SubProductTree<Mint> spt(xs);
     auto ys = spt.multi_eval(f);
-    
+
     // f(0) = 1
     // f(1) = 6
     // f(2) = 17
@@ -66,11 +73,12 @@ int main() {
 ```
 
 ### 多項式補間の例
+
 ```cpp
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/SubProductTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/SubProductTree.hpp"
 
 int main() {
     using namespace std;
@@ -94,6 +102,7 @@ int main() {
 ```
 
 ## Verify
+
 - [yosupo judge - Multipoint Evaluation](https://judge.yosupo.jp/problem/multipoint_evaluation)
 - [yosupo judge - Polynomial Interpolation](https://judge.yosupo.jp/problem/polynomial_interpolation)
 - [AtCoder Regular Contest 033 D - 見たことのない多項式](https://atcoder.jp/contests/arc033/tasks/arc033_4) (オーバーキル)

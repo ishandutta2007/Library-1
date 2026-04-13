@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/set_power_series.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/set_power_series.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,18 +14,18 @@ signed main() {
  cin >> N;
  vector<Mint> A(N + 1);
  Mint sum= 0;
- for (int i= 0; i <= N; ++i) cin >> A[i], sum+= A[i];
+ for(int i= 0; i <= N; ++i) cin >> A[i], sum+= A[i];
  Mint iv= Mint(1) / sum;
- for (int i= 0; i <= N; ++i) A[i]*= iv;
+ for(int i= 0; i <= N; ++i) A[i]*= iv;
  Mint ans= 0;
  vector<Mint> b(1024);
  b[0]= A[0], sps::hadamard(b);
- for (int X= 1; X < 1024; ++X) {
+ for(int X= 1; X < 1024; ++X) {
   vector<Mint> a(1024);
-  for (int i= 1; i <= N; ++i)
-   if (i != X) a[i]= A[i];
+  for(int i= 1; i <= N; ++i)
+   if(i != X) a[i]= A[i];
   sps::hadamard(a);
-  for (int i= 0; i < 1024; ++i) a[i]= b[i] / (Mint(1) - a[i]);
+  for(int i= 0; i < 1024; ++i) a[i]= b[i] / (Mint(1) - a[i]);
   sps::hadamard(a);
   ans+= a[X];
  }

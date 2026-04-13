@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/UndirectedGraphSetPowerSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  int n, m;
  cin >> n >> m;
  UndirectedGraphSetPowerSeries g(n);
- for (int i= m; i--;) {
+ for(int i= m; i--;) {
   int u, v;
   cin >> u >> v, --u, --v;
   g.add_edge(u, v);

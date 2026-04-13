@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/ArrayOnDivisors.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/ArrayOnDivisors.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,15 +14,15 @@ signed main() {
  Mint M;
  cin >> N >> M;
  vector<int> A(N);
- for (int i= 0; i < N; ++i) cin >> A[i];
+ for(int i= 0; i < N; ++i) cin >> A[i];
  int l= 1;
- for (int a: A) l= lcm(l, a);
+ for(int a: A) l= lcm(l, a);
  ArrayOnDivisors<int, int> X(l);
  X.set_totient();
  Mint ans= 0;
- for (auto [d, phi]: X) {
+ for(auto [d, phi]: X) {
   long long e= 0, k= l / d;
-  for (int a: A) e+= gcd(a, k);
+  for(int a: A) e+= gcd(a, k);
   ans+= M.pow(e) * phi;
  }
  ans/= l;

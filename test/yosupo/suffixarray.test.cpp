@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/String/SuffixArray.hpp"
+#include "mylib/string/SuffixArray.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,6 +12,6 @@ signed main() {
  cin >> S;
  int n= S.length();
  SuffixArray sa(S);
- for (int i= 0; i < n; ++i) cout << sa[i] << " \n"[i + 1 == n];
+ for(int i= 0; i < n; ++i) cout << sa[i] << " \n"[i + 1 == n];
  return 0;
 }

@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/characteristic_polynomial.hpp"
 using namespace std;
 signed main() {
@@ -12,11 +12,11 @@ signed main() {
  int N;
  cin >> N;
  Matrix<Mint> M0(N, N), M1(N, N);
- for (int i= 0; i < N; ++i)
-  for (int j= 0; j < N; ++j) cin >> M0[i][j];
- for (int i= 0; i < N; ++i)
-  for (int j= 0; j < N; ++j) cin >> M1[i][j];
+ for(int i= 0; i < N; ++i)
+  for(int j= 0; j < N; ++j) cin >> M0[i][j];
+ for(int i= 0; i < N; ++i)
+  for(int j= 0; j < N; ++j) cin >> M1[i][j];
  auto poly= det_of_first_degree_poly_mat(M0, M1);
- for (int i= 0; i <= N; ++i) cout << poly[i] << '\n';
+ for(int i= 0; i <= N; ++i) cout << poly[i] << '\n';
  return 0;
 }

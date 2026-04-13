@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include "mylib/LinearAlgebra/Matrix.hpp"
-#include "mylib/Math/Algebra.hpp"
+#include "mylib/algebra/Algebra.hpp"
 using namespace std;
 struct Rig {
  using T= bool;
@@ -17,14 +17,14 @@ signed main() {
  long long N, M, T;
  cin >> N >> M >> T;
  Matrix<Algebra<Rig>> A(N, N);
- while (M--) {
+ while(M--) {
   int a, b;
   cin >> a >> b;
   A[b][a]= 1;
  }
  auto B= A.pow(T);
  int ans= 0;
- for (int i= 0; i < N; i++) ans+= B[i][0].x;
+ for(int i= 0; i < N; i++) ans+= B[i][0].x;
  cout << ans << '\n';
  return 0;
 }

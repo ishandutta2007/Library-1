@@ -4,7 +4,7 @@
 // 　二部グラフ
 #include <iostream>
 #include <vector>
-#include "mylib/Optimization/WeightedMatching.hpp"
+#include "mylib/optimization/WeightedMatching.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,16 +12,16 @@ signed main() {
  int N;
  cin >> N;
  WeightedMatching<long long, true> graph(N + N);
- for (int i= 0; i < N; ++i)
-  for (int j= 0; j < N; ++j) {
+ for(int i= 0; i < N; ++i)
+  for(int j= 0; j < N; ++j) {
    long long a;
    cin >> a;
    graph.add_edge(i, N + j, a);
   }
  graph.build();
  long long ans= 0;
- for (auto [u, v, w]: graph.weight_matching()) ans+= w;
+ for(auto [u, v, w]: graph.weight_matching()) ans+= w;
  cout << ans << '\n';
- for (int i= 0; i < N; ++i) cout << graph.match(i) - N << " \n"[i == N - 1];
+ for(int i= 0; i < N; ++i) cout << graph.match(i) - N << " \n"[i == N - 1];
  return 0;
 }

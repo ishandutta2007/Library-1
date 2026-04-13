@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/LinkCutTree.hpp"
+#include "mylib/data_structure/LinkCutTree.hpp"
 using namespace std;
 struct Mono {
  using T= long long;
@@ -15,12 +15,12 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  LinkCutTree<Mono> lct(N);
- for (int i= 0, a; i < N; ++i) cin >> a, lct.set(i, a);
- for (int i= 0, u, v; i < N - 1; ++i) cin >> u >> v, lct.link(u, v);
- while (Q--) {
+ for(int i= 0, a; i < N; ++i) cin >> a, lct.set(i, a);
+ for(int i= 0, u, v; i < N - 1; ++i) cin >> u >> v, lct.link(u, v);
+ while(Q--) {
   bool op;
   cin >> op;
-  if (op) {
+  if(op) {
    int u, v;
    cin >> u >> v;
    cout << lct.prod(u, v) << '\n';

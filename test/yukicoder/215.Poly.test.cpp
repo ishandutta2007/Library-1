@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/bostan_mori.hpp"
-#include "mylib/FFT/Polynomial.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/bostan_mori.hpp"
+#include "mylib/fft/Polynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,10 +18,10 @@ signed main() {
  cin >> N >> P >> C;
  vector<Poly> a(P + 1), b(C + 1);
  a[0]= {1}, b[0]= {1};
- for (int v: {2, 3, 5, 7, 11, 13})
-  for (int i= 1; i <= P; i++) a[i]+= a[i - 1] * (x ^ v);
- for (int v: {4, 6, 8, 9, 10, 12})
-  for (int i= 1; i <= C; i++) b[i]+= b[i - 1] * (x ^ v);
+ for(int v: {2, 3, 5, 7, 11, 13})
+  for(int i= 1; i <= P; i++) a[i]+= a[i - 1] * (x ^ v);
+ for(int v: {4, 6, 8, 9, 10, 12})
+  for(int i= 1; i <= C; i++) b[i]+= b[i - 1] * (x ^ v);
  auto f= a[P] * b[C];
  cout << div_at<Mint, 1 << 17>((f(1) - f) / (x - 1), f - 1, N - 1) << '\n';
  return 0;

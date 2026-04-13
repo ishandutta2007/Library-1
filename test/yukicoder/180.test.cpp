@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Optimization/fibonacci_search.hpp"
+#include "mylib/optimization/fibonacci_search.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,10 +11,10 @@ signed main() {
  int N;
  cin >> N;
  long long a[N], b[N];
- for (int i= 0; i < N; ++i) cin >> a[i] >> b[i];
+ for(int i= 0; i < N; ++i) cin >> a[i] >> b[i];
  auto f= [&](long long n) {
   long long mx= 0, mi= 1e18;
-  for (int i= 0; i < N; ++i) {
+  for(int i= 0; i < N; ++i) {
    long long tmp= a[i] + b[i] * n;
    mx= max(mx, tmp);
    mi= min(mi, tmp);

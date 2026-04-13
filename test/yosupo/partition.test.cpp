@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 512
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/sequences.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/sequences.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,6 +12,6 @@ signed main() {
  int N;
  cin >> N;
  auto ans= partition<Mint>(N);
- for (int i= 0; i <= N; i++) cout << ans[i] << " \n"[i == N];
+ for(int i= 0; i <= N; i++) cout << ans[i] << " \n"[i == N];
  return 0;
 }

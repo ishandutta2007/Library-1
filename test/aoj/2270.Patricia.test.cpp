@@ -4,9 +4,9 @@
 // 永続化 + find * 4 の verify
 #include <iostream>
 #include <algorithm>
-#include "mylib/DataStructure/SegmentTree_Patricia.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/data_structure/SegmentTree_Patricia.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
 using namespace std;
 struct RsumQ {
  using T= int;
@@ -19,22 +19,22 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<int> x(N + 1);
- for (int i= 1; i <= N; i++) cin >> x[i];
+ for(int i= 1; i <= N; i++) cin >> x[i];
  Graph g(N + 1, N);
  g[0]= {0, 1};
- for (int i= 1; i < N; ++i) cin >> g[i];
+ for(int i= 1; i < N; ++i) cin >> g[i];
  auto adj= g.adjacency_vertex(0);
  HeavyLightDecomposition tree(adj, 0);
  using Seg= SegmentTree_Patricia<RsumQ, true>;
  vector<Seg> segs(N + 1);
- auto dfs= [&](auto &&f, int v, int p) -> void {
+ auto dfs= [&](auto&& f, int v, int p) -> void {
   segs[v]= segs[p];
   segs[v].set(x[v], segs[v][x[v]] + 1);
-  for (int u: adj[v])
-   if (u != p) f(f, u, v);
+  for(int u: adj[v])
+   if(u != p) f(f, u, v);
  };
  dfs(dfs, 1, 0);
- for (int i= 0; i < Q; i++) {
+ for(int i= 0; i < Q; i++) {
   int v, w, l;
   cin >> v >> w >> l;
   auto check= [&](int x, int y, int a, int ap) { return x + y - a - ap >= l; };

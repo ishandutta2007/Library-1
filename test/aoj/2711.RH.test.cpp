@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/Misc/rng.hpp"
-#include "mylib/String/RollingHash.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/misc/rng.hpp"
+#include "mylib/string/RollingHash.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -20,29 +20,29 @@ signed main() {
  RH rh(S);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int l, r, t;
   cin >> l >> r >> t, l--;
   int n= r - l;
   auto rhT= rh.sub(l, n);
   auto a= rhT.sub(0, n - t), b= rhT.sub(t, n - t);
   int s= lcp(a, b);
-  if (s >= n - t) {
+  if(s >= n - t) {
    cout << "Yes" << '\n';
    continue;
   }
-  if (s < t) {
-   if (a.sub(s + 1) == b.sub(s + 1)) {
+  if(s < t) {
+   if(a.sub(s + 1) == b.sub(s + 1)) {
     cout << "Yes" << '\n';
     continue;
    }
   }
-  if (s + t > n - t) {
+  if(s + t > n - t) {
    cout << (a.sub(s + 1) == b.sub(s + 1) ? "Yes" : "No") << '\n';
    continue;
   }
   bool isok= a.sub(s + 1, t - 1) == b.sub(s + 1, t - 1);
-  if (t + s + t < n) {
+  if(t + s + t < n) {
    isok&= S[l + s] == S[l + t + s + t];
    isok&= a.sub(s + t + 1) == b.sub(s + t + 1);
   }

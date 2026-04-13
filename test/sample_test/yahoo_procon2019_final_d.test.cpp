@@ -6,10 +6,10 @@
 #include <cassert>
 #include <vector>
 #include <array>
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
-#include "mylib/DataStructure/SegmentTree.hpp"
-#include "mylib/Misc/compress.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
+#include "mylib/misc/compress.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -29,10 +29,10 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> N >> Q;
  vector<array<int, 3>> query(Q);
  vector<int> x;
- for (int q= 0; q < Q; ++q) {
+ for(int q= 0; q < Q; ++q) {
   int t;
   scin >> t;
-  if (t == 1) {
+  if(t == 1) {
    int p;
    scin >> p, --p;
    x.push_back(p), x.push_back(p + 1);
@@ -50,12 +50,12 @@ signed main(stringstream& scin, stringstream& scout) {
  fill_n(f, n - 1, false);
  Mat A= {{1, 1}, {1, 0}};
  SegmentTree<M> seg(n - 1, [&](int i) { return A.pow(x[i + 1] - x[i]); });
- for (int q= 0; q < Q; ++q) {
+ for(int q= 0; q < Q; ++q) {
   auto [t, l, r]= query[q];
-  if (t == 1) {
+  if(t == 1) {
    int p= id(l);
    f[p]= !f[p];
-   if (f[p]) seg.set(p, Mat{{0, 0}, {1, 0}});
+   if(f[p]) seg.set(p, Mat{{0, 0}, {1, 0}});
    else seg.set(p, A);
   } else {
    l= id(l), r= id(r);

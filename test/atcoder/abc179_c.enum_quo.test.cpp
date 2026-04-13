@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // O(√N)
 #include <iostream>
-#include "mylib/NumberTheory/enumerate_quotients.hpp"
+#include "mylib/number_theory/enumerate_quotients.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  int N;
  cin >> N;
  long long ans= 0;
- for (auto [q, l, r]: enumerate_quotients(N - 1)) ans+= (r - l) * q;
+ for(auto [q, l, r]: enumerate_quotients(N - 1)) ans+= (r - l) * q;
  cout << ans << '\n';
  return 0;
 }

@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <map>
-#include "mylib/DataStructure/RangeSet.hpp"
+#include "mylib/data_structure/RangeSet.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,16 +14,16 @@ signed main() {
  RangeSet<int> rs;
  map<int, long long> A;
  constexpr int M= (1 << 20) - 1;
- while (Q--) {
+ while(Q--) {
   long long t, x;
   cin >> t >> x;
   int h= x & M;
   auto cs= rs.covered_by(h);
-  if (t == 2) cout << (cs ? A[h] : -1) << '\n';
+  if(t == 2) cout << (cs ? A[h] : -1) << '\n';
   else {
-   if (cs) {
+   if(cs) {
     h= (cs.r + 1) & M, cs= rs.covered_by(h);
-    if (cs) h= (cs.r + 1) & M;
+    if(cs) h= (cs.r + 1) & M;
    }
    rs.insert(h), A[h]= x;
   }

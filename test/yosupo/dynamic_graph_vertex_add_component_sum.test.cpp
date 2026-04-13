@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 3
 // competitive-verifier: MLE 512
 #include <iostream>
-#include "mylib/DataStructure/OnlineDynamicConnectivity.hpp"
+#include "mylib/data_structure/OnlineDynamicConnectivity.hpp"
 using namespace std;
 struct Monoid {
  using T= long long;
@@ -15,22 +15,22 @@ int main() {
  int N, Q;
  cin >> N >> Q;
  OnlineDynamicConnectivity<Monoid, 6'000'000> dicon(N);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   int a;
   cin >> a;
   dicon.set(i, a);
  }
- for (int i= 0; i < Q; i++) {
+ for(int i= 0; i < Q; i++) {
   int t;
   int u, v;
   cin >> t;
-  if (t == 0) {
+  if(t == 0) {
    cin >> u >> v;
    dicon.link(u, v);
-  } else if (t == 1) {
+  } else if(t == 1) {
    cin >> u >> v;
    dicon.cut(u, v);
-  } else if (t == 2) {
+  } else if(t == 2) {
    cin >> u >> v;
    dicon.set(u, dicon[u] + v);
   } else {

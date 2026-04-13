@@ -4,9 +4,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/CartesianTree.hpp"
-#include "mylib/DataStructure/BinaryIndexedTree_RangeAdd.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/CartesianTree.hpp"
+#include "mylib/data_structure/BinaryIndexedTree_RangeAdd.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,11 +15,11 @@ signed main() {
  int N;
  cin >> N;
  vector<int> A(N);
- for (int i= 0; i < N; ++i) cin >> A[i];
+ for(int i= 0; i < N; ++i) cin >> A[i];
  CartesianTree ct1(A), ct2(A, false);
  BinaryIndexedTree_RangeAdd<Mint> dp(N + 1);
  dp.add_range(0, 1, 1);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   auto [l1, r1]= ct1.range(i);
   dp.add_range(i + 1, r1 + 1, -dp.sum(l1, i + 1) * A[i]);
   auto [l2, r2]= ct2.range(i);

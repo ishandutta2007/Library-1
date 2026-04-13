@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/RandomizedBinarySearchTree.hpp"
+#include "mylib/data_structure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,18 +13,18 @@ signed main() {
  int n, q;
  cin >> n >> q;
  RandomizedBinarySearchTree<int> ar[n];
- for (int i= 0; i < q; ++i) {
+ for(int i= 0; i < q; ++i) {
   int op;
   cin >> op;
-  if (op == 0) {
+  if(op == 0) {
    int t, x;
    cin >> t >> x;
    ar[t].push_back(x);
-  } else if (op == 1) {
+  } else if(op == 1) {
    int t;
    cin >> t;
    auto ans= ar[t].dump();
-   for (int i= 0; i < ans.size(); ++i) cout << (i ? " " : "") << ans[i];
+   for(int i= 0; i < ans.size(); ++i) cout << (i ? " " : "") << ans[i];
    cout << '\n';
   } else {
    int s, t;

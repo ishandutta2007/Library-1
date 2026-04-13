@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/String/AhoCorasick.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/string/AhoCorasick.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -15,14 +15,14 @@ int main() {
  cin >> N >> L >> R;
  vector<vector<int>> Fs;
  long long fp= 1, fpp= 1;
- if (L <= 1 && 1 <= R) Fs.push_back({1}), Fs.push_back({1});
- while (fp <= R) {
+ if(L <= 1 && 1 <= R) Fs.push_back({1}), Fs.push_back({1});
+ while(fp <= R) {
   long long tmp= fpp;
   fpp= fp;
   fp+= tmp;
-  if (L <= fp && fp <= R) {
+  if(L <= fp && fp <= R) {
    vector<int> F;
-   for (tmp= fp; tmp; tmp/= 10) F.push_back(tmp % 10);
+   for(tmp= fp; tmp; tmp/= 10) F.push_back(tmp % 10);
    reverse(F.begin(), F.end());
    Fs.push_back(F);
   }
@@ -31,12 +31,12 @@ int main() {
  int M= ac.state_size();
  vector<Mint> dp(M);
  dp[0]= 1;
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   vector<Mint> next(M);
-  for (int s= 0; s < M; s++) {
-   for (int k= 0; k < 10; k++) {
+  for(int s= 0; s < M; s++) {
+   for(int k= 0; k < 10; k++) {
     int t= ac.transition(s, k);
-    if (ac.is_accept(t)) continue;
+    if(ac.is_accept(t)) continue;
     next[t]+= dp[s];
    }
   }

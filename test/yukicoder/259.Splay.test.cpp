@@ -4,7 +4,7 @@
 // reverse, split, + の verify
 
 #include <iostream>
-#include "mylib/DataStructure/SplayTree.hpp"
+#include "mylib/data_structure/SplayTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;
@@ -18,21 +18,21 @@ int main() {
  cin >> N >> Q;
  SplayTree<RSQ, true> stL(N, 0), stR(N, 0);
  int now= 0;
- while (Q--) {
+ while(Q--) {
   char x;
   int t, y, z;
   cin >> x >> t >> y >> z;
   int dt= t - now;
   dt%= 2 * N;
-  if (dt > N) swap(stL, stR), stL.reverse(), stR.reverse(), dt-= N;
+  if(dt > N) swap(stL, stR), stL.reverse(), stR.reverse(), dt-= N;
   auto [Ll, Lr]= stL.split(dt);
   auto [Rl, Rr]= stR.split(N - dt);
   Ll.reverse(), Rr.reverse();
   stL= Lr + Rr;
   stR= Ll + Rl;
-  if (x == 'L') {
+  if(x == 'L') {
    stL.mul(y, z);
-  } else if (x == 'R') {
+  } else if(x == 'R') {
    stR.mul(y, z);
   } else {
    cout << stL.prod(y, z) + stR.prod(y, z) << '\n';

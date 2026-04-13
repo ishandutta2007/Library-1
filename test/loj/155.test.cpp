@@ -4,9 +4,9 @@
 
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/set_power_series.hpp"
-#include "mylib/Graph/UndirectedGraphSetPowerSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/set_power_series.hpp"
+#include "mylib/graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,11 +15,11 @@ signed main() {
  int n;
  cin >> n;
  UndirectedGraphSetPowerSeries g(n);
- for (int i= 0; i < n; ++i)
-  for (int j= 0; j < n; ++j) {
+ for(int i= 0; i < n; ++i)
+  for(int j= 0; j < n; ++j) {
    bool c;
    cin >> c;
-   if (c && i < j) g.add_edge(i, j);
+   if(c && i < j) g.add_edge(i, j);
   }
  Mint x, y;
  cin >> x >> y;

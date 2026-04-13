@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // 200 (=100+100) 頂点
 #include <iostream>
-#include "mylib/Graph/CliqueProblem.hpp"
+#include "mylib/graph/CliqueProblem.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,7 +11,7 @@ signed main() {
  int X, Y, E;
  cin >> X >> Y >> E;
  CliqueProblem graph(X + Y);
- for (int i= 0; i < E; ++i) {
+ for(int i= 0; i < E; ++i) {
   int x, y;
   cin >> x >> y;
   graph.add_edge(x, X + y);

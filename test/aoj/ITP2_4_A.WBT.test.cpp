@@ -4,7 +4,7 @@
 // reverse の verify
 
 #include <iostream>
-#include "mylib/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/data_structure/WeightBalancedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,16 +12,16 @@ signed main() {
  int n;
  cin >> n;
  int a[n];
- for (int i= 0; i < n; i++) cin >> a[i];
+ for(int i= 0; i < n; i++) cin >> a[i];
  WeightBalancedTree<int, true> ar(a, a + n);
  int q;
  cin >> q;
- for (int i= 0; i < q; ++i) {
+ for(int i= 0; i < q; ++i) {
   int b, e;
   cin >> b >> e;
   ar.reverse(b, e);
  }
  auto ans= ar.dump();
- for (int i= 0; i < n; ++i) cout << ans[i] << " \n"[i == n - 1];
+ for(int i= 0; i < n; ++i) cout << ans[i] << " \n"[i == n - 1];
  return 0;
 }

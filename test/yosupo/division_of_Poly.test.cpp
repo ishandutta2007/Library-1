@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/Polynomial.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/Polynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,13 +12,13 @@ signed main() {
  int N, M;
  cin >> N >> M;
  Polynomial<Mint> f(N), g(M), x, y;
- for (int i= 0; i < N; i++) cin >> f[i];
- for (int i= 0; i < M; i++) cin >> g[i];
+ for(int i= 0; i < N; i++) cin >> f[i];
+ for(int i= 0; i < M; i++) cin >> g[i];
  auto [q, r]= f.quorem(g);
  cout << q.deg() + 1 << " " << r.deg() + 1 << '\n';
- if (q.deg() != -1)
-  for (int i= 0, ed= q.size(); i < ed; i++) cout << q[i] << " \n"[i == ed - 1];
- if (r.deg() != -1)
-  for (int i= 0, ed= r.size(); i < ed; i++) cout << r[i] << " \n"[i == ed - 1];
+ if(q.deg() != -1)
+  for(int i= 0, ed= q.size(); i < ed; i++) cout << q[i] << " \n"[i == ed - 1];
+ if(r.deg() != -1)
+  for(int i= 0, ed= r.size(); i < ed; i++) cout << r[i] << " \n"[i == ed - 1];
  return 0;
 }

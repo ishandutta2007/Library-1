@@ -4,7 +4,7 @@
 #include <iostream>
 #include <array>
 #include <algorithm>
-#include "mylib/DataStructure/RangeSet.hpp"
+#include "mylib/data_structure/RangeSet.hpp"
 
 using namespace std;
 signed main() {
@@ -13,12 +13,12 @@ signed main() {
  int N, M, Q;
  cin >> N >> M >> Q;
  array<int, 5> query[M + Q];
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   int D, A, B;
   cin >> D >> A >> B;
   query[i]= {D, 1, A, B, -1};
  }
- for (int i= 0; i < Q; ++i) {
+ for(int i= 0; i < Q; ++i) {
   int E, S, T;
   cin >> E >> S >> T;
   query[i + M]= {E, 0, S, T, i};
@@ -26,13 +26,13 @@ signed main() {
  sort(query, query + M + Q);
  bool ans[Q];
  RangeSet<int, false> rs;
- for (auto [d, t, a, b, i]: query) {
-  if (t) rs.insert(a, b);
+ for(auto [d, t, a, b, i]: query) {
+  if(t) rs.insert(a, b);
   else {
-   if (a >= b) ans[i]= true;
+   if(a >= b) ans[i]= true;
    else ans[i]= rs.covered_by(a, b);
   }
  }
- for (bool a: ans) cout << (a ? "Yes" : "No") << '\n';
+ for(bool a: ans) cout << (a ? "Yes" : "No") << '\n';
  return 0;
 }

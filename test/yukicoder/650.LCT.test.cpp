@@ -2,16 +2,16 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
-#include "mylib/DataStructure/LinkCutTree.hpp"
+#include "mylib/data_structure/LinkCutTree.hpp"
 using namespace std;
 
 using Mint= ModInt<int(1e9) + 7>;
 using Mat= Matrix<Mint>;
 struct Monoid {
  using T= Mat;
- static T op(const T &l, const T &r) { return l * r; }
+ static T op(const T& l, const T& r) { return l * r; }
 };
 int main() {
  cin.tie(0);
@@ -19,7 +19,7 @@ int main() {
  int n;
  cin >> n;
  LinkCutTree<Monoid> lct(n + n - 1, Mat::identity(2));
- for (int i= 0; i < n - 1; i++) {
+ for(int i= 0; i < n - 1; i++) {
   int a, b;
   cin >> a >> b;
   lct.link(a, i + n);
@@ -27,10 +27,10 @@ int main() {
  }
  int q;
  cin >> q;
- while (q--) {
+ while(q--) {
   char t;
   cin >> t;
-  if (t == 'x') {
+  if(t == 'x') {
    int i;
    cin >> i;
    Mat X(2, 2);

@@ -3,7 +3,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Geometry/IncrementalConvexHull.hpp"
+#include "mylib/geometry/IncrementalConvexHull.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,14 +12,14 @@ signed main() {
  int N;
  cin >> N;
  IncrementalConvexHull<int> ch;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   Point<int> p;
   cin >> p;
   ch.insert(p);
  }
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   Point<int> p;
   cin >> p;
   int ans= ch.where(p);

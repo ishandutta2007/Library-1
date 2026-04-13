@@ -5,8 +5,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/DataStructure/RandomizedBinarySearchTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/data_structure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -17,7 +17,7 @@ namespace TEST {
 struct M {
  using T= array<int, 2>;
  static T op(const T& l, const T& r) {
-  if (l[1] > r[0]) return {l[0], r[1] + l[1] - r[0]};
+  if(l[1] > r[0]) return {l[0], r[1] + l[1] - r[0]};
   else return {l[0] + r[0] - l[1], r[1]};
  }
 };
@@ -31,19 +31,19 @@ signed main(stringstream& scin, stringstream& scout) {
   scin >> S;
   int N= S.length();
   vector<typename M::T> v(N);
-  for (int i= N; i--;) v[i]= {S[i] == ')', S[i] == '('};
+  for(int i= N; i--;) v[i]= {S[i] == ')', S[i] == '('};
   rbst= RBST(v);
  }
- while (Q--) {
+ while(Q--) {
   char x;
   int y, z;
   scin >> x >> y >> z;
   --y;
-  if (x == '(') {
+  if(x == '(') {
    rbst.insert(y, {0, 1});
-  } else if (x == ')') {
+  } else if(x == ')') {
    rbst.insert(y, {1, 0});
-  } else if (x == 'D') {
+  } else if(x == 'D') {
    rbst.erase(y);
   } else {
    auto [l, r]= rbst.prod(y, z);

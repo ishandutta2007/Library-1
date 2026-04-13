@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "mylib/NumberTheory/is_prime.hpp"
+#include "mylib/number_theory/is_prime.hpp"
 
 constexpr auto f= is_prime(1000000007);
 static_assert(f == true);

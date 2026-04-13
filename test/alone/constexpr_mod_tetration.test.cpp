@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "mylib/Math/mod_tetration.hpp"
+#include "mylib/algebra/mod_tetration.hpp"
 
 constexpr auto f= mod_tetration(2, 3, 1000000007);
 static_assert(f == 16);

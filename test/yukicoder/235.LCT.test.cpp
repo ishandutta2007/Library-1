@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/LinkCutTree.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/data_structure/LinkCutTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 
 using Mint= ModInt<int(1e9 + 7)>;
@@ -12,9 +12,9 @@ struct Mono {
   Mint val, coef;
  };
  using E= Mint;
- static T op(const T &vl, const T &vr) { return {vl.val + vr.val, vl.coef + vr.coef}; }
- static void mp(T &val, const E &op) { val.val+= val.coef * op; }
- static void cp(E &pre, const E &suf) { pre+= suf; }
+ static T op(const T& vl, const T& vr) { return {vl.val + vr.val, vl.coef + vr.coef}; }
+ static void mp(T& val, const E& op) { val.val+= val.coef * op; }
+ static void cp(E& pre, const E& suf) { pre+= suf; }
  using commute= void;
 };
 signed main() {
@@ -24,10 +24,10 @@ signed main() {
  cin >> N;
  LinkCutTree<Mono> lct(N);
  Mint S[N], C[N];
- for (int i= 0; i < N; i++) cin >> S[i];
- for (int i= 0; i < N; i++) cin >> C[i];
- for (int i= 0; i < N; i++) lct.set(i, {S[i], C[i]});
- for (int i= 0; i < N - 1; i++) {
+ for(int i= 0; i < N; i++) cin >> S[i];
+ for(int i= 0; i < N; i++) cin >> C[i];
+ for(int i= 0; i < N; i++) lct.set(i, {S[i], C[i]});
+ for(int i= 0; i < N - 1; i++) {
   int A, B;
   cin >> A >> B;
   lct.link(--A, --B);
@@ -35,10 +35,10 @@ signed main() {
  lct.evert(0);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int op, X, Y;
   cin >> op >> X >> Y, --X, --Y;
-  if (op) {
+  if(op) {
    cout << lct.prod(X, Y).val << '\n';
   } else {
    Mint Z;

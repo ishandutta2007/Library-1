@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include "mylib/DataStructure/RandomizedBinarySearchTree.hpp"
+#include "mylib/data_structure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,7 +16,7 @@ signed main() {
  int H, W;
  cin >> H >> W;
  vector<string> A(H);
- for (int i= 0; i < H; ++i) cin >> A[i];
+ for(int i= 0; i < H; ++i) cin >> A[i];
  RBST row, col;
  {
   vector<int> v(H);
@@ -30,7 +30,7 @@ signed main() {
  }
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int a, b;
   cin >> a >> b;
   {
@@ -46,8 +46,8 @@ signed main() {
  }
  auto row_= row.dump();
  auto col_= col.dump();
- for (int i= 0; i < H; ++i) {
-  for (int j= 0; j < W; ++j) {
+ for(int i= 0; i < H; ++i) {
+  for(int j= 0; j < W; ++j) {
    cout << A[row_[i]][col_[j]];
   }
   cout << '\n';

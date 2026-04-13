@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/String/SuffixArray.hpp"
+#include "mylib/string/SuffixArray.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  SuffixArray sa(t);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   string p;
   cin >> p;
   auto [l, r]= sa.pattern_matching(p);

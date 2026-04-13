@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "mylib/LinearAlgebra/LU_Decomposition.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  int N, M, r;
  cin >> N >> M >> r;
  Matrix<Mint> A(N, N);
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   int u, v;
   cin >> u >> v;
   A[v][v]+= 1;

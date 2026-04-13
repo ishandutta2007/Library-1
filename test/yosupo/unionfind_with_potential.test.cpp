@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,11 +12,11 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  UnionFind_Potentialized<Mint> uf(N);
- while (Q--) {
+ while(Q--) {
   int t, u, v;
   cin >> t >> u >> v;
-  if (t) {
-   if (uf.connected(u, v)) cout << uf.diff(u, v) << '\n';
+  if(t) {
+   if(uf.connected(u, v)) cout << uf.diff(u, v) << '\n';
    else cout << -1 << '\n';
   } else {
    Mint x;

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/Automaton.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/Automaton.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,38 +17,38 @@ signed main() {
  cin >> P;
  vector alp= {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
  int n_a= A.length(), n_b= B.length();
- for (int i= n_a; i--;) {
-  if (A[i] > '0') {
+ for(int i= n_a; i--;) {
+  if(A[i] > '0') {
    --A[i];
    break;
   }
   A[i]= '9';
  }
  auto tr_a= [&](int s, int c) {
-  if (s >= n_a) return s;
+  if(s >= n_a) return s;
   int d= A[s] - '0';
-  if (c < d) return n_a;
-  if (c > d) return n_a + 1;
+  if(c < d) return n_a;
+  if(c > d) return n_a + 1;
   return s + 1;
  };
  auto tr_b= [&](int s, int c) {
-  if (s >= n_b) return s;
+  if(s >= n_b) return s;
   int d= B[s] - '0';
-  if (c < d) return n_b;
-  if (c > d) return n_b + 1;
+  if(c < d) return n_b;
+  if(c > d) return n_b + 1;
   return s + 1;
  };
  auto ac= [&](int) { return true; };
  Automaton dfa_a(alp, 0, tr_a, ac, n_a + 1), dfa_b(alp, 0, tr_b, ac, n_b + 1);
  auto tr_3= [&](int s, int c) {
-  if (s == -1 || c == 3) return -1;
+  if(s == -1 || c == 3) return -1;
   return (s + c) % 3;
  };
  Automaton dfa_3(alp, 0, tr_3, [](int s) { return s <= 0; });
  auto dfa1= dfa_a & dfa_3;
  auto dfa2= dfa_b & dfa_3;
  Mint ans= dfa2.num<Mint>(n_b) - dfa1.num<Mint>(n_a);
- while (P % 10 == 0) P/= 10, --n_a, --n_b;
+ while(P % 10 == 0) P/= 10, --n_a, --n_b;
  Automaton dfa_a2(alp, 0, tr_a, ac, n_a + 1), dfa_b2(alp, 0, tr_b, ac, n_b + 1);
  auto tr_P= [&](int s, int c) { return (s * 10 + c) % P; };
  Automaton dfa_P(alp, 0, tr_P, [](int s) { return s == 0; });

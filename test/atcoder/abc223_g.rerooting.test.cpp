@@ -5,8 +5,8 @@
 #include <iostream>
 #include <algorithm>
 #include <array>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,7 +14,7 @@ signed main() {
  int N;
  cin >> N;
  Graph g(N, N - 1);
- for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
+ for(int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
  using Data= array<int, 2>;
  auto put_edge= [&](int, int, const Data& d) {
   auto x= max(d[0], d[1]);
@@ -24,8 +24,8 @@ signed main() {
  auto put_vertex= [&](int, const Data& d) { return Data{d[0], d[0] + d[1]}; };
  Rerooting<Data> dp(g, put_edge, op, Data{0, 0}, put_vertex);
  int mx= 0, ans= 0;
- for (auto [x, y]: dp) mx= max({mx, x, y});
- for (auto [x, y]: dp) ans+= (mx == x);
+ for(auto [x, y]: dp) mx= max({mx, x, y});
+ for(auto [x, y]: dp) ans+= (mx == x);
  cout << ans << '\n';
  return 0;
 }

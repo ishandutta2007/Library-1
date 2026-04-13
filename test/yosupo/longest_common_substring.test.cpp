@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <string>
-#include "mylib/String/SuffixArray.hpp"
+#include "mylib/string/SuffixArray.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,10 +16,10 @@ signed main() {
  SuffixArray sa(S);
  LCPArray lcp(sa);
  int a= 0, c= 0, len= 0;
- for (int i= 0; i + 1 < N; ++i) {
+ for(int i= 0; i + 1 < N; ++i) {
   int x= sa[i], y= sa[i + 1];
-  if (x > y) swap(x, y);
-  if (x < n && n < y && len < lcp[i]) {
+  if(x > y) swap(x, y);
+  if(x < n && n < y && len < lcp[i]) {
    len= lcp[i];
    a= x, c= y - n - 1;
   }

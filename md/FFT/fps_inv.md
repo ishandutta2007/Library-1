@@ -1,9 +1,10 @@
 ---
 title: 形式的冪級数の逆元
-documentation_of: ../../mylib/FFT/fps_inv.hpp
+documentation_of: ../../mylib/fft/fps_inv.hpp
 ---
 
 ## 概要
+
 形式的冪級数 $A(x) = \sum_{i=0}^{N-1} a_i x^i$ の逆元 $B(x) = A(x)^{-1}$ を $\pmod{x^N}$ で求める。
 すなわち、$A(x)B(x) \equiv 1 \pmod{x^N}$ となる $B(x) = \sum_{i=0}^{N-1} b_i x^i$ を計算する。
 
@@ -12,17 +13,20 @@ documentation_of: ../../mylib/FFT/fps_inv.hpp
 計算量: $O(N \log N)$
 
 ## 制約
+
 - $p$ は空でない (`p.size() > 0`)
 - $p$ の定数項 `p[0]` は逆元を持つ必要がある
 
 ## 使用方法
+
 ```cpp
 #include <vector>
-#include "mylib/Math/ModInt.hpp" // ModIntなど
-#include "mylib/FFT/fps_inv.hpp"
+#include "mylib/algebra/ModInt.hpp" // ModIntなど
+#include "mylib/fft/fps_inv.hpp"
 ```
 
 ### inv(p)
+
 - `p`: `vector<mod_t>` 型の形式的冪級数の係数ベクトル
 - 戻り値: `p` の逆元の係数ベクトル (サイズは `p` と同じ)
 
@@ -31,8 +35,8 @@ documentation_of: ../../mylib/FFT/fps_inv.hpp
 ```cpp
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/fps_inv.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/fps_inv.hpp"
 
 // https://judge.yosupo.jp/problem/inv_of_formal_power_series
 int main() {

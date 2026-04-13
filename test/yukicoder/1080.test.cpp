@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 512
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/fps_inv.hpp"
-#include "mylib/FFT/fps_exp.hpp"
-#include "mylib/Math/mod_sqrt.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/fps_inv.hpp"
+#include "mylib/fft/fps_exp.hpp"
+#include "mylib/algebra/mod_sqrt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,12 +16,12 @@ signed main() {
  int N;
  cin >> N;
  vector<Mint> f(N + 1);
- for (int i= 1; i <= N; i++) f[i]= Mint(i + 1) * (i + 1);
+ for(int i= 1; i <= N; i++) f[i]= Mint(i + 1) * (i + 1);
  Mint im= mod_sqrt(MOD - 1, MOD), cf= Mint(1) / (im + 1);
- for (auto& x: f) x*= im;
+ for(auto& x: f) x*= im;
  auto exp_pi= exp<Mint, 1 << 20>(f), exp_mi= inv<Mint, 1 << 20>(exp_pi);
- for (int i= 2; i <= N; i++) cf*= i;
- for (auto& x: f) x*= im;
- for (int i= 1; i <= N; i++) cout << (exp_pi[i] + im * exp_mi[i]) * cf << '\n';
+ for(int i= 2; i <= N; i++) cf*= i;
+ for(auto& x: f) x*= im;
+ for(int i= 1; i <= N; i++) cout << (exp_pi[i] + im * exp_mi[i]) * cf << '\n';
  return 0;
 }

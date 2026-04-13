@@ -1,15 +1,15 @@
 #pragma once
 #include <array>
 #include <limits>
-#include "mylib/NumberTheory/is_prime.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/number_theory/is_prime.hpp"
+#include "mylib/algebra/ModInt.hpp"
 template <class mod_t, size_t LM> mod_t get_inv(int n) {
  static_assert(is_modint_v<mod_t>);
  static const auto m= mod_t::mod();
  static mod_t* dat= new mod_t[LM];
  static int l= 1;
- if (l == 1) dat[l++]= 1;
- for (; l <= n; ++l) dat[l]= dat[m % l] * (m - m / l);
+ if(l == 1) dat[l++]= 1;
+ for(; l <= n; ++l) dat[l]= dat[m % l] * (m - m / l);
  return dat[n];
 }
 namespace math_internal {
@@ -20,27 +20,27 @@ namespace math_internal {
 TP<class mod_t> struct NTT {
 #define _DFT(a, b, c, ...) \
  mod_t r, u, *x0, *x1; \
- for (int a= n, b= 1, s, i; a>>= 1; b<<= 1) \
-  for (s= 0, r= I, x0= x;; r*= c[BSF(, s)], x0= x1 + p) { \
-   for (x1= x0 + (i= p); i--;) __VA_ARGS__; \
-   if (++s == e) break; \
+ for(int a= n, b= 1, s, i; a>>= 1; b<<= 1) \
+  for(s= 0, r= I, x0= x;; r*= c[BSF(, s)], x0= x1 + p) { \
+   for(x1= x0 + (i= p); i--;) __VA_ARGS__; \
+   if(++s == e) break; \
   }
  ST inline void dft(int n, mod_t x[]) { _DFT(p, e, r2, x1[i]= x0[i] - (u= r * x1[i]), x0[i]+= u); }
  ST inline void idft(int n, mod_t x[]) {
   _DFT(e, p, ir2, u= x0[i] - x1[i], x0[i]+= x1[i], x1[i]= r * u)
-  for (const mod_t iv= I / n; n--;) x[n]*= iv;
+  for(const mod_t iv= I / n; n--;) x[n]*= iv;
  }
 #undef _DFT
  ST inline void even_dft(int n, mod_t x[]) {
-  for (int i= 0, j= 0; i < n; i+= 2) x[j++]= iv2 * (x[i] + x[i + 1]);
+  for(int i= 0, j= 0; i < n; i+= 2) x[j++]= iv2 * (x[i] + x[i + 1]);
  }
  ST inline void odd_dft(int n, mod_t x[], mod_t r= iv2) {
-  for (int i= 0, j= 0;; r*= ir2[BSF(, ++j)])
-   if (x[j]= r * (x[i] - x[i + 1]); (i+= 2) == n) break;
+  for(int i= 0, j= 0;; r*= ir2[BSF(, ++j)])
+   if(x[j]= r * (x[i] - x[i + 1]); (i+= 2) == n) break;
  }
  ST inline void dft_doubling(int n, mod_t x[], int i= 0) {
   mod_t k= I, t= rt[BSF(, n << 1)];
-  for (copy_n(x, n, x + n), idft(n, x + n); i < n; ++i) x[n + i]*= k, k*= t;
+  for(copy_n(x, n, x + n), idft(n, x + n); i < n; ++i) x[n + i]*= k, k*= t;
   dft(n, x + n);
  }
 protected:
@@ -49,20 +49,20 @@ protected:
  static_assert(is_prime(md));
  ST CE u8 E= BSF(ll, md - 1);
  ST CE mod_t w= [](u8 e) {
-  for (mod_t r= 2;; r+= 1)
-   if (auto s= r.pow((md - 1) / 2); s != 1 && s * s == 1) return r.pow((md - 1) >> e);
+  for(mod_t r= 2;; r+= 1)
+   if(auto s= r.pow((md - 1) / 2); s != 1 && s * s == 1) return r.pow((md - 1) >> e);
   return mod_t();
  }(E);
  static_assert(w != mod_t());
  ST CE mod_t I= 1, iv2= (md + 1) / 2, iw= w.pow((1ULL << E) - 1);
  ST CE auto roots(mod_t w) {
   array<mod_t, E + 1> x= {};
-  for (u8 e= E; e; w*= w) x[e--]= w;
+  for(u8 e= E; e; w*= w) x[e--]= w;
   return x[0]= w, x;
  }
  TP<u32 N> ST CE auto ras(const array<mod_t, E + 1>& rt, const array<mod_t, E + 1>& irt, int i= N) {
   array<mod_t, E + 1 - N> x= {};
-  for (mod_t ro= 1; i <= E; ro*= irt[i++]) x[i - N]= rt[i] * ro;
+  for(mod_t ro= 1; i <= E; ro*= irt[i++]) x[i - N]= rt[i] * ro;
   return x;
  }
  ST CE auto rt= roots(w), irt= roots(iw);
@@ -73,12 +73,12 @@ TP<class T, u8 t, class B> struct NI: public B {
 #define FUNC(op, name, HG, ...) \
  inline void name(__VA_ARGS__) { \
   HG(op, 1); \
-  if CE (t > 1) HG(op, 2); \
-  if CE (t > 2) HG(op, 3); \
-  if CE (t > 3) HG(op, 4); \
-  if CE (t > 4) HG(op, 5); \
+  if CE(t > 1) HG(op, 2); \
+  if CE(t > 2) HG(op, 3); \
+  if CE(t > 3) HG(op, 4); \
+  if CE(t > 4) HG(op, 5); \
  }
-#define REP for (int i= b; i < e; ++i)
+#define REP for(int i= b; i < e; ++i)
 #define DFT(fft, _) B::ntt##_::fft(e - b, this->dt##_ + b)
 #define ZEROS(op, _) fill_n(this->dt##_ + b, e - b, typename B::m##_())
 #define SET(op, _) copy(x + b, x + e, this->dt##_ + b)
@@ -89,19 +89,19 @@ TP<class T, u8 t, class B> struct NI: public B {
 #define BOP(op, _) REP this->dt##_[i]= l.dt##_[i] op r.dt##_[i]
 #define OP(nm, op) TP<class C, class D> FUNC(op, nm, BOP, const NI<T, t, C>& l, const NI<T, t, D>& r, int b, int e)
  OP(add, +) OP(dif, -) OP(mul, *) ASN(add, +) ASN(dif, -) ASN(mul, *) FUNC(dft, dft, DFT, int b, int e) FUNC(idft, idft, DFT, int b, int e) FUNC(__, zeros, ZEROS, int b, int e) FUNC(__, set, SET, const T x[], int b, int e) FUNC(__, set, SET_S, int i, T x) TP<class C> FUNC(__, subst, SUBST, const NI<T, t, C>& r, int b, int e) inline void get(T x[], int b, int e) const {
-  if CE (t == 1) copy(this->dt1 + b, this->dt1 + e, x + b);
+  if CE(t == 1) copy(this->dt1 + b, this->dt1 + e, x + b);
   else REP x[i]= get(i);
  }
 #define TMP(_) B::iv##_##1 * (this->dt##_[i] - r1)
  inline T get(int i) const {
-  if CE (t > 1) {
+  if CE(t > 1) {
    u64 r1= this->dt1[i].val(), r2= (TMP(2)).val();
    T a= 0;
-   if CE (t > 2) {
+   if CE(t > 2) {
     u64 r3= (TMP(3) - B::iv32 * r2).val();
-    if CE (t > 3) {
+    if CE(t > 3) {
      u64 r4= (TMP(4) - B::iv42 * r2 - B::iv43 * r3).val();
-     if CE (t > 4) a= T(B::m4::mod()) * (TMP(5) - B::iv52 * r2 - B::iv53 * r3 - B::iv54 * r4).val();
+     if CE(t > 4) a= T(B::m4::mod()) * (TMP(5) - B::iv52 * r2 - B::iv53 * r3 - B::iv54 * r4).val();
      a= (a + r4) * B::m3::mod();
     }
     a= (a + r3) * B::m2::mod();
@@ -188,18 +188,18 @@ TP<u64 M1, u32 M2, u32 M3, u32 M4, u32 M5, u32 LM> struct NB<5, M1, M2, M3, M4, 
 #undef IV4
 #undef IV5
 TP<class T, u32 LM> CE bool is_nttfriend() {
- if CE (!is_staticmodint_v<T>) return 0;
+ if CE(!is_staticmodint_v<T>) return 0;
  else return (T::mod() & is_prime(T::mod())) && LM <= (1ULL << BSF(ll, T::mod() - 1));
 }
 TP<class T, enable_if_t<is_arithmetic_v<T>, nullptr_t> = nullptr> CE u64 mv() { return numeric_limits<T>::max(); }
 TP<class T, enable_if_t<is_staticmodint_v<T>, nullptr_t> = nullptr> CE u64 mv() { return T::mod(); }
 TP<class T, u32 LM, u32 M1, u32 M2, u32 M3, u32 M4> CE u8 nt() {
- if CE (!is_nttfriend<T, LM>()) {
+ if CE(!is_nttfriend<T, LM>()) {
   CE u128 m= mv<T>(), mm= m * m;
-  if CE (mm <= M1 / LM) return 1;
-  else if CE (mm <= u64(M1) * M2 / LM) return 2;
-  else if CE (mm <= u128(M1) * M2 * M3 / LM) return 3;
-  else if CE (mm <= u128(M1) * M2 * M3 * M4 / LM) return 4;
+  if CE(mm <= M1 / LM) return 1;
+  else if CE(mm <= u64(M1) * M2 / LM) return 2;
+  else if CE(mm <= u128(M1) * M2 * M3 / LM) return 3;
+  else if CE(mm <= u128(M1) * M2 * M3 * M4 / LM) return 4;
   else return 5;
  } else return 1;
 }

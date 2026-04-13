@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Geometry/Point.hpp"
+#include "mylib/geometry/Point.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  cin >> p0 >> p1;
  int q;
  cin >> q;
- while (q--) {
+ while(q--) {
   P p2;
   cin >> p2;
   cout << ccw(p0, p1, p2) << '\n';

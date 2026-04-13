@@ -7,8 +7,8 @@
 #include <iomanip>
 #include <vector>
 #include <algorithm>
-#include "mylib/Misc/compress.hpp"
-#include "mylib/Geometry/Segment.hpp"
+#include "mylib/misc/compress.hpp"
+#include "mylib/geometry/Segment.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,13 +16,13 @@ signed main() {
  using namespace geo;
  using R= long double;
  cout << fixed << setprecision(12);
- for (int W, H, N; cin >> W >> H >> N && N;) {
+ for(int W, H, N; cin >> W >> H >> N && N;) {
   Segment<R> left({0, 0}, {0, R(H)}), right({R(W), 0}, {R(W), R(H)});
   vector<Point<R>> ps(2 * N);
-  for (int i= 0; i < 2 * N; ++i) cin >> ps[i];
-  auto check= [&](const Line<R> &l) {
+  for(int i= 0; i < 2 * N; ++i) cin >> ps[i];
+  auto check= [&](const Line<R>& l) {
    int on= 0, dif= 0;
-   for (auto &p: ps) {
+   for(auto& p: ps) {
     int w= l.where(p);
     on+= (w == 0), dif+= w;
    }
@@ -32,13 +32,13 @@ signed main() {
   auto qs= ps;
   qs.emplace_back(right.p), qs.emplace_back(right.q);
   compress(qs);
-  for (int i= qs.size(); i--;)
-   for (int j= i; j--;) {
+  for(int i= qs.size(); i--;)
+   for(int j= i; j--;) {
     Line l= line_through(qs[i], qs[j]);
-    if (!check(l)) continue;
-    if (!cross_points(right, l).size()) continue;
+    if(!check(l)) continue;
+    if(!cross_points(right, l).size()) continue;
     auto cp= cross_points(left, l);
-    if (!cp.size()) continue;
+    if(!cp.size()) continue;
     xs.emplace_back(cp[0].y);
    }
   xs.emplace_back(0), xs.emplace_back(H);
@@ -46,19 +46,19 @@ signed main() {
   auto f= [&](R x) {
    R mn= H + 1, mx= -1;
    Point<R> p0= {0, x};
-   for (auto &p: qs) {
-    if (sgn(p.x) == 0) continue;
+   for(auto& p: qs) {
+    if(sgn(p.x) == 0) continue;
     Line l= line_through(p0, p);
-    if (!check(l)) continue;
+    if(!check(l)) continue;
     auto cp= cross_points(right, l);
-    if (!cp.size()) continue;
+    if(!cp.size()) continue;
     mn= min(mn, cp[0].y), mx= max(mx, cp[0].y);
    }
-   if (mx < 0) return R(0);
+   if(mx < 0) return R(0);
    return mx - mn;
   };
   R ans= 0;
-  for (int i= xs.size(); --i;) ans+= (xs[i] - xs[i - 1]) * f((xs[i] + xs[i - 1]) / 2);
+  for(int i= xs.size(); --i;) ans+= (xs[i] - xs[i - 1]) * f((xs[i] + xs[i - 1]) / 2);
   ans/= H * H;
   cout << ans << '\n';
  }

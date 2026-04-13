@@ -7,10 +7,10 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/Misc/rng.hpp"
-#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/misc/rng.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
 using namespace std;
 using Mint= ModInt<int(1e9) + 7>;
 using K= Pointwise<Mint, Mint>;
@@ -20,7 +20,7 @@ void init(int n) {
  bs= {rng(), rng()};
  iv= K(1) / (bs - 1);
  pw[0]= 1;
- for (int i= 1; i <= n; ++i) pw[i]= pw[i - 1] * bs;
+ for(int i= 1; i <= n; ++i) pw[i]= pw[i - 1] * bs;
 }
 struct M {
  struct T {
@@ -42,14 +42,14 @@ signed main() {
  string U;
  cin >> U;
  vector<M::T> A(N);
- for (int i= 0; i < N; ++i) A[i]= {U[i], 1};
+ for(int i= 0; i < N; ++i) A[i]= {U[i], 1};
  SegmentTree<M> seg(A);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   string op;
   cin >> op;
-  if (op == "set") {
+  if(op == "set") {
    int x, y;
    char z;
    cin >> x >> y >> z, --x;
@@ -59,12 +59,12 @@ signed main() {
    cin >> a >> b >> c >> d, --a, --c;
    int s= b - a, t= d - c, m= min(s, t);
    int ok= 0, ng= m + 1;
-   while (ng - ok > 1) {
+   while(ng - ok > 1) {
     int x= (ok + ng) / 2;
-    if (seg.prod(a, a + x).val == seg.prod(c, c + x).val) ok= x;
+    if(seg.prod(a, a + x).val == seg.prod(c, c + x).val) ok= x;
     else ng= x;
    }
-   if (ok == m) {
+   if(ok == m) {
     cout << (s < t ? "s" : s > t ? "t" : "e") << '\n';
    } else {
     K sck= seg[a + ok].val, tck= seg[c + ok].val;

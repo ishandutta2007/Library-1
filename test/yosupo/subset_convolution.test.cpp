@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/set_power_series.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/set_power_series.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,9 +13,9 @@ signed main() {
  int N;
  cin >> N;
  vector<Mint> a(1 << N), b(1 << N);
- for (auto &ai: a) cin >> ai;
- for (auto &bi: b) cin >> bi;
+ for(auto& ai: a) cin >> ai;
+ for(auto& bi: b) cin >> bi;
  auto c= sps::convolve(a, b);
- for (int i= 0; i < (1 << N); i++) cout << c[i] << " \n"[i + 1 == 1 << N];
+ for(int i= 0; i < (1 << N); i++) cout << c[i] << " \n"[i + 1 == 1 << N];
  return 0;
 }

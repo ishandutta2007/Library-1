@@ -1,6 +1,6 @@
 ---
 title: 最近点対
-documentation_of: ../../mylib/Geometry/closest_pair.hpp
+documentation_of: ../../mylib/geometry/closest_pair.hpp
 ---
 
 分割統治+枝刈り

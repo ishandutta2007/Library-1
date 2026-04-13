@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Geometry/intersection_area.hpp"
+#include "mylib/geometry/intersection_area.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,14 +14,14 @@ signed main() {
  int N, R;
  cin >> N >> R;
  vector<Point<Real>> ps(N);
- for (int i= 0; i < N; ++i) cin >> ps[i];
+ for(int i= 0; i < N; ++i) cin >> ps[i];
  Polygon g(ps);
  Real ans= 0, pre= 0;
- for (int r= 1; r <= R; ++r) {
+ for(int r= 1; r <= R; ++r) {
   Circle<Real> c({0, 0}, r - 1), d({0, 0}, r);
   Real cur= intersection_area(g, d);
   Real b= cur - pre;
-  if (r & 1) ans+= b;
+  if(r & 1) ans+= b;
   else ans+= d.area() - c.area() - b;
   pre= cur;
  }

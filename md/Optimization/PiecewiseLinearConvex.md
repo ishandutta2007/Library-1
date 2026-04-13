@@ -1,6 +1,6 @@
 ---
 title: 区分線形凸関数
-documentation_of: ../../mylib/Optimization/PiecewiseLinearConvex.hpp
+documentation_of: ../../mylib/optimization/PiecewiseLinearConvex.hpp
 ---
 
 ## `PiecewiseLinearConvex<T, persistent, NODE_SIZE>` クラス

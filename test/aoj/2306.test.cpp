@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Graph/CliqueProblem.hpp"
+#include "mylib/graph/CliqueProblem.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  cin >> n >> m;
  CliqueProblem graph(n);
  vector adj(n, vector(n, 0));
- for (int i= 0; i < m; ++i) {
+ for(int i= 0; i < m; ++i) {
   int u, v, f;
   cin >> u >> v;
   --u, --v;
@@ -21,13 +21,13 @@ signed main() {
  }
  constexpr int INF= 1'000'010;
  long long ans= 0;
- graph.enumerate_cliques([&](const auto &clique) {
-  if (clique.size() == 1) return;
+ graph.enumerate_cliques([&](const auto& clique) {
+  if(clique.size() == 1) return;
   long long a= 0;
-  for (int u: clique) {
+  for(int u: clique) {
    int b= INF;
-   for (int v: clique)
-    if (u != v) b= min(b, adj[u][v]);
+   for(int v: clique)
+    if(u != v) b= min(b, adj[u][v]);
    a+= b;
   }
   ans= max(ans, a);

@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/KDTree.hpp"
+#include "mylib/data_structure/KDTree.hpp"
 
 // 2次元xor
 using namespace std;
@@ -19,7 +19,7 @@ signed main() {
  int N;
  cin >> N;
  vector<array<int, 3>> vec(N);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   int x, y, v;
   cin >> x >> y >> v;
   vec[i]= {x, y, v};
@@ -27,7 +27,7 @@ signed main() {
  KDT kdt(vec);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int a, b, c, d;
   cin >> a >> b >> c >> d;
   cout << kdt.prod_cuboid(a, b, c, d) << '\n';

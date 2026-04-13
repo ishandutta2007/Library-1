@@ -4,9 +4,9 @@
 // competitive-verifier: MLE 64
 // 連結二部グラフ
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/set_power_series.hpp"
-#include "mylib/Graph/UndirectedGraphSetPowerSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/set_power_series.hpp"
+#include "mylib/graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  int N, M;
  cin >> N >> M;
  UndirectedGraphSetPowerSeries g(N);
- for (int i= 0, a, b; i < M; i++) cin >> a >> b, g.add_edge(--a, --b);
+ for(int i= 0, a, b; i < M; i++) cin >> a >> b, g.add_edge(--a, --b);
  cout << g.connected_biparate_graph<Mint>().back() << '\n';
  return 0;
 }

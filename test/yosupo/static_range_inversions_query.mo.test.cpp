@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/Misc/compress.hpp"
-#include "mylib/Misc/Mo.hpp"
-#include "mylib/DataStructure/BinaryIndexedTree.hpp"
+#include "mylib/misc/compress.hpp"
+#include "mylib/misc/Mo.hpp"
+#include "mylib/data_structure/BinaryIndexedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,12 +14,12 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  int A[N];
- for (int i= 0; i < N; i++) cin >> A[i];
+ for(int i= 0; i < N; i++) cin >> A[i];
  vector<int> v(A, A + N);
  auto id= compress(v);
- for (int i= 0; i < N; i++) A[i]= id(A[i]);
+ for(int i= 0; i < N; i++) A[i]= id(A[i]);
  Mo mo;
- for (int q= 0; q < Q; q++) {
+ for(int q= 0; q < Q; q++) {
   int l, r;
   cin >> l >> r;
   mo.query(l, r);
@@ -33,6 +33,6 @@ signed main() {
  long long ans[Q];
  auto out= [&](int q) { ans[q]= inv; };
  mo.run(addl, addr, erasel, eraser, out);
- for (int q= 0; q < Q; q++) cout << ans[q] << "\n";
+ for(int q= 0; q < Q; q++) cout << ans[q] << "\n";
  return 0;
 }

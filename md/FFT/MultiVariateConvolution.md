@@ -1,6 +1,6 @@
 ---
 title: 多変数畳み込み
-documentation_of: ../../mylib/FFT/MultiVariateConvolution.hpp
+documentation_of: ../../mylib/fft/MultiVariateConvolution.hpp
 ---
 
 ## 概要
@@ -49,8 +49,8 @@ $$
 ```cpp
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/MultiVariateConvolution.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/MultiVariateConvolution.hpp"
 
 using Mint = ModInt<998244353>;
 
@@ -84,7 +84,9 @@ int main() {
 ```
 
 ## 制約
+
 - `convolve` のテンプレート引数 `mod_t` は、NTTが可能な法を持つ `ModInt` である必要があります。
 
 ## 参考
+
 - [https://37zigen.com/truncated-multivariate-convolution/](https://37zigen.com/truncated-multivariate-convolution/)

@@ -4,9 +4,9 @@
 // competitive-verifier: MLE 64
 // 連結グラフ
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/set_power_series.hpp"
-#include "mylib/Graph/UndirectedGraphSetPowerSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/set_power_series.hpp"
+#include "mylib/graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,13 +16,13 @@ signed main() {
  cin >> N >> M;
  int all= (1 << N) - 1;
  UndirectedGraphSetPowerSeries g(N);
- for (int i= 0, a, b; i < M; i++) cin >> a >> b, g.add_edge(--a, --b);
+ for(int i= 0, a, b; i < M; i++) cin >> a >> b, g.add_edge(--a, --b);
  auto x= g.graph<Mint>();
  auto y= g.connected_graph<Mint>();
- for (int k= 1; k < N; ++k) {
+ for(int k= 1; k < N; ++k) {
   Mint ans= 0;
-  for (int s= 1; s <= all; s+= 2)
-   if ((s >> k) & 1) ans+= y[s] * x[all ^ s];
+  for(int s= 1; s <= all; s+= 2)
+   if((s >> k) & 1) ans+= y[s] * x[all ^ s];
   cout << ans << '\n';
  }
  return 0;

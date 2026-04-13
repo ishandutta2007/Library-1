@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/SegmentTree_Dynamic.hpp"
+#include "mylib/data_structure/SegmentTree_Dynamic.hpp"
 using namespace std;
 struct RMQ {
  using T= int;
@@ -19,13 +19,13 @@ signed main() {
  int N;
  cin >> N;
  vector<int> A(N);
- for (int i= 0; i < N; i++) cin >> A[i];
+ for(int i= 0; i < N; i++) cin >> A[i];
  int Q1;
  cin >> Q1;
  using Seg= SegmentTree_Dynamic<RMQ, true>;
  vector<Seg> seg(Q1 + 1);
  seg[0]= Seg(A);
- for (int i= 1; i <= Q1; i++) {
+ for(int i= 1; i <= Q1; i++) {
   int p, x;
   cin >> p >> x;
   seg[i]= seg[i - 1];
@@ -34,7 +34,7 @@ signed main() {
  int Q2;
  cin >> Q2;
  int X= 0;
- for (int i= 0; i < Q2; i++) {
+ for(int i= 0; i < Q2; i++) {
   int a, b, c;
   cin >> a >> b >> c;
   int k= X ^ a, l= b ^ X, r= c ^ X;

@@ -4,9 +4,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/FactorialPrecalculation.hpp"
-#include "mylib/Math/set_power_series.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/algebra/set_power_series.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,12 +17,12 @@ signed main() {
  cin >> N >> M;
  int n= 1 << N;
  vector<int> r(n), b(n);
- for (int i= 0, R; i < M; ++i) cin >> R, --R, r[1 << R]+= 1;
- for (int i= 0, B; i < M; ++i) cin >> B, --B, b[1 << B]+= 1;
+ for(int i= 0, R; i < M; ++i) cin >> R, --R, r[1 << R]+= 1;
+ for(int i= 0, B; i < M; ++i) cin >> B, --B, b[1 << B]+= 1;
  sps::subset_zeta(r), sps::subset_zeta(b);
  vector<Mint> f(n);
- for (int s= n; s--;) {
-  if (r[s] != b[s]) continue;
+ for(int s= n; s--;) {
+  if(r[s] != b[s]) continue;
   f[s]= F::fact(r[s]);
  }
  auto ans= sps::convolve(f, sps::log(f));

@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/block_cut_tree.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/block_cut_tree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,13 +11,13 @@ signed main() {
  int N, M;
  cin >> N >> M;
  Graph g(N, M);
- for (int i= 0; i < M; ++i) cin >> g[i];
+ for(int i= 0; i < M; ++i) cin >> g[i];
  auto bct= block_cut_tree(g).adjacency_vertex(0);
  int K= bct.size();
  cout << K - N << '\n';
- for (int i= N; i < K; ++i) {
+ for(int i= N; i < K; ++i) {
   cout << bct[i].size();
-  for (int v: bct[i]) cout << " " << v;
+  for(int v: bct[i]) cout << " " << v;
   cout << '\n';
  }
  return 0;

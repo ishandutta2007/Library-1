@@ -4,8 +4,8 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
-#include "mylib/String/AhoCorasick.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/string/AhoCorasick.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -14,7 +14,7 @@ int main() {
  int N;
  cin >> N;
  vector<string> S(N);
- for (int i= 0; i < N; i++) cin >> S[i];
+ for(int i= 0; i < N; i++) cin >> S[i];
  AhoCorasick ac(S);
  string t;
  cin >> t;
@@ -22,14 +22,14 @@ int main() {
  Mint dp[M + 1];
  fill_n(dp, M + 1, 0);
  dp[0]= 1;
- for (int i= 0, s= ac.initial_state();;) {
+ for(int i= 0, s= ac.initial_state();;) {
   auto ps= ac.matched_patterns(s);
-  for (int j: ps) {
+  for(int j: ps) {
    int k= i - S[j].length();
-   if (i < 0) continue;
+   if(i < 0) continue;
    dp[i]+= dp[k];
   }
-  if (i == M) break;
+  if(i == M) break;
   s= ac.transition(s, t[i++]);
  }
  cout << dp[M] << '\n';

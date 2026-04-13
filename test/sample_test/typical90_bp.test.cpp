@@ -5,10 +5,10 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
-#include "mylib/Math/Algebra.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized.hpp"
+#include "mylib/algebra/Algebra.hpp"
 using namespace std;
-bool test(int (*solve)(stringstream &, stringstream &), string in, string expected) {
+bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
  solve(scin, scout);
  return scout.str() == expected;
@@ -17,22 +17,22 @@ namespace TEST {
 struct M {
  using T= pair<bool, long long>;
  static constexpr T o= {false, 0};
- static T add(const T &a, const T &b) {
-  if (b.first) return {!a.first, b.second - a.second};
+ static T add(const T& a, const T& b) {
+  if(b.first) return {!a.first, b.second - a.second};
   else return {a.first, a.second + b.second};
  }
- static T neg(const T &a) { return {a.first, (a.first ? a.second : -a.second)}; }
+ static T neg(const T& a) { return {a.first, (a.first ? a.second : -a.second)}; }
 };
-signed main(stringstream &scin, stringstream &scout) {
+signed main(stringstream& scin, stringstream& scout) {
  using G= Algebra<M>;
  int N, Q;
  scin >> N >> Q;
  UnionFind_Potentialized<G> uf(N);
- while (Q--) {
+ while(Q--) {
   int T, X, Y, V;
   scin >> T >> X >> Y >> V, --X, --Y;
-  if (T) {
-   if (uf.connected(X, Y)) {
+  if(T) {
+   if(uf.connected(X, Y)) {
     auto [a, b]= uf.diff(Y, X).x;
     scout << (a ? -V : V) + b << '\n';
    } else scout << "Ambiguous" << '\n';

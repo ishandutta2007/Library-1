@@ -6,8 +6,8 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-#include "mylib/DataStructure/UnionFind.hpp"
-#include "mylib/Geometry/Convex.hpp"
+#include "mylib/data_structure/UnionFind.hpp"
+#include "mylib/geometry/Convex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -19,19 +19,19 @@ signed main() {
  cin >> V >> R;
  vector<P> ps(V);
  map<P, int> id;
- for (int i= 0; i < V; ++i) cin >> ps[i], id[ps[i]]= i;
+ for(int i= 0; i < V; ++i) cin >> ps[i], id[ps[i]]= i;
  UnionFind uf(V);
  Real ans= 0;
- for (const auto &e: Convex(ps).edges()) uf.unite(id[e.p], id[e.q]), ans+= e.length();
+ for(const auto& e: Convex(ps).edges()) uf.unite(id[e.p], id[e.q]), ans+= e.length();
  vector<Segment<Real>> ss;
- for (int i= 0; i < R; ++i) {
+ for(int i= 0; i < R; ++i) {
   int s, t;
   cin >> s >> t;
-  if (!uf.connected(--s, --t)) ss.emplace_back(ps[s], ps[t]);
+  if(!uf.connected(--s, --t)) ss.emplace_back(ps[s], ps[t]);
  }
- sort(ss.begin(), ss.end(), [](const auto &a, const auto &b) { return a.length() < b.length(); });
- for (const auto &e: ss)
-  if (uf.unite(id[e.p], id[e.q])) ans+= e.length();
+ sort(ss.begin(), ss.end(), [](const auto& a, const auto& b) { return a.length() < b.length(); });
+ for(const auto& e: ss)
+  if(uf.unite(id[e.p], id[e.q])) ans+= e.length();
  cout << fixed << setprecision(12) << ans << '\n';
  return 0;
 }

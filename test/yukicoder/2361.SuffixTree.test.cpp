@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "mylib/String/SuffixTree.hpp"
+#include "mylib/string/SuffixTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,11 +17,11 @@ signed main() {
  SuffixTree st(sa, lcp);
  int n= st.size();
  vector<long long> sum(n);
- for (int i= 0; i + 1 < n; ++i) {
+ for(int i= 0; i + 1 < n; ++i) {
   auto [l, r, h, hh]= st[i];
   sum[i + 1]= sum[i] + (long long)(r - l) * (hh - h);
  }
- while (Q--) {
+ while(Q--) {
   int L, R;
   cin >> L >> R, --L;
   int len= R - L;

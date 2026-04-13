@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include "mylib/LinearAlgebra/Matrix.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,12 +12,12 @@ signed main() {
  int N, M, K;
  cin >> N >> M >> K;
  Matrix<Mint> A(N, M), B(M, K);
- for (int i= 0; i < N; ++i)
-  for (int j= 0; j < M; ++j) cin >> A[i][j];
- for (int i= 0; i < M; ++i)
-  for (int j= 0; j < K; ++j) cin >> B[i][j];
+ for(int i= 0; i < N; ++i)
+  for(int j= 0; j < M; ++j) cin >> A[i][j];
+ for(int i= 0; i < M; ++i)
+  for(int j= 0; j < K; ++j) cin >> B[i][j];
  auto C= A * B;
- for (int i= 0; i < N; ++i)
-  for (int j= 0; j < K; ++j) cout << C[i][j] << " \n"[j == K - 1];
+ for(int i= 0; i < N; ++i)
+  for(int j= 0; j < K; ++j) cout << C[i][j] << " \n"[j == K - 1];
  return 0;
 }

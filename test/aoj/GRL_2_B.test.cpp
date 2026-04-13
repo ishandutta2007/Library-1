@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/minimum_spanning_aborescence.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/minimum_spanning_aborescence.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  cin >> N >> M >> r;
  Graph g(N, M);
  vector<int> w(M);
- for (int i= 0; i < M; ++i) cin >> g[i] >> w[i];
+ for(int i= 0; i < M; ++i) cin >> g[i] >> w[i];
  auto [ans, _]= minimum_spanning_aborescence(g, w, r);
  cout << ans << '\n';
  return 0;

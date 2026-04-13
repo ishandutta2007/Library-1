@@ -5,8 +5,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/data_structure/WeightBalancedTree.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -21,15 +21,15 @@ struct Mono {
  using E= int;
  static T op(T l, T r) { return l + r; }
  static void mp(T& a, E b, T sz) {
-  if (b <= 0) a= sz * -b;
+  if(b <= 0) a= sz * -b;
   else a+= sz * b;
  }
  static void cp(E& a, E b) {
-  if (b <= 0) a= b;
-  else if (a <= 0) a-= b;
+  if(b <= 0) a= b;
+  else if(a <= 0) a-= b;
   else a+= b;
-  if (a >= MOD) a-= MOD;
-  else if (a <= -MOD) a+= MOD;
+  if(a >= MOD) a-= MOD;
+  else if(a <= -MOD) a+= MOD;
  }
  using commute= void;
 };
@@ -40,29 +40,29 @@ signed main(stringstream& scin, stringstream& scout) {
  WBT wbt;
  {
   vector<Mint> v(n);
-  for (int i= 0; i < n; ++i) scin >> v[i];
+  for(int i= 0; i < n; ++i) scin >> v[i];
   wbt= WBT(v);
  }
  int lst= 0;
- while (m--) {
+ while(m--) {
   int t, l, r;
   scin >> t >> l >> r;
   l^= lst, r^= lst;
   --l;
-  if (t == 1) {
+  if(t == 1) {
    lst= wbt.prod(l, r).val();
    scout << lst << '\n';
-  } else if (t == 2) {
+  } else if(t == 2) {
    int val;
    scin >> val;
    val^= lst;
    wbt.apply(l, r, -val);
-  } else if (t == 3) {
+  } else if(t == 3) {
    int val;
    scin >> val;
    val^= lst;
-   if (val) wbt.apply(l, r, val);
-  } else if (t == 4) {
+   if(val) wbt.apply(l, r, val);
+  } else if(t == 4) {
    int l2, r2;
    scin >> l2 >> r2;
    l2^= lst, r2^= lst;
@@ -70,26 +70,26 @@ signed main(stringstream& scin, stringstream& scout) {
    auto [a, b, c]= wbt.split3(l, r);
    auto [d, e, f]= wbt.split3(l2, r2);
    wbt= d + b + f;
-  } else if (t == 5) {
+  } else if(t == 5) {
    int l2, r2;
    scin >> l2 >> r2;
    l2^= lst, r2^= lst;
    --l2;
-   if (l2 > l) swap(l, l2), swap(r, r2);
+   if(l2 > l) swap(l, l2), swap(r, r2);
    auto [a, b, c]= wbt.split3(l, r);
    auto [d, e, f]= a.split3(l2, r2);
    wbt= d + b + f + e + c;
   } else {
    wbt.reverse(l, r);
   }
-  if (WBT::pool_empty()) {
+  if(WBT::pool_empty()) {
    auto dmp= wbt.dump();
    WBT::reset();
    wbt= WBT(dmp);
   }
  }
  auto dmp= wbt.dump();
- for (int i= 0; i < n; ++i) scout << dmp[i] << " \n"[i == n - 1];
+ for(int i= 0; i < n; ++i) scout << dmp[i] << " \n"[i == n - 1];
  return 0;
 }
 }

@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 #include <array>
-#include "mylib/Misc/Automaton.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/misc/Automaton.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -19,10 +19,10 @@ signed main() {
  using symbol_t= array<bool, 2>;
  vector<symbol_t> alp= {{0, 0}, {0, 1}, {1, 0}};
  auto tr= [&](int s, symbol_t c) {
-  if (s >= n) return s;
+  if(s >= n) return s;
   bool d= L[s] - '0', e= c[0] ^ c[1];
-  if (e > d) return n + 1;
-  if (e < d) return n;
+  if(e > d) return n + 1;
+  if(e < d) return n;
   return s + 1;
  };
  auto ac= [&](int s) { return true; };

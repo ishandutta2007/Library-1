@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 512
 #include <iostream>
 #include <numeric>
-#include "mylib/Optimization/LiChaoTree.hpp"
+#include "mylib/optimization/LiChaoTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,7 +11,7 @@ signed main() {
  int N, T;
  cin >> N >> T;
  int t[N], p[N], f[N];
- for (int i= 0; i < N; ++i) cin >> t[i] >> p[i] >> f[i];
+ for(int i= 0; i < N; ++i) cin >> t[i] >> p[i] >> f[i];
  int ord[N];
  iota(ord, ord + N, 0), sort(ord, ord + N, [&](int i, int j) { return f[i] < f[j]; });
  LiChaoTree lct([](int x, int a, long long b) {
@@ -20,9 +20,9 @@ signed main() {
  });
  vector lcts(T + 1, lct.make_tree<MAXIMIZE>());
  long long ans= -1e9;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int I= ord[i], ti= t[I];
-  for (int x= T; x >= ti; --x) {
+  for(int x= T; x >= ti; --x) {
    auto [val, _]= lcts[x - ti].query(f[I]);
    val= max(0ll, val) + p[I];
    ans= max(ans, val);

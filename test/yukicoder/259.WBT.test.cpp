@@ -4,7 +4,7 @@
 // reverse, split, + の verify
 
 #include <iostream>
-#include "mylib/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/data_structure/WeightBalancedTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;
@@ -18,21 +18,21 @@ int main() {
  cin >> N >> Q;
  WeightBalancedTree<RSQ, true> wbtL(N, 0), wbtR(N, 0);
  int now= 0;
- while (Q--) {
+ while(Q--) {
   char x;
   int t, y, z;
   cin >> x >> t >> y >> z;
   int dt= t - now;
   dt%= 2 * N;
-  if (dt > N) swap(wbtL, wbtR), wbtL.reverse(), wbtR.reverse(), dt-= N;
+  if(dt > N) swap(wbtL, wbtR), wbtL.reverse(), wbtR.reverse(), dt-= N;
   auto [Ll, Lr]= wbtL.split(dt);
   auto [Rl, Rr]= wbtR.split(N - dt);
   Ll.reverse(), Rr.reverse();
   wbtL= Lr + Rr;
   wbtR= Ll + Rl;
-  if (x == 'L') {
+  if(x == 'L') {
    wbtL.mul(y, z);
-  } else if (x == 'R') {
+  } else if(x == 'R') {
    wbtR.mul(y, z);
   } else {
    cout << wbtL.prod(y, z) + wbtR.prod(y, z) << '\n';

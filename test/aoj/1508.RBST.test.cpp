@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/RandomizedBinarySearchTree.hpp"
+#include "mylib/data_structure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 struct RminQ {
  using T= int;
@@ -17,16 +17,16 @@ int main() {
  int N, Q;
  cin >> N >> Q;
  vector<int> A(N);
- for (int i= 0; i < N; i++) cin >> A[i];
+ for(int i= 0; i < N; i++) cin >> A[i];
  RandomizedBinarySearchTree<RminQ> rbst(A);
- while (Q--) {
+ while(Q--) {
   int x, y, z;
   cin >> x >> y >> z;
-  if (x == 0) {
+  if(x == 0) {
    auto [a, b, c]= rbst.split3(y, z + 1);
    b.push_front(b.pop_back());
    rbst= a + b + c;
-  } else if (x == 1) cout << rbst.prod(y, z + 1) << '\n';
+  } else if(x == 1) cout << rbst.prod(y, z + 1) << '\n';
   else rbst.set(y, z);
  }
 }

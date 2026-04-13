@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/Graph/incidence_matrix_equation.hpp"
+#include "mylib/graph/incidence_matrix_equation.hpp"
 using namespace std;
 // 解無しの判定のverify
 
@@ -15,11 +15,11 @@ signed main() {
  int N, M;
  cin >> N >> M;
  vector<long long> a(N);
- for (int i= 0; i < N; i++) cin >> a[i];
- for (int i= 0, b; i < N; i++) cin >> b, a[i]-= b;
+ for(int i= 0; i < N; i++) cin >> a[i];
+ for(int i= 0, b; i < N; i++) cin >> b, a[i]-= b;
  Graph g(N, M);
- for (int i= 0; i < M; ++i) cin >> g[i], --g[i];
- if (M) cout << (incidence_matrix_equation(g, a).empty() ? "No" : "Yes") << '\n';
+ for(int i= 0; i < M; ++i) cin >> g[i], --g[i];
+ if(M) cout << (incidence_matrix_equation(g, a).empty() ? "No" : "Yes") << '\n';
  else cout << (all_of(begin(a), end(a), [](auto t) { return !t; }) ? "Yes" : "No") << '\n';
  return 0;
 }

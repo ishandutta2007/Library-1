@@ -1,4 +1,4 @@
 ---
 title: 畳み込み
-documentation_of: ../../mylib/FFT/convolve.hpp
+documentation_of: ../../mylib/fft/convolve.hpp
 ---

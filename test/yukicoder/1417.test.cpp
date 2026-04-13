@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/Automaton.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/Automaton.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,16 +16,16 @@ signed main() {
  cin >> N;
  int n= N.length();
  auto tr_le= [&](int s, int c) {
-  if (s >= n) return s;
+  if(s >= n) return s;
   int d= N[s] - '0';
-  if (c < d) return n;
-  if (c > d) return n + 1;
+  if(c < d) return n;
+  if(c > d) return n + 1;
   return s + 1;
  };
  Automaton dfa_le(alp, 0, tr_le, [&](int) { return true; }, n + 1);
  auto tr_prod= [](int s, int c) {
-  if (s == -1) return c ? c : -1;
-  if (!c) return -2;
+  if(s == -1) return c ? c : -1;
+  if(!c) return -2;
   return s * c % 100;
  };
  Automaton dfa_prod(alp, -1, tr_prod, [](int s) { return s == 0; }, -2);

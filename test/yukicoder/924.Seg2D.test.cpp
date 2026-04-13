@@ -7,8 +7,8 @@
 
 // kdt だと TLE
 
-#include "mylib/DataStructure/SegmentTree_2D.hpp"
-#include "mylib/DataStructure/WaveletMatrix.hpp"
+#include "mylib/data_structure/SegmentTree_2D.hpp"
+#include "mylib/data_structure/WaveletMatrix.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;
@@ -22,10 +22,10 @@ signed main() {
  cin >> N >> Q;
  vector<int> A(N);
  vector<array<int, 3>> xyv(N);
- for (int i= 0; i < N; ++i) cin >> A[i], xyv[i]= {i, A[i], A[i]};
+ for(int i= 0; i < N; ++i) cin >> A[i], xyv[i]= {i, A[i], A[i]};
  WaveletMatrix wm(A);
  SegmentTree_2D<int, RSQ> seg(xyv);
- for (int i= 0; i < Q; ++i) {
+ for(int i= 0; i < Q; ++i) {
   int L, R;
   cin >> L >> R, --L;
   int k= (R - L - 1) / 2;

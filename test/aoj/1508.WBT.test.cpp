@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/data_structure/WeightBalancedTree.hpp"
 using namespace std;
 struct RminQ {
  using T= int;
@@ -17,16 +17,16 @@ int main() {
  int N, Q;
  cin >> N >> Q;
  vector<int> A(N);
- for (int i= 0; i < N; i++) cin >> A[i];
+ for(int i= 0; i < N; i++) cin >> A[i];
  WeightBalancedTree<RminQ> wbt(A);
- while (Q--) {
+ while(Q--) {
   int x, y, z;
   cin >> x >> y >> z;
-  if (x == 0) {
+  if(x == 0) {
    auto [a, b, c]= wbt.split3(y, z + 1);
    b.push_front(b.pop_back());
    wbt= a + b + c;
-  } else if (x == 1) cout << wbt.prod(y, z + 1) << '\n';
+  } else if(x == 1) cout << wbt.prod(y, z + 1) << '\n';
   else wbt.set(y, z);
  }
 }

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "mylib/Misc/Automaton.hpp"
+#include "mylib/misc/Automaton.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,10 +16,10 @@ signed main() {
  int n= N.length();
  vector alp= {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
  auto tr_le= [&](int s, int c) {
-  if (s >= n) return s;
+  if(s >= n) return s;
   int d= N[s] - '0';
-  if (c < d) return n;
-  if (c > d) return n + 1;
+  if(c < d) return n;
+  if(c > d) return n + 1;
   return s + 1;
  };
  auto ac_le= [](int) { return true; };

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/Graph/BipartiteGraph.hpp"
+#include "mylib/graph/BipartiteGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,17 +15,17 @@ signed main() {
  int N, M;
  cin >> N >> M;
  BipartiteGraph bg(N, N, M);
- for (int i= 0; i < M; ++i) cin >> bg[i], --bg[i], bg[i].second+= N;
+ for(int i= 0; i < M; ++i) cin >> bg[i], --bg[i], bg[i].second+= N;
  int Q;
  cin >> Q;
  std::vector<int> match, partner(N + N, -1);
- while (Q--) {
+ while(Q--) {
   int x, y;
   cin >> x >> y, --x, --y, y+= N;
   auto it= std::find(bg.begin(), bg.end(), make_pair(x, y));
-  if (it != bg.end()) {
+  if(it != bg.end()) {
    bg.erase(it);
-   if (partner[x] == y) partner[x]= partner[y]= -1;
+   if(partner[x] == y) partner[x]= partner[y]= -1;
   } else bg.emplace_back(x, y);
   tie(match, partner)= bipartite_matching(bg, partner);
   cout << (match.size() == N ? "Yes" : "No") << '\n';

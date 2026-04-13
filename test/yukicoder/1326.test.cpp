@@ -2,9 +2,9 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/block_cut_tree.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/block_cut_tree.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,14 +12,14 @@ signed main() {
  int N, M;
  cin >> N >> M;
  Graph g(N, M);
- for (int i= 0; i < M; ++i) cin >> g[i], --g[i];
+ for(int i= 0; i < M; ++i) cin >> g[i], --g[i];
  HeavyLightDecomposition bct(block_cut_tree(g));
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int x, y;
   cin >> x >> y;
-  if (x == y) cout << 0 << '\n';
+  if(x == y) cout << 0 << '\n';
   else cout << bct.dist(--x, --y) / 2 - 1 << '\n';
  }
  return 0;

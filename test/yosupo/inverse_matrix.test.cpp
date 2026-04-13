@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include "mylib/LinearAlgebra/LU_Decomposition.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,13 +12,13 @@ signed main() {
  int N;
  cin >> N;
  Matrix<Mint> A(N, N);
- for (int i= 0; i < N; i++)
-  for (int j= 0; j < N; j++) cin >> A[i][j];
+ for(int i= 0; i < N; i++)
+  for(int j= 0; j < N; j++) cin >> A[i][j];
  LU_Decomposition lu(A);
  auto ans= lu.inverse_matrix();
- if (!ans) cout << -1 << '\n';
+ if(!ans) cout << -1 << '\n';
  else
-  for (int i= 0; i < N; i++)
-   for (int j= 0; j < N; j++) cout << ans[i][j] << " \n"[j == N - 1];
+  for(int i= 0; i < N; i++)
+   for(int j= 0; j < N; j++) cout << ans[i][j] << " \n"[j == N - 1];
  return 0;
 }

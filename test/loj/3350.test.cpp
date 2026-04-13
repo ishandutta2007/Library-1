@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,16 +16,16 @@ signed main() {
  long long N, D;
  cin >> N >> D;
  Graph g(N, N - 1);
- for (auto &e: g) cin >> e, --e;
+ for(auto& e: g) cin >> e, --e;
  auto put_edge= [](int, int, Mat x) {
   swap(x[0][0], x[1][0]);
   swap(x[0][1], x[1][1]);
   return x;
  };
- auto op= [](const Mat &l, const Mat &r) {
+ auto op= [](const Mat& l, const Mat& r) {
   Mat ret(2, 2);
-  for (int i= 2; i--;)
-   for (int j= 2; j--;) {
+  for(int i= 2; i--;)
+   for(int j= 2; j--;) {
     ret[i & j][1]+= l[i][1] * r[j][0] + l[i][0] * r[j][1];
     ret[i & j][0]+= l[i][0] * r[j][0];
    }
@@ -39,7 +39,7 @@ signed main() {
  };
  Rerooting<Mat> dp(g, put_edge, op, ui, put_vertex);
  Mat sum(2, 2);
- for (int i= N; i--;) sum+= dp[i];
+ for(int i= N; i--;) sum+= dp[i];
  auto M= sum;
  M[0][0]*= N, M[1][0]*= N;
  auto A= dp[0];

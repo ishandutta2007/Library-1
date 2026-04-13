@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
-#include "mylib/Geometry/Segment.hpp"
+#include "mylib/geometry/Segment.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  cout << fixed << setprecision(12);
  int q;
  cin >> q;
- while (q--) {
+ while(q--) {
   Segment<long double> s, t;
   cin >> s.p >> s.q >> t.p >> t.q;
   cout << dist(s, t) << '\n';

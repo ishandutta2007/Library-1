@@ -5,8 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,27 +15,27 @@ signed main() {
  cin >> N;
  Graph g(N, N - 1);
  vector<int> C(N - 1), D(N - 1);
- for (int i= 0; i < N - 1; ++i) cin >> g[i] >> C[i] >> D[i], --g[i];
+ for(int i= 0; i < N - 1; ++i) cin >> g[i] >> C[i] >> D[i], --g[i];
  auto adje= g.adjacency_edge(0);
  vector<int> deg(N);
- for (int v= N; v--;) deg[v]= adje[v].size();
+ for(int v= N; v--;) deg[v]= adje[v].size();
  priority_queue<pair<long long, int>> pq;
- for (int v= N; v--;)
-  if (deg[v] == 1) {
+ for(int v= N; v--;)
+  if(deg[v] == 1) {
    deg[v]= 0;
    int e= adje[v][0];
    long long x= g[e].first == v ? D[e] : C[e];
    pq.emplace(-x, g[e].to(v));
   }
  vector<long long> ans(N + 1);
- while (pq.size() > 2) {
+ while(pq.size() > 2) {
   auto [c, v]= pq.top();
   pq.pop(), c= -c;
-  if (--deg[v] == 1) {
+  if(--deg[v] == 1) {
    deg[v]= 0;
-   for (int e: adje[v]) {
+   for(int e: adje[v]) {
     int u= g[e].to(v);
-    if (deg[u] == 0) continue;
+    if(deg[u] == 0) continue;
     long long x= g[e].first == v ? D[e] : C[e];
     pq.emplace(-c - x, u);
     break;
@@ -46,10 +46,10 @@ signed main() {
  auto op= [](long long l, long long r) { return l + r; };
  auto put_vertex= [](int, long long x) { return x; };
  ans[1]= 1ll << 61;
- for (auto x: Rerooting<long long>(g, adje, put_edge, op, 0ll, put_vertex)) ans[1]= min(ans[1], x);
+ for(auto x: Rerooting<long long>(g, adje, put_edge, op, 0ll, put_vertex)) ans[1]= min(ans[1], x);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int E;
   cin >> E;
   cout << ans[E] << '\n';

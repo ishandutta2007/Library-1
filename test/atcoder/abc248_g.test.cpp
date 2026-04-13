@@ -4,10 +4,10 @@
 // competitive-verifier: MLE 2048
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/Rerooting.hpp"
-#include "mylib/NumberTheory/ArrayOnDivisors.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/Rerooting.hpp"
+#include "mylib/number_theory/ArrayOnDivisors.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,26 +17,26 @@ signed main() {
  cin >> n;
  vector<int> A(n);
  Mint sum= 0;
- for (int &a: A) cin >> a, sum+= a;
+ for(int& a: A) cin >> a, sum+= a;
  Graph g(n, n - 1);
- for (auto &e: g) cin >> e, --e;
+ for(auto& e: g) cin >> e, --e;
  using T= ArrayOnDivisors<int, pair<int, Mint>>;
- auto put_edge= [&](int v, int, const T &dat) {
+ auto put_edge= [&](int v, int, const T& dat) {
   T ret(A[v]);
-  for (auto &&[d, a]: dat) {
-   auto &[l0, l1]= ret[gcd(d, A[v])];
+  for(auto&& [d, a]: dat) {
+   auto& [l0, l1]= ret[gcd(d, A[v])];
    auto [r0, r1]= a;
    l1+= r1;
    l0+= r0;
   }
   return ret;
  };
- auto op= [&](const T &l, const T &r) {
-  if (l.size() == 0) return r;
-  if (r.size() == 0) return l;
+ auto op= [&](const T& l, const T& r) {
+  if(l.size() == 0) return r;
+  if(r.size() == 0) return l;
   auto ret= l;
-  for (auto &[d, a]: ret) {
-   auto &[l0, l1]= a;
+  for(auto& [d, a]: ret) {
+   auto& [l0, l1]= a;
    auto [r0, r1]= r[d];
    l1+= r1;
    l0+= r0;
@@ -44,14 +44,14 @@ signed main() {
   return ret;
  };
  auto put_vertex= [&](int v, T dat) {
-  if (dat.size() == 0) dat= T(A[v]);
+  if(dat.size() == 0) dat= T(A[v]);
   dat[A[v]].first+= 1;
-  for (auto &[d, x]: dat) x.second+= x.first;
+  for(auto& [d, x]: dat) x.second+= x.first;
   return dat;
  };
  Mint ans= 0;
- for (auto dat: Rerooting<T>(g, put_edge, op, T(), put_vertex))
-  for (auto &&[d, x]: dat) ans+= x.second * d;
+ for(auto dat: Rerooting<T>(g, put_edge, op, T(), put_vertex))
+  for(auto&& [d, x]: dat) ans+= x.second * d;
  ans-= sum, ans/= 2;
  cout << ans << '\n';
  return 0;

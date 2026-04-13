@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/String/SuffixArray.hpp"
+#include "mylib/string/SuffixArray.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,7 +14,7 @@ signed main() {
  LCPArray lcp(sa);
  int N= S.length();
  long long ans= (long long)N * (N + 1) / 2;
- for (int i= N; --i;) ans-= lcp[i - 1];
+ for(int i= N; --i;) ans-= lcp[i - 1];
  cout << ans << '\n';
  return 0;
 }

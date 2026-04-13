@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // 遅延伝搬のverify
 #include <iostream>
-#include "mylib/DataStructure/SegmentTree_Dynamic.hpp"
+#include "mylib/data_structure/SegmentTree_Dynamic.hpp"
 using namespace std;
 struct RSQandRUQ {
  using T= int;
@@ -19,10 +19,10 @@ signed main() {
  int n, q;
  cin >> n >> q;
  SegmentTree_Dynamic<RSQandRUQ> seg(n, 0);
- for (int i= 0; i < q; i++) {
+ for(int i= 0; i < q; i++) {
   int op, s, t;
   cin >> op >> s >> t;
-  if (op == 0) {
+  if(op == 0) {
    int x;
    cin >> x;
    seg.apply(s, t + 1, x);

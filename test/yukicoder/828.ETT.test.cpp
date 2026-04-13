@@ -3,13 +3,13 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/EulerTourTree.hpp"
+#include "mylib/data_structure/EulerTourTree.hpp"
 using namespace std;
 struct RaddQ {
  using T= long long;
  using E= long long;
- static void mp(T &t, E e, int sz) { t+= e; }
- static void cp(E &pre, E suf) { pre+= suf; }
+ static void mp(T& t, E e, int sz) { t+= e; }
+ static void cp(E& pre, E suf) { pre+= suf; }
 };
 signed main() {
  cin.tie(0);
@@ -17,23 +17,23 @@ signed main() {
  int N;
  cin >> N;
  int r[N];
- for (int i= 0; i < N; i++) cin >> r[i];
+ for(int i= 0; i < N; i++) cin >> r[i];
  EulerTourTree<RaddQ> ett(N);
  vector<int> tree[N];
- for (int i= 0; i < N - 1; i++) {
+ for(int i= 0; i < N - 1; i++) {
   int u, v;
   cin >> u >> v;
   u--, v--;
-  if (u > v) swap(u, v);
+  if(u > v) swap(u, v);
   ett.link(u, v);
   tree[v].push_back(u);
  }
- for (int v= N; v--;) {
+ for(int v= N; v--;) {
   ett.apply_tree(v, 1);
-  for (int u: tree[v]) ett.cut(u, v);
+  for(int u: tree[v]) ett.cut(u, v);
  }
  long long ans= 1;
- for (int i= 0; i < N; i++) (ans*= r[i] + ett[i])%= int(1e9 + 7);
+ for(int i= 0; i < N; i++) (ans*= r[i] + ett[i])%= int(1e9 + 7);
  cout << ans << '\n';
  return 0;
 }

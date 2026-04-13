@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // https://atcoder.jp/contests/abc244/tasks/abc244_h
 #include <iostream>
-#include "mylib/Optimization/ConvexHullTrick.hpp"
+#include "mylib/optimization/ConvexHullTrick.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  int Q;
  cin >> Q;
  ConvexHullTrick_XY<int64_t> cht;
- while (Q--) {
+ while(Q--) {
   int X, Y, A, B;
   cin >> X >> Y >> A >> B;
   cht.insert(X, Y);

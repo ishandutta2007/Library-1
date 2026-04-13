@@ -1,6 +1,6 @@
 ---
 title: Aho-Corasick
-documentation_of: ../../mylib/String/AhoCorasick.hpp
+documentation_of: ../../mylib/string/AhoCorasick.hpp
 ---
 ## `AhoCorasick<String>` クラス
 pattern と suffix がマッチする文字列を受理するDFA. \
@@ -22,5 +22,3 @@ pattern と suffix がマッチする文字列を受理するDFA. \
 ## Verify
 
 - [天下一プログラマーコンテスト2016本戦（オープンコンテスト） C - たんごたくさん](https://atcoder.jp/contests/tenka1-2016-final-open/tasks/tenka1_2016_final_c)
-
-

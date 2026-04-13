@@ -6,8 +6,8 @@
 #include <iostream>
 #include <vector>
 #include "mylib/LinearAlgebra/LU_Decomposition.hpp"
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/FactorialPrecalculation.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,15 +16,15 @@ signed main() {
  using F= FactorialPrecalculation<Mint>;
  int a[4];
  cin >> a[0] >> a[1] >> a[2] >> a[3];
- for (int i= 4; i--;)
-  if ((a[i] ^ a[0]) & 1) return cout << 0 << '\n', 0;
+ for(int i= 4; i--;)
+  if((a[i] ^ a[0]) & 1) return cout << 0 << '\n', 0;
  int mn= min({a[0], a[1], a[2], a[3]});
  Mint ans= 0;
- for (int x= 0; x <= mn; ++x) {
+ for(int x= 0; x <= mn; ++x) {
   int k= mn - x - x;
   Matrix<Mint> A(4, 4);
   Mint s= 1;
-  for (int i= 4; i--;) {
+  for(int i= 4; i--;) {
    int j= (i + 1) % 4;
    int z= (a[i] - k) / 2;
    A[i][j]-= z;
@@ -35,7 +35,7 @@ signed main() {
    s*= F::finv(a[i] - z);
   }
   s*= LU_Decomposition(A.submatrix_rm({0}, {0})).det();
-  for (int i= 4; i--;) s*= F::fact(A[i][i].val() - 1);
+  for(int i= 4; i--;) s*= F::fact(A[i][i].val() - 1);
   s*= A[0][0];
   ans+= s;
  }

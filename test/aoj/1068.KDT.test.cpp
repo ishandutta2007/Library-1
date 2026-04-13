@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "mylib/DataStructure/KDTree.hpp"
+#include "mylib/data_structure/KDTree.hpp"
 using namespace std;
 struct RminQ {
  using T= int;
@@ -17,16 +17,16 @@ struct RminQ {
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
- for (int r, c, q; cin >> r >> c >> q && r;) {
+ for(int r, c, q; cin >> r >> c >> q && r;) {
   vector<array<int, 3>> xy;
-  for (int i= 0; i < r; i++)
-   for (int j= 0; j < c; j++) {
+  for(int i= 0; i < r; i++)
+   for(int j= 0; j < c; j++) {
     int grid;
     cin >> grid;
     xy.push_back({i, j, grid});
    }
   KDTree<int, 2, RminQ> kdt(xy);
-  while (q--) {
+  while(q--) {
    int r1, c1, r2, c2;
    cin >> r1 >> c1 >> r2 >> c2;
    cout << kdt.prod_cuboid(r1, r2, c1, c2) << '\n';

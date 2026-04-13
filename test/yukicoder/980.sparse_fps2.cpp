@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/sparse_fps.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/sparse_fps.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  auto b= sfps::pow_of_div<Mint>({0, 1}, {1, -p, -1}, 2, 2000000);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int q;
   cin >> q;
   cout << b[q - 2] << '\n';

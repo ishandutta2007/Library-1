@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 2
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt_Runtime.hpp"
+#include "mylib/algebra/ModInt_Runtime.hpp"
 #include "mylib/LinearAlgebra/characteristic_polynomial.hpp"
 using namespace std;
 signed main() {
@@ -13,8 +13,8 @@ signed main() {
  cin >> N >> m;
  Mint::set_mod(m);
  Matrix<Mint> a(N, N);
- for (int i= 0; i < N; ++i)
-  for (int j= 0; j < N; ++j) cin >> a[i][j];
+ for(int i= 0; i < N; ++i)
+  for(int j= 0; j < N; ++j) cin >> a[i][j];
  cout << characteristic_polynomial(a * -1, true)[0] << '\n';
  return 0;
 }

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include "mylib/LinearAlgebra/LU_Decomposition.hpp"
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/FactorialPrecalculation.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,7 +17,7 @@ signed main() {
  Matrix<Mint> A(N, N);
  vector<int> in(N), out(N);
  int r= 0;
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   int u, v;
   cin >> u >> v;
   A[u][v]-= 1;
@@ -28,9 +28,9 @@ signed main() {
  }
  vector<int> rm= {r};
  Mint ans= 1;
- for (int i= N; i--;) {
-  if (in[i] != out[i]) return cout << 0 << '\n', 0;
-  if (in[i]) ans*= F::fact(in[i] - 1);
+ for(int i= N; i--;) {
+  if(in[i] != out[i]) return cout << 0 << '\n', 0;
+  if(in[i]) ans*= F::fact(in[i] - 1);
   else rm.push_back(i);
  }
  ans*= LU_Decomposition(A.submatrix_rm(rm, rm)).det();

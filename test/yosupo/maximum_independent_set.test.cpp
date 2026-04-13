@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/CliqueProblem.hpp"
+#include "mylib/graph/CliqueProblem.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,7 +10,7 @@ signed main() {
  int N, M;
  cin >> N >> M;
  CliqueProblem graph(N);
- while (M--) {
+ while(M--) {
   int u, v;
   cin >> u >> v;
   graph.add_edge(u, v);
@@ -18,6 +18,6 @@ signed main() {
  auto ans= graph.get_max_independent_set();
  int n= ans.size();
  cout << n << '\n';
- for (int i= 0; i < n; i++) cout << ans[i] << " \n"[i == n - 1];
+ for(int i= 0; i < n; i++) cout << ans[i] << " \n"[i == n - 1];
  return 0;
 }

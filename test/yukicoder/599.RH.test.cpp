@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/String/RollingHash.hpp"
-#include "mylib/Misc/rng.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/string/RollingHash.hpp"
+#include "mylib/misc/rng.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -22,9 +22,9 @@ signed main() {
  vector<Mint> dp(n / 2 + 1);
  dp[0]= 1;
  Mint ans= 0;
- for (int i= 0; i <= n / 2; ++i) {
-  for (int j= 0; j < i; ++j)
-   if (rh.sub(j, i - j) == rh.sub(n - i, i - j)) dp[i]+= dp[j];
+ for(int i= 0; i <= n / 2; ++i) {
+  for(int j= 0; j < i; ++j)
+   if(rh.sub(j, i - j) == rh.sub(n - i, i - j)) dp[i]+= dp[j];
   ans+= dp[i];
  }
  cout << ans;

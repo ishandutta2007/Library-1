@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/data_structure/WeightBalancedTree.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -24,20 +24,20 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> n;
  vector<WBT> wbt(n + 1);
  long long lst= 0;
- for (int i= 1; i <= n; ++i) {
+ for(int i= 1; i <= n; ++i) {
   int v, opt;
   scin >> v >> opt;
   wbt[i]= wbt[v];
-  if (opt == 1) {
+  if(opt == 1) {
    long long p, x;
    scin >> p >> x, p^= lst, x^= lst;
    wbt[i].insert(p, x);
-  } else if (opt == 2) {
+  } else if(opt == 2) {
    long long p;
    scin >> p, p^= lst;
    --p;
    wbt[i].erase(p);
-  } else if (opt == 3) {
+  } else if(opt == 3) {
    long long l, r;
    scin >> l >> r, l^= lst, r^= lst;
    --l;
@@ -48,11 +48,11 @@ signed main(stringstream& scin, stringstream& scout) {
    --l;
    scout << (lst= wbt[i].prod(l, r)) << '\n';
   }
-  if (WBT::pool_empty()) {
+  if(WBT::pool_empty()) {
    vector<vector<long long>> dmps(i + 1);
-   for (int j= 1; j <= i; ++j) dmps[j]= wbt[j].dump();
+   for(int j= 1; j <= i; ++j) dmps[j]= wbt[j].dump();
    WBT::reset();
-   for (int j= 1; j <= i; ++j) wbt[j]= WBT(dmps[j]);
+   for(int j= 1; j <= i; ++j) wbt[j]= WBT(dmps[j]);
   }
  }
  return 0;

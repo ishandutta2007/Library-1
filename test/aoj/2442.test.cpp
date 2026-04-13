@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "mylib/Geometry/Point.hpp"
+#include "mylib/geometry/Point.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,13 +14,13 @@ signed main() {
  int N;
  cin >> N;
  vector<Point<int>> ps(N);
- for (int i= 0; i < N; i++) cin >> ps[i];
- if (N & 1) cout << "NA" << '\n';
+ for(int i= 0; i < N; i++) cin >> ps[i];
+ if(N & 1) cout << "NA" << '\n';
  else {
   Point p= ps[0] + ps[N / 2];
   bool isok= true;
-  for (int i= N / 2; i--;) isok&= p == ps[i] + ps[N / 2 + i];
-  if (isok) cout << fixed << setprecision(10) << 0.5 * p.x << " " << 0.5 * p.y << '\n';
+  for(int i= N / 2; i--;) isok&= p == ps[i] + ps[N / 2 + i];
+  if(isok) cout << fixed << setprecision(10) << 0.5 * p.x << " " << 0.5 * p.y << '\n';
   else cout << "NA" << '\n';
  }
  return 0;

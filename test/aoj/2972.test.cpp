@@ -6,8 +6,8 @@
 #include <vector>
 #include <algorithm>
 #include <iomanip>
-#include "mylib/Optimization/golden_search.hpp"
-#include "mylib/Geometry/Point.hpp"
+#include "mylib/optimization/golden_search.hpp"
+#include "mylib/geometry/Point.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,13 +17,13 @@ signed main() {
  int N, K;
  cin >> N >> K;
  vector<Point<R>> ps(N);
- for (int i= 0; i < N; ++i) cin >> ps[i];
- auto score= [&](const Point<R> &p) {
+ for(int i= 0; i < N; ++i) cin >> ps[i];
+ auto score= [&](const Point<R>& p) {
   vector<R> dis(N);
-  for (int i= 0; i < N; ++i) dis[i]= dist(ps[i], p);
+  for(int i= 0; i < N; ++i) dis[i]= dist(ps[i], p);
   sort(dis.rbegin(), dis.rend());
   R ret= 0;
-  for (int i= 0; i < K; ++i) ret+= dis[i];
+  for(int i= 0; i < K; ++i) ret+= dis[i];
   return ret;
  };
  auto f= [&](R x) {

@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
-#include "mylib/DataStructure/BinaryIndexedTree.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
+#include "mylib/data_structure/BinaryIndexedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,20 +13,20 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<long long> a(N);
- for (int u= 0; u < N; ++u) cin >> a[u];
+ for(int u= 0; u < N; ++u) cin >> a[u];
  Graph g(N);
- for (int i= 1, p; i < N; ++i) cin >> p, g.add_edge(p, i);
+ for(int i= 1, p; i < N; ++i) cin >> p, g.add_edge(p, i);
  HeavyLightDecomposition hld(g.adjacency_vertex(1), 0);
  BinaryIndexedTree<long long> bit([&]() {
   vector<long long> v(N);
-  for (int u= N; u--;) v[hld.to_seq(u)]= a[u];
+  for(int u= N; u--;) v[hld.to_seq(u)]= a[u];
   return v;
  }());
- while (Q--) {
+ while(Q--) {
   bool op;
   int u;
   cin >> op >> u;
-  if (op) {
+  if(op) {
    auto [l, r]= hld.subtree(u);
    cout << bit.sum(l, r) << '\n';
   } else {

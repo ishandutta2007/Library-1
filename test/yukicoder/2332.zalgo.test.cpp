@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/String/z_algorithm.hpp"
-#include "mylib/Optimization/LiChaoTree.hpp"
+#include "mylib/string/z_algorithm.hpp"
+#include "mylib/optimization/LiChaoTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,19 +12,19 @@ signed main() {
  int N, M;
  cin >> N >> M;
  vector<int> A(N), B(M), C(M);
- for (int i= 0; i < N; ++i) cin >> A[i];
- for (int i= 0; i < M; ++i) cin >> B[i];
- for (int i= 0; i < M; ++i) cin >> C[i];
+ for(int i= 0; i < N; ++i) cin >> A[i];
+ for(int i= 0; i < M; ++i) cin >> B[i];
+ for(int i= 0; i < M; ++i) cin >> C[i];
  A.insert(A.end(), B.begin(), B.end());
  vector<int> Z= z_algorithm(A);
  Z= vector<int>(Z.begin() + N, Z.end());
- for (int &x: Z) x= min(x, N);
+ for(int& x: Z) x= min(x, N);
  auto f= [&](int x, long long a, long long b) { return a * x + b; };
  LiChaoTree lct(f, 0, 1e9 + 10);
  auto tree= lct.make_tree<MINIMIZE>();
  long long ans= 0;
- for (int i= 0; i < M; ++i) {
-  if (ans >= 0) tree.insert(C[i], ans - (long long)C[i] * i, i + 1, i + Z[i] + 1);
+ for(int i= 0; i < M; ++i) {
+  if(ans >= 0) tree.insert(C[i], ans - (long long)C[i] * i, i + 1, i + Z[i] + 1);
   auto [a, b]= tree.query(i + 1);
   ans= b < 0 ? -1 : a;
  }

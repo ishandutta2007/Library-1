@@ -6,13 +6,13 @@
 #include <vector>
 #include <string>
 #include <array>
-#include "mylib/Misc/Automaton.hpp"
+#include "mylib/misc/Automaton.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  vector<int> alp(19);
- for (int i= 0; i < 19; ++i) alp[i]= i - 9;
+ for(int i= 0; i < 19; ++i) alp[i]= i - 9;
  string N;
  cin >> N;
  N= "0" + N;
@@ -20,9 +20,9 @@ signed main() {
  using state_t= array<int, 2>;
  auto tr= [&](state_t s, int c) -> state_t {
   auto [i, b]= s;
-  if (i < 0) return {-1, -1};
+  if(i < 0) return {-1, -1};
   int d= (N[i] - '0' + b) % 10;
-  if (c == d || 10 + c == d) return {i - 1, (N[i] - '0' + b - c) / 10};
+  if(c == d || 10 + c == d) return {i - 1, (N[i] - '0' + b - c) / 10};
   return {-1, -1};
  };
  auto ac= [&](state_t s) { return s[1] == 0; };

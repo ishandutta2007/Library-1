@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 512
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/convolve.hpp"
-#include "mylib/FFT/bostan_mori.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/convolve.hpp"
+#include "mylib/fft/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,7 +14,7 @@ signed main() {
  long long N, M;
  cin >> N >> M;
  std::vector<Mint> f= {1};
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   int A;
   cin >> A;
   std::vector<Mint> g(A + 1);

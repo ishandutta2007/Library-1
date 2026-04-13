@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/WaveletMatrix.hpp"
+#include "mylib/data_structure/WaveletMatrix.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,9 +11,9 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<int> a(N);
- for (int i= 0; i < N; i++) cin >> a[i];
+ for(int i= 0; i < N; i++) cin >> a[i];
  WaveletMatrix wm(a);
- while (Q--) {
+ while(Q--) {
   int l, r, k;
   cin >> l >> r >> k;
   cout << wm.kth_smallest(l, r, k) << "\n";

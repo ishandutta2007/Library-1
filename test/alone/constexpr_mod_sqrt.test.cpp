@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "mylib/Math/mod_sqrt.hpp"
+#include "mylib/algebra/mod_sqrt.hpp"
 
 constexpr auto f= mod_sqrt(4, 1000000007);
 static_assert(f == 2);

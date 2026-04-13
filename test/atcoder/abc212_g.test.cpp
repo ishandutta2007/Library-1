@@ -3,8 +3,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/ArrayOnDivisors.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/ArrayOnDivisors.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  ArrayOnDivisors<long long, Mint> a(P - 1);
  a.set_totient();
  Mint ans= 1;
- for (auto [d, phi]: a) ans+= phi * d;
+ for(auto [d, phi]: a) ans+= phi * d;
  cout << ans << '\n';
  return 0;
 }

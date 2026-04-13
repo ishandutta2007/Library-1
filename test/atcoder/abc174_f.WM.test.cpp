@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/RangeCountDistinct.hpp"
+#include "mylib/data_structure/RangeCountDistinct.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,9 +12,9 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<int> c(N);
- for (int i= 0; i < N; i++) cin >> c[i];
+ for(int i= 0; i < N; i++) cin >> c[i];
  RangeCountDistinct dq(c);
- while (Q--) {
+ while(Q--) {
   int l, r;
   cin >> l >> r, l--;
   cout << dq.count(l, r) << '\n';

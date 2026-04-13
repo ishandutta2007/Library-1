@@ -3,15 +3,15 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/ArrayOnDivisors.hpp"
-#include "mylib/NumberTheory/sum_on_primes.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/ArrayOnDivisors.hpp"
+#include "mylib/number_theory/sum_on_primes.hpp"
 using namespace std;
-template <class Tp> void read(Tp &x) {
+template <class Tp> void read(Tp& x) {
  static char ch;
  static bool neg;
- for (ch= neg= 0; ch < '0' || ch > '9'; neg|= (ch == '-'), ch= getchar());
- for (x= 0; ch >= '0' && ch <= '9'; (x*= 10)+= (ch ^ 48), ch= getchar());
+ for(ch= neg= 0; ch < '0' || ch > '9'; neg|= (ch == '-'), ch= getchar());
+ for(x= 0; ch >= '0' && ch <= '9'; (x*= 10)+= (ch ^ 48), ch= getchar());
  neg && (x= -x);
 }
 signed main() {
@@ -23,10 +23,10 @@ signed main() {
  u128 n= 0;
  read(n);
  u64 l= 0, h= 1e10 + 10;
- while (h - l > 1) {
+ while(h - l > 1) {
   u64 x= (h + l) / 2;
   u128 t= u128(x) * x * x;
-  if (t <= n) l= x;
+  if(t <= n) l= x;
   else h= x;
  }
  u64 r= l - 1;
@@ -34,7 +34,7 @@ signed main() {
  Mint ans= 0;
  ArrayOnDivisors<u64, u64> totient(l);
  totient.set_totient();
- for (auto [d, phi]: totient) ans+= Mint(n / d - (m - 1) / d) * phi;
+ for(auto [d, phi]: totient) ans+= Mint(n / d - (m - 1) / d) * phi;
  auto Ps= sums_of_powers_on_primes<Mint>(r, 2);
  auto f= [&](Mint p, int e) { return p.pow(e - 1) * (p * (e + 1) - e); };
  auto g= [&](Mint p, int e) { return p.pow(e + e - 1) * (p * (e + 1) - e); };

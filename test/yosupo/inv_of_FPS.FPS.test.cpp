@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/FormalPowerSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/FormalPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,8 +14,8 @@ signed main() {
  int N;
  cin >> N;
  vector<Mint> A(N);
- for (int i= 0; i < N; i++) cin >> A[i];
+ for(int i= 0; i < N; i++) cin >> A[i];
  auto ans= FPS(A).inv();
- for (int i= 0; i < N; i++) cout << ans[i] << " \n"[i == N - 1];
+ for(int i= 0; i < N; i++) cout << ans[i] << " \n"[i == N - 1];
  return 0;
 }

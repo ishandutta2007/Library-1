@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/UnionFind.hpp"
+#include "mylib/data_structure/UnionFind.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,10 +10,10 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  UnionFind uf(N);
- while (Q--) {
+ while(Q--) {
   int t, u, v;
   cin >> t >> u >> v;
-  if (t) cout << uf.connected(u, v) << '\n';
+  if(t) cout << uf.connected(u, v) << '\n';
   else uf.unite(u, v);
  }
  return 0;

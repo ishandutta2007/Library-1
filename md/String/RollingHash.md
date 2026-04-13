@@ -1,6 +1,6 @@
 ---
 title: Rolling-Hash
-documentation_of: ../../mylib/String/RollingHash.hpp
+documentation_of: ../../mylib/string/RollingHash.hpp
 ---
 ## `RollingHash<K, Int=int>` クラス
 
@@ -51,4 +51,3 @@ documentation_of: ../../mylib/String/RollingHash.hpp
 - [AtCoder Beginner Contest 284 F - ABCBAC](https://atcoder.jp/contests/abc284/tasks/abc284_f) (sp judge)
 - [競プロ典型 90 問 047 - Monochromatic Diagonal（★7）](https://atcoder.jp/contests/typical90/tasks/typical90_au)
 - [早稲田大学プログラミングコンテスト2019 E - Artist](https://atcoder.jp/contests/wupc2019/tasks/wupc2019_e)
-

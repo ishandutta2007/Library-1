@@ -3,8 +3,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/BipartiteGraph.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/BipartiteGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,9 +12,9 @@ signed main() {
  int N, M;
  cin >> N >> M;
  Graph g(N, M);
- for (int i= 0; i < M; ++i) cin >> g[i].first;
- for (int i= 0; i < M; ++i) cin >> g[i].second;
- for (auto &e: g) --e;
+ for(int i= 0; i < M; ++i) cin >> g[i].first;
+ for(int i= 0; i < M; ++i) cin >> g[i].second;
+ for(auto& e: g) --e;
  auto col= paint_two_colors(g);
  cout << (col.empty() ? "No" : "Yes") << '\n';
  return 0;

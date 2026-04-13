@@ -2,9 +2,9 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt_Runtime.hpp"
+#include "mylib/algebra/ModInt_Runtime.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
-#include "mylib/Math/DiscreteLogarithm.hpp"
+#include "mylib/algebra/DiscreteLogarithm.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,14 +15,14 @@ signed main() {
  cin >> p;
  Mint::set_mod(p);
  Mat A(2, 2), B(2, 2);
- for (int i= 0; i < 2; ++i)
-  for (int j= 0; j < 2; ++j) cin >> A[i][j];
- for (int i= 0; i < 2; ++i)
-  for (int j= 0; j < 2; ++j) cin >> B[i][j];
+ for(int i= 0; i < 2; ++i)
+  for(int j= 0; j < 2; ++j) cin >> A[i][j];
+ for(int i= 0; i < 2; ++i)
+  for(int j= 0; j < 2; ++j) cin >> B[i][j];
  auto g= [](Mat a, Mat b) { return a * b; };
  DiscreteLogarithm log1(g, g, [](Mat x) { return x[0][0].val(); }, 2ll * p + 1);
  Mint detA= A[0][0] * A[1][1] - A[0][1] * A[1][0];
- if (detA == Mint()) {
+ if(detA == Mint()) {
   int ans= log1(A, A, B) + 1;
   cout << (ans ? ans : -1) << '\n';
   return 0;
@@ -31,7 +31,7 @@ signed main() {
  auto f= [](Mint a, Mint b) { return a * b; };
  DiscreteLogarithm log2(f, f, [](Mint x) { return x.val(); }, p);
  int m= log2(detA, detA, 1) + 1, r= log2(detA, detA, detB) + 1;
- if (m == 0 || r == 0) {
+ if(m == 0 || r == 0) {
   cout << -1 << '\n';
   return 0;
  }

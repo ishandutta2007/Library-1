@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/NumberTheory/tables.hpp"
+#include "mylib/number_theory/tables.hpp"
 // 倍数メビウス
 using namespace std;
 signed main() {
@@ -12,13 +12,13 @@ signed main() {
  int T;
  cin >> T;
  long long f[1'000'010];
- while (T--) {
+ while(T--) {
   long long N, a= 2, ans= 0;
   cin >> N;
-  for (; a * a * a <= N; a++) f[a]= N / (a * a * a);
+  for(; a * a * a <= N; a++) f[a]= N / (a * a * a);
   vector<long long> g(f, f + a);
   multiple_mobius(g);
-  for (; --a >= 2;) ans+= g[a];
+  for(; --a >= 2;) ans+= g[a];
   cout << ans << '\n';
  }
  return 0;

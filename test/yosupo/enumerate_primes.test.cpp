@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 2048
 #include <iostream>
 #include <vector>
-#include "mylib/NumberTheory/enumerate_primes.hpp"
+#include "mylib/number_theory/enumerate_primes.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,9 +13,9 @@ signed main() {
  auto ps= enumerate_primes(N);
  int pi= ps.size();
  vector<int> ans;
- for (int i= 0; A * i + B < pi; i++) ans.push_back(ps[A * i + B]);
+ for(int i= 0; A * i + B < pi; i++) ans.push_back(ps[A * i + B]);
  int X= ans.size();
  cout << pi << " " << X << '\n';
- for (int i= 0; i < X; i++) cout << ans[i] << " \n"[i == X - 1];
+ for(int i= 0; i < X; i++) cout << ans[i] << " \n"[i == X - 1];
  return 0;
 }

@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <deque>
-#include "mylib/Graph/RangeToRangeGraph.hpp"
+#include "mylib/graph/RangeToRangeGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  int N;
  cin >> N;
  RangeToRangeGraph<int> r2r(N);
- for (int i= 1; i < N; ++i) {
+ for(int i= 1; i < N; ++i) {
   int R;
   cin >> R;
   r2r.add_to_range(i - 1, i, R, 1);
@@ -26,18 +26,18 @@ signed main() {
  fill_n(used, n, 0);
  dist[0]= 0;
  dq.push_back(0);
- while (!dq.empty()) {
+ while(!dq.empty()) {
   int v= dq.front();
   dq.pop_front();
-  if (v == N - 1) break;
-  if (used[v]) continue;
+  if(v == N - 1) break;
+  if(used[v]) continue;
   used[v]= true;
-  for (int e: adj[v]) {
+  for(int e: adj[v]) {
    int u= r2r.graph[e].to(v);
    int c= r2r.weight[e];
-   if (dist[u] > dist[v] + c) {
+   if(dist[u] > dist[v] + c) {
     dist[u]= dist[v] + c;
-    if (c) dq.push_back(u);
+    if(c) dq.push_back(u);
     else dq.push_front(u);
    }
   }

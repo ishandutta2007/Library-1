@@ -5,8 +5,8 @@
 // https://atcoder.jp/contests/arc080/tasks/arc080_d
 #include <iostream>
 #include <vector>
-#include "mylib/NumberTheory/is_prime.hpp"
-#include "mylib/Optimization/WeightedMatching.hpp"
+#include "mylib/number_theory/is_prime.hpp"
+#include "mylib/optimization/WeightedMatching.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,21 +14,21 @@ signed main() {
  int N;
  cin >> N;
  int x[N];
- for (int i= 0; i < N; ++i) cin >> x[i];
+ for(int i= 0; i < N; ++i) cin >> x[i];
  vector<int> vs= {x[0]};
- for (int i= 1; i < N; ++i)
-  if (x[i] - x[i - 1] > 1) vs.push_back(x[i - 1] + 1), vs.push_back(x[i]);
+ for(int i= 1; i < N; ++i)
+  if(x[i] - x[i - 1] > 1) vs.push_back(x[i - 1] + 1), vs.push_back(x[i]);
  vs.push_back(x[N - 1] + 1);
  int m= vs.size();
  WeightedMatching<long long, true> graph(m);
- for (int i= m; --i;)
-  for (int j= i; j--;) {
+ for(int i= m; --i;)
+  for(int j= i; j--;) {
    int k= vs[i] - vs[j];
    graph.add_edge(i, j, k & 1 ? is_prime(k) ? 1 : 3 : 2);
   }
  graph.build();
  long long ans= 0;
- for (auto [u, v, w]: graph.weight_matching()) ans+= w;
+ for(auto [u, v, w]: graph.weight_matching()) ans+= w;
  cout << ans << '\n';
  return 0;
 }

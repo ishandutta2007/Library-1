@@ -5,9 +5,9 @@
 // OEIS A054473, 実装サボり
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/berlekamp_massey.hpp"
-#include "mylib/Math/bostan_mori.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/berlekamp_massey.hpp"
+#include "mylib/algebra/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

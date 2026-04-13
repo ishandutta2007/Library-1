@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "mylib/Geometry/Segment.hpp"
+#include "mylib/geometry/Segment.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,26 +12,26 @@ signed main() {
  using R= long double;
  int T;
  cin >> T;
- while (T--) {
+ while(T--) {
   Segment<R> AB;
   cin >> AB.p >> AB.q;
   int n;
   cin >> n;
   vector<pair<Point<R>, bool>> cps;
-  for (int i= 0; i < n; ++i) {
+  for(int i= 0; i < n; ++i) {
    Segment<R> s;
    bool o, l;
    cin >> s.p >> s.q >> o >> l;
    auto ps= cross_points(AB, s);
-   if (ps.size()) cps.emplace_back(ps[0], 1 ^ o ^ l);
+   if(ps.size()) cps.emplace_back(ps[0], 1 ^ o ^ l);
   }
-  if (!cps.size()) cout << 0 << '\n';
+  if(!cps.size()) cout << 0 << '\n';
   else {
    sort(cps.begin(), cps.end());
    bool cur= cps[0].second;
    int ans= 0;
-   for (int i= 1, e= cps.size(); i < e; ++i)
-    if (cur ^ cps[i].second) ++ans, cur= !cur;
+   for(int i= 1, e= cps.size(); i < e; ++i)
+    if(cur ^ cps[i].second) ++ans, cur= !cur;
    cout << ans << '\n';
   }
  }

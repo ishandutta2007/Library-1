@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // 偶奇
 #include <iostream>
-#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized_Undoable.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,12 +12,12 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  UnionFind_Potentialized_Undoable<bool> uf(N);
- for (int i= N - 1; i--;) {
+ for(int i= N - 1; i--;) {
   int a, b;
   cin >> a >> b;
   uf.unite(--a, --b, 1);
  }
- while (Q--) {
+ while(Q--) {
   int c, d;
   cin >> c >> d;
   cout << (uf.diff(--c, --d) ? "Road" : "Town") << '\n';

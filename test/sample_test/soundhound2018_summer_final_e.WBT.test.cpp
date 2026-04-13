@@ -5,8 +5,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/data_structure/WeightBalancedTree.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -27,20 +27,20 @@ signed main(stringstream& scin, stringstream& scout) {
  int N, M;
  scin >> N >> M;
  vector<WBT> S(M);
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   string str;
   scin >> str;
   vector<Mono::T> v(N);
-  for (int i= N; i--;) v[i]= {str[i] - 'a' + 1, 1};
+  for(int i= N; i--;) v[i]= {str[i] - 'a' + 1, 1};
   S[i]= WBT(v);
  }
  int Q;
  scin >> Q;
- while (Q--) {
+ while(Q--) {
   int type, x, y, l, r;
   scin >> type >> x >> y >> l >> r;
   --x, --y, --l;
-  if (type == 1) {
+  if(type == 1) {
    auto [xl, xc, xr]= S[x].split3(l, r);
    auto [yl, yc, yr]= S[y].split3(l, r);
    S[x]= xl + yc + xr;

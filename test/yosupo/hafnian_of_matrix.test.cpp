@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/UndirectedGraphSetPowerSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,11 +13,11 @@ signed main() {
  int N;
  cin >> N;
  UndirectedGraphSetPowerSeries g(N);
- for (int i= 0; i < N; i++)
-  for (int j= 0; j < N; j++) {
+ for(int i= 0; i < N; i++)
+  for(int j= 0; j < N; j++) {
    int a;
    cin >> a;
-   if (i < j) g.add_edge(i, j, a);
+   if(i < j) g.add_edge(i, j, a);
   }
  cout << g.perfect_matching<Mint>() << '\n';
  return 0;

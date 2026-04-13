@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // ポテンシャルUF (2部グラフ判定+連結成分)
 #include <iostream>
-#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized_Undoable.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,21 +13,21 @@ signed main() {
  cin >> N >> M;
  UnionFind_Potentialized_Undoable<bool> uf(N);
  vector<int> b(N, 1);
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   int u, v;
   cin >> u >> v, --u, --v;
   int x= uf.leader(u), y= uf.leader(v);
   b[x]= b[y]= b[x] & b[y];
-  if (!uf.unite(u, v, 1)) b[x]= b[y]= 0;
+  if(!uf.unite(u, v, 1)) b[x]= b[y]= 0;
  }
  long long one= 0, bin= 0, oth= 0;
  vector<int> used(N, 0);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int v= uf.leader(i);
-  if (used[v]) continue;
+  if(used[v]) continue;
   used[v]= 1;
-  if (uf.size(v) == 1) ++one;
-  else if (b[v]) ++bin;
+  if(uf.size(v) == 1) ++one;
+  else if(b[v]) ++bin;
   else ++oth;
  }
  cout << one * N * 2 - one * one + bin * bin * 2 + bin * oth * 2 + oth * oth << '\n';

@@ -4,9 +4,9 @@
 // 辞書順マッチングのverify
 #include <iostream>
 #include <vector>
-#include "mylib/Graph/BipartiteGraph.hpp"
-#include "mylib/Geometry/Circle.hpp"
-#include "mylib/Geometry/min_enclosing_circle.hpp"
+#include "mylib/graph/BipartiteGraph.hpp"
+#include "mylib/geometry/Circle.hpp"
+#include "mylib/geometry/min_enclosing_circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -17,19 +17,19 @@ signed main() {
  cin >> n >> m;
  BipartiteGraph bg(m, n);
  R rs[n];
- for (int i= 0; i < n; i++) cin >> rs[i];
- for (int j= 0; j < m; j++) {
+ for(int i= 0; i < n; i++) cin >> rs[i];
+ for(int j= 0; j < m; j++) {
   int p;
   cin >> p;
   vector<Point<R>> ps(p);
-  for (int k= 0; k < p; k++) cin >> ps[k];
+  for(int k= 0; k < p; k++) cin >> ps[k];
   R r= min_enclosing_circle(ps).r;
-  for (int i= 0; i < n; i++)
-   if (sgn(rs[i] - r) >= 0) bg.add_edge(j, i + m);
+  for(int i= 0; i < n; i++)
+   if(sgn(rs[i] - r) >= 0) bg.add_edge(j, i + m);
  }
  auto [mc, mate]= bipartite_matching<true>(bg);
- if (mc.size() < m) cout << "NG" << '\n';
+ if(mc.size() < m) cout << "NG" << '\n';
  else
-  for (int l= 0; l < m; ++l) cout << mate[l] - m + 1 << '\n';
+  for(int l= 0; l < m; ++l) cout << mate[l] - m + 1 << '\n';
  return 0;
 }

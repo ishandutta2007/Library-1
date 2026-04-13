@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/FFT/BigInt.hpp"
-#include "mylib/Misc/Period.hpp"
+#include "mylib/fft/BigInt.hpp"
+#include "mylib/misc/Period.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,11 +14,11 @@ signed main() {
  cin >> S;
  int N= S.length();
  vector<int> to(N);
- for (int i= 0; i < N; ++i) to[i]= S[i] == 'L' ? i - 1 : i + 1;
+ for(int i= 0; i < N; ++i) to[i]= S[i] == 'L' ? i - 1 : i + 1;
  Period g(to);
  BigInt K("1" + string(100, '0'));
  vector cnt(N, 0);
- for (int i= 0; i < N; ++i) ++cnt[g.jump(i, K)];
- for (int i= 0; i < N; ++i) cout << cnt[i] << " \n"[i == N - 1];
+ for(int i= 0; i < N; ++i) ++cnt[g.jump(i, K)];
+ for(int i= 0; i < N; ++i) cout << cnt[i] << " \n"[i == N - 1];
  return 0;
 }

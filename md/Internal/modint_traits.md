@@ -1,6 +1,6 @@
 ---
 title: ModInt型を判定する型特性 (Type Traits)
-documentation_of: ../../mylib/Internal/modint_traits.hpp
+documentation_of: ../../mylib/internal/modint_traits.hpp
 ---
 
 ## 概要
@@ -20,9 +20,9 @@ documentation_of: ../../mylib/Internal/modint_traits.hpp
 ## 使用例
 
 ```cpp
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/ModInt_Runtime.hpp"
-#include "mylib/Internal/modint_traits.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/ModInt_Runtime.hpp"
+#include "mylib/internal/modint_traits.hpp"
 
 using static_mint = ModInt<998244353>;
 using runtime_mint = ModInt_Runtime<0>;

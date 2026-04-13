@@ -1,6 +1,6 @@
 ---
 title: Suffix Array (接尾辞配列)
-documentation_of: ../../mylib/String/SuffixArray.hpp
+documentation_of: ../../mylib/string/SuffixArray.hpp
 ---
 
 $\newcommand{\SA}{\mathrm{SA}}$
@@ -46,4 +46,3 @@ $\mathrm{LCP}_k:=$ $S_{\SA_k:}$ と $S_{\SA_{k+1}:}$ の共通接頭辞の長さ
 
 - [DISCO presents ディスカバリーチャンネル プログラミングコンテスト2016 予選 C - アメージングな文字列は、きみが作る！](https://atcoder.jp/contests/discovery2016-qual/tasks/discovery_2016_qual_c)
 - [DISCO presents ディスカバリーチャンネル コードコンテスト2020 本戦 C - Smaller-Suffix-Free Sequences](https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_c)
-

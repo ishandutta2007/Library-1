@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Misc/Automaton.hpp"
+#include "mylib/misc/Automaton.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

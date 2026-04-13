@@ -4,7 +4,7 @@
 #include <iostream>
 #include <array>
 #include <algorithm>
-#include "mylib/Optimization/LiChaoTree.hpp"
+#include "mylib/optimization/LiChaoTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,12 +15,12 @@ signed main() {
  auto cht= lct.make_tree<MAXIMIZE>();
  long long ans= -1e18;
  cht.insert(0, 0);
- for (int i= 0;;) {
+ for(int i= 0;;) {
   long long Q;
   cin >> Q;
   long long dp= cht.query(Q).first;
   ans= max(ans, dp);
-  if (++i == N) break;
+  if(++i == N) break;
   cht.insert(Q, dp);
  }
  cout << ans << '\n';

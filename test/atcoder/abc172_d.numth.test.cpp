@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 256
 // O(N)
 #include <iostream>
-#include "mylib/NumberTheory/tables.hpp"
+#include "mylib/number_theory/tables.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  cin >> N;
  auto d= multiplicative_table<long long>(N, [](long long, short e) { return e + 1; });
  long long ans= 0;
- for (long long i= 1; i <= N; i++) ans+= d[i] * i;
+ for(long long i= 1; i <= N; i++) ans+= d[i] * i;
  cout << ans << '\n';
  return 0;
 }

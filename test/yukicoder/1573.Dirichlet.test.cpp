@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 // O(N^(2/3)log^(1/3)N))
 #include <iostream>
-#include "mylib/NumberTheory/DirichletSeries.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/number_theory/DirichletSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  cin >> n >> m;
  long long M= (long long)m * (m + 1) / 2;
  auto fsum= [&](int x) {
-  if (x < m) return (long long)x * (x + 1) / 2;
+  if(x < m) return (long long)x * (x + 1) / 2;
   return M;
  };
  auto gsum= [&](int x) { return (long long)x * (x + 3) / 2; };

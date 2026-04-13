@@ -5,9 +5,9 @@
 // より厳しい制約: http://codeforces.com/contest/622/problem/F
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/enumerate_primes.hpp"
-#include "mylib/Math/sample_points_shift.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/enumerate_primes.hpp"
+#include "mylib/algebra/sample_points_shift.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,7 +16,7 @@ signed main() {
  long long n, k;
  cin >> n >> k;
  auto pws= pow_table<Mint>(k + 1, k);
- for (int i= 0; i < k + 1; ++i) pws[i + 1]+= pws[i];
+ for(int i= 0; i < k + 1; ++i) pws[i + 1]+= pws[i];
  cout << sample_points_shift<Mint>(pws, n) << '\n';
  return 0;
 }

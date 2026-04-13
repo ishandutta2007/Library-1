@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 1024
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/MultiVariateConvolution.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/MultiVariateConvolution.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,9 +14,9 @@ signed main() {
  cin >> N;
  MultiVariateConvolution mvc(vector(N, 2));
  vector<Mint> a(1 << N), b(1 << N);
- for (auto &ai: a) cin >> ai;
- for (auto &bi: b) cin >> bi;
+ for(auto& ai: a) cin >> ai;
+ for(auto& bi: b) cin >> bi;
  auto c= mvc.convolve<Mint, 1 << 21, 20>(a, b);
- for (int i= 0; i < (1 << N); i++) cout << c[i] << " \n"[i + 1 == 1 << N];
+ for(int i= 0; i < (1 << N); i++) cout << c[i] << " \n"[i + 1 == 1 << N];
  return 0;
 }

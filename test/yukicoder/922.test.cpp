@@ -5,9 +5,9 @@
 #include <iostream>
 #include <array>
 #include <vector>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
-#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
+#include "mylib/graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,30 +15,30 @@ signed main() {
  int N, M, Q;
  cin >> N >> M >> Q;
  Graph g(N, M);
- for (int i= 0; i < M; ++i) cin >> g[i], --g[i];
+ for(int i= 0; i < M; ++i) cin >> g[i], --g[i];
  HeavyLightDecomposition forest(g);
  vector<int> cnt(N);
  long long ans= 0;
- while (Q--) {
+ while(Q--) {
   int a, b;
   cin >> a >> b;
   --a, --b;
-  if (forest.connected(a, b)) ans+= forest.dist(a, b);
+  if(forest.connected(a, b)) ans+= forest.dist(a, b);
   else ++cnt[a], ++cnt[b];
  }
  using Data= array<long long, 2>;
  auto put_edge= [&](int, int, Data d) { return d[1]+= d[0], d; };
- auto op= [&](const Data &l, const Data &r) { return Data{l[0] + r[0], l[1] + r[1]}; };
+ auto op= [&](const Data& l, const Data& r) { return Data{l[0] + r[0], l[1] + r[1]}; };
  auto put_vertex= [&](int v, Data d) { return d[0]+= cnt[v], d; };
  Rerooting<Data> dp(g, forest, put_edge, op, Data{0, 0}, put_vertex);
  constexpr long long INF= 1ll << 60;
  vector<long long> mn(N, INF);
- for (int v= N; v--;) {
+ for(int v= N; v--;) {
   int u= forest.root(v);
   mn[u]= min(mn[u], dp[v][1]);
  }
- for (int i= 0; i < N; ++i)
-  if (mn[i] != INF) ans+= mn[i];
+ for(int i= 0; i < N; ++i)
+  if(mn[i] != INF) ans+= mn[i];
  cout << ans << '\n';
  return 0;
 }

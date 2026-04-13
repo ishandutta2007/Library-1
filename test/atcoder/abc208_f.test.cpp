@@ -3,9 +3,9 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 128
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/sample_points_shift.hpp"
-#include "mylib/NumberTheory/enumerate_primes.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/sample_points_shift.hpp"
+#include "mylib/number_theory/enumerate_primes.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,8 +14,8 @@ signed main() {
  long long N, M, K;
  cin >> N >> M >> K;
  auto y= pow_table<Mint>(M + K, K);
- for (int i= M; i--;)
-  for (int j= 0; j < M + K; ++j) y[j + 1]+= y[j];
+ for(int i= M; i--;)
+  for(int j= 0; j < M + K; ++j) y[j + 1]+= y[j];
  cout << sample_points_shift<Mint>(y, N) << '\n';
  return 0;
 }

@@ -7,11 +7,11 @@
 #include <tuple>
 // Q=2*10^5 で 2*Q回クエリあるみたいなもんだけど 通る
 
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/DataStructure/UnionFind.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
-#include "mylib/DataStructure/KDTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/data_structure/UnionFind.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
+#include "mylib/data_structure/KDTree.hpp"
 using namespace std;
 struct RMQ {
  using T= int;
@@ -25,16 +25,16 @@ signed main() {
  int N, M;
  cin >> N >> M;
  vector<Edge> es(M);
- for (int i= 0; i < M; ++i) cin >> es[i], --es[i];
+ for(int i= 0; i < M; ++i) cin >> es[i], --es[i];
  Graph g(N);
  vector<Mint> C;
  Mint w= 1;
  UnionFind uf(N);
  vector<char> used(M);
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   auto [A, B]= es[i];
   w+= w;
-  if (uf.unite(A, B)) {
+  if(uf.unite(A, B)) {
    used[i]= true;
    g.add_edge(A, B), C.push_back(w);
   }
@@ -42,40 +42,40 @@ signed main() {
  HeavyLightDecomposition tree(g);
  auto adj= g.adjacency_edge(0);
  vector<Mint> dep(N);
- for (int i= 0, v; i < N; ++i)
-  for (int e: adj[v= tree.to_vertex(i)])
-   if (int u= g[e].to(v); u != tree.parent(v)) dep[u]= dep[v] + C[e];
+ for(int i= 0, v; i < N; ++i)
+  for(int e: adj[v= tree.to_vertex(i)])
+   if(int u= g[e].to(v); u != tree.parent(v)) dep[u]= dep[v] + C[e];
  auto dist= [&](int u, int v) { return dep[u] + dep[v] - dep[tree.lca(u, v)] * 2; };
  vector<array<int, 3>> xyw;
- for (int i= 0; i < M; ++i) {
-  if (used[i]) continue;
+ for(int i= 0; i < M; ++i) {
+  if(used[i]) continue;
   auto [A, B]= es[i];
   int a= tree.to_seq(A), b= tree.to_seq(B);
-  if (a > b) swap(a, b);
+  if(a > b) swap(a, b);
   xyw.push_back({a, b, i});
  }
  KDTree<int, 2, RMQ> kdt(xyw);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int u, v, e;
   cin >> u >> v >> e, --u, --v, --e;
   auto [x, y]= es[e];
-  if (tree.parent(y) == x) swap(x, y);
+  if(tree.parent(y) == x) swap(x, y);
   bool u_in= tree.in_subtree(u, x);
-  if (!used[e] || u_in == tree.in_subtree(v, x)) {
+  if(!used[e] || u_in == tree.in_subtree(v, x)) {
    cout << dist(u, v) << '\n';
    continue;
   }
   auto [l, r]= tree.subtree(x);
   int i= min(kdt.prod_cuboid(0, l - 1, l, r - 1), kdt.prod_cuboid(l, r - 1, r, N));
-  if (i > M) {
+  if(i > M) {
    cout << -1 << '\n';
    continue;
   }
   auto [p, q]= es[i];
-  if (!u_in) swap(u, v);
-  if (tree.in_subtree(q, x)) swap(p, q);
+  if(!u_in) swap(u, v);
+  if(tree.in_subtree(q, x)) swap(p, q);
   cout << dist(u, p) + dist(v, q) + Mint(2).pow(i + 1) << '\n';
  }
  return 0;

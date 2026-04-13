@@ -4,13 +4,13 @@
 #include <iostream>
 #include <algorithm>
 #include <array>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/DataStructure/LinkCutTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/data_structure/LinkCutTree.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct Mono {
  using T= array<Mint, 2>;
- static T op(const T &l, const T &r) { return {l[0] * r[0], l[1] * r[0] + r[1]}; }
+ static T op(const T& l, const T& r) { return {l[0] * r[0], l[1] * r[0] + r[1]}; }
 };
 signed main() {
  cin.tie(0);
@@ -18,17 +18,17 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  LinkCutTree<Mono> lct(N);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   Mint a, b;
   cin >> a >> b;
   lct.set(i, {a, b});
  }
- for (int i= 0, u, v; i < N - 1; ++i) cin >> u >> v, lct.link(u, v);
+ for(int i= 0, u, v; i < N - 1; ++i) cin >> u >> v, lct.link(u, v);
 
- while (Q--) {
+ while(Q--) {
   bool op;
   cin >> op;
-  if (op) {
+  if(op) {
    int u, v;
    Mint x;
    cin >> u >> v >> x;

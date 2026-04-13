@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 128
 
 #include <iostream>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,12 +13,12 @@ signed main() {
  vector<int> C(N);
  cin >> C[0];
  vector<vector<int>> tree(N);
- for (int i= 1, P; i < N; i++) cin >> P >> C[i], tree[--P].push_back(i);
+ for(int i= 1, P; i < N; i++) cin >> P >> C[i], tree[--P].push_back(i);
  using PLC= PiecewiseLinearConvex<int>;
  auto dfs= [&](auto&& dfs, int v) -> PLC {
   PLC f;
   f.add_abs(1, C[v]);
-  for (int u: tree[v]) {
+  for(int u: tree[v]) {
    auto g= dfs(dfs, u);
    g.chmin_cum(), g.shift(1);
    f+= g;

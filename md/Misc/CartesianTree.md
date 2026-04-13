@@ -1,6 +1,6 @@
 ---
 title: Cartesian-Tree
-documentation_of: ../../mylib/Misc/CartesianTree.hpp
+documentation_of: ../../mylib/misc/CartesianTree.hpp
 ---
 
 <img src="/img/cartesiantree.svg" width="60%">

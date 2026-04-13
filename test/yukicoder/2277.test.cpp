@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 // ポテンシャルUF(2SAT+連結成分)
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,14 +14,14 @@ signed main() {
  cin >> N >> Q;
  UnionFind_Potentialized<bool> uf(N);
  bool isok= true;
- for (int i= 0; i < Q; ++i) {
+ for(int i= 0; i < Q; ++i) {
   int A, B, C;
   cin >> A >> B >> C, --A, --B;
   isok&= uf.unite(A, B, C);
  }
- if (!isok) return cout << 0 << '\n', 0;
+ if(!isok) return cout << 0 << '\n', 0;
  int cnt= 0;
- for (int i= 0; i < N; ++i) cnt+= uf.leader(i) == i;
+ for(int i= 0; i < N; ++i) cnt+= uf.leader(i) == i;
  cout << Mint(2).pow(cnt) << '\n';
  return 0;
 }

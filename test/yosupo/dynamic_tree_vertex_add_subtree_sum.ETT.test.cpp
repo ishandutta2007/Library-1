@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "mylib/DataStructure/EulerTourTree.hpp"
+#include "mylib/data_structure/EulerTourTree.hpp"
 using namespace std;
 struct RsumQ {
  using T= long long;
@@ -15,25 +15,25 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  EulerTourTree<RsumQ> ett(N);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   long long a;
   cin >> a;
   ett.set(i, a);
  }
- for (int i= 0; i < N - 1; i++) {
+ for(int i= 0; i < N - 1; i++) {
   int u, v;
   cin >> u >> v;
   ett.link(v, u);
  }
- while (Q--) {
+ while(Q--) {
   int op;
   cin >> op;
-  if (op == 0) {
+  if(op == 0) {
    int u, v, w, x;
    cin >> u >> v >> w >> x;
    ett.cut(u, v);
    ett.link(w, x);
-  } else if (op == 1) {
+  } else if(op == 1) {
    int p;
    long long x;
    cin >> p >> x;

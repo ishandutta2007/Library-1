@@ -7,7 +7,7 @@
 #include <vector>
 #include <array>
 #include <set>
-#include "mylib/DataStructure/KDTree.hpp"
+#include "mylib/data_structure/KDTree.hpp"
 using namespace std;
 struct RSQ {
  using T= int;
@@ -21,13 +21,13 @@ signed main() {
  cin >> N >> Q;
  vector<array<int, 4>> query;
  set<array<int, 2>> st;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int S, T;
   cin >> S >> T;
   st.insert({S, T});
   query.push_back({-(S + T), -1, S, T});
  }
- for (int i= 0; i < Q; ++i) {
+ for(int i= 0; i < Q; ++i) {
   int X, Y, Z;
   cin >> X >> Y >> Z;
   query.push_back({-Z, i, X, Y});
@@ -36,10 +36,10 @@ signed main() {
  vector<int> ans(Q);
  KDTree<int, 2, RSQ> kdt(st);
  static constexpr int INF= 0x7fffffff;
- for (auto [z, i, x, y]: query) {
-  if (i < 0) kdt.mul(x, y, 1);
+ for(auto [z, i, x, y]: query) {
+  if(i < 0) kdt.mul(x, y, 1);
   else ans[i]= kdt.prod_cuboid(x, INF, y, INF);
  }
- for (int i= 0; i < Q; ++i) cout << ans[i] << '\n';
+ for(int i= 0; i < Q; ++i) cout << ans[i] << '\n';
  return 0;
 }

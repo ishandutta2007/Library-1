@@ -5,9 +5,9 @@
 #include <algorithm>
 #include <vector>
 #include <numeric>
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/characteristic_polynomial.hpp"
-#include "mylib/DataStructure/UnionFind.hpp"
+#include "mylib/data_structure/UnionFind.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,30 +18,30 @@ signed main() {
  Matrix<Mint> L(N, N);
  UnionFind uf(N);
  int u[M], v[M];
- for (int i= 0; i < M; ++i) cin >> u[i] >> v[i], uf.unite(--u[i], --v[i]), L[u[i]][v[i]]-= 1, L[v[i]][u[i]]-= 1, L[u[i]][u[i]]+= 1, L[v[i]][v[i]]+= 1;
- if (uf.size(0) == N) {  // connected
+ for(int i= 0; i < M; ++i) cin >> u[i] >> v[i], uf.unite(--u[i], --v[i]), L[u[i]][v[i]]-= 1, L[v[i]][u[i]]-= 1, L[u[i]][u[i]]+= 1, L[v[i]][v[i]]+= 1;
+ if(uf.size(0) == N) {  // connected
   Matrix<Mint> M1(N, N);
-  for (int i= N; i--;)
-   for (int j= i; j--;)
-    if (L[i][j] == 0) M1[i][j]-= 1, M1[j][i]-= 1, M1[i][i]+= 1, M1[j][j]+= 1;
+  for(int i= N; i--;)
+   for(int j= i; j--;)
+    if(L[i][j] == 0) M1[i][j]-= 1, M1[j][i]-= 1, M1[i][i]+= 1, M1[j][j]+= 1;
   auto poly= det_of_first_degree_poly_mat(L.submatrix_rm({0}, {0}), M1.submatrix_rm({0}, {0}));
   cout << 0 << '\n';
   cout << poly[0] + poly[1] << '\n';
  } else {  // unconnected
   int fuben= 0, cnt= 0, mx= 0;
-  for (int i= N; i--;)
-   for (int j= i; j--;)
-    if (!uf.connected(i, j)) {
+  for(int i= N; i--;)
+   for(int j= i; j--;)
+    if(!uf.connected(i, j)) {
      fuben+= 2;
-     if (int s= uf.size(i) * uf.size(j); mx < s) mx= s, cnt= 1;
-     else if (mx == s) ++cnt;
+     if(int s= uf.size(i) * uf.size(j); mx < s) mx= s, cnt= 1;
+     else if(mx == s) ++cnt;
     }
   cout << fuben - mx * 2 << '\n';
   vector<int> vs[N];
-  for (int i= 0; i < N; ++i) vs[uf.leader(i)].push_back(i);
+  for(int i= 0; i < N; ++i) vs[uf.leader(i)].push_back(i);
   Mint ans= cnt;
-  for (int i= 0; i < N; ++i)
-   if (int n= vs[i].size(); n != 0) {
+  for(int i= 0; i < N; ++i)
+   if(int n= vs[i].size(); n != 0) {
     vs[i].pop_back();
     ans*= characteristic_polynomial(L.submatrix(vs[i], vs[i]) * -1)[0];
    }

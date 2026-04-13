@@ -4,15 +4,15 @@
 // min_left
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
 using namespace std;
 struct M {
  using T= long long;
  using E= long long;
  static T ti() { return 1ll << 60; }
  static T op(T l, T r) { return min(l, r); }
- static void mp(T &v, E y) { v+= y; }
- static void cp(E &x, E y) { x+= y; }
+ static void mp(T& v, E y) { v+= y; }
+ static void cp(E& x, E y) { x+= y; }
 };
 signed main() {
  cin.tie(0);
@@ -20,10 +20,10 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  int X[Q], D[Q], L[Q];
- for (int q= 0; q < Q; ++q) cin >> X[q] >> D[q] >> L[q];
+ for(int q= 0; q < Q; ++q) cin >> X[q] >> D[q] >> L[q];
  SegmentTree<M> seg1(N + 1, [&](int i) { return i; }), seg2(N + 1, [&](int i) { return i; });
- for (int q= Q; q--;) {
-  if (D[q] == 1) {
+ for(int q= Q; q--;) {
+  if(D[q] == 1) {
    int i= seg1.min_left(N + 1, [&](long long x) { return x > X[q]; });
    seg2.apply(0, i, -2ll * L[q]);
   } else {
@@ -31,6 +31,6 @@ signed main() {
    seg1.apply(i, N + 1, 2ll * L[q]);
   }
  }
- for (int i= 1; i <= N; ++i) cout << (seg1[i] - seg2[i]) / 2 << '\n';
+ for(int i= 1; i <= N; ++i) cout << (seg1[i] - seg2[i]) / 2 << '\n';
  return 0;
 }

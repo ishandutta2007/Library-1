@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/MinimalPolynomial.hpp"
 using namespace std;
 signed main() {
@@ -13,10 +13,10 @@ signed main() {
  int N, K;
  cin >> N >> K;
  int a[K], b[K], c[K];
- for (int i= 0; i < K; i++) cin >> a[i] >> b[i] >> c[i];
+ for(int i= 0; i < K; i++) cin >> a[i] >> b[i] >> c[i];
  auto f= [&](const Vec& v) {
   Vec ret(N);
-  for (int i= 0; i < K; i++) ret[a[i]]+= v[b[i]] * c[i];
+  for(int i= 0; i < K; i++) ret[a[i]]+= v[b[i]] * c[i];
   return ret;
  };
  cout << linear_map_det<Mint>(f, N) << '\n';

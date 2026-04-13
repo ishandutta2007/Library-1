@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/UndirectedGraphSetPowerSeries.hpp"
+#include "mylib/graph/UndirectedGraphSetPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,9 +10,9 @@ signed main() {
  int n, m;
  cin >> n >> m;
  UndirectedGraphSetPowerSeries g(n);
- for (int i= 0, u, v; i < m; ++i) cin >> u >> v, g.add_edge(--u, --v);
+ for(int i= 0, u, v; i < m; ++i) cin >> u >> v, g.add_edge(--u, --v);
  auto f= g.cycle_graph<long long>();
- for (int i= n; i--;) f[1 << i]= 1;
+ for(int i= n; i--;) f[1 << i]= 1;
  cout << g.disjoint_union(g.bridge_union(f)).back() << '\n';
  return 0;
 }

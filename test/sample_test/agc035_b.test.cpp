@@ -7,36 +7,36 @@
 #include <cassert>
 #include <algorithm>
 #include <vector>
-#include "mylib/Graph/incidence_matrix_equation.hpp"
+#include "mylib/graph/incidence_matrix_equation.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
  solve(scin, scout);
- if (expected == "-1\n") return scout.str() == expected;
+ if(expected == "-1\n") return scout.str() == expected;
  stringstream scin2(in);
  int N, M;
  scin2 >> N >> M;
  int A[M], B[M];
- for (int i= 0; i < M; ++i) scin2 >> A[i] >> B[i];
+ for(int i= 0; i < M; ++i) scin2 >> A[i] >> B[i];
  bool f[M];
- for (int i= 0; i < M; i++) f[i]= 0;
+ for(int i= 0; i < M; i++) f[i]= 0;
  int od[N];
- for (int i= 0; i < N; i++) od[i]= 0;
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < N; i++) od[i]= 0;
+ for(int i= 0; i < M; ++i) {
   int C, D;
   scout >> C >> D;
-  for (int j= 0; j < M; j++) {
-   if ((A[j] == C && B[j] == D) || (A[j] == D && B[j] == C)) {
-    if (f[j]) return false;
+  for(int j= 0; j < M; j++) {
+   if((A[j] == C && B[j] == D) || (A[j] == D && B[j] == C)) {
+    if(f[j]) return false;
     f[j]= true;
    }
   }
   ++od[C - 1];
  }
- for (int i= 0; i < M; ++i)
-  if (!f[i]) return false;
- for (int i= 0; i < N; ++i)
-  if (od[i] & 1) return false;
+ for(int i= 0; i < M; ++i)
+  if(!f[i]) return false;
+ for(int i= 0; i < N; ++i)
+  if(od[i] & 1) return false;
  return true;
 }
 namespace TEST {
@@ -45,12 +45,12 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> N >> M;
  Graph g(N, M);
  vector<bool> b(N, 0);
- for (int i= 0; i < M; ++i) scin >> g[i], --g[i], b[g[i].second]= !b[g[i].second];
+ for(int i= 0; i < M; ++i) scin >> g[i], --g[i], b[g[i].second]= !b[g[i].second];
  auto sol= incidence_matrix_equation(g, b);
- if (sol.empty()) return scout << -1 << '\n', 0;
- for (int i= 0; i < M; i++) {
+ if(sol.empty()) return scout << -1 << '\n', 0;
+ for(int i= 0; i < M; i++) {
   auto [A, B]= g[i];
-  if (!sol[i]) swap(A, B);
+  if(!sol[i]) swap(A, B);
   scout << A + 1 << " " << B + 1 << '\n';
  }
  return 0;

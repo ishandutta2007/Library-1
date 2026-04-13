@@ -2,14 +2,14 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/FFT/BigInt.hpp"
+#include "mylib/fft/BigInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int T;
  cin >> T;
- while (T--) {
+ while(T--) {
   BigInt A, B;
   cin >> A >> B;
   auto q= A / B;

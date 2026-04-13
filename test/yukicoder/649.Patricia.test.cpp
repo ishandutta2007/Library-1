@@ -2,12 +2,12 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/SegmentTree_Patricia.hpp"
+#include "mylib/data_structure/SegmentTree_Patricia.hpp"
 using namespace std;
 struct RsumQ {
  using T= int;
  static T ti() { return 0; }
- static T op(const T &l, const T &r) { return l + r; }
+ static T op(const T& l, const T& r) { return l + r; }
 };
 signed main() {
  cin.tie(0);
@@ -15,17 +15,17 @@ signed main() {
  int Q, K;
  cin >> Q >> K;
  SegmentTree_Patricia<RsumQ, false, 60> seg;
- while (Q--) {
+ while(Q--) {
   long long v;
   cin >> v;
-  if (v == 1) {
+  if(v == 1) {
    cin >> v;
    seg.set(v, seg[v] + 1);
   } else {
    auto check= [&](int x) { return x >= K; };
    v= seg.find_first(0, check);
    cout << v << '\n';
-   if (v >= 0) seg.set(v, seg[v] - 1);
+   if(v >= 0) seg.set(v, seg[v] - 1);
   }
  }
  return 0;

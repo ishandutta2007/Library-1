@@ -2,10 +2,10 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
-#include "mylib/DataStructure/SegmentTree.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 using Mint= ModInt<int(1e9 + 7)>;
 struct Mono {
@@ -14,9 +14,9 @@ struct Mono {
  };
  using E= Mint;
  static T ti() { return {Mint(), Mint()}; }
- static T op(const T &l, const T &r) { return {l.S + r.S, l.C + r.C}; }
- static bool mp(T &v, E x, int) { return v.S+= x * v.C, true; }
- static void cp(E &p, E s) { p+= s; }
+ static T op(const T& l, const T& r) { return {l.S + r.S, l.C + r.C}; }
+ static bool mp(T& v, E x, int) { return v.S+= x * v.C, true; }
+ static void cp(E& p, E s) { p+= s; }
 };
 signed main() {
  cin.tie(0);
@@ -24,27 +24,27 @@ signed main() {
  int N;
  cin >> N;
  Mint S[N], C[N];
- for (int i= 0; i < N; ++i) cin >> S[i];
- for (int i= 0; i < N; ++i) cin >> C[i];
+ for(int i= 0; i < N; ++i) cin >> S[i];
+ for(int i= 0; i < N; ++i) cin >> C[i];
  Graph g(N, N - 1);
- for (int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
+ for(int i= 0; i < N - 1; ++i) cin >> g[i], --g[i];
  HeavyLightDecomposition tree(g, 0);
  vector<typename Mono::T> vec(N);
- for (int v= 0; v < N; ++v) vec[tree.to_seq(v)]= {S[v], C[v]};
+ for(int v= 0; v < N; ++v) vec[tree.to_seq(v)]= {S[v], C[v]};
  SegmentTree<Mono> seg(vec);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   int op, X, Y;
   cin >> op >> X >> Y, --X, --Y;
-  if (op) {
+  if(op) {
    Mint ans= 0;
-   for (auto [x, y]: tree.path(X, Y)) ans+= x < y ? seg.prod(x, y + 1).S : seg.prod(y, x + 1).S;
+   for(auto [x, y]: tree.path(X, Y)) ans+= x < y ? seg.prod(x, y + 1).S : seg.prod(y, x + 1).S;
    cout << ans << '\n';
   } else {
    Mint Z;
    cin >> Z;
-   for (auto [x, y]: tree.path(X, Y)) x < y ? seg.apply(x, y + 1, Z) : seg.apply(y, x + 1, Z);
+   for(auto [x, y]: tree.path(X, Y)) x < y ? seg.apply(x, y + 1, Z) : seg.apply(y, x + 1, Z);
   }
  }
  return 0;

@@ -1,6 +1,6 @@
 ---
 title: 凸多角形
-documentation_of: ../../mylib/Geometry/Convex.hpp
+documentation_of: ../../mylib/geometry/Convex.hpp
 ---
 
 ## `Convex<K>` クラス
@@ -22,4 +22,3 @@ documentation_of: ../../mylib/Geometry/Convex.hpp
 |名前|概要|計算量|
 |---|---|---|
 |`farthest_pair(ps)`| 引数は `vector<Point<K>>`. <br>点群のペアのうち2点間の距離が最も遠いもの (最遠点対) を返す. |$O(n \log n)$ <br> ただし引数の点の個数を $n$ とした|
-

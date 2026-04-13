@@ -1,5 +1,5 @@
 #pragma once
-#include "mylib/Graph/StronglyConnectedComponents.hpp"
+#include "mylib/graph/StronglyConnectedComponents.hpp"
 class TwoSatisfiability {
  int n;
  Graph g;
@@ -14,8 +14,8 @@ public:
  std::vector<bool> solve() {
   StronglyConnectedComponents scc(g);
   std::vector<bool> ret(n);
-  for (int i= 0, l, r; i<n; ret[i++]= l> r)
-   if (l= scc(i), r= scc(neg(i)); l == r) return {};  // no solution
+  for(int i= 0, l, r; i<n; ret[i++]= l> r)
+   if(l= scc(i), r= scc(neg(i)); l == r) return {};  // no solution
   return ret;
  }
 };

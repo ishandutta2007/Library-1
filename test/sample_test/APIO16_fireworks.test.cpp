@@ -4,8 +4,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
-#include "mylib/Graph/Graph.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/graph/Graph.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -19,15 +19,15 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> N >> M;
  Graph g(N + M, N + M - 1);
  vector<int> C(N + M - 1);
- for (int i= 0, p; i < N + M - 1; ++i) scin >> p >> C[i], g[i]= {p - 1, i + 1};
+ for(int i= 0, p; i < N + M - 1; ++i) scin >> p >> C[i], g[i]= {p - 1, i + 1};
  auto adj= g.adjacency_edge(1);
  auto dfs= [&](auto&& dfs, int v) -> PLC {
   PLC f;
-  if (adj[v].size() == 0) {
+  if(adj[v].size() == 0) {
    f.add_inf(), f.add_inf(true);
    return f;
   }
-  for (int e: adj[v]) {
+  for(int e: adj[v]) {
    int u= g[e].to(v);
    PLC fu= dfs(dfs, u);
    fu.shift(C[e]);

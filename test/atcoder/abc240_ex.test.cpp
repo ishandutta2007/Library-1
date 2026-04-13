@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include "mylib/String/SuffixArray.hpp"
-#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/string/SuffixArray.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
 using namespace std;
 struct RMQ {
  using T= int;
@@ -26,19 +26,19 @@ signed main() {
  SuffixArray sa(S);
  LCPArray lcp(sa);
  int B= 0;
- for (int n= N; n >= B + 1;) n-= ++B;
+ for(int n= N; n >= B + 1;) n-= ++B;
  vector<pair<int, int>> subs;
- for (int l= 0; l < N; ++l)
-  for (int n= 1; n <= B && l + n <= N; ++n) subs.emplace_back(l, n);
+ for(int l= 0; l < N; ++l)
+  for(int n= 1; n <= B && l + n <= N; ++n) subs.emplace_back(l, n);
  auto cmp= [&](auto a, auto b) {
   int l= lcp(a.first, b.first);
-  if (l < min(a.second, b.second)) return S[a.first + l] < S[b.first + l];
+  if(l < min(a.second, b.second)) return S[a.first + l] < S[b.first + l];
   return a.second == b.second ? a.first > b.first : a.second < b.second;
  };
  stable_sort(subs.begin(), subs.end(), cmp);
  SegmentTree<RMQ> seg(N + 1);
  seg.set(0, 0);
- for (auto [l, n]: subs) {
+ for(auto [l, n]: subs) {
   int r= l + n;
   seg.set(r, max(seg[r], seg.prod(0, l + 1) + 1));
  }

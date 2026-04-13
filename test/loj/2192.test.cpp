@@ -5,11 +5,11 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/Rerooting.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/Misc/rng.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/Rerooting.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/misc/rng.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,13 +18,13 @@ signed main() {
  cin >> n;
  Graph g(n, n - 1);
  vector<double> w(n - 1), p(n);
- for (int i= 0; i < n - 1; ++i) cin >> g[i] >> w[i], --g[i], w[i]/= 100;
- for (int i= 0; i < n; ++i) cin >> p[i], p[i]/= 100;
+ for(int i= 0; i < n - 1; ++i) cin >> g[i] >> w[i], --g[i], w[i]/= 100;
+ for(int i= 0; i < n; ++i) cin >> p[i], p[i]/= 100;
  auto put_edge= [&](int, int e, double d) { return d * w[e]; };
  auto op= [](double l, double r) { return 1 - (1 - l) * (1 - r); };
  auto put_vertex= [&](int v, double d) { return 1 - (1 - d) * (1 - p[v]); };
  double ans= 0;
- for (double x: Rerooting<double>(g, put_edge, op, 0., put_vertex)) ans+= x;
+ for(double x: Rerooting<double>(g, put_edge, op, 0., put_vertex)) ans+= x;
  cout << fixed << setprecision(6) << ans << '\n';
  return 0;
 }

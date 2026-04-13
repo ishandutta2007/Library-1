@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/bostan_mori.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,7 +11,7 @@ signed main() {
  using Mint= ModInt<17>;
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   long long n;
   cin >> n;
   cout << linear_recurrence<Mint>({1, 1, 1, 1}, {0, 0, 0, 1}, n - 1) << "\n";

@@ -3,10 +3,10 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/Misc/rng.hpp"
-#include "mylib/String/RollingHash.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/misc/rng.hpp"
+#include "mylib/string/RollingHash.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -19,6 +19,6 @@ signed main() {
  cin >> S;
  RH rh(S);
  int N= S.length();
- for (int i= 0; i < N; i++) cout << lcp(rh, rh.sub(i)) << " \n"[i == N - 1];
+ for(int i= 0; i < N; i++) cout << lcp(rh, rh.sub(i)) << " \n"[i == N - 1];
  return 0;
 }

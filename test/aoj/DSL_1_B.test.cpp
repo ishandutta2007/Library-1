@@ -4,7 +4,7 @@
 
 // ポテンシャルUF
 #include <iostream>
-#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,11 +12,11 @@ signed main() {
  int n, q;
  cin >> n >> q;
  UnionFind_Potentialized<int> uf(n);
- for (int i= 0; i < q; i++) {
+ for(int i= 0; i < q; i++) {
   int c, x, y;
   cin >> c >> x >> y;
-  if (c) {
-   if (uf.connected(x, y)) cout << uf.diff(x, y) << "\n";
+  if(c) {
+   if(uf.connected(x, y)) cout << uf.diff(x, y) << "\n";
    else cout << "?\n";
   } else {
    int z;

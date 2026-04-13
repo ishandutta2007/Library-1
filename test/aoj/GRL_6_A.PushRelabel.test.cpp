@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Optimization/MaxFlow.hpp"
+#include "mylib/optimization/MaxFlow.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,7 +10,7 @@ signed main() {
  int N, M;
  cin >> N >> M;
  MaxFlow<PushRelabel<long long>> graph(N);
- for (int i= 0; i < M; i++) {
+ for(int i= 0; i < M; i++) {
   int u, v;
   long long c;
   cin >> u >> v >> c;

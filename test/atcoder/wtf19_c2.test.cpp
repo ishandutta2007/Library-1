@@ -6,8 +6,8 @@
 // nimber pow log
 #include <iostream>
 #include <vector>
-#include "mylib/Math/Nimber.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/Nimber.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -22,10 +22,10 @@ int main() {
  int N;
  cin >> N;
  vector<long long> x(N), y(N);
- for (int i= 0; i < N; i++) cin >> x[i] >> y[i], x[i]+= OFS, y[i]+= OFS;
+ for(int i= 0; i < N; i++) cin >> x[i] >> y[i], x[i]+= OFS, y[i]+= OFS;
  auto f= [&](Nimber z) -> Nimber {
   Nimber sum= 0;
-  for (int i= N; i--;) sum+= z.pow(x[i]) * (z + 1).pow(y[i]);
+  for(int i= N; i--;) sum+= z.pow(x[i]) * (z + 1).pow(y[i]);
   return sum;
  };
  Mint u= a.log(f(a)), v= b.log(f(b));

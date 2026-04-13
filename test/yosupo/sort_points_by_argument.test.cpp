@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/Geometry/angle.hpp"
+#include "mylib/geometry/angle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,8 +13,8 @@ signed main() {
  int N;
  cin >> N;
  vector<Point<int>> ps(N);
- for (int i= 0; i < N; ++i) cin >> ps[i];
+ for(int i= 0; i < N; ++i) cin >> ps[i];
  sort(ps.begin(), ps.end(), AngleComp<int>());
- for (auto &p: ps) cout << p.x << " " << p.y << "\n";
+ for(auto& p: ps) cout << p.x << " " << p.y << "\n";
  return 0;
 }

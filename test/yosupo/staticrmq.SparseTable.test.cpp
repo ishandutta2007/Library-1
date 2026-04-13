@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/SparseTable.hpp"
+#include "mylib/data_structure/SparseTable.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,9 +11,9 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<int> a(N);
- for (int i= 0; i < N; ++i) cin >> a[i];
+ for(int i= 0; i < N; ++i) cin >> a[i];
  SparseTable st(a, [](int l, int r) { return min(l, r); });
- while (Q--) {
+ while(Q--) {
   int l, r;
   cin >> l >> r;
   cout << st.prod(l, r) << '\n';

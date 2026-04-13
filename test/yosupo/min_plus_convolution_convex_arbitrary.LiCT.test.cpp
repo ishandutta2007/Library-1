@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Optimization/LiChaoTree.hpp"
+#include "mylib/optimization/LiChaoTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,11 +10,11 @@ signed main() {
  int N, M;
  cin >> N >> M;
  long long a[N], b[M];
- for (int i= 0; i < N; ++i) cin >> a[i];
- for (int j= 0; j < M; ++j) cin >> b[j];
+ for(int i= 0; i < N; ++i) cin >> a[i];
+ for(int j= 0; j < M; ++j) cin >> b[j];
  LiChaoTree lct([&](int i, int j) { return a[i - j] + b[j]; }, 0, N + M - 1);
  auto tree= lct.make_tree<MINIMIZE>();
- for (int j= 0; j < M; ++j) tree.insert(j, j, N + j);
- for (int i= 0; i < N + M - 1; ++i) cout << tree.query(i).first << " \n"[i == N + M - 2];
+ for(int j= 0; j < M; ++j) tree.insert(j, j, N + j);
+ for(int i= 0; i < N + M - 1; ++i) cout << tree.query(i).first << " \n"[i == N + M - 2];
  return 0;
 }

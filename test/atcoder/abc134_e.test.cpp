@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Misc/longest_increasing_subsequence.hpp"
+#include "mylib/misc/longest_increasing_subsequence.hpp"
 // 広義単調
 using namespace std;
 signed main() {
@@ -13,7 +13,7 @@ signed main() {
  int N;
  cin >> N;
  vector<int> A(N);
- for (int i= 0; i < N; ++i) cin >> A[N - i - 1];
+ for(int i= 0; i < N; ++i) cin >> A[N - i - 1];
  auto [_, cand]= longest_increasing_subsequence(A, false);
  cout << cand.size() << '\n';
  return 0;

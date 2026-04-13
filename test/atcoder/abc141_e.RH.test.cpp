@@ -5,10 +5,10 @@
 #include <iostream>
 #include <string>
 #include <set>
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/String/RollingHash.hpp"
-#include "mylib/Misc/rng.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/string/RollingHash.hpp"
+#include "mylib/misc/rng.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -24,11 +24,11 @@ signed main() {
  RH rh(S);
  multiset<K> st;
  int ok= 0, ng= N / 2 + 1;
- while (ng - ok > 1) {
+ while(ng - ok > 1) {
   int x= (ok + ng) / 2;
   st.clear();
   bool isok= false;
-  for (int i= x; i + x <= N; ++i) {
+  for(int i= x; i + x <= N; ++i) {
    st.insert(rh.sub(i - x, x).hash());
    isok|= st.count(rh.sub(i, x).hash());
   }

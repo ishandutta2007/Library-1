@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/Misc/Period.hpp"
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/bostan_mori.hpp"
+#include "mylib/misc/Period.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,9 +18,9 @@ signed main() {
  long long M, L;
  cin >> M >> L;
  vector<int> to(N);
- for (int n= 0; n < N; ++n) {
+ for(int n= 0; n < N; ++n) {
   auto x= linear_recurrence<Mint>({n, 1}, {0, 1}, M);
-  if (M & 1) x-= 1;
+  if(M & 1) x-= 1;
   to[n]= x.val();
  }
  string ans= to_string(Period(to).jump(a, L));

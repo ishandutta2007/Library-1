@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <vector>
 #include <array>
-#include "mylib/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/data_structure/SegmentTree_2D.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -25,16 +25,16 @@ signed main(stringstream& scin, stringstream& scout) {
  int N, K;
  scin >> N >> K;
  vector<array<int, 2>> v(N);
- for (int i= 0; i < N; ++i) v[i]= {i / K, i % K};
+ for(int i= 0; i < N; ++i) v[i]= {i / K, i % K};
  static constexpr long long INF= 1ll << 60;
  SegmentTree_2D<int, RmQ> seg(v);
  seg.set((N - 1) / K, (N - 1) % K, 0);
  int A[N - 1], B[N - 1], C[N - 1];
- for (int i= 0; i + 1 < N; ++i) scin >> A[i] >> B[i] >> C[i];
- for (int i= N - 1; i--;) {
+ for(int i= 0; i + 1 < N; ++i) scin >> A[i] >> B[i] >> C[i];
+ for(int i= N - 1; i--;) {
   int h= i / K, w= i % K;
   long long dp;
-  if (w + B[i] < K) dp= seg.prod(h, h + A[i] + 1, w, w + B[i] + 1);
+  if(w + B[i] < K) dp= seg.prod(h, h + A[i] + 1, w, w + B[i] + 1);
   else dp= min(seg.prod(h, h + A[i] + 1, w, K + 1), seg.prod(h + 1, h + A[i] + 2, 0, w + B[i] - K + 1));
   seg.set(h, w, dp + C[i]);
  }

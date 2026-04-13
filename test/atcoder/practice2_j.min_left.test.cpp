@@ -5,7 +5,7 @@
 // min_left
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
 using namespace std;
 struct M {
  using T= int;
@@ -18,13 +18,13 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<int> A(N);
- for (int i= N; i--;) cin >> A[i];
+ for(int i= N; i--;) cin >> A[i];
  SegmentTree<M> seg(A);
- while (Q--) {
+ while(Q--) {
   int t, a, b;
   cin >> t >> a >> b;
-  if (t == 1) seg.set(N - a, b);
-  else if (t == 2) cout << seg.prod(N - b, N - a + 1) << '\n';
+  if(t == 1) seg.set(N - a, b);
+  else if(t == 2) cout << seg.prod(N - b, N - a + 1) << '\n';
   else cout << N - seg.min_left(N - a + 1, [&](int x) { return x < b; }) + 1 << '\n';
  }
  return 0;

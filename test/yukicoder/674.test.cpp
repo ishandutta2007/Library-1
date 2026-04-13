@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "mylib/DataStructure/RangeSet.hpp"
+#include "mylib/data_structure/RangeSet.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  cin >> D >> Q;
  RangeSet<long long, true> rs;
  long long ans= 0;
- while (Q--) {
+ while(Q--) {
   long long A, B;
   cin >> A >> B;
   rs.insert(A, B);

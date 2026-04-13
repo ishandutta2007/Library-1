@@ -2,11 +2,11 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
-#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
 using namespace std;
 
 using Mint= ModInt<int(1e9) + 7>;
@@ -15,7 +15,7 @@ Mat I= Mat::identity(2);
 struct Monoid {
  using T= Mat;
  static T ti() { return I; }
- static T op(const T &l, const T &r) { return l * r; }
+ static T op(const T& l, const T& r) { return l * r; }
 };
 int main() {
  cin.tie(0);
@@ -24,17 +24,17 @@ int main() {
  cin >> n;
  SegmentTree<Monoid> seg(n, I);
  Graph g(n, n - 1);
- for (int e= 0; e < n - 1; ++e) cin >> g[e];
+ for(int e= 0; e < n - 1; ++e) cin >> g[e];
  HeavyLightDecomposition hld(g);
- for (auto &[u, v]: g)
-  if (hld.in_subtree(u, v)) swap(u, v);
+ for(auto& [u, v]: g)
+  if(hld.in_subtree(u, v)) swap(u, v);
 
  int q;
  cin >> q;
- while (q--) {
+ while(q--) {
   char t;
   cin >> t;
-  if (t == 'x') {
+  if(t == 'x') {
    int e;
    cin >> e;
    Mat X(2, 2);
@@ -45,7 +45,7 @@ int main() {
    int u, v;
    cin >> u >> v;
    Mat ans= I;
-   for (auto [l, r]: hld.path(u, v, true)) ans*= seg.prod(l, r + 1);
+   for(auto [l, r]: hld.path(u, v, true)) ans*= seg.prod(l, r + 1);
    cout << ans[0][0] << " " << ans[0][1] << " " << ans[1][0] << " " << ans[1][1] << '\n';
   }
  }

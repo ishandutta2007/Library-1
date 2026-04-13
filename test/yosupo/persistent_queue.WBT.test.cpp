@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/WeightBalancedTree.hpp"
+#include "mylib/data_structure/WeightBalancedTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,11 +13,11 @@ signed main() {
  int Q;
  cin >> Q;
  vector<WeightBalancedTree<int, false, true, 1 << 21>> S(Q + 1);
- for (int i= 1; i <= Q; ++i) {
+ for(int i= 1; i <= Q; ++i) {
   int op, t;
   cin >> op >> t;
   S[i]= S[++t];
-  if (op) {
+  if(op) {
    cout << S[i].pop_front() << '\n';
   } else {
    int x;

@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 256
 #include <iostream>
-#include "mylib/Math/ModInt_Runtime.hpp"
-#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/algebra/ModInt_Runtime.hpp"
+#include "mylib/algebra/FactorialPrecalculation.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ int main() {
  int T, m;
  cin >> T >> m;
  Mint::set_mod(m);
- while (T--) {
+ while(T--) {
   int n, k;
   cin >> n >> k;
   cout << F::nCr(n, k) << '\n';

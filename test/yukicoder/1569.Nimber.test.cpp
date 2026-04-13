@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/Nimber.hpp"
-#include "mylib/Math/bostan_mori.hpp"
+#include "mylib/algebra/Nimber.hpp"
+#include "mylib/algebra/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  long long N, K;
  cin >> N >> K;
  vector<Nimber> A(N);
- for (int i= 0; i < N; ++i) cin >> A[i];
+ for(int i= 0; i < N; ++i) cin >> A[i];
  cout << linear_recurrence(vector<Nimber>(N, 1), A, K - 1) << '\n';
  return 0;
 }

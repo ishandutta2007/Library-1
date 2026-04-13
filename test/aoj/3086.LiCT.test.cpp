@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/DataStructure/SegmentTree.hpp"
-#include "mylib/Optimization/LiChaoTree.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
+#include "mylib/optimization/LiChaoTree.hpp"
 using namespace std;
 struct RMQ {
  using T= long long;
@@ -18,13 +18,13 @@ signed main() {
  int N, L;
  cin >> N >> L;
  vector<long long> a(N);
- for (int i= 0; i < N; ++i) cin >> a[i];
+ for(int i= 0; i < N; ++i) cin >> a[i];
  SegmentTree<RMQ> seg(a);
  auto w= [&](int i, int j, long long d) { return d + seg.prod(j, i); };
  LiChaoTree lct(w, 1, N + 1);
  auto tree= lct.make_tree<MAXIMIZE>();
  tree.insert(0, 0, L);
- for (int i= 1; i < N; ++i) tree.insert(i, tree.query(i).first, i + L);
+ for(int i= 1; i < N; ++i) tree.insert(i, tree.query(i).first, i + L);
  cout << tree.query(N).first << '\n';
  return 0;
 }

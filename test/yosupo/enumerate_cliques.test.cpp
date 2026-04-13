@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/CliqueProblem.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/CliqueProblem.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,9 +12,9 @@ signed main() {
  int N, M;
  cin >> N >> M;
  vector<Mint> x(N);
- for (int i= 0; i < N; ++i) cin >> x[i];
+ for(int i= 0; i < N; ++i) cin >> x[i];
  CliqueProblem graph(N);
- while (M--) {
+ while(M--) {
   int u, v;
   cin >> u >> v;
   graph.add_edge(u, v);
@@ -22,7 +22,7 @@ signed main() {
  Mint ans= 0;
  graph.enumerate_cliques([&](const auto& clique) {
   Mint prod= 1;
-  for (auto i: clique) prod*= x[i];
+  for(auto i: clique) prod*= x[i];
   ans+= prod;
  });
  cout << ans << '\n';

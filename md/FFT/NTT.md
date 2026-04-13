@@ -1,4 +1,4 @@
 ---
 title: Number-Theoretic-Transform
-documentation_of: ../../mylib/FFT/NTT.hpp
+documentation_of: ../../mylib/fft/NTT.hpp
 ---

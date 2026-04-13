@@ -4,9 +4,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/String/RollingHash.hpp"
-#include "mylib/Misc/rng.hpp"
-#include "mylib/Math/Nimber.hpp"
+#include "mylib/string/RollingHash.hpp"
+#include "mylib/misc/rng.hpp"
+#include "mylib/algebra/Nimber.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,14 +18,14 @@ signed main() {
  int N;
  cin >> N;
  vector<Nimber> a(N), b(N);
- for (int i= 0; i < N; ++i) cin >> a[i];
- for (int i= 0; i < N; ++i) cin >> b[i];
+ for(int i= 0; i < N; ++i) cin >> a[i];
+ for(int i= 0; i < N; ++i) cin >> b[i];
  RH ra(a), rb(b);
  auto X= (base.pow(N) - 1) / (base - 1);
  auto bh= rb.hash();
- for (int k= 0; k < N; ++k) {
+ for(int k= 0; k < N; ++k) {
   auto x= a[k] + b[0];
-  if (concat_hash(ra.sub(k), ra.sub(0, k)) + x * X == bh) cout << k << " " << x << '\n';
+  if(concat_hash(ra.sub(k), ra.sub(0, k)) + x * X == bh) cout << k << " " << x << '\n';
  }
  return 0;
 }

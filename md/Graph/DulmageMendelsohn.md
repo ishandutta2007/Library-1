@@ -1,6 +1,6 @@
 ---
 title: Dulmage-Mendelsohn 分解
-documentation_of: ../../mylib/Graph/DulmageMendelsohn.hpp
+documentation_of: ../../mylib/graph/DulmageMendelsohn.hpp
 ---
 
 ## `DulmageMendelsohn` クラス
@@ -25,4 +25,3 @@ K+1 個 の集合(0~K) に分割する．
 
 
 - [東京大学プログラミングコンテスト2013 K - 辞書順最小頂点被覆](https://atcoder.jp/contests/utpc2013/tasks/utpc2013_11) (辞書順最小頂点被覆のverify)
-

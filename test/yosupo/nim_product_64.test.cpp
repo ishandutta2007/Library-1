@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/Nimber.hpp"
+#include "mylib/algebra/Nimber.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,7 +10,7 @@ signed main() {
  Nimber::init();
  int T;
  cin >> T;
- for (int i= 0; i < T; ++i) {
+ for(int i= 0; i < T; ++i) {
   Nimber a, b;
   cin >> a >> b;
   cout << a * b << '\n';

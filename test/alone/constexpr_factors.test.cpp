@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "mylib/NumberTheory/Factors.hpp"
+#include "mylib/number_theory/Factors.hpp"
 
 constexpr auto f= Factors(2 * 2 * 3 * 5);
 static_assert(f.size() == 3);

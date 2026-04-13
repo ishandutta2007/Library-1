@@ -2,14 +2,14 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/NumberTheory/is_prime.hpp"
+#include "mylib/number_theory/is_prime.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(0);
  int Q;
  cin >> Q;
- while (Q--) {
+ while(Q--) {
   long long N;
   cin >> N;
   cout << (is_prime(N) ? "Yes" : "No") << '\n';

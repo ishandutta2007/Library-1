@@ -6,9 +6,9 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/FactorialPrecalculation.hpp"
-#include "mylib/Graph/block_cut_tree.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/graph/block_cut_tree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,35 +18,35 @@ signed main() {
  int N, M, K;
  cin >> N >> M >> K;
  Graph g(N, M);
- for (int i= 0; i < M; ++i) cin >> g[i], --g[i];
+ for(int i= 0; i < M; ++i) cin >> g[i], --g[i];
  auto bct= block_cut_tree(g).adjacency_vertex(0);
  int n= bct.size();
  vector<int> es[n - N];
- for (int e= M; e--;) {
+ for(int e= M; e--;) {
   auto [s, d]= g[e];
   int x;
-  for (int u: bct[s])
-   for (int v: bct[d])
-    if (u == v) x= u;
+  for(int u: bct[s])
+   for(int v: bct[d])
+    if(u == v) x= u;
   es[x - N].push_back(e);
  }
  Mint ans= 1;
- for (int i= N; i < n; ++i) {
+ for(int i= N; i < n; ++i) {
   int m= bct[i].size();
-  if (m == 2) {
+  if(m == 2) {
    ans*= K;
    continue;
   }
   vector<int> deg(N);
-  for (int e: es[i - N]) {
+  for(int e: es[i - N]) {
    auto [a, b]= g[e];
    ++deg[a], ++deg[b];
   }
   bool is_cyc= true;
-  for (int u: bct[i]) is_cyc&= (deg[u] == 2);
-  if (is_cyc) {
+  for(int u: bct[i]) is_cyc&= (deg[u] == 2);
+  if(is_cyc) {
    Mint cnt= 0;
-   for (int j= 1; j <= m; ++j) cnt+= Mint(K).pow(gcd(m, j));
+   for(int j= 1; j <= m; ++j) cnt+= Mint(K).pow(gcd(m, j));
    cnt/= m;
    ans*= cnt;
   } else ans*= F::nHr(K, es[i - N].size());

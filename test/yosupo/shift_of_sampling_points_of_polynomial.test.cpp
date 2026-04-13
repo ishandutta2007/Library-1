@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/sample_points_shift.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/sample_points_shift.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,8 +14,8 @@ signed main() {
  Mint c;
  cin >> N >> M >> c;
  std::vector<Mint> pts(N);
- for (int i= 0; i < N; i++) cin >> pts[i];
+ for(int i= 0; i < N; i++) cin >> pts[i];
  auto ans= sample_points_shift(pts, c, M);
- for (int i= 0; i < M; i++) cout << ans[i] << " \n"[i == M - 1];
+ for(int i= 0; i < M; i++) cout << ans[i] << " \n"[i == M - 1];
  return 0;
 }

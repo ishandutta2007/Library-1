@@ -5,15 +5,15 @@
 
 #include <iostream>
 #include <array>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/DataStructure/SegmentTree_Dynamic.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/data_structure/SegmentTree_Dynamic.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 struct M {
  using T= Mint;
  using E= array<Mint, 2>;
- static void mp(T &v, E x) { v= x[0] * v + x[1]; }
- static void cp(E &x, E y) { x= {y[0] * x[0], y[0] * x[1] + y[1]}; }
+ static void mp(T& v, E x) { v= x[0] * v + x[1]; }
+ static void cp(E& x, E y) { x= {y[0] * x[0], y[0] * x[1] + y[1]}; }
 };
 signed main() {
  cin.tie(0);
@@ -21,12 +21,12 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<Mint> a(N);
- for (int i= 0; i < N; i++) cin >> a[i];
+ for(int i= 0; i < N; i++) cin >> a[i];
  SegmentTree_Dynamic<M> seg(a);
- while (Q--) {
+ while(Q--) {
   int t;
   cin >> t;
-  if (t) {
+  if(t) {
    int i;
    cin >> i;
    cout << seg[i] << '\n';

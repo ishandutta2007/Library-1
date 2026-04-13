@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 2
 // competitive-verifier: MLE 128
 #include <iostream>
-#include "mylib/Misc/compress.hpp"
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/misc/compress.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,22 +11,22 @@ signed main() {
  int M, N;
  cin >> M >> N;
  long long A[M], B[N];
- for (int i= 0; i < M; ++i) cin >> A[i];
- for (int j= 0; j < N; ++j) cin >> B[j];
+ for(int i= 0; i < M; ++i) cin >> A[i];
+ for(int j= 0; j < N; ++j) cin >> B[j];
  vector<long long> vec(A, A + M);
- for (int j= 0; j < N; ++j) vec.push_back(B[j]);
+ for(int j= 0; j < N; ++j) vec.push_back(B[j]);
  auto id= compress(vec);
  int n= vec.size();
  vector<long long> a(n), b(n);
- for (int i= 0; i < M; ++i) ++a[id(A[i])];
- for (int j= 0; j < N; ++j) ++b[id(B[j])];
+ for(int i= 0; i < M; ++i) ++a[id(A[i])];
+ for(int j= 0; j < N; ++j) ++b[id(B[j])];
  using PLC= PiecewiseLinearConvex<long long>;
- for (int k= 1; k <= M; ++k) {
+ for(int k= 1; k <= M; ++k) {
   PLC f;
-  for (int i= 0; i < n; ++i) {
+  for(int i= 0; i < n; ++i) {
    f.add_inf(true);
    f.add_linear(a[i] - b[i] * k);
-   if (i < n - 1) {
+   if(i < n - 1) {
     long long c= vec[i + 1] - vec[i];
     f.chmin_slide_win(-c, c);
    }

@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 128
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/FormalPowerSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/FormalPowerSeries.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,6 +13,6 @@ signed main() {
  int N;
  cin >> N;
  auto ans= MSET(FPS(vector<Mint>(N + 1, 1)));
- for (int i= 0; i <= N; i++) cout << ans[i] << " \n"[i == N];
+ for(int i= 0; i <= N; i++) cout << ans[i] << " \n"[i == N];
  return 0;
 }

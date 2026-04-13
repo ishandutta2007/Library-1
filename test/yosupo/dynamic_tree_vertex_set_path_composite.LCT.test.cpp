@@ -2,14 +2,14 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/LinkCutTree.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/data_structure/LinkCutTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 
 using Mint= ModInt<998244353>;
 struct RcompositeQ {
  using T= pair<Mint, Mint>;
- static T op(const T &l, const T &r) { return make_pair(r.first * l.first, r.first * l.second + r.second); }
+ static T op(const T& l, const T& r) { return make_pair(r.first * l.first, r.first * l.second + r.second); }
 };
 signed main() {
  cin.tie(0);
@@ -17,25 +17,25 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  LinkCutTree<RcompositeQ> lct(N);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   Mint a, b;
   cin >> a >> b;
   lct.set(i, {a, b});
  }
- for (int i= 0; i < N - 1; i++) {
+ for(int i= 0; i < N - 1; i++) {
   int u, v;
   cin >> u >> v;
   lct.link(u, v);
  }
- while (Q--) {
+ while(Q--) {
   int op;
   cin >> op;
-  if (op == 0) {
+  if(op == 0) {
    int u, v, w, x;
    cin >> u >> v >> w >> x;
    lct.cut(u, v);
    lct.link(w, x);
-  } else if (op == 1) {
+  } else if(op == 1) {
    int p;
    Mint c, d;
    cin >> p >> c >> d;

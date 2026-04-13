@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -17,16 +17,16 @@ signed main(stringstream& scin, stringstream& scout) {
  int z;
  scin >> z;
  using PLC= PiecewiseLinearConvex<long long>;
- while (z--) {
+ while(z--) {
   int n, d;
   scin >> n >> d;
   long long c[n];
-  for (int i= 0; i < n; ++i) scin >> c[i];
+  for(int i= 0; i < n; ++i) scin >> c[i];
   sort(c, c + n);
   PLC f;
   f.add_inf();
   f.add_abs(1, c[0]);
-  for (int i= 1; i < n; ++i) {
+  for(int i= 1; i < n; ++i) {
    f.chmin_cum();
    f.shift(d);
    f.add_abs(1, c[i]);
@@ -42,16 +42,16 @@ signed main(stringstream& scin, stringstream& scout) {
  int z;
  scin >> z;
  using PLC= PiecewiseLinearConvex<long long>;
- while (z--) {
+ while(z--) {
   int n, d;
   scin >> n >> d;
   long long c[n];
-  for (int i= 0; i < n; ++i) scin >> c[i];
+  for(int i= 0; i < n; ++i) scin >> c[i];
   sort(c, c + n);
   PLC f;
-  for (int i= 0; i < n; ++i) {
+  for(int i= 0; i < n; ++i) {
    f.add_inf(true);
-   if (i) f.add_linear(d);
+   if(i) f.add_linear(d);
    f.add_linear(-c[i]);
    f.chmin_slide_win(-1, 1);
    f.add_linear(c[i]);

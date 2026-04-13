@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/DisjointSparseTable.hpp"
+#include "mylib/data_structure/DisjointSparseTable.hpp"
 
 using namespace std;
 signed main() {
@@ -12,9 +12,9 @@ signed main() {
  int N, L;
  cin >> N >> L;
  vector<int> a(N);
- for (int i= 0; i < N; i++) cin >> a[i];
+ for(int i= 0; i < N; i++) cin >> a[i];
  DisjointSparseTable<int> dst(a, [](int a, int b) { return min(a, b); });
- for (int i= 0; i + L <= N; i++) cout << (i ? " " : "") << dst.prod(i, i + L);
+ for(int i= 0; i + L <= N; i++) cout << (i ? " " : "") << dst.prod(i, i + L);
  cout << '\n';
  return 0;
 }

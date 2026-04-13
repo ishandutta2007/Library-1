@@ -1,6 +1,6 @@
 ---
 title: マトロイド交叉
-documentation_of: ../../mylib/Optimization/matroid_intersection.hpp
+documentation_of: ../../mylib/optimization/matroid_intersection.hpp
 ---
 
 ## 概要

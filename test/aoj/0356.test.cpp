@@ -5,9 +5,9 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "mylib/Geometry/Circle.hpp"
-#include "mylib/Geometry/Polygon.hpp"
-#include "mylib/Geometry/intersection_area.hpp"
+#include "mylib/geometry/Circle.hpp"
+#include "mylib/geometry/Polygon.hpp"
+#include "mylib/geometry/intersection_area.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,7 +18,7 @@ signed main() {
  int N, R;
  cin >> N >> R;
  vector<Polygon<Real>> gs(N);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   Real x, w, h;
   cin >> x >> w >> h;
   gs[i]= Polygon<Real>({{x, 0}, {x + w, 0}, {x + w, h}, {x, h}});
@@ -26,12 +26,12 @@ signed main() {
  gs.emplace_back(Polygon<Real>({{-200, 0}, {200, 0}, {200, -200}, {-200, -200}}));
  Real all= M_PI * R * R;
  Real low= 0, high= 200;
- for (int cnt= 100; cnt--;) {
+ for(int cnt= 100; cnt--;) {
   Real y= (low + high) / 2;
   Real area= 0;
   Circle<Real> c(Point<Real>(0, y), R);
-  for (const auto &g: gs) area+= intersection_area(g, c);
-  if (area * 2 < all) high= y;
+  for(const auto& g: gs) area+= intersection_area(g, c);
+  if(area * 2 < all) high= y;
   else low= y;
  }
  cout << low << '\n';

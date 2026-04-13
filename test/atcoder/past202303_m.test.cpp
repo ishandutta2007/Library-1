@@ -5,7 +5,7 @@
 // max_right
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
 using namespace std;
 struct RmQ {
  using T= int;
@@ -18,15 +18,15 @@ signed main() {
  int N, M;
  cin >> N >> M;
  vector<int> A(N), B(M);
- for (int i= 0; i < N; ++i) cin >> A[i];
- for (int i= 0; i < M; ++i) cin >> B[i];
+ for(int i= 0; i < N; ++i) cin >> A[i];
+ for(int i= 0; i < M; ++i) cin >> B[i];
  SegmentTree<RmQ> seg(B);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int j= seg.max_right(0, [&](int x) { return x < A[i]; });
-  if (j == M) return cout << "No\n" << i + 1 << '\n', 0;
+  if(j == M) return cout << "No\n" << i + 1 << '\n', 0;
   seg.set(j, seg[j] - A[i]);
  }
  cout << "Yes\n";
- for (int i= 0; i < M; ++i) cout << B[i] - seg[i] << " \n"[i + 1 == M];
+ for(int i= 0; i < M; ++i) cout << B[i] - seg[i] << " \n"[i + 1 == M];
  return 0;
 }

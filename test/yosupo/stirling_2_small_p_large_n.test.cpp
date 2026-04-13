@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 128
 #include <iostream>
-#include "mylib/Math/StirlingNumber.hpp"
+#include "mylib/algebra/StirlingNumber.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,7 +10,7 @@ signed main() {
  int T, p;
  cin >> T >> p;
  StirlingNumber SN(p, 0, 1);
- while (T--) {
+ while(T--) {
   long long n, k;
   cin >> n >> k;
   cout << SN.S2(n, k) << '\n';

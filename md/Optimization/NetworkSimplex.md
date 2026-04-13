@@ -1,6 +1,6 @@
 ---
 title:  ネットワーク単体法 (Network Simplex)
-documentation_of: ../../mylib/Optimization/NetworkSimplex.hpp
+documentation_of: ../../mylib/optimization/NetworkSimplex.hpp
 ---
 
 ##  概要
@@ -100,7 +100,7 @@ class NetworkSimplex;
 #include <vector>
 #include <string>
 #include <algorithm>
-#include "mylib/Optimization/NetworkSimplex.hpp"
+#include "mylib/optimization/NetworkSimplex.hpp"
 
 // __int128_t の出力設定
 namespace std {

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <array>
 #include <map>
-#include "mylib/DataStructure/KDTree.hpp"
+#include "mylib/data_structure/KDTree.hpp"
 using namespace std;
 struct RSQ {
  using T= int;
@@ -18,14 +18,14 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  map<array<int, 3>, int> mp;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int S, T;
   cin >> S >> T;
   mp[{S, T, S + T}]+= 1;
  }
  KDTree<int, 3, RSQ> kdt(mp);
  static constexpr int INF= 0x7fffffff;
- for (int i= 0; i < Q; ++i) {
+ for(int i= 0; i < Q; ++i) {
   int X, Y, Z;
   cin >> X >> Y >> Z;
   cout << kdt.prod_cuboid(X, INF, Y, INF, Z, INF) << '\n';

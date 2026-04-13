@@ -8,7 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <stack>
-#include "mylib/String/SuffixArray.hpp"
+#include "mylib/string/SuffixArray.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -21,12 +21,12 @@ signed main() {
  LCPArray lcp(sa);
  vector<long long> B(N), C(N);
  stack<pair<long long, int>> stb, stc;
- for (int i= 1; i < N; ++i) {
+ for(int i= 1; i < N; ++i) {
   int cnt= 1;
   B[i]= B[i - 1];
-  while (stb.size()) {
+  while(stb.size()) {
    auto [h, c]= stb.top();
-   if (h < lcp[i - 1]) break;
+   if(h < lcp[i - 1]) break;
    stb.pop();
    cnt+= c;
    B[i]-= h * c;
@@ -34,12 +34,12 @@ signed main() {
   B[i]+= (long long)lcp[i - 1] * cnt;
   stb.emplace(lcp[i - 1], cnt);
  }
- for (int i= N; --i;) {
+ for(int i= N; --i;) {
   int cnt= 1;
   C[i - 1]= C[i];
-  while (stc.size()) {
+  while(stc.size()) {
    auto [h, c]= stc.top();
-   if (h < lcp[i - 1]) break;
+   if(h < lcp[i - 1]) break;
    stc.pop();
    cnt+= c;
    C[i - 1]-= h * c;
@@ -48,10 +48,10 @@ signed main() {
   stc.emplace(lcp[i - 1], cnt);
  }
  vector<long long> ans(N);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int j= sa[i];
   ans[j]= B[i] + C[i] + N - j;
  }
- for (int i= 0; i < N; ++i) cout << ans[i] << '\n';
+ for(int i= 0; i < N; ++i) cout << ans[i] << '\n';
  return 0;
 }

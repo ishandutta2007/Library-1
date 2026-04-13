@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
-#include "mylib/Optimization/fibonacci_search.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/fibonacci_search.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -20,13 +20,13 @@ signed main(stringstream& scin, stringstream& scout) {
  int n, k;
  scin >> n >> k;
  vector<int> a(n), b(n);
- for (int i= 0; i < n; ++i) scin >> a[i];
- for (int i= 0; i < n; ++i) scin >> b[i];
+ for(int i= 0; i < n; ++i) scin >> a[i];
+ for(int i= 0; i < n; ++i) scin >> b[i];
  auto lagrange= [&](int p) {
   PLC f;
   f.add_inf(), f.add_inf(true);
-  for (int i= 0; i < n; ++i) {
-   if (a[i] < p - b[i]) {
+  for(int i= 0; i < n; ++i) {
+   if(a[i] < p - b[i]) {
     f.add_linear(b[i] - p);
     f.chmin_slide_win(0, 1);
     f.add_linear(p - b[i] - a[i]);
@@ -56,12 +56,12 @@ signed main(stringstream& scin, stringstream& scout) {
  int n, k;
  scin >> n >> k;
  vector<int> a(n), b(n);
- for (int i= 0; i < n; ++i) scin >> a[i];
- for (int i= 0; i < n; ++i) scin >> b[i];
+ for(int i= 0; i < n; ++i) scin >> a[i];
+ for(int i= 0; i < n; ++i) scin >> b[i];
  auto lagrange= [&](int p) {
   PLC f;
-  for (int i= 0; i < n; ++i) {
-   if (a[i] < p - b[i]) {
+  for(int i= 0; i < n; ++i) {
+   if(a[i] < p - b[i]) {
     f.add_ramp(1, p - b[i]);
     f.add_ramp(-1, a[i]);
     f.add_const(p - a[i] - b[i]);

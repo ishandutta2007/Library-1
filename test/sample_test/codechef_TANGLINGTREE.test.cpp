@@ -4,8 +4,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
-#include "mylib/Graph/Graph.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/graph/Graph.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -17,20 +17,20 @@ signed main(stringstream& scin, stringstream& scout) {
  using PLC= PiecewiseLinearConvex<int>;
  int T;
  scin >> T;
- while (T--) {
+ while(T--) {
   int N;
   scin >> N;
   vector<int> W(N);
-  for (int i= 0; i < N; ++i) scin >> W[i];
+  for(int i= 0; i < N; ++i) scin >> W[i];
   Graph g(N, N - 1);
   vector<int> R(N - 1);
-  for (int e= 0; e < N - 1; ++e) scin >> g[e] >> R[e], --g[e];
+  for(int e= 0; e < N - 1; ++e) scin >> g[e] >> R[e], --g[e];
   auto adj= g.adjacency_edge(0);
   auto dfs= [&](auto&& dfs, int v, int p) -> pair<PLC, PLC> {
    PLC f1, f2;
-   for (int e: adj[v]) {
+   for(int e: adj[v]) {
     int u= g[e].to(v);
-    if (u == p) continue;
+    if(u == p) continue;
     auto [g1, g2]= dfs(dfs, u, v);
     g1.chmin_cum();
     g1.shift(-R[e]);
@@ -43,7 +43,7 @@ signed main(stringstream& scin, stringstream& scout) {
    f2.add_linear(W[v]);
    f1.add_inf();
    f2.add_inf(true);
-   if (PLC::pool_empty()) PLC::rebuild(f1, f2);
+   if(PLC::pool_empty()) PLC::rebuild(f1, f2);
    return {f1, f2};
   };
   auto [f, _]= dfs(dfs, 0, -1);

@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // ポテンシャルUF(無向2SAT)
 #include <iostream>
-#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized_Undoable.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,14 +11,14 @@ signed main() {
  int N, M;
  cin >> N >> M;
  int L[N], R[N];
- for (int i= 0; i < N; ++i) cin >> L[i] >> R[i];
+ for(int i= 0; i < N; ++i) cin >> L[i] >> R[i];
  UnionFind_Potentialized_Undoable<bool> uf(N);
- for (int i= N; i--;)
-  for (int j= i; j--;) {
-   if (!(R[i] < L[j] || R[j] < L[i]))
-    if (!uf.unite(i, j, 1)) return cout << "NO" << '\n', 0;
-   if (!(R[i] < M - 1 - R[j] || M - 1 - L[j] < L[i]))
-    if (!uf.unite(i, j, 0)) return cout << "NO" << '\n', 0;
+ for(int i= N; i--;)
+  for(int j= i; j--;) {
+   if(!(R[i] < L[j] || R[j] < L[i]))
+    if(!uf.unite(i, j, 1)) return cout << "NO" << '\n', 0;
+   if(!(R[i] < M - 1 - R[j] || M - 1 - L[j] < L[i]))
+    if(!uf.unite(i, j, 0)) return cout << "NO" << '\n', 0;
   }
  cout << "YES" << '\n';
  return 0;

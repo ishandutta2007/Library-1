@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/OnlineDynamicConnectivity.hpp"
+#include "mylib/data_structure/OnlineDynamicConnectivity.hpp"
 using namespace std;
 int main() {
  std::cin.tie(nullptr);
@@ -10,11 +10,11 @@ int main() {
  int n, k;
  cin >> n >> k;
  OnlineDynamicConnectivity dicon(n);
- while (k--) {
+ while(k--) {
   int op, u, v;
   cin >> op >> u >> v;
-  if (op == 1) dicon.link(u, v);
-  if (op == 2) dicon.cut(u, v);
-  if (op == 3) cout << (dicon.connected(u, v) ? "YES" : "NO") << '\n';
+  if(op == 1) dicon.link(u, v);
+  if(op == 2) dicon.cut(u, v);
+  if(op == 3) cout << (dicon.connected(u, v) ? "YES" : "NO") << '\n';
  }
 }

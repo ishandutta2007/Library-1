@@ -1,13 +1,13 @@
 ---
 title: 黄金分割探索 (Golden-section search)
-documentation_of: ../../mylib/Optimization/golden_search.hpp
+documentation_of: ../../mylib/optimization/golden_search.hpp
 ---
 
 ## 概要
 
 実数上の単峰関数 (unimodal function) の最小値または最大値を求めるアルゴリズム。探索範囲を黄金比を用いて狭めていくことで、効率的に最適解を探索する。
 
-対象とする関数の引数の型は `long double`。引数の型が整数な単峰関数を対象にする場合は[フィボナッチ探索](src/Optimization/fibonacci_search.hpp) を使う。
+対象とする関数の引数の型は `long double`。引数の型が整数な単峰関数を対象にする場合は[フィボナッチ探索](fibonacci_search.md) を使う。
 
 ### 計算量
 
@@ -17,7 +17,7 @@ documentation_of: ../../mylib/Optimization/golden_search.hpp
 ## インクルード
 
 ```cpp
-#include "mylib/Optimization/golden_search.hpp"
+#include "mylib/optimization/golden_search.hpp"
 ```
 
 ## 関数
@@ -35,7 +35,7 @@ documentation_of: ../../mylib/Optimization/golden_search.hpp
 ```cpp
 #include <iostream>
 #include <iomanip>
-#include "mylib/Optimization/golden_search.hpp"
+#include "mylib/optimization/golden_search.hpp"
 
 int main() {
     auto f = [](long double x) {

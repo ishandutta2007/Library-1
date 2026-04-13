@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Misc/longest_increasing_subsequence.hpp"
+#include "mylib/misc/longest_increasing_subsequence.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,14 +11,14 @@ signed main() {
  int N;
  cin >> N;
  vector<int> P(N);
- for (int i= 0; i < N; ++i) cin >> P[i];
+ for(int i= 0; i < N; ++i) cin >> P[i];
  auto [_, cand]= longest_increasing_subsequence(P);
  vector<int> ans;
- for (auto &c: cand)
-  if (c.size() == 1) ans.push_back(P[c[0]]);
+ for(auto& c: cand)
+  if(c.size() == 1) ans.push_back(P[c[0]]);
  int m= ans.size();
  cout << m << '\n';
- for (int i= 0; i < m; ++i) cout << ans[i] << " \n"[i + 1 == m];
- if (!m) cout << " \n";
+ for(int i= 0; i < m; ++i) cout << ans[i] << " \n"[i + 1 == m];
+ if(!m) cout << " \n";
  return 0;
 }

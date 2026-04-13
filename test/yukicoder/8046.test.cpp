@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 512
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/fps_inv.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/fps_inv.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  cin >> N;
  using Mint= ModInt<int(1e9 + 7)>;
  vector<Mint> f(1e5 + 10, 0);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   int x;
   cin >> x, f[x]= -1;
  }

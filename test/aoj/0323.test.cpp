@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
-#include "mylib/Optimization/golden_search.hpp"
+#include "mylib/optimization/golden_search.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,14 +14,14 @@ signed main() {
  int N;
  cin >> N;
  int x[N], r[N];
- for (int i= 0; i < N; ++i) cin >> x[i] >> r[i];
+ for(int i= 0; i < N; ++i) cin >> x[i] >> r[i];
  auto f= [&](R t) {
   R ret= 1e14;
-  for (int i= 0; i < N; ++i) ret= min(ret, R(r[i]) * r[i] - R(t - x[i]) * (t - x[i]));
+  for(int i= 0; i < N; ++i) ret= min(ret, R(r[i]) * r[i] - R(t - x[i]) * (t - x[i]));
   return sqrt(ret);
  };
  int left= -1e7, right= 1e7;
- for (int i= 0; i < N; ++i) left= max(left, x[i] - r[i]), right= min(right, x[i] + r[i]);
+ for(int i= 0; i < N; ++i) left= max(left, x[i] - r[i]), right= min(right, x[i] + r[i]);
  cout << golden_search<MAXIMIZE>(f, left, right).second << '\n';
  return 0;
 }

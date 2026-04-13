@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/fps_sqrt.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/fps_sqrt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,12 +13,12 @@ signed main() {
  cin >> N;
  using Mint= ModInt<998244353>;
  vector<Mint> a(N);
- for (int i= 0; i < N; i++) cin >> a[i];
+ for(int i= 0; i < N; i++) cin >> a[i];
  auto b= sqrt(a);
- if (b.size() == 0) {
+ if(b.size() == 0) {
   cout << -1 << '\n';
  } else {
-  for (int i= 0; i < N; i++) cout << b[i] << " \n"[i == N - 1];
+  for(int i= 0; i < N; i++) cout << b[i] << " \n"[i == N - 1];
  }
  return 0;
 }

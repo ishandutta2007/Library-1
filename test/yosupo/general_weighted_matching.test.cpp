@@ -3,13 +3,13 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Optimization/WeightedMatching.hpp"
+#include "mylib/optimization/WeightedMatching.hpp"
 using namespace std;
 int main() {
  int n, m;
  cin >> n >> m;
  WeightedMatching<long long> graph(n);
- for (int i= 0; i < m; i++) {
+ for(int i= 0; i < m; i++) {
   int u, v, w;
   cin >> u >> v >> w;
   graph.add_edge(u, v, w);
@@ -17,9 +17,9 @@ int main() {
  graph.build();
  auto ans= graph.weight_matching();
  long long sum= 0;
- for (auto [u, v, w]: ans) sum+= w;
+ for(auto [u, v, w]: ans) sum+= w;
  cout << ans.size() << " " << sum << '\n';
- for (int i= 0; i < n; i++)
-  if (int j= graph.match(i); i < j) cout << i << " " << j << '\n';
+ for(int i= 0; i < n; i++)
+  if(int j= graph.match(i); i < j) cout << i << " " << j << '\n';
  return 0;
 }

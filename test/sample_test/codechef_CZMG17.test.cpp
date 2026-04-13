@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -16,14 +16,14 @@ signed main(stringstream& scin, stringstream& scout) {
  int N;
  scin >> N;
  int A[N], B[N], C[N], D[N - 1];
- for (int i= 0; i < N; ++i) scin >> A[i];
- for (int i= 0; i < N; ++i) scin >> B[i];
- for (int i= 0; i < N; ++i) scin >> C[i];
- for (int i= 0; i < N - 1; ++i) scin >> D[i];
+ for(int i= 0; i < N; ++i) scin >> A[i];
+ for(int i= 0; i < N; ++i) scin >> B[i];
+ for(int i= 0; i < N; ++i) scin >> C[i];
+ for(int i= 0; i < N - 1; ++i) scin >> D[i];
  PiecewiseLinearConvex<int> f;
  f.add_inf(), f.add_inf(true);
- for (int i= 0; i < N; ++i) {
-  if (i) f.add_ramp(-D[i - 1], 0);
+ for(int i= 0; i < N; ++i) {
+  if(i) f.add_ramp(-D[i - 1], 0);
   f.shift(-A[i]);
   f.add_linear(-C[i]);
   f.chmin_slide_win(0, B[i]);
@@ -39,13 +39,13 @@ signed main(stringstream& scin, stringstream& scout) {
  int N;
  scin >> N;
  int A[N], B[N], C[N], D[N - 1];
- for (int i= 0; i < N; ++i) scin >> A[i];
- for (int i= 0; i < N; ++i) scin >> B[i];
- for (int i= 0; i < N; ++i) scin >> C[i];
- for (int i= 0; i < N - 1; ++i) scin >> D[i];
+ for(int i= 0; i < N; ++i) scin >> A[i];
+ for(int i= 0; i < N; ++i) scin >> B[i];
+ for(int i= 0; i < N; ++i) scin >> C[i];
+ for(int i= 0; i < N - 1; ++i) scin >> D[i];
  PiecewiseLinearConvex<int> f;
- for (int i= 0; i < N; ++i) {
-  if (i) f.chmin_slide_win(-D[i - 1], 0);
+ for(int i= 0; i < N; ++i) {
+  if(i) f.chmin_slide_win(-D[i - 1], 0);
   f.add_linear(-A[i]);
   f.add_ramp(B[i], C[i]);
   f.chmin_cum();

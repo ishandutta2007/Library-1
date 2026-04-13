@@ -1,6 +1,6 @@
 ---
 title: 0-1 ナップサック問題 (半分全列挙)
-documentation_of: ../../mylib/Optimization/Knapsack.hpp
+documentation_of: ../../mylib/optimization/Knapsack.hpp
 ---
 計算量が n 倍 改善されてるやつ \
 空間計算量的にも n は 50 ぐらいが限界か
@@ -18,4 +18,3 @@ documentation_of: ../../mylib/Optimization/Knapsack.hpp
 
 
 - [東京海上日動 プログラミングコンテスト2020 D - Knapsack Queries on a tree](https://atcoder.jp/contests/tokiomarine2020/tasks/tokiomarine2020_d)
-

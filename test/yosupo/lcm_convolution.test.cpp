@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/NumberTheory/tables.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/number_theory/tables.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,9 +13,9 @@ signed main() {
  int N;
  cin >> N;
  vector<Mint> a(N + 1), b(N + 1);
- for (int i= 1; i <= N; i++) cin >> a[i];
- for (int i= 1; i <= N; i++) cin >> b[i];
+ for(int i= 1; i <= N; i++) cin >> a[i];
+ for(int i= 1; i <= N; i++) cin >> b[i];
  auto c= lcm_convolve(a, b);
- for (int i= 1; i <= N; i++) cout << c[i] << " \n"[i == N];
+ for(int i= 1; i <= N; i++) cout << c[i] << " \n"[i == N];
  return 0;
 }

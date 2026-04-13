@@ -7,8 +7,8 @@
 #include <vector>
 #include <string>
 #include <array>
-#include "mylib/Misc/Automaton.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/misc/Automaton.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -19,16 +19,16 @@ signed main() {
  cin >> N >> M;
  int n= N.length();
  int c= 0;
- for (int i= 0; i < M; i++) {
+ for(int i= 0; i < M; i++) {
   int C;
   cin >> C, c|= 1 << C;
  }
  std::vector<int> alp= {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
  auto tr0= [&](int s, int q) {
-  if (s >= n) return s;
+  if(s >= n) return s;
   int d= N[s] - '0';
-  if (q > d) return n + 1;
-  if (q < d) return n;
+  if(q > d) return n + 1;
+  if(q < d) return n;
   return s + 1;
  };
  auto ac0= [&](int) { return true; };
@@ -38,8 +38,8 @@ signed main() {
  Automaton dfa_variety(alp, 0, tr1, ac1);
  auto dfa= dfa_le & dfa_variety;
  using T= array<Mint, 2>;
- auto op= [](const T &l, const T &r) { return T{l[0] + r[0], l[1] + r[1]}; };
- auto f= [](const T &v, int a, int) { return T{v[0], v[1] * 10 + v[0] * a}; };
+ auto op= [](const T& l, const T& r) { return T{l[0] + r[0], l[1] + r[1]}; };
+ auto f= [](const T& v, int a, int) { return T{v[0], v[1] * 10 + v[0] * a}; };
  cout << dfa.dp_run(n, op, T{0, 0}, f, T{1, 0})[1] << '\n';
  return 0;
 }

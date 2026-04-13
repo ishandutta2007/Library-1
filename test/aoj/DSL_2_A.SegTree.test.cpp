@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
 using namespace std;
 struct RminQ {
  using T= int;
@@ -15,10 +15,10 @@ signed main() {
  int n, q;
  cin >> n >> q;
  SegmentTree<RminQ> seg(n);
- while (q--) {
+ while(q--) {
   int com, x, y;
   cin >> com >> x >> y;
-  if (com) {
+  if(com) {
    cout << seg.prod(x, y + 1) << '\n';
   } else {
    seg.set(x, y);

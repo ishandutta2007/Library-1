@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/AllPurposeEuclid.hpp"
+#include "mylib/algebra/AllPurposeEuclid.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,7 +11,7 @@ signed main() {
  FST::init();
  int T;
  cin >> T;
- while (T--) {
+ while(T--) {
   long long N, M, A, B;
   cin >> N >> M >> A >> B;
   cout << FST::solve(N - 1, A, B, M, 0, 1)[0][1] << '\n';

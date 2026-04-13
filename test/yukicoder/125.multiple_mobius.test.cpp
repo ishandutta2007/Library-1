@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/ArrayOnDivisors.hpp"
-#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/ArrayOnDivisors.hpp"
+#include "mylib/algebra/FactorialPrecalculation.hpp"
 // 倍数メビウス
 using namespace std;
 signed main() {
@@ -17,15 +17,15 @@ signed main() {
  cin >> K;
  int tot= 0, g= 0;
  vector<int> C(K);
- for (int i= 0; i < K; ++i) cin >> C[i], tot+= C[i], g= gcd(g, C[i]);
+ for(int i= 0; i < K; ++i) cin >> C[i], tot+= C[i], g= gcd(g, C[i]);
  ArrayOnDivisors<int, Mint> A(g);
- for (auto &[d, v]: A) {
+ for(auto& [d, v]: A) {
   v= F::fact(tot / d);
-  for (int i= 0; i < K; ++i) v*= F::finv(C[i] / d);
+  for(int i= 0; i < K; ++i) v*= F::finv(C[i] / d);
  }
  A.multiple_mobius();
  Mint ans= 0;
- for (auto [d, v]: A) ans+= v * d;
+ for(auto [d, v]: A) ans+= v * d;
  ans/= tot;
  cout << ans << '\n';
  return 0;

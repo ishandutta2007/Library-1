@@ -1,6 +1,6 @@
 ---
 title: 一般グラフの最大マッチング
-documentation_of: ../../mylib/Graph/general_matching.hpp
+documentation_of: ../../mylib/graph/general_matching.hpp
 ---
 GabowのEdmonds' Algorithm
 
@@ -18,4 +18,3 @@ GabowのEdmonds' Algorithm
 - [Universal Online Judge #171. 【WC2016】挑战NPC](https://uoj.ac/problem/171) (マッチング相手の調整が必要)
 - [The 2021 ICPC Asia Shanghai Regional Programming Contest L. Three,Three,Three](https://codeforces.com/gym/103446/problem/L)
 - [ICPC 2018-2019, NEERC B Bimatching](https://codeforces.com/contest/1089)
-

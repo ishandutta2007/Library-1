@@ -3,7 +3,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Misc/Period.hpp"
+#include "mylib/misc/Period.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ signed main() {
  long long K;
  cin >> N >> K;
  vector<int> A(N);
- for (int i= 0; i < N; ++i) cin >> A[i], --A[i];
+ for(int i= 0; i < N; ++i) cin >> A[i], --A[i];
  cout << Period(A).jump(0, K) + 1 << '\n';
  return 0;
 }

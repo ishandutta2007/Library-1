@@ -5,23 +5,23 @@
 // Alien DP
 #include <iostream>
 #include <algorithm>
-#include "mylib/Optimization/fibonacci_search.hpp"
+#include "mylib/optimization/fibonacci_search.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
  ios::sync_with_stdio(false);
  int N, R;
  cin >> N >> R;
- if (R > N - R) R= N - R;
+ if(R > N - R) R= N - R;
  long long A[N - 1];
- for (int i= 0; i < N - 1; ++i) cin >> A[i];
+ for(int i= 0; i < N - 1; ++i) cin >> A[i];
  long long B[N];
  fill_n(B, N, 0);
- for (int i= 0; i < N - 1; ++i) B[i]+= A[i], B[i + 1]+= A[i];
+ for(int i= 0; i < N - 1; ++i) B[i]+= A[i], B[i + 1]+= A[i];
  auto f= [&](long long p) {
   long long dp[N + 1][2];
   dp[0][0]= 0, dp[0][1]= -1e18;
-  for (int i= 0; i < N; ++i) {
+  for(int i= 0; i < N; ++i) {
    dp[i + 1][1]= dp[i][0] + B[i] - p;
    dp[i + 1][0]= max(dp[i][0], dp[i][1]);
   }

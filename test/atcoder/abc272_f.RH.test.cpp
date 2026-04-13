@@ -7,10 +7,10 @@
 #include <string>
 #include <map>
 #include <algorithm>
-#include "mylib/String/RollingHash.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/rng.hpp"
+#include "mylib/string/RollingHash.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/rng.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -26,10 +26,10 @@ signed main() {
  S+= S, T+= T;
  RH rhS(S), rhT(T);
  vector<RH> rh(N);
- for (int i= 0; i < N; ++i) rh[i]= rhS.sub(i, N);
+ for(int i= 0; i < N; ++i) rh[i]= rhS.sub(i, N);
  stable_sort(rh.begin(), rh.end());
  long long ans= 0;
- for (int i= 0; i < N; ++i) ans+= upper_bound(rh.begin(), rh.end(), rhT.sub(i, N)) - rh.begin();
+ for(int i= 0; i < N; ++i) ans+= upper_bound(rh.begin(), rh.end(), rhT.sub(i, N)) - rh.begin();
  cout << ans << '\n';
  return 0;
 }

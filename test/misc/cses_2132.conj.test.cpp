@@ -3,14 +3,14 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  int n;
  cin >> n;
  PiecewiseLinearConvex<int> f;
  f.add_inf();
- for (int i= 0; i < n; ++i) {
+ for(int i= 0; i < n; ++i) {
   int x;
   cin >> x;
   f.add_inf(true);

@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <vector>
-#include "mylib/Geometry/Circle.hpp"
+#include "mylib/geometry/Circle.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,8 +18,8 @@ signed main() {
  cin >> c.o >> c.r;
  cin >> d.o >> d.r;
  vector<Point<R>> ps;
- for (auto &l: common_tangent(c, d)) ps.push_back(cross_points(c, l)[0]);
+ for(auto& l: common_tangent(c, d)) ps.push_back(cross_points(c, l)[0]);
  sort(ps.begin(), ps.end());
- for (auto &p: ps) cout << p.x << " " << p.y << '\n';
+ for(auto& p: ps) cout << p.x << " " << p.y << '\n';
  return 0;
 }

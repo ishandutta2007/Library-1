@@ -6,7 +6,7 @@
 // ポテンシャルUF
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,20 +15,20 @@ signed main() {
  cin >> N >> M >> Q;
  UnionFind_Potentialized<long long> uf(N);
  vector<bool> isinf(N, false);
- for (int i= 0; i < M; i++) {
+ for(int i= 0; i < M; i++) {
   int A, B;
   cin >> A >> B, A--, B--;
   long long C;
   cin >> C;
-  if (!uf.unite(A, B, C)) isinf[A]= true, isinf[B]= true;
+  if(!uf.unite(A, B, C)) isinf[A]= true, isinf[B]= true;
  }
- for (int i= 0; i < N; i++)
-  if (isinf[i]) isinf[uf.leader(i)]= true;
- while (Q--) {
+ for(int i= 0; i < N; i++)
+  if(isinf[i]) isinf[uf.leader(i)]= true;
+ while(Q--) {
   int X, Y;
   cin >> X >> Y, X--, Y--;
-  if (!uf.connected(X, Y)) cout << "nan" << '\n';
-  else if (isinf[uf.leader(X)]) cout << "inf" << '\n';
+  if(!uf.connected(X, Y)) cout << "nan" << '\n';
+  else if(isinf[uf.leader(X)]) cout << "inf" << '\n';
   else cout << uf.diff(X, Y) << '\n';
  }
  return 0;

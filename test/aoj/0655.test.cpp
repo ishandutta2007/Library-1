@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/Misc/compress.hpp"
-#include "mylib/DataStructure/RangeSet.hpp"
+#include "mylib/misc/compress.hpp"
+#include "mylib/data_structure/RangeSet.hpp"
 
 using namespace std;
 signed main() {
@@ -14,17 +14,17 @@ signed main() {
  int N;
  cin >> N;
  int A[N];
- for (int i= 0; i < N; ++i) cin >> A[i];
+ for(int i= 0; i < N; ++i) cin >> A[i];
  vector<int> vec(A, A + N);
  auto id= compress(vec);
  int n= vec.size();
  vector<int> group[n];
- for (int i= 0; i < N; ++i) group[id(A[i])].push_back(i);
+ for(int i= 0; i < N; ++i) group[id(A[i])].push_back(i);
  RangeSet<int> rs;
  int ans= 0;
- for (int i= n; i--;) {
-  if (vec[i] == 0) break;
-  for (int j: group[i]) rs.insert(j);
+ for(int i= n; i--;) {
+  if(vec[i] == 0) break;
+  for(int j: group[i]) rs.insert(j);
   ans= max(ans, (int)rs.size());
  }
  cout << ans << '\n';

@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 128
 #include <iostream>
 #include <vector>
-#include "mylib/Math/set_power_series.hpp"
+#include "mylib/algebra/set_power_series.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,19 +12,19 @@ signed main() {
  cin >> n;
  int N= 1 << n;
  vector<int> a[32], b[32];
- for (int i= 32; i--;) a[i].resize(N), b[i].resize(N);
- for (int i= 0; i < N; i++)
-  for (int j= 0; j < 32; ++j) cin >> a[j][i];
- for (int i= 0; i < N; i++)
-  for (int j= 0; j < 32; ++j) cin >> b[j][i];
- for (int i= 32; i--;) sps::hadamard(a[i]), sps::hadamard(b[i]);
+ for(int i= 32; i--;) a[i].resize(N), b[i].resize(N);
+ for(int i= 0; i < N; i++)
+  for(int j= 0; j < 32; ++j) cin >> a[j][i];
+ for(int i= 0; i < N; i++)
+  for(int j= 0; j < 32; ++j) cin >> b[j][i];
+ for(int i= 32; i--;) sps::hadamard(a[i]), sps::hadamard(b[i]);
  vector<int> c[64];
- for (int i= 64; i--;) c[i].resize(N);
- for (int i= 32; i--;)
-  for (int j= 32; j--;)
-   for (int k= 0; k < N; ++k) c[i + j][k]+= a[i][k] * b[j][k];
- for (int i= 64; i--;) sps::hadamard(c[i]);
- for (int i= 0; i < N; ++i)
-  for (int j= 0; j < 63; ++j) cout << ((c[j][i] >> n) & 1) << " \n"[j == 62];
+ for(int i= 64; i--;) c[i].resize(N);
+ for(int i= 32; i--;)
+  for(int j= 32; j--;)
+   for(int k= 0; k < N; ++k) c[i + j][k]+= a[i][k] * b[j][k];
+ for(int i= 64; i--;) sps::hadamard(c[i]);
+ for(int i= 0; i < N; ++i)
+  for(int j= 0; j < 63; ++j) cout << ((c[j][i] >> n) & 1) << " \n"[j == 62];
  return 0;
 }

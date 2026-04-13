@@ -8,15 +8,15 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "mylib/DataStructure/SegmentTree.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
 using namespace std;
 struct M {
  using T= long long;
  using E= long long;
  static T ti() { return -(1ll << 60); }
  static T op(T l, T r) { return max(l, r); }
- static void mp(T &v, E y) { v+= y; }
- static void cp(E &x, E y) { x+= y; }
+ static void mp(T& v, E y) { v+= y; }
+ static void cp(E& x, E y) { x+= y; }
 };
 signed main() {
  cin.tie(0);
@@ -25,19 +25,19 @@ signed main() {
  int N, B, Q;
  cin >> N >> B >> Q;
  vector<int> a(N);
- for (int i= 0; i < N; ++i) cin >> a[i];
+ for(int i= 0; i < N; ++i) cin >> a[i];
  vector<long long> sum(N);
  sum[0]= a[0] - B;
- for (int i= 1; i < N; ++i) sum[i]= sum[i - 1] + a[i] - B;
+ for(int i= 1; i < N; ++i) sum[i]= sum[i - 1] + a[i] - B;
  SegmentTree<M> seg(sum);
- while (Q--) {
+ while(Q--) {
   int c, x;
   cin >> c >> x, --c;
   int d= x - a[c];
   a[c]= x;
   seg.apply(c, N, d);
   int s= seg.max_right(0, [&](long long x) { return x < 0; });
-  if (s == N) s= N - 1;
+  if(s == N) s= N - 1;
   cout << (double)seg[s] / (s + 1) + B << '\n';
  }
  return 0;

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/fps_exp.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/fps_exp.hpp"
 using namespace std;
 // log(1+x^s_1)(1+x^s_2)...(1+x^s_N)=log(1+x^s_1)+log(1+x^s_2)+...log(1+x^s_N)
 // log(1+x)=x-x^2/2+x^3/3-x^4/4...
@@ -17,18 +17,18 @@ signed main() {
  cin >> N >> T;
  int c[T + 1];
  fill_n(c, T + 1, 0);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   int s;
   cin >> s, c[s]++;
  }
  vector<Mint> a(T + 1);
- for (int t= 1; t <= T; t++)
-  if (c[t])
-   for (int j= 1; j * t <= T; j++) {
+ for(int t= 1; t <= T; t++)
+  if(c[t])
+   for(int j= 1; j * t <= T; j++) {
     Mint tmp= Mint(c[t]) / j;
     a[j * t]+= j & 1 ? tmp : -tmp;
    }
  auto ans= exp(a);
- for (int t= 1; t <= T; t++) cout << ans[t] << " \n"[t == T];
+ for(int t= 1; t <= T; t++) cout << ans[t] << " \n"[t == T];
  return 0;
 }

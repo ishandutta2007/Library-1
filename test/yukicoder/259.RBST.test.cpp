@@ -4,7 +4,7 @@
 // reverse, split, + の verify
 
 #include <iostream>
-#include "mylib/DataStructure/RandomizedBinarySearchTree.hpp"
+#include "mylib/data_structure/RandomizedBinarySearchTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;
@@ -18,21 +18,21 @@ int main() {
  cin >> N >> Q;
  RandomizedBinarySearchTree<RSQ, true> rbstL(N, 0), rbstR(N, 0);
  int now= 0;
- while (Q--) {
+ while(Q--) {
   char x;
   int t, y, z;
   cin >> x >> t >> y >> z;
   int dt= t - now;
   dt%= 2 * N;
-  if (dt > N) swap(rbstL, rbstR), rbstL.reverse(), rbstR.reverse(), dt-= N;
+  if(dt > N) swap(rbstL, rbstR), rbstL.reverse(), rbstR.reverse(), dt-= N;
   auto [Ll, Lr]= rbstL.split(dt);
   auto [Rl, Rr]= rbstR.split(N - dt);
   Ll.reverse(), Rr.reverse();
   rbstL= Lr + Rr;
   rbstR= Ll + Rl;
-  if (x == 'L') {
+  if(x == 'L') {
    rbstL.mul(y, z);
-  } else if (x == 'R') {
+  } else if(x == 'R') {
    rbstR.mul(y, z);
   } else {
    cout << rbstL.prod(y, z) + rbstR.prod(y, z) << '\n';

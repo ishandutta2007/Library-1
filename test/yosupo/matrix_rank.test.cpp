@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include "mylib/LinearAlgebra/LU_Decomposition.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,8 +13,8 @@ signed main() {
  int N, M;
  cin >> N >> M;
  Matrix<Mint> A(N, M);
- for (int i= 0; i < N; ++i)
-  for (int j= 0; j < M; ++j) cin >> A[i][j];
+ for(int i= 0; i < N; ++i)
+  for(int j= 0; j < M; ++j) cin >> A[i][j];
  cout << LU_Decomposition(A).rank() << '\n';
  return 0;
 }

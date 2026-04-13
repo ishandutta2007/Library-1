@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Geometry/Polygon.hpp"
+#include "mylib/geometry/Polygon.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,7 +11,7 @@ signed main() {
  int n;
  cin >> n;
  vector<Point<int>> ps(n);
- for (int i= 0; i < n; ++i) cin >> ps[i];
+ for(int i= 0; i < n; ++i) cin >> ps[i];
  Polygon g(ps);
  cout << g.is_convex() << '\n';
  return 0;

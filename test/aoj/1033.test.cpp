@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <queue>
 #include <vector>
-#include "mylib/Geometry/SegmentArrangement.hpp"
+#include "mylib/geometry/SegmentArrangement.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,37 +15,37 @@ signed main() {
  cout << fixed << setprecision(10);
  using R= long double;
  static constexpr R INF= 1e18;
- for (int n; cin >> n && n;) {
+ for(int n; cin >> n && n;) {
   vector<Segment<R>> ss(n);
-  for (int i= 0; i < n; ++i) cin >> ss[i].p >> ss[i].q;
+  for(int i= 0; i < n; ++i) cin >> ss[i].p >> ss[i].q;
   SegmentArrangement sa(ss);
   Point<R> s, g;
   cin >> s >> g;
   int si= sa.vertex(s), gi= sa.vertex(g);
   int m= sa.vertex_size();
   R dis[m][m + 1];
-  for (int i= m; i--;) fill_n(dis[i], m + 1, INF);
+  for(int i= m; i--;) fill_n(dis[i], m + 1, INF);
   priority_queue<tuple<R, int, int>> pq;
   pq.emplace(0, si, m);
   dis[si][m]= 0;
   R ans= -1;
-  while (!pq.empty()) {
+  while(!pq.empty()) {
    auto [d, v, p]= pq.top();
    pq.pop();
    d= -d;
-   if (sgn(dis[v][p] - d) != 0) continue;
-   if (v == gi) {
+   if(sgn(dis[v][p] - d) != 0) continue;
+   if(v == gi) {
     ans= d;
     break;
    }
-   for (int e: sa.out_edges(v)) {
+   for(int e: sa.out_edges(v)) {
     int u= sa.to_v(e);
     R nd= d;
-    if (p != m) nd+= abs(angle(sa.point(v) - sa.point(p), sa.point(u) - sa.point(v)));
-    if (sgn(dis[u][v] - nd) > 0) dis[u][v]= nd, pq.emplace(-nd, u, v);
+    if(p != m) nd+= abs(angle(sa.point(v) - sa.point(p), sa.point(u) - sa.point(v)));
+    if(sgn(dis[u][v] - nd) > 0) dis[u][v]= nd, pq.emplace(-nd, u, v);
    }
   }
-  if (ans < 0) cout << "-1" << '\n';
+  if(ans < 0) cout << "-1" << '\n';
   else cout << radian_to_degree(ans) << '\n';
  }
  return 0;

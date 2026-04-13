@@ -5,7 +5,7 @@
 // 最小全域有向木(グラフ+分割)
 #include <iostream>
 #include <vector>
-#include "mylib/Optimization/matroid_intersection.hpp"
+#include "mylib/optimization/matroid_intersection.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ int main() {
  GraphicMatroid M1(N);
  vector<int> w(M);
  vector<vector<int>> parts(N);
- for (int i= 0; i < M; i++) {
+ for(int i= 0; i < M; i++) {
   int s, t;
   cin >> s >> t >> w[i];
   M1.add_edge(s, t);
@@ -26,7 +26,7 @@ int main() {
  PartitionMatroid M2(M, parts, R);
  auto S= weighted_matroid_intersection<MINIMIZE>(M, M1, M2, w);
  int ans= 0;
- for (int e: S[N - 1]) ans+= w[e];
+ for(int e: S[N - 1]) ans+= w[e];
  cout << ans << '\n';
  return 0;
 }

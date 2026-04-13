@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/sparse_fps.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/sparse_fps.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -18,7 +18,7 @@ signed main() {
  f[1]= -(p + N);
  f[N + 1]= p;
  auto g= sfps::div({c * N, -c * N}, f, K);
- for (int i= 1; i < K; ++i) ans-= g[i];
+ for(int i= 1; i < K; ++i) ans-= g[i];
  cout << ans << '\n';
  return 0;
 }

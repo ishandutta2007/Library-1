@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include "mylib/LinearAlgebra/characteristic_polynomial.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,9 +12,9 @@ signed main() {
  int N;
  cin >> N;
  Matrix<Mint> a(N, N);
- for (int i= 0; i < N; i++)
-  for (int j= 0; j < N; j++) cin >> a[i][j];
+ for(int i= 0; i < N; i++)
+  for(int j= 0; j < N; j++) cin >> a[i][j];
  auto p= characteristic_polynomial(a);
- for (int i= 0; i <= N; i++) cout << p[i] << " \n"[i == N];
+ for(int i= 0; i <= N; i++) cout << p[i] << " \n"[i == N];
  return 0;
 }

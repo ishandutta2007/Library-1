@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Misc/Automaton.hpp"
+#include "mylib/misc/Automaton.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,13 +14,13 @@ signed main() {
  auto tr_le= [&](int64_t s, int c) { return (s - c + 5) / 5 - 1; };
  Automaton dfa_le(alp, N, tr_le, [](int64_t) { return true; }, int64_t(-1));
  auto tr_pos= [&](bool s, int c) {
-  if (c > 0) s= 1;
-  else if (c < 0) s= 0;
+  if(c > 0) s= 1;
+  else if(c < 0) s= 0;
   return s;
  };
  Automaton dfa_pos(alp, false, tr_pos, [](bool s) { return s; });
  auto tr_eq= [&](int s, int c) {
-  if (abs(s) > 100) return s;
+  if(abs(s) > 100) return s;
   return s + c;
  };
  Automaton dfa_eq(alp, 0, tr_eq, [](int s) { return s == 0; });

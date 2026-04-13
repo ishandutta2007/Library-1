@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 1024
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/bostan_mori.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/bostan_mori.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,8 +15,8 @@ signed main() {
  std::uint64_t k;
  cin >> k;
  std::vector<Mint> a(d), c(d);
- for (int i= 0; i < d; i++) cin >> a[i];
- for (int i= 0; i < d; i++) cin >> c[i];
+ for(int i= 0; i < d; i++) cin >> a[i];
+ for(int i= 0; i < d; i++) cin >> c[i];
  cout << linear_recurrence(c, a, k) << '\n';
  return 0;
 }

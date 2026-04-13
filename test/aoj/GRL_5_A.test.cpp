@@ -4,8 +4,8 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,7 +14,7 @@ signed main() {
  cin >> n;
  Graph g(n, n - 1);
  vector<int> w(n - 1);
- for (int i= 0; i < n - 1; ++i) cin >> g[i] >> w[i];
+ for(int i= 0; i < n - 1; ++i) cin >> g[i] >> w[i];
  auto put_edge= [&](int, int e, int d) { return d + w[e]; };
  auto op= [&](int l, int r) { return max(l, r); };
  auto put_vertex= [&](int, int d) { return d; };

@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <iomanip>
-#include "mylib/Geometry/Convex.hpp"
+#include "mylib/geometry/Convex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,11 +15,11 @@ signed main() {
  int n;
  cin >> n;
  vector<P> ps(n);
- for (int i= 0; i < n; ++i) cin >> ps[i];
+ for(int i= 0; i < n; ++i) cin >> ps[i];
  Convex g(ps);
  int q;
  cin >> q;
- while (q--) {
+ while(q--) {
   P lp, lq;
   cin >> lp >> lq;
   cout << g.cut(line_through(lp, lq)).area() << '\n';

@@ -1,6 +1,6 @@
 ---
 title: 2-SAT (2-Satisfiability)
-documentation_of: ../../mylib/Misc/TwoSatisfiability.hpp
+documentation_of: ../../mylib/misc/TwoSatisfiability.hpp
 ---
 
 ## 概要
@@ -58,7 +58,7 @@ documentation_of: ../../mylib/Misc/TwoSatisfiability.hpp
 ```cpp
 #include <iostream>
 #include <vector>
-#include "mylib/Misc/TwoSatisfiability.hpp"
+#include "mylib/misc/TwoSatisfiability.hpp"
 
 int main() {
     // 変数が3つ (x_0, x_1, x_2)
@@ -92,4 +92,3 @@ x1 = false
 x2 = true
 ```
 (注: 解は一意ではないため、出力は異なる場合があります)
-

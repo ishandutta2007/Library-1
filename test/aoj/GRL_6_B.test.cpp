@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Optimization/NetworkSimplex.hpp"
+#include "mylib/optimization/NetworkSimplex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,7 +10,7 @@ signed main() {
  int V, E, F;
  cin >> V >> E >> F;
  NetworkSimplex<int, int> graph(V);
- while (E--) {
+ while(E--) {
   int u, v, c, d;
   cin >> u >> v >> c >> d;
   graph.add_edge(u, v, 0, c, d);

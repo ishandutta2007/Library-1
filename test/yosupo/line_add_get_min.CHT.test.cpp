@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Optimization/ConvexHullTrick.hpp"
+#include "mylib/optimization/ConvexHullTrick.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,15 +10,15 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  ConvexHullTrick<long long, MINIMIZE> cht;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   long long a, b;
   cin >> a >> b;
   cht.insert(a, b);
  }
- while (Q--) {
+ while(Q--) {
   int t;
   cin >> t;
-  if (t) {
+  if(t) {
    int p;
    cin >> p;
    cout << cht.query(p) << '\n';

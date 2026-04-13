@@ -6,22 +6,22 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Math/Nimber.hpp"
-#include "mylib/DataStructure/UnionFind_Potentialized.hpp"
+#include "mylib/algebra/Nimber.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
  solve(scin, scout);
- if (expected == "-1\n") return scout.str() == expected;
+ if(expected == "-1\n") return scout.str() == expected;
  stringstream scin2(in);
  int N, M;
  scin2 >> N >> M;
  int A[M], B[M], Y[M];
- for (int i= 0; i < M; ++i) scin2 >> A[i] >> B[i] >> Y[i];
+ for(int i= 0; i < M; ++i) scin2 >> A[i] >> B[i] >> Y[i];
  int ans[N];
- for (int i= 0; i < N; ++i) scout >> ans[i];
- for (int i= 0; i < M; ++i)
-  if ((ans[A[i] - 1] ^ ans[B[i] - 1]) != Y[i]) return false;
+ for(int i= 0; i < N; ++i) scout >> ans[i];
+ for(int i= 0; i < M; ++i)
+  if((ans[A[i] - 1] ^ ans[B[i] - 1]) != Y[i]) return false;
  return true;
 }
 namespace TEST {
@@ -31,15 +31,15 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> N >> M;
  UnionFind_Potentialized<Nimber> uf(N);
  bool isok= true;
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   int A, B;
   Nimber Y;
   scin >> A >> B >> Y;
   --A, --B;
   isok&= uf.unite(A, B, Y);
  }
- if (isok)
-  for (int i= 0; i < N; ++i) scout << uf.potential(i) << '\n';
+ if(isok)
+  for(int i= 0; i < N; ++i) scout << uf.potential(i) << '\n';
  else scout << -1 << '\n';
  return 0;
 }

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "mylib/DataStructure/SegmentTree_2D.hpp"
+#include "mylib/data_structure/SegmentTree_2D.hpp"
 using namespace std;
 struct ROrQ {
  using T= bool;
@@ -19,7 +19,7 @@ signed main() {
  cin >> N;
  vector<array<int, 3>> query;
  vector<array<int, 2>> xy;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int a[3];
   cin >> a[0] >> a[1] >> a[2];
   sort(a, a + 3);
@@ -29,9 +29,9 @@ signed main() {
  SegmentTree_2D<int, ROrQ> seg(xy);
  sort(query.begin(), query.end(), [](auto a, auto b) { return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0]; });
  bool isok= false;
- for (auto [h, w, d]: query) {
+ for(auto [h, w, d]: query) {
   isok= seg.prod(0, w, 0, d);
-  if (isok) break;
+  if(isok) break;
   seg.set(w, d, 1);
  }
  cout << (isok ? "Yes" : "No") << '\n';

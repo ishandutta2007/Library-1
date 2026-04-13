@@ -3,7 +3,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt_Exp.hpp"
+#include "mylib/algebra/ModInt_Exp.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

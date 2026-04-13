@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/NumberTheory/tables.hpp"
+#include "mylib/number_theory/tables.hpp"
 // メビウス関数
 using namespace std;
 signed main() {
@@ -11,10 +11,10 @@ signed main() {
  int T;
  cin >> T;
  auto mu= mobius_table(1'000'010);
- while (T--) {
+ while(T--) {
   long long N, ans= 0;
   cin >> N;
-  for (long long x= 2; x * x * x <= N; x++) ans-= N / (x * x * x) * mu[x];
+  for(long long x= 2; x * x * x <= N; x++) ans-= N / (x * x * x) * mu[x];
   cout << ans << '\n';
  }
  return 0;

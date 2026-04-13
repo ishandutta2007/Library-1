@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 1024
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/PersistentArray.hpp"
-#include "mylib/DataStructure/UnionFind_Persistent.hpp"
+#include "mylib/data_structure/PersistentArray.hpp"
+#include "mylib/data_structure/UnionFind_Persistent.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,11 +13,11 @@ signed main() {
  cin >> N >> Q;
  vector<UnionFind_Persistent> uf(Q + 1);
  uf[0]= UnionFind_Persistent(N);
- for (int i= 1; i <= Q; i++) {
+ for(int i= 1; i <= Q; i++) {
   int t, k, u, v;
   cin >> t >> k >> u >> v;
   k++;
-  if (t) {
+  if(t) {
    cout << uf[k].connected(u, v) << '\n';
   } else {
    uf[i]= uf[k];

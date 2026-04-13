@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <vector>
-#include "mylib/Misc/Automaton.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/misc/Automaton.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,7 +16,7 @@ signed main() {
  int n= S.length();
  vector alp= {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
  auto tr_s= [&](int s, int c) {
-  if (S[s] == '?' || S[s] == c + '0') return s + 1;
+  if(S[s] == '?' || S[s] == c + '0') return s + 1;
   return -1;
  };
  auto ac_s= [](int) { return true; };

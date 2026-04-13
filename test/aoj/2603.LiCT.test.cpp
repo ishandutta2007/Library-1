@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <algorithm>
-#include "mylib/Optimization/LiChaoTree.hpp"
+#include "mylib/optimization/LiChaoTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,28 +11,28 @@ signed main() {
  int s, n, m;
  cin >> s >> n >> m;
  int x[s];
- for (int i= 0; i < s; ++i) cin >> x[i];
+ for(int i= 0; i < s; ++i) cin >> x[i];
  int a[n];
- for (int i= 0; i < n; ++i) {
+ for(int i= 0; i < n; ++i) {
   int t, p;
   cin >> t >> p;
   a[i]= t - x[p - 1];
  }
- if (n <= m) return cout << 0 << '\n', 0;
+ if(n <= m) return cout << 0 << '\n', 0;
  sort(a, a + n);
  int sum[n + 1];
  sum[0]= 0;
- for (int i= 0; i < n; ++i) sum[i + 1]= sum[i] + a[i];
+ for(int i= 0; i < n; ++i) sum[i + 1]= sum[i] + a[i];
  auto w= [&](int i, int j) { return (i - j) * a[i - 1] - (sum[i] - sum[j]); };
 
  int dp[n + 1];
  fill_n(dp, n + 1, 1e9);
  dp[0]= 0;
- for (int _= m; _--;) {
+ for(int _= m; _--;) {
   LiChaoTree lct([&](int i, int j) { return dp[j] + w(i, j); }, 1, n + 1);
   auto tree= lct.make_tree<MINIMIZE>();
   int ndp[n + 1];
-  for (int i= 1; i <= n; ++i) {
+  for(int i= 1; i <= n; ++i) {
    tree.insert(i - 1);
    ndp[i]= tree.query(i).first;
   }

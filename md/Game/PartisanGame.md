@@ -1,6 +1,6 @@
 ---
 title: 非不偏ゲーム (Conwayの構成)
-documentation_of: ../../mylib/Game/PartisanGame.hpp
+documentation_of: ../../mylib/game/PartisanGame.hpp
 ---
 メモ化再帰で2進分数を計算
 ## 参考

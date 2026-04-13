@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Optimization/monotone_minima.hpp"
+#include "mylib/optimization/monotone_minima.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,14 +10,14 @@ signed main() {
  int N, M;
  cin >> N >> M;
  long long a[N], b[M];
- for (int i= 0; i < N; ++i) cin >> a[i];
- for (int j= 0; j < M; ++j) cin >> b[j];
+ for(int i= 0; i < N; ++i) cin >> a[i];
+ for(int j= 0; j < M; ++j) cin >> b[j];
  auto select= [&](int i, int j, int k) {
-  if (i < k) return false;
-  if (i - j >= N) return true;
+  if(i < k) return false;
+  if(i - j >= N) return true;
   return a[i - j] + b[j] >= a[i - k] + b[k];
  };
  auto r= monotone_minima(N + M - 1, M, select);
- for (int i= 0; i < N + M - 1; ++i) cout << a[i - r[i]] + b[r[i]] << " \n"[i == N + M - 2];
+ for(int i= 0; i < N + M - 1; ++i) cout << a[i - r[i]] + b[r[i]] << " \n"[i == N + M - 2];
  return 0;
 }

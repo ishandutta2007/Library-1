@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/HeavyLightDecomposition.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/HeavyLightDecomposition.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,9 +11,9 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  Graph g(N);
- for (int i= 1, p; i < N; ++i) cin >> p, g.add_edge(p, i);
+ for(int i= 1, p; i < N; ++i) cin >> p, g.add_edge(p, i);
  HeavyLightDecomposition tree(g, 0);
- while (Q--) {
+ while(Q--) {
   int u, v;
   cin >> u >> v;
   cout << tree.lca(u, v) << '\n';

@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/LinkCutTree.hpp"
+#include "mylib/data_structure/LinkCutTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,13 +10,13 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  LinkCutTree lct(N);
- for (int i= 1; i < N; i++) {
+ for(int i= 1; i < N; i++) {
   int p;
   cin >> p;
   lct.link(i, p);
  }
  lct.evert(0);
- while (Q--) {
+ while(Q--) {
   int u, v;
   cin >> u >> v;
   cout << lct.lca(u, v) << '\n';

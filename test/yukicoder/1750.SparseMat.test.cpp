@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // 疎行列の行列累乗
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/MinimalPolynomial.hpp"
 using namespace std;
 signed main() {
@@ -14,10 +14,10 @@ signed main() {
  long long N, M, T;
  cin >> N >> M >> T;
  int s[M], t[M];
- for (int i= 0; i < M; ++i) cin >> s[i] >> t[i];
+ for(int i= 0; i < M; ++i) cin >> s[i] >> t[i];
  auto f= [&](const Vec& v) {
   Vec ret(N);
-  for (int i= 0; i < M; ++i) ret[s[i]]+= v[t[i]], ret[t[i]]+= v[s[i]];
+  for(int i= 0; i < M; ++i) ret[s[i]]+= v[t[i]], ret[t[i]]+= v[s[i]];
   return ret;
  };
  Vector<Mint> vec(N);

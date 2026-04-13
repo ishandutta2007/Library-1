@@ -5,7 +5,7 @@
 #include <set>
 #include <vector>
 #include <array>
-#include "mylib/DataStructure/KDTree.hpp"
+#include "mylib/data_structure/KDTree.hpp"
 // 3次元
 using namespace std;
 struct RSQ {
@@ -18,15 +18,15 @@ signed main() {
  ios::sync_with_stdio(0);
  int T;
  cin >> T;
- while (T--) {
+ while(T--) {
   int n, m;
   cin >> n >> m;
   set<array<int, 3>> xyz;
   vector<array<int, 7>> query;
-  while (m--) {
+  while(m--) {
    string op;
    cin >> op;
-   if (op[0] == 'U') {
+   if(op[0] == 'U') {
     int x, y, z, w;
     cin >> x >> y >> z >> w;
     xyz.insert({x, y, z});
@@ -38,8 +38,8 @@ signed main() {
    }
   }
   KDTree<int, 3, RSQ> kdt(xyz);
-  for (auto q: query) {
-   if (q[0] == 0) {
+  for(auto q: query) {
+   if(q[0] == 0) {
     auto [_, x, y, z, w, __, ___]= q;
     kdt.set(x, y, z, w);
    } else {

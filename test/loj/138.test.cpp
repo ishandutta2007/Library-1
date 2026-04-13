@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/AllPurposeEuclid.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/AllPurposeEuclid.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
 
  int T;
  cin >> T;
- while (T--) {
+ while(T--) {
   int n, a, b, c, k1, k2;
   cin >> n >> a >> b >> c >> k1 >> k2;
   cout << FST::solve(n, a, b, c, k1, k2)[k1][k2] << '\n';

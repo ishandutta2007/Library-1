@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
-#include "mylib/Optimization/matroid_intersection.hpp"
+#include "mylib/optimization/matroid_intersection.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -17,7 +17,7 @@ int main() {
  vector<long long> C(N);
  vector<vector<int>> parts1(H), parts2(W);
  vector<int> sz1(H, -1), sz2(W, -1);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   int A, B;
   cin >> A >> B >> C[i], A--, B--;
   parts1[A].push_back(i);
@@ -27,10 +27,10 @@ int main() {
  PartitionMatroid M1(N, parts1, sz1), M2(N, parts2, sz2);
  auto S= weighted_matroid_intersection<MAXIMIZE>(N, M1, M2, C);
  long long s= 0;
- for (int i= 1, ed= S.size(); i < ed; i++) {
+ for(int i= 1, ed= S.size(); i < ed; i++) {
   long long sum= 0;
-  for (int e: S[i]) sum+= C[e];
-  if (s < sum) s= sum;
+  for(int e: S[i]) sum+= C[e];
+  if(s < sum) s= sum;
  }
  cout << accumulate(C.begin(), C.end(), 0ll) - s << '\n';
  return 0;

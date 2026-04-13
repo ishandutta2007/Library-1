@@ -6,30 +6,30 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Math/Nimber.hpp"
+#include "mylib/algebra/Nimber.hpp"
 #include "mylib/LinearAlgebra/LU_Decomposition.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
  solve(scin, scout);
- if (expected == "-1\n") return scout.str() == expected;
+ if(expected == "-1\n") return scout.str() == expected;
  stringstream scin2(in);
  int N, M;
  scin2 >> N >> M;
  int A[M], Y[M];
  vector<int> B[M];
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   scin2 >> A[i];
   B[i].resize(A[i]);
-  for (int j= 0; j < A[i]; ++j) scin2 >> B[i][j], --B[i][j];
+  for(int j= 0; j < A[i]; ++j) scin2 >> B[i][j], --B[i][j];
   scin2 >> Y[i];
  }
  int ans[N];
- for (int i= 0; i < N; i++) scout >> ans[i];
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < N; i++) scout >> ans[i];
+ for(int i= 0; i < M; ++i) {
   int x= 0;
-  for (int j= 0; j < A[i]; ++j) x^= ans[B[i][j]];
-  if (x != Y[i]) return false;
+  for(int j= 0; j < A[i]; ++j) x^= ans[B[i][j]];
+  if(x != Y[i]) return false;
  }
  return true;
 }
@@ -40,10 +40,10 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> N >> M;
  Matrix<Nimber> m(M, N);
  Vector<Nimber> Y(M);
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   int A;
   scin >> A;
-  for (int j= 0; j < A; ++j) {
+  for(int j= 0; j < A; ++j) {
    int B;
    scin >> B, --B;
    m[i][B]= 1;
@@ -51,8 +51,8 @@ signed main(stringstream& scin, stringstream& scout) {
   scin >> Y[i];
  }
  auto sol= LU_Decomposition(m).linear_equations(Y);
- if (sol) {
-  for (int i= 0; i < N; ++i) scout << sol[i] << '\n';
+ if(sol) {
+  for(int i= 0; i < N; ++i) scout << sol[i] << '\n';
  } else scout << -1 << '\n';
  return 0;
 }

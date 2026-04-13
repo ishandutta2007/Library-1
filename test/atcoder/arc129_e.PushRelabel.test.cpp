@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Optimization/MaxFlow.hpp"
-#include "mylib/Optimization/monge_mincut.hpp"
+#include "mylib/optimization/MaxFlow.hpp"
+#include "mylib/optimization/monge_mincut.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,11 +14,11 @@ signed main() {
  int N, M;
  cin >> N >> M;
  vector<vector<long long>> A(N, vector<long long>(M)), C(N, vector<long long>(M));
- for (int i= 0; i < N; i++)
-  for (int k= 0; k < M; k++) cin >> A[i][k] >> C[i][k];
+ for(int i= 0; i < N; i++)
+  for(int k= 0; k < M; k++) cin >> A[i][k] >> C[i][k];
  vector<vector<long long>> W(N, vector<long long>(N));
- for (int i= 0; i < N; i++)
-  for (int j= i + 1; j < N; j++) cin >> W[i][j];
+ for(int i= 0; i < N; i++)
+  for(int j= i + 1; j < N; j++) cin >> W[i][j];
  auto theta= [&](int i, int xi) { return C[i][xi]; };
  auto phi= [&](int i, int j, int xi, int xj) { return abs(A[i][xi] - A[j][xj]) * W[i][j]; };
  auto [ans, x]= monge_mincut<MF>(N, M, theta, phi);

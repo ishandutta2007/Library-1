@@ -5,13 +5,13 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  int n;
  cin >> n;
  PiecewiseLinearConvex<int> f;
- for (int i= 0; i < n; ++i) {
+ for(int i= 0; i < n; ++i) {
   int x;
   cin >> x;
   f.chmin_cum();

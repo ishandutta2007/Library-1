@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Graph/Rerooting.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/graph/Rerooting.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -16,7 +16,7 @@ signed main() {
  Graph g(N, N - 1);
  int d= 0;
  vector<int> c(N);
- for (int i= 0; i < N - 1; ++i) cin >> g[i] >> c[i], --g[i], d= max(d, c[i]);
+ for(int i= 0; i < N - 1; ++i) cin >> g[i] >> c[i], --g[i], d= max(d, c[i]);
  using Dat= array<int, 3>;
  auto put_edge= [&](int, int e, Dat dp) {
   dp[0]= max(dp[0], c[e]);
@@ -24,7 +24,7 @@ signed main() {
   dp[2]= min(max(dp[2], c[e]), dp[1]);
   return dp;
  };
- auto op= [&](const Dat &l, const Dat &r) {
+ auto op= [&](const Dat& l, const Dat& r) {
   Dat ret;
   ret[0]= max(l[0], r[0]);
   ret[1]= min(max(l[1], r[0]), max(l[0], r[1]));
@@ -37,7 +37,7 @@ signed main() {
   return dp;
  };
  int ans= d;
- for (auto [_, __, x]: Rerooting<Dat>(g, put_edge, op, Dat{0, d, d}, put_vertex)) ans= min(ans, x);
+ for(auto [_, __, x]: Rerooting<Dat>(g, put_edge, op, Dat{0, d, d}, put_vertex)) ans= min(ans, x);
  cout << ans << "\n";
  return 0;
 }

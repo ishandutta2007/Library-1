@@ -4,8 +4,8 @@
 
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/set_power_series.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/set_power_series.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,7 +14,7 @@ signed main() {
  int n, m, k;
  cin >> n >> m >> k;
  vector<Mint> f(1 << n, 0);
- for (int s; m--;) cin >> s, f[s]+= 1;
+ for(int s; m--;) cin >> s, f[s]+= 1;
  vector<Mint> F(k + 1, 1);
  cout << sps::egf_comp(F, f)[(1 << n) - 1] << '\n';
  return 0;

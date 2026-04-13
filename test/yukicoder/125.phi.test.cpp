@@ -3,9 +3,9 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/ArrayOnDivisors.hpp"
-#include "mylib/Math/FactorialPrecalculation.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/ArrayOnDivisors.hpp"
+#include "mylib/algebra/FactorialPrecalculation.hpp"
 // バーンサイドの補題から求めた
 using namespace std;
 signed main() {
@@ -17,13 +17,13 @@ signed main() {
  cin >> K;
  int tot= 0, g= 0;
  vector<int> C(K);
- for (int i= 0; i < K; ++i) cin >> C[i], tot+= C[i], g= gcd(g, C[i]);
+ for(int i= 0; i < K; ++i) cin >> C[i], tot+= C[i], g= gcd(g, C[i]);
  Mint ans= 0;
  ArrayOnDivisors<int, Mint> A(g);
  A.set_totient();
- for (auto [d, phi]: A) {
+ for(auto [d, phi]: A) {
   Mint tmp= F::fact(tot / d);
-  for (int i= 0; i < K; ++i) tmp*= F::finv(C[i] / d);
+  for(int i= 0; i < K; ++i) tmp*= F::finv(C[i] / d);
   tmp*= phi;
   ans+= tmp;
  }

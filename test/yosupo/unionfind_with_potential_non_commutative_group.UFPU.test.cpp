@@ -2,18 +2,18 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/DataStructure/UnionFind_Potentialized_Undoable.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/data_structure/UnionFind_Potentialized_Undoable.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
-#include "mylib/Math/Algebra.hpp"
+#include "mylib/algebra/Algebra.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;
 using Mat= Matrix<Mint>;
 struct M {
  using T= Mat;
  static inline T o= Mat::identity(2);
- static T add(const T &a, const T &b) { return a * b; }
- static T neg(const T &a) { return Mat{{a[1][1], -a[0][1]}, {-a[1][0], a[0][0]}}; }
+ static T add(const T& a, const T& b) { return a * b; }
+ static T neg(const T& a) { return Mat{{a[1][1], -a[0][1]}, {-a[1][0], a[0][0]}}; }
 };
 signed main() {
  cin.tie(0);
@@ -22,11 +22,11 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  UnionFind_Potentialized_Undoable<G> uf(N);
- while (Q--) {
+ while(Q--) {
   int t, u, v;
   cin >> t >> u >> v;
-  if (t) {
-   if (uf.connected(u, v)) {
+  if(t) {
+   if(uf.connected(u, v)) {
     auto ans= uf.diff(u, v).x;
     cout << ans[0][0] << " " << ans[0][1] << " " << ans[1][0] << " " << ans[1][1] << '\n';
    } else cout << "-1\n";

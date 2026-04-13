@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <vector>
-#include "mylib/Graph/Graph.hpp"
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/graph/Graph.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,13 +15,13 @@ signed main() {
  cin >> N;
  Graph g(N, N - 1);
  vector<long long> L(N - 1);
- for (int i= 0; i < N - 1; ++i) cin >> g[i] >> L[i], --g[i], L[i]*= 2;
+ for(int i= 0; i < N - 1; ++i) cin >> g[i] >> L[i], --g[i], L[i]*= 2;
  auto adj= g.adjacency_edge(0);
- auto dfs= [&](auto &&dfs, int v, int p) -> PLC {
+ auto dfs= [&](auto&& dfs, int v, int p) -> PLC {
   PLC f;
-  for (auto e: adj[v]) {
+  for(auto e: adj[v]) {
    int u= g[e].to(v);
-   if (u == p) continue;
+   if(u == p) continue;
    PLC fu= dfs(dfs, u, v);
    fu.add_linear(-1);
    fu.chmin_slide_win(-L[e], 0);
@@ -34,7 +34,7 @@ signed main() {
   return f;
  };
  PLC f= dfs(dfs, 0, -1);
- for (int i= 1; i <= N; ++i) {
+ for(int i= 1; i <= N; ++i) {
   f.add_linear(-i);
   cout << (long long)f.min().value() << '\n';
   f.add_linear(i);

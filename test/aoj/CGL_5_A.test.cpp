@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include "mylib/Geometry/closest_pair.hpp"
+#include "mylib/geometry/closest_pair.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -14,7 +14,7 @@ signed main() {
  int n;
  cin >> n;
  vector<Point<long double>> ps(n);
- for (int i= 0; i < n; i++) cin >> ps[i];
+ for(int i= 0; i < n; i++) cin >> ps[i];
  auto [p, q]= closest_pair(ps);
  cout << fixed << setprecision(12) << dist(p, q) << '\n';
  return 0;

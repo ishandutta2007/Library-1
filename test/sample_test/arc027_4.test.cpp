@@ -5,8 +5,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include "mylib/DataStructure/SegmentTree.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
@@ -27,18 +27,18 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> N;
  SegmentTree<Mono> seg(N);
  Mat tmp(10, 10);
- for (int j= 0; j + 1 < 10; j++) tmp[j + 1][j]= 1;
- for (int i= 0; i < N; i++) {
+ for(int j= 0; j + 1 < 10; j++) tmp[j + 1][j]= 1;
+ for(int i= 0; i < N; i++) {
   int h;
   scin >> h;
   Mat m= tmp;
-  for (int j= 0; j < h; j++) m[0][j]= 1;
+  for(int j= 0; j < h; j++) m[0][j]= 1;
   seg.unsafe_set(i, m);
  }
  seg.build();
  int D;
  scin >> D;
- while (D--) {
+ while(D--) {
   int s, t;
   scin >> s >> t;
   s--, t--;

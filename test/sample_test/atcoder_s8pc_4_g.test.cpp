@@ -9,9 +9,9 @@
 #include <vector>
 #include <array>
 #include <set>
-#include "mylib/DataStructure/KDTree.hpp"
+#include "mylib/data_structure/KDTree.hpp"
 using namespace std;
-bool test(int (*solve)(stringstream &, stringstream &), string in, string expected) {
+bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
  solve(scin, scout);
  return scout.str() == expected;
@@ -24,30 +24,30 @@ struct RaddsumQ {
  };
  using E= long long;
  static T ti() { return {0, 0}; }
- static T op(const T &l, const T &r) { return {l.val + r.val, l.sz + r.sz}; }
- static void mp(T &v, E x) { v.val+= x * v.sz; }
- static void cp(E &pre, E suf) { pre+= suf; }
+ static T op(const T& l, const T& r) { return {l.val + r.val, l.sz + r.sz}; }
+ static void mp(T& v, E x) { v.val+= x * v.sz; }
+ static void cp(E& pre, E suf) { pre+= suf; }
 };
-signed main(stringstream &scin, stringstream &scout) {
+signed main(stringstream& scin, stringstream& scout) {
  int N, Q;
  scin >> N >> Q;
  int a[N];
  vector<vector<int>> adj(N);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   int p;
   scin >> p >> a[i];
-  if (p != -1) adj[p].push_back(i);
+  if(p != -1) adj[p].push_back(i);
  }
  vector<array<int, 4>> query(Q);
  int M= N;
- for (int i= 0; i < Q; i++) {
+ for(int i= 0; i < Q; i++) {
   int type;
   scin >> type;
-  if (type == 1) {
+  if(type == 1) {
    int v, d, x;
    scin >> v >> d >> x;
    query[i]= {type, v, d, x};
-  } else if (type == 2) {
+  } else if(type == 2) {
    int v, d;
    scin >> v >> d;
    query[i]= {type, v, d, -1};
@@ -63,17 +63,17 @@ signed main(stringstream &scin, stringstream &scout) {
  auto dfs= [&adj, &in, &out, &dep](auto self, int v, int d) -> void {
   static int t= 0;
   dep[v]= d, in[v]= t++;
-  for (int u: adj[v]) self(self, u, d + 1);
+  for(int u: adj[v]) self(self, u, d + 1);
   out[v]= t;
  };
  dfs(dfs, 0, 0);
  vector<tuple<int, int, typename RaddsumQ::T>> vec(M);
- for (int i= 0; i < N; i++) vec[i]= {in[i], dep[i], {a[i], 1}};
- for (int i= N; i < M; i++) vec[i]= {in[i], dep[i], {0, 0}};
+ for(int i= 0; i < N; i++) vec[i]= {in[i], dep[i], {a[i], 1}};
+ for(int i= N; i < M; i++) vec[i]= {in[i], dep[i], {0, 0}};
  KDTree<int, 2, RaddsumQ> kdt(vec);
- for (auto [type, v, d, x]: query) {
-  if (type == 1) kdt.apply_cuboid(in[v], out[v] - 1, dep[v], dep[v] + d, x);
-  else if (type == 2) scout << kdt.prod_cuboid(in[v], out[v] - 1, dep[v], dep[v] + d).val << '\n';
+ for(auto [type, v, d, x]: query) {
+  if(type == 1) kdt.apply_cuboid(in[v], out[v] - 1, dep[v], dep[v] + d, x);
+  else if(type == 2) scout << kdt.prod_cuboid(in[v], out[v] - 1, dep[v], dep[v] + d).val << '\n';
   else kdt.set(in[v], dep[v], {x, 1});
  }
  return 0;

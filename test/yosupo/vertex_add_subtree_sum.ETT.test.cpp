@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include <vector>
-#include "mylib/DataStructure/EulerTourTree.hpp"
+#include "mylib/data_structure/EulerTourTree.hpp"
 using namespace std;
 struct RSQ {
  using T= long long;
@@ -16,14 +16,14 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  EulerTourTree<RSQ> ett(N);
- for (int u= 0, a; u < N; ++u) cin >> a, ett.set(u, a);
+ for(int u= 0, a; u < N; ++u) cin >> a, ett.set(u, a);
  vector<int> p(N, -1);
- for (int i= 1; i < N; ++i) cin >> p[i], ett.link(p[i], i);
- while (Q--) {
+ for(int i= 1; i < N; ++i) cin >> p[i], ett.link(p[i], i);
+ while(Q--) {
   bool op;
   int u;
   cin >> op >> u;
-  if (op) {
+  if(op) {
    cout << ett.prod_subtree(u, p[u]) << '\n';
   } else {
    int x;

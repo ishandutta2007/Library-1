@@ -1,6 +1,6 @@
 ---
 title: tupleやarrayに関するテンプレート 他
-documentation_of: ../../mylib/Internal/tuple_traits.hpp
+documentation_of: ../../mylib/internal/tuple_traits.hpp
 ---
 
 | 名前                 | 概要                                                                                             |

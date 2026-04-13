@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/NumberTheory/Factors.hpp"
+#include "mylib/number_theory/Factors.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

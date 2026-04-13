@@ -4,8 +4,8 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Math/sparse_fps.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/algebra/sparse_fps.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -15,7 +15,7 @@ signed main() {
  cin >> N >> K;
  vector<Mint> num= {1, -1}, den(N + 2);
  den[0]= 1, den[1]= -1;
- for (int i= 0; i < K; ++i) {
+ for(int i= 0; i < K; ++i) {
   int L, R;
   cin >> L >> R;
   den[L]-= 1;

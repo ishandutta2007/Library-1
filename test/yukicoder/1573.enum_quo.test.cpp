@@ -3,8 +3,8 @@
 // competitive-verifier: MLE 64
 // O(√N)
 #include <iostream>
-#include "mylib/NumberTheory/enumerate_quotients.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/number_theory/enumerate_quotients.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,9 +13,9 @@ signed main() {
  int n, m;
  cin >> n >> m;
  Mint ans= 0;
- for (auto [q, l, r]: enumerate_quotients(n)) {
+ for(auto [q, l, r]: enumerate_quotients(n)) {
   long long h= min<long long>(m, r);
-  if (l >= h) continue;
+  if(l >= h) continue;
   ans+= Mint((h * (h + 1) - l * (l + 1)) / 2) * (q * (q + 3) / 2);
  }
  cout << ans << '\n';

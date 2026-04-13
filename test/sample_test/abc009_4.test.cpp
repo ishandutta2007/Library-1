@@ -6,7 +6,7 @@
 #include <string>
 #include <cassert>
 #include <algorithm>
-#include "mylib/Math/Algebra.hpp"
+#include "mylib/algebra/Algebra.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
@@ -27,9 +27,9 @@ signed main(stringstream& scin, stringstream& scout) {
  Matrix<R> C(100, 100);
  int K, M;
  scin >> K >> M, M--;
- for (int i= 0; i < K; i++) scin >> A[K - i - 1];
- for (int i= 0; i < K; i++) scin >> C[0][i];
- for (int i= 1; i < K; i++) C[i][i - 1]= R(true);
+ for(int i= 0; i < K; i++) scin >> A[K - i - 1];
+ for(int i= 0; i < K; i++) scin >> C[0][i];
+ for(int i= 1; i < K; i++) C[i][i - 1]= R(true);
  scout << (M < K ? A[K - M - 1] : (C.pow(M - (K - 1)) * A)[0]) << '\n';
  return 0;
 }

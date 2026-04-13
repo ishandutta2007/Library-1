@@ -5,8 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include "mylib/Misc/Automaton.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/misc/Automaton.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -21,8 +21,8 @@ signed main() {
  auto ac= [](int64_t s) { return s == 0; };
  Automaton dfa_le(alp, R, tr_le, ac, int64_t(-1)), dfa_ge(alp, L, tr_ge, ac, int64_t(-1));
  auto tr_len= [](bool s, symbol_t c) {
-  if (c[0] == 1 && c[1] == 1) s= 1;
-  if (c[0] != c[1]) s= 0;
+  if(c[0] == 1 && c[1] == 1) s= 1;
+  if(c[0] != c[1]) s= 0;
   return s;
  };
  auto ac_len= [](bool s) { return s; };

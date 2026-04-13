@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Optimization/WeightedMatching.hpp"
+#include "mylib/optimization/WeightedMatching.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,15 +10,15 @@ signed main() {
  int n;
  cin >> n;
  WeightedMatching<long long> graph(n);
- for (int i= 0; i < n; ++i)
-  for (int j= 0; j < n; ++j) {
+ for(int i= 0; i < n; ++i)
+  for(int j= 0; j < n; ++j) {
    int F;
    cin >> F;
    graph.add_edge(i, j, F);
   }
  graph.build();
  long long ans= 0;
- for (auto [u, v, w]: graph.weight_matching()) ans+= w;
+ for(auto [u, v, w]: graph.weight_matching()) ans+= w;
  cout << ans << '\n';
  return 0;
 }

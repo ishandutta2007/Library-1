@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <vector>
 #include <array>
-#include "mylib/DataStructure/KDTree.hpp"
-#include "mylib/Graph/StronglyConnectedComponents.hpp"
+#include "mylib/data_structure/KDTree.hpp"
+#include "mylib/graph/StronglyConnectedComponents.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -21,39 +21,39 @@ signed main(stringstream& scin, stringstream& scout) {
  int N;
  scin >> N;
  vector<array<int, 2>> f(N);
- for (int i= 0; i < N; ++i) scin >> f[i][0] >> f[i][1];
+ for(int i= 0; i < N; ++i) scin >> f[i][0] >> f[i][1];
  int M;
  scin >> M;
  vector<array<int, 2>> s(M);
- for (int i= 0; i < M; ++i) scin >> s[i][0] >> s[i][1];
+ for(int i= 0; i < M; ++i) scin >> s[i][0] >> s[i][1];
  KDTree<int, 2> kdt(s);
  vector<long long> lim(N, 1ll << 60);
  auto dist2= [&](int x1, int y1, int x2, int y2) {
   long long dx= x1 - x2, dy= y1 - y2;
   return dx * dx + dy * dy;
  };
- if (M)
-  for (int i= 0; i < N; ++i) {
+ if(M)
+  for(int i= 0; i < N; ++i) {
    auto [x, y]= f[i];
    auto [xx, yy]= kdt.nearest_neighbor(x, y);
    lim[i]= dist2(x, y, xx, yy);
   }
  Graph g(N);
- for (int i= N; i--;)
-  for (int j= i; j--;) {
+ for(int i= N; i--;)
+  for(int j= i; j--;) {
    auto d= dist2(f[i][0], f[i][1], f[j][0], f[j][1]);
-   if (lim[i] > d) g.add_edge(i, j);
-   if (lim[j] > d) g.add_edge(j, i);
+   if(lim[i] > d) g.add_edge(i, j);
+   if(lim[j] > d) g.add_edge(j, i);
   }
  StronglyConnectedComponents scc(g);
  auto dag= scc.dag(g);
  int C= scc.size();
  vector<int> start(C, true);
  auto adj= dag.adjacency_vertex(1);
- for (int i= C; i--;)
-  for (int j: adj[i]) start[j]= false;
+ for(int i= C; i--;)
+  for(int j: adj[i]) start[j]= false;
  int ans= 0;
- for (int i= C; i--;) ans+= start[i];
+ for(int i= C; i--;) ans+= start[i];
  scout << ans << '\n';
  return 0;
 }

@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/Misc/Mo.hpp"
+#include "mylib/misc/Mo.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,12 +11,12 @@ signed main() {
  int N;
  cin >> N;
  vector<int> A(N), cnt(N), sum(N + 2);
- for (int i= 0; i < N; i++) cin >> A[i], A[i]--;
+ for(int i= 0; i < N; i++) cin >> A[i], A[i]--;
  Mo mo;
  int Q;
  cin >> Q;
  vector<int> x(Q), y(Q), ans(Q);
- for (int q= 0; q < Q; q++) {
+ for(int q= 0; q < Q; q++) {
   int l, r;
   cin >> l >> r >> x[q] >> y[q];
   mo.query(--l, r);
@@ -25,6 +25,6 @@ signed main() {
  auto erase= [&](int k) { sum[cnt[A[k]]--]--; };
  auto out= [&](int q) { ans[q]= sum[x[q]] - sum[y[q] + 1]; };
  mo.run(add, erase, out);
- for (int q= 0; q < Q; q++) cout << ans[q] << '\n';
+ for(int q= 0; q < Q; q++) cout << ans[q] << '\n';
  return 0;
 }

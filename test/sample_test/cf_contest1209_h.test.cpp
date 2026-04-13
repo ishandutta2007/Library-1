@@ -5,7 +5,7 @@
 #include <string>
 #include <cassert>
 #include <iomanip>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;
@@ -22,7 +22,7 @@ signed main(stringstream& scin, stringstream& scout) {
  PiecewiseLinearConvex<long double> f;
  f.add_inf(), f.add_inf(true);
  auto no_belt= [&](int y, int x) {
-  if (y == x) return;
+  if(y == x) return;
   f.add_linear(-1);
   f.chmin_cum();
   f.shift(-double(x - y) / 2);
@@ -31,7 +31,7 @@ signed main(stringstream& scin, stringstream& scout) {
   f.add_inf();
  };
  int x, y= 0;
- for (int i= 0; i < n; ++i) {
+ for(int i= 0; i < n; ++i) {
   scin >> x;
   no_belt(y, x);
   double s;
@@ -53,14 +53,14 @@ signed main(stringstream& scin, stringstream& scout) {
  scin >> n >> L;
  PiecewiseLinearConvex<long double> f;
  auto no_belt= [&](int y, int x) {
-  if (y == x) return;
+  if(y == x) return;
   f.add_inf(true, 1);
   f.add_linear(-double(x - y) / 2);
   f.add_const(-double(x - y) / 2);
   f.chmin_cum(true);
  };
  int x, y= 0;
- for (int i= 0; i < n; ++i) {
+ for(int i= 0; i < n; ++i) {
   scin >> x;
   no_belt(y, x);
   double s;

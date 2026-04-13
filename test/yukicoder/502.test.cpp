@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/FFT/polynomial_matrix_prod.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/fft/polynomial_matrix_prod.hpp"
 using namespace std;
 int main() {
  cin.tie(0);
@@ -12,7 +12,7 @@ int main() {
  using Mint= ModInt<MOD>;
  long long n;
  cin >> n;
- if (n >= MOD) {
+ if(n >= MOD) {
   cout << 0 << '\n';
  } else {
   cout << polynomial_matrix_prod<Mint>({{{1, 1}}}, n)[0][0] << '\n';

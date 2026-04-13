@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/NumberTheory/tables.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/number_theory/tables.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,8 +13,8 @@ signed main() {
  cin >> N >> M;
  auto phi= totient_table(N);
  Mint ans= 0;
- for (int i= 2; i <= N / M; i++) ans+= phi[i];
- for (int i= 1; i <= N - 2; i++) ans*= i;
+ for(int i= 2; i <= N / M; i++) ans+= phi[i];
+ for(int i= 1; i <= N - 2; i++) ans*= i;
  ans*= 2;
  cout << ans << '\n';
  return 0;

@@ -4,10 +4,10 @@
 #include <iostream>
 #include <set>
 #include <string>
-#include "mylib/Math/ModInt.hpp"
-#include "mylib/Misc/rng.hpp"
-#include "mylib/Misc/Pointwise.hpp"
-#include "mylib/String/RollingHash.hpp"
+#include "mylib/algebra/ModInt.hpp"
+#include "mylib/misc/rng.hpp"
+#include "mylib/misc/Pointwise.hpp"
+#include "mylib/string/RollingHash.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -21,15 +21,15 @@ signed main() {
  RH rh(S), rhT(T);
  int N= S.length(), M= T.length();
  multiset<K> hs;
- for (int i= 0; i + M <= N; i++) hs.insert(rh.sub(i, M).hash());
+ for(int i= 0; i + M <= N; i++) hs.insert(rh.sub(i, M).hash());
  vector<char> chars(52);
- for (int i= 0; i < 26; i++) chars[i]= 'a' + i;
- for (int i= 0; i < 26; i++) chars[i + 26]= 'A' + i;
+ for(int i= 0; i < 26; i++) chars[i]= 'a' + i;
+ for(int i= 0; i < 26; i++) chars[i + 26]= 'A' + i;
  RH rhC(chars);
  int ans= 0;
- for (int i= 0; i < M; ++i)
-  for (int j= 0; j < 52; ++j)
-   if (T[i] != chars[j]) ans+= hs.count(concat_hash(rhT.sub(0, i), rhC.sub(j, 1), rhT.sub(i + 1)));
+ for(int i= 0; i < M; ++i)
+  for(int j= 0; j < 52; ++j)
+   if(T[i] != chars[j]) ans+= hs.count(concat_hash(rhT.sub(0, i), rhC.sub(j, 1), rhT.sub(i + 1)));
  cout << ans << '\n';
  return 0;
 }

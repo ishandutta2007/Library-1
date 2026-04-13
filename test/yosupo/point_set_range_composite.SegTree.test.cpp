@@ -4,15 +4,15 @@
 #include <iostream>
 #include <vector>
 #include <utility>
-#include "mylib/DataStructure/SegmentTree.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/data_structure/SegmentTree.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 
 using Mint= ModInt<998244353>;
 struct RcompositeQ {
  using T= pair<Mint, Mint>;
  static T ti() { return make_pair(Mint(1), Mint(0)); }
- static T op(const T &l, const T &r) { return make_pair(r.first * l.first, r.first * l.second + r.second); }
+ static T op(const T& l, const T& r) { return make_pair(r.first * l.first, r.first * l.second + r.second); }
 };
 signed main() {
  cin.tie(0);
@@ -20,16 +20,16 @@ signed main() {
  int N, Q;
  cin >> N >> Q;
  vector<RcompositeQ::T> v(N);
- for (int i= 0; i < N; i++) {
+ for(int i= 0; i < N; i++) {
   Mint a, b;
   cin >> a >> b;
   v[i]= {a, b};
  }
  SegmentTree<RcompositeQ> seg(v);
- while (Q--) {
+ while(Q--) {
   bool op;
   cin >> op;
-  if (op) {
+  if(op) {
    int l, r;
    Mint x;
    cin >> l >> r >> x;

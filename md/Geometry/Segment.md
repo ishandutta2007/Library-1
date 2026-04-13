@@ -1,6 +1,6 @@
 ---
 title: 線分
-documentation_of: ../../mylib/Geometry/Segment.hpp
+documentation_of: ../../mylib/geometry/Segment.hpp
 ---
 
 ## `Segment<K>` クラス
@@ -26,4 +26,3 @@ documentation_of: ../../mylib/Geometry/Segment.hpp
 |`dist2(s,p)` <br> `dist2(p,s)`| 線分 $s$ と点 $\boldsymbol{p}$ との距離の二乗|
 |`dist2(s,l)` <br> `dist2(l,s)`| 線分 $s$ と直線 $l$ との距離の二乗. ただし交わるときは 0.|
 |`dist2(s,t)`|線分 $s$ と線分 $t$ との距離の二乗. ただし交わるときは 0.|
-

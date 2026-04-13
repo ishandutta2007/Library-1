@@ -5,14 +5,14 @@
 // オリジナル: https://usaco.org/index.php?page=viewproblem2&cpid=650
 
 #include <iostream>
-#include "mylib/Optimization/PiecewiseLinearConvex.hpp"
-#include "mylib/Optimization/fibonacci_search.hpp"
+#include "mylib/optimization/PiecewiseLinearConvex.hpp"
+#include "mylib/optimization/fibonacci_search.hpp"
 using namespace std;
 signed main() {
  int N, X, Y, Z;
  cin >> N >> X >> Y >> Z;
  PiecewiseLinearConvex<int> f;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int A, B;
   cin >> A >> B;
   f.add_linear(A - B);

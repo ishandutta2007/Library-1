@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 // (min,max)半環
 #include <iostream>
-#include "mylib/Math/Algebra.hpp"
+#include "mylib/algebra/Algebra.hpp"
 #include "mylib/LinearAlgebra/Matrix.hpp"
 using namespace std;
 struct M {
@@ -20,12 +20,12 @@ signed main() {
  int N, T, L;
  cin >> N >> T >> L;
  Matrix<R> A(N, N);
- for (int t= 1; t <= T; t++) {
+ for(int t= 1; t <= T; t++) {
   int u, v;
   cin >> u >> v, u--, v--;
   A[v][u]= t;
  }
  A= A.pow(L);
- for (int i= 0; i < N; i++) cout << (A[i][0] == R(false) ? -1 : A[i][0]) << " \n"[i == N - 1];
+ for(int i= 0; i < N; i++) cout << (A[i][0] == R(false) ? -1 : A[i][0]) << " \n"[i == N - 1];
  return 0;
 }

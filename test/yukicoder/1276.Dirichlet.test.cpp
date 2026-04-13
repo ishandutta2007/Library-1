@@ -2,8 +2,8 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/NumberTheory/DirichletSeries.hpp"
-#include "mylib/Math/ModInt.hpp"
+#include "mylib/number_theory/DirichletSeries.hpp"
+#include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

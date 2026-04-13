@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/Graph/BipartiteGraph.hpp"
+#include "mylib/graph/BipartiteGraph.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -10,10 +10,10 @@ signed main() {
  int L, R, M;
  cin >> L >> R >> M;
  BipartiteGraph bg(L, R, M);
- for (int i= 0; i < M; ++i) cin >> bg[i], bg[i].second+= L;
+ for(int i= 0; i < M; ++i) cin >> bg[i], bg[i].second+= L;
  auto [ans, _]= bipartite_matching(bg);
  cout << ans.size() << '\n';
- for (int e: ans) {
+ for(int e: ans) {
   auto [l, r]= bg[e];
   cout << l << " " << r - L << '\n';
  }

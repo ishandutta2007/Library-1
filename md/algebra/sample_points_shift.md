@@ -9,7 +9,7 @@ $n-1$ 次多項式 $f(x)$ の $x=0, 1, \dots, n-1$ における評価点の値 $
 
 ### 1点の評価 ($O(n)$)
 
-`src/Math/sample_points_shift.hpp`
+`mylib/algebra/sample_points_shift.hpp`
 
 |名前|概要|計算量|
 |---|---|---|

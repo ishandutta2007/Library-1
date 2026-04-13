@@ -13,8 +13,8 @@ documentation_of: ../../mylib/algebra/sparse_fps.hpp
 すべての関数は `sfps` 名前空間に定義されています。
 
 ## 依存
-- `src/Math/FactorialPrecalculation.hpp`
-- `src/Math/mod_sqrt.hpp`
+- `mylib/algebra/FactorialPrecalculation.hpp`
+- `mylib/algebra/mod_sqrt.hpp`
 
 ## 関数
 

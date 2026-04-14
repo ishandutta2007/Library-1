@@ -22,6 +22,7 @@ interface TestResult {
   file: string
   problem: string
   environment: string
+  split?: number
   status: string
   compile_error?: string
   last_execution_time?: string
@@ -178,9 +179,14 @@ if (fs.existsSync(prevPath)) {
 }
 
 // 新しい結果をマージ
+const splitMap: Record<string, number> = {}
 for (const result of newResults) {
   const key = result.file
   if (!prevMap[key]) prevMap[key] = {}
+
+  if (result.split != null) {
+    splitMap[key] = result.split
+  }
 
   const cases = result.cases || []
   const timeMax = cases.length > 0 ? Math.max(...cases.map(c => c.time_ms)) : 0
@@ -268,6 +274,7 @@ interface CompactResults {
   tests: Record<string, {
     problem: string
     time_limit_ms: number
+    split?: number
     environments: Record<string, EnvSummary>
   }>
   // hpp → テストファイル一覧のマッピング
@@ -281,11 +288,15 @@ function buildCompactResults(): CompactResults {
   for (const problems of Object.values(output)) {
     for (const p of problems) {
       if (!tests[p.file]) {
-        tests[p.file] = {
+        const entry: CompactResults['tests'][string] = {
           problem: p.problem,
           time_limit_ms: p.time_limit_ms,
           environments: p.environments,
         }
+        if (splitMap[p.file] != null) {
+          entry.split = splitMap[p.file]
+        }
+        tests[p.file] = entry
       }
     }
   }

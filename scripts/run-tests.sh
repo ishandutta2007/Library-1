@@ -23,6 +23,7 @@ CXXFLAGS="${CXXFLAGS:--std=c++17 -O2}"
 TC_DIR="${TC_DIR:-${ROOT}/.cache/testcases}"
 RESULT_DIR="${RESULT_DIR:-${ROOT}/.cache/results}"
 ENV_NAME="${ENV_NAME:-local}"
+SPLIT_NUMBER="${SPLIT_NUMBER:-}"
 SPLIT_INDEX=""
 SPLIT_SIZE=""
 SPLIT_FILE=""
@@ -255,11 +256,14 @@ run_test_file() {
     # CE の結果を記録（コンパイルエラーメッセージも含める）
     local ce_message
     ce_message=$(head -50 "${compile_err}" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))" 2>/dev/null || echo '""')
+    local split_field=""
+    [[ -n "${SPLIT_NUMBER}" ]] && split_field="\"split\": ${SPLIT_NUMBER},"
     cat <<JSONEOF >> "${RESULT_FILE}"
 ,{
   "file": "${rel_path}",
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
+  ${split_field}
   "status": "CE",
   "compile_error": ${ce_message},
   "last_execution_time": "${EXECUTION_TIME}",
@@ -290,11 +294,14 @@ JSONEOF
       echo "${case_status} (${case_time}ms, ${case_mem}KB)"
     fi
 
+    local split_field=""
+    [[ -n "${SPLIT_NUMBER}" ]] && split_field="\"split\": ${SPLIT_NUMBER},"
     cat <<JSONEOF >> "${RESULT_FILE}"
 ,{
   "file": "${rel_path}",
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
+  ${split_field}
   "status": "${case_status}",
   "last_execution_time": "${EXECUTION_TIME}",
   "cases": [{"name": "standalone", "status": "${case_status}", "time_ms": ${case_time}, "memory_kb": ${case_mem}}]
@@ -388,11 +395,14 @@ JSONEOF
 
   echo "${overall_status} (${case_count} cases)"
 
+  local split_field=""
+  [[ -n "${SPLIT_NUMBER}" ]] && split_field="\"split\": ${SPLIT_NUMBER},"
   cat <<JSONEOF >> "${RESULT_FILE}"
 ,{
   "file": "${rel_path}",
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
+  ${split_field}
   "status": "${overall_status}",
   "last_execution_time": "${EXECUTION_TIME}",
   "cases": [${cases_json}]

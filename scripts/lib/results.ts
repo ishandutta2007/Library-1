@@ -19,6 +19,7 @@ export function loadResults(): Record<string, any[]> {
           file: f,
           problem: raw.tests[f]?.problem || '',
           time_limit_ms: raw.tests[f]?.time_limit_ms || 0,
+          split: raw.tests[f]?.split,
           environments: raw.tests[f]?.environments || {},
         }))
       }

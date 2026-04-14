@@ -16,10 +16,11 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TEST_DIR="${ROOT}/test"
-SRC_DIR="${ROOT}/mylib"
 
 CXX="${CXX:-g++}"
 CXXFLAGS="${CXXFLAGS:--std=c++17 -O2}"
+read -r -a CXX_CMD_ARR <<< "${CXX}"
+read -r -a CXXFLAGS_ARR <<< "${CXXFLAGS}"
 TC_DIR="${TC_DIR:-${ROOT}/.cache/testcases}"
 RESULT_DIR="${RESULT_DIR:-${ROOT}/.cache/results}"
 ENV_NAME="${ENV_NAME:-local}"
@@ -239,7 +240,7 @@ parse_annotations() {
 run_test_file() {
   local test_file="$1"
   local rel_path
-  rel_path="${test_file#${ROOT}/}"
+  rel_path="${test_file#"$ROOT"/}"
 
   parse_annotations "${test_file}"
 
@@ -254,7 +255,7 @@ run_test_file() {
   binary=$(mktemp)
   local compile_err
   compile_err=$(mktemp)
-  if ! ${CXX} ${CXXFLAGS} -I"${ROOT}" -o "${binary}" "${test_file}" 2>"${compile_err}"; then
+  if ! "${CXX_CMD_ARR[@]}" "${CXXFLAGS_ARR[@]}" -I"${ROOT}" -o "${binary}" "${test_file}" 2>"${compile_err}"; then
     echo "  [CE] ${rel_path}"
     head -20 "${compile_err}" | sed 's/^/    /'
     # CE の結果を記録（コンパイルエラーメッセージも含める）
@@ -456,18 +457,19 @@ if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
   # テストファイル一覧を一時ファイルに書き出し
   SPLIT_TESTS_FILE=$(mktemp)
   for t in "${TESTS[@]}"; do
-    echo "${t#${ROOT}/}" >> "${SPLIT_TESTS_FILE}"
+    echo "${t#"$ROOT"/}" >> "${SPLIT_TESTS_FILE}"
   done
+  mapfile -t split_test_args < "${SPLIT_TESTS_FILE}"
   python3 "${ROOT}/scripts/check-need-rerun.py" \
     --prev-result "${PREV_RESULT}" \
     --env "${ENV_NAME}" \
-    --test-files $(cat "${SPLIT_TESTS_FILE}") \
+    --test-files "${split_test_args[@]}" \
     > "${NEED_RERUN_FILE}" 2>&1
   echo "$(grep -c -v '^#' "${NEED_RERUN_FILE}" || echo 0) tests need re-running"
 else
   # 前回結果なし → 全テスト実行
   for t in "${TESTS[@]}"; do
-    echo "${t#${ROOT}/}" >> "${NEED_RERUN_FILE}"
+    echo "${t#"$ROOT"/}" >> "${NEED_RERUN_FILE}"
   done
 fi
 
@@ -549,7 +551,7 @@ echo "---"
 EXECUTION_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S+00:00")
 
 for test_file in "${TESTS[@]}"; do
-  local_rel="${test_file#${ROOT}/}"
+  local_rel="${test_file#"$ROOT"/}"
   # 差分実行: need_rerun に含まれていなければスキップ
   if ! grep -q "^${local_rel}$" "${NEED_RERUN_FILE}" 2>/dev/null; then
     echo "  [CACHED] ${local_rel}"

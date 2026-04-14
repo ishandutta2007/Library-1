@@ -441,6 +441,7 @@ function generateSidebar(
       const indexFm = readFrontmatter(path.join(MD_DIR, cat.name, "_index.md"));
       allItems.push({
         text: indexFm.title || cat.name,
+        dirName: indexFm.title && indexFm.title !== cat.name ? cat.name : undefined,
         items,
         order: indexFm.order ?? 999,
       });

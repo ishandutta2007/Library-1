@@ -49,6 +49,41 @@ append_result_json() {
   printf '%s\n' "${json}" | python3 -c "import json, sys; print(json.dumps(json.load(sys.stdin), ensure_ascii=False))" >> "${RESULT_JSONL_FILE}"
 }
 
+append_case_record() {
+  local records_file="$1"
+  local case_name="$2"
+  local case_status="$3"
+  local case_time="$4"
+  local case_mem="$5"
+  local case_detail="${6:-}"
+  printf '%s\x1f%s\x1f%s\x1f%s\x1f%s\n' "${case_name}" "${case_status}" "${case_time}" "${case_mem}" "${case_detail}" >> "${records_file}"
+}
+
+build_result_entry() {
+  local file="$1"
+  local problem="$2"
+  local status="$3"
+  local cases_records="$4"
+  local compile_error_file="${5:-}"
+
+  local cmd=(python3 "${ROOT}/scripts/collect-run-results.py" build-entry
+    --file "${file}"
+    --problem "${problem}"
+    --environment "${ENV_NAME}"
+    --status "${status}"
+    --last-execution-time "${EXECUTION_TIME}"
+    --cases-records "${cases_records}")
+
+  if [[ -n "${SPLIT_NUMBER}" ]]; then
+    cmd+=(--split "${SPLIT_NUMBER}")
+  fi
+  if [[ -n "${compile_error_file}" ]]; then
+    cmd+=(--compile-error-file "${compile_error_file}")
+  fi
+
+  "${cmd[@]}"
+}
+
 # =============================================================================
 # テストケースのダウンロード
 # =============================================================================
@@ -263,24 +298,11 @@ run_test_file() {
   if ! "${CXX_CMD_ARR[@]}" "${CXXFLAGS_ARR[@]}" -I"${ROOT}" -o "${binary}" "${test_file}" 2>"${compile_err}"; then
     echo "  [CE] ${rel_path}"
     head -20 "${compile_err}" | sed 's/^/    /'
-    # CE の結果を記録（コンパイルエラーメッセージも含める）
-    local ce_message
-    ce_message=$(head -50 "${compile_err}" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))" 2>/dev/null || echo '""')
-    local split_field=""
-    [[ -n "${SPLIT_NUMBER}" ]] && split_field="\"split\": ${SPLIT_NUMBER},"
-    append_result_json "$(cat <<JSONEOF
-{
-  "file": "${rel_path}",
-  "problem": "${PROBLEM_URL}",
-  "environment": "${ENV_NAME}",
-  ${split_field}
-  "status": "CE",
-  "compile_error": ${ce_message},
-  "last_execution_time": "${EXECUTION_TIME}",
-  "cases": []
-}
-JSONEOF
-)"
+    local compile_error_excerpt
+    compile_error_excerpt=$(mktemp)
+    head -50 "${compile_err}" > "${compile_error_excerpt}"
+    append_result_json "$(build_result_entry "${rel_path}" "${PROBLEM_URL}" "CE" /dev/null "${compile_error_excerpt}")"
+    rm -f "${compile_error_excerpt}"
     rm -f "${binary}" "${compile_err}"
     return
   fi
@@ -291,12 +313,8 @@ JSONEOF
     echo -n "  [RUN] ${rel_path} (standalone) ... "
     local result
     result=$(run_single_case "${binary}" /dev/null /dev/null "${TLE_SEC}" "")
-    local case_status
-    case_status=$(echo "${result}" | awk '{print $1}')
-    local case_time
-    case_time=$(echo "${result}" | awk '{print $2}')
-    local case_mem
-    case_mem=$(echo "${result}" | awk '{print $3}')
+    local case_status case_time case_mem case_detail
+    read -r case_status case_time case_mem case_detail <<< "${result}"
 
     # standalone は exit code 0 なら AC
     if [[ "${case_status}" == "AC" ]]; then
@@ -305,20 +323,11 @@ JSONEOF
       echo "${case_status} (${case_time}ms, ${case_mem}KB)"
     fi
 
-    local split_field=""
-    [[ -n "${SPLIT_NUMBER}" ]] && split_field="\"split\": ${SPLIT_NUMBER},"
-    append_result_json "$(cat <<JSONEOF
-{
-  "file": "${rel_path}",
-  "problem": "${PROBLEM_URL}",
-  "environment": "${ENV_NAME}",
-  ${split_field}
-  "status": "${case_status}",
-  "last_execution_time": "${EXECUTION_TIME}",
-  "cases": [{"name": "standalone", "status": "${case_status}", "time_ms": ${case_time}, "memory_kb": ${case_mem}}]
-}
-JSONEOF
-)"
+    local case_records_file
+    case_records_file=$(mktemp)
+    append_case_record "${case_records_file}" "standalone" "${case_status}" "${case_time}" "${case_mem}" "${case_detail:-}"
+    append_result_json "$(build_result_entry "${rel_path}" "${PROBLEM_URL}" "${case_status}" "${case_records_file}")"
+    rm -f "${case_records_file}"
     rm -f "${binary}"
     return
   fi
@@ -341,8 +350,9 @@ JSONEOF
   # テストケース実行
   echo -n "  [RUN] ${rel_path} "
   local overall_status="AC"
-  local cases_json=""
   local case_count=0
+  local case_records_file
+  case_records_file=$(mktemp)
 
   # checker の検出・コンパイル (yosupo judge 等)
   local checker_bin=""
@@ -383,45 +393,22 @@ JSONEOF
 
     local result
     result=$(case_name="${case_name}" run_single_case "${binary}" "${input_file}" "${expected_file}" "${TLE_SEC}" "${ERROR_TOL}" "${checker_bin}")
-    local case_status
-    case_status=$(echo "${result}" | awk '{print $1}')
-    local case_time
-    case_time=$(echo "${result}" | awk '{print $2}')
-    local case_mem
-    case_mem=$(echo "${result}" | awk '{print $3}')
-    local case_detail
-    case_detail=$(echo "${result}" | cut -d' ' -f4- | sed 's/"/\\"/g')
+    local case_status case_time case_mem case_detail
+    read -r case_status case_time case_mem case_detail <<< "${result}"
 
     if [[ "${case_status}" != "AC" ]]; then
       overall_status="${case_status}"
     fi
 
-    [[ -n "${cases_json}" ]] && cases_json+=","
-    if [[ -n "${case_detail}" ]]; then
-      cases_json+="{\"name\":\"${case_name}\",\"status\":\"${case_status}\",\"time_ms\":${case_time},\"memory_kb\":${case_mem},\"detail\":\"${case_detail}\"}"
-    else
-      cases_json+="{\"name\":\"${case_name}\",\"status\":\"${case_status}\",\"time_ms\":${case_time},\"memory_kb\":${case_mem}}"
-    fi
+    append_case_record "${case_records_file}" "${case_name}" "${case_status}" "${case_time}" "${case_mem}" "${case_detail:-}"
     case_count=$((case_count + 1))
   done
 
   echo "${overall_status} (${case_count} cases)"
 
-  local split_field=""
-  [[ -n "${SPLIT_NUMBER}" ]] && split_field="\"split\": ${SPLIT_NUMBER},"
-  append_result_json "$(cat <<JSONEOF
-{
-  "file": "${rel_path}",
-  "problem": "${PROBLEM_URL}",
-  "environment": "${ENV_NAME}",
-  ${split_field}
-  "status": "${overall_status}",
-  "last_execution_time": "${EXECUTION_TIME}",
-  "cases": [${cases_json}]
-}
-JSONEOF
-)"
+  append_result_json "$(build_result_entry "${rel_path}" "${PROBLEM_URL}" "${overall_status}" "${case_records_file}")"
 
+  rm -f "${case_records_file}"
   rm -f "${binary}"
 }
 

@@ -14,6 +14,8 @@ import os
 from pathlib import Path
 from typing import Any
 
+CASE_RECORD_SEPARATOR = "\x1f"
+
 
 def flatten_previous_results(prev: Any) -> list[dict[str, Any]]:
     flat: list[dict[str, Any]] = []
@@ -120,6 +122,55 @@ def cmd_finalize(args: argparse.Namespace) -> int:
     return 0
 
 
+def load_case_records(path: str | None) -> list[dict[str, Any]]:
+    if not path or not os.path.exists(path):
+        return []
+
+    cases: list[dict[str, Any]] = []
+    with open(path) as fh:
+        for line in fh:
+            line = line.rstrip("\n")
+            if not line:
+                continue
+            parts = line.split(CASE_RECORD_SEPARATOR)
+            if len(parts) < 4:
+                continue
+            name, status, time_ms, memory_kb = parts[:4]
+            detail = parts[4] if len(parts) >= 5 and parts[4] != "" else None
+            entry: dict[str, Any] = {
+                "name": name,
+                "status": status,
+                "time_ms": int(time_ms),
+                "memory_kb": int(memory_kb),
+            }
+            if detail:
+                entry["detail"] = detail
+            cases.append(entry)
+    return cases
+
+
+def cmd_build_entry(args: argparse.Namespace) -> int:
+    entry: dict[str, Any] = {
+        "file": args.file,
+        "problem": args.problem,
+        "environment": args.environment,
+        "status": args.status,
+        "last_execution_time": args.last_execution_time,
+        "cases": load_case_records(args.cases_records),
+    }
+    if args.split is not None:
+        entry["split"] = args.split
+    if args.compile_error_file:
+        compile_error = Path(args.compile_error_file).read_text()
+        if compile_error:
+            entry["compile_error"] = compile_error
+    elif args.compile_error:
+        entry["compile_error"] = args.compile_error
+
+    print(json.dumps(entry, ensure_ascii=False))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -136,6 +187,18 @@ def build_parser() -> argparse.ArgumentParser:
     finalize.add_argument("--in-jsonl", required=True)
     finalize.add_argument("--out-json", required=True)
     finalize.set_defaults(func=cmd_finalize)
+
+    build_entry = subparsers.add_parser("build-entry")
+    build_entry.add_argument("--file", required=True)
+    build_entry.add_argument("--problem", required=True)
+    build_entry.add_argument("--environment", required=True)
+    build_entry.add_argument("--status", required=True)
+    build_entry.add_argument("--last-execution-time", required=True)
+    build_entry.add_argument("--split", type=int)
+    build_entry.add_argument("--compile-error")
+    build_entry.add_argument("--compile-error-file")
+    build_entry.add_argument("--cases-records")
+    build_entry.set_defaults(func=cmd_build_entry)
 
     return parser
 

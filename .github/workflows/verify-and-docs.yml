@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths-ignore:
-      - '.verify-results/**'
+      - ".verify-results/**"
   pull_request:
   workflow_dispatch:
 
@@ -33,6 +33,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Determine tests to run
         id: split
         run: |
@@ -40,7 +49,7 @@ jobs:
           need_rerun_all=""
           if [ -f "${prev}" ]; then
             for env in x64-g++ x64-clang++ arm-g++ arm-clang++; do
-              tests=$(python3 scripts/check-need-rerun.py \
+              tests=$(npx tsx scripts/check-need-rerun.ts \
                 --prev-result "${prev}" \
                 --env "${env}" \
                 --all 2>/dev/null | grep -v '^#')
@@ -172,7 +181,20 @@ jobs:
       YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
 
   docs:
-    needs: [setup, split-0, split-1, split-2, split-3, split-4, split-5, split-6, split-7, split-8, split-9]
+    needs:
+      [
+        setup,
+        split-0,
+        split-1,
+        split-2,
+        split-3,
+        split-4,
+        split-5,
+        split-6,
+        split-7,
+        split-8,
+        split-9,
+      ]
     if: "!cancelled() && needs.setup.result == 'success'"
     runs-on: ubuntu-24.04
     steps:

@@ -44,9 +44,16 @@ done
 
 mkdir -p "${TC_DIR}" "${RESULT_DIR}"
 
+run_ts_script() {
+  (
+    cd "${ROOT}"
+    npx tsx "$@"
+  )
+}
+
 append_result_json() {
   local json="$1"
-  printf '%s\n' "${json}" | python3 -c "import json, sys; print(json.dumps(json.load(sys.stdin), ensure_ascii=False))" >> "${RESULT_JSONL_FILE}"
+  printf '%s\n' "${json}" | node -e 'const fs=require("fs"); const data=JSON.parse(fs.readFileSync(0,"utf8")); process.stdout.write(JSON.stringify(data)+"\n")' >> "${RESULT_JSONL_FILE}"
 }
 
 append_case_record() {
@@ -66,7 +73,7 @@ build_result_entry() {
   local cases_records="$4"
   local compile_error_file="${5:-}"
 
-  local cmd=(python3 "${ROOT}/scripts/collect-run-results.py" build-entry
+  local cmd=(npx tsx "${ROOT}/scripts/collect-run-results.ts" build-entry
     --file "${file}"
     --problem "${problem}"
     --environment "${ENV_NAME}"
@@ -455,7 +462,7 @@ if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
     echo "${t#"$ROOT"/}" >> "${SPLIT_TESTS_FILE}"
   done
   mapfile -t split_test_args < "${SPLIT_TESTS_FILE}"
-  python3 "${ROOT}/scripts/check-need-rerun.py" \
+  run_ts_script "${ROOT}/scripts/check-need-rerun.ts" \
     --prev-result "${PREV_RESULT}" \
     --env "${ENV_NAME}" \
     --test-files "${split_test_args[@]}" \
@@ -474,7 +481,7 @@ RESULT_FILE="${RESULT_DIR}/result-${ENV_NAME}.json"
 
 # 前回結果からスキップしたテストの結果をコピー
 if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
-  python3 "${ROOT}/scripts/collect-run-results.py" carry-over \
+  run_ts_script "${ROOT}/scripts/collect-run-results.ts" carry-over \
   --prev-result "${PREV_RESULT}" \
   --need-rerun-file "${NEED_RERUN_FILE}" \
   --split-tests-file "${SPLIT_TESTS_FILE}" \
@@ -500,6 +507,6 @@ done
 
 rm -f "${NEED_RERUN_FILE}" "${SPLIT_TESTS_FILE:-}"
 
-python3 "${ROOT}/scripts/collect-run-results.py" finalize \
+run_ts_script "${ROOT}/scripts/collect-run-results.ts" finalize \
   --in-jsonl "${RESULT_JSONL_FILE}" \
   --out-json "${RESULT_FILE}"

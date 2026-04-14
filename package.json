@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "build": "npx tsx scripts/build-site.ts && npx pagefind --site site/Library --output-path site/Library/pagefind"
+    "build": "npx tsx scripts/build-site.ts && npx pagefind --site site/Library --output-path site/Library/pagefind",
+    "test:scripts": "node --test --import tsx scripts/tests/*.test.ts"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,8 @@
     "katex": "^0.16.44",
     "markdown-it": "^14.1.1",
     "pagefind": "^1.5.0",
-    "shiki": "^4.0.2"
+    "shiki": "^4.0.2",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
   }
 }

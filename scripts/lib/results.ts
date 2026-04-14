@@ -50,20 +50,20 @@ export interface GroupedProblemResult {
 
 export type GroupedResultsByHpp = Record<string, GroupedProblemResult[]>;
 
-function readRawResults(): unknown {
-  if (!fs.existsSync(RESULTS_PATH)) return null;
+export function readJsonFile(filePath: string): unknown {
+  if (!fs.existsSync(filePath)) return null;
   try {
-    return JSON.parse(fs.readFileSync(RESULTS_PATH, "utf-8"));
+    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
   } catch {
     return null;
   }
 }
 
-function isCompactResults(raw: any): raw is CompactResults {
+export function isCompactResults(raw: any): raw is CompactResults {
   return !!raw && typeof raw === "object" && raw.tests && raw.hpp_map;
 }
 
-function normalizeToCompactResults(raw: unknown): CompactResults {
+export function parseCompactResults(raw: unknown): CompactResults {
   if (!raw || typeof raw !== "object") {
     return { tests: {}, hpp_map: {} };
   }
@@ -97,7 +97,11 @@ function normalizeToCompactResults(raw: unknown): CompactResults {
 }
 
 export function loadCompactResults(): CompactResults {
-  return normalizeToCompactResults(readRawResults());
+  return parseCompactResults(readJsonFile(RESULTS_PATH));
+}
+
+export function loadCompactResultsFromPath(filePath: string): CompactResults {
+  return parseCompactResults(readJsonFile(filePath));
 }
 
 export function loadGroupedResultsByHpp(): GroupedResultsByHpp {

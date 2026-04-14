@@ -11,7 +11,7 @@ import { katex } from "@mdit/plugin-katex";
 import matter from "gray-matter";
 import { createHighlighter, type Highlighter } from "shiki";
 import katexLib from "katex";
-import { loadResults } from "./lib/results";
+import { loadGroupedResultsByHpp } from "./lib/results";
 import {
   buildDependencyGraph,
   buildTestMap,
@@ -100,37 +100,40 @@ function escapeHtml(s: string): string {
  */
 function rewriteLinks(html: string, mdDir: string): string {
   // href="..." と src="..." の両方を書き換える
-  return html.replace(/((?:href|src)=")([^"]+)(")/g, (_match, pre, url, post) => {
-    // 外部URLはスキップ
-    if (/^https?:\/\//.test(url)) return pre + url + post;
-    // # のみのアンカーはスキップ
-    if (url.startsWith("#")) return pre + url + post;
+  return html.replace(
+    /((?:href|src)=")([^"]+)(")/g,
+    (_match, pre, url, post) => {
+      // 外部URLはスキップ
+      if (/^https?:\/\//.test(url)) return pre + url + post;
+      // # のみのアンカーはスキップ
+      if (url.startsWith("#")) return pre + url + post;
 
-    // 絶対パス → BASE_PATH を付与
-    if (url.startsWith("/")) {
-      return pre + BASE_PATH + url + post;
-    }
+      // 絶対パス → BASE_PATH を付与
+      if (url.startsWith("/")) {
+        return pre + BASE_PATH + url + post;
+      }
 
-    // 相対パスを md ディレクトリ基準で解決
-    const resolved = path.posix.normalize(path.posix.join(mdDir, url));
+      // 相対パスを md ディレクトリ基準で解決
+      const resolved = path.posix.normalize(path.posix.join(mdDir, url));
 
-    // .hpp → サイト上の対応ページ
-    if (resolved.endsWith(".hpp")) {
-      // mylib/ prefix を除去して .html に変換
-      const pagePath = resolved
-        .replace(/^(?:\.\.\/)*mylib\//, "")
-        .replace(/\.hpp$/, ".html");
-      return pre + `${BASE_PATH}/${pagePath}` + post;
-    }
+      // .hpp → サイト上の対応ページ
+      if (resolved.endsWith(".hpp")) {
+        // mylib/ prefix を除去して .html に変換
+        const pagePath = resolved
+          .replace(/^(?:\.\.\/)*mylib\//, "")
+          .replace(/\.hpp$/, ".html");
+        return pre + `${BASE_PATH}/${pagePath}` + post;
+      }
 
-    // .md → .html に変換
-    if (resolved.endsWith(".md")) {
-      const pagePath = resolved.replace(/\.md$/, ".html");
-      return pre + `${BASE_PATH}/${pagePath}` + post;
-    }
+      // .md → .html に変換
+      if (resolved.endsWith(".md")) {
+        const pagePath = resolved.replace(/\.md$/, ".html");
+        return pre + `${BASE_PATH}/${pagePath}` + post;
+      }
 
-    return pre + url + post;
-  });
+      return pre + url + post;
+    },
+  );
 }
 
 function statusLabel(status: string): string {
@@ -401,7 +404,10 @@ function generateSidebar(
         );
         items.push({
           text: indexFm.title || entry.name,
-          dirName: indexFm.title && indexFm.title !== entry.name ? entry.name : undefined,
+          dirName:
+            indexFm.title && indexFm.title !== entry.name
+              ? entry.name
+              : undefined,
           items: subItems,
           order: indexFm.order ?? 999,
         });
@@ -421,7 +427,9 @@ function generateSidebar(
         const icon = item.icon ? `${item.icon} ` : "";
         html += `<li><a href="${item.link}">${icon}${renderInlineKatex(escapeHtml(item.text))}</a></li>`;
       } else if (item.items) {
-        const dirLabel = item.dirName ? `<span class="sidebar-dir">${escapeHtml(item.dirName)}</span>` : "";
+        const dirLabel = item.dirName
+          ? `<span class="sidebar-dir">${escapeHtml(item.dirName)}</span>`
+          : "";
         html += `<li><details><summary>${renderInlineKatex(escapeHtml(item.text))}${dirLabel}</summary>${renderItems(item.items)}</details></li>`;
       }
     }
@@ -441,7 +449,8 @@ function generateSidebar(
       const indexFm = readFrontmatter(path.join(MD_DIR, cat.name, "_index.md"));
       allItems.push({
         text: indexFm.title || cat.name,
-        dirName: indexFm.title && indexFm.title !== cat.name ? cat.name : undefined,
+        dirName:
+          indexFm.title && indexFm.title !== cat.name ? cat.name : undefined,
         items,
         order: indexFm.order ?? 999,
       });
@@ -713,7 +722,7 @@ async function main() {
   const md = await initMarkdown();
   const depGraph = buildDependencyGraph();
   const testMap = buildTestMap(depGraph);
-  const resultsData = loadResults();
+  const resultsData = loadGroupedResultsByHpp();
   const sidebar = generateSidebar(testMap, resultsData);
 
   // 出力ディレクトリを準備

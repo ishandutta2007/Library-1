@@ -1,11 +1,15 @@
 /**
  * GitHub Actions の Job Summary に検証結果のサマリーを出力する
  */
-import { loadResults } from "./lib/results";
+import {
+  loadCompactResults,
+  type CompactTestResult,
+  type EnvSummary,
+} from "./lib/results";
 
-const data = loadResults();
+const data = loadCompactResults();
 
-if (Object.keys(data).length === 0) {
+if (Object.keys(data.tests).length === 0) {
   console.log("No results found.");
   process.exit(0);
 }
@@ -28,35 +32,30 @@ interface FileRow {
   envResults: Record<string, EnvInfo>;
 }
 
-const rowMap = new Map<string, FileRow>();
-
-for (const problems of Object.values(data) as any[]) {
-  for (const problem of problems) {
-    const row: FileRow = rowMap.get(problem.file) ?? {
-      file: problem.file,
-      split: problem.split,
-      envResults: {},
-    };
-    if (row.split == null && problem.split != null) {
-      row.split = problem.split;
-    }
-    for (const [env, result] of Object.entries(problem.environments) as [
-      string,
-      any,
-    ][]) {
-      envSet.add(env);
-      const status = result.status;
-      const timeMax = result.summary?.time_max_ms ?? 0;
-      const memMax = result.summary?.memory_max_kb ?? 0;
-      row.envResults[env] = { status, timeMax, memMax };
-    }
-    rowMap.set(problem.file, row);
-  }
+function toEnvInfo(result: EnvSummary): EnvInfo {
+  return {
+    status: result.status,
+    timeMax: result.summary?.time_max_ms ?? 0,
+    memMax: result.summary?.memory_max_kb ?? 0,
+  };
 }
 
-const rows = [...rowMap.values()].sort((left, right) =>
-  left.file.localeCompare(right.file),
-);
+function toFileRow(file: string, result: CompactTestResult): FileRow {
+  const envResults: Record<string, EnvInfo> = {};
+  for (const [env, envResult] of Object.entries(result.environments)) {
+    envSet.add(env);
+    envResults[env] = toEnvInfo(envResult);
+  }
+  return {
+    file,
+    split: result.split,
+    envResults,
+  };
+}
+
+const rows = Object.entries(data.tests)
+  .map(([file, result]) => toFileRow(file, result))
+  .sort((left, right) => left.file.localeCompare(right.file));
 
 for (const row of rows) {
   for (const info of Object.values(row.envResults)) {

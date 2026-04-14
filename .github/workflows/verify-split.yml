@@ -154,12 +154,6 @@ jobs:
           name: testcases-${{ inputs.split }}
           path: .cache
 
-      - name: Set up Python
-        if: steps.check.outputs.has-tests == 'true'
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
       - name: Setup Node.js
         if: steps.check.outputs.has-tests == 'true'
         uses: actions/setup-node@v4

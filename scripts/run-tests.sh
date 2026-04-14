@@ -197,14 +197,10 @@ run_single_case() {
         detail="expected:[${expected_head}] actual:[${actual_head}]"
       fi
     elif [[ -n "${error_tolerance}" ]] && [[ "${error_tolerance}" != "0" ]]; then
-      if ! python3 -c "
-import sys
-with open('${output_file}') as f: actual = f.read().split()
-with open('${expected_file}') as f: expected = f.read().split()
-if len(actual) != len(expected): sys.exit(1)
-for a, e in zip(actual, expected):
-    if abs(float(a) - float(e)) > ${error_tolerance}: sys.exit(1)
-" 2>/dev/null; then
+      if ! run_ts_script "${ROOT}/scripts/compare-float-output.ts" \
+        --actual "${output_file}" \
+        --expected "${expected_file}" \
+        --tolerance "${error_tolerance}" >/dev/null 2>&1; then
         status="WA"
         detail="float compare failed (tolerance=${error_tolerance})"
       fi

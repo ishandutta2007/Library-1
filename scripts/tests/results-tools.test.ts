@@ -9,6 +9,7 @@ import {
   CASE_RECORD_SEPARATOR,
   finalizeResults,
 } from "../lib/run-results";
+import { compareFloatOutputs } from "../lib/float-compare";
 import { parseCompactResults } from "../lib/results";
 
 function makeTempDir(): string {
@@ -159,4 +160,41 @@ test("carryOverResults and finalizeResults keep only cached target env results",
   assert.equal(data.length, 1);
   assert.equal(data[0].file, "test/a.test.cpp");
   assert.equal(data[0].environment, "x64-g++");
+});
+
+test("compareFloatOutputs respects tolerance and token count", () => {
+  const dir = makeTempDir();
+  const actualFile = path.join(dir, "actual.txt");
+  const expectedFile = path.join(dir, "expected.txt");
+
+  fs.writeFileSync(actualFile, "2.0\n3.0\n3.999999999\n");
+  fs.writeFileSync(expectedFile, "2.0\n3.0\n4.0\n");
+
+  assert.equal(
+    compareFloatOutputs({
+      actualPath: actualFile,
+      expectedPath: expectedFile,
+      tolerance: 1e-8,
+    }),
+    true,
+  );
+  assert.equal(
+    compareFloatOutputs({
+      actualPath: actualFile,
+      expectedPath: expectedFile,
+      tolerance: 1e-12,
+    }),
+    false,
+  );
+
+  fs.writeFileSync(actualFile, "1 2\n");
+  fs.writeFileSync(expectedFile, "1\n");
+  assert.equal(
+    compareFloatOutputs({
+      actualPath: actualFile,
+      expectedPath: expectedFile,
+      tolerance: 1e-8,
+    }),
+    false,
+  );
 });

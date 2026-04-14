@@ -4,7 +4,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/algebra/LU_Decomposition.hpp"
 #include "mylib/algebra/ModInt.hpp"
 #include "mylib/algebra/FactorialPrecalculation.hpp"
 using namespace std;

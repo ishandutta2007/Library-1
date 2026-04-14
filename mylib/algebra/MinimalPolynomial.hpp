@@ -2,7 +2,7 @@
 #include <cassert>
 #include "mylib/internal/modint_traits.hpp"
 #include "mylib/algebra/berlekamp_massey.hpp"
-#include "mylib/LinearAlgebra/Vector.hpp"
+#include "mylib/algebra/Vector.hpp"
 #include "mylib/misc/rng.hpp"
 // c s.t. (c[d] * M^d + c[d-1] * M^(d-1)  + ... + c[1] * M + c[0]) * b = 0
 template <class mod_t, class LinMap> class MinimalPolynomial {

@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 #include "mylib/data_structure/LinkCutTree.hpp"
 using namespace std;
 

@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "mylib/algebra/ModInt.hpp"
 #include "mylib/algebra/FactorialPrecalculation.hpp"
-#include "mylib/LinearAlgebra/MinimalPolynomial.hpp"
+#include "mylib/algebra/MinimalPolynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

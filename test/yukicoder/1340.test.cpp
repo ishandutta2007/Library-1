@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 #include "mylib/algebra/Algebra.hpp"
 using namespace std;
 struct Rig {

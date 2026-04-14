@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include "mylib/algebra/ModInt_Runtime.hpp"
-#include "mylib/LinearAlgebra/characteristic_polynomial.hpp"
+#include "mylib/algebra/characteristic_polynomial.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

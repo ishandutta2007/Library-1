@@ -1,6 +1,6 @@
 ---
 title: 行列の特性多項式 他
-documentation_of: ../../mylib/LinearAlgebra/characteristic_polynomial.hpp
+documentation_of: ../../mylib/algebra/characteristic_polynomial.hpp
 ---
 
 
@@ -20,4 +20,3 @@ documentation_of: ../../mylib/LinearAlgebra/characteristic_polynomial.hpp
 
 
 - [Codeforces Round 459 (Div. 1) D. Stranger Trees](https://codeforces.com/contest/917/problem/D) (`det_of_first_degree_poly_mat`)
-

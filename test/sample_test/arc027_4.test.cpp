@@ -7,7 +7,7 @@
 #include <cassert>
 #include "mylib/data_structure/SegmentTree.hpp"
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

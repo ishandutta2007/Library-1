@@ -4,7 +4,7 @@
 // 行列累乗
 #include <iostream>
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

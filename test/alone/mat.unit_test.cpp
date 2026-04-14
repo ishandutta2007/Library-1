@@ -2,7 +2,7 @@
 
 // 特に 型推論 auto で受け取っても正しく動作するかテストする。
 #include <cassert>
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 
 using namespace std;
 void mat_int_test() {

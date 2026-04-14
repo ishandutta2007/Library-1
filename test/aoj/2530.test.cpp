@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 // F_2 の線形方程式・カーネル
 #include <iostream>
-#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/algebra/LU_Decomposition.hpp"
 #include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {

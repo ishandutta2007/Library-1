@@ -6,7 +6,7 @@
 #include <vector>
 #include <numeric>
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/LinearAlgebra/characteristic_polynomial.hpp"
+#include "mylib/algebra/characteristic_polynomial.hpp"
 #include "mylib/data_structure/UnionFind.hpp"
 using namespace std;
 signed main() {

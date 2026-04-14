@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/algebra/LU_Decomposition.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,15 +11,15 @@ signed main() {
  int N;
  cin >> N;
  Matrix<bool> A(N, N);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   string a;
   cin >> a;
-  for (int j= 0; j < N; ++j) A[i][j]= a[j] - '0';
+  for(int j= 0; j < N; ++j) A[i][j]= a[j] - '0';
  }
  auto B= LU_Decomposition(A).inverse_matrix();
- if (!B) return cout << -1 << '\n', 0;
- for (int i= 0; i < N; ++i) {
-  for (int j= 0; j < N; ++j) cout << B[i][j];
+ if(!B) return cout << -1 << '\n', 0;
+ for(int i= 0; i < N; ++i) {
+  for(int j= 0; j < N; ++j) cout << B[i][j];
   cout << '\n';
  }
  return 0;

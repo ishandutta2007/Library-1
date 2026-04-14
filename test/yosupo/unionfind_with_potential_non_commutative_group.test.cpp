@@ -4,7 +4,7 @@
 #include <iostream>
 #include "mylib/data_structure/UnionFind_Potentialized.hpp"
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 #include "mylib/algebra/Algebra.hpp"
 using namespace std;
 using Mint= ModInt<998244353>;

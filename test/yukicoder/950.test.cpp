@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include "mylib/algebra/ModInt_Runtime.hpp"
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 #include "mylib/algebra/DiscreteLogarithm.hpp"
 using namespace std;
 signed main() {

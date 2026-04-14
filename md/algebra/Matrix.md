@@ -1,6 +1,6 @@
 ---
 title: 行列
-documentation_of: ../../mylib/LinearAlgebra/Matrix.hpp
+documentation_of: ../../mylib/algebra/Matrix.hpp
 ---
 
 ## `Matrix<R>` クラス
@@ -54,4 +54,3 @@ documentation_of: ../../mylib/LinearAlgebra/Matrix.hpp
 - [「みんなのプロコン 2019」決勝 D - Dangerous Hopscotch](https://atcoder.jp/contests/yahoo-procon2019-final/tasks/yahoo_procon2019_final_d)\
 - [DISCO presents ディスカバリーチャンネル コードコンテスト2019 本戦 D - DISCO!](https://atcoder.jp/contests/ddcc2019-final/tasks/ddcc2019_final_d)\
 - [DISCO presents ディスカバリーチャンネル コードコンテスト2020 本戦 B - Hawker on Graph](https://atcoder.jp/contests/ddcc2020-final/tasks/ddcc2020_final_b) (max+の一次関数の加法合成の半環)
-

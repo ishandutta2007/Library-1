@@ -7,7 +7,7 @@
 #include <vector>
 #include <array>
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 #include "mylib/data_structure/SegmentTree.hpp"
 #include "mylib/misc/compress.hpp"
 using namespace std;

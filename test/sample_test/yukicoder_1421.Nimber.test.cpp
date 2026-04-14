@@ -7,7 +7,7 @@
 #include <string>
 #include <cassert>
 #include "mylib/algebra/Nimber.hpp"
-#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/algebra/LU_Decomposition.hpp"
 using namespace std;
 bool test(int (*solve)(stringstream&, stringstream&), string in, string expected) {
  stringstream scin(in), scout;

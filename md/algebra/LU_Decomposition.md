@@ -1,6 +1,6 @@
 ---
 title: LU分解
-documentation_of: ../../mylib/LinearAlgebra/LU_Decomposition.hpp
+documentation_of: ../../mylib/algebra/LU_Decomposition.hpp
 ---
 
 
@@ -24,4 +24,3 @@ documentation_of: ../../mylib/LinearAlgebra/LU_Decomposition.hpp
 
 - [yukicoder No.1421 国勢調査 (Hard)](https://yukicoder.me/problems/no/1421) (sp judge)\
 - [AtCoder Beginner Contest 276 Ex - Construct a Matrix](https://atcoder.jp/contests/abc276/tasks/abc276_h) (sp judge)
-

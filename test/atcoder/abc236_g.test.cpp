@@ -5,7 +5,7 @@
 // (min,max)半環
 #include <iostream>
 #include "mylib/algebra/Algebra.hpp"
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 using namespace std;
 struct M {
  using T= int;

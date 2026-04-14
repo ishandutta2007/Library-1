@@ -5,7 +5,7 @@
 // https://atcoder.jp/contests/agc051/tasks/agc051_d
 #include <iostream>
 #include <vector>
-#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/algebra/LU_Decomposition.hpp"
 #include "mylib/algebra/ModInt.hpp"
 #include "mylib/algebra/FactorialPrecalculation.hpp"
 using namespace std;

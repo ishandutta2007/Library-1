@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <string>
-#include "mylib/LinearAlgebra/LU_Decomposition.hpp"
+#include "mylib/algebra/LU_Decomposition.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -11,19 +11,19 @@ signed main() {
  int N, M, K;
  cin >> N >> M >> K;
  Matrix<bool> A(N, M), B(M, K);
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   string a;
   cin >> a;
-  for (int j= 0; j < M; ++j) A[i][j]= a[j] - '0';
+  for(int j= 0; j < M; ++j) A[i][j]= a[j] - '0';
  }
- for (int i= 0; i < M; ++i) {
+ for(int i= 0; i < M; ++i) {
   string b;
   cin >> b;
-  for (int j= 0; j < K; ++j) B[i][j]= b[j] - '0';
+  for(int j= 0; j < K; ++j) B[i][j]= b[j] - '0';
  }
  auto C= A * B;
- for (int i= 0; i < N; ++i) {
-  for (int j= 0; j < K; ++j) cout << C[i][j];
+ for(int i= 0; i < N; ++i) {
+  for(int j= 0; j < K; ++j) cout << C[i][j];
   cout << '\n';
  }
  return 0;

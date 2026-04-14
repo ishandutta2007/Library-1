@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 3
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/LinearAlgebra/Matrix.hpp"
+#include "mylib/algebra/Matrix.hpp"
 #include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {

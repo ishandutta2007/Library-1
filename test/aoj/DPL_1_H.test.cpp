@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <src/Optimization/Knapsack.hpp>
+#include <mylib/optimization/Knapsack.hpp>
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,7 +13,7 @@ signed main() {
  int N;
  int64_t W;
  cin >> N >> W;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   int64_t v, w;
   cin >> v >> w;
   K.add(v, w);

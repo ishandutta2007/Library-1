@@ -91,6 +91,48 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
+/**
+ * レンダリング済みHTMLのリンク・画像パスを書き換える。
+ * - 絶対パス /img/... → BASE_PATH/img/...
+ * - 相対 .md リンク → 対応する .html へ
+ * - 相対 .hpp リンク → サイト上の対応ページへ
+ * mdDir: md ファイルのあるディレクトリ (例: "string")
+ */
+function rewriteLinks(html: string, mdDir: string): string {
+  // href="..." と src="..." の両方を書き換える
+  return html.replace(/((?:href|src)=")([^"]+)(")/g, (_match, pre, url, post) => {
+    // 外部URLはスキップ
+    if (/^https?:\/\//.test(url)) return pre + url + post;
+    // # のみのアンカーはスキップ
+    if (url.startsWith("#")) return pre + url + post;
+
+    // 絶対パス → BASE_PATH を付与
+    if (url.startsWith("/")) {
+      return pre + BASE_PATH + url + post;
+    }
+
+    // 相対パスを md ディレクトリ基準で解決
+    const resolved = path.posix.normalize(path.posix.join(mdDir, url));
+
+    // .hpp → サイト上の対応ページ
+    if (resolved.endsWith(".hpp")) {
+      // mylib/ prefix を除去して .html に変換
+      const pagePath = resolved
+        .replace(/^(?:\.\.\/)*mylib\//, "")
+        .replace(/\.hpp$/, ".html");
+      return pre + `${BASE_PATH}/${pagePath}` + post;
+    }
+
+    // .md → .html に変換
+    if (resolved.endsWith(".md")) {
+      const pagePath = resolved.replace(/\.md$/, ".html");
+      return pre + `${BASE_PATH}/${pagePath}` + post;
+    }
+
+    return pre + url + post;
+  });
+}
+
 function statusLabel(status: string): string {
   if (status === "IGNORE") return "-";
   return status;
@@ -480,7 +522,8 @@ function generateHppPage(
 
   // ユーザーの md コンテンツ
   if (mdContent.trim()) {
-    body += md.render(mdContent);
+    const mdRelDir = path.posix.dirname(path.relative(MD_DIR, mdPath));
+    body += rewriteLinks(md.render(mdContent), mdRelDir);
   }
 
   // Verified with

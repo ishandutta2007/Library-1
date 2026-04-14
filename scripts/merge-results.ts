@@ -23,12 +23,14 @@ interface TestResult {
   problem: string
   environment: string
   status: string
+  compile_error?: string
   last_execution_time?: string
   cases: CaseResult[]
 }
 
 interface EnvSummary {
   status: string
+  compile_error?: string
   summary: { time_max_ms: number; time_total_ms: number; memory_max_kb: number }
   last_execution_time?: string
   cases: CaseResult[]
@@ -185,12 +187,16 @@ for (const result of newResults) {
   const timeTotal = cases.reduce((sum, c) => sum + c.time_ms, 0)
   const memMax = cases.length > 0 ? Math.max(...cases.map(c => c.memory_kb)) : 0
 
-  prevMap[key][result.environment] = {
+  const envSummary: EnvSummary = {
     status: result.status,
     summary: { time_max_ms: timeMax, time_total_ms: timeTotal, memory_max_kb: memMax },
     last_execution_time: result.last_execution_time || new Date().toISOString(),
     cases,
   }
+  if (result.compile_error) {
+    envSummary.compile_error = result.compile_error
+  }
+  prevMap[key][result.environment] = envSummary
 }
 
 // hpp ごとにグループ化して出力形式に変換

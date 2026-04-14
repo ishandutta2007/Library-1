@@ -252,13 +252,16 @@ run_test_file() {
   if ! ${CXX} ${CXXFLAGS} -I"${ROOT}" -o "${binary}" "${test_file}" 2>"${compile_err}"; then
     echo "  [CE] ${rel_path}"
     head -20 "${compile_err}" | sed 's/^/    /'
-    # CE の結果を記録
+    # CE の結果を記録（コンパイルエラーメッセージも含める）
+    local ce_message
+    ce_message=$(head -50 "${compile_err}" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))" 2>/dev/null || echo '""')
     cat <<JSONEOF >> "${RESULT_FILE}"
 ,{
   "file": "${rel_path}",
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
   "status": "CE",
+  "compile_error": ${ce_message},
   "last_execution_time": "${EXECUTION_TIME}",
   "cases": []
 }

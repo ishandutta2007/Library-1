@@ -197,6 +197,15 @@ jobs:
           path: .cache/results/
           merge-multiple: true
 
+      - name: Download error logs
+        if: needs.setup.outputs.has-tests == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: logs-*
+          path: .cache/logs/
+          merge-multiple: true
+        continue-on-error: true
+
       - name: Merge results
         run: |
           mkdir -p .verify-results

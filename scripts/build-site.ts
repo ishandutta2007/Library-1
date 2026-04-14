@@ -319,6 +319,7 @@ function generateSidebar(
     link?: string;
     items?: SidebarItem[];
     order: number;
+    dirName?: string;
   }
 
   function buildItems(
@@ -358,6 +359,7 @@ function generateSidebar(
         );
         items.push({
           text: indexFm.title || entry.name,
+          dirName: indexFm.title && indexFm.title !== entry.name ? entry.name : undefined,
           items: subItems,
           order: indexFm.order ?? 999,
         });
@@ -377,7 +379,8 @@ function generateSidebar(
         const icon = item.icon ? `${item.icon} ` : "";
         html += `<li><a href="${item.link}">${icon}${renderInlineKatex(escapeHtml(item.text))}</a></li>`;
       } else if (item.items) {
-        html += `<li><details><summary>${renderInlineKatex(escapeHtml(item.text))}</summary>${renderItems(item.items)}</details></li>`;
+        const dirLabel = item.dirName ? `<span class="sidebar-dir">${escapeHtml(item.dirName)}</span>` : "";
+        html += `<li><details><summary>${renderInlineKatex(escapeHtml(item.text))}${dirLabel}</summary>${renderItems(item.items)}</details></li>`;
       }
     }
     html += "</ul>";
@@ -857,6 +860,7 @@ a:hover { text-decoration: underline; }
 .sidebar li { margin: 0.15rem 0; }
 .sidebar a { display: block; padding: 0.15rem 0; }
 .sidebar summary { cursor: pointer; font-weight: 600; padding: 0.15rem 0; }
+.sidebar-dir { color: var(--c-text-2); font-size: 0.75em; font-weight: 400; margin-left: 0.5em; }
 
 .content {
   flex: 1;

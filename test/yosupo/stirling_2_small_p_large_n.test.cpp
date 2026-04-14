@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 128
 #include <iostream>
-#include "mylib/algebra/StirlingNumber.hpp"
+#include "mylib/number_theory/StirlingNumber.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

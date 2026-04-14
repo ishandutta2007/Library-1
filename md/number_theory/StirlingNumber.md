@@ -1,6 +1,7 @@
 ---
-title: スターリング数 (小さい素数 mod)
-documentation_of: ../../mylib/algebra/StirlingNumber.hpp
+title: $\mathbb{F}_p$ 上のスターリング数 (小さい素数 mod)
+documentation_of: ../../mylib/number_theory/StirlingNumber.hpp
+order: 140
 ---
 
 ## 概要
@@ -34,7 +35,7 @@ Lucasの定理と同様の性質を利用して、$O(p^2)$ の前処理ののち
 ## コード
 ```cpp
 #include <iostream>
-#include "mylib/algebra/StirlingNumber.hpp"
+#include "mylib/number_theory/StirlingNumber.hpp"
 
 int main() {
     long long n = 1000000000000000000;

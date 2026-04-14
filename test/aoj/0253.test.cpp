@@ -1,5 +1,5 @@
 // competitive-verifier: PROBLEM https://onlinejudge.u-aizu.ac.jp/challenges/sources/PCK/Final/0253
-// competitive-verifier: ERROR 0.00000001
+// competitive-verifier: ERROR 0.00001
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>

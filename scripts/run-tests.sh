@@ -178,6 +178,10 @@ for a, e in zip(actual, expected):
       echo "Status: ${status}"
       echo "Time: ${elapsed_ms}ms"
       echo "Memory: ${memory_kb}KB"
+      if [[ -f "${input_file}" ]]; then
+        echo "--- input (first 20 lines) ---"
+        head -20 "${input_file}"
+      fi
       if [[ "${status}" == "WA" ]] && [[ -f "${output_file}" ]]; then
         echo "--- actual output (first 20 lines) ---"
         head -20 "${output_file}"

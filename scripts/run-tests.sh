@@ -450,16 +450,15 @@ NEED_RERUN_FILE=$(mktemp)
 if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
   echo "Checking for changes against previous result..."
   # テストファイル一覧を一時ファイルに書き出し
-  TESTS_LIST=$(mktemp)
+  SPLIT_TESTS_FILE=$(mktemp)
   for t in "${TESTS[@]}"; do
-    echo "${t#${ROOT}/}" >> "${TESTS_LIST}"
+    echo "${t#${ROOT}/}" >> "${SPLIT_TESTS_FILE}"
   done
   python3 "${ROOT}/scripts/check-need-rerun.py" \
     --prev-result "${PREV_RESULT}" \
     --env "${ENV_NAME}" \
-    --test-files $(cat "${TESTS_LIST}") \
+    --test-files $(cat "${SPLIT_TESTS_FILE}") \
     > "${NEED_RERUN_FILE}" 2>&1
-  rm -f "${TESTS_LIST}"
   echo "$(grep -c -v '^#' "${NEED_RERUN_FILE}" || echo 0) tests need re-running"
 else
   # 前回結果なし → 全テスト実行
@@ -522,9 +521,18 @@ if isinstance(prev, dict):
     prev = flat
 carried = 0
 env = '${ENV_NAME}'
+# このスプリットに含まれるテスト一覧を読み込み
+split_tests = set()
+split_tests_file = '${SPLIT_TESTS_FILE}'
+if os.path.exists(split_tests_file):
+    with open(split_tests_file) as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                split_tests.add(line)
 with open('${RESULT_FILE}', 'a') as out:
     for entry in prev:
-        if isinstance(entry, dict) and entry.get('file') not in need_rerun and entry.get('environment') == env:
+        if isinstance(entry, dict) and entry.get('file') in split_tests and entry.get('file') not in need_rerun and entry.get('environment') == env:
             out.write(',' + json.dumps(entry) + '\n')
             carried += 1
 print(f'Carried over {carried} results from previous run', file=sys.stderr)
@@ -546,7 +554,7 @@ for test_file in "${TESTS[@]}"; do
   run_test_file "${test_file}"
 done
 
-rm -f "${NEED_RERUN_FILE}"
+rm -f "${NEED_RERUN_FILE}" "${SPLIT_TESTS_FILE:-}"
 
 # JSON の先頭の null を削除して配列を閉じる
 echo "]" >> "${RESULT_FILE}"

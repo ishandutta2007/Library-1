@@ -502,7 +502,7 @@ function generateHppPage(
         ?.replace(/\.hpp$/, "") ||
       hppRelPath;
     const link = `${BASE_PATH}/${hppRelPath.replace(/^mylib\//, "").replace(/\.hpp$/, ".html")}`;
-    return `<li>${icon} <a href="${link}">${renderInlineKatex(escapeHtml(title))}</a> (${escapeHtml(hppRelPath)})</li>\n`;
+    return `<li>${icon} <a href="${link}">${renderInlineKatex(escapeHtml(title))}</a><span class="dep-path">${escapeHtml(hppRelPath)}</span></li>\n`;
   }
 
   // Depends on
@@ -512,14 +512,14 @@ function generateHppPage(
   if (directDeps.size > 0 || indirectDeps.length > 0) {
     body += "<h2>Depends on</h2>\n";
     if (directDeps.size > 0) {
-      body += "<h3>Direct</h3>\n<ul>\n";
+      body += '<h3>Direct</h3>\n<ul class="dep-list">\n';
       for (const dep of [...directDeps].sort()) {
         body += renderDepItem(dep);
       }
       body += "</ul>\n";
     }
     if (indirectDeps.length > 0) {
-      body += `<details><summary>Indirect (${indirectDeps.length})</summary>\n<ul>\n`;
+      body += `<details><summary>Indirect (${indirectDeps.length})</summary>\n<ul class="dep-list">\n`;
       for (const dep of indirectDeps) {
         body += renderDepItem(dep);
       }
@@ -534,14 +534,14 @@ function generateHppPage(
   if (directReqBy.size > 0 || indirectReqBy.length > 0) {
     body += "<h2>Required by</h2>\n";
     if (directReqBy.size > 0) {
-      body += "<h3>Direct</h3>\n<ul>\n";
+      body += '<h3>Direct</h3>\n<ul class="dep-list">\n';
       for (const req of [...directReqBy].sort()) {
         body += renderDepItem(req);
       }
       body += "</ul>\n";
     }
     if (indirectReqBy.length > 0) {
-      body += `<details><summary>Indirect (${indirectReqBy.length})</summary>\n<ul>\n`;
+      body += `<details><summary>Indirect (${indirectReqBy.length})</summary>\n<ul class="dep-list">\n`;
       for (const req of indirectReqBy) {
         body += renderDepItem(req);
       }
@@ -586,7 +586,7 @@ function generateTestPage(
 
   // Depends on
   if (directIncludes.length > 0) {
-    body += "<h2>Depends on</h2>\n<ul>\n";
+    body += '<h2>Depends on</h2>\n<ul class="dep-list">\n';
     for (const hpp of directIncludes) {
       const icon = hppStatusIcon(hpp, testMap, resultsData);
       const title =
@@ -602,7 +602,7 @@ function generateTestPage(
           ?.replace(/\.hpp$/, "") ||
         hpp;
       const link = `${BASE_PATH}/${hpp.replace(/^mylib\//, "").replace(/\.hpp$/, ".html")}`;
-      body += `<li>${icon} <a href="${link}">${renderInlineKatex(escapeHtml(title))}</a> (${escapeHtml(hpp)})</li>\n`;
+      body += `<li>${icon} <a href="${link}">${renderInlineKatex(escapeHtml(title))}</a><span class="dep-path">${escapeHtml(hpp)}</span></li>\n`;
     }
     body += "</ul>\n";
   }
@@ -910,6 +910,10 @@ details .result-table td, details .result-table th { padding: 0.25rem 0.5rem; }
 
 details { margin: 0.5rem 0; }
 summary { cursor: pointer; }
+
+.dep-list { list-style: none; padding-left: 1rem; }
+.dep-list li { margin: 0.15rem 0; }
+.dep-path { color: var(--c-text-2); font-size: 0.85em; margin-left: 0.5em; }
 
 /* shiki dual theme
    ライト: インラインの color/background-color をそのまま使う

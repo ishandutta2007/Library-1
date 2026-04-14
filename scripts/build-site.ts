@@ -487,52 +487,66 @@ function generateHppPage(
     body += renderVerifyMatrix(hppResults);
   }
 
+  function renderDepItem(hppRelPath: string): string {
+    const icon = hppStatusIcon(hppRelPath, testMap, resultsData);
+    const title =
+      readFrontmatter(
+        path.join(
+          MD_DIR,
+          hppRelPath.replace(/^mylib\//, "").replace(/\.hpp$/, ".md"),
+        ),
+      ).title ||
+      hppRelPath
+        .split("/")
+        .pop()
+        ?.replace(/\.hpp$/, "") ||
+      hppRelPath;
+    const link = `${BASE_PATH}/${hppRelPath.replace(/^mylib\//, "").replace(/\.hpp$/, ".html")}`;
+    return `<li>${icon} <a href="${link}">${escapeHtml(title)}</a> (${escapeHtml(hppRelPath)})</li>\n`;
+  }
+
   // Depends on
-  const deps = depGraph.dependsOn[hppPath] || [];
-  if (deps.length > 0) {
-    body += "<h2>Depends on</h2>\n<ul>\n";
-    for (const dep of deps) {
-      const depIcon = hppStatusIcon(dep, testMap, resultsData);
-      const depTitle =
-        readFrontmatter(
-          path.join(
-            MD_DIR,
-            dep.replace(/^mylib\//, "").replace(/\.hpp$/, ".md"),
-          ),
-        ).title ||
-        dep
-          .split("/")
-          .pop()
-          ?.replace(/\.hpp$/, "") ||
-        dep;
-      const depLink = `${BASE_PATH}/${dep.replace(/^mylib\//, "").replace(/\.hpp$/, ".html")}`;
-      body += `<li>${depIcon} <a href="${depLink}">${escapeHtml(depTitle)}</a> (${escapeHtml(dep)})</li>\n`;
+  const directDeps = new Set(depGraph.dependsOn[hppPath] || []);
+  const allDeps = depGraph.transitiveDeps[hppPath] || new Set<string>();
+  const indirectDeps = [...allDeps].filter((d) => !directDeps.has(d)).sort();
+  if (directDeps.size > 0 || indirectDeps.length > 0) {
+    body += "<h2>Depends on</h2>\n";
+    if (directDeps.size > 0) {
+      body += "<h3>Direct</h3>\n<ul>\n";
+      for (const dep of [...directDeps].sort()) {
+        body += renderDepItem(dep);
+      }
+      body += "</ul>\n";
     }
-    body += "</ul>\n";
+    if (indirectDeps.length > 0) {
+      body += "<h3>Indirect</h3>\n<ul>\n";
+      for (const dep of indirectDeps) {
+        body += renderDepItem(dep);
+      }
+      body += "</ul>\n";
+    }
   }
 
   // Required by
-  const reqBy = depGraph.requiredBy[hppPath] || [];
-  if (reqBy.length > 0) {
-    body += "<h2>Required by</h2>\n<ul>\n";
-    for (const req of reqBy) {
-      const reqIcon = hppStatusIcon(req, testMap, resultsData);
-      const reqTitle =
-        readFrontmatter(
-          path.join(
-            MD_DIR,
-            req.replace(/^mylib\//, "").replace(/\.hpp$/, ".md"),
-          ),
-        ).title ||
-        req
-          .split("/")
-          .pop()
-          ?.replace(/\.hpp$/, "") ||
-        req;
-      const reqLink = `${BASE_PATH}/${req.replace(/^mylib\//, "").replace(/\.hpp$/, ".html")}`;
-      body += `<li>${reqIcon} <a href="${reqLink}">${escapeHtml(reqTitle)}</a> (${escapeHtml(req)})</li>\n`;
+  const directReqBy = new Set(depGraph.requiredBy[hppPath] || []);
+  const allReqBy = depGraph.transitiveRequiredBy[hppPath] || new Set<string>();
+  const indirectReqBy = [...allReqBy].filter((r) => !directReqBy.has(r)).sort();
+  if (directReqBy.size > 0 || indirectReqBy.length > 0) {
+    body += "<h2>Required by</h2>\n";
+    if (directReqBy.size > 0) {
+      body += "<h3>Direct</h3>\n<ul>\n";
+      for (const req of [...directReqBy].sort()) {
+        body += renderDepItem(req);
+      }
+      body += "</ul>\n";
     }
-    body += "</ul>\n";
+    if (indirectReqBy.length > 0) {
+      body += "<h3>Indirect</h3>\n<ul>\n";
+      for (const req of indirectReqBy) {
+        body += renderDepItem(req);
+      }
+      body += "</ul>\n";
+    }
   }
 
   // 出力

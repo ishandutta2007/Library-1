@@ -12,6 +12,7 @@ export interface DependencyGraph {
   dependsOn: Record<string, string[]>
   requiredBy: Record<string, string[]>
   transitiveDeps: Record<string, Set<string>>
+  transitiveRequiredBy: Record<string, Set<string>>
 }
 
 export function buildDependencyGraph(): DependencyGraph {
@@ -54,7 +55,23 @@ export function buildDependencyGraph(): DependencyGraph {
   }
   for (const hpp of Object.keys(dependsOn)) getTransitive(hpp, new Set())
 
-  return { dependsOn, requiredBy, transitiveDeps }
+  const transitiveRequiredBy: Record<string, Set<string>> = {}
+  function getTransitiveReqBy(hpp: string, visited: Set<string>): Set<string> {
+    if (transitiveRequiredBy[hpp]) return transitiveRequiredBy[hpp]
+    if (visited.has(hpp)) return new Set()
+    visited.add(hpp)
+    const result = new Set<string>()
+    for (const req of requiredBy[hpp] || []) {
+      result.add(req)
+      for (const t of getTransitiveReqBy(req, visited)) result.add(t)
+    }
+    transitiveRequiredBy[hpp] = result
+    return result
+  }
+  const allHpps = new Set([...Object.keys(dependsOn), ...Object.keys(requiredBy)])
+  for (const hpp of allHpps) getTransitiveReqBy(hpp, new Set())
+
+  return { dependsOn, requiredBy, transitiveDeps, transitiveRequiredBy }
 }
 
 export function buildTestMap(graph: DependencyGraph): Record<string, string[]> {

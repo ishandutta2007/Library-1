@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 1
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/algebra/BinomialCoefficient.hpp"
+#include "mylib/number_theory/BinomialCoefficient.hpp"
 using namespace std;
 int main() {
  cin.tie(0);

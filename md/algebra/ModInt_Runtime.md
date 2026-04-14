@@ -1,6 +1,7 @@
 ---
 title: ModInt(実行時modセット)
 documentation_of: ../../mylib/algebra/ModInt_Runtime.hpp
+order: 10
 ---
 ## Verify
 

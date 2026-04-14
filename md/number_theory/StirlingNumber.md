@@ -1,5 +1,5 @@
 ---
-title: $\mathbb{F}_p$ 上のスターリング数 (小さい素数 mod)
+title: $\mathbb{F}_p$ 上のスターリング数 ($p \lt 32768$)
 documentation_of: ../../mylib/number_theory/StirlingNumber.hpp
 order: 140
 ---

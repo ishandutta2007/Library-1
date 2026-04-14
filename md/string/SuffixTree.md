@@ -10,8 +10,8 @@ documentation_of: ../../mylib/string/SuffixTree.hpp
 
 |メンバ変数|概要|
 |---|---|
-|`graph`| 接尾辞木の[`Graph` クラス](../Graph/Graph.hpp) 表現. <br> 親から子の向きの辺のリスト．|
-|`tree`| 接尾辞木の[重軽分解](../Graph/HeavyLightDecomposition.hpp)|
+|`graph`| 接尾辞木の[`Graph` クラス](../graph/Graph.hpp) 表現. <br> 親から子の向きの辺のリスト．|
+|`tree`| 接尾辞木の[重軽分解](../graph/HeavyLightDecomposition.hpp)|
 
 |メンバ関数|概要|計算量|
 |---|---|---|

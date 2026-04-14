@@ -1,6 +1,7 @@
 ---
 title: グラフ
 documentation_of: ../../mylib/graph/Graph.hpp
+order: 1
 ---
 
 ## 使い方

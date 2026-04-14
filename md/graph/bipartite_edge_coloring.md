@@ -1,6 +1,7 @@
 ---
 title: 二部グラフの辺彩色
 documentation_of: ../../mylib/graph/bipartite_edge_coloring.hpp
+order: 120
 ---
 
 |関数名|概要|計算量|

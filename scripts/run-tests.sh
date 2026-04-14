@@ -44,6 +44,11 @@ done
 
 mkdir -p "${TC_DIR}" "${RESULT_DIR}"
 
+append_result_json() {
+  local json="$1"
+  printf '%s\n' "${json}" | python3 -c "import json, sys; print(json.dumps(json.load(sys.stdin), ensure_ascii=False))" >> "${RESULT_JSONL_FILE}"
+}
+
 # =============================================================================
 # テストケースのダウンロード
 # =============================================================================
@@ -263,8 +268,8 @@ run_test_file() {
     ce_message=$(head -50 "${compile_err}" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))" 2>/dev/null || echo '""')
     local split_field=""
     [[ -n "${SPLIT_NUMBER}" ]] && split_field="\"split\": ${SPLIT_NUMBER},"
-    cat <<JSONEOF >> "${RESULT_FILE}"
-,{
+    append_result_json "$(cat <<JSONEOF
+{
   "file": "${rel_path}",
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
@@ -275,6 +280,7 @@ run_test_file() {
   "cases": []
 }
 JSONEOF
+)"
     rm -f "${binary}" "${compile_err}"
     return
   fi
@@ -301,8 +307,8 @@ JSONEOF
 
     local split_field=""
     [[ -n "${SPLIT_NUMBER}" ]] && split_field="\"split\": ${SPLIT_NUMBER},"
-    cat <<JSONEOF >> "${RESULT_FILE}"
-,{
+    append_result_json "$(cat <<JSONEOF
+{
   "file": "${rel_path}",
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
@@ -312,6 +318,7 @@ JSONEOF
   "cases": [{"name": "standalone", "status": "${case_status}", "time_ms": ${case_time}, "memory_kb": ${case_mem}}]
 }
 JSONEOF
+)"
     rm -f "${binary}"
     return
   fi
@@ -402,8 +409,8 @@ JSONEOF
 
   local split_field=""
   [[ -n "${SPLIT_NUMBER}" ]] && split_field="\"split\": ${SPLIT_NUMBER},"
-  cat <<JSONEOF >> "${RESULT_FILE}"
-,{
+  append_result_json "$(cat <<JSONEOF
+{
   "file": "${rel_path}",
   "problem": "${PROBLEM_URL}",
   "environment": "${ENV_NAME}",
@@ -413,6 +420,7 @@ JSONEOF
   "cases": [${cases_json}]
 }
 JSONEOF
+)"
 
   rm -f "${binary}"
 }
@@ -473,76 +481,19 @@ else
   done
 fi
 
+RESULT_JSONL_FILE="${RESULT_DIR}/result-${ENV_NAME}.jsonl"
 RESULT_FILE="${RESULT_DIR}/result-${ENV_NAME}.json"
-echo "[null" > "${RESULT_FILE}"
+: > "${RESULT_JSONL_FILE}"
 
 # 前回結果からスキップしたテストの結果をコピー
 if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
-  python3 -c "
-import json, sys, os
-need_rerun = set()
-with open('${NEED_RERUN_FILE}') as f:
-    for line in f:
-        line = line.strip()
-        if line and not line.startswith('#'):
-            need_rerun.add(line)
-prev_file = '${PREV_RESULT}'
-if not os.path.exists(prev_file):
-    sys.exit(0)
-try:
-    with open(prev_file) as f:
-        prev = json.load(f)
-except (json.JSONDecodeError, ValueError):
-    sys.exit(0)
-# コンパクト形式 or 従来形式をフラットに展開
-if isinstance(prev, dict):
-    flat = []
-    if 'tests' in prev and 'hpp_map' in prev:
-        # コンパクト形式
-        for file_key, test_data in prev['tests'].items():
-            envs = test_data.get('environments', {})
-            for env_name, env_data in envs.items():
-                flat.append({
-                    'file': file_key,
-                    'problem': test_data.get('problem', ''),
-                    'environment': env_name,
-                    'status': env_data.get('status', ''),
-                    'last_execution_time': env_data.get('last_execution_time', ''),
-                    'cases': env_data.get('cases', []),
-                })
-    else:
-        # 従来のマージ済み形式
-        for problems in prev.values():
-            for p in problems:
-                envs = p.get('environments', {})
-                for env_name, env_data in envs.items():
-                    flat.append({
-                        'file': p.get('file', ''),
-                        'problem': p.get('problem', ''),
-                        'environment': env_name,
-                        'status': env_data.get('status', ''),
-                        'last_execution_time': env_data.get('last_execution_time', ''),
-                        'cases': env_data.get('cases', []),
-                    })
-    prev = flat
-carried = 0
-env = '${ENV_NAME}'
-# このスプリットに含まれるテスト一覧を読み込み
-split_tests = set()
-split_tests_file = '${SPLIT_TESTS_FILE}'
-if os.path.exists(split_tests_file):
-    with open(split_tests_file) as f:
-        for line in f:
-            line = line.strip()
-            if line:
-                split_tests.add(line)
-with open('${RESULT_FILE}', 'a') as out:
-    for entry in prev:
-        if isinstance(entry, dict) and entry.get('file') in split_tests and entry.get('file') not in need_rerun and entry.get('environment') == env:
-            out.write(',' + json.dumps(entry) + '\n')
-            carried += 1
-print(f'Carried over {carried} results from previous run', file=sys.stderr)
-" 2>&1 || true
+  python3 "${ROOT}/scripts/collect-run-results.py" carry-over \
+  --prev-result "${PREV_RESULT}" \
+  --need-rerun-file "${NEED_RERUN_FILE}" \
+  --split-tests-file "${SPLIT_TESTS_FILE}" \
+  --env "${ENV_NAME}" \
+  --out-jsonl "${RESULT_JSONL_FILE}" \
+  || true
 fi
 
 echo "Environment: ${ENV_NAME} (${CXX})"
@@ -562,15 +513,6 @@ done
 
 rm -f "${NEED_RERUN_FILE}" "${SPLIT_TESTS_FILE:-}"
 
-# JSON の先頭の null を削除して配列を閉じる
-echo "]" >> "${RESULT_FILE}"
-# null, を削除して整形
-python3 -c "
-import json, sys
-with open('${RESULT_FILE}') as f:
-    data = json.load(f)
-data = [x for x in data if x is not None]
-with open('${RESULT_FILE}', 'w') as f:
-    json.dump(data, f, indent=2)
-print(f'Results written to ${RESULT_FILE} ({len(data)} tests)')
-"
+python3 "${ROOT}/scripts/collect-run-results.py" finalize \
+  --in-jsonl "${RESULT_JSONL_FILE}" \
+  --out-json "${RESULT_FILE}"

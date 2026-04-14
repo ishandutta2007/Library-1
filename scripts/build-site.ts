@@ -434,7 +434,7 @@ function generateHppPage(
     hppPath;
 
   // md コンテンツをレンダリング
-  let body = `<h1>${icon} ${escapeHtml(title)}</h1>\n`;
+  let body = `<h1>${icon} ${renderInlineKatex(escapeHtml(title))}</h1>\n`;
 
   // ソースコード (元 + バンドル切り替え)
   const sourcePath = path.join(ROOT, hppPath);
@@ -502,7 +502,7 @@ function generateHppPage(
         ?.replace(/\.hpp$/, "") ||
       hppRelPath;
     const link = `${BASE_PATH}/${hppRelPath.replace(/^mylib\//, "").replace(/\.hpp$/, ".html")}`;
-    return `<li>${icon} <a href="${link}">${escapeHtml(title)}</a> (${escapeHtml(hppRelPath)})</li>\n`;
+    return `<li>${icon} <a href="${link}">${renderInlineKatex(escapeHtml(title))}</a> (${escapeHtml(hppRelPath)})</li>\n`;
   }
 
   // Depends on
@@ -519,11 +519,11 @@ function generateHppPage(
       body += "</ul>\n";
     }
     if (indirectDeps.length > 0) {
-      body += "<h3>Indirect</h3>\n<ul>\n";
+      body += `<details><summary>Indirect (${indirectDeps.length})</summary>\n<ul>\n`;
       for (const dep of indirectDeps) {
         body += renderDepItem(dep);
       }
-      body += "</ul>\n";
+      body += "</ul>\n</details>\n";
     }
   }
 
@@ -541,11 +541,11 @@ function generateHppPage(
       body += "</ul>\n";
     }
     if (indirectReqBy.length > 0) {
-      body += "<h3>Indirect</h3>\n<ul>\n";
+      body += `<details><summary>Indirect (${indirectReqBy.length})</summary>\n<ul>\n`;
       for (const req of indirectReqBy) {
         body += renderDepItem(req);
       }
-      body += "</ul>\n";
+      body += "</ul>\n</details>\n";
     }
   }
 
@@ -602,7 +602,7 @@ function generateTestPage(
           ?.replace(/\.hpp$/, "") ||
         hpp;
       const link = `${BASE_PATH}/${hpp.replace(/^mylib\//, "").replace(/\.hpp$/, ".html")}`;
-      body += `<li>${icon} <a href="${link}">${escapeHtml(title)}</a> (${escapeHtml(hpp)})</li>\n`;
+      body += `<li>${icon} <a href="${link}">${renderInlineKatex(escapeHtml(title))}</a> (${escapeHtml(hpp)})</li>\n`;
     }
     body += "</ul>\n";
   }

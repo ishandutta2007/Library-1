@@ -1,6 +1,7 @@
 ---
 title: 乗法的関数テーブルや gcd 畳み込みなど
 documentation_of: ../../mylib/number_theory/tables.hpp
+order: 300
 ---
 
 ## 関数

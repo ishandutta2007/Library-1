@@ -1,6 +1,7 @@
 ---
-title: テトレーション $a\upuparrows b$ ($\mathbb{Z}/m\mathbb{Z}$)
+title: $\mathbb{Z}/m\mathbb{Z}$ 上のテトレーション $a\upuparrows b$ 
 documentation_of: ../../mylib/number_theory/mod_tetration.hpp
+order: 130
 ---
 
 ## 概要

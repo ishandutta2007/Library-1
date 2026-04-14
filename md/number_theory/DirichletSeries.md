@@ -1,6 +1,7 @@
 ---
 title: ディリクレ級数
 documentation_of: ../../mylib/number_theory/DirichletSeries.hpp
+order: 330
 ---
 
 $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$

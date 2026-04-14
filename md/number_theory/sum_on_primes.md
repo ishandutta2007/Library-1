@@ -1,6 +1,7 @@
 ---
 title: 素数上の累積和
 documentation_of: ../../mylib/number_theory/sum_on_primes.hpp
+order: 320
 ---
 
 $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$

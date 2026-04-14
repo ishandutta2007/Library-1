@@ -1,6 +1,7 @@
 ---
 title: 高速素因数分解など
 documentation_of: ../../mylib/number_theory/Factors.hpp
+order: 20
 ---
 
 ## `Factors` クラス

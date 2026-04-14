@@ -1,6 +1,7 @@
 ---
-title: k乗根 ($\mathbb{F}_p$)
+title:  $\mathbb{F}_p$ 上の $k$ 乗根
 documentation_of: ../../mylib/number_theory/mod_kth_root.hpp
+order: 120
 ---
 ## 計算量
 $O ( \min(k,p)^{1/4} )$

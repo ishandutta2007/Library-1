@@ -1,6 +1,7 @@
 ---
 title: $\lfloor N/x \rfloor$ の配列
 documentation_of: ../../mylib/number_theory/CumSumQuotient.hpp
+order: 310
 ---
 
 $\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}$

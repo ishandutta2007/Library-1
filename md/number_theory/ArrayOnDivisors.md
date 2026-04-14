@@ -1,6 +1,7 @@
 ---
 title: 約数配列
 documentation_of: ../../mylib/number_theory/ArrayOnDivisors.hpp
+order: 220
 ---
 
 

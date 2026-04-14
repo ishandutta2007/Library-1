@@ -1,6 +1,7 @@
 ---
 title: 素数判定
 documentation_of: ../../mylib/number_theory/is_prime.hpp
+order: 1
 ---
 
 `unsigned long long` 型の整数が素数かどうかを判定する。

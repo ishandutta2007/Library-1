@@ -1,6 +1,7 @@
 ---
 title: 原始根と位数 $\mathbb{F}_p^{\times}$
 documentation_of: ../../mylib/number_theory/OrderFp.hpp
+order: 50
 ---
 
 

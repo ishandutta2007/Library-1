@@ -2,7 +2,7 @@
 #include <string>
 #include <limits>
 #include <sstream>
-#include "mylib/algebra/binary_gcd.hpp"
+#include "mylib/number_theory/binary_gcd.hpp"
 template <class Int, bool reduction= true> struct Rational {
  Int num, den;
  constexpr Rational(): num(0), den(1) {}

@@ -5,7 +5,7 @@
 #include <vector>
 #include "mylib/algebra/ModInt.hpp"
 #include "mylib/algebra/sparse_fps.hpp"
-#include "mylib/algebra/mod_sqrt.hpp"
+#include "mylib/number_theory/mod_sqrt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

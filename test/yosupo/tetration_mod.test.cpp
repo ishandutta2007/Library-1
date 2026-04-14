@@ -2,7 +2,7 @@
 // competitive-verifier: TLE 0.5
 // competitive-verifier: MLE 64
 #include <iostream>
-#include "mylib/algebra/mod_tetration.hpp"
+#include "mylib/number_theory/mod_tetration.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

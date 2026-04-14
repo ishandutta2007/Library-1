@@ -1,6 +1,6 @@
 ---
 title: Binary GCD
-documentation_of: ../../mylib/algebra/binary_gcd.hpp
+documentation_of: ../../mylib/number_theory/binary_gcd.hpp
 ---
 
 除算の代わりにシフト演算と引き算を使うことで高速に最大公約数を求めるアルゴリズム。

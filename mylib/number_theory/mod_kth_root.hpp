@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <cmath>
-#include "mylib/algebra/mod_inv.hpp"
+#include "mylib/number_theory/mod_inv.hpp"
 #include "mylib/number_theory/Factors.hpp"
 namespace math_internal {
 template <class Int, class MP> inline i64 peth_root(Int c, Int pi, int ei, const MP& md) {

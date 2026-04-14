@@ -1,7 +1,7 @@
 // competitive-verifier: STANDALONE
 
 #include <cassert>
-#include "mylib/algebra/mod_tetration.hpp"
+#include "mylib/number_theory/mod_tetration.hpp"
 using namespace std;
 int len(unsigned long long x) {
  int ret= 0;

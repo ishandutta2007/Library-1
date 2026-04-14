@@ -1,6 +1,6 @@
 // competitive-verifier: STANDALONE
 
-#include "mylib/algebra/mod_inv.hpp"
+#include "mylib/number_theory/mod_inv.hpp"
 
 constexpr auto f= mod_inv(2, 1000000007);
 static_assert(f == 500000004);

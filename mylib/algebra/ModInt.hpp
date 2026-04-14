@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "mylib/algebra/mod_inv.hpp"
+#include "mylib/number_theory/mod_inv.hpp"
 #include "mylib/internal/Remainder.hpp"
 #include "mylib/internal/modint_traits.hpp"
 namespace math_internal {

@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include "mylib/algebra/FactorialPrecalculation.hpp"
-#include "mylib/algebra/mod_sqrt.hpp"
+#include "mylib/number_theory/mod_sqrt.hpp"
 namespace sfps {
 namespace sfps_internal {
 using namespace std;

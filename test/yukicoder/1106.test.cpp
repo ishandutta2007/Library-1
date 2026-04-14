@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 64
 #include <iostream>
 #include <vector>
-#include "mylib/misc/Automaton.hpp"
+#include "mylib/counting/Automaton.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

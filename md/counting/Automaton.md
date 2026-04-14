@@ -1,6 +1,6 @@
 ---
 title: オートマトン上のDP
-documentation_of: ../../mylib/misc/Automaton.hpp
+documentation_of: ../../mylib/counting/Automaton.hpp
 ---
 
 オートマトンで表現できる条件を満たす文字列（や数列）について、その個数や総和などを効率的に計算するためのライブラリ。いわゆる「桁DP」は、このライブラリの典型的な応用例の一つである。
@@ -57,7 +57,7 @@ documentation_of: ../../mylib/misc/Automaton.hpp
 #include <iostream>
 #include <vector>
 #include <string>
-#include "mylib/misc/Automaton.hpp"
+#include "mylib/counting/Automaton.hpp"
 
 void solve() {
     std::string N;

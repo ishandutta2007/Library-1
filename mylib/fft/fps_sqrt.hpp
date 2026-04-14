@@ -1,6 +1,6 @@
 #pragma once
 #include "mylib/fft/fps_inv.hpp"
-#include "mylib/algebra/mod_sqrt.hpp"
+#include "mylib/number_theory/mod_sqrt.hpp"
 namespace math_internal {
 template <size_t LM, class mod_t> void sqrt_base(const mod_t p[], int n, mod_t r[], int l, mod_t v[], mod_t iv[]) {
  static constexpr int t= nttarr_cat<mod_t, LM>, TH= (int[]){64, 64, 256, 256, 256, 256}[t];

@@ -6,7 +6,7 @@
 #include "mylib/algebra/ModInt.hpp"
 #include "mylib/fft/fps_inv.hpp"
 #include "mylib/fft/fps_exp.hpp"
-#include "mylib/algebra/mod_sqrt.hpp"
+#include "mylib/number_theory/mod_sqrt.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

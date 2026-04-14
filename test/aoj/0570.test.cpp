@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include <array>
-#include "mylib/misc/Automaton.hpp"
+#include "mylib/counting/Automaton.hpp"
 #include "mylib/algebra/ModInt.hpp"
 using namespace std;
 signed main() {

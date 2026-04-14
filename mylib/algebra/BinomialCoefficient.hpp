@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "mylib/number_theory/Factors.hpp"
-#include "mylib/algebra/mod_inv.hpp"
+#include "mylib/number_theory/mod_inv.hpp"
 class BinomialCoefficient {  // mod <= 1e6
  using i64= int64_t;
  struct ModPe {

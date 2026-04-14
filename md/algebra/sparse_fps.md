@@ -14,7 +14,7 @@ documentation_of: ../../mylib/algebra/sparse_fps.hpp
 
 ## 依存
 - `mylib/algebra/FactorialPrecalculation.hpp`
-- `mylib/algebra/mod_sqrt.hpp`
+- `mylib/number_theory/mod_sqrt.hpp`
 
 ## 関数
 

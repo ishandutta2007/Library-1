@@ -1,6 +1,7 @@
 ---
 title: 多項式の評価点シフト
 documentation_of: ../../mylib/algebra/sample_points_shift.hpp
+order: 100
 ---
 
 $n-1$ 次多項式 $f(x)$ の $x=0, 1, \dots, n-1$ における評価点の値 $y_i = f(i)$ が与えられたときに、$f(c), f(c+1), \dots$ の値を求める。

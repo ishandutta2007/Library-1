@@ -5,7 +5,7 @@
 #include <vector>
 #include "mylib/algebra/ModInt.hpp"
 #include "mylib/number_theory/ArrayOnDivisors.hpp"
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 // 倍数メビウス
 using namespace std;
 signed main() {

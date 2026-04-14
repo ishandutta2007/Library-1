@@ -7,7 +7,7 @@
 #include <vector>
 #include <numeric>
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 #include "mylib/graph/block_cut_tree.hpp"
 using namespace std;
 signed main() {

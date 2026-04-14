@@ -5,7 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 #include "mylib/graph/Graph.hpp"
 #include "mylib/graph/Rerooting.hpp"
 using namespace std;

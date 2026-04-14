@@ -5,7 +5,7 @@
 #include <vector>
 #include "mylib/algebra/ModInt.hpp"
 #include "mylib/number_theory/ArrayOnDivisors.hpp"
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 // バーンサイドの補題から求めた
 using namespace std;
 signed main() {

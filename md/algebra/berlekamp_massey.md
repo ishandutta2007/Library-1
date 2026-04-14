@@ -1,6 +1,7 @@
 ---
 title: Berlekamp-Massey
 documentation_of: ../../mylib/algebra/berlekamp_massey.hpp
+order: 110
 ---
 数列$\lbrace a_i\rbrace$の最初の $n$ 項 $\lbrace a_i\rbrace_{i=0}^{n-1}$から、その数列を生成する最小の線形漸化式
 $$

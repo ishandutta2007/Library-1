@@ -1,6 +1,7 @@
 ---
 title: 疎な形式的冪級数
 documentation_of: ../../mylib/algebra/sparse_fps.hpp
+order: 130
 ---
 
 ## 概要
@@ -13,7 +14,7 @@ documentation_of: ../../mylib/algebra/sparse_fps.hpp
 すべての関数は `sfps` 名前空間に定義されています。
 
 ## 依存
-- `mylib/algebra/FactorialPrecalculation.hpp`
+- `mylib/counting/FactorialPrecalculation.hpp`
 - `mylib/number_theory/mod_sqrt.hpp`
 
 ## 関数

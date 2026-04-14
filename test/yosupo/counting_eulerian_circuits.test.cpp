@@ -5,7 +5,7 @@
 #include <vector>
 #include "mylib/algebra/LU_Decomposition.hpp"
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);

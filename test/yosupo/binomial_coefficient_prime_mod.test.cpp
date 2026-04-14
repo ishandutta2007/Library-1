@@ -3,7 +3,7 @@
 // competitive-verifier: MLE 256
 #include <iostream>
 #include "mylib/algebra/ModInt_Runtime.hpp"
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 using namespace std;
 int main() {
  cin.tie(0);

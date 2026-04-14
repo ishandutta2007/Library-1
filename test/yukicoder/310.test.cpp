@@ -4,7 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 #include "mylib/algebra/MinimalPolynomial.hpp"
 using namespace std;
 signed main() {

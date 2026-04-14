@@ -1,5 +1,5 @@
 #pragma once
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 // given: f(0),f(1),...,f(n-1), c   output: f(c)    O(n)
 template <class mod_t> mod_t sample_points_shift(std::vector<mod_t> y, mod_t c) {
  using F= FactorialPrecalculation<mod_t>;

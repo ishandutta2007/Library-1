@@ -5,7 +5,7 @@
  */
 #include <iostream>
 #include <vector>
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 #include "mylib/algebra/ModInt.hpp"
 #include "mylib/number_theory/enumerate_primes.hpp"
 using namespace std;

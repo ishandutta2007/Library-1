@@ -1,6 +1,7 @@
 ---
 title: 線形漸化的数列の第$k$項
 documentation_of: ../../mylib/algebra/bostan_mori.hpp
+order: 120
 ---
 
 ## 概要

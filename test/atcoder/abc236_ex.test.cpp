@@ -6,7 +6,7 @@
 #include <iostream>
 #include <numeric>
 #include "mylib/algebra/ModInt.hpp"
-#include "mylib/algebra/FactorialPrecalculation.hpp"
+#include "mylib/counting/FactorialPrecalculation.hpp"
 #include "mylib/algebra/set_power_series.hpp"
 using namespace std;
 signed main() {

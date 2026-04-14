@@ -1,6 +1,7 @@
 ---
 title: 削除なし動的凸包
 documentation_of: ../../mylib/geometry/IncrementalConvexHull.hpp
+order: 200
 ---
 
 ## メンバ関数

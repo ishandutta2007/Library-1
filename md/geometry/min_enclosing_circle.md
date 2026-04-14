@@ -1,6 +1,7 @@
 ---
 title: 最小包含円
 documentation_of: ../../mylib/geometry/min_enclosing_circle.hpp
+order: 130
 ---
 
 ## 関数

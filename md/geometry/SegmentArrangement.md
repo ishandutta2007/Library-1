@@ -1,6 +1,7 @@
 ---
 title: 線分アレンジメント
 documentation_of: ../../mylib/geometry/SegmentArrangement.hpp
+order: 210
 ---
 
 ## 概要

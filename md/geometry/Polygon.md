@@ -1,6 +1,7 @@
 ---
 title: 多角形
 documentation_of: ../../mylib/geometry/Polygon.hpp
+order: 40
 ---
 
 ## `Polygon<K>` クラス

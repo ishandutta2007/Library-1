@@ -1,6 +1,7 @@
 ---
 title: 凸多角形
 documentation_of: ../../mylib/geometry/Convex.hpp
+order: 50
 ---
 
 ## `Convex<K>` クラス

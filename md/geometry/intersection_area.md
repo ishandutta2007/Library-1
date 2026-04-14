@@ -1,6 +1,7 @@
 ---
 title: 円との共通部分の面積
 documentation_of: ../../mylib/geometry/intersection_area.hpp
+order: 120
 ---
 
 ## 関数

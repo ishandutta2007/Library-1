@@ -1,6 +1,7 @@
 ---
 title: 最近点対
 documentation_of: ../../mylib/geometry/closest_pair.hpp
+order: 110
 ---
 
 分割統治+枝刈り

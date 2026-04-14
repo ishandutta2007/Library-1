@@ -1,6 +1,7 @@
 ---
 title: 直線
 documentation_of: ../../mylib/geometry/Line.hpp
+order: 10
 ---
 
 ## `Line<K>` クラス

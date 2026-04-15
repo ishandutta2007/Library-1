@@ -26,7 +26,6 @@ export function flattenPreviousResults(prevPath: string): RunResultEntry[] {
         file,
         problem: testData.problem,
         environment,
-        split: testData.split,
         status: envData.status,
         compile_error: envData.compile_error,
         last_execution_time: envData.last_execution_time || "",

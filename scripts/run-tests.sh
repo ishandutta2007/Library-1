@@ -138,8 +138,11 @@ run_single_case() {
   stderr_file=$(mktemp)
 
   # 実行 + 計測
+  # /usr/bin/time の出力は time_output へ、バイナリの stderr は stderr_file へ分離する
   if [[ "$(uname)" == "Darwin" ]]; then
-    /usr/bin/time -l timeout "${tle_sec}" "${binary}" < "${input_file}" > "${output_file}" 2>"${time_output}" && true
+    /usr/bin/time -l sh -c 'timeout "$1" "$2" < "$3" > "$4" 2>"$5"' _ \
+      "${tle_sec}" "${binary}" "${input_file}" "${output_file}" "${stderr_file}" \
+      2>"${time_output}" && true
     local exit_code=$?
 
     if [[ ${exit_code} -eq 124 ]] || [[ ${exit_code} -eq 137 ]]; then
@@ -152,8 +155,10 @@ run_single_case() {
     elapsed_ms=$(awk '/real/{printf "%.0f", $1 * 1000}' "${time_output}" 2>/dev/null || echo "0")
     memory_kb=$(awk '/maximum resident set size/{printf "%.0f", $1 / 1024}' "${time_output}" 2>/dev/null || echo "0")
   else
-    # Linux: stderr を別途キャプチャ
-    /usr/bin/time -v timeout "${tle_sec}" "${binary}" < "${input_file}" > "${output_file}" 2>"${time_output}" && true
+    # Linux: バイナリの stderr を stderr_file に分離し、/usr/bin/time の出力は time_output へ
+    /usr/bin/time -v sh -c 'timeout "$1" "$2" < "$3" > "$4" 2>"$5"' _ \
+      "${tle_sec}" "${binary}" "${input_file}" "${output_file}" "${stderr_file}" \
+      2>"${time_output}" && true
     local exit_code=$?
 
     if [[ ${exit_code} -eq 124 ]] || [[ ${exit_code} -eq 137 ]]; then
@@ -167,7 +172,7 @@ run_single_case() {
     memory_kb=$(grep "Maximum resident set size" "${time_output}" | awk '{print $NF}' 2>/dev/null || echo "0")
   fi
 
-  rm -f "${time_output}" "${stderr_file}"
+  rm -f "${time_output}"
 
   # 空値のガード
   [[ -z "${elapsed_ms}" ]] && elapsed_ms=0
@@ -228,12 +233,16 @@ run_single_case() {
         echo "--- expected output (first 20 lines) ---"
         head -20 "${expected_file}"
       fi
+      if [[ -s "${stderr_file}" ]]; then
+        echo "--- stderr (first 30 lines) ---"
+        head -30 "${stderr_file}"
+      fi
       echo "--- detail ---"
       echo "${detail}"
     } > "${log_file}" 2>/dev/null
   fi
 
-  rm -f "${output_file}"
+  rm -f "${output_file}" "${stderr_file}"
 
   # detail 内の改行や特殊文字をエスケープ
   if [[ -n "${detail}" ]]; then

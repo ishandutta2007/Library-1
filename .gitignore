@@ -17,6 +17,9 @@ test/atcoder/agc005_b*.test.cpp
 
 gemini-artifacts/
 
+# Python
+__pycache__/
+
 # VitePress / Node.js
 node_modules/
 /.vitepress/

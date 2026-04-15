@@ -28,14 +28,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
+          python-version: "3.12"
 
       - name: Determine tests to run
         id: split
@@ -44,7 +40,7 @@ jobs:
           need_rerun_all=""
           if [ -f "${prev}" ]; then
             for env in x64-g++ x64-clang++ arm-g++ arm-clang++; do
-              tests=$(npx tsx scripts/check-need-rerun.ts \
+              tests=$(python3 scripts/check-need-rerun.py \
                 --prev-result "${prev}" \
                 --env "${env}" \
                 --all 2>/dev/null | grep -v '^#')
@@ -233,7 +229,7 @@ jobs:
         run: |
           mkdir -p .verify-results
           if [ -d ".cache/results" ] && ls .cache/results/result-*.json 1>/dev/null 2>&1; then
-            npx tsx scripts/merge-results.ts --prev .verify-results/results.json
+            python3 scripts/merge-results.py --prev .verify-results/results.json
           fi
 
       - name: Commit results
@@ -252,7 +248,7 @@ jobs:
           fi
 
       - name: Write summary
-        run: npx tsx scripts/write-summary.ts >> "$GITHUB_STEP_SUMMARY" || true
+        run: python3 scripts/write-summary.py >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Build site
         run: npm run build

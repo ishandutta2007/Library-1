@@ -16,6 +16,10 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TEST_DIR="${ROOT}/test"
+SCRIPTS_DIR="${ROOT}/scripts"
+
+# 共通関数を読み込み
+source "${SCRIPTS_DIR}/lib/run-lib.sh"
 
 CXX="${CXX:-g++}"
 CXXFLAGS="${CXXFLAGS:--std=c++17 -O2}"
@@ -43,26 +47,16 @@ done
 
 mkdir -p "${TC_DIR}" "${RESULT_DIR}"
 
-run_ts_script() {
-  (
-    cd "${ROOT}"
-    npx tsx "$@"
-  )
+# =============================================================================
+# Python ヘルパー呼び出し
+# =============================================================================
+run_python() {
+  python3 "$@"
 }
 
-append_result_json() {
+append_result_jsonl() {
   local json="$1"
-  printf '%s\n' "${json}" | node -e 'const fs=require("fs"); const data=JSON.parse(fs.readFileSync(0,"utf8")); process.stdout.write(JSON.stringify(data)+"\n")' >> "${RESULT_JSONL_FILE}"
-}
-
-append_case_record() {
-  local records_file="$1"
-  local case_name="$2"
-  local case_status="$3"
-  local case_time="$4"
-  local case_mem="$5"
-  local case_detail="${6:-}"
-  printf '%s\x1f%s\x1f%s\x1f%s\x1f%s\n' "${case_name}" "${case_status}" "${case_time}" "${case_mem}" "${case_detail}" >> "${records_file}"
+  printf '%s\n' "${json}" >> "${RESULT_JSONL_FILE}"
 }
 
 build_result_entry() {
@@ -72,7 +66,7 @@ build_result_entry() {
   local cases_records="$4"
   local compile_error_file="${5:-}"
 
-  local cmd=(npx tsx "${ROOT}/scripts/collect-run-results.ts" build-entry
+  local cmd=(python3 "${SCRIPTS_DIR}/collect-run-results.py" build-entry
     --file "${file}"
     --problem "${problem}"
     --environment "${ENV_NAME}"
@@ -112,145 +106,6 @@ get_testcase_dir() {
   fi
 
   return 1
-}
-
-# =============================================================================
-# 1つのテストケースを実行して時間・メモリを計測
-# =============================================================================
-run_single_case() {
-  local binary="$1"
-  local input_file="$2"
-  local expected_file="$3"
-  local tle_sec="$4"
-  local error_tolerance="$5"
-  local checker_bin="${6:-}"
-  local output_file
-  output_file=$(mktemp)
-
-  local status="AC"
-  local elapsed_ms=0
-  local memory_kb=0
-  local detail=""
-
-  local time_output
-  time_output=$(mktemp)
-  local stderr_file
-  stderr_file=$(mktemp)
-
-  # 実行 + 計測
-  # /usr/bin/time の出力は time_output へ、バイナリの stderr は stderr_file へ分離する
-  if [[ "$(uname)" == "Darwin" ]]; then
-    /usr/bin/time -l sh -c 'timeout "$1" "$2" < "$3" > "$4" 2>"$5"' _ \
-      "${tle_sec}" "${binary}" "${input_file}" "${output_file}" "${stderr_file}" \
-      2>"${time_output}" && true
-    local exit_code=$?
-
-    if [[ ${exit_code} -eq 124 ]] || [[ ${exit_code} -eq 137 ]]; then
-      status="TLE"
-    elif [[ ${exit_code} -ne 0 ]]; then
-      status="RE"
-      detail="exit code ${exit_code}"
-    fi
-
-    elapsed_ms=$(awk '/real/{printf "%.0f", $1 * 1000}' "${time_output}" 2>/dev/null || echo "0")
-    memory_kb=$(awk '/maximum resident set size/{printf "%.0f", $1 / 1024}' "${time_output}" 2>/dev/null || echo "0")
-  else
-    # Linux: バイナリの stderr を stderr_file に分離し、/usr/bin/time の出力は time_output へ
-    /usr/bin/time -v sh -c 'timeout "$1" "$2" < "$3" > "$4" 2>"$5"' _ \
-      "${tle_sec}" "${binary}" "${input_file}" "${output_file}" "${stderr_file}" \
-      2>"${time_output}" && true
-    local exit_code=$?
-
-    if [[ ${exit_code} -eq 124 ]] || [[ ${exit_code} -eq 137 ]]; then
-      status="TLE"
-    elif [[ ${exit_code} -ne 0 ]]; then
-      status="RE"
-      detail="exit code ${exit_code}"
-    fi
-
-    elapsed_ms=$(grep "Elapsed (wall clock)" "${time_output}" | sed 's/.*: //' | awk -F: '{if (NF==2) printf "%.0f", ($1*60+$2)*1000; else printf "%.0f", $1*1000}' 2>/dev/null || echo "0")
-    memory_kb=$(grep "Maximum resident set size" "${time_output}" | awk '{print $NF}' 2>/dev/null || echo "0")
-  fi
-
-  rm -f "${time_output}"
-
-  # 空値のガード
-  [[ -z "${elapsed_ms}" ]] && elapsed_ms=0
-  [[ -z "${memory_kb}" ]] && memory_kb=0
-
-  # MLE 判定
-  if [[ "${status}" == "AC" ]] && [[ -n "${MLE_MB:-}" ]]; then
-    local mle_kb=$(( MLE_MB * 1024 ))
-    if [[ ${memory_kb} -gt ${mle_kb} ]]; then
-      status="MLE"
-      detail="used ${memory_kb}KB > limit ${mle_kb}KB"
-    fi
-  fi
-
-  # 判定 (TLE/RE/MLE でなければ出力を比較)
-  if [[ "${status}" == "AC" ]]; then
-    if [[ -n "${checker_bin}" ]] && [[ -x "${checker_bin}" ]]; then
-      if ! "${checker_bin}" "${input_file}" "${output_file}" "${expected_file}" &>/dev/null; then
-        status="WA"
-        local actual_head expected_head
-        actual_head=$(head -1 "${output_file}" | cut -c1-50)
-        expected_head=$(head -1 "${expected_file}" | cut -c1-50)
-        detail="expected:[${expected_head}] actual:[${actual_head}]"
-      fi
-    elif [[ -n "${error_tolerance}" ]] && [[ "${error_tolerance}" != "0" ]]; then
-      if ! run_ts_script "${ROOT}/scripts/compare-float-output.ts" \
-        --actual "${output_file}" \
-        --expected "${expected_file}" \
-        --tolerance "${error_tolerance}" >/dev/null 2>&1; then
-        status="WA"
-        detail="float compare failed (tolerance=${error_tolerance})"
-      fi
-    else
-      if ! diff <(sed 's/[[:space:]]*$//' "${output_file}") <(sed 's/[[:space:]]*$//' "${expected_file}") &>/dev/null; then
-        status="WA"
-        local actual_head expected_head
-        actual_head=$(head -1 "${output_file}" | cut -c1-50)
-        expected_head=$(head -1 "${expected_file}" | cut -c1-50)
-        detail="expected:[${expected_head}] actual:[${actual_head}]"
-      fi
-    fi
-  fi
-
-  # WA/RE の詳細をログディレクトリに保存
-  if [[ "${status}" != "AC" ]] && [[ -n "${DETAIL_LOG_DIR:-}" ]]; then
-    local log_file="${DETAIL_LOG_DIR}/${case_name:-unknown}.${status}.log"
-    {
-      echo "Status: ${status}"
-      echo "Time: ${elapsed_ms}ms"
-      echo "Memory: ${memory_kb}KB"
-      if [[ -f "${input_file}" ]]; then
-        echo "--- input (first 20 lines) ---"
-        head -20 "${input_file}"
-      fi
-      if [[ "${status}" == "WA" ]] && [[ -f "${output_file}" ]]; then
-        echo "--- actual output (first 20 lines) ---"
-        head -20 "${output_file}"
-        echo "--- expected output (first 20 lines) ---"
-        head -20 "${expected_file}"
-      fi
-      if [[ -s "${stderr_file}" ]]; then
-        echo "--- stderr (first 30 lines) ---"
-        head -30 "${stderr_file}"
-      fi
-      echo "--- detail ---"
-      echo "${detail}"
-    } > "${log_file}" 2>/dev/null
-  fi
-
-  rm -f "${output_file}" "${stderr_file}"
-
-  # detail 内の改行や特殊文字をエスケープ
-  if [[ -n "${detail}" ]]; then
-    detail=$(echo "${detail}" | head -3 | tr '\n' ' ' | sed 's/"/\\"/g' | cut -c1-200)
-    echo "${status} ${elapsed_ms} ${memory_kb} ${detail}"
-  else
-    echo "${status} ${elapsed_ms} ${memory_kb}"
-  fi
 }
 
 # =============================================================================
@@ -309,7 +164,7 @@ run_test_file() {
     local compile_error_excerpt
     compile_error_excerpt=$(mktemp)
     head -50 "${compile_err}" > "${compile_error_excerpt}"
-    append_result_json "$(build_result_entry "${rel_path}" "${PROBLEM_URL}" "CE" /dev/null "${compile_error_excerpt}")"
+    append_result_jsonl "$(build_result_entry "${rel_path}" "${PROBLEM_URL}" "CE" /dev/null "${compile_error_excerpt}")"
     rm -f "${compile_error_excerpt}"
     rm -f "${binary}" "${compile_err}"
     return
@@ -324,7 +179,6 @@ run_test_file() {
     local case_status case_time case_mem case_detail
     read -r case_status case_time case_mem case_detail <<< "${result}"
 
-    # standalone は exit code 0 なら AC
     if [[ "${case_status}" == "AC" ]]; then
       echo "AC (${case_time}ms, ${case_mem}KB)"
     else
@@ -334,7 +188,7 @@ run_test_file() {
     local case_records_file
     case_records_file=$(mktemp)
     append_case_record "${case_records_file}" "standalone" "${case_status}" "${case_time}" "${case_mem}" "${case_detail:-}"
-    append_result_json "$(build_result_entry "${rel_path}" "${PROBLEM_URL}" "${case_status}" "${case_records_file}")"
+    append_result_jsonl "$(build_result_entry "${rel_path}" "${PROBLEM_URL}" "${case_status}" "${case_records_file}")"
     rm -f "${case_records_file}"
     rm -f "${binary}"
     return
@@ -363,16 +217,8 @@ run_test_file() {
   case_records_file=$(mktemp)
 
   # checker の検出・コンパイル (yosupo judge 等)
-  local checker_bin=""
-  if [[ -f "${tc_cache}/checker.cpp" ]]; then
-    checker_bin="${tc_cache}/checker"
-    if [[ ! -x "${checker_bin}" ]]; then
-      # アーキテクチャに合わせてコンパイル
-      local checker_args=(-std=c++17 -O2)
-      [[ -f "${tc_cache}/testlib.h" ]] && checker_args+=("-I${tc_cache}")
-      g++ "${checker_args[@]}" -o "${checker_bin}" "${tc_cache}/checker.cpp" 2>/dev/null || checker_bin=""
-    fi
-  fi
+  local checker_bin
+  checker_bin=$(compile_checker "${tc_cache}")
 
   shopt -s nullglob
   for input_file in "${tc_cache}"/*/in.txt "${tc_cache}"/*.in; do
@@ -414,7 +260,7 @@ run_test_file() {
 
   echo "${overall_status} (${case_count} cases)"
 
-  append_result_json "$(build_result_entry "${rel_path}" "${PROBLEM_URL}" "${overall_status}" "${case_records_file}")"
+  append_result_jsonl "$(build_result_entry "${rel_path}" "${PROBLEM_URL}" "${overall_status}" "${case_records_file}")"
 
   rm -f "${case_records_file}"
   rm -f "${binary}"
@@ -463,7 +309,7 @@ if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
     echo "${t#"$ROOT"/}" >> "${SPLIT_TESTS_FILE}"
   done
   mapfile -t split_test_args < "${SPLIT_TESTS_FILE}"
-  run_ts_script "${ROOT}/scripts/check-need-rerun.ts" \
+  run_python "${SCRIPTS_DIR}/check-need-rerun.py" \
     --prev-result "${PREV_RESULT}" \
     --env "${ENV_NAME}" \
     --test-files "${split_test_args[@]}" \
@@ -482,13 +328,13 @@ RESULT_FILE="${RESULT_DIR}/result-${ENV_NAME}.json"
 
 # 前回結果からスキップしたテストの結果をコピー
 if [[ -n "${PREV_RESULT}" ]] && [[ -f "${PREV_RESULT}" ]]; then
-  run_ts_script "${ROOT}/scripts/collect-run-results.ts" carry-over \
-  --prev-result "${PREV_RESULT}" \
-  --need-rerun-file "${NEED_RERUN_FILE}" \
-  --split-tests-file "${SPLIT_TESTS_FILE}" \
-  --env "${ENV_NAME}" \
-  --out-jsonl "${RESULT_JSONL_FILE}" \
-  || true
+  run_python "${SCRIPTS_DIR}/collect-run-results.py" carry-over \
+    --prev-result "${PREV_RESULT}" \
+    --need-rerun-file "${NEED_RERUN_FILE}" \
+    --split-tests-file "${SPLIT_TESTS_FILE}" \
+    --env "${ENV_NAME}" \
+    --out-jsonl "${RESULT_JSONL_FILE}" \
+    || true
 fi
 
 echo "Environment: ${ENV_NAME} (${CXX})"
@@ -508,6 +354,6 @@ done
 
 rm -f "${NEED_RERUN_FILE}" "${SPLIT_TESTS_FILE:-}"
 
-run_ts_script "${ROOT}/scripts/collect-run-results.ts" finalize \
+run_python "${SCRIPTS_DIR}/collect-run-results.py" finalize \
   --in-jsonl "${RESULT_JSONL_FILE}" \
   --out-json "${RESULT_FILE}"

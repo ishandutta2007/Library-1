@@ -184,31 +184,6 @@ function buildGroupedOutput(
   return output;
 }
 
-export function buildCompactResults(
-  grouped: Record<string, MergedProblem[]>,
-): CompactResults {
-  const tests: CompactResults["tests"] = {};
-  const hpp_map: Record<string, string[]> = {};
-
-  for (const problems of Object.values(grouped)) {
-    for (const problem of problems) {
-      if (!tests[problem.file]) {
-        tests[problem.file] = {
-          problem: problem.problem,
-          time_limit_ms: problem.time_limit_ms,
-          environments: problem.environments,
-        };
-      }
-    }
-  }
-
-  for (const [hpp, problems] of Object.entries(grouped)) {
-    hpp_map[hpp] = problems.map((problem) => problem.file);
-  }
-
-  return { tests, hpp_map };
-}
-
 export function mergeResults(args: MergeArgs): CompactResults {
   const outputPath = path.join(args.root, ".verify-results", "results.json");
   const newResults = loadNewResults(args.root);
@@ -216,5 +191,23 @@ export function mergeResults(args: MergeArgs): CompactResults {
   const prevMap = fs.existsSync(prevPath) ? loadPreviousEnvMap(prevPath) : {};
   const envMap = mergeEnvironments(prevMap, newResults);
   const grouped = buildGroupedOutput(args.root, envMap);
-  return buildCompactResults(grouped);
+
+  // hpp_map: grouped から構築
+  const hpp_map: Record<string, string[]> = {};
+  for (const [hpp, problems] of Object.entries(grouped)) {
+    hpp_map[hpp] = problems.map((p) => p.file);
+  }
+
+  // tests: envMap の全テストから構築（hpp に紐づかないテストも漏れない）
+  const tests: CompactResults["tests"] = {};
+  for (const [file, environments] of Object.entries(envMap)) {
+    const meta = getTestMeta(args.root, file);
+    tests[file] = {
+      problem: meta.problem,
+      time_limit_ms: meta.tlMs,
+      environments,
+    };
+  }
+
+  return { tests, hpp_map };
 }

@@ -5,8 +5,7 @@ import {
   type CompactResults,
   type CompactTestResult,
   type EnvSummary,
-  isCompactResults,
-  readJsonFile,
+  loadCompactResultsFromPath,
 } from "./results";
 import { buildDependencyGraph, buildTestMap } from "./dependency-graph";
 
@@ -44,31 +43,11 @@ function loadNewResults(root: string): TestResult[] {
 function loadPreviousTests(
   prevPath: string,
 ): Record<string, CompactTestResult> {
-  const raw = readJsonFile(prevPath);
-  if (!raw) return {};
-
-  console.log(`Loaded previous results from ${prevPath}`);
-  if (isCompactResults(raw)) {
-    return { ...raw.tests };
+  const compact = loadCompactResultsFromPath(prevPath);
+  if (Object.keys(compact.tests).length > 0) {
+    console.log(`Loaded previous results from ${prevPath}`);
   }
-
-  // レガシー grouped 形式
-  const tests: Record<string, CompactTestResult> = {};
-  for (const problems of Object.values(
-    raw as Record<string, { file: string; problem: string; time_limit_ms: number; environments: Record<string, EnvSummary> }[]>,
-  )) {
-    for (const p of problems) {
-      if (!tests[p.file]) {
-        tests[p.file] = {
-          problem: p.problem,
-          time_limit_ms: p.time_limit_ms,
-          environments: {},
-        };
-      }
-      Object.assign(tests[p.file].environments, p.environments);
-    }
-  }
-  return tests;
+  return { ...compact.tests };
 }
 
 /** 前回結果と新しい結果をマージする */

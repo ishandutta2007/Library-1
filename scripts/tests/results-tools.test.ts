@@ -10,51 +10,10 @@ import {
   finalizeResults,
 } from "../lib/run-results";
 import { compareFloatOutputs, compareFloatText } from "../lib/float-compare";
-import { parseCompactResults } from "../lib/results";
 
 function makeTempDir(): string {
   return fs.mkdtempSync(path.join(os.tmpdir(), "library-scripts-"));
 }
-
-test("parseCompactResults normalizes grouped legacy results", () => {
-  const grouped = {
-    "mylib/foo.hpp": [
-      {
-        file: "test/foo.test.cpp",
-        problem: "https://example.com/foo",
-        time_limit_ms: 2000,
-        environments: {
-          "x64-g++": {
-            status: "AC",
-            summary: { time_max_ms: 10, time_total_ms: 10, memory_max_kb: 20 },
-            cases: [],
-          },
-        },
-      },
-    ],
-    "mylib/bar.hpp": [
-      {
-        file: "test/foo.test.cpp",
-        problem: "https://example.com/foo",
-        time_limit_ms: 2000,
-        environments: {
-          "x64-clang++": {
-            status: "WA",
-            summary: { time_max_ms: 11, time_total_ms: 11, memory_max_kb: 21 },
-            cases: [],
-          },
-        },
-      },
-    ],
-  };
-
-  const compact = parseCompactResults(grouped);
-  assert.deepEqual(compact.hpp_map["mylib/foo.hpp"], ["test/foo.test.cpp"]);
-  assert.deepEqual(
-    Object.keys(compact.tests["test/foo.test.cpp"].environments).sort(),
-    ["x64-clang++", "x64-g++"],
-  );
-});
 
 test("buildResultEntry parses case record file", () => {
   const dir = makeTempDir();

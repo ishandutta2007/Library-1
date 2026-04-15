@@ -1,6 +1,5 @@
 /**
  * .verify-results/results.json の読み込み
- * compact 形式 / hpp grouped 形式を用途ごとに返す
  */
 import fs from "fs";
 import path from "path";
@@ -48,7 +47,7 @@ export interface GroupedProblemResult {
 
 export type GroupedResultsByHpp = Record<string, GroupedProblemResult[]>;
 
-export function readJsonFile(filePath: string): unknown {
+function readJsonFile(filePath: string): unknown {
   if (!fs.existsSync(filePath)) return null;
   try {
     return JSON.parse(fs.readFileSync(filePath, "utf-8"));
@@ -57,48 +56,24 @@ export function readJsonFile(filePath: string): unknown {
   }
 }
 
-export function isCompactResults(raw: any): raw is CompactResults {
-  return !!raw && typeof raw === "object" && raw.tests && raw.hpp_map;
-}
-
-export function parseCompactResults(raw: unknown): CompactResults {
-  if (!raw || typeof raw !== "object") {
-    return { tests: {}, hpp_map: {} };
+function loadCompactResultsFromJson(raw: unknown): CompactResults {
+  if (
+    raw &&
+    typeof raw === "object" &&
+    "tests" in raw &&
+    "hpp_map" in raw
+  ) {
+    return raw as CompactResults;
   }
-
-  if (isCompactResults(raw)) {
-    return raw;
-  }
-
-  const grouped = raw as GroupedResultsByHpp;
-  const tests: Record<string, CompactTestResult> = {};
-  const hpp_map: Record<string, string[]> = {};
-
-  for (const [hpp, problems] of Object.entries(grouped)) {
-    hpp_map[hpp] = [];
-    for (const problem of problems ?? []) {
-      hpp_map[hpp].push(problem.file);
-      const existing = tests[problem.file];
-      tests[problem.file] = {
-        problem: problem.problem,
-        time_limit_ms: problem.time_limit_ms,
-        environments: {
-          ...(existing?.environments || {}),
-          ...(problem.environments || {}),
-        },
-      };
-    }
-  }
-
-  return { tests, hpp_map };
+  return { tests: {}, hpp_map: {} };
 }
 
 export function loadCompactResults(): CompactResults {
-  return parseCompactResults(readJsonFile(RESULTS_PATH));
+  return loadCompactResultsFromJson(readJsonFile(RESULTS_PATH));
 }
 
 export function loadCompactResultsFromPath(filePath: string): CompactResults {
-  return parseCompactResults(readJsonFile(filePath));
+  return loadCompactResultsFromJson(readJsonFile(filePath));
 }
 
 export function loadGroupedResultsByHpp(): GroupedResultsByHpp {
@@ -116,4 +91,3 @@ export function loadGroupedResultsByHpp(): GroupedResultsByHpp {
 
   return data;
 }
-

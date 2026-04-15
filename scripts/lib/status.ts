@@ -1,15 +1,16 @@
 /**
  * hpp のステータス判定
  */
+import type { CompactResults } from "./results";
 
-export function hppStatusIcon(hpp: string, testMap: Record<string, string[]>, resultsData: Record<string, any[]>): string {
-  const tests = testMap[hpp]
-  if (!tests || tests.length === 0) return '<span data-pagefind-ignore class="dot dot-gray">●</span>'
-  const problems = resultsData[hpp]
-  if (!problems || problems.length === 0) return '<span data-pagefind-ignore class="dot dot-gray">●</span>'
+export function hppStatusIcon(hpp: string, results: CompactResults): string {
+  const files = results.hpp_map[hpp]
+  if (!files || files.length === 0) return '<span data-pagefind-ignore class="dot dot-gray">●</span>'
   let hasAC = false, hasFail = false
-  for (const p of problems) {
-    for (const [, env] of Object.entries(p.environments || {}) as [string, any][]) {
+  for (const file of files) {
+    const test = results.tests[file]
+    if (!test) continue
+    for (const env of Object.values(test.environments)) {
       if (env.status === 'AC' || env.status === 'IGNORE') hasAC = true
       else if (env.status) hasFail = true
     }

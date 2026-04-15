@@ -11,10 +11,9 @@ import { katex } from "@mdit/plugin-katex";
 import matter from "gray-matter";
 import { createHighlighter, type Highlighter } from "shiki";
 import katexLib from "katex";
-import { loadGroupedResultsByHpp } from "./lib/results";
+import { loadCompactResults, type CompactResults } from "./lib/results";
 import {
   buildDependencyGraph,
-  buildTestMap,
   type DependencyGraph,
 } from "./lib/dependency-graph";
 import { hppStatusIcon } from "./lib/status";
@@ -154,19 +153,20 @@ function formatMemory(kb: number): string {
   return kb + " KB";
 }
 
-function renderVerifyMatrix(hppResults: any[]): string {
-  if (!hppResults || hppResults.length === 0) return "";
+function renderVerifyMatrix(files: string[], results: CompactResults): string {
+  if (files.length === 0) return "";
 
   // 全環境名を収集
   const envNames = new Set<string>();
-  for (const r of hppResults) {
-    for (const name of Object.keys(r.environments || {})) envNames.add(name);
+  for (const file of files) {
+    const test = results.tests[file];
+    if (test) for (const name of Object.keys(test.environments)) envNames.add(name);
   }
   const envList = [...envNames].sort();
   if (envList.length === 0) return "";
 
-  const collapsed = hppResults.length > 20;
-  let html = `<details${collapsed ? "" : " open"}><summary>Verification Results (${hppResults.length} tests)</summary>\n`;
+  const collapsed = files.length > 20;
+  let html = `<details${collapsed ? "" : " open"}><summary>Verification Results (${files.length} tests)</summary>\n`;
   html +=
     '<div class="table-wrapper"><table class="verify-matrix"><thead><tr><th>Test</th>';
   for (const env of envList) html += `<th colspan="3">${escapeHtml(env)}</th>`;
@@ -175,12 +175,13 @@ function renderVerifyMatrix(hppResults: any[]): string {
     html += "<th>Status</th><th>Time</th><th>Memory</th>";
   html += "</tr></thead><tbody>\n";
 
-  for (const r of hppResults) {
-    const testName = r.file.replace(/^test\//, "").replace(/\.cpp$/, "");
+  for (const file of files) {
+    const test = results.tests[file];
+    const testName = file.replace(/^test\//, "").replace(/\.cpp$/, "");
     const testLink = `${BASE_PATH}/test/${testName}.html`;
-    html += `<tr><td class="test-name-cell"><div class="test-name-scroll"><a href="${testLink}">${escapeHtml(r.file)}</a></div></td>`;
+    html += `<tr><td class="test-name-cell"><div class="test-name-scroll"><a href="${testLink}">${escapeHtml(file)}</a></div></td>`;
     for (const env of envList) {
-      const e = r.environments?.[env];
+      const e = test?.environments?.[env];
       if (e) {
         const time =
           e.summary?.time_max_ms != null ? `${e.summary.time_max_ms} ms` : "";
@@ -351,8 +352,7 @@ function readFrontmatter(mdPath: string): { title?: string; order?: number } {
 }
 
 function generateSidebar(
-  testMap: Record<string, string[]>,
-  resultsData: Record<string, any[]>,
+  results: CompactResults,
 ): string {
   const categories = fs
     .readdirSync(SRC_DIR, { withFileTypes: true })
@@ -381,7 +381,7 @@ function generateSidebar(
       const name = entry.name.replace(/\.hpp$/, "");
       const fm = readFrontmatter(path.join(mdPath, name + ".md"));
       const hppPath = `mylib/${hppPrefix}${entry.name}`;
-      const icon = hppStatusIcon(hppPath, testMap, resultsData);
+      const icon = hppStatusIcon(hppPath, results);
       items.push({
         text: fm.title || name,
         icon,
@@ -473,13 +473,12 @@ function generateHppPage(
   mdPath: string,
   sidebar: string,
   depGraph: DependencyGraph,
-  testMap: Record<string, string[]>,
-  resultsData: Record<string, any[]>,
+  results: CompactResults,
 ): void {
   const raw = fs.readFileSync(mdPath, "utf-8");
   const { data: fm, content: mdContent } = matter(raw);
 
-  const icon = hppStatusIcon(hppPath, testMap, resultsData);
+  const icon = hppStatusIcon(hppPath, results);
   const title =
     fm.title ||
     hppPath
@@ -537,14 +536,14 @@ function generateHppPage(
   }
 
   // Verified with
-  const hppResults = resultsData[hppPath] || [];
-  if (hppResults.length > 0) {
+  const hppTestFiles = results.hpp_map[hppPath] || [];
+  if (hppTestFiles.length > 0) {
     body += "<h2>Verified with</h2>\n";
-    body += renderVerifyMatrix(hppResults);
+    body += renderVerifyMatrix(hppTestFiles, results);
   }
 
   function renderDepItem(hppRelPath: string): string {
-    const icon = hppStatusIcon(hppRelPath, testMap, resultsData);
+    const icon = hppStatusIcon(hppRelPath, results);
     const title =
       readFrontmatter(
         path.join(
@@ -619,8 +618,7 @@ function generateHppPage(
 function generateTestPage(
   testFile: string,
   sidebar: string,
-  testMap: Record<string, string[]>,
-  resultsData: Record<string, any[]>,
+  results: CompactResults,
 ): void {
   const source = fs.readFileSync(path.join(ROOT, testFile), "utf-8");
 
@@ -628,17 +626,7 @@ function generateTestPage(
   for (const m of source.matchAll(/#include\s+"(mylib\/[^"]+\.hpp)"/g))
     directIncludes.push(m[1]);
 
-  // 結果データからテスト情報を取得
-  let testResult: any = null;
-  for (const problems of Object.values(resultsData)) {
-    for (const p of problems) {
-      if (p.file === testFile) {
-        testResult = p;
-        break;
-      }
-    }
-    if (testResult) break;
-  }
+  const testResult = results.tests[testFile] || null;
   const problem: string | null = testResult?.problem || null;
 
   const githubUrl = `https://github.com/hashiryo/Library/blob/master/${testFile}`;
@@ -654,7 +642,7 @@ function generateTestPage(
   if (directIncludes.length > 0) {
     body += '<h2>Depends on</h2>\n<ul class="dep-list">\n';
     for (const hpp of directIncludes) {
-      const icon = hppStatusIcon(hpp, testMap, resultsData);
+      const icon = hppStatusIcon(hpp, results);
       const title =
         readFrontmatter(
           path.join(
@@ -721,9 +709,8 @@ async function main() {
   // 初期化
   const md = await initMarkdown();
   const depGraph = buildDependencyGraph();
-  const testMap = buildTestMap(depGraph);
-  const resultsData = loadGroupedResultsByHpp();
-  const sidebar = generateSidebar(testMap, resultsData);
+  const results = loadCompactResults();
+  const sidebar = generateSidebar(results);
 
   // 出力ディレクトリを準備
   if (fs.existsSync(SITE_DIR)) fs.rmSync(SITE_DIR, { recursive: true });
@@ -787,8 +774,7 @@ async function main() {
         mdPath || path.join(MD_DIR, mdRelPath),
         sidebar,
         depGraph,
-        testMap,
-        resultsData,
+        results,
       );
       hppCount++;
     }
@@ -808,7 +794,7 @@ async function main() {
       if (!entry.name.endsWith(".test.cpp")) continue;
 
       const testFile = path.relative(ROOT, full);
-      generateTestPage(testFile, sidebar, testMap, resultsData);
+      generateTestPage(testFile, sidebar, results);
       testCount++;
     }
   }

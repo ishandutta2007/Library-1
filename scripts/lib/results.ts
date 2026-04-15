@@ -38,15 +38,6 @@ export interface CompactResults {
   hpp_map: Record<string, string[]>;
 }
 
-export interface GroupedProblemResult {
-  file: string;
-  problem: string;
-  time_limit_ms: number;
-  environments: Record<string, EnvSummary>;
-}
-
-export type GroupedResultsByHpp = Record<string, GroupedProblemResult[]>;
-
 function readJsonFile(filePath: string): unknown {
   if (!fs.existsSync(filePath)) return null;
   try {
@@ -74,20 +65,4 @@ export function loadCompactResults(): CompactResults {
 
 export function loadCompactResultsFromPath(filePath: string): CompactResults {
   return loadCompactResultsFromJson(readJsonFile(filePath));
-}
-
-export function loadGroupedResultsByHpp(): GroupedResultsByHpp {
-  const compact = loadCompactResults();
-  const data: GroupedResultsByHpp = {};
-
-  for (const [hpp, files] of Object.entries(compact.hpp_map)) {
-    data[hpp] = files.map((file) => ({
-      file,
-      problem: compact.tests[file]?.problem || "",
-      time_limit_ms: compact.tests[file]?.time_limit_ms || 0,
-      environments: compact.tests[file]?.environments || {},
-    }));
-  }
-
-  return data;
 }

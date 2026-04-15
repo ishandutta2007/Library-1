@@ -19,17 +19,12 @@ export interface TestResult {
   cases: CaseResult[];
 }
 
-export interface MergedProblem {
-  problem: string;
-  file: string;
-  time_limit_ms: number;
-  environments: Record<string, EnvSummary>;
-}
-
 export interface MergeArgs {
   root: string;
   prevFile?: string | null;
 }
+
+const ENVS = ["x64-g++", "x64-clang++", "arm-g++", "arm-clang++"];
 
 function loadNewResults(root: string): TestResult[] {
   const resultDir = path.join(root, ".cache/results");
@@ -62,8 +57,9 @@ function loadPreviousEnvMap(
     return prevMap;
   }
 
+  // レガシー grouped 形式
   for (const problems of Object.values(
-    raw as Record<string, MergedProblem[]>,
+    raw as Record<string, { file: string; environments: Record<string, EnvSummary> }[]>,
   )) {
     for (const problem of problems) {
       prevMap[problem.file] = {
@@ -75,15 +71,16 @@ function loadPreviousEnvMap(
   return prevMap;
 }
 
+/** 前回結果と新しい結果をマージして、テストファイル→環境別結果のマップを返す */
 function mergeEnvironments(
   previous: Record<string, Record<string, EnvSummary>>,
   newResults: TestResult[],
 ): Record<string, Record<string, EnvSummary>> {
-  const prevMap = { ...previous };
+  const merged = { ...previous };
 
   for (const result of newResults) {
     const key = result.file;
-    if (!prevMap[key]) prevMap[key] = {};
+    if (!merged[key]) merged[key] = {};
 
     const cases = result.cases || [];
     const timeMax =
@@ -104,10 +101,10 @@ function mergeEnvironments(
       cases,
     };
     if (result.compile_error) envSummary.compile_error = result.compile_error;
-    prevMap[key][result.environment] = envSummary;
+    merged[key][result.environment] = envSummary;
   }
 
-  return prevMap;
+  return merged;
 }
 
 function getTestMeta(
@@ -125,63 +122,44 @@ function getTestMeta(
   };
 }
 
-function getTestStatus(
-  root: string,
-  testFile: string,
-): "normal" | "ignore" | "standalone" {
+function isIgnoreTest(root: string, testFile: string): boolean {
   const full = path.join(root, testFile);
-  if (!fs.existsSync(full)) return "normal";
+  if (!fs.existsSync(full)) return false;
   const content = fs.readFileSync(full, "utf-8");
-  if (/competitive-verifier:\s*IGNORE/.test(content)) return "ignore";
-  if (/competitive-verifier:\s*STANDALONE/.test(content)) return "standalone";
-  return "normal";
+  return /competitive-verifier:\s*IGNORE/.test(content);
 }
 
-function buildGroupedOutput(
-  root: string,
-  prevMap: Record<string, Record<string, EnvSummary>>,
-): Record<string, MergedProblem[]> {
-  const hppMap = buildTestMap(buildDependencyGraph());
-  const output: Record<string, MergedProblem[]> = {};
+const IGNORE_ENV_SUMMARY: EnvSummary = {
+  status: "IGNORE",
+  summary: { time_max_ms: 0, time_total_ms: 0, memory_max_kb: 0 },
+  cases: [],
+};
 
-  for (const [hpp, testFiles] of Object.entries(hppMap)) {
-    const problems: MergedProblem[] = [];
+/** hpp→テストファイルのマッピングを構築し、IGNORE テストの疑似環境も envMap に注入する */
+function buildHppMap(
+  root: string,
+  envMap: Record<string, Record<string, EnvSummary>>,
+): Record<string, string[]> {
+  const hppTestMap = buildTestMap(buildDependencyGraph());
+  const hppMap: Record<string, string[]> = {};
+
+  for (const [hpp, testFiles] of Object.entries(hppTestMap)) {
+    const files: string[] = [];
     for (const file of testFiles) {
-      const meta = getTestMeta(root, file);
-      const status = getTestStatus(root, file);
-      if (status === "ignore") {
-        const ignoreEnvs: Record<string, EnvSummary> = {};
-        for (const env of [
-          "x64-g++",
-          "x64-clang++",
-          "arm-g++",
-          "arm-clang++",
-        ]) {
-          ignoreEnvs[env] = {
-            status: "IGNORE",
-            summary: { time_max_ms: 0, time_total_ms: 0, memory_max_kb: 0 },
-            cases: [],
-          };
+      if (isIgnoreTest(root, file)) {
+        // IGNORE テストは実行されないので envMap に結果がない → 疑似環境を注入
+        if (!envMap[file]) {
+          envMap[file] = Object.fromEntries(
+            ENVS.map((env) => [env, IGNORE_ENV_SUMMARY]),
+          );
         }
-        problems.push({
-          problem: meta.problem,
-          file,
-          time_limit_ms: meta.tlMs,
-          environments: ignoreEnvs,
-        });
-      } else if (prevMap[file]) {
-        problems.push({
-          problem: meta.problem,
-          file,
-          time_limit_ms: meta.tlMs,
-          environments: prevMap[file],
-        });
       }
+      files.push(file);
     }
-    if (problems.length > 0) output[hpp] = problems;
+    if (files.length > 0) hppMap[hpp] = files;
   }
 
-  return output;
+  return hppMap;
 }
 
 export function mergeResults(args: MergeArgs): CompactResults {
@@ -190,15 +168,8 @@ export function mergeResults(args: MergeArgs): CompactResults {
   const prevPath = args.prevFile || outputPath;
   const prevMap = fs.existsSync(prevPath) ? loadPreviousEnvMap(prevPath) : {};
   const envMap = mergeEnvironments(prevMap, newResults);
-  const grouped = buildGroupedOutput(args.root, envMap);
+  const hpp_map = buildHppMap(args.root, envMap);
 
-  // hpp_map: grouped から構築
-  const hpp_map: Record<string, string[]> = {};
-  for (const [hpp, problems] of Object.entries(grouped)) {
-    hpp_map[hpp] = problems.map((p) => p.file);
-  }
-
-  // tests: envMap の全テストから構築（hpp に紐づかないテストも漏れない）
   const tests: CompactResults["tests"] = {};
   for (const [file, environments] of Object.entries(envMap)) {
     const meta = getTestMeta(args.root, file);

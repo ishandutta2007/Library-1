@@ -210,6 +210,22 @@ def ensure_library_checker_repo():
     return True
 
 
+def copy_yosupo_checker_assets(problem_dir: Path, tmp_dir: Path) -> None:
+    """checker とその依存ヘッダをテストケースキャッシュへコピー"""
+    checker_cpp = problem_dir / "checker.cpp"
+    if not checker_cpp.exists():
+        return
+
+    shutil.copy2(checker_cpp, tmp_dir / "checker.cpp")
+
+    for header in problem_dir.glob("*.h"):
+        shutil.copy2(header, tmp_dir / header.name)
+
+    testlib_h = LIBRARY_CHECKER_DIR / "common" / "testlib.h"
+    if testlib_h.exists():
+        shutil.copy2(testlib_h, tmp_dir / "testlib.h")
+
+
 def download_yosupo(url: str) -> bool:
     """yosupo judge のテストケースを生成し、checker もコピー"""
     cache_dir = url_to_cache_dir(url)
@@ -262,15 +278,7 @@ def download_yosupo(url: str) -> bool:
             shutil.copy2(out_file, tmp_dir / out_file.name)
             count += 1
 
-    # checker のソースをコピー
-    checker_cpp = problem_dir / "checker.cpp"
-    if checker_cpp.exists():
-        shutil.copy2(checker_cpp, tmp_dir / "checker.cpp")
-        for header in problem_dir.glob("*.h"):
-            shutil.copy2(header, tmp_dir / header.name)
-        testlib_h = LIBRARY_CHECKER_DIR / "common" / "testlib.h"
-        if testlib_h.exists():
-            shutil.copy2(testlib_h, tmp_dir / "testlib.h")
+    copy_yosupo_checker_assets(problem_dir, tmp_dir)
 
     if count > 0:
         if cache_dir.exists():

@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import { spawnSync } from "child_process";
 import { loadCompactResultsFromPath } from "./results";
-import { parseAnnotations } from "./annotations";
 
 const ROOT = path.resolve(__dirname, "../..");
 const TEST_DIR = path.join(ROOT, "test");
@@ -92,7 +91,7 @@ export function listTargetTests(
         stack.push(full);
       } else if (entry.name.endsWith(".test.cpp")) {
         const content = fs.readFileSync(full, "utf-8");
-        if (parseAnnotations(content).isIgnore) continue;
+        if (/competitive-verifier:\s*IGNORE/.test(content)) continue;
         result.push(path.relative(ROOT, full));
       }
     }

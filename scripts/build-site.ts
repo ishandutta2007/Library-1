@@ -18,7 +18,6 @@ import {
   type DependencyGraph,
 } from "./lib/dependency-graph";
 import { hppStatusIcon } from "./lib/status";
-import { parseAnnotations } from "./lib/annotations";
 import { bundleCpp } from "./lib/bundle";
 
 // ============================================================
@@ -625,12 +624,22 @@ function generateTestPage(
 ): void {
   const source = fs.readFileSync(path.join(ROOT, testFile), "utf-8");
 
-  const ann = parseAnnotations(source);
-  const problem = ann.problem || null;
-
   const directIncludes: string[] = [];
   for (const m of source.matchAll(/#include\s+"(mylib\/[^"]+\.hpp)"/g))
     directIncludes.push(m[1]);
+
+  // 結果データからテスト情報を取得
+  let testResult: any = null;
+  for (const problems of Object.values(resultsData)) {
+    for (const p of problems) {
+      if (p.file === testFile) {
+        testResult = p;
+        break;
+      }
+    }
+    if (testResult) break;
+  }
+  const problem: string | null = testResult?.problem || null;
 
   const githubUrl = `https://github.com/hashiryo/Library/blob/master/${testFile}`;
 
@@ -666,16 +675,6 @@ function generateTestPage(
 
   // Test results
   body += "<h2>Test Results</h2>\n";
-  let testResult: any = null;
-  for (const problems of Object.values(resultsData)) {
-    for (const p of problems) {
-      if (p.file === testFile) {
-        testResult = p;
-        break;
-      }
-    }
-    if (testResult) break;
-  }
   body += renderResultTable(testResult);
 
   // Source code

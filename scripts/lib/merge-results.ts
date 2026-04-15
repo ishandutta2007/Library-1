@@ -3,12 +3,12 @@ import path from "path";
 import {
   type CaseResult,
   type CompactResults,
+  type CompactTestResult,
   type EnvSummary,
   isCompactResults,
   readJsonFile,
 } from "./results";
 import { buildDependencyGraph, buildTestMap } from "./dependency-graph";
-import { parseAnnotationsFromFile } from "./annotations";
 
 export interface TestResult {
   file: string;
@@ -41,45 +41,57 @@ function loadNewResults(root: string): TestResult[] {
   return newResults;
 }
 
-function loadPreviousEnvMap(
+function loadPreviousTests(
   prevPath: string,
-): Record<string, Record<string, EnvSummary>> {
-  const prevMap: Record<string, Record<string, EnvSummary>> = {};
+): Record<string, CompactTestResult> {
   const raw = readJsonFile(prevPath);
-  if (!raw) return prevMap;
+  if (!raw) return {};
 
   console.log(`Loaded previous results from ${prevPath}`);
   if (isCompactResults(raw)) {
-    for (const [file, data] of Object.entries(raw.tests)) {
-      prevMap[file] = data.environments || {};
-    }
-    return prevMap;
+    return { ...raw.tests };
   }
 
   // レガシー grouped 形式
+  const tests: Record<string, CompactTestResult> = {};
   for (const problems of Object.values(
-    raw as Record<string, { file: string; environments: Record<string, EnvSummary> }[]>,
+    raw as Record<string, { file: string; problem: string; time_limit_ms: number; environments: Record<string, EnvSummary> }[]>,
   )) {
-    for (const problem of problems) {
-      prevMap[problem.file] = {
-        ...(prevMap[problem.file] || {}),
-        ...problem.environments,
-      };
+    for (const p of problems) {
+      if (!tests[p.file]) {
+        tests[p.file] = {
+          problem: p.problem,
+          time_limit_ms: p.time_limit_ms,
+          environments: {},
+        };
+      }
+      Object.assign(tests[p.file].environments, p.environments);
     }
   }
-  return prevMap;
+  return tests;
 }
 
-/** 前回結果と新しい結果をマージして、テストファイル→環境別結果のマップを返す */
-function mergeEnvironments(
-  previous: Record<string, Record<string, EnvSummary>>,
+/** 前回結果と新しい結果をマージする */
+function mergeTests(
+  previous: Record<string, CompactTestResult>,
   newResults: TestResult[],
-): Record<string, Record<string, EnvSummary>> {
-  const merged = { ...previous };
+): Record<string, CompactTestResult> {
+  const merged: Record<string, CompactTestResult> = {};
+  for (const [file, prev] of Object.entries(previous)) {
+    merged[file] = { ...prev, environments: { ...prev.environments } };
+  }
 
   for (const result of newResults) {
     const key = result.file;
-    if (!merged[key]) merged[key] = {};
+    if (!merged[key]) {
+      merged[key] = {
+        problem: result.problem,
+        time_limit_ms: 0,
+        environments: {},
+      };
+    }
+    // problem は新しい結果で上書き（run-tests.sh が正としてセット）
+    if (result.problem) merged[key].problem = result.problem;
 
     const cases = result.cases || [];
     const timeMax =
@@ -100,14 +112,16 @@ function mergeEnvironments(
       cases,
     };
     if (result.compile_error) envSummary.compile_error = result.compile_error;
-    merged[key][result.environment] = envSummary;
+    merged[key].environments[result.environment] = envSummary;
   }
 
   return merged;
 }
 
-function getTestAnnotations(root: string, testFile: string) {
-  return parseAnnotationsFromFile(path.join(root, testFile));
+function isIgnoreTest(filePath: string): boolean {
+  if (!fs.existsSync(filePath)) return false;
+  const content = fs.readFileSync(filePath, "utf-8");
+  return /competitive-verifier:\s*IGNORE/.test(content);
 }
 
 const IGNORE_ENV_SUMMARY: EnvSummary = {
@@ -116,35 +130,37 @@ const IGNORE_ENV_SUMMARY: EnvSummary = {
   cases: [],
 };
 
-/** envMap に含まれる全環境名を収集する */
+/** tests に含まれる全環境名を収集する */
 function collectEnvNames(
-  envMap: Record<string, Record<string, EnvSummary>>,
+  tests: Record<string, CompactTestResult>,
 ): string[] {
   const envSet = new Set<string>();
-  for (const envs of Object.values(envMap)) {
-    for (const env of Object.keys(envs)) envSet.add(env);
+  for (const test of Object.values(tests)) {
+    for (const env of Object.keys(test.environments)) envSet.add(env);
   }
   return [...envSet].sort();
 }
 
-/** hpp→テストファイルのマッピングを構築し、IGNORE テストの疑似環境も envMap に注入する */
+/** hpp→テストファイルのマッピングを構築し、IGNORE テストの疑似環境も tests に注入する */
 function buildHppMap(
   root: string,
-  envMap: Record<string, Record<string, EnvSummary>>,
+  tests: Record<string, CompactTestResult>,
 ): Record<string, string[]> {
   const hppTestMap = buildTestMap(buildDependencyGraph());
   const hppMap: Record<string, string[]> = {};
-  const envNames = collectEnvNames(envMap);
+  const envNames = collectEnvNames(tests);
 
   for (const [hpp, testFiles] of Object.entries(hppTestMap)) {
     const files: string[] = [];
     for (const file of testFiles) {
-      const ann = getTestAnnotations(root, file);
-      if (ann.isIgnore && !envMap[file]) {
-        // IGNORE テストは実行されないので envMap に結果がない → 疑似環境を注入
-        envMap[file] = Object.fromEntries(
-          envNames.map((env) => [env, IGNORE_ENV_SUMMARY]),
-        );
+      if (!tests[file] && isIgnoreTest(path.join(root, file))) {
+        tests[file] = {
+          problem: "",
+          time_limit_ms: 0,
+          environments: Object.fromEntries(
+            envNames.map((env) => [env, IGNORE_ENV_SUMMARY]),
+          ),
+        };
       }
       files.push(file);
     }
@@ -158,19 +174,9 @@ export function mergeResults(args: MergeArgs): CompactResults {
   const outputPath = path.join(args.root, ".verify-results", "results.json");
   const newResults = loadNewResults(args.root);
   const prevPath = args.prevFile || outputPath;
-  const prevMap = fs.existsSync(prevPath) ? loadPreviousEnvMap(prevPath) : {};
-  const envMap = mergeEnvironments(prevMap, newResults);
-  const hpp_map = buildHppMap(args.root, envMap);
-
-  const tests: CompactResults["tests"] = {};
-  for (const [file, environments] of Object.entries(envMap)) {
-    const ann = getTestAnnotations(args.root, file);
-    tests[file] = {
-      problem: ann.problem,
-      time_limit_ms: Math.round(ann.tleSec * 1000),
-      environments,
-    };
-  }
+  const prevTests = fs.existsSync(prevPath) ? loadPreviousTests(prevPath) : {};
+  const tests = mergeTests(prevTests, newResults);
+  const hpp_map = buildHppMap(args.root, tests);
 
   return { tests, hpp_map };
 }

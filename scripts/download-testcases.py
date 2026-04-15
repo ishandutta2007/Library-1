@@ -266,6 +266,8 @@ def download_yosupo(url: str) -> bool:
     checker_cpp = problem_dir / "checker.cpp"
     if checker_cpp.exists():
         shutil.copy2(checker_cpp, tmp_dir / "checker.cpp")
+        for header in problem_dir.glob("*.h"):
+            shutil.copy2(header, tmp_dir / header.name)
         testlib_h = LIBRARY_CHECKER_DIR / "common" / "testlib.h"
         if testlib_h.exists():
             shutil.copy2(testlib_h, tmp_dir / "testlib.h")

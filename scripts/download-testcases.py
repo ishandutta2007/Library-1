@@ -82,6 +82,28 @@ def is_cached(url: str) -> bool:
     return False
 
 
+def copy_checker_assets(
+    source_dir: Path,
+    dest_dir: Path,
+    *,
+    extra_headers: list[Path] | None = None,
+) -> None:
+    """checker と依存ヘッダをコピー"""
+    checker_cpp = source_dir / "checker.cpp"
+    if not checker_cpp.exists():
+        return
+
+    shutil.copy2(checker_cpp, dest_dir / "checker.cpp")
+
+    for pattern in ("*.h", "*.hpp"):
+        for header in source_dir.glob(pattern):
+            shutil.copy2(header, dest_dir / header.name)
+
+    for header in extra_headers or []:
+        if header.exists():
+            shutil.copy2(header, dest_dir / header.name)
+
+
 def try_tc_zip(url: str) -> bool:
     """tc.zip からテストケースをコピー（キャッシュ対象外の別ディレクトリに置く）"""
     md5 = url_to_md5(url)
@@ -94,9 +116,7 @@ def try_tc_zip(url: str) -> bool:
         if test_dir.exists() and any(test_dir.iterdir()):
             resolved_dir.mkdir(parents=True, exist_ok=True)
             subprocess.run(["cp", "-r", f"{test_dir}/.", str(resolved_dir)], check=True)
-            checker = problem_dir / "checker.cpp"
-            if checker.exists():
-                shutil.copy2(checker, resolved_dir / "checker.cpp")
+            copy_checker_assets(problem_dir, resolved_dir)
             return True
     return False
 
@@ -210,22 +230,6 @@ def ensure_library_checker_repo():
     return True
 
 
-def copy_yosupo_checker_assets(problem_dir: Path, tmp_dir: Path) -> None:
-    """checker とその依存ヘッダをテストケースキャッシュへコピー"""
-    checker_cpp = problem_dir / "checker.cpp"
-    if not checker_cpp.exists():
-        return
-
-    shutil.copy2(checker_cpp, tmp_dir / "checker.cpp")
-
-    for header in problem_dir.glob("*.h"):
-        shutil.copy2(header, tmp_dir / header.name)
-
-    testlib_h = LIBRARY_CHECKER_DIR / "common" / "testlib.h"
-    if testlib_h.exists():
-        shutil.copy2(testlib_h, tmp_dir / "testlib.h")
-
-
 def download_yosupo(url: str) -> bool:
     """yosupo judge のテストケースを生成し、checker もコピー"""
     cache_dir = url_to_cache_dir(url)
@@ -278,7 +282,11 @@ def download_yosupo(url: str) -> bool:
             shutil.copy2(out_file, tmp_dir / out_file.name)
             count += 1
 
-    copy_yosupo_checker_assets(problem_dir, tmp_dir)
+    copy_checker_assets(
+        problem_dir,
+        tmp_dir,
+        extra_headers=[LIBRARY_CHECKER_DIR / "common" / "testlib.h"],
+    )
 
     if count > 0:
         if cache_dir.exists():

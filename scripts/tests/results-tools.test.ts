@@ -9,7 +9,7 @@ import {
   CASE_RECORD_SEPARATOR,
   finalizeResults,
 } from "../lib/run-results";
-import { compareFloatOutputs } from "../lib/float-compare";
+import { compareFloatOutputs, compareFloatText } from "../lib/float-compare";
 import { parseCompactResults } from "../lib/results";
 
 function makeTempDir(): string {
@@ -196,5 +196,85 @@ test("compareFloatOutputs respects tolerance and token count", () => {
       tolerance: 1e-8,
     }),
     false,
+  );
+});
+
+test("compareFloatText accepts mixed string and float output", () => {
+  assert.equal(
+    compareFloatText({
+      actual: "OK 3.14\n",
+      expected: "OK 3.140000001\n",
+      tolerance: 1e-6,
+    }),
+    true,
+  );
+
+  assert.equal(
+    compareFloatText({
+      actual: "NA\n",
+      expected: "NA\n",
+      tolerance: 1e-8,
+    }),
+    true,
+  );
+
+  assert.equal(
+    compareFloatText({
+      actual: "NA\n",
+      expected: "0 0\n",
+      tolerance: 1e-8,
+    }),
+    false,
+  );
+});
+
+test("compareFloatText uses relative tolerance for large values", () => {
+  assert.equal(
+    compareFloatText({
+      actual: "1000000.0\n",
+      expected: "1000000.5\n",
+      tolerance: 1e-6,
+    }),
+    true,
+  );
+
+  assert.equal(
+    compareFloatText({
+      actual: "1000000.0\n",
+      expected: "1000002.0\n",
+      tolerance: 1e-6,
+    }),
+    false,
+  );
+});
+
+test("compareFloatText rejects partial numeric parsing and shape mismatches", () => {
+  assert.equal(
+    compareFloatText({
+      actual: "1abc\n",
+      expected: "1\n",
+      tolerance: 1e-6,
+    }),
+    false,
+  );
+
+  assert.equal(
+    compareFloatText({
+      actual: "A 1\nB\n",
+      expected: "A 1\nB 2\n",
+      tolerance: 1e-6,
+    }),
+    false,
+  );
+});
+
+test("compareFloatText normalizes newlines and ignores trailing newlines", () => {
+  assert.equal(
+    compareFloatText({
+      actual: "X 1.0\r\nY 2.0\r\n",
+      expected: "X 1\nY 2\n\n",
+      tolerance: 1e-8,
+    }),
+    true,
   );
 });

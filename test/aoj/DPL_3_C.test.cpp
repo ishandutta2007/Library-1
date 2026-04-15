@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <src/Misc/CartesianTree.hpp>
+#include "mylib/misc/CartesianTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -12,10 +12,10 @@ signed main() {
  int N;
  cin >> N;
  vector<long long> h(N);
- for (int i= 0; i < N; ++i) cin >> h[i];
+ for(int i= 0; i < N; ++i) cin >> h[i];
  CartesianTree ct(h);
  long long ans= 0;
- for (int i= 0; i < N; ++i) {
+ for(int i= 0; i < N; ++i) {
   auto [l, r]= ct.range(i);
   ans= max(ans, h[i] * (r - l));
  }

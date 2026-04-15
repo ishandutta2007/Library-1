@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <src/Misc/CartesianTree.hpp>
+#include "mylib/misc/CartesianTree.hpp"
 using namespace std;
 signed main() {
  cin.tie(0);
@@ -13,14 +13,14 @@ signed main() {
  cin >> H >> W;
  vector<int> h(W, 0);
  int ans= 0;
- for (int i= 0; i < H; ++i) {
-  for (int j= 0; j < W; ++j) {
+ for(int i= 0; i < H; ++i) {
+  for(int j= 0; j < W; ++j) {
    bool c;
    cin >> c;
    h[j]= c ? 0 : h[j] + 1;
   }
   CartesianTree ct(h);
-  for (int j= 0; j < W; ++j) {
+  for(int j= 0; j < W; ++j) {
    auto [l, r]= ct.range(j);
    ans= max(ans, h[j] * (r - l));
   }

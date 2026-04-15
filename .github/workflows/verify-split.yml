@@ -171,7 +171,6 @@ jobs:
           CXX: ${{ matrix.env.cxx }}
           CXXFLAGS: ${{ matrix.env.cxxflags }}
           ENV_NAME: ${{ matrix.env.name }}
-          SPLIT_NUMBER: ${{ inputs.split }}
         run: |
           prev_arg=""
           if [ -f ".verify-results/results.json" ]; then

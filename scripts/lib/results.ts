@@ -31,7 +31,6 @@ export interface EnvSummary {
 export interface CompactTestResult {
   problem: string;
   time_limit_ms: number;
-  split?: number;
   environments: Record<string, EnvSummary>;
 }
 
@@ -44,7 +43,6 @@ export interface GroupedProblemResult {
   file: string;
   problem: string;
   time_limit_ms: number;
-  split?: number;
   environments: Record<string, EnvSummary>;
 }
 
@@ -84,7 +82,6 @@ export function parseCompactResults(raw: unknown): CompactResults {
       tests[problem.file] = {
         problem: problem.problem,
         time_limit_ms: problem.time_limit_ms,
-        split: problem.split ?? existing?.split,
         environments: {
           ...(existing?.environments || {}),
           ...(problem.environments || {}),
@@ -113,7 +110,6 @@ export function loadGroupedResultsByHpp(): GroupedResultsByHpp {
       file,
       problem: compact.tests[file]?.problem || "",
       time_limit_ms: compact.tests[file]?.time_limit_ms || 0,
-      split: compact.tests[file]?.split,
       environments: compact.tests[file]?.environments || {},
     }));
   }

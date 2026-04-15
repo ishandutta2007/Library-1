@@ -24,7 +24,6 @@ read -r -a CXXFLAGS_ARR <<< "${CXXFLAGS}"
 TC_DIR="${TC_DIR:-${ROOT}/.cache/testcases}"
 RESULT_DIR="${RESULT_DIR:-${ROOT}/.cache/results}"
 ENV_NAME="${ENV_NAME:-local}"
-SPLIT_NUMBER="${SPLIT_NUMBER:-}"
 SPLIT_INDEX=""
 SPLIT_SIZE=""
 SPLIT_FILE=""
@@ -81,9 +80,6 @@ build_result_entry() {
     --last-execution-time "${EXECUTION_TIME}"
     --cases-records "${cases_records}")
 
-  if [[ -n "${SPLIT_NUMBER}" ]]; then
-    cmd+=(--split "${SPLIT_NUMBER}")
-  fi
   if [[ -n "${compile_error_file}" ]]; then
     cmd+=(--compile-error-file "${compile_error_file}")
   fi

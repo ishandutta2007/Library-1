@@ -23,7 +23,6 @@ test("parseCompactResults normalizes grouped legacy results", () => {
         file: "test/foo.test.cpp",
         problem: "https://example.com/foo",
         time_limit_ms: 2000,
-        split: 3,
         environments: {
           "x64-g++": {
             status: "AC",
@@ -51,7 +50,6 @@ test("parseCompactResults normalizes grouped legacy results", () => {
 
   const compact = parseCompactResults(grouped);
   assert.deepEqual(compact.hpp_map["mylib/foo.hpp"], ["test/foo.test.cpp"]);
-  assert.equal(compact.tests["test/foo.test.cpp"].split, 3);
   assert.deepEqual(
     Object.keys(compact.tests["test/foo.test.cpp"].environments).sort(),
     ["x64-clang++", "x64-g++"],
@@ -75,11 +73,9 @@ test("buildResultEntry parses case record file", () => {
     environment: "x64-g++",
     status: "WA",
     lastExecutionTime: "2026-04-14T00:00:00+00:00",
-    split: 7,
     casesRecords: casesFile,
   });
 
-  assert.equal(entry.split, 7);
   assert.equal(entry.cases.length, 2);
   assert.deepEqual(entry.cases[0], {
     name: "case1",
@@ -106,7 +102,6 @@ test("carryOverResults and finalizeResults keep only cached target env results",
           "test/a.test.cpp": {
             problem: "A",
             time_limit_ms: 1000,
-            split: 1,
             environments: {
               "x64-g++": {
                 status: "AC",

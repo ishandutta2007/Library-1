@@ -9,10 +9,6 @@ function getOption(args: string[], name: string): string | undefined {
   return index >= 0 ? args[index + 1] : undefined;
 }
 
-function hasFlag(args: string[], name: string): boolean {
-  return args.includes(name);
-}
-
 function requireOption(args: string[], name: string): string {
   const value = getOption(args, name);
   if (value == null) {
@@ -47,14 +43,12 @@ function main() {
       return;
     }
     case "build-entry": {
-      const splitValue = getOption(args, "--split");
       const entry = buildResultEntry({
         file: requireOption(args, "--file"),
         problem: requireOption(args, "--problem"),
         environment: requireOption(args, "--environment"),
         status: requireOption(args, "--status"),
         lastExecutionTime: requireOption(args, "--last-execution-time"),
-        split: splitValue != null ? Number.parseInt(splitValue, 10) : undefined,
         compileError: getOption(args, "--compile-error"),
         compileErrorFile: getOption(args, "--compile-error-file"),
         casesRecords: getOption(args, "--cases-records"),

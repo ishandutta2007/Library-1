@@ -13,7 +13,6 @@ export interface TestResult {
   file: string;
   problem: string;
   environment: string;
-  split?: number;
   status: string;
   compile_error?: string;
   last_execution_time?: string;
@@ -79,17 +78,12 @@ function loadPreviousEnvMap(
 function mergeEnvironments(
   previous: Record<string, Record<string, EnvSummary>>,
   newResults: TestResult[],
-): {
-  prevMap: Record<string, Record<string, EnvSummary>>;
-  splitMap: Record<string, number>;
-} {
+): Record<string, Record<string, EnvSummary>> {
   const prevMap = { ...previous };
-  const splitMap: Record<string, number> = {};
 
   for (const result of newResults) {
     const key = result.file;
     if (!prevMap[key]) prevMap[key] = {};
-    if (result.split != null) splitMap[key] = result.split;
 
     const cases = result.cases || [];
     const timeMax =
@@ -113,7 +107,7 @@ function mergeEnvironments(
     prevMap[key][result.environment] = envSummary;
   }
 
-  return { prevMap, splitMap };
+  return prevMap;
 }
 
 function getTestMeta(
@@ -192,7 +186,6 @@ function buildGroupedOutput(
 
 export function buildCompactResults(
   grouped: Record<string, MergedProblem[]>,
-  splitMap: Record<string, number>,
 ): CompactResults {
   const tests: CompactResults["tests"] = {};
   const hpp_map: Record<string, string[]> = {};
@@ -204,9 +197,6 @@ export function buildCompactResults(
           problem: problem.problem,
           time_limit_ms: problem.time_limit_ms,
           environments: problem.environments,
-          ...(splitMap[problem.file] != null
-            ? { split: splitMap[problem.file] }
-            : {}),
         };
       }
     }
@@ -224,7 +214,7 @@ export function mergeResults(args: MergeArgs): CompactResults {
   const newResults = loadNewResults(args.root);
   const prevPath = args.prevFile || outputPath;
   const prevMap = fs.existsSync(prevPath) ? loadPreviousEnvMap(prevPath) : {};
-  const merged = mergeEnvironments(prevMap, newResults);
-  const grouped = buildGroupedOutput(args.root, merged.prevMap);
-  return buildCompactResults(grouped, merged.splitMap);
+  const envMap = mergeEnvironments(prevMap, newResults);
+  const grouped = buildGroupedOutput(args.root, envMap);
+  return buildCompactResults(grouped);
 }

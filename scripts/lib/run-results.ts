@@ -7,7 +7,6 @@ export interface RunResultEntry {
   file: string;
   problem: string;
   environment: string;
-  split?: number;
   status: string;
   compile_error?: string;
   last_execution_time: string;
@@ -127,7 +126,6 @@ export function buildResultEntry(options: {
   environment: string;
   status: string;
   lastExecutionTime: string;
-  split?: number;
   compileError?: string;
   compileErrorFile?: string;
   casesRecords?: string;
@@ -142,7 +140,6 @@ export function buildResultEntry(options: {
     environment: options.environment,
     status: options.status,
     last_execution_time: options.lastExecutionTime,
-    ...(options.split != null ? { split: options.split } : {}),
     ...(compileError ? { compile_error: compileError } : {}),
     cases: loadCaseRecords(options.casesRecords),
   };

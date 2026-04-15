@@ -206,6 +206,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Download split lists
+        if: needs.setup.outputs.has-tests == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: split-lists
+
       - name: Download all results
         if: needs.setup.outputs.has-tests == 'true'
         uses: actions/download-artifact@v4

@@ -1,6 +1,7 @@
 /**
  * GitHub Actions の Job Summary に検証結果のサマリーを出力する
  */
+import fs from "fs";
 import {
   loadCompactResults,
   type CompactTestResult,
@@ -8,6 +9,23 @@ import {
 } from "./lib/results";
 
 const data = loadCompactResults();
+
+/** split-*.txt から テストファイル→split番号 のマッピングを構築 */
+function loadSplitMap(): Record<string, number> {
+  const splitMap: Record<string, number> = {};
+  for (let i = 0; i < 100; i++) {
+    const filePath = `split-${i}.txt`;
+    if (!fs.existsSync(filePath)) break;
+    const content = fs.readFileSync(filePath, "utf-8");
+    for (const line of content.split(/\r?\n/)) {
+      const trimmed = line.trim();
+      if (trimmed) splitMap[trimmed] = i;
+    }
+  }
+  return splitMap;
+}
+
+const splitMap = loadSplitMap();
 
 if (Object.keys(data.tests).length === 0) {
   console.log("No results found.");
@@ -48,7 +66,7 @@ function toFileRow(file: string, result: CompactTestResult): FileRow {
   }
   return {
     file,
-    split: result.split,
+    split: splitMap[file],
     envResults,
   };
 }

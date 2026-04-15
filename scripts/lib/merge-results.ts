@@ -8,6 +8,7 @@ import {
   readJsonFile,
 } from "./results";
 import { buildDependencyGraph, buildTestMap } from "./dependency-graph";
+import { parseAnnotationsFromFile } from "./annotations";
 
 export interface TestResult {
   file: string;
@@ -23,8 +24,6 @@ export interface MergeArgs {
   root: string;
   prevFile?: string | null;
 }
-
-const ENVS = ["x64-g++", "x64-clang++", "arm-g++", "arm-clang++"];
 
 function loadNewResults(root: string): TestResult[] {
   const resultDir = path.join(root, ".cache/results");
@@ -107,26 +106,8 @@ function mergeEnvironments(
   return merged;
 }
 
-function getTestMeta(
-  root: string,
-  testFile: string,
-): { problem: string; tlMs: number } {
-  const full = path.join(root, testFile);
-  if (!fs.existsSync(full)) return { problem: "", tlMs: 0 };
-  const content = fs.readFileSync(full, "utf-8");
-  const problemMatch = content.match(/competitive-verifier:\s*PROBLEM\s+(\S+)/);
-  const tleMatch = content.match(/competitive-verifier:\s*TLE\s+([0-9.]+)/);
-  return {
-    problem: problemMatch ? problemMatch[1] : "",
-    tlMs: tleMatch ? Math.round(Number.parseFloat(tleMatch[1]) * 1000) : 0,
-  };
-}
-
-function isIgnoreTest(root: string, testFile: string): boolean {
-  const full = path.join(root, testFile);
-  if (!fs.existsSync(full)) return false;
-  const content = fs.readFileSync(full, "utf-8");
-  return /competitive-verifier:\s*IGNORE/.test(content);
+function getTestAnnotations(root: string, testFile: string) {
+  return parseAnnotationsFromFile(path.join(root, testFile));
 }
 
 const IGNORE_ENV_SUMMARY: EnvSummary = {
@@ -135,6 +116,17 @@ const IGNORE_ENV_SUMMARY: EnvSummary = {
   cases: [],
 };
 
+/** envMap に含まれる全環境名を収集する */
+function collectEnvNames(
+  envMap: Record<string, Record<string, EnvSummary>>,
+): string[] {
+  const envSet = new Set<string>();
+  for (const envs of Object.values(envMap)) {
+    for (const env of Object.keys(envs)) envSet.add(env);
+  }
+  return [...envSet].sort();
+}
+
 /** hpp→テストファイルのマッピングを構築し、IGNORE テストの疑似環境も envMap に注入する */
 function buildHppMap(
   root: string,
@@ -142,17 +134,17 @@ function buildHppMap(
 ): Record<string, string[]> {
   const hppTestMap = buildTestMap(buildDependencyGraph());
   const hppMap: Record<string, string[]> = {};
+  const envNames = collectEnvNames(envMap);
 
   for (const [hpp, testFiles] of Object.entries(hppTestMap)) {
     const files: string[] = [];
     for (const file of testFiles) {
-      if (isIgnoreTest(root, file)) {
+      const ann = getTestAnnotations(root, file);
+      if (ann.isIgnore && !envMap[file]) {
         // IGNORE テストは実行されないので envMap に結果がない → 疑似環境を注入
-        if (!envMap[file]) {
-          envMap[file] = Object.fromEntries(
-            ENVS.map((env) => [env, IGNORE_ENV_SUMMARY]),
-          );
-        }
+        envMap[file] = Object.fromEntries(
+          envNames.map((env) => [env, IGNORE_ENV_SUMMARY]),
+        );
       }
       files.push(file);
     }
@@ -172,10 +164,10 @@ export function mergeResults(args: MergeArgs): CompactResults {
 
   const tests: CompactResults["tests"] = {};
   for (const [file, environments] of Object.entries(envMap)) {
-    const meta = getTestMeta(args.root, file);
+    const ann = getTestAnnotations(args.root, file);
     tests[file] = {
-      problem: meta.problem,
-      time_limit_ms: meta.tlMs,
+      problem: ann.problem,
+      time_limit_ms: Math.round(ann.tleSec * 1000),
       environments,
     };
   }

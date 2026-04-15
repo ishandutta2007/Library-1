@@ -117,4 +117,3 @@ export function loadGroupedResultsByHpp(): GroupedResultsByHpp {
   return data;
 }
 
-export const loadResults = loadGroupedResultsByHpp;

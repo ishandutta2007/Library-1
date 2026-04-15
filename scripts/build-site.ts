@@ -18,6 +18,7 @@ import {
   type DependencyGraph,
 } from "./lib/dependency-graph";
 import { hppStatusIcon } from "./lib/status";
+import { parseAnnotations } from "./lib/annotations";
 import { bundleCpp } from "./lib/bundle";
 
 // ============================================================
@@ -624,8 +625,8 @@ function generateTestPage(
 ): void {
   const source = fs.readFileSync(path.join(ROOT, testFile), "utf-8");
 
-  const problemMatch = source.match(/competitive-verifier:\s*PROBLEM\s+(\S+)/);
-  const problem = problemMatch ? problemMatch[1] : null;
+  const ann = parseAnnotations(source);
+  const problem = ann.problem || null;
 
   const directIncludes: string[] = [];
   for (const m of source.matchAll(/#include\s+"(mylib\/[^"]+\.hpp)"/g))

@@ -115,7 +115,7 @@ parse_annotations() {
   local test_file="$1"
   PROBLEM_URL=""
   TLE_SEC="10"
-  MLE_MB="256"
+  export MLE_MB="256"
   ERROR_TOL=""
   IS_IGNORE=false
   IS_STANDALONE=false
@@ -126,7 +126,7 @@ parse_annotations() {
     elif [[ "${line}" =~ competitive-verifier:\ *TLE\ +([0-9.]+) ]]; then
       TLE_SEC="${BASH_REMATCH[1]}"
     elif [[ "${line}" =~ competitive-verifier:\ *MLE\ +([0-9]+) ]]; then
-      MLE_MB="${BASH_REMATCH[1]}"
+      export MLE_MB="${BASH_REMATCH[1]}"
     elif [[ "${line}" =~ competitive-verifier:\ *ERROR\ +([0-9.]+) ]]; then
       ERROR_TOL="${BASH_REMATCH[1]}"
     elif [[ "${line}" =~ competitive-verifier:\ *IGNORE ]]; then

@@ -48,6 +48,7 @@ def _flatten_previous_results(prev_path: str) -> list[dict]:
     flat: list[dict] = []
     for file, test_data in compact["tests"].items():
         for environment, env_data in test_data.get("environments", {}).items():
+            cases = env_data.get("cases", [])
             flat.append(
                 {
                     "file": file,
@@ -58,7 +59,9 @@ def _flatten_previous_results(prev_path: str) -> list[dict]:
                     "last_execution_time": env_data.get(
                         "last_execution_time", ""
                     ),
-                    "cases": env_data.get("cases", []),
+                    "cases": cases,
+                    "time_max_ms": max((c["time_ms"] for c in cases), default=0),
+                    "memory_max_kb": max((c["memory_kb"] for c in cases), default=0),
                 }
             )
     return flat
@@ -122,13 +125,16 @@ def build_result_entry(
     elif compile_error:
         ce = compile_error
 
+    cases = load_case_records(cases_records)
     entry: dict = {
         "file": file,
         "problem": problem,
         "environment": environment,
         "status": status,
         "last_execution_time": last_execution_time,
-        "cases": load_case_records(cases_records),
+        "cases": cases,
+        "time_max_ms": max((c["time_ms"] for c in cases), default=0),
+        "memory_max_kb": max((c["memory_kb"] for c in cases), default=0),
     }
     if ce:
         entry["compile_error"] = ce

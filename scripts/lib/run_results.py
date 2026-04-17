@@ -128,6 +128,7 @@ def build_result_entry(
     compile_error: str | None = None,
     compile_error_file: str | None = None,
     cases_records: str | None = None,
+    cases_hash: str | None = None,
 ) -> dict:
     """1テスト分の結果エントリを構築する"""
     ce = None
@@ -147,7 +148,7 @@ def build_result_entry(
         "cases": cases,
         "time_max_ms": max((c["time_ms"] for c in cases), default=0),
         "memory_max_kb": max((c["memory_kb"] for c in cases), default=0),
-        "cases_hash": compute_cases_hash(cases),
+        "cases_hash": cases_hash if cases_hash else compute_cases_hash(cases),
     }
     if ce:
         entry["compile_error"] = ce

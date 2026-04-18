@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.12"
+# ///
 """GitHub Actions の Job Summary に検証結果のサマリーを出力する (write-summary.ts の Python 版)"""
 import json
 import sys

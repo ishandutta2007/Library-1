@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.12"
+# ///
 """テスト結果の組み立て・集約 CLI (collect-run-results.ts の Python 版)
 
 サブコマンド:

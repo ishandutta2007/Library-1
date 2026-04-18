@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.12"
+# ///
 """差分実行判定 CLI (check-need-rerun.ts の Python 版)
 
 再実行が必要なテストファイルを1行1ファイルで stdout に出力する。

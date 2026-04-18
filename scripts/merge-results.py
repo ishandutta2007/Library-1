@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.12"
+# ///
 """テスト結果をマージして results.json を生成する (merge-results.ts の Python 版)
 
 使い方:

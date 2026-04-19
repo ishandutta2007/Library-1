@@ -15,6 +15,16 @@
 # SCRIPTS_DIR が未設定なら、このファイルの親の親を使う
 SCRIPTS_DIR="${SCRIPTS_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 
+# timeout コマンドの解決 (macOS は gtimeout を優先)
+if command -v gtimeout >/dev/null 2>&1; then
+  TIMEOUT_CMD=gtimeout
+elif command -v timeout >/dev/null 2>&1; then
+  TIMEOUT_CMD=timeout
+else
+  echo "Error: 'timeout' (or 'gtimeout') not found. On macOS: brew install coreutils" >&2
+  exit 1
+fi
+
 # =============================================================================
 # ケース記録の追記 (\x1f 区切り)
 # =============================================================================
@@ -97,7 +107,8 @@ run_single_case() {
   # 実行 + 計測
   # バイナリの stderr を stderr_file に分離し、/usr/bin/time の出力は time_output へ
   if [[ "$(uname)" == "Darwin" ]]; then
-    /usr/bin/time -l sh -c 'timeout "$1" "$2" < "$3" > "$4" 2>"$5"' _ \
+    # shellcheck disable=SC2016  # "$N" は内側の sh -c で展開する
+    /usr/bin/time -l sh -c "${TIMEOUT_CMD}"' "$1" "$2" < "$3" > "$4" 2>"$5"' _ \
       "${tle_sec}" "${binary}" "${input_file}" "${output_file}" "${stderr_file}" \
       2>"${time_output}" && true
     local exit_code=$?
@@ -112,7 +123,8 @@ run_single_case() {
     elapsed_ms=$(awk '/real/{printf "%.0f", $1 * 1000}' "${time_output}" 2>/dev/null || echo "0")
     memory_kb=$(awk '/maximum resident set size/{printf "%.0f", $1 / 1024}' "${time_output}" 2>/dev/null || echo "0")
   else
-    /usr/bin/time -v sh -c 'timeout "$1" "$2" < "$3" > "$4" 2>"$5"' _ \
+    # shellcheck disable=SC2016  # "$N" は内側の sh -c で展開する
+    /usr/bin/time -v sh -c "${TIMEOUT_CMD}"' "$1" "$2" < "$3" > "$4" 2>"$5"' _ \
       "${tle_sec}" "${binary}" "${input_file}" "${output_file}" "${stderr_file}" \
       2>"${time_output}" && true
     local exit_code=$?

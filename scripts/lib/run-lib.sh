@@ -160,10 +160,11 @@ run_single_case() {
     if [[ -n "${checker_bin}" ]] && [[ -x "${checker_bin}" ]]; then
       if ! "${checker_bin}" "${input_file}" "${output_file}" "${expected_file}" &>/dev/null; then
         status="WA"
-        local actual_head expected_head
+        local actual_head expected_head input_head
         actual_head=$(head -1 "${output_file}" | cut -c1-50)
         expected_head=$(head -1 "${expected_file}" | cut -c1-50)
-        detail="expected:[${expected_head}] actual:[${actual_head}]"
+        input_head=$(head -1 "${input_file}" | cut -c1-80)
+        detail="input:[${input_head}] expected:[${expected_head}] actual:[${actual_head}]"
       fi
     elif [[ -n "${error_tolerance}" ]] && [[ "${error_tolerance}" != "0" ]]; then
       if ! python3 "${SCRIPTS_DIR}/compare-float-output.py" \
@@ -171,15 +172,18 @@ run_single_case() {
         --expected "${expected_file}" \
         --tolerance "${error_tolerance}" >/dev/null 2>&1; then
         status="WA"
-        detail="float compare failed (tolerance=${error_tolerance})"
+        local input_head
+        input_head=$(head -1 "${input_file}" | cut -c1-80)
+        detail="input:[${input_head}] float compare failed (tolerance=${error_tolerance})"
       fi
     else
       if ! diff <(sed 's/[[:space:]]*$//' "${output_file}") <(sed 's/[[:space:]]*$//' "${expected_file}") &>/dev/null; then
         status="WA"
-        local actual_head expected_head
+        local actual_head expected_head input_head
         actual_head=$(head -1 "${output_file}" | cut -c1-50)
         expected_head=$(head -1 "${expected_file}" | cut -c1-50)
-        detail="expected:[${expected_head}] actual:[${actual_head}]"
+        input_head=$(head -1 "${input_file}" | cut -c1-80)
+        detail="input:[${input_head}] expected:[${expected_head}] actual:[${actual_head}]"
       fi
     fi
   fi

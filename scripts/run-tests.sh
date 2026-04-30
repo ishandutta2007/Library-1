@@ -25,6 +25,12 @@ CXX="${CXX:-g++}"
 CXXFLAGS="${CXXFLAGS:--std=c++17 -O2}"
 read -r -a CXX_CMD_ARR <<< "${CXX}"
 read -r -a CXXFLAGS_ARR <<< "${CXXFLAGS}"
+
+# macOS clang + libc++ には __lg が無いので互換ヘッダを強制 include する。
+# Linux gcc/libstdc++ では clang_compat.hpp 内の polyfill は無効化される。
+if [[ "$(uname)" == "Darwin" ]]; then
+  CXXFLAGS_ARR+=("-include" "${ROOT}/include/clang_compat.hpp")
+fi
 TC_DIR="${TC_DIR:-${ROOT}/.cache/testcases}"
 RESULT_DIR="${RESULT_DIR:-${ROOT}/.cache/results}"
 ENV_NAME="${ENV_NAME:-local}"

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(c++ -std=c++17 -O2 -I/Users/01058120/code/asobi/procon/judge/lib/include -DALGO_HPP=\"\\\\\"algos/barrett_ceil_64.hpp\\\\\"\" -o /tmp/run31 base.cpp)",
+      "Bash(/tmp/run31)",
+      "Bash(echo \"rc=$?\")",
+      "Bash(./scripts/local-test.sh problems/1word-mod/static/1word-998244353/)",
+      "Bash(./scripts/local-test.sh problems/1word-mod/static/1word-998244353/algos/barrett_floor_64.hpp)",
+      "Bash(./scripts/local-test.sh problems/1word-mod/runtime/1word-31/algos/barrett_floor_64.hpp)",
+      "Bash(./scripts/local-test.sh \"problems/1word-mod/static/1word-2^61-1/\")",
+      "Bash(xargs -I{} sh -c 'echo \"=== {} ===\"; grep -E \"\\(MP\\\\\\(\\\\\\)|s\\\\\\(__builtin|odd|even|奇|偶\\)\" \"{}\" | head -3')",
+      "Bash(chmod +x /Users/01058120/code/asobi/procon/judge/problems/modulo-test/runtime/runtime-30-even/gen/generate.sh /Users/01058120/code/asobi/procon/judge/problems/modulo-test/runtime/runtime-30-even/gen/make_inputs.py)",
+      "Bash(./scripts/local-test.sh problems/modulo-test/runtime/runtime-30-even/)",
+      "Bash(curl -sLo \"pdfs/Huang22_ImprovedPlantard_TCHES.pdf\" \"https://eprint.iacr.org/2022/956.pdf\")",
+      "Bash(curl -sLo \"arxiv/Kim23_YetAnotherPlantard.pdf\" \"https://arxiv.org/pdf/2309.00440\")",
+      "Bash(curl -sLo \"arxiv/2402.00675_PlantardButterfly_NTT.pdf\" \"https://arxiv.org/pdf/2402.00675\")",
+      "Bash(curl -sL -A 'Mozilla/5.0 \\(Macintosh; Intel Mac OS X 10_15_7\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36' -o /Users/01058120/code/asobi/procon/my-docs/sources/pdfs/Huang22_ImprovedPlantard_TCHES.pdf https://eprint.iacr.org/2022/956.pdf)"
+    ]
+  }
+}

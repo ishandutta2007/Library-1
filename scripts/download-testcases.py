@@ -74,6 +74,38 @@ def get_problem_urls(split_file: str | None = None) -> dict[str, list[str]]:
     return urls
 
 
+def copy_managed_checkers() -> int:
+    """test/**/checkers/*.checker.cpp を該当 md5 ディレクトリに checker.cpp としてコピー。
+
+    対応する PROBLEM URL は checker ファイル先頭の `competitive-verifier: PROBLEM <url>`
+    から読み取る。コピー先は API キャッシュ (.cache/testcases/<md5>) を優先し、
+    なければ tc.zip 展開先 (.cache/tc-resolved/<md5>) を使う。
+    どちらも存在しないものはスキップ (まだダウンロード前)。
+    """
+    copied = 0
+    checker_files = sorted(TEST_DIR.rglob("checkers/*.checker.cpp"))
+    for checker in checker_files:
+        content = checker.read_text()
+        m = re.search(r"competitive-verifier:\s*PROBLEM\s+(\S+)", content)
+        if not m:
+            print(f"  [WARN] no PROBLEM URL in {checker.relative_to(ROOT)}")
+            continue
+        url = m.group(1)
+        md5 = url_to_md5(url)
+        candidates = [TC_CACHE_DIR / md5, TC_RESOLVED_DIR / md5]
+        for dest in candidates:
+            if dest.exists():
+                shutil.copy2(checker, dest / "checker.cpp")
+                copied += 1
+                break
+        else:
+            print(
+                f"  [SKIP] checker for {url}: no testcase dir yet "
+                f"({checker.relative_to(ROOT)})"
+            )
+    return copied
+
+
 def is_cached_any(url: str) -> bool:
     """API キャッシュまたは tc.zip 展開済みか判定"""
     if is_cached(url, CONFIG):
@@ -130,12 +162,18 @@ def main() -> None:
 
     summary = download_batch(urls_for_download, CONFIG)
 
+    # 3. test/**/checkers/*.checker.cpp を該当キャッシュディレクトリにコピー
+    print("\nCopying managed checkers...")
+    copied = copy_managed_checkers()
+    print(f"  Copied: {copied}")
+
     print(f"\nTestcase download summary:")
     print(f"  Cached:      {summary.cached}")
     print(f"  From tc.zip: {from_zip}")
     print(f"  Downloaded:  {summary.downloaded}")
     print(f"  Failed:      {summary.failed}")
     print(f"  Total:       {summary.total}")
+    print(f"  Checkers:    {copied}")
 
 
 if __name__ == "__main__":

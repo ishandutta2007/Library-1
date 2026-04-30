@@ -74,13 +74,14 @@ def get_problem_urls(split_file: str | None = None) -> dict[str, list[str]]:
     return urls
 
 
-def copy_managed_checkers() -> int:
+def copy_managed_checkers(target_urls: set[str]) -> int:
     """test/**/checkers/*.checker.cpp を該当 md5 ディレクトリに checker.cpp としてコピー。
 
     対応する PROBLEM URL は checker ファイル先頭の `competitive-verifier: PROBLEM <url>`
-    から読み取る。コピー先は API キャッシュ (.cache/testcases/<md5>) を優先し、
-    なければ tc.zip 展開先 (.cache/tc-resolved/<md5>) を使う。
-    どちらも存在しないものはスキップ (まだダウンロード前)。
+    から読み取る。target_urls (この split で対象になっている URL 集合) に
+    含まれる checker のみ処理する。コピー先は API キャッシュ
+    (.cache/testcases/<md5>) を優先し、なければ tc.zip 展開先
+    (.cache/tc-resolved/<md5>) を使う。
     """
     copied = 0
     checker_files = sorted(TEST_DIR.rglob("checkers/*.checker.cpp"))
@@ -91,6 +92,8 @@ def copy_managed_checkers() -> int:
             print(f"  [WARN] no PROBLEM URL in {checker.relative_to(ROOT)}")
             continue
         url = m.group(1)
+        if url not in target_urls:
+            continue
         md5 = url_to_md5(url)
         candidates = [TC_CACHE_DIR / md5, TC_RESOLVED_DIR / md5]
         for dest in candidates:
@@ -100,7 +103,7 @@ def copy_managed_checkers() -> int:
                 break
         else:
             print(
-                f"  [SKIP] checker for {url}: no testcase dir yet "
+                f"  [WARN] checker for {url}: no testcase dir found "
                 f"({checker.relative_to(ROOT)})"
             )
     return copied
@@ -164,7 +167,7 @@ def main() -> None:
 
     # 3. test/**/checkers/*.checker.cpp を該当キャッシュディレクトリにコピー
     print("\nCopying managed checkers...")
-    copied = copy_managed_checkers()
+    copied = copy_managed_checkers(set(urls.keys()))
     print(f"  Copied: {copied}")
 
     print(f"\nTestcase download summary:")
